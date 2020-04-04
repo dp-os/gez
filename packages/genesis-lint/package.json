@@ -1,0 +1,62 @@
+{
+    "name": "@fmfe/genesis-lint",
+    "version": "0.0.165",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "postinstall": "node postinstall.js",
+        "lint": "npm run lint:js && npm run lint:css",
+        "lint:css": "stylelint . --syntax less --fix --ignore-path ./.stylelintignore | stylelint . --custom-syntax postcss-html --fix",
+        "lint:js": "eslint . --ext .js,.ts,.vue --fix"
+    },
+    "author": "Followme",
+    "license": "MIT",
+    "dependencies": {
+        "@typescript-eslint/eslint-plugin": "^2.20.0",
+        "@typescript-eslint/parser": "^2.20.0",
+        "babel-eslint": "^10.0.3",
+        "eslint": "^6.8.0",
+        "eslint-config-alloy": "^3.6.0",
+        "eslint-config-prettier": "^6.10.0",
+        "eslint-config-standard": "^14.1.0",
+        "eslint-import-resolver-custom-alias": "^1.2.0",
+        "eslint-plugin-import": "^2.20.1",
+        "eslint-plugin-node": "^11.0.0",
+        "eslint-plugin-prettier": "^3.1.2",
+        "eslint-plugin-promise": "^4.2.1",
+        "eslint-plugin-standard": "^4.0.1",
+        "eslint-plugin-vue": "^6.2.1",
+        "husky": "^4.2.3",
+        "lint-staged": "^9.5.0",
+        "postcss-html": "^0.36.0",
+        "stylelint": "^12.0.1",
+        "stylelint-config-prettier": "^8.0.1",
+        "stylelint-config-rational-order": "^0.1.2",
+        "stylelint-config-standard": "^19.0.0",
+        "stylelint-order": "^4.0.0",
+        "typescript": "^3.8.2",
+        "vue-eslint-parser": "5.0.0"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    },
+    "lint-staged": {
+        "*.{ts,js}": [
+            "eslint --ext .js,.ts --fix",
+            "git add"
+        ],
+        "*.{css,less}": [
+            "stylelint --syntax less --fix",
+            "git add"
+        ],
+        "*.{vue}": [
+            "eslint --ext .js,.ts --fix",
+            "stylelint --custom-syntax postcss-html --fix",
+            "git add"
+        ]
+    },
+    "gitHead": "151f02f6b89e6505ffc6bfdad06906e71d3e8bf1"
+}

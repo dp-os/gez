@@ -1,0 +1,14 @@
+{
+    "packages": [
+        "packages/*"
+    ],
+    "publish": {
+        "ignoreChanges": [
+            "tsconfig.json",
+            "src",
+            "package-lock.json"
+        ],
+        "allowBranch": "master"
+    },
+    "version": "0.0.36"
+}

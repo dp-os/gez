@@ -1,0 +1,21 @@
+{
+  "name": "@fmfe/square",
+  "main": "dist/index.js",
+  "types": "types/index.d.ts",
+  "version": "0.0.165",
+  "description": "",
+  "sideEffects": false,
+  "postCompile": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Followme",
+  "license": "MIT",
+  "devDependencies": {
+    "vue": "^2.6.11"
+  },
+  "dependencies": {
+    "@fmfe/tms.js": "^0.1.7"
+  },
+  "gitHead": "151f02f6b89e6505ffc6bfdad06906e71d3e8bf1"
+}

@@ -1,0 +1,25 @@
+{
+  "name": "@fmfe/genesis-core",
+  "version": "0.0.165",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "types/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Followme",
+  "license": "MIT",
+  "gitHead": "151f02f6b89e6505ffc6bfdad06906e71d3e8bf1",
+  "sideEffects": false,
+  "dependencies": {
+    "ejs": "^3.0.1",
+    "serialize-javascript": "^3.0.0",
+    "vue": "^2.6.11",
+    "vue-server-renderer": "^2.6.11"
+  },
+  "devDependencies": {
+    "@types/ejs": "^3.0.0",
+    "@types/node": "^13.7.4",
+    "@types/serialize-javascript": "^1.5.0"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "@fmfe/genesis-remote",
+  "version": "0.0.165",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "types/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Followme",
+  "license": "MIT",
+  "gitHead": "151f02f6b89e6505ffc6bfdad06906e71d3e8bf1",
+  "sideEffects": false,
+  "dependencies": {
+  },
+  "devDependencies": {}
+}

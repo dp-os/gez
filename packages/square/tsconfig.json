@@ -1,0 +1,14 @@
+{
+	"compilerOptions": {
+		"baseUrl": "../../",
+		"target": "esnext",
+		"module": "CommonJS",
+        "moduleResolution": "node",
+		"allowSyntheticDefaultImports": true,
+		"declaration": true,
+		"esModuleInterop": true,
+		"removeComments": false,
+		"declarationDir": "./types",
+		"outDir": "./dist"
+	}
+}
