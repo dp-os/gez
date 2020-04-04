@@ -1,0 +1,21 @@
+{
+  "name": "@fmfe/genesis-app",
+  "version": "0.0.165",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "types/index.d.ts",
+  "sideEffects": false,
+  "postCompile": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Followme",
+  "license": "MIT",
+  "dependencies": {
+    "vue-router": "^3.1.6"
+  },
+  "devDependencies": {
+    "vue": "^2.6.11"
+  },
+  "gitHead": "151f02f6b89e6505ffc6bfdad06906e71d3e8bf1"
+}

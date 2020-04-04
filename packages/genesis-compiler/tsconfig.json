@@ -1,0 +1,15 @@
+{
+	"compilerOptions": {
+		"baseUrl": "../../src",
+		"target": "es2018",
+		"module": "commonjs",
+        "moduleResolution": "node",
+		"allowSyntheticDefaultImports": true,
+		"declaration": true,
+		"esModuleInterop": true,
+		"removeComments": false,
+		"declarationDir": "./types",
+		"outDir": "./dist"
+	},
+	"include": ["./src/"]
+}
