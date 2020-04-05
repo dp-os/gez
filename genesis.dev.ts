@@ -1,18 +1,14 @@
-import express from 'express';
-import { SSR } from '@fmfe/genesis-core';
 import { Watch } from '@fmfe/genesis-compiler';
+import { ssr, app, startApp } from './genesis';
 
 const start = async () => {
-    const ssr = new SSR();
     const watch = new Watch(ssr);
     await watch.start();
     const renderer = watch.renderer;
-    const app = express();
-
-    app.use(watch.devMiddleware)
-        .use(watch.hotMiddleware)
-        .use(renderer.renderMiddleware);
-    app.listen(3000, () => console.log(`http://localhost:3000`));
+    // 开发时使用的中间件
+    app.use(watch.devMiddleware);
+    app.use(watch.hotMiddleware);
+    // 拿到渲染器之后，启动服务
+    startApp(renderer);
 };
-
-export default start();
+start();
