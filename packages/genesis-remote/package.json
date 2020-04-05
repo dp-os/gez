@@ -1,6 +1,6 @@
 {
   "name": "@fmfe/genesis-remote",
-  "version": "0.0.37-alpha.2",
+  "version": "0.0.37-alpha.3",
   "description": "",
   "main": "dist/index.js",
   "types": "types/index.d.ts",
@@ -9,6 +9,6 @@
   },
   "author": "Followme",
   "license": "MIT",
-  "gitHead": "ac94a1f4da4015e75bfb82ce46bdb93f672aec7c",
+  "gitHead": "68dffb9bec1c65011bc3030fb59a872c1b18b151",
   "sideEffects": false
 }
