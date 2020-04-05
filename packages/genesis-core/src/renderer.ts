@@ -34,6 +34,11 @@ export class Renderer {
      */
     private ssrRenderer: BundleRenderer;
     public constructor(ssr: Genesis.SSR, options?: Genesis.RendererOptions) {
+        if (!options?.client?.data || !options?.server?.data) {
+            throw new Error(
+                `You have not built the application, please execute 'new Build(ssr).start()' build first`
+            );
+        }
         this.ssr = ssr;
         const template: any = async (
             strHtml: string,

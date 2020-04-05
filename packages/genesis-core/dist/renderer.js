@@ -15,7 +15,10 @@ const md5 = (content) => {
 const defaultTemplate = `<!DOCTYPE html><html><head><title>Vue SSR for Genesis</title><%-style%></head><body><%-html%><%-scriptState%><%-script%></body></html>`;
 class Renderer {
     constructor(ssr, options) {
-        var _a, _b;
+        var _a, _b, _c, _d;
+        if (!((_a = options === null || options === void 0 ? void 0 : options.client) === null || _a === void 0 ? void 0 : _a.data) || !((_b = options === null || options === void 0 ? void 0 : options.server) === null || _b === void 0 ? void 0 : _b.data)) {
+            throw new Error(`You have not built the application, please execute 'new Build(ssr).start()' build first`);
+        }
         this.ssr = ssr;
         const template = async (strHtml, ctx) => {
             const html = strHtml.replace(/^(<[A-z]([A-z]|[0-9])+)/, `$1 data-ssr-genesis-id="${ctx.data.id}"`);
@@ -32,8 +35,8 @@ class Renderer {
             data.resource = [...data.resource, ...resource];
             return ctx.data;
         };
-        const clientManifest = ((_a = options === null || options === void 0 ? void 0 : options.client) === null || _a === void 0 ? void 0 : _a.data) || require(this.ssr.outputClientManifestFile);
-        const bundle = ((_b = options === null || options === void 0 ? void 0 : options.server) === null || _b === void 0 ? void 0 : _b.data) || require(this.ssr.outputServerBundleFile);
+        const clientManifest = ((_c = options === null || options === void 0 ? void 0 : options.client) === null || _c === void 0 ? void 0 : _c.data) || require(this.ssr.outputClientManifestFile);
+        const bundle = ((_d = options === null || options === void 0 ? void 0 : options.server) === null || _d === void 0 ? void 0 : _d.data) || require(this.ssr.outputServerBundleFile);
         const renderOptions = {
             template,
             inject: false,
