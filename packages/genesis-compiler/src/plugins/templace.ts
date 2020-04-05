@@ -45,7 +45,7 @@ export class TemplacePlugin extends Plugin {
             outputDir,
             path.resolve(srcDir, './entry-server')
         );
-        const writeTemplace = (
+        const writeDistSrcTemplace = (
             filename: string,
             options: { [x: string]: string } = {}
         ) => {
@@ -60,12 +60,25 @@ export class TemplacePlugin extends Plugin {
             const outputDir = path.resolve(ssr.outputDir, './src');
             write.sync(path.resolve(outputDir, filename), text);
         };
-        writeTemplace('entry-client.ts', {
+        writeDistSrcTemplace('entry-client.ts', {
             clientFilename
         });
-        writeTemplace('entry-server.ts', {
+        writeDistSrcTemplace('entry-server.ts', {
             serverFilename
         });
+        const writeSrcTemplace = (filename: string) => {
+            const text = fs.readFileSync(
+                path.resolve(__dirname, `../../templace/src/${filename}`),
+                'utf8'
+            );
+            const output = path.resolve(ssr.srcDir, filename);
+            if (fs.existsSync(output)) return;
+            write.sync(output, text);
+        };
+        writeSrcTemplace('entry-client.ts');
+        writeSrcTemplace('entry-server.ts');
+        writeSrcTemplace('app.vue');
+        writeSrcTemplace('shims-vue.d.ts');
     }
 
     public async afterCompiler(type: CompilerType) {

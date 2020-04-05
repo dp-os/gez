@@ -142,21 +142,14 @@ namespace Genesis {
         };
         [x: string]: any;
     }
-    /**
-     * Rendered template data
-     */
-    export interface TemplateData {
+    export interface ClientData {
         url: string;
         id: string;
-        html: string;
-        style: string;
-        scriptState: string;
-        script: string;
-        resource: RenderContextResource[];
         name: string;
         state: {
             [x: string]: any;
         };
+        el: Element;
     }
     /**
      * Rendered context
