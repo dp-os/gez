@@ -1,6 +1,6 @@
 {
     "name": "@fmfe/genesis-lint",
-    "version": "0.0.37-alpha.1",
+    "version": "0.0.37-alpha.2",
     "description": "",
     "main": "index.js",
     "scripts": {
@@ -58,5 +58,5 @@
             "git add"
         ]
     },
-    "gitHead": "b89812494af5876602dd3c3055f6a30bb8266070"
+    "gitHead": "ac94a1f4da4015e75bfb82ce46bdb93f672aec7c"
 }
