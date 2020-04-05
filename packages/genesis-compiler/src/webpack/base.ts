@@ -12,7 +12,7 @@ export class BaseConfig extends BaseGenesis {
         this.config.mode(this.ssr.isProd ? 'production' : 'development');
         this.config.output.publicPath(this.ssr.publicPath);
         this.config.resolve.extensions.add('.js');
-        this.reday = this.ssr.plugin.callHook('webpackConfig', {
+        this.reday = this.ssr.plugin.callHook('chainWebpack', {
             target: target,
             config: this.config
         });

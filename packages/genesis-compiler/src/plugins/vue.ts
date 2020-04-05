@@ -7,7 +7,7 @@ import VueLoaderPlugin from 'vue-loader/lib/plugin';
 import { Plugin, WebpackHookParams } from '@fmfe/genesis-core';
 
 export class VuePlugin extends Plugin {
-    public webpackConfig({ target, config }: WebpackHookParams) {
+    public chainWebpack({ target, config }: WebpackHookParams) {
         const { ssr } = this;
         switch (target) {
             case 'client':

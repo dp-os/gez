@@ -1,6 +1,6 @@
 import { Plugin, WebpackHookParams } from '@fmfe/genesis-core';
 export class BabelPlugin extends Plugin {
-    public webpackConfig({ target, config }: WebpackHookParams) {
+    public chainWebpack({ target, config }: WebpackHookParams) {
         const { isProd } = this.ssr;
         config.resolve.extensions.prepend('.js').prepend('.ts');
         const jsRule = config.module

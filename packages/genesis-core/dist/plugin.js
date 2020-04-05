@@ -11,7 +11,7 @@ class Plugin {
     /**
      * Add plug-in of webpack or change configuration of webpack
      */
-    webpackConfig(config) { }
+    chainWebpack(config) { }
     /**
      * Execute after building production environment
      */
