@@ -99,6 +99,7 @@ class Genesis {
                     `${process.env.GENESIS_NAME} 'entry-client.ts' must return Vue object instance, Example 'export default async () => new Vue({...})'`
                 );
             }
+            app.$mount(item.options.el);
         });
     }
 }

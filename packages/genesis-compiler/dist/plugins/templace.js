@@ -40,7 +40,7 @@ class TemplacePlugin extends genesis_core_1.Plugin {
         const srcDir = ssr.srcDir;
         const clientFilename = path_1.default.relative(outputDir, path_1.default.resolve(srcDir, './entry-client'));
         const serverFilename = path_1.default.relative(outputDir, path_1.default.resolve(srcDir, './entry-server'));
-        const writeTemplace = (filename, options = {}) => {
+        const writeDistSrcTemplace = (filename, options = {}) => {
             let text = fs_1.default.readFileSync(path_1.default.resolve(__dirname, `../../templace/${filename}`), 'utf8');
             Object.keys(options).forEach((k) => {
                 const value = options[k];
@@ -49,12 +49,23 @@ class TemplacePlugin extends genesis_core_1.Plugin {
             const outputDir = path_1.default.resolve(ssr.outputDir, './src');
             write_1.default.sync(path_1.default.resolve(outputDir, filename), text);
         };
-        writeTemplace('entry-client.ts', {
+        writeDistSrcTemplace('entry-client.ts', {
             clientFilename
         });
-        writeTemplace('entry-server.ts', {
+        writeDistSrcTemplace('entry-server.ts', {
             serverFilename
         });
+        const writeSrcTemplace = (filename) => {
+            const text = fs_1.default.readFileSync(path_1.default.resolve(__dirname, `../../templace/src/${filename}`), 'utf8');
+            const output = path_1.default.resolve(ssr.srcDir, filename);
+            if (fs_1.default.existsSync(output))
+                return;
+            write_1.default.sync(output, text);
+        };
+        writeSrcTemplace('entry-client.ts');
+        writeSrcTemplace('entry-server.ts');
+        writeSrcTemplace('app.vue');
+        writeSrcTemplace('shims-vue.d.ts');
     }
     async afterCompiler(type) {
         const { ssr } = this;

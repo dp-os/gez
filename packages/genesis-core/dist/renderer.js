@@ -53,8 +53,7 @@ class Renderer {
             'renderJson',
             'renderHtml',
             'render',
-            'renderMiddleware',
-            'createContext'
+            'renderMiddleware'
         ];
         bindArr.forEach((k) => {
             this[k] = this[k].bind(this);
