@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const webpackbar_1 = __importDefault(require("webpackbar"));
 const genesis_core_1 = require("@fmfe/genesis-core");
 class BarPlugin extends genesis_core_1.Plugin {
-    webpackConfig({ target, config }) {
+    chainWebpack({ target, config }) {
         const options = target === 'client'
             ? {
                 name: `Client: ${this.ssr.name}`,

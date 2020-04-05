@@ -1,7 +1,7 @@
 import WebpackBar from 'webpackbar';
 import { Plugin, WebpackHookParams } from '@fmfe/genesis-core';
 export class BarPlugin extends Plugin {
-    public webpackConfig({ target, config }: WebpackHookParams) {
+    public chainWebpack({ target, config }: WebpackHookParams) {
         const options =
             target === 'client'
                 ? {

@@ -10,7 +10,7 @@ export declare class Plugin {
     /**
      * Add plug-in of webpack or change configuration of webpack
      */
-    webpackConfig(config: Genesis.WebpackHookParams): void;
+    chainWebpack(config: Genesis.WebpackHookParams): void;
     /**
      * Execute after building production environment
      */

@@ -1,7 +1,7 @@
 import { Plugin, WebpackHookParams } from '@fmfe/genesis-core';
 
 export class ImagePlugin extends Plugin {
-    public webpackConfig({ config }: WebpackHookParams) {
+    public chainWebpack({ config }: WebpackHookParams) {
         const { ssr } = this;
         config.module
             .rule('file')

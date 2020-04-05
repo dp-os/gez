@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const genesis_core_1 = require("@fmfe/genesis-core");
 class ImagePlugin extends genesis_core_1.Plugin {
-    webpackConfig({ config }) {
+    chainWebpack({ config }) {
         const { ssr } = this;
         config.module
             .rule('file')

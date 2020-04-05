@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const genesis_core_1 = require("@fmfe/genesis-core");
 class BabelPlugin extends genesis_core_1.Plugin {
-    webpackConfig({ target, config }) {
+    chainWebpack({ target, config }) {
         const { isProd } = this.ssr;
         config.resolve.extensions.prepend('.js').prepend('.ts');
         const jsRule = config.module

@@ -10,7 +10,7 @@ const server_plugin_1 = __importDefault(require("vue-server-renderer/server-plug
 const plugin_1 = __importDefault(require("vue-loader/lib/plugin"));
 const genesis_core_1 = require("@fmfe/genesis-core");
 class VuePlugin extends genesis_core_1.Plugin {
-    webpackConfig({ target, config }) {
+    chainWebpack({ target, config }) {
         const { ssr } = this;
         switch (target) {
             case 'client':

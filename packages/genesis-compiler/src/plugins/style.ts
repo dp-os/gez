@@ -20,7 +20,7 @@ interface RuleOptions {
     };
 }
 export class StylePlugin extends Plugin {
-    public webpackConfig({ target, config }: WebpackHookParams) {
+    public chainWebpack({ target, config }: WebpackHookParams) {
         const { ssr } = this;
         const { isProd, srcIncludes } = ssr;
         if (isProd) {

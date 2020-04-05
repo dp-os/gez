@@ -8,7 +8,7 @@ const postcss_preset_env_1 = __importDefault(require("postcss-preset-env"));
 const cssnano_1 = __importDefault(require("cssnano"));
 const genesis_core_1 = require("@fmfe/genesis-core");
 class StylePlugin extends genesis_core_1.Plugin {
-    webpackConfig({ target, config }) {
+    chainWebpack({ target, config }) {
         const { ssr } = this;
         const { isProd, srcIncludes } = ssr;
         if (isProd) {
