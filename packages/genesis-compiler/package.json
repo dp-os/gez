@@ -10,7 +10,7 @@
   "author": "Followme",
   "license": "MIT",
   "sideEffects": false,
-  "gitHead": "99fa1e81ee2f772a66f71be8ae9f50484c4f2ae1",
+  "gitHead": "0c5b6e71b662e75cff4c0197aa516816b8141888",
   "dependencies": {
     "@babel/core": "^7.8.4",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
