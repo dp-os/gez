@@ -1,15 +1,9 @@
 import Vue from 'vue';
-interface InstalledOptions {
-    el: HTMLElement;
-    id: string;
-    name: string;
-    state: { [x: string]: any };
-    url: string;
-}
+import { ClientOptions } from '@fmfe/genesis-core';
 interface InstalledListItem {
     appId: number;
     app: Promise<Vue>;
-    options: InstalledOptions;
+    options: ClientOptions;
 }
 
 class Genesis {
@@ -20,11 +14,14 @@ class Genesis {
         (window as any).genesis = this;
     }
 
-    public register(name: string, fn: Function) {
+    public register(
+        name: string,
+        createApp: (data: ClientOptions) => Promise<Vue>
+    ) {
         if (typeof name !== 'string') {
             throw new Error(`Application name must be of string type`);
         }
-        if (typeof fn !== 'function') {
+        if (typeof createApp !== 'function') {
             throw new Error(
                 `Application initialization method must be of string type`
             );
@@ -34,7 +31,7 @@ class Genesis {
                 `${name} Application has been used, please change the name`
             );
         }
-        this.applicationCenter[name] = fn;
+        this.applicationCenter[name] = createApp;
         this.startInstall();
     }
 
@@ -45,7 +42,7 @@ class Genesis {
      * options.state 当前应用的状态
      * options.url 当前应用的url
      */
-    public install(options: any): number {
+    public install(options: ClientOptions): number {
         if (typeof options !== 'object') {
             throw new TypeError('Options must be the object type');
         }
@@ -100,13 +97,16 @@ class Genesis {
                 );
             }
             app.$mount(item.options.el);
+            app.$once('hook:destroyed', () => {
+                this.uninstall(item.appId);
+            });
         });
     }
 }
 
-const genesis: Genesis = (window as any).genesis || new Genesis();
+const genesis: Genesis = window.genesis || new Genesis();
 
-const start = (createApp?: Function) => {
+const start = (createApp?: (data: ClientOptions) => Promise<Vue>) => {
     const name = process.env.GENESIS_NAME!;
     genesis.register(name, createApp);
 
@@ -131,3 +131,9 @@ const start = (createApp?: Function) => {
     });
 };
 start(require('${{clientFilename}}').default);
+
+declare global {
+    interface Window {
+        genesis: Genesis;
+    }
+}
