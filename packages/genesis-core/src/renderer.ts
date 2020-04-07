@@ -34,7 +34,11 @@ export class Renderer {
      */
     private ssrRenderer: BundleRenderer;
     public constructor(ssr: Genesis.SSR, options?: Genesis.RendererOptions) {
-        if (!options?.client?.data || !options?.server?.data) {
+        if (
+            (!options?.client?.data || !options?.server?.data) &&
+            (!fs.existsSync(ssr.outputClientManifestFile) ||
+                !fs.existsSync(ssr.outputServerBundleFile))
+        ) {
             throw new Error(
                 `You have not built the application, please execute 'new Build(ssr).start()' build first`
             );
