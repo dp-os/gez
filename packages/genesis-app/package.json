@@ -1,6 +1,6 @@
 {
   "name": "@fmfe/genesis-app",
-  "version": "0.0.41-beta.2",
+  "version": "0.0.41-beta.3",
   "description": "",
   "main": "dist/index.js",
   "types": "types/index.d.ts",
