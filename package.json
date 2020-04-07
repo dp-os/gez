@@ -14,7 +14,7 @@
         "lint:css": "stylelint . --syntax less --fix --ignore-path ./.stylelintignore | stylelint . --custom-syntax postcss-html --fix",
         "type-check": "tsc --noEmit",
         "test": "jest",
-        "lerna": "lerna publish --force-publish"
+        "lerna": "lerna publish  --registry=https://registry.npmjs.org --force-publish"
     },
     "sideEffects": [
         "*.css",
