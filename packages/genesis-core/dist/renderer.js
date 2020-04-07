@@ -16,7 +16,9 @@ const defaultTemplate = `<!DOCTYPE html><html><head><title>Vue SSR for Genesis</
 class Renderer {
     constructor(ssr, options) {
         var _a, _b, _c, _d;
-        if (!((_a = options === null || options === void 0 ? void 0 : options.client) === null || _a === void 0 ? void 0 : _a.data) || !((_b = options === null || options === void 0 ? void 0 : options.server) === null || _b === void 0 ? void 0 : _b.data)) {
+        if ((!((_a = options === null || options === void 0 ? void 0 : options.client) === null || _a === void 0 ? void 0 : _a.data) || !((_b = options === null || options === void 0 ? void 0 : options.server) === null || _b === void 0 ? void 0 : _b.data)) &&
+            (!fs_1.default.existsSync(ssr.outputClientManifestFile) ||
+                !fs_1.default.existsSync(ssr.outputServerBundleFile))) {
             throw new Error(`You have not built the application, please execute 'new Build(ssr).start()' build first`);
         }
         this.ssr = ssr;
