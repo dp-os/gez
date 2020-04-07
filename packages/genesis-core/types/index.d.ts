@@ -136,7 +136,7 @@ declare namespace Genesis {
         };
         [x: string]: any;
     }
-    interface ClientData {
+    interface ClientOptions {
         url: string;
         id: string;
         name: string;

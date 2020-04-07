@@ -142,7 +142,7 @@ namespace Genesis {
         };
         [x: string]: any;
     }
-    export interface ClientData {
+    export interface ClientOptions {
         url: string;
         id: string;
         name: string;
