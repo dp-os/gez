@@ -10,5 +10,10 @@
         ],
         "allowBranch": "master"
     },
+    "command": {
+        "publish": {
+            "message": "chore(release): publish %s"
+        }
+    },
     "version": "0.0.41-beta.1"
 }
