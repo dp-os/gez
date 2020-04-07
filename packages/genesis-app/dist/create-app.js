@@ -1,11 +1,15 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+const vue_1 = __importDefault(require("vue"));
 exports.createClientApp = async (options) => {
     if (typeof options !== 'object') {
         throw new Error('Option cannot be empty');
     }
-    const context = options.context;
-    if (typeof options.context !== 'object') {
+    const context = options.clientOptions;
+    if (typeof options.clientOptions !== 'object') {
         throw new Error('Option.context cannot be empty');
     }
     const el = context.el;
@@ -21,9 +25,11 @@ exports.createClientApp = async (options) => {
     else {
         el.removeAttribute('data-server-rendered');
     }
-    const app = new App({
-        el,
-        ...vueOptions
+    const app = new vue_1.default({
+        ...vueOptions,
+        render(h) {
+            return h(App);
+        }
     });
     if (router && renderMode !== 'true') {
         await router.replace(context.url);
@@ -42,8 +48,11 @@ exports.createServerApp = async (options) => {
     if (router) {
         await router.replace(context.data.url);
     }
-    const app = new App({
-        ...vueOptions
+    const app = new vue_1.default({
+        ...vueOptions,
+        render(h) {
+            return h(App);
+        }
     });
     return app;
 };

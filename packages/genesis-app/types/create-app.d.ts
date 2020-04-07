@@ -1,13 +1,5 @@
 import Vue, { ComponentOptions } from 'vue';
-import { RenderContext } from '@fmfe/genesis-core';
-export interface ClientContext {
-    el: Element;
-    url: string;
-    state: {
-        [x: string]: any;
-    };
-}
-export declare type ServerContext = RenderContext;
+import { ClientOptions, RenderContext } from '@fmfe/genesis-core';
 export interface CreateClientAppOptions {
     /**
      * Root render component
@@ -16,7 +8,7 @@ export interface CreateClientAppOptions {
     /**
      * Client side rendering context
      */
-    context: ClientContext;
+    clientOptions: ClientOptions;
     /**
      * Parameters of Vue
      */
@@ -30,7 +22,7 @@ export interface CreateServerAppOptions {
     /**
      * Client side rendering context
      */
-    context: ServerContext;
+    context: RenderContext;
     /**
      * Parameters of Vue
      */
