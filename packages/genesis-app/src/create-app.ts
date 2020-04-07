@@ -1,15 +1,5 @@
 import Vue, { ComponentOptions } from 'vue';
-import { RenderContext } from '@fmfe/genesis-core';
-
-export interface ClientContext {
-    el: Element;
-    url: string;
-    state: {
-        [x: string]: any;
-    };
-}
-
-export type ServerContext = RenderContext;
+import { ClientOptions, RenderContext } from '@fmfe/genesis-core';
 
 export interface CreateClientAppOptions {
     /**
@@ -19,7 +9,7 @@ export interface CreateClientAppOptions {
     /**
      * Client side rendering context
      */
-    context: ClientContext;
+    clientOptions: ClientOptions;
     /**
      * Parameters of Vue
      */
@@ -33,7 +23,7 @@ export interface CreateServerAppOptions {
     /**
      * Client side rendering context
      */
-    context: ServerContext;
+    context: RenderContext;
     /**
      * Parameters of Vue
      */
@@ -44,8 +34,8 @@ export const createClientApp = async (options: CreateClientAppOptions) => {
     if (typeof options !== 'object') {
         throw new Error('Option cannot be empty');
     }
-    const context = options.context;
-    if (typeof options.context !== 'object') {
+    const context = options.clientOptions;
+    if (typeof options.clientOptions !== 'object') {
         throw new Error('Option.context cannot be empty');
     }
     const el = context.el;
@@ -60,9 +50,11 @@ export const createClientApp = async (options: CreateClientAppOptions) => {
     } else {
         el.removeAttribute('data-server-rendered');
     }
-    const app = new App({
-        el,
-        ...vueOptions
+    const app = new Vue({
+        ...vueOptions,
+        render(h) {
+            return h(App);
+        }
     });
     if (router && renderMode !== 'true') {
         await router.replace(context.url);
@@ -82,8 +74,11 @@ export const createServerApp = async (options: CreateServerAppOptions) => {
     if (router) {
         await router.replace(context.data.url);
     }
-    const app = new App({
-        ...vueOptions
+    const app = new Vue({
+        ...vueOptions,
+        render(h) {
+            return h(App);
+        }
     });
     return app;
 };
