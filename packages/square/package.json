@@ -2,7 +2,7 @@
   "name": "@fmfe/square",
   "main": "dist/index.js",
   "types": "types/index.d.ts",
-  "version": "0.0.41-beta.3",
+  "version": "0.0.41-beta.4",
   "description": "",
   "sideEffects": false,
   "postCompile": true,
@@ -17,5 +17,5 @@
   "dependencies": {
     "@fmfe/tms.js": "^0.1.7"
   },
-  "gitHead": "cb04ea288457b822cb1ae2712c581bbd89a3065b"
+  "gitHead": "1a29b2505a05b5f7edf105590cd9c77979ea046f"
 }

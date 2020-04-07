@@ -1,6 +1,6 @@
 {
   "name": "@fmfe/genesis-app",
-  "version": "0.0.41-beta.3",
+  "version": "0.0.41-beta.4",
   "description": "",
   "main": "dist/index.js",
   "types": "types/index.d.ts",
@@ -16,5 +16,5 @@
   "devDependencies": {
     "vue": "^2.6.11"
   },
-  "gitHead": "cb04ea288457b822cb1ae2712c581bbd89a3065b"
+  "gitHead": "1a29b2505a05b5f7edf105590cd9c77979ea046f"
 }
