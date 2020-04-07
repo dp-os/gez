@@ -1,6 +1,6 @@
 {
-  "name": "genesis-plugin-remote",
-  "version": "1.0.0",
+  "name": "@fmfe/genesis-plugin-remote",
+  "version": "0.0.41-beta.2",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
