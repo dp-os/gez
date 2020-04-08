@@ -17,6 +17,7 @@ exports.getLocation = getLocation;
 class GenesisAppRouter {
     constructor() {
         this.list = [];
+        this.syncing = false;
         window.addEventListener('popstate', (e) => {
             this.sync((router) => {
                 // Here is a Fang'f that vue-router does not disclose
@@ -39,15 +40,21 @@ class GenesisAppRouter {
         return this;
     }
     sync(fn) {
+        if (this.syncing)
+            return;
+        this.syncing = true;
         this.list.forEach((router) => {
             if (this.target === router)
                 return;
             fn(router);
         });
         this.target = null;
+        this.syncing = false;
     }
     push(location) {
         this.sync((router) => {
+            if (router.currentRoute.fullPath === location)
+                return;
             router.push(location);
         });
         if (!this.list.length)
@@ -56,6 +63,8 @@ class GenesisAppRouter {
     }
     replace(location) {
         this.sync((router) => {
+            if (router.currentRoute.fullPath === location)
+                return;
             router.replace(location);
         });
         if (!this.list.length)
@@ -98,6 +107,7 @@ class Router extends vue_router_1.default {
         });
         if (!route || options.mode !== 'history')
             return;
+        console.log('>>>>>>>>> router');
         route.set(this);
         let app = this.app;
         let remove = false;
@@ -119,28 +129,31 @@ class Router extends vue_router_1.default {
             }
         });
     }
+    get _isSync() {
+        return this.mode === 'history' && route;
+    }
     async push(location) {
         const url = this.resolve(location).href;
         const v = await super.push(location);
-        route && route.dispatchTarget(this).push(url);
+        this._isSync && route.dispatchTarget(this).push(url);
         return v;
     }
     async replace(location) {
         const url = this.resolve(location).href;
         const v = await super.replace(location);
-        route && route.dispatchTarget(this).replace(url);
+        this._isSync && route.dispatchTarget(this).replace(url);
         return v;
     }
     go(n) {
-        route && route.dispatchTarget(this).go(n);
+        this._isSync && route.dispatchTarget(this).go(n);
         return super.go(n);
     }
     back() {
-        route && route.dispatchTarget(this).back();
+        this._isSync && route.dispatchTarget(this).back();
         return super.back();
     }
     forward() {
-        route && route.dispatchTarget(this).forward();
+        this._isSync && route.dispatchTarget(this).forward();
         return super.forward();
     }
 }

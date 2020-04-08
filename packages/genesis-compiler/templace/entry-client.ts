@@ -61,6 +61,11 @@ class Genesis {
         if (typeof options.url !== 'string') {
             throw new TypeError('Options.url must be the string type');
         }
+        for (const item of this.installedList) {
+            if (item.options.id === options.id) {
+                return;
+            }
+        }
         const appId = ++this.appId;
         this.installedList.push({
             appId,

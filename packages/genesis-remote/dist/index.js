@@ -35,7 +35,8 @@ var RemoteView = /** @class */ (function () {
                     installOptions: {},
                     html: '',
                     remote: {},
-                    serverIndex: 0
+                    serverIndex: 0,
+                    appId: 0
                 };
             },
             created: function () {
@@ -62,7 +63,14 @@ var RemoteView = /** @class */ (function () {
                 if (!ssrContext) {
                     this.clientLoad();
                 }
-                this.install();
+                else {
+                    this.install();
+                }
+            },
+            beforeDestroy: function () {
+                if (this.appId) {
+                    window.genesis.uninstall(this.appId);
+                }
             },
             methods: {
                 install: function () {
@@ -70,7 +78,7 @@ var RemoteView = /** @class */ (function () {
                     this.$nextTick(function () {
                         var options = __assign(__assign({}, _this.installOptions), { el: _this.$el.firstChild });
                         if (options.el && window.genesis) {
-                            window.genesis.install(options);
+                            _this.appId = window.genesis.install(options);
                         }
                     });
                 },

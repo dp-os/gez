@@ -1,14 +1,20 @@
 import { Watch } from '@fmfe/genesis-compiler';
-import { ssr, app, startApp } from './genesis';
+import { ssr, RendererItems, app, startApp } from './genesis';
 
 const start = async () => {
-    const watch = new Watch(ssr);
-    await watch.start();
-    const renderer = watch.renderer;
-    // 开发时使用的中间件
-    app.use(watch.devMiddleware);
-    app.use(watch.hotMiddleware);
-    // 拿到渲染器之后，启动服务
-    startApp(renderer);
+    const renderer: Partial<RendererItems> = {};
+    const watchArr = await Promise.all(
+        Object.keys(ssr).map(async (k) => {
+            const watch = new Watch(ssr[k]);
+            await watch.start();
+            renderer[k] = watch.renderer;
+            return watch;
+        })
+    );
+    watchArr.forEach((watch) => {
+        app.use(watch.devMiddleware);
+        app.use(watch.hotMiddleware);
+    });
+    startApp(renderer as RendererItems);
 };
 start();
