@@ -55,36 +55,14 @@ class GenesisAppRouter {
     public push(location: string) {
         this.sync((router) => {
             if (router.currentRoute.fullPath === location) return;
-            router.push(location);
+            VueRouter.prototype.push.call(router, location);
         });
-        if (!this.list.length) return;
-        history.pushState({}, '', location);
     }
 
     public replace(location: string) {
         this.sync((router) => {
             if (router.currentRoute.fullPath === location) return;
-            router.replace(location);
-        });
-        if (!this.list.length) return;
-        history.replaceState({}, '', location);
-    }
-
-    public go(n: number) {
-        this.sync((router) => {
-            router.go(n);
-        });
-    }
-
-    public back() {
-        this.sync((router) => {
-            router.back();
-        });
-    }
-
-    public forward() {
-        this.sync((router) => {
-            router.forward();
+            VueRouter.prototype.replace.call(router, location);
         });
     }
 }
@@ -110,7 +88,7 @@ export class Router extends VueRouter {
             mode: 'abstract'
         });
         this._mode = options.mode;
-        if (!route || options.mode !== 'history') return;
+        if (!this._isSync) return;
         route.set(this);
         let app = this.app;
         let remove = false;
@@ -140,14 +118,20 @@ export class Router extends VueRouter {
     public async push(location: RawLocation) {
         const url = this.resolve(location).href;
         const v = await super.push(location);
-        this._isSync && route.dispatchTarget(this).push(url);
+        if (this._isSync) {
+            route.dispatchTarget(this).push(url);
+            history.pushState({}, '', url);
+        }
         return v;
     }
 
     public async replace(location: RawLocation) {
         const url = this.resolve(location).href;
         const v = await super.replace(location);
-        this._isSync && route.dispatchTarget(this).replace(url);
+        if (this._isSync) {
+            route.dispatchTarget(this).replace(url);
+            history.replaceState({}, '', url);
+        }
         return v;
     }
 

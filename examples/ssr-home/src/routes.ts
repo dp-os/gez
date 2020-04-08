@@ -14,7 +14,7 @@ export const createRouter = () => {
                 component: () => import('./views/index.vue')
             },
             {
-                path: '/about',
+                path: '*',
                 component: Default
             }
         ]

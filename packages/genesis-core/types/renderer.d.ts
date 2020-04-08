@@ -23,15 +23,15 @@ export declare class Renderer {
     /**
      * Render JSON
      */
-    renderJson(req: IncomingMessage, res: ServerResponse, mode?: Genesis.RenderModeJson): Promise<Genesis.RenderResultJson>;
+    renderJson(options: Genesis.RenderOptions): Promise<Genesis.RenderResultJson>;
     /**
      * Render HTML
      */
-    renderHtml(req: IncomingMessage, res: ServerResponse, mode?: Genesis.RenderMode): Promise<Genesis.RenderResultHtml>;
+    renderHtml(options: Genesis.RenderOptions): Promise<Genesis.RenderResultHtml>;
     /**
      * General basic rendering function
      */
-    render(req: IncomingMessage, res: ServerResponse, mode?: Genesis.RenderMode): Promise<Genesis.RenderResul>;
+    render(options?: Genesis.RenderOptions): Promise<Genesis.RenderResul>;
     /**
      * Rendering Middleware
      */

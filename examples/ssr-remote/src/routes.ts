@@ -2,10 +2,10 @@ import { Router } from '@fmfe/genesis-app';
 
 export const createRouter = () => {
     return new Router({
-        mode: 'abstract',
+        mode: 'history',
         routes: [
             {
-                path: '/api/remote/common-header/',
+                path: '*',
                 component: () => import('./views/common-header.vue')
             }
         ]
