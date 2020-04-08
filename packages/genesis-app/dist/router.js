@@ -107,7 +107,6 @@ class Router extends vue_router_1.default {
         });
         if (!route || options.mode !== 'history')
             return;
-        console.log('>>>>>>>>> router');
         route.set(this);
         let app = this.app;
         let remove = false;
