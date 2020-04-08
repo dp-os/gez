@@ -132,14 +132,14 @@ namespace Genesis {
         url: string;
         id: string;
         html: string;
-        style: string;
-        script: string;
-        scriptState: string;
-        resource: RenderContextResource[];
         name: string;
         state: {
             [x: string]: any;
         };
+        style: string;
+        script: string;
+        scriptState: string;
+        resource: RenderContextResource[];
         [x: string]: any;
     }
     export interface ClientOptions {
@@ -151,21 +151,28 @@ namespace Genesis {
         };
         el: Element;
     }
+    export interface RenderOptions<T = RenderMode> {
+        req?: IncomingMessage;
+        res?: ServerResponse;
+        mode?: T;
+        url?: string;
+        id?: string;
+        name?: string;
+        state?: {
+            [x: string]: any;
+        };
+    }
     /**
      * Rendered context
      */
     export interface RenderContext {
-        req?: IncomingMessage;
-        res?: ServerResponse;
         data: RenderData;
         mode: RenderMode;
         ssr: SSR;
+        req?: IncomingMessage;
+        res?: ServerResponse;
         compile: Ejs.TemplateFunction;
         format: Format;
-        renderResourceHints(): string;
-        renderStyles(): string;
-        renderScripts(): string;
-        getPreloadFiles(): RenderContextPreload[];
     }
 
     export interface RenderContextResource {

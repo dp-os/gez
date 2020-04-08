@@ -55,35 +55,14 @@ class GenesisAppRouter {
         this.sync((router) => {
             if (router.currentRoute.fullPath === location)
                 return;
-            router.push(location);
+            vue_router_1.default.prototype.push.call(router, location);
         });
-        if (!this.list.length)
-            return;
-        history.pushState({}, '', location);
     }
     replace(location) {
         this.sync((router) => {
             if (router.currentRoute.fullPath === location)
                 return;
-            router.replace(location);
-        });
-        if (!this.list.length)
-            return;
-        history.replaceState({}, '', location);
-    }
-    go(n) {
-        this.sync((router) => {
-            router.go(n);
-        });
-    }
-    back() {
-        this.sync((router) => {
-            router.back();
-        });
-    }
-    forward() {
-        this.sync((router) => {
-            router.forward();
+            vue_router_1.default.prototype.replace.call(router, location);
         });
     }
 }
@@ -107,7 +86,7 @@ class Router extends vue_router_1.default {
         });
         this._mode = 'abstract';
         this._mode = options.mode;
-        if (!route || options.mode !== 'history')
+        if (!this._isSync)
             return;
         route.set(this);
         let app = this.app;
@@ -136,13 +115,19 @@ class Router extends vue_router_1.default {
     async push(location) {
         const url = this.resolve(location).href;
         const v = await super.push(location);
-        this._isSync && route.dispatchTarget(this).push(url);
+        if (this._isSync) {
+            route.dispatchTarget(this).push(url);
+            history.pushState({}, '', url);
+        }
         return v;
     }
     async replace(location) {
         const url = this.resolve(location).href;
         const v = await super.replace(location);
-        this._isSync && route.dispatchTarget(this).replace(url);
+        if (this._isSync) {
+            route.dispatchTarget(this).replace(url);
+            history.replaceState({}, '', url);
+        }
         return v;
     }
     go(n) {

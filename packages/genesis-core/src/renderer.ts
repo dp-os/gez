@@ -19,6 +19,21 @@ const md5 = (content: string) => {
 
 const defaultTemplate = `<!DOCTYPE html><html><head><title>Vue SSR for Genesis</title><%-style%></head><body><%-html%><%-scriptState%><%-script%></body></html>`;
 
+const modes: Genesis.RenderMode[] = [
+    'ssr-html',
+    'csr-html',
+    'ssr-json',
+    'csr-json'
+];
+
+const renderModeTypeError = (v: string) => {
+    throw new TypeError(
+        `Render mode can only be ${modes
+            .filter((t) => t.indexOf(v) > -1)
+            .join(' ')}`
+    );
+};
+
 export class Renderer {
     public ssr: Genesis.SSR;
     /**
@@ -52,7 +67,8 @@ export class Renderer {
                 /^(<[A-z]([A-z]|[0-9])+)/,
                 `$1 data-ssr-genesis-id="${ctx.data.id}"`
             );
-            const resource = ctx.getPreloadFiles().map(
+            const vueCtx: any = ctx;
+            const resource = vueCtx.getPreloadFiles().map(
                 (item): Genesis.RenderContextResource => {
                     return {
                         file: `${this.ssr.publicPath}${item.file}`,
@@ -62,8 +78,8 @@ export class Renderer {
             );
             const { data } = ctx;
             data.html += html;
-            data.script += ctx.renderScripts();
-            data.style += ctx.renderStyles();
+            data.script += vueCtx.renderScripts();
+            data.style += vueCtx.renderStyles();
             data.resource = [...data.resource, ...resource];
             return ctx.data;
         };
@@ -118,69 +134,47 @@ export class Renderer {
      * Render JSON
      */
     public async renderJson(
-        req: IncomingMessage,
-        res: ServerResponse,
-        mode: Genesis.RenderModeJson = 'ssr-json'
+        options: Genesis.RenderOptions
     ): Promise<Genesis.RenderResultJson> {
         const { ssr } = this;
-        const modes: Genesis.RenderMode[] = ['ssr-json', 'csr-json'];
-        if (modes.indexOf(mode) === -1) {
-            throw new TypeError(`Render mode can only be ${modes.join(' ')}`);
-        }
-        const context = this._createContext(ssr, {
-            req,
-            res,
-            mode: mode
+        const context = this._createContext({
+            ...options,
+            mode: options.mode || 'ssr-json'
         });
         await ssr.plugin.callHook('renderBefore', context as any);
-        return this._renderJson(context);
+        switch (context.mode) {
+            case 'ssr-json':
+            case 'csr-json':
+                return this._renderJson(context);
+        }
+        renderModeTypeError('json');
     }
 
     /**
      * Render HTML
      */
     public async renderHtml(
-        req: IncomingMessage,
-        res: ServerResponse,
-        mode: Genesis.RenderMode = 'ssr-html'
+        options: Genesis.RenderOptions
     ): Promise<Genesis.RenderResultHtml> {
         const { ssr } = this;
-        const modes: Genesis.RenderMode[] = ['ssr-html', 'csr-html'];
-        if (modes.indexOf(mode) === -1) {
-            throw new TypeError(`Render mode can only be ${modes.join(' ')}`);
-        }
-        const context = this._createContext(ssr, {
-            req,
-            res,
-            mode: mode
-        });
+        const context = this._createContext(options);
         await ssr.plugin.callHook('renderBefore', context as any);
-        return this._renderHtml(context);
+        switch (context.mode) {
+            case 'ssr-html':
+            case 'csr-html':
+                return this._renderHtml(context);
+        }
+        renderModeTypeError('html');
     }
 
     /**
      * General basic rendering function
      */
     public async render(
-        req: IncomingMessage,
-        res: ServerResponse,
-        mode: Genesis.RenderMode = 'ssr-html'
+        options: Genesis.RenderOptions = {}
     ): Promise<Genesis.RenderResul> {
         const { ssr } = this;
-        const modes: Genesis.RenderMode[] = [
-            'ssr-html',
-            'csr-html',
-            'ssr-json',
-            'csr-json'
-        ];
-        if (modes.indexOf(mode) === -1) {
-            throw new TypeError(`Render mode can only be ${modes.join(' ')}`);
-        }
-        const context = this._createContext(ssr, {
-            req,
-            res,
-            mode: mode
-        });
+        const context = this._createContext(options);
         await ssr.plugin.callHook('renderBefore', context);
         switch (context.mode) {
             case 'ssr-html':
@@ -190,6 +184,7 @@ export class Renderer {
             case 'csr-json':
                 return this._renderJson(context);
         }
+        renderModeTypeError('');
     }
 
     /**
@@ -201,7 +196,7 @@ export class Renderer {
         next: (err: any) => void
     ): Promise<void> {
         try {
-            const renderResult = await this.render(req, res);
+            const renderResult = await this.render({ req, res });
             switch (renderResult.type) {
                 case 'html':
                     res.setHeader('content-type', 'text/html; charset=utf-8');
@@ -223,13 +218,12 @@ export class Renderer {
     }
 
     private _createContext(
-        ssr: Genesis.SSR,
-        context: Partial<Genesis.RenderContext> = {}
+        options: Genesis.RenderOptions = {}
     ): Genesis.RenderContext {
-        if (!context.data) {
-            context.data = {
+        const context: Genesis.RenderContext = {
+            data: {
                 id: '',
-                name: ssr.name,
+                name: this.ssr.name,
                 url: '',
                 html: '',
                 style: '',
@@ -237,25 +231,39 @@ export class Renderer {
                 scriptState: '',
                 state: {},
                 resource: []
-            };
+            },
+            mode: 'ssr-html',
+            format: new this.ssr.Format(this.ssr),
+            compile: this.compile,
+            ssr: this.ssr
+        };
+        // set context
+        if (options.req) {
+            context.req = options.req;
+            if (typeof context.req.url === 'string') {
+                context.data.url = context.req.url;
+            }
         }
-        if (!('mode' in context)) {
-            context.mode = 'ssr-json';
+        if (options.res) {
+            context.res = options.res;
         }
-        if (context.req && !context.data.url) {
-            context.data.url = context.req.url || '';
+        if (options.mode && modes.indexOf(options.mode) > -1) {
+            context.mode = options.mode;
         }
-        if (!context.data?.id) {
+        if (typeof options.state === 'object') {
+            context.data.state = options.state;
+        }
+        // set context data
+        if (typeof options.url === 'string') {
+            context.data.url = options.url;
+        }
+        if (typeof options.id === 'string') {
+            context.data.id = options.id;
+        } else {
             context.data.id = md5(`${context.data.name}-${context.data.url}`);
         }
-        if (!context.compile) {
-            context.compile = this.compile;
-        }
-        if (!context.format) {
-            context.format = new ssr.Format(this.ssr);
-        }
-        context.ssr = this.ssr;
-        return context as any;
+
+        return context;
     }
 
     private _mergeContextData(

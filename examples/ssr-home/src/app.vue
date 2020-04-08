@@ -1,5 +1,8 @@
 <template>
     <div>
+        <remote-view
+            :url="`/api/remote/common-header/?renderUrl=${$route.fullPath}`"
+        />
         <router-view class="app" />
     </div>
 </template>

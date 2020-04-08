@@ -33,15 +33,24 @@ export const ssr = new SSRItems();
 
 export const startApp = (renderer: RendererItems) => {
     app.get('/', renderer.home.renderMiddleware);
-    app.get('/about/', (req, res, next) => {
+    app.get('/about/', renderer.home.renderMiddleware);
+    app.get('/api/remote/about/', (req, res, next) => {
+        const url = req.query.renderUrl;
+        if (typeof url !== 'string') {
+            return res.status(404).end();
+        }
         renderer.about
-            .renderJson(req, res)
+            .renderJson({ req, res, url })
             .then((r) => res.send(r.data))
             .catch(next);
     });
     app.get('/api/remote/common-header/', (req, res, next) => {
+        const url = req.query.renderUrl;
+        if (typeof url !== 'string') {
+            return res.status(404).end();
+        }
         renderer.remote
-            .renderJson(req, res)
+            .renderJson({ req, res, url })
             .then((r) => res.send(r.data))
             .catch(next);
     });

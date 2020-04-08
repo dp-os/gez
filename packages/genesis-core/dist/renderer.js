@@ -13,6 +13,17 @@ const md5 = (content) => {
     return md5.update(content).digest('hex');
 };
 const defaultTemplate = `<!DOCTYPE html><html><head><title>Vue SSR for Genesis</title><%-style%></head><body><%-html%><%-scriptState%><%-script%></body></html>`;
+const modes = [
+    'ssr-html',
+    'csr-html',
+    'ssr-json',
+    'csr-json'
+];
+const renderModeTypeError = (v) => {
+    throw new TypeError(`Render mode can only be ${modes
+        .filter((t) => t.indexOf(v) > -1)
+        .join(' ')}`);
+};
 class Renderer {
     constructor(ssr, options) {
         var _a, _b, _c, _d;
@@ -24,7 +35,8 @@ class Renderer {
         this.ssr = ssr;
         const template = async (strHtml, ctx) => {
             const html = strHtml.replace(/^(<[A-z]([A-z]|[0-9])+)/, `$1 data-ssr-genesis-id="${ctx.data.id}"`);
-            const resource = ctx.getPreloadFiles().map((item) => {
+            const vueCtx = ctx;
+            const resource = vueCtx.getPreloadFiles().map((item) => {
                 return {
                     file: `${this.ssr.publicPath}${item.file}`,
                     extension: item.extension
@@ -32,8 +44,8 @@ class Renderer {
             });
             const { data } = ctx;
             data.html += html;
-            data.script += ctx.renderScripts();
-            data.style += ctx.renderStyles();
+            data.script += vueCtx.renderScripts();
+            data.style += vueCtx.renderStyles();
             data.resource = [...data.resource, ...resource];
             return ctx.data;
         };
@@ -79,56 +91,40 @@ class Renderer {
     /**
      * Render JSON
      */
-    async renderJson(req, res, mode = 'ssr-json') {
+    async renderJson(options) {
         const { ssr } = this;
-        const modes = ['ssr-json', 'csr-json'];
-        if (modes.indexOf(mode) === -1) {
-            throw new TypeError(`Render mode can only be ${modes.join(' ')}`);
-        }
-        const context = this._createContext(ssr, {
-            req,
-            res,
-            mode: mode
+        const context = this._createContext({
+            ...options,
+            mode: options.mode || 'ssr-json'
         });
         await ssr.plugin.callHook('renderBefore', context);
-        return this._renderJson(context);
+        switch (context.mode) {
+            case 'ssr-json':
+            case 'csr-json':
+                return this._renderJson(context);
+        }
+        renderModeTypeError('json');
     }
     /**
      * Render HTML
      */
-    async renderHtml(req, res, mode = 'ssr-html') {
+    async renderHtml(options) {
         const { ssr } = this;
-        const modes = ['ssr-html', 'csr-html'];
-        if (modes.indexOf(mode) === -1) {
-            throw new TypeError(`Render mode can only be ${modes.join(' ')}`);
-        }
-        const context = this._createContext(ssr, {
-            req,
-            res,
-            mode: mode
-        });
+        const context = this._createContext(options);
         await ssr.plugin.callHook('renderBefore', context);
-        return this._renderHtml(context);
+        switch (context.mode) {
+            case 'ssr-html':
+            case 'csr-html':
+                return this._renderHtml(context);
+        }
+        renderModeTypeError('html');
     }
     /**
      * General basic rendering function
      */
-    async render(req, res, mode = 'ssr-html') {
+    async render(options = {}) {
         const { ssr } = this;
-        const modes = [
-            'ssr-html',
-            'csr-html',
-            'ssr-json',
-            'csr-json'
-        ];
-        if (modes.indexOf(mode) === -1) {
-            throw new TypeError(`Render mode can only be ${modes.join(' ')}`);
-        }
-        const context = this._createContext(ssr, {
-            req,
-            res,
-            mode: mode
-        });
+        const context = this._createContext(options);
         await ssr.plugin.callHook('renderBefore', context);
         switch (context.mode) {
             case 'ssr-html':
@@ -138,13 +134,14 @@ class Renderer {
             case 'csr-json':
                 return this._renderJson(context);
         }
+        renderModeTypeError('');
     }
     /**
      * Rendering Middleware
      */
     async renderMiddleware(req, res, next) {
         try {
-            const renderResult = await this.render(req, res);
+            const renderResult = await this.render({ req, res });
             switch (renderResult.type) {
                 case 'html':
                     res.setHeader('content-type', 'text/html; charset=utf-8');
@@ -162,12 +159,11 @@ class Renderer {
             next(err);
         }
     }
-    _createContext(ssr, context = {}) {
-        var _a;
-        if (!context.data) {
-            context.data = {
+    _createContext(options = {}) {
+        const context = {
+            data: {
                 id: '',
-                name: ssr.name,
+                name: this.ssr.name,
                 url: '',
                 html: '',
                 style: '',
@@ -175,24 +171,38 @@ class Renderer {
                 scriptState: '',
                 state: {},
                 resource: []
-            };
+            },
+            mode: 'ssr-html',
+            format: new this.ssr.Format(this.ssr),
+            compile: this.compile,
+            ssr: this.ssr
+        };
+        // set context
+        if (options.req) {
+            context.req = options.req;
+            if (typeof context.req.url === 'string') {
+                context.data.url = context.req.url;
+            }
         }
-        if (!('mode' in context)) {
-            context.mode = 'ssr-json';
+        if (options.res) {
+            context.res = options.res;
         }
-        if (context.req && !context.data.url) {
-            context.data.url = context.req.url || '';
+        if (options.mode && modes.indexOf(options.mode) > -1) {
+            context.mode = options.mode;
         }
-        if (!((_a = context.data) === null || _a === void 0 ? void 0 : _a.id)) {
+        if (typeof options.state === 'object') {
+            context.data.state = options.state;
+        }
+        // set context data
+        if (typeof options.url === 'string') {
+            context.data.url = options.url;
+        }
+        if (typeof options.id === 'string') {
+            context.data.id = options.id;
+        }
+        else {
             context.data.id = md5(`${context.data.name}-${context.data.url}`);
         }
-        if (!context.compile) {
-            context.compile = this.compile;
-        }
-        if (!context.format) {
-            context.format = new ssr.Format(this.ssr);
-        }
-        context.ssr = this.ssr;
         return context;
     }
     _mergeContextData(context, data) {
