@@ -19,7 +19,8 @@ export default class RemoteView {
                     installOptions: {},
                     html: '',
                     remote: {},
-                    serverIndex: 0
+                    serverIndex: 0,
+                    appId: 0
                 };
             },
             created() {
@@ -44,8 +45,14 @@ export default class RemoteView {
                 const ssrContext: any = this.$root.$options.ssrContext;
                 if (!ssrContext) {
                     this.clientLoad();
+                } else {
+                    this.install();
                 }
-                this.install();
+            },
+            beforeDestroy() {
+                if (this.appId) {
+                    (window as any).genesis.uninstall(this.appId);
+                }
             },
             methods: {
                 install() {
@@ -55,7 +62,9 @@ export default class RemoteView {
                             el: this.$el.firstChild
                         };
                         if (options.el && (window as any).genesis) {
-                            (window as any).genesis.install(options);
+                            this.appId = (window as any).genesis.install(
+                                options
+                            );
                         }
                     });
                 },

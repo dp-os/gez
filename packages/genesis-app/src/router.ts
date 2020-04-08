@@ -15,6 +15,7 @@ class GenesisAppRouter {
     public static key = '__genesisAppRouter';
     private list: VueRouter[] = [];
     private target: VueRouter | null;
+    private syncing = false;
     public constructor() {
         window.addEventListener('popstate', (e) => {
             this.sync((router: any) => {
@@ -41,15 +42,19 @@ class GenesisAppRouter {
     }
 
     public sync(fn: (router: VueRouter) => void) {
+        if (this.syncing) return;
+        this.syncing = true;
         this.list.forEach((router) => {
             if (this.target === router) return;
             fn(router);
         });
         this.target = null;
+        this.syncing = false;
     }
 
     public push(location: string) {
         this.sync((router) => {
+            if (router.currentRoute.fullPath === location) return;
             router.push(location);
         });
         if (!this.list.length) return;
@@ -58,6 +63,7 @@ class GenesisAppRouter {
 
     public replace(location: string) {
         this.sync((router) => {
+            if (router.currentRoute.fullPath === location) return;
             router.replace(location);
         });
         if (!this.list.length) return;
@@ -103,6 +109,7 @@ export class Router extends VueRouter {
             mode: 'abstract'
         });
         if (!route || options.mode !== 'history') return;
+        console.log('>>>>>>>>> router');
         route.set(this);
         let app = this.app;
         let remove = false;
@@ -125,32 +132,36 @@ export class Router extends VueRouter {
         });
     }
 
+    public get _isSync() {
+        return this.mode === 'history' && route;
+    }
+
     public async push(location: RawLocation) {
         const url = this.resolve(location).href;
         const v = await super.push(location);
-        route && route.dispatchTarget(this).push(url);
+        this._isSync && route.dispatchTarget(this).push(url);
         return v;
     }
 
     public async replace(location: RawLocation) {
         const url = this.resolve(location).href;
         const v = await super.replace(location);
-        route && route.dispatchTarget(this).replace(url);
+        this._isSync && route.dispatchTarget(this).replace(url);
         return v;
     }
 
     public go(n: number) {
-        route && route.dispatchTarget(this).go(n);
+        this._isSync && route.dispatchTarget(this).go(n);
         return super.go(n);
     }
 
     public back() {
-        route && route.dispatchTarget(this).back();
+        this._isSync && route.dispatchTarget(this).back();
         return super.back();
     }
 
     public forward() {
-        route && route.dispatchTarget(this).forward();
+        this._isSync && route.dispatchTarget(this).forward();
         return super.forward();
     }
 }

@@ -1,16 +1,15 @@
 <template>
-    <div class="app">
-        <h2>你好世界！</h2>
-        <p v-if="show" @click="clsoe" class="text">
-            {{ installed ? '在客户端应该安装成功，点击我关闭!' : '未安装' }}
-        </p>
+    <div class="about">
+        关于我们试试
+        <router-link to="/">返回首页</router-link>
+        <button @click="$router.back()">Back</button>
     </div>
 </template>
 <script lang="ts">
 import Vue from 'vue';
 
 export default Vue.extend({
-    name: 'app',
+    name: 'index',
     data() {
         return {
             installed: false,

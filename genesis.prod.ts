@@ -1,15 +1,18 @@
 import express from 'express';
-import { ssr, app, startApp } from './genesis';
+import { RendererItems, ssr, app, startApp } from './genesis';
 
-const renderer = ssr.createRenderer();
+const renderer: Partial<RendererItems> = {};
 
-// 设置静态目录和缓存
-app.use(
-    renderer.staticPublicPath,
-    express.static(renderer.staticDir, {
-        immutable: true,
-        maxAge: '31536000000'
-    })
-);
+Object.keys(ssr).forEach((k) => {
+    renderer[k] = ssr[k].createRenderer();
+    // 设置静态目录和缓存
+    app.use(
+        renderer[k].staticPublicPath,
+        express.static(renderer[k].staticDir, {
+            immutable: true,
+            maxAge: '31536000000'
+        })
+    );
+});
 
-startApp(renderer);
+startApp(renderer as RendererItems);
