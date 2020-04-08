@@ -131,7 +131,7 @@ class Router extends vue_router_1.default {
         });
     }
     get _isSync() {
-        return this._mode === 'history' && route;
+        return this._mode === 'history' && !!route;
     }
     async push(location) {
         const url = this.resolve(location).href;
@@ -146,15 +146,21 @@ class Router extends vue_router_1.default {
         return v;
     }
     go(n) {
-        this._isSync && route.dispatchTarget(this).go(n);
+        if (this._isSync) {
+            return history.go(n);
+        }
         return super.go(n);
     }
     back() {
-        this._isSync && route.dispatchTarget(this).back();
+        if (this._isSync) {
+            return history.back();
+        }
         return super.back();
     }
     forward() {
-        this._isSync && route.dispatchTarget(this).forward();
+        if (this._isSync) {
+            return history.forward();
+        }
         return super.forward();
     }
 }

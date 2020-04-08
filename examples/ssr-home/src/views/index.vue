@@ -1,6 +1,8 @@
 <template>
     <div class="index">
-        <remote-view url="/api/remote/common-header/" />
+        <remote-view
+            :url="`/api/remote/common-header/?_renderUrl=${$route.fullPath}`"
+        />
         <h2>你好世界！</h2>
         <p v-if="show" @click="clsoe" class="text">
             {{ installed ? '在客户端应该安装成功，点击我关闭!' : '未安装' }}

@@ -108,13 +108,15 @@ class Genesis {
         });
     }
 }
-
+const automount = !window.genesis;
 const genesis: Genesis = window.genesis || new Genesis();
 
 const start = (createApp?: (data: ClientOptions) => Promise<Vue>) => {
     const name = process.env.GENESIS_NAME!;
     genesis.register(name, createApp);
-
+    if (!automount) {
+        return;
+    }
     const nodeList = document.querySelectorAll(
         '[data-ssr-genesis-name="' + name + '"]'
     )!;
@@ -128,6 +130,7 @@ const start = (createApp?: (data: ClientOptions) => Promise<Vue>) => {
         );
         if (!el) return;
         const data = window[id];
+
         delete window[id];
         genesis.install({
             ...data,
@@ -135,6 +138,7 @@ const start = (createApp?: (data: ClientOptions) => Promise<Vue>) => {
         });
     });
 };
+
 start(require('${{clientFilename}}').default);
 
 declare global {

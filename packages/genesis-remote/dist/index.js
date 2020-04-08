@@ -36,7 +36,8 @@ var RemoteView = /** @class */ (function () {
                     html: '',
                     remote: {},
                     serverIndex: 0,
-                    appId: 0
+                    appId: 0,
+                    destroyed: false
                 };
             },
             created: function () {
@@ -71,13 +72,16 @@ var RemoteView = /** @class */ (function () {
                 if (this.appId) {
                     window.genesis.uninstall(this.appId);
                 }
+                this.destroyed = true;
             },
             methods: {
                 install: function () {
                     var _this = this;
                     this.$nextTick(function () {
                         var options = __assign(__assign({}, _this.installOptions), { el: _this.$el.firstChild });
-                        if (options.el && window.genesis) {
+                        if (options.el &&
+                            window.genesis &&
+                            !_this.destroyed) {
                             _this.appId = window.genesis.install(options);
                         }
                     });

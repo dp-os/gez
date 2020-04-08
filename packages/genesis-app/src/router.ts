@@ -134,7 +134,7 @@ export class Router extends VueRouter {
     }
 
     public get _isSync() {
-        return this._mode === 'history' && route;
+        return this._mode === 'history' && !!route;
     }
 
     public async push(location: RawLocation) {
@@ -152,17 +152,23 @@ export class Router extends VueRouter {
     }
 
     public go(n: number) {
-        this._isSync && route.dispatchTarget(this).go(n);
+        if (this._isSync) {
+            return history.go(n);
+        }
         return super.go(n);
     }
 
     public back() {
-        this._isSync && route.dispatchTarget(this).back();
+        if (this._isSync) {
+            return history.back();
+        }
         return super.back();
     }
 
     public forward() {
-        this._isSync && route.dispatchTarget(this).forward();
+        if (this._isSync) {
+            return history.forward();
+        }
         return super.forward();
     }
 }
