@@ -17,6 +17,7 @@ declare class GenesisAppRouter {
     forward(): void;
 }
 export declare class Router extends VueRouter {
+    private _mode;
     constructor(options?: RouterOptions);
     get _isSync(): GenesisAppRouter;
     push(location: RawLocation): Promise<import("vue-router").Route>;

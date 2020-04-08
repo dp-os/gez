@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import VueRouter, { RouterOptions, RawLocation } from 'vue-router';
+import VueRouter, { RouterOptions, RouterMode, RawLocation } from 'vue-router';
 
 Vue.use(VueRouter);
 
@@ -103,13 +103,14 @@ const getRoute = (): GenesisAppRouter | null => {
 const route: GenesisAppRouter = getRoute();
 
 export class Router extends VueRouter {
+    private _mode: RouterMode = 'abstract';
     public constructor(options: RouterOptions = {}) {
         super({
             ...options,
             mode: 'abstract'
         });
+        this._mode = options.mode;
         if (!route || options.mode !== 'history') return;
-        console.log('>>>>>>>>> router');
         route.set(this);
         let app = this.app;
         let remove = false;
@@ -133,7 +134,7 @@ export class Router extends VueRouter {
     }
 
     public get _isSync() {
-        return this.mode === 'history' && route;
+        return this._mode === 'history' && route;
     }
 
     public async push(location: RawLocation) {

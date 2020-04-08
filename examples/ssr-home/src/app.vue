@@ -1,6 +1,5 @@
 <template>
     <div>
-        <remote-view url="/api/remote/common-header/" />
         <router-view class="app" />
     </div>
 </template>

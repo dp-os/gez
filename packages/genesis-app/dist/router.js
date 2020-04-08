@@ -105,6 +105,8 @@ class Router extends vue_router_1.default {
             ...options,
             mode: 'abstract'
         });
+        this._mode = 'abstract';
+        this._mode = options.mode;
         if (!route || options.mode !== 'history')
             return;
         route.set(this);
@@ -129,7 +131,7 @@ class Router extends vue_router_1.default {
         });
     }
     get _isSync() {
-        return this.mode === 'history' && route;
+        return this._mode === 'history' && route;
     }
     async push(location) {
         const url = this.resolve(location).href;
