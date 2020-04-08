@@ -20,7 +20,8 @@ export default class RemoteView {
                     html: '',
                     remote: {},
                     serverIndex: 0,
-                    appId: 0
+                    appId: 0,
+                    destroyed: false
                 };
             },
             created() {
@@ -53,6 +54,7 @@ export default class RemoteView {
                 if (this.appId) {
                     (window as any).genesis.uninstall(this.appId);
                 }
+                this.destroyed = true;
             },
             methods: {
                 install() {
@@ -61,7 +63,11 @@ export default class RemoteView {
                             ...this.installOptions,
                             el: this.$el.firstChild
                         };
-                        if (options.el && (window as any).genesis) {
+                        if (
+                            options.el &&
+                            (window as any).genesis &&
+                            !this.destroyed
+                        ) {
                             this.appId = (window as any).genesis.install(
                                 options
                             );
