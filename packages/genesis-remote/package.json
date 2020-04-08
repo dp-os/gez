@@ -1,6 +1,6 @@
 {
   "name": "@fmfe/genesis-remote",
-  "version": "0.0.41-beta.5",
+  "version": "0.0.41-beta.6",
   "description": "",
   "main": "dist/index.js",
   "types": "types/index.d.ts",
