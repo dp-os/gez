@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const vue_1 = __importDefault(require("vue"));
 const fs_1 = __importDefault(require("fs"));
+const http_1 = require("http");
 const ejs_1 = __importDefault(require("ejs"));
 const crypto_1 = __importDefault(require("crypto"));
 const vue_server_renderer_1 = require("vue-server-renderer");
@@ -179,19 +180,19 @@ class Renderer {
             ssr: this.ssr
         };
         // set context
-        if (options.req) {
+        if (options.req instanceof http_1.IncomingMessage) {
             context.req = options.req;
             if (typeof context.req.url === 'string') {
                 context.data.url = context.req.url;
             }
         }
-        if (options.res) {
+        if (options.res instanceof http_1.ServerResponse) {
             context.res = options.res;
         }
         if (options.mode && modes.indexOf(options.mode) > -1) {
             context.mode = options.mode;
         }
-        if (typeof options.state === 'object') {
+        if (Object.prototype.toString.call(options.state) === '[object Object]') {
             context.data.state = options.state;
         }
         // set context data
@@ -203,6 +204,12 @@ class Renderer {
         }
         else {
             context.data.id = md5(`${context.data.name}-${context.data.url}`);
+        }
+        if (typeof options.name === 'string') {
+            context.data.name = options.name;
+        }
+        if (typeof options.automount === 'boolean') {
+            context.data.automount = options.automount;
         }
         return context;
     }

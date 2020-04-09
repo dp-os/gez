@@ -18,12 +18,8 @@ exports.createClientApp = async (options) => {
     }
     const { vueOptions, App } = options;
     const { router } = vueOptions || {};
-    const renderMode = el.getAttribute('data-server-rendered') || 'false';
-    if (router && renderMode === 'true') {
+    if (router) {
         await router.replace(context.url);
-    }
-    else {
-        el.removeAttribute('data-server-rendered');
     }
     const app = new vue_1.default({
         ...vueOptions,
@@ -31,9 +27,6 @@ exports.createClientApp = async (options) => {
             return h(App);
         }
     });
-    if (router && renderMode !== 'true') {
-        await router.replace(context.url);
-    }
     return app;
 };
 exports.createServerApp = async (options) => {
