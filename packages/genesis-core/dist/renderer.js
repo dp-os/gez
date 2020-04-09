@@ -139,7 +139,7 @@ class Renderer {
             next(err);
         }
     }
-    _createContext(options = {}) {
+    _createContext(options) {
         const context = {
             data: {
                 id: '',

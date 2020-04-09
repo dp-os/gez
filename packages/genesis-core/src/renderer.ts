@@ -194,7 +194,7 @@ export class Renderer {
     }
 
     private _createContext<T extends Genesis.RenderMode = Genesis.RenderMode>(
-        options: Genesis.RenderOptions<T> = {}
+        options: Genesis.RenderOptions<T>
     ): Genesis.RenderContext {
         const context: Genesis.RenderContext = {
             data: {
