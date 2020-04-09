@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import path from 'path';
-import { SSR } from '../packages/genesis-core/src/ssr';
+import { SSR } from '../../packages/genesis-core/src/ssr';
 
 test('check options.name', async () => {
     const test = new SSR({ name: 'ssr-test' });
@@ -8,7 +8,7 @@ test('check options.name', async () => {
     await expect(test.name).toBe('ssr-test');
     await expect(test.publicPath).toBe('/ssr-test/');
     await expect(test.outputDir).toBe(
-        path.resolve(__dirname, '../dist/ssr-test')
+        path.resolve(path.resolve(), 'dist/ssr-test')
     );
     await expect(
         () => new SSR({ name: (10000 as any) as string }).name
