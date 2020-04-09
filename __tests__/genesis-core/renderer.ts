@@ -198,5 +198,6 @@ test('renderer.renderMiddleware', async () => {
     await renderer.renderMiddleware(req, res, (err) => {
         expect(err.toString().trim()).toBe('TypeError: jest test error');
     });
+    console.warn = warn;
     console.error = error;
 });
