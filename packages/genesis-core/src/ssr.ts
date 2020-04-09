@@ -26,8 +26,11 @@ export class SSR {
     /**
      * Constructor
      */
-    public constructor(options?: Genesis.Options) {
-        this.options = options || {};
+    public constructor(options: Genesis.Options = {}) {
+        this.options = options;
+        if ('name' in options && typeof options.name !== 'string') {
+            throw new TypeError('Options.name can only be of string type');
+        }
     }
 
     /**
@@ -145,11 +148,7 @@ export class SSR {
      * Manifest file path of client
      */
     public get outputClientManifestFile() {
-        return path.resolve(
-            __dirname,
-            this.outputDirInServer,
-            this.clientManifestName
-        );
+        return path.resolve(this.outputDirInServer, this.clientManifestName);
     }
 
     /**
@@ -163,11 +162,7 @@ export class SSR {
      * Manifest file path of server
      */
     public get outputServerBundleFile() {
-        return path.resolve(
-            __dirname,
-            this.outputDirInServer,
-            this.serverBundleName
-        );
+        return path.resolve(this.outputDirInServer, this.serverBundleName);
     }
 
     /**

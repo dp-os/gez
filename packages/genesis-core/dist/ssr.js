@@ -12,7 +12,7 @@ class SSR {
     /**
      * Constructor
      */
-    constructor(options) {
+    constructor(options = {}) {
         /**
          * Template renderer
          */
@@ -25,7 +25,10 @@ class SSR {
          * Plug in management
          */
         this.plugin = new plugin_1.PluginManage(this);
-        this.options = options || {};
+        this.options = options;
+        if ('name' in options && typeof options.name !== 'string') {
+            throw new TypeError('Options.name can only be of string type');
+        }
     }
     /**
      * Judge whether it is a production environment. By default, judge by process.env.NODE_ENV
@@ -128,7 +131,7 @@ class SSR {
      * Manifest file path of client
      */
     get outputClientManifestFile() {
-        return path_1.default.resolve(__dirname, this.outputDirInServer, this.clientManifestName);
+        return path_1.default.resolve(this.outputDirInServer, this.clientManifestName);
     }
     /**
      * Name of manifest compiled by the server
@@ -140,7 +143,7 @@ class SSR {
      * Manifest file path of server
      */
     get outputServerBundleFile() {
-        return path_1.default.resolve(__dirname, this.outputDirInServer, this.serverBundleName);
+        return path_1.default.resolve(this.outputDirInServer, this.serverBundleName);
     }
     /**
      * Template path

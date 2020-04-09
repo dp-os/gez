@@ -109,7 +109,7 @@ class Genesis {
     }
 }
 const genesis: Genesis = window.genesis || new Genesis();
-
+console.log('???????????');
 const start = (createApp?: (data: ClientOptions) => Promise<Vue>) => {
     const name = process.env.GENESIS_NAME!;
     genesis.register(name, createApp);
