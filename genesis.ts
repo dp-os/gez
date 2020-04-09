@@ -34,6 +34,7 @@ export const ssr = new SSRItems();
 export const startApp = (renderer: RendererItems) => {
     app.get('/', renderer.home.renderMiddleware);
     app.get('/about/', renderer.home.renderMiddleware);
+    app.get('/error/', renderer.home.renderMiddleware);
     app.get('/api/remote/about/', (req, res, next) => {
         const url = req.query.renderUrl;
         if (typeof url !== 'string') {

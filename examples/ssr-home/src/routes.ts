@@ -14,6 +14,10 @@ export const createRouter = () => {
                 component: () => import('./views/index.vue')
             },
             {
+                path: '/error',
+                component: () => import('./views/error.vue')
+            },
+            {
                 path: '*',
                 component: Default
             }
