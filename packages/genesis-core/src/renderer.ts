@@ -224,7 +224,7 @@ export class Renderer {
             data: {
                 id: '',
                 name: this.ssr.name,
-                url: '',
+                url: '/',
                 html: '',
                 style: '',
                 script: '',
@@ -374,7 +374,7 @@ export class Renderer {
             vm,
             context
         )) as any;
-        data.html = `<div data-ssr-genesis-id="${data.id}" data-server-rendered="false"></div>`;
+        data.html = `<div data-ssr-genesis-id="${data.id}"></div>`;
         this._mergeContextData(context, data);
         await this.ssr.plugin.callHook('renderCompleted', context);
         return context.data;
