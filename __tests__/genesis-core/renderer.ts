@@ -31,12 +31,13 @@ test('renderer.staticPublicPath', async () => {
 test('renderer.render', async () => {
     const renderer = ssr.home.createRenderer();
 
-    // Base
+    // Defalut
     let result = await renderer.render();
     await expect(result.type).toBe('html');
     await expect(typeof result.data).toBe('string');
     await expect(result.context.data.name).toBe(ssr.home.name);
     await expect(result.context.data.url).toBe('/');
+    await expect(result.context.data.automount).toBeTruthy();
     await expect(result.context.mode).toBe('ssr-html');
 
     // options.(url | req | res)
@@ -76,4 +77,21 @@ test('renderer.render', async () => {
     );
     await expect(result.data).not.toBe(result.context.data.html);
     await expect(result.data).toBe(result.context.compile(result.context.data));
+
+    // options.id
+    result = await renderer.render({ id: '100000000' });
+    await expect(result.context.data.id).toBe('100000000');
+
+    // options.name
+    result = await renderer.render({ name: 'ssr-ok' });
+    await expect(result.context.data.name).toBe('ssr-ok');
+
+    // options.automount
+    result = await renderer.render({ automount: false });
+    await expect(result.context.data.automount).toBeFalsy();
+
+    // options.state
+    const state = {};
+    result = await renderer.render({ state });
+    await expect(result.context.data.state).toBe(state);
 });

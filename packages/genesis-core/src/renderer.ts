@@ -239,19 +239,21 @@ export class Renderer {
             ssr: this.ssr
         };
         // set context
-        if (options.req) {
+        if (options.req instanceof IncomingMessage) {
             context.req = options.req;
             if (typeof context.req.url === 'string') {
                 context.data.url = context.req.url;
             }
         }
-        if (options.res) {
+        if (options.res instanceof ServerResponse) {
             context.res = options.res;
         }
         if (options.mode && modes.indexOf(options.mode) > -1) {
             context.mode = options.mode;
         }
-        if (typeof options.state === 'object') {
+        if (
+            Object.prototype.toString.call(options.state) === '[object Object]'
+        ) {
             context.data.state = options.state;
         }
         // set context data
@@ -262,6 +264,13 @@ export class Renderer {
             context.data.id = options.id;
         } else {
             context.data.id = md5(`${context.data.name}-${context.data.url}`);
+        }
+
+        if (typeof options.name === 'string') {
+            context.data.name = options.name;
+        }
+        if (typeof options.automount === 'boolean') {
+            context.data.automount = options.automount;
         }
 
         return context;
