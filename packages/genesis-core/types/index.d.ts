@@ -134,6 +134,7 @@ declare namespace Genesis {
         script: string;
         scriptState: string;
         resource: RenderContextResource[];
+        automount: boolean;
         [x: string]: any;
     }
     interface ClientOptions {
@@ -152,6 +153,7 @@ declare namespace Genesis {
         url?: string;
         id?: string;
         name?: string;
+        automount?: boolean;
         state?: {
             [x: string]: any;
         };

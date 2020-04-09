@@ -263,8 +263,18 @@ export default class RemoteView {
                                         )!;
                                         newScript.setAttribute(attr, value);
                                     });
-                                    // eslint-disable-next-line no-new-func
-                                    new Function(script.innerHTML)();
+                                    if (
+                                        script.innerHTML &&
+                                        !script.getAttribute('src')
+                                    ) {
+                                        // eslint-disable-next-line no-new-func
+                                        new Function(script.innerHTML)();
+                                        if (window[res.data.id]) {
+                                            (window as any)[
+                                                res.data.id
+                                            ].automount = false;
+                                        }
+                                    }
                                     if (!script.src) return script;
                                     let ready;
                                     scriptPromiseArr.push(
@@ -322,6 +332,7 @@ export default class RemoteView {
                     const ssrContext = this.$root.$options.ssrContext;
                     if (ssrContext && res.status === 200) {
                         this.html = res.data.html;
+                        res.data.automount = false;
                         Object.assign(this.remote, res.data);
                         ssrContext.data.state[clientKey][this.serverIndex] =
                             res.data.id;
