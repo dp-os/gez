@@ -82,7 +82,7 @@ class Router extends vue_router_1.default {
     constructor(options = {}) {
         super({
             ...options,
-            mode: 'abstract'
+            mode: options.mode === 'history' ? 'abstract' : options.mode
         });
         this._mode = 'abstract';
         this._mode = options.mode;
@@ -114,6 +114,8 @@ class Router extends vue_router_1.default {
     }
     async push(location) {
         const url = this.resolve(location).href;
+        if (url === this.currentRoute.fullPath)
+            return this.currentRoute;
         const v = await super.push(location);
         if (this._isSync) {
             route.dispatchTarget(this).push(url);

@@ -85,7 +85,7 @@ export class Router extends VueRouter {
     public constructor(options: RouterOptions = {}) {
         super({
             ...options,
-            mode: 'abstract'
+            mode: options.mode === 'history' ? 'abstract' : options.mode
         });
         this._mode = options.mode;
         if (!this._isSync) return;
@@ -117,6 +117,7 @@ export class Router extends VueRouter {
 
     public async push(location: RawLocation) {
         const url = this.resolve(location).href;
+        if (url === this.currentRoute.fullPath) return this.currentRoute;
         const v = await super.push(location);
         if (this._isSync) {
             route.dispatchTarget(this).push(url);
