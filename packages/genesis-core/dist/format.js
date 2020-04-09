@@ -39,12 +39,14 @@ class Format {
      * Render state
      */
     scriptState(data) {
-        const scriptJSON = serialize_javascript_1.default({
-            url: data.url,
-            id: data.id,
-            name: data.name,
-            state: data.state
-        }, {
+        const script = { ...data };
+        const arr = ['style', 'html', 'scriptState', 'script', 'resource'];
+        arr.forEach((k) => {
+            Object.defineProperty(script, k, {
+                enumerable: false
+            });
+        });
+        const scriptJSON = serialize_javascript_1.default(script, {
             isJSON: true
         });
         return `<script data-ssr-genesis-name="${data.name}" data-ssr-genesis-id="${data.id}">window["${data.id}"]=${scriptJSON};</script>`;

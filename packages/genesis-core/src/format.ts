@@ -45,17 +45,16 @@ export class Format {
      * Render state
      */
     public scriptState(data: Genesis.RenderData) {
-        const scriptJSON: string = serialize(
-            {
-                url: data.url,
-                id: data.id,
-                name: data.name,
-                state: data.state
-            },
-            {
-                isJSON: true
-            }
-        );
+        const script = { ...data };
+        const arr = ['style', 'html', 'scriptState', 'script', 'resource'];
+        arr.forEach((k) => {
+            Object.defineProperty(script, k, {
+                enumerable: false
+            });
+        });
+        const scriptJSON: string = serialize(script, {
+            isJSON: true
+        });
         return `<script data-ssr-genesis-name="${data.name}" data-ssr-genesis-id="${data.id}">window["${data.id}"]=${scriptJSON};</script>`;
     }
 }

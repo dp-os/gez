@@ -170,7 +170,8 @@ class Renderer {
                 script: '',
                 scriptState: '',
                 state: {},
-                resource: []
+                resource: [],
+                automount: true
             },
             mode: 'ssr-html',
             format: new this.ssr.Format(this.ssr),

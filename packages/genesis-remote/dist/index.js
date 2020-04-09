@@ -214,8 +214,14 @@ var RemoteView = /** @class */ (function () {
                                     var value = script.getAttribute(attr);
                                     newScript.setAttribute(attr, value);
                                 });
-                                // eslint-disable-next-line no-new-func
-                                new Function(script.innerHTML)();
+                                if (script.innerHTML &&
+                                    !script.getAttribute('src')) {
+                                    // eslint-disable-next-line no-new-func
+                                    new Function(script.innerHTML)();
+                                    if (window[res.data.id]) {
+                                        window[res.data.id].automount = false;
+                                    }
+                                }
                                 if (!script.src)
                                     return script;
                                 var ready;
@@ -270,6 +276,7 @@ var RemoteView = /** @class */ (function () {
                     var ssrContext = _this.$root.$options.ssrContext;
                     if (ssrContext && res.status === 200) {
                         _this.html = res.data.html;
+                        res.data.automount = false;
                         Object.assign(_this.remote, res.data);
                         ssrContext.data.state[clientKey][_this.serverIndex] =
                             res.data.id;
