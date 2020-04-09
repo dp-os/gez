@@ -3,14 +3,21 @@ import path from 'path';
 import { IncomingMessage, ServerResponse } from 'http';
 import { Socket } from 'net';
 import { SSR } from '../../packages/genesis-core/src/ssr';
+import { Plugin } from '../../packages/genesis-core/src/plugin';
+
+class Home extends SSR {
+    public constructor() {
+        super({
+            name: 'ssr-home',
+            build: {
+                baseDir: path.resolve(__dirname, '../../examples/ssr-home')
+            }
+        });
+    }
+}
 
 const ssr = {
-    home: new SSR({
-        name: 'ssr-home',
-        build: {
-            baseDir: path.resolve(__dirname, '../../examples/ssr-home')
-        }
-    })
+    home: new Home()
 };
 
 test('renderer.ssr ', async () => {
@@ -143,4 +150,41 @@ test('renderer.renderJson', async () => {
 test('renderer.hotUpdate', async () => {
     const renderer = ssr.home.createRenderer();
     await expect(() => renderer.hotUpdate()).not.toThrowError();
+});
+
+test('renderer.renderMiddleware', async () => {
+    const ssr = new Home();
+    const renderer = ssr.createRenderer();
+
+    // html
+    let req = new IncomingMessage(new Socket());
+    let res = new ServerResponse(req);
+    await new Promise((resolve) => {
+        (res as any).end = resolve;
+        renderer.renderMiddleware(req, res, () => {});
+    });
+
+    await expect(res.getHeader('content-type')).toBe(
+        'text/html; charset=utf-8'
+    );
+    await expect(res.getHeader('cache-control')).toBe('max-age=0');
+
+    // json
+    req = new IncomingMessage(new Socket());
+    res = new ServerResponse(req);
+    class MyPlugin extends Plugin {
+        public renderBefore(context) {
+            context.mode = 'ssr-json';
+        }
+    }
+    ssr.plugin.use(MyPlugin);
+    await new Promise((resolve) => {
+        (res as any).end = resolve;
+        renderer.renderMiddleware(req, res, () => {});
+    });
+
+    await expect(res.getHeader('content-type')).toBe(
+        'application/json; charset=utf-8'
+    );
+    await expect(res.getHeader('cache-control')).toBe('max-age=0');
 });
