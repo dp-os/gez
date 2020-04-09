@@ -102,7 +102,7 @@ namespace Genesis {
     /**
      * Render Type
      */
-    export type RenderType = 'json' | 'html' | 'reject';
+    export type RenderType = 'json' | 'html';
     /**
      * Render Mode
      */
@@ -156,7 +156,9 @@ namespace Genesis {
         };
         el: Element;
     }
-    export interface RenderOptions<T = RenderMode> {
+    export interface RenderOptions<
+        T extends Genesis.RenderMode = Genesis.RenderMode
+    > {
         req?: IncomingMessage;
         res?: ServerResponse;
         mode?: T;
