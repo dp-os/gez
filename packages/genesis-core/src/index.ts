@@ -87,6 +87,10 @@ namespace Genesis {
          * Build side configuration
          */
         build?: BuildOptions;
+        /**
+         * Production environment or not
+         */
+        isProd?: boolean;
     }
     /**
      * Hook parameter of webpack

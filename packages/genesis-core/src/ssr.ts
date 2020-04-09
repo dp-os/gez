@@ -37,7 +37,7 @@ export class SSR {
      * Judge whether it is a production environment. By default, judge by process.env.NODE_ENV
      */
     public get isProd() {
-        return process.env.NODE_ENV === 'production';
+        return this.options?.isProd || process.env.NODE_ENV === 'production';
     }
 
     /**
