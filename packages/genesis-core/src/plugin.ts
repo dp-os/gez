@@ -31,13 +31,13 @@ export class Plugin {
 
 export class PluginManage {
     /**
-     * List of installed plug-ins
-     */
-    public plugins: Genesis.Plugin[] = [];
-    /**
      * Current SSR instance
      */
     public ssr: Genesis.SSR;
+    /**
+     * List of installed plug-ins
+     */
+    private plugins: Genesis.Plugin[] = [];
     public constructor(ssr: Genesis.SSR) {
         this.ssr = ssr;
     }

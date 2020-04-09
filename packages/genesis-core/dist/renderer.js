@@ -121,16 +121,16 @@ class Renderer {
      */
     async renderMiddleware(req, res, next) {
         try {
-            const renderResult = await this.render({ req, res });
-            switch (renderResult.type) {
+            const result = await this.render({ req, res });
+            res.setHeader('cache-control', 'max-age=0');
+            switch (result.type) {
                 case 'html':
                     res.setHeader('content-type', 'text/html; charset=utf-8');
-                    res.setHeader('cache-control', 'max-age=0');
-                    res.write(renderResult.data);
+                    res.write(result.data);
                     break;
                 case 'json':
                     res.setHeader('content-type', 'application/json; charset=utf-8');
-                    res.write(JSON.stringify(renderResult.data));
+                    res.write(JSON.stringify(result.data));
                     break;
             }
             res.end();

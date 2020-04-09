@@ -26,13 +26,13 @@ export declare class Plugin {
 }
 export declare class PluginManage {
     /**
-     * List of installed plug-ins
-     */
-    plugins: Genesis.Plugin[];
-    /**
      * Current SSR instance
      */
     ssr: Genesis.SSR;
+    /**
+     * List of installed plug-ins
+     */
+    private plugins;
     constructor(ssr: Genesis.SSR);
     /**
      * Using a plug-in for SSR
