@@ -34,7 +34,8 @@ class SSR {
      * Judge whether it is a production environment. By default, judge by process.env.NODE_ENV
      */
     get isProd() {
-        return process_1.default.env.NODE_ENV === 'production';
+        var _a;
+        return ((_a = this.options) === null || _a === void 0 ? void 0 : _a.isProd) || process_1.default.env.NODE_ENV === 'production';
     }
     /**
      * Current app name, default is 'ssr-genesis'
