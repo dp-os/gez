@@ -2,3 +2,4 @@ node_modules/**
 src/**
 dist/**
 examples/**/dist/**
+coverage/**
