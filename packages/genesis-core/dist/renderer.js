@@ -20,11 +20,6 @@ const modes = [
     'ssr-json',
     'csr-json'
 ];
-const renderModeTypeError = (v) => {
-    throw new TypeError(`Render mode can only be ${modes
-        .filter((t) => t.indexOf(v) > -1)
-        .join(' ')}`);
-};
 class Renderer {
     constructor(ssr, options) {
         var _a, _b, _c, _d;
@@ -92,33 +87,18 @@ class Renderer {
     /**
      * Render JSON
      */
-    async renderJson(options) {
-        const { ssr } = this;
-        const context = this._createContext({
-            ...options,
-            mode: options.mode || 'ssr-json'
-        });
-        await ssr.plugin.callHook('renderBefore', context);
-        switch (context.mode) {
-            case 'ssr-json':
-            case 'csr-json':
-                return this._renderJson(context);
-        }
-        renderModeTypeError('json');
+    async renderJson(options = {
+        mode: 'ssr-json'
+    }) {
+        return this.render(options);
     }
     /**
      * Render HTML
      */
-    async renderHtml(options) {
-        const { ssr } = this;
-        const context = this._createContext(options);
-        await ssr.plugin.callHook('renderBefore', context);
-        switch (context.mode) {
-            case 'ssr-html':
-            case 'csr-html':
-                return this._renderHtml(context);
-        }
-        renderModeTypeError('html');
+    async renderHtml(options = {
+        mode: 'ssr-html'
+    }) {
+        return this.render(options);
     }
     /**
      * General basic rendering function
@@ -135,7 +115,6 @@ class Renderer {
             case 'csr-json':
                 return this._renderJson(context);
         }
-        renderModeTypeError('');
     }
     /**
      * Rendering Middleware

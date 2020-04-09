@@ -26,14 +26,6 @@ const modes: Genesis.RenderMode[] = [
     'csr-json'
 ];
 
-const renderModeTypeError = (v: string) => {
-    throw new TypeError(
-        `Render mode can only be ${modes
-            .filter((t) => t.indexOf(v) > -1)
-            .join(' ')}`
-    );
-};
-
 export class Renderer {
     public ssr: Genesis.SSR;
     /**
@@ -134,47 +126,32 @@ export class Renderer {
      * Render JSON
      */
     public async renderJson(
-        options: Genesis.RenderOptions
-    ): Promise<Genesis.RenderResultJson> {
-        const { ssr } = this;
-        const context = this._createContext({
-            ...options,
-            mode: options.mode || 'ssr-json'
-        });
-        await ssr.plugin.callHook('renderBefore', context as any);
-        switch (context.mode) {
-            case 'ssr-json':
-            case 'csr-json':
-                return this._renderJson(context);
+        options: Genesis.RenderOptions<Genesis.RenderModeJson> = {
+            mode: 'ssr-json'
         }
-        renderModeTypeError('json');
+    ): Promise<Genesis.RenderResultJson> {
+        return this.render(options) as Promise<Genesis.RenderResultJson>;
     }
 
     /**
      * Render HTML
      */
     public async renderHtml(
-        options: Genesis.RenderOptions
-    ): Promise<Genesis.RenderResultHtml> {
-        const { ssr } = this;
-        const context = this._createContext(options);
-        await ssr.plugin.callHook('renderBefore', context as any);
-        switch (context.mode) {
-            case 'ssr-html':
-            case 'csr-html':
-                return this._renderHtml(context);
+        options: Genesis.RenderOptions<Genesis.RenderModeHtml> = {
+            mode: 'ssr-html'
         }
-        renderModeTypeError('html');
+    ): Promise<Genesis.RenderResultHtml> {
+        return this.render(options) as Promise<Genesis.RenderResultHtml>;
     }
 
     /**
      * General basic rendering function
      */
-    public async render(
-        options: Genesis.RenderOptions = {}
+    public async render<T extends Genesis.RenderMode = Genesis.RenderMode>(
+        options: Genesis.RenderOptions<T> = {}
     ): Promise<Genesis.RenderResul> {
         const { ssr } = this;
-        const context = this._createContext(options);
+        const context = this._createContext<T>(options);
         await ssr.plugin.callHook('renderBefore', context);
         switch (context.mode) {
             case 'ssr-html':
@@ -184,7 +161,6 @@ export class Renderer {
             case 'csr-json':
                 return this._renderJson(context);
         }
-        renderModeTypeError('');
     }
 
     /**
@@ -217,8 +193,8 @@ export class Renderer {
         }
     }
 
-    private _createContext(
-        options: Genesis.RenderOptions = {}
+    private _createContext<T extends Genesis.RenderMode = Genesis.RenderMode>(
+        options: Genesis.RenderOptions<T> = {}
     ): Genesis.RenderContext {
         const context: Genesis.RenderContext = {
             data: {

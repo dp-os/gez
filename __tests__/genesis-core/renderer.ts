@@ -78,6 +78,20 @@ test('renderer.render', async () => {
     await expect(result.data).not.toBe(result.context.data.html);
     await expect(result.data).toBe(result.context.compile(result.context.data));
 
+    result = await renderer.render({ mode: 'ssr-json' });
+    await expect(result.context.mode).toBe('ssr-json');
+    await expect(result.context.data).toBe(result.data);
+
+    result = await renderer.render({ mode: 'csr-json' });
+    await expect(result.context.mode).toBe('csr-json');
+    await expect(result.context.data).toBe(result.data);
+    await expect(result.context.data.html).toBe(
+        '<div data-ssr-genesis-id="8d07b00bc6ec949da008e624ef609b3d"></div>'
+    );
+
+    result = await renderer.render({ mode: 'ssr-test' as any });
+    await expect(result.context.mode).toBe('ssr-html');
+
     // options.id
     result = await renderer.render({ id: '100000000' });
     await expect(result.context.data.id).toBe('100000000');
@@ -94,4 +108,39 @@ test('renderer.render', async () => {
     const state = {};
     result = await renderer.render({ state });
     await expect(result.context.data.state).toBe(state);
+});
+
+test('renderer.renderHtml', async () => {
+    const renderer = ssr.home.createRenderer();
+    let result = await renderer.renderHtml();
+    await expect(result.context.compile(result.context.data)).toBe(result.data);
+    await expect(result.context.mode).toBe('ssr-html');
+
+    result = await renderer.renderHtml({ mode: 'csr-html' });
+    await expect(result.context.compile(result.context.data)).toBe(result.data);
+    await expect(result.data).toBe(result.data);
+    await expect(result.context.mode).toBe('csr-html');
+    await expect(result.context.data.html).toBe(
+        '<div data-ssr-genesis-id="8d07b00bc6ec949da008e624ef609b3d"></div>'
+    );
+});
+
+test('renderer.renderJson', async () => {
+    const renderer = ssr.home.createRenderer();
+
+    let result = await renderer.renderJson();
+    await expect(result.context.mode).toBe('ssr-json');
+    await expect(result.context.data).toBe(result.data);
+
+    result = await renderer.renderJson({ mode: 'csr-json' });
+    await expect(result.context.mode).toBe('csr-json');
+    await expect(result.context.data).toBe(result.data);
+    await expect(result.context.data.html).toBe(
+        '<div data-ssr-genesis-id="8d07b00bc6ec949da008e624ef609b3d"></div>'
+    );
+});
+
+test('renderer.hotUpdate', async () => {
+    const renderer = ssr.home.createRenderer();
+    await expect(() => renderer.hotUpdate()).not.toThrowError();
 });
