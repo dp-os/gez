@@ -187,4 +187,16 @@ test('renderer.renderMiddleware', async () => {
         'application/json; charset=utf-8'
     );
     await expect(res.getHeader('cache-control')).toBe('max-age=0');
+    // error
+    req = new IncomingMessage(new Socket());
+    res = new ServerResponse(req);
+    const warn = console.warn;
+    const error = console.error;
+    console.warn = () => {};
+    console.error = () => {};
+    req.url = '/error';
+    await renderer.renderMiddleware(req, res, (err) => {
+        expect(err.toString().trim()).toBe('TypeError: jest test error');
+    });
+    console.error = error;
 });
