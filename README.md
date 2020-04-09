@@ -6,3 +6,5 @@ yarn build # 构建生产包
 yarn start # 运行生产包
 # open http://localhost:3000
 ```
+
+[Genesis 文档](https://fmfe.github.io/genesis-docs/)
