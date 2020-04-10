@@ -15,9 +15,20 @@ class Home extends SSR {
         });
     }
 }
+class About extends SSR {
+    public constructor() {
+        super({
+            name: 'ssr-about',
+            build: {
+                baseDir: path.resolve(__dirname, '../../examples/ssr-about')
+            }
+        });
+    }
+}
 
 const ssr = {
-    home: new Home()
+    home: new Home(),
+    about: new About()
 };
 
 test('renderer.ssr ', async () => {
@@ -35,6 +46,18 @@ test('renderer.staticPublicPath', async () => {
     await expect(renderer.staticPublicPath).toBe(ssr.home.publicPath);
 });
 
+test('renderer.render default html', async () => {
+    const renderer = ssr.about.createRenderer();
+
+    // Defalut
+    const result = await renderer.render();
+    await expect(result.type).toBe('html');
+    await expect(typeof result.data).toBe('string');
+    await expect(result.context.data.name).toBe(ssr.about.name);
+    await expect(result.context.data.url).toBe('/');
+    await expect(result.context.data.automount).toBeTruthy();
+    await expect(result.context.mode).toBe('ssr-html');
+});
 test('renderer.render', async () => {
     const renderer = ssr.home.createRenderer();
 
@@ -68,6 +91,12 @@ test('renderer.render', async () => {
     req.url = '/test2';
     result = await renderer.render({ req, res, url: '/test3' });
     await expect(result.context.data.url).toBe('/test3');
+    await expect(result.context.req).toBe(req);
+    await expect(result.context.res).toBe(res);
+
+    req.url = undefined;
+    result = await renderer.render({ req, res, url: '/' });
+    await expect(result.context.data.url).toBe('/');
     await expect(result.context.req).toBe(req);
     await expect(result.context.res).toBe(res);
 

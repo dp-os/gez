@@ -190,13 +190,38 @@ declare namespace Genesis {
      */
     interface RendererOptions {
         client: {
-            data: any;
+            data: {
+                publicPath: string;
+                all: string[];
+                initial: string[];
+                async: string[];
+                modules: {
+                    [key: string]: number[];
+                };
+            };
             fs: any;
         };
         server: {
-            data: any;
+            data: {
+                entry: string;
+                files: {
+                    [x: string]: string;
+                };
+                maps: {
+                    [key: string]: RendererOptionsMap;
+                };
+            };
             fs: any;
         };
+    }
+    interface RendererOptionsMap {
+        version: number;
+        sources: string[];
+        names: string[];
+        mappings: string;
+        file: string;
+        sourcesContent: string[];
+        sourceRoot: string;
     }
     type CompilerType = 'build' | 'watch';
 }

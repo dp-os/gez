@@ -83,8 +83,7 @@ export class Renderer {
         const renderOptions = {
             template,
             inject: false,
-            clientManifest: clientManifest,
-            shouldPreload: () => true
+            clientManifest: clientManifest
         };
 
         const ejsTemplate = fs.existsSync(this.ssr.templaceFile)
