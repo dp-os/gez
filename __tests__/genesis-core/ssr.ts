@@ -178,4 +178,18 @@ test('check ssr.createRenderer()', async () => {
     await expect(() => ssr.createRenderer()).toThrowError(
         `You have not built the application, please execute 'new Build(ssr).start()' build first`
     );
+    const options: any = {
+        client: {
+            data: {
+                publicPath: '',
+                all: [],
+                initial: [],
+                async: [],
+                modules: {}
+            }
+        }
+    };
+    await expect(() => ssr.createRenderer(options)).toThrowError(
+        `You have not built the application, please execute 'new Build(ssr).start()' build first`
+    );
 });

@@ -198,8 +198,34 @@ namespace Genesis {
      * Options for rendering
      */
     export interface RendererOptions {
-        client: { data: any; fs: any };
-        server: { data: any; fs: any };
+        client: {
+            data: {
+                publicPath: string;
+                all: string[];
+                initial: string[];
+                async: string[];
+                modules: { [key: string]: number[] };
+            };
+            fs: any;
+        };
+        server: {
+            data: {
+                entry: string;
+                files: { [x: string]: string };
+                maps: { [key: string]: RendererOptionsMap };
+            };
+            fs: any;
+        };
+    }
+
+    export interface RendererOptionsMap {
+        version: number;
+        sources: string[];
+        names: string[];
+        mappings: string;
+        file: string;
+        sourcesContent: string[];
+        sourceRoot: string;
     }
     export type CompilerType = 'build' | 'watch';
 }

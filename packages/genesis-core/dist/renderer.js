@@ -50,8 +50,7 @@ class Renderer {
         const renderOptions = {
             template,
             inject: false,
-            clientManifest: clientManifest,
-            shouldPreload: () => true
+            clientManifest: clientManifest
         };
         const ejsTemplate = fs_1.default.existsSync(this.ssr.templaceFile)
             ? fs_1.default.readFileSync(this.ssr.outputTemplaceFile, 'utf-8')
