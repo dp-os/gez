@@ -230,3 +230,38 @@ test('renderer.renderMiddleware', async () => {
     console.warn = warn;
     console.error = error;
 });
+
+test('renderer callHook', async () => {
+    const ssr = new Home();
+    let renderBefore = 0;
+    let renderCompleted = 0;
+    let context;
+    class MyPlugin extends Plugin {
+        public renderBefore(ctx) {
+            renderBefore++;
+            context = ctx;
+        }
+
+        public async renderCompleted(ctx) {
+            renderCompleted++;
+            await expect(context).toBe(ctx);
+        }
+    }
+    ssr.plugin.use(MyPlugin);
+    const renderer = ssr.createRenderer();
+
+    let result = await renderer.render({ url: '/test' });
+    await expect(renderBefore).toBe(1);
+    await expect(renderCompleted).toBe(1);
+    await expect(context).toBe(result.context);
+
+    result = await renderer.renderHtml({ url: '/test' });
+    await expect(renderBefore).toBe(2);
+    await expect(renderCompleted).toBe(2);
+    await expect(context).toBe(result.context);
+
+    result = await renderer.renderJson({ url: '/test' });
+    await expect(renderBefore).toBe(3);
+    await expect(renderCompleted).toBe(3);
+    await expect(context).toBe(result.context);
+});
