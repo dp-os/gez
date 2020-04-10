@@ -2794,7 +2794,7 @@ cosmiconfig@^6.0.0:
 
 coveralls@^3.0.11:
   version "3.0.11"
-  resolved "http://npm.followme.com/coveralls/-/coveralls-3.0.11.tgz#e141da0922b632fcc66620f334460c3f0026a4ce"
+  resolved "https://registry.npm.taobao.org/coveralls/download/coveralls-3.0.11.tgz#e141da0922b632fcc66620f334460c3f0026a4ce"
   integrity sha1-4UHaCSK2MvzGZiDzNEYMPwAmpM4=
   dependencies:
     js-yaml "^3.13.1"
