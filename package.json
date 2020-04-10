@@ -15,7 +15,7 @@
         "lint:css": "stylelint . --syntax less --fix --ignore-path ./.stylelintignore | stylelint . --custom-syntax postcss-html --fix",
         "type-check": "tsc --noEmit",
         "test": "yarn build && jest --coverage",
-        "coveralls": "coveralls",
+        "coveralls": "coveralls < coverage/lcov.info",
         "lerna": "lerna publish  --registry=https://registry.npmjs.org --force-publish"
     },
     "sideEffects": [
