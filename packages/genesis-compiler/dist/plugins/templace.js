@@ -59,12 +59,16 @@ class TemplacePlugin extends genesis_core_1.Plugin {
             const text = fs_1.default.readFileSync(path_1.default.resolve(__dirname, `../../templace/src/${filename}`), 'utf8');
             const output = path_1.default.resolve(ssr.srcDir, filename);
             if (fs_1.default.existsSync(output))
-                return;
+                return false;
             write_1.default.sync(output, text);
+            return true;
         };
-        writeSrcTemplace('entry-client.ts');
-        writeSrcTemplace('entry-server.ts');
-        writeSrcTemplace('app.vue');
+        if (!writeSrcTemplace('entry-client.ts'))
+            return;
+        if (!writeSrcTemplace('entry-server.ts'))
+            return;
+        if (!writeSrcTemplace('app.vue'))
+            return;
         writeSrcTemplace('shims-vue.d.ts');
     }
     async afterCompiler(type) {

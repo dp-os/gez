@@ -72,12 +72,13 @@ export class TemplacePlugin extends Plugin {
                 'utf8'
             );
             const output = path.resolve(ssr.srcDir, filename);
-            if (fs.existsSync(output)) return;
+            if (fs.existsSync(output)) return false;
             write.sync(output, text);
+            return true;
         };
-        writeSrcTemplace('entry-client.ts');
-        writeSrcTemplace('entry-server.ts');
-        writeSrcTemplace('app.vue');
+        if (!writeSrcTemplace('entry-client.ts')) return;
+        if (!writeSrcTemplace('entry-server.ts')) return;
+        if (!writeSrcTemplace('app.vue')) return;
         writeSrcTemplace('shims-vue.d.ts');
     }
 
