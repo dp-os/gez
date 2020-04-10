@@ -1,0 +1,8 @@
+language: node_js
+node_js:
+  - lts/*
+install:
+  - yarn install
+script:
+  - yarn build
+  - yarn test
