@@ -4,5 +4,6 @@ node_js:
 install:
   - yarn install
 script:
+  - yarn lint
   - yarn build
   - yarn test
