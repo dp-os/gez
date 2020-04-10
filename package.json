@@ -15,6 +15,7 @@
         "lint:css": "stylelint . --syntax less --fix --ignore-path ./.stylelintignore | stylelint . --custom-syntax postcss-html --fix",
         "type-check": "tsc --noEmit",
         "test": "yarn build && jest --coverage",
+        "coveralls": "coveralls",
         "lerna": "lerna publish  --registry=https://registry.npmjs.org --force-publish"
     },
     "sideEffects": [
@@ -28,6 +29,7 @@
     "devDependencies": {
         "@fmfe/genesis-lint": "file:./packages/genesis-lint",
         "@types/jest": "^25.1.4",
+        "coveralls": "^3.0.11",
         "jest": "^25.2.4",
         "vue": "^2.6.11",
         "vue-property-decorator": "^8.4.0"

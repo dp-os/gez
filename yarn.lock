@@ -853,12 +853,12 @@
   integrity sha1-rUldxBsS511YjG24uYNPCPoTHrc=
 
 "@fmfe/genesis-app@file:./packages/genesis-app":
-  version "0.0.39"
+  version "0.0.41-beta.10"
   dependencies:
     vue-router "^3.1.6"
 
 "@fmfe/genesis-compiler@file:./packages/genesis-compiler":
-  version "0.0.39"
+  version "0.0.41-beta.10"
   dependencies:
     "@babel/core" "^7.8.4"
     "@babel/plugin-proposal-class-properties" "^7.8.3"
@@ -898,7 +898,7 @@
     write "^2.0.0"
 
 "@fmfe/genesis-core@file:./packages/genesis-core":
-  version "0.0.39"
+  version "0.0.41-beta.10"
   dependencies:
     ejs "^3.0.1"
     serialize-javascript "^3.0.0"
@@ -906,7 +906,7 @@
     vue-server-renderer "^2.6.11"
 
 "@fmfe/genesis-lint@file:./packages/genesis-lint":
-  version "0.0.39"
+  version "0.0.41-beta.10"
   dependencies:
     "@typescript-eslint/eslint-plugin" "^2.20.0"
     "@typescript-eslint/parser" "^2.20.0"
@@ -934,10 +934,10 @@
     vue-eslint-parser "5.0.0"
 
 "@fmfe/genesis-remote@file:./packages/genesis-remote":
-  version "0.0.39"
+  version "0.0.41-beta.10"
 
 "@fmfe/square@file:./packages/square":
-  version "0.0.39"
+  version "0.0.41-beta.10"
   dependencies:
     "@fmfe/tms.js" "^0.1.7"
 
@@ -2791,6 +2791,17 @@ cosmiconfig@^6.0.0:
     parse-json "^5.0.0"
     path-type "^4.0.0"
     yaml "^1.7.2"
+
+coveralls@^3.0.11:
+  version "3.0.11"
+  resolved "http://npm.followme.com/coveralls/-/coveralls-3.0.11.tgz#e141da0922b632fcc66620f334460c3f0026a4ce"
+  integrity sha1-4UHaCSK2MvzGZiDzNEYMPwAmpM4=
+  dependencies:
+    js-yaml "^3.13.1"
+    lcov-parse "^1.0.0"
+    log-driver "^1.2.7"
+    minimist "^1.2.5"
+    request "^2.88.0"
 
 create-ecdh@^4.0.0:
   version "4.0.3"
@@ -5765,6 +5776,11 @@ known-css-properties@^0.17.0:
   resolved "https://registry.npm.taobao.org/known-css-properties/download/known-css-properties-0.17.0.tgz#1c535f530ee8e9e3e27bb6a718285780e1d07326"
   integrity sha1-HFNfUw7o6ePie7anGChXgOHQcyY=
 
+lcov-parse@^1.0.0:
+  version "1.0.0"
+  resolved "http://npm.followme.com/lcov-parse/-/lcov-parse-1.0.0.tgz#eb0d46b54111ebc561acb4c408ef9363bdc8f7e0"
+  integrity sha1-6w1GtUER68VhrLTECO+TY73I9+A=
+
 less-loader@^5.0.0:
   version "5.0.0"
   resolved "https://registry.npm.taobao.org/less-loader/download/less-loader-5.0.0.tgz#498dde3a6c6c4f887458ee9ed3f086a12ad1b466"
@@ -5986,6 +6002,11 @@ lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17
   version "4.17.15"
   resolved "https://registry.npm.taobao.org/lodash/download/lodash-4.17.15.tgz?cache=0&sync_timestamp=1571657272199&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Flodash%2Fdownload%2Flodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
   integrity sha1-tEf2ZwoEVbv+7dETku/zMOoJdUg=
+
+log-driver@^1.2.7:
+  version "1.2.7"
+  resolved "http://npm.followme.com/log-driver/-/log-driver-1.2.7.tgz#63b95021f0702fedfa2c9bb0a24e7797d71871d8"
+  integrity sha1-Y7lQIfBwL+36LJuwok53l9cYcdg=
 
 log-symbols@^1.0.2:
   version "1.0.2"

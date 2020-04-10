@@ -1,9 +1,14 @@
 language: node_js
 node_js:
   - lts/*
+env:
+  global:
+    - SERVICE_NAME=travis-pro
+    - COVERALLS_REPO_TOKEN=9cdJAJEmw2GLKBfbnciQTu90nm1LiSHnt
 install:
   - yarn install
 script:
   - yarn lint
   - yarn build
   - yarn test
+  - yarn coveralls
