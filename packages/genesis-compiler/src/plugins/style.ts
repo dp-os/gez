@@ -22,7 +22,13 @@ interface RuleOptions {
 export class StylePlugin extends Plugin {
     public chainWebpack({ target, config }: WebpackHookParams) {
         const { ssr } = this;
-        const { isProd, srcIncludes } = ssr;
+        const { isProd } = ssr;
+        const srcIncludes = [
+            ...ssr.srcIncludes,
+            /\.css/,
+            /\.less/,
+            /\.p(ost)?css$/
+        ];
         if (isProd) {
             if (target === 'client') {
                 config.plugin('extract-css').use(ExtractCssChunks, [
@@ -114,7 +120,9 @@ export class StylePlugin extends Plugin {
                 lds.push(loaders.extract);
             }
             lds.push(isModule ? loaders['module-css'] : loaders.css);
-            lds.push(loaders.postcss);
+            if (isProd) {
+                lds.push(loaders.postcss);
+            }
             return lds;
         };
         const getLessLoader = (isModule = false) => {
