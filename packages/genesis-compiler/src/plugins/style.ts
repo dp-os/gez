@@ -75,7 +75,7 @@ export class StylePlugin extends Plugin {
                 options: {
                     sourceMap: false,
                     plugins: () => {
-                        if (!ssr.isProd) return [];
+                        if (!isProd) return [];
                         return [
                             postcssPresetEnv({
                                 browsers: ssr.getBrowsers('client')
@@ -114,9 +114,7 @@ export class StylePlugin extends Plugin {
                 lds.push(loaders.extract);
             }
             lds.push(isModule ? loaders['module-css'] : loaders.css);
-            if (ssr.isProd) {
-                lds.push(loaders.postcss);
-            }
+            lds.push(loaders.postcss);
             return lds;
         };
         const getLessLoader = (isModule = false) => {
@@ -202,9 +200,7 @@ export class StylePlugin extends Plugin {
             Object.keys(rule.modules).forEach((moduleName: string) => {
                 const r = currentRule.oneOf(moduleName);
                 const currentModule = rule.modules[moduleName];
-                if (currentModule.resourceQuery) {
-                    r.resourceQuery(currentModule.resourceQuery);
-                }
+                r.resourceQuery(currentModule.resourceQuery);
                 const lds = currentModule.loaders;
                 for (const currentLoader of lds) {
                     r.use(currentLoader.name)
