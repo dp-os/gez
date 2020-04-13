@@ -206,6 +206,8 @@ class Micro extends MicroBase {
     createServerCommit() {
         const commits = [];
         this.subscribe((commit) => {
+            if (/\.\$\$[^$]/.test(commit.position))
+                return;
             commits.push(commit);
         });
         return commits;

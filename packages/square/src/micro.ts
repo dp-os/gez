@@ -232,6 +232,7 @@ export class Micro extends MicroBase {
     public createServerCommit() {
         const commits: Types.Commit[] = [];
         this.subscribe((commit) => {
+            if (/\.\$\$[^$]/.test(commit.position)) return;
             commits.push(commit);
         });
         return commits;
