@@ -191,7 +191,9 @@ class StylePlugin extends genesis_core_1.Plugin {
             Object.keys(rule.modules).forEach((moduleName) => {
                 const r = currentRule.oneOf(moduleName);
                 const currentModule = rule.modules[moduleName];
-                r.resourceQuery(currentModule.resourceQuery);
+                if (currentModule.resourceQuery) {
+                    r.resourceQuery(currentModule.resourceQuery);
+                }
                 const lds = currentModule.loaders;
                 for (const currentLoader of lds) {
                     r.use(currentLoader.name)
