@@ -24,6 +24,7 @@ export class ServerConfig extends BaseConfig {
                 whitelist: [
                     /\.css$/,
                     /\.less$/,
+                    /\?vue&type=style/,
                     /core-js/,
                     /@babel\/runtime/,
                     /regenerator-runtime/,

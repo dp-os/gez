@@ -64,7 +64,7 @@ class StylePlugin extends genesis_core_1.Plugin {
                 options: {
                     sourceMap: false,
                     plugins: () => {
-                        if (!ssr.isProd)
+                        if (!isProd)
                             return [];
                         return [
                             postcss_preset_env_1.default({
@@ -105,9 +105,7 @@ class StylePlugin extends genesis_core_1.Plugin {
                 lds.push(loaders.extract);
             }
             lds.push(isModule ? loaders['module-css'] : loaders.css);
-            if (ssr.isProd) {
-                lds.push(loaders.postcss);
-            }
+            lds.push(loaders.postcss);
             return lds;
         };
         const getLessLoader = (isModule = false) => {
@@ -193,9 +191,7 @@ class StylePlugin extends genesis_core_1.Plugin {
             Object.keys(rule.modules).forEach((moduleName) => {
                 const r = currentRule.oneOf(moduleName);
                 const currentModule = rule.modules[moduleName];
-                if (currentModule.resourceQuery) {
-                    r.resourceQuery(currentModule.resourceQuery);
-                }
+                r.resourceQuery(currentModule.resourceQuery);
                 const lds = currentModule.loaders;
                 for (const currentLoader of lds) {
                     r.use(currentLoader.name)
