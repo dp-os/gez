@@ -16,7 +16,7 @@
         "type-check": "tsc --noEmit",
         "test": "yarn build && jest --coverage",
         "coveralls": "coveralls < coverage/lcov.info",
-        "lerna": "lerna publish  --registry=https://registry.npmjs.org --force-publish"
+        "lerna": "yarn test && lerna publish  --registry=https://registry.npmjs.org --force-publish"
     },
     "sideEffects": [
         "*.css",
