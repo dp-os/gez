@@ -250,7 +250,17 @@ class Renderer {
      * The server renders a JSON
      */
     async _ssrToJson(context) {
-        const data = (await this.ssrRenderer.renderToString(context));
+        const data = await new Promise((resolve, reject) => {
+            this.ssrRenderer.renderToString(context, (err, data) => {
+                if (err) {
+                    return reject(err);
+                }
+                else if (typeof data !== 'object') {
+                    reject(new Error('Vue no rendering results'));
+                }
+                resolve(data);
+            });
+        });
         this._mergeContextData(context, data);
         await this.ssr.plugin.callHook('renderCompleted', context);
         return context.data;
