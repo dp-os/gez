@@ -19,7 +19,14 @@ exports.createClientApp = async (options) => {
     const { vueOptions, App } = options;
     const { router } = vueOptions || {};
     if (router) {
-        await router.replace(context.url);
+        await router.replace(context.url).catch((err) => {
+            throw err || new Error(`router.push('${context.url}') error`);
+        });
+        await new Promise((resolve, reject) => {
+            router.onReady(resolve, (err) => {
+                reject(err || new Error('Vue router onReady error'));
+            });
+        });
     }
     const app = new vue_1.default({
         ...vueOptions,
@@ -39,7 +46,15 @@ exports.createServerApp = async (options) => {
     const { App, context, vueOptions } = options;
     const { router } = vueOptions || {};
     if (router) {
-        await router.replace(context.data.url);
+        await router.replace(context.data.url).catch((err) => {
+            throw err ||
+                new Error(`router.replace('${context.data.url}') error`);
+        });
+        await new Promise((resolve, reject) => {
+            router.onReady(resolve, (err) => {
+                reject(err || new Error('Vue router onReady error'));
+            });
+        });
     }
     const app = new vue_1.default({
         ...vueOptions,

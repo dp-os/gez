@@ -325,9 +325,18 @@ export class Renderer {
     private async _ssrToJson(
         context: Genesis.RenderContext
     ): Promise<Genesis.RenderData> {
-        const data: Genesis.RenderData = (await this.ssrRenderer.renderToString(
-            context
-        )) as any;
+        const data: Genesis.RenderData = await new Promise(
+            (resolve, reject) => {
+                this.ssrRenderer.renderToString(context, (err, data: any) => {
+                    if (err) {
+                        return reject(err);
+                    } else if (typeof data !== 'object') {
+                        reject(new Error('Vue no rendering results'));
+                    }
+                    resolve(data);
+                });
+            }
+        );
         this._mergeContextData(context, data);
         await this.ssr.plugin.callHook('renderCompleted', context);
         return context.data;
