@@ -1,7 +1,7 @@
 <template>
     <div class="app">
         <h2>你好世界！</h2>
-        <p v-if="show" @click="clsoe" class="text">
+        <p v-if="show" @click="close" class="text">
             {{ installed ? '在客户端应该安装成功，点击我关闭!' : '未安装' }}
         </p>
     </div>
@@ -21,7 +21,7 @@ export default Vue.extend({
         this.installed = true;
     },
     methods: {
-        clsoe() {
+        close() {
             this.show = false;
         }
     }
