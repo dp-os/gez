@@ -4,11 +4,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const vue_1 = __importDefault(require("vue"));
+const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
 const http_1 = require("http");
 const ejs_1 = __importDefault(require("ejs"));
 const crypto_1 = __importDefault(require("crypto"));
 const vue_server_renderer_1 = require("vue-server-renderer");
+const ssr_1 = require("./ssr");
 const md5 = (content) => {
     var md5 = crypto_1.default.createHash('md5');
     return md5.update(content).digest('hex');
@@ -26,7 +28,14 @@ class Renderer {
         if ((!((_a = options === null || options === void 0 ? void 0 : options.client) === null || _a === void 0 ? void 0 : _a.data) || !((_b = options === null || options === void 0 ? void 0 : options.server) === null || _b === void 0 ? void 0 : _b.data)) &&
             (!fs_1.default.existsSync(ssr.outputClientManifestFile) ||
                 !fs_1.default.existsSync(ssr.outputServerBundleFile))) {
-            throw new Error(`You have not built the application, please execute 'new Build(ssr).start()' build first`);
+            ssr = new ssr_1.SSR({
+                build: {
+                    outputDir: path_1.default.resolve(__dirname, /src$/.test(__dirname)
+                        ? '../dist/ssr-genesis'
+                        : './ssr-genesis')
+                }
+            });
+            console.warn(`You have not built the application, please execute 'new Build(ssr).start()' build first, Now use the default`);
         }
         this.ssr = ssr;
         const template = async (strHtml, ctx) => {

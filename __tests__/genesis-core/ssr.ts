@@ -175,21 +175,14 @@ test('check options.isProd', async () => {
 
 test('check ssr.createRenderer()', async () => {
     const ssr = new SSR();
-    await expect(() => ssr.createRenderer()).toThrowError(
-        `You have not built the application, please execute 'new Build(ssr).start()' build first`
-    );
-    const options: any = {
-        client: {
-            data: {
-                publicPath: '',
-                all: [],
-                initial: [],
-                async: [],
-                modules: {}
-            }
-        }
+    const warn = console.warn;
+    let text = '';
+    console.warn = (s: string) => {
+        text = s;
     };
-    await expect(() => ssr.createRenderer(options)).toThrowError(
-        `You have not built the application, please execute 'new Build(ssr).start()' build first`
+    ssr.createRenderer();
+    await expect(text).toBe(
+        `You have not built the application, please execute 'new Build(ssr).start()' build first, Now use the default`
     );
+    console.warn = warn;
 });
