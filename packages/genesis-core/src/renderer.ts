@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import path from 'path';
 import fs from 'fs';
 import { ServerResponse, IncomingMessage } from 'http';
 import Ejs from 'ejs';
@@ -11,6 +12,7 @@ import {
     BundleRenderer,
     createBundleRenderer
 } from 'vue-server-renderer';
+import { SSR } from './ssr';
 
 const md5 = (content: string) => {
     var md5 = crypto.createHash('md5');
@@ -46,8 +48,18 @@ export class Renderer {
             (!fs.existsSync(ssr.outputClientManifestFile) ||
                 !fs.existsSync(ssr.outputServerBundleFile))
         ) {
-            throw new Error(
-                `You have not built the application, please execute 'new Build(ssr).start()' build first`
+            ssr = new SSR({
+                build: {
+                    outputDir: path.resolve(
+                        __dirname,
+                        /src$/.test(__dirname)
+                            ? '../dist/ssr-genesis'
+                            : './ssr-genesis'
+                    )
+                }
+            });
+            console.warn(
+                `You have not built the application, please execute 'new Build(ssr).start()' build first, Now use the default`
             );
         }
         this.ssr = ssr;
