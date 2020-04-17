@@ -119,7 +119,7 @@ var RemoteView = /** @class */ (function () {
                 clientLoad: function () {
                     var _this = this;
                     axios_1.default.get(this.url).then(function (res) {
-                        if (res.status !== 200)
+                        if (res.status !== 200 || typeof res.data !== 'object')
                             return;
                         return _this.$nextTick().then(function () {
                             // 这里需要往页面插入样式和js
@@ -181,7 +181,11 @@ var RemoteView = /** @class */ (function () {
                             });
                             temp.innerHTML =
                                 res.data.script + res.data.scriptState;
+                            console.log(res.data);
                             var scripts = nodeListToArr(temp.childNodes).map(function (script) {
+                                if (!(script instanceof HTMLScriptElement)) {
+                                    return script;
+                                }
                                 var attrs = script.getAttributeNames();
                                 var values = [];
                                 attrs.forEach(function (attr) {

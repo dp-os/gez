@@ -32,7 +32,6 @@ export type RendererItems = Record<keyof SSRItems, Renderer>;
 export const ssr = new SSRItems();
 
 export const startApp = (renderer: RendererItems) => {
-    app.get('/', renderer.home.renderMiddleware);
     app.get('/about/', renderer.home.renderMiddleware);
     app.get('/error/', renderer.home.renderMiddleware);
     app.get('/api/remote/about/', (req, res, next) => {
@@ -42,7 +41,9 @@ export const startApp = (renderer: RendererItems) => {
         }
         renderer.about
             .renderJson({ req, res, url })
-            .then((r) => res.send(r.data))
+            .then((r) => {
+                res.send(r.data);
+            })
             .catch(next);
     });
     app.get('/api/remote/common-header/', (req, res, next) => {
@@ -55,6 +56,7 @@ export const startApp = (renderer: RendererItems) => {
             .then((r) => res.send(r.data))
             .catch(next);
     });
+    app.get('/', renderer.home.renderMiddleware);
 
     app.listen(3000, () => console.log(`http://localhost:3000`));
 };
