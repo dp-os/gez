@@ -89,6 +89,11 @@ class Renderer {
     async renderJson(options = {
         mode: 'ssr-json'
     }) {
+        options = { ...options };
+        if (!options.mode ||
+            ['ssr-json', 'csr-json'].indexOf(options.mode) === -1) {
+            options.mode = 'ssr-json';
+        }
         return this.render(options);
     }
     /**
@@ -97,6 +102,11 @@ class Renderer {
     async renderHtml(options = {
         mode: 'ssr-html'
     }) {
+        options = { ...options };
+        if (!options.mode ||
+            ['ssr-html', 'csr-html'].indexOf(options.mode) === -1) {
+            options.mode = 'ssr-html';
+        }
         return this.render(options);
     }
     /**

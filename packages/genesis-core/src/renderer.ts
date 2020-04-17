@@ -129,6 +129,13 @@ export class Renderer {
             mode: 'ssr-json'
         }
     ): Promise<Genesis.RenderResultJson> {
+        options = { ...options };
+        if (
+            !options.mode ||
+            ['ssr-json', 'csr-json'].indexOf(options.mode) === -1
+        ) {
+            options.mode = 'ssr-json';
+        }
         return this.render(options) as Promise<Genesis.RenderResultJson>;
     }
 
@@ -140,6 +147,13 @@ export class Renderer {
             mode: 'ssr-html'
         }
     ): Promise<Genesis.RenderResultHtml> {
+        options = { ...options };
+        if (
+            !options.mode ||
+            ['ssr-html', 'csr-html'].indexOf(options.mode) === -1
+        ) {
+            options.mode = 'ssr-html';
+        }
         return this.render(options) as Promise<Genesis.RenderResultHtml>;
     }
 

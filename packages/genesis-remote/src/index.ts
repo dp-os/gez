@@ -111,7 +111,8 @@ export default class RemoteView {
                 },
                 clientLoad() {
                     axios.get(this.url).then((res) => {
-                        if (res.status !== 200) return;
+                        if (res.status !== 200 || typeof res.data !== 'object')
+                            return;
 
                         return this.$nextTick().then(() => {
                             // 这里需要往页面插入样式和js
@@ -203,9 +204,14 @@ export default class RemoteView {
 
                             temp.innerHTML =
                                 res.data.script + res.data.scriptState;
-
+                            console.log(res.data);
                             const scripts = nodeListToArr(temp.childNodes).map(
                                 (script: HTMLScriptElement) => {
+                                    if (
+                                        !(script instanceof HTMLScriptElement)
+                                    ) {
+                                        return script;
+                                    }
                                     const attrs = script.getAttributeNames();
                                     const values: string[] = [];
                                     attrs.forEach((attr) => {

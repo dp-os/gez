@@ -159,6 +159,9 @@ test('renderer.renderHtml', async () => {
     await expect(result.context.data.html).toBe(
         '<div data-ssr-genesis-id="8d07b00bc6ec949da008e624ef609b3d"></div>'
     );
+
+    result = await renderer.renderHtml({ url: '/' });
+    await expect(result.context.mode).toBe('ssr-html');
 });
 
 test('renderer.renderJson', async () => {
@@ -174,6 +177,9 @@ test('renderer.renderJson', async () => {
     await expect(result.context.data.html).toBe(
         '<div data-ssr-genesis-id="8d07b00bc6ec949da008e624ef609b3d"></div>'
     );
+
+    result = await renderer.renderJson({ url: '/' });
+    await expect(result.context.mode).toBe('ssr-json');
 });
 
 test('renderer.hotUpdate', async () => {
