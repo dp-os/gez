@@ -183,7 +183,8 @@ class Renderer {
         };
         Object.defineProperty(context, '_subs', {
             enumerable: false,
-            value: []
+            value: [],
+            writable: true
         });
         // set context
         if (options.req instanceof http_1.IncomingMessage) {

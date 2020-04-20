@@ -14,7 +14,7 @@
         "lint:js": "eslint . --ext .js,.ts,.vue --fix",
         "lint:css": "stylelint . --syntax less --fix --ignore-path ./.stylelintignore | stylelint . --custom-syntax postcss-html --fix",
         "type-check": "tsc --noEmit",
-        "test": "yarn build && jest --coverage",
+        "test": "yarn build:ts && yarn build && jest --coverage",
         "coveralls": "coveralls < coverage/lcov.info",
         "lerna": "yarn test && lerna publish  --registry=https://registry.npmjs.org --force-publish"
     },
