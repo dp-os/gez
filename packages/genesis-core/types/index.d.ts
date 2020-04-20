@@ -173,6 +173,7 @@ declare namespace Genesis {
         res?: ServerResponse;
         compile: Ejs.TemplateFunction;
         format: Format;
+        beforeRender: (cb: (context: RenderContext) => void) => void;
     }
     interface RenderContextResource {
         file: string;

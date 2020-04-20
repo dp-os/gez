@@ -85,6 +85,8 @@ export class Renderer {
             data.script += vueCtx.renderScripts();
             data.style += vueCtx.renderStyles();
             data.resource = [...data.resource, ...resource];
+            (ctx as any)._subs.forEach((fn: Function) => fn(ctx));
+            (ctx as any)._subs = [];
             return ctx.data;
         };
 
@@ -237,8 +239,15 @@ export class Renderer {
             mode: 'ssr-html',
             format: new this.ssr.Format(this.ssr),
             compile: this.compile,
-            ssr: this.ssr
+            ssr: this.ssr,
+            beforeRender: (cb) => {
+                (context as any)._subs.push(cb);
+            }
         };
+        Object.defineProperty(context, '_subs', {
+            enumerable: false,
+            value: []
+        });
         // set context
         if (options.req instanceof IncomingMessage) {
             context.req = options.req;
