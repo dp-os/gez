@@ -52,6 +52,8 @@ class Renderer {
             data.script += vueCtx.renderScripts();
             data.style += vueCtx.renderStyles();
             data.resource = [...data.resource, ...resource];
+            ctx._subs.forEach((fn) => fn(ctx));
+            ctx._subs = [];
             return ctx.data;
         };
         const clientManifest = ((_c = options === null || options === void 0 ? void 0 : options.client) === null || _c === void 0 ? void 0 : _c.data) || require(this.ssr.outputClientManifestFile);
@@ -174,8 +176,15 @@ class Renderer {
             mode: 'ssr-html',
             format: new this.ssr.Format(this.ssr),
             compile: this.compile,
-            ssr: this.ssr
+            ssr: this.ssr,
+            beforeRender: (cb) => {
+                context._subs.push(cb);
+            }
         };
+        Object.defineProperty(context, '_subs', {
+            enumerable: false,
+            value: []
+        });
         // set context
         if (options.req instanceof http_1.IncomingMessage) {
             context.req = options.req;
