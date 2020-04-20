@@ -2,7 +2,7 @@ import Vue from 'vue';
 import { ClientOptions } from '@fmfe/genesis-core';
 interface InstalledListItem {
     appId: number;
-    app: Promise<Vue>;
+    app: Promise<Vue> | null;
     options: ClientOptions;
 }
 
@@ -61,11 +61,6 @@ class Genesis {
         if (typeof options.url !== 'string') {
             throw new TypeError('Options.url must be the string type');
         }
-        for (const item of this.installedList) {
-            if (item.options.id === options.id) {
-                return;
-            }
-        }
         const appId = ++this.appId;
         this.installedList.push({
             appId,
@@ -109,18 +104,17 @@ const genesis: Genesis = window.genesis || new Genesis();
 
 const start = (createApp?: (data: ClientOptions) => Promise<Vue>) => {
     const name = process.env.GENESIS_NAME!;
-    genesis.register(name, createApp);
+    if (typeof createApp === 'function') {
+        genesis.register(name, createApp);
+    }
     const nodeList = document.querySelectorAll(
         '[data-ssr-genesis-name="' + name + '"]'
     )!;
     const list: Element[] = Array.prototype.slice.call(nodeList);
-
     list.forEach((script) => {
         const id = script.getAttribute('data-ssr-genesis-id');
         if (!id) return;
-        const el = document.querySelector(
-            '[data-ssr-genesis-id="' + id + '"][data-server-rendered]'
-        );
+        const el = document.querySelector('[data-ssr-genesis-id="' + id + '"]');
         if (!el) return;
         const data = window[id];
         if (data.automount === false) return;
