@@ -175,7 +175,7 @@ class Renderer {
             },
             mode: 'ssr-html',
             format: new this.ssr.Format(this.ssr),
-            compile: this.compile,
+            renderHtml: () => this.compile(context.data),
             ssr: this.ssr,
             beforeRender: (cb) => {
                 context._subs.push(cb);
@@ -299,7 +299,7 @@ class Renderer {
      */
     async _ssrToString(context) {
         await this._ssrToJson(context);
-        return context.compile(context.data);
+        return context.renderHtml();
     }
     /**
      * The client renders a JSON
@@ -321,7 +321,7 @@ class Renderer {
      */
     async _csrToString(context) {
         await this._csrToJson(context);
-        return context.compile(context.data);
+        return context.renderHtml();
     }
 }
 exports.Renderer = Renderer;

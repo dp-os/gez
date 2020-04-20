@@ -179,7 +179,7 @@ namespace Genesis {
         ssr: SSR;
         req?: IncomingMessage;
         res?: ServerResponse;
-        compile: Ejs.TemplateFunction;
+        renderHtml: () => string;
         format: Format;
         beforeRender: (cb: (context: RenderContext) => void) => void;
     }

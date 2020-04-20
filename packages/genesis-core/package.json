@@ -15,10 +15,10 @@
     "ejs": "^3.0.1",
     "serialize-javascript": "^3.0.0",
     "vue": "^2.6.11",
-    "vue-server-renderer": "^2.6.11"
+    "vue-server-renderer": "^2.6.11",
+    "@types/ejs": "^3.0.0"
   },
   "devDependencies": {
-    "@types/ejs": "^3.0.0",
     "@types/node": "^13.7.4",
     "@types/serialize-javascript": "^1.5.0"
   }

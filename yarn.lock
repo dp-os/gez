@@ -868,12 +868,12 @@
   integrity sha1-rUldxBsS511YjG24uYNPCPoTHrc=
 
 "@fmfe/genesis-app@file:./packages/genesis-app":
-  version "0.0.47-alpha.0"
+  version "0.0.48"
   dependencies:
     vue-router "^3.1.6"
 
 "@fmfe/genesis-compiler@file:./packages/genesis-compiler":
-  version "0.0.47-alpha.0"
+  version "0.0.48"
   dependencies:
     "@babel/core" "^7.8.4"
     "@babel/plugin-proposal-class-properties" "^7.8.3"
@@ -913,15 +913,16 @@
     write "^2.0.0"
 
 "@fmfe/genesis-core@file:./packages/genesis-core":
-  version "0.0.47-alpha.0"
+  version "0.0.48"
   dependencies:
+    "@types/ejs" "^3.0.0"
     ejs "^3.0.1"
     serialize-javascript "^3.0.0"
     vue "^2.6.11"
     vue-server-renderer "^2.6.11"
 
 "@fmfe/genesis-lint@file:./packages/genesis-lint":
-  version "0.0.47-alpha.0"
+  version "0.0.48"
   dependencies:
     "@typescript-eslint/eslint-plugin" "^2.20.0"
     "@typescript-eslint/parser" "^2.20.0"
@@ -949,10 +950,10 @@
     vue-eslint-parser "5.0.0"
 
 "@fmfe/genesis-remote@file:./packages/genesis-remote":
-  version "0.0.47-alpha.0"
+  version "0.0.48"
 
 "@fmfe/square@file:./packages/square":
-  version "0.0.47-alpha.0"
+  version "0.0.48"
   dependencies:
     "@fmfe/tms.js" "^0.1.7"
 
@@ -1232,6 +1233,11 @@
   integrity sha1-MWEMkB7KVzuHE8MzCrxua59YhUY=
   dependencies:
     "@types/node" "*"
+
+"@types/ejs@^3.0.0":
+  version "3.0.2"
+  resolved "http://npm.followme.com/@types%2fejs/-/ejs-3.0.2.tgz#b2eb8ac59af7057da7d93a37c54fee763e17b9bd"
+  integrity sha1-suuKxZr3BX2n2To3xU/udj4Xub0=
 
 "@types/eslint-visitor-keys@^1.0.0":
   version "1.0.0"
