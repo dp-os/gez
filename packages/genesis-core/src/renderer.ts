@@ -238,7 +238,7 @@ export class Renderer {
             },
             mode: 'ssr-html',
             format: new this.ssr.Format(this.ssr),
-            compile: this.compile,
+            renderHtml: () => this.compile(context.data),
             ssr: this.ssr,
             beforeRender: (cb) => {
                 (context as any)._subs.push(cb);
@@ -385,7 +385,7 @@ export class Renderer {
         context: Genesis.RenderContext
     ): Promise<string> {
         await this._ssrToJson(context);
-        return context.compile(context.data);
+        return context.renderHtml();
     }
 
     /**
@@ -416,6 +416,6 @@ export class Renderer {
         context: Genesis.RenderContext
     ): Promise<string> {
         await this._csrToJson(context);
-        return context.compile(context.data);
+        return context.renderHtml();
     }
 }

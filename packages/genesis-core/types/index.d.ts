@@ -1,6 +1,5 @@
 /// <reference types="node" />
 import Config from 'webpack-chain';
-import Ejs from 'ejs';
 import { ServerResponse, IncomingMessage } from 'http';
 import { SSR as SSRConstructor } from './ssr';
 import { Plugin as PluginConstructor, PluginManage as PluginManageConstructor } from './plugin';
@@ -171,7 +170,7 @@ declare namespace Genesis {
         ssr: SSR;
         req?: IncomingMessage;
         res?: ServerResponse;
-        compile: Ejs.TemplateFunction;
+        renderHtml: () => string;
         format: Format;
         beforeRender: (cb: (context: RenderContext) => void) => void;
     }

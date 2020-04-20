@@ -104,7 +104,7 @@ test('renderer.render', async () => {
     result = await renderer.render({ mode: 'ssr-html' });
     await expect(result.context.mode).toBe('ssr-html');
     await expect(result.data).not.toBe(result.context.data.html);
-    await expect(result.data).toBe(result.context.compile(result.context.data));
+    await expect(result.data).toBe(result.context.renderHtml());
 
     result = await renderer.render({ mode: 'csr-html' });
     await expect(result.context.mode).toBe('csr-html');
@@ -112,7 +112,7 @@ test('renderer.render', async () => {
         '<div data-ssr-genesis-id="8d07b00bc6ec949da008e624ef609b3d"></div>'
     );
     await expect(result.data).not.toBe(result.context.data.html);
-    await expect(result.data).toBe(result.context.compile(result.context.data));
+    await expect(result.data).toBe(result.context.renderHtml());
 
     result = await renderer.render({ mode: 'ssr-json' });
     await expect(result.context.mode).toBe('ssr-json');
@@ -149,11 +149,11 @@ test('renderer.render', async () => {
 test('renderer.renderHtml', async () => {
     const renderer = ssr.home.createRenderer();
     let result = await renderer.renderHtml();
-    await expect(result.context.compile(result.context.data)).toBe(result.data);
+    await expect(result.context.renderHtml()).toBe(result.data);
     await expect(result.context.mode).toBe('ssr-html');
 
     result = await renderer.renderHtml({ mode: 'csr-html' });
-    await expect(result.context.compile(result.context.data)).toBe(result.data);
+    await expect(result.context.renderHtml()).toBe(result.data);
     await expect(result.data).toBe(result.data);
     await expect(result.context.mode).toBe('csr-html');
     await expect(result.context.data.html).toBe(
