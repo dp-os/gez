@@ -10,5 +10,8 @@
   "author": "Followme",
   "license": "MIT",
   "gitHead": "1a29b2505a05b5f7edf105590cd9c77979ea046f",
-  "sideEffects": false
+  "sideEffects": false,
+  "devDependencies": {
+    "@fmfe/genesis-core": "^0.0.50"
+  }
 }
