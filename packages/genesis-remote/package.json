@@ -1,6 +1,6 @@
 {
   "name": "@fmfe/genesis-remote",
-  "version": "0.0.50",
+  "version": "0.0.51",
   "description": "",
   "main": "dist/index.js",
   "types": "types/index.d.ts",
@@ -12,6 +12,6 @@
   "gitHead": "1a29b2505a05b5f7edf105590cd9c77979ea046f",
   "sideEffects": false,
   "devDependencies": {
-    "@fmfe/genesis-core": "^0.0.50"
+    "@fmfe/genesis-core": "^0.0.51"
   }
 }
