@@ -14,282 +14,327 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var axios_1 = __importDefault(require("axios"));
-var clientKey = '__remote_view_client_state__';
-var serverKey = '__remote_view_server_state__';
-var RemoteView = /** @class */ (function () {
-    function RemoteView() {
+/* eslint-disable @typescript-eslint/prefer-for-of */
+var vue_1 = __importDefault(require("vue"));
+var format_1 = require("./format");
+var remoteViewStateKey = '__remote_view_state__';
+var isPromise = function (obj) {
+    return (!!obj &&
+        (typeof obj === 'object' || typeof obj === 'function') &&
+        typeof obj.then === 'function');
+};
+/**
+ * el 加载的元素
+ * bool 在 doc 中是否已经存在
+ */
+var onload = function (el, bool) {
+    // 暂时先处理成已经加载成功
+    if (bool === true && !('_loading' in el)) {
+        return Promise.resolve(true);
     }
-    RemoteView.install = function (_Vue, options) {
-        var RemoteView = _Vue.extend({
-            name: 'remote-view',
-            props: {
-                method: String,
-                url: String,
-                option: Object,
-                mode: String,
-                serverCall: Boolean
-            },
-            data: function () {
-                return {
-                    installOptions: {},
-                    html: '',
-                    remote: {},
-                    serverIndex: 0,
-                    appId: 0,
-                    destroyed: false
-                };
-            },
-            created: function () {
-                var ssrContext = this.$root.$options.ssrContext;
-                if (!ssrContext) {
-                    return;
-                }
-                if (typeof window === 'object') {
-                    this.initClient();
-                }
-                else {
-                    this.initServer();
-                }
-            },
-            render: function (h) {
-                return h('div', {
-                    domProps: {
-                        innerHTML: this.html
-                    }
+    // 已经加载成功
+    if (el._loading === false) {
+        return Promise.resolve(true);
+    }
+    // 正在加载中
+    if (el._loading === true) {
+        return new Promise(function (resolve) {
+            el._loadArr.push(resolve);
+            el._loadArr = [];
+        });
+    }
+    // 首次加载
+    return new Promise(function (resolve, reject) {
+        var load = function () {
+            el._loadArr.forEach(function (fn) { return fn(); });
+            el._loading = false;
+            resolve(true);
+        };
+        var error = function () {
+            el._loadArr.forEach(function (fn) { return fn(); });
+            el._loading = false;
+            resolve(false);
+        };
+        el.addEventListener('load', load, false);
+        el.addEventListener('error', error, false);
+        el._loading = true;
+        el._loadArr = [];
+    });
+};
+/**
+ * 加载样式文件
+ */
+exports.loadStyle = function (html) {
+    var doc = document.createDocumentFragment();
+    var div = document.createElement('div');
+    div.innerHTML = html;
+    var arr = [];
+    var linkArr = document.querySelectorAll('link[rel=stylesheet][href]');
+    var findOne = function (href) {
+        for (var i = 0; i < linkArr.length; i++) {
+            if (linkArr[i].href === href) {
+                return linkArr[i];
+            }
+        }
+        return null;
+    };
+    var installArr = [];
+    var forEach = function (el) {
+        if (el instanceof HTMLLinkElement &&
+            el.rel === 'stylesheet' &&
+            el.href) {
+            var docLink = findOne(el.href);
+            if (docLink) {
+                arr.push(onload(docLink, true));
+                return;
+            }
+            else {
+                arr.push(onload(el, false));
+            }
+        }
+        installArr.push(el);
+    };
+    for (var i = 0; i < div.children.length; i++) {
+        forEach(div.children[i]);
+    }
+    installArr.forEach(function (el) {
+        doc.appendChild(el);
+    });
+    document.head.appendChild(doc);
+    return Promise.all(arr);
+};
+/**
+ * 加载js文件
+ */
+exports.loadScript = function (html) {
+    var doc = document.createDocumentFragment();
+    var div = document.createElement('div');
+    div.innerHTML = html;
+    var arr = [];
+    var scriptArr = document.querySelectorAll('script[src]');
+    var findOne = function (src) {
+        for (var i = 0; i < scriptArr.length; i++) {
+            if (scriptArr[i].src === src) {
+                return scriptArr[i];
+            }
+        }
+        return null;
+    };
+    var installArr = [];
+    var forEach = function (el) {
+        if (el instanceof HTMLScriptElement && el.src) {
+            var docLink = findOne(el.src);
+            if (docLink) {
+                arr.push(onload(docLink, true));
+                return;
+            }
+            else {
+                var newScript_1 = document.createElement('script');
+                var attrs = el.getAttributeNames();
+                newScript_1.async = false;
+                attrs.forEach(function (attr) {
+                    var value = el.getAttribute(attr);
+                    newScript_1.setAttribute(attr, value);
                 });
+                arr.push(onload(newScript_1, false));
+                installArr.push(newScript_1);
+                return;
+            }
+        }
+        installArr.push(el);
+    };
+    for (var i = 0; i < div.children.length; i++) {
+        forEach(div.children[i]);
+    }
+    installArr.forEach(function (el) {
+        doc.appendChild(el);
+    });
+    document.body.appendChild(doc);
+    return Promise.all(arr);
+};
+/**
+ * 远程调用组件
+ */
+exports.RemoteView = {
+    name: 'remote-view',
+    props: {
+        fetch: {
+            type: Function
+        },
+        clientFetch: {
+            type: Function
+        },
+        serverFetch: {
+            type: Function
+        }
+    },
+    data: function () {
+        return {
+            // 安装的选项
+            installOptions: {},
+            // 远程请求到的数据
+            localData: {
+                style: '',
+                script: '',
+                html: ''
             },
-            mounted: function () {
-                var ssrContext = this.$root.$options.ssrContext;
-                if (!ssrContext) {
-                    this.clientLoad();
-                }
-                else {
-                    this.install();
-                }
-            },
-            beforeDestroy: function () {
-                if (this.appId) {
-                    window.genesis.uninstall(this.appId);
-                }
-                this.destroyed = true;
-            },
-            methods: {
-                install: function () {
-                    var _this = this;
-                    this.$nextTick(function () {
-                        var options = __assign(__assign({}, _this.installOptions), { el: _this.$el.firstChild });
-                        if (options.el &&
-                            window.genesis &&
-                            !_this.destroyed) {
-                            _this.appId = window.genesis.install(options);
-                        }
-                    });
-                },
-                initServer: function () {
-                    var ssrContext = this.$root.$options.ssrContext;
-                    var state = ssrContext.data.state;
-                    state[clientKey] = state[clientKey] || [];
-                    state[serverKey] = state[serverKey] || [];
-                    this.serverIndex = state[clientKey].length;
-                    state[serverKey].push(this.remote);
-                    state[clientKey].push(null);
-                    Object.defineProperty(state, serverKey, {
-                        enumerable: false
-                    });
-                },
-                initClient: function () {
-                    var ssrContext = this.$root.$options.ssrContext;
-                    var id = ssrContext.state[clientKey].splice(0, 1)[0];
-                    if (!id) {
-                        // 这里服务器端加载失败，要调整到客户端加载
-                        this.clientLoad();
-                        return;
-                    }
-                    var el = document.querySelector("[data-ssr-genesis-id=\"" + id + "\"][data-server-rendered]");
-                    if (!el)
-                        return;
-                    this.html = el.parentNode.innerHTML;
-                    if (!window[id]) {
-                        throw new Error("Context for " + id + " not found");
-                    }
-                    this.installOptions = window[id];
-                    delete window[id];
-                },
-                clientLoad: function () {
-                    var _this = this;
-                    axios_1.default.get(this.url).then(function (res) {
-                        if (res.status !== 200 || typeof res.data !== 'object')
-                            return;
-                        return _this.$nextTick().then(function () {
-                            // 这里需要往页面插入样式和js
-                            var temp = document.createElement('div');
-                            temp.innerHTML = res.data.style;
-                            var nodeListToArr = function (nodes) {
-                                var arr = [];
-                                // eslint-disable-next-line @typescript-eslint/prefer-for-of
-                                for (var i = 0; i < nodes.length; i++) {
-                                    arr.push(nodes[i]);
-                                }
-                                return arr;
-                            };
-                            var stylePromiseArr = [];
-                            var scriptPromiseArr = [];
-                            var styles = nodeListToArr(temp.childNodes).map(function (style) {
-                                if (!(style instanceof HTMLLinkElement) ||
-                                    !style.href)
-                                    return style;
-                                var attrs = style.getAttributeNames();
-                                var values = [];
-                                attrs.forEach(function (attr) {
-                                    var value = style.getAttribute(attr);
-                                    values.push("[" + attr + "=\"" + value + "\"]");
-                                });
-                                var existEl = document.querySelector("link" + values.join(''));
-                                // 已经存在
-                                if (existEl) {
-                                    // 已经加载完成了
-                                    if (!existEl.onload)
-                                        return null;
-                                    var ready_1;
-                                    stylePromiseArr.push(new Promise(function (resolve) {
-                                        ready_1 = resolve;
-                                    }));
-                                    var done_1 = function () {
-                                        existEl.removeEventListener('load', done_1, false);
-                                        existEl.removeEventListener('error', done_1, false);
-                                        ready_1();
-                                    };
-                                    existEl.addEventListener('load', done_1, false);
-                                    existEl.addEventListener('error', done_1, false);
-                                    return null;
-                                }
-                                // 首次加载这个样式文件
-                                var ready;
-                                stylePromiseArr.push(new Promise(function (resolve) {
-                                    ready = resolve;
-                                }));
-                                var done = function () {
-                                    style.onload = null;
-                                    style.onerror = null;
-                                    console.log('genesis-remote style', style.href);
-                                    ready();
-                                };
-                                style.onload = done;
-                                style.onerror = done;
-                                return style;
-                            });
-                            temp.innerHTML =
-                                res.data.script + res.data.scriptState;
-                            console.log(res.data);
-                            var scripts = nodeListToArr(temp.childNodes).map(function (script) {
-                                if (!(script instanceof HTMLScriptElement)) {
-                                    return script;
-                                }
-                                var attrs = script.getAttributeNames();
-                                var values = [];
-                                attrs.forEach(function (attr) {
-                                    var value = script.getAttribute(attr);
-                                    values.push("[" + attr + "=\"" + value + "\"]");
-                                });
-                                var existEl = document.querySelector("script" + values.join(''));
-                                // 已经存在
-                                if (existEl) {
-                                    // 已经加载完成了
-                                    if (!existEl.onload)
-                                        return null;
-                                    var ready_2;
-                                    scriptPromiseArr.push(new Promise(function (resolve) {
-                                        ready_2 = resolve;
-                                    }));
-                                    var done_2 = function () {
-                                        existEl.removeEventListener('load', done_2, false);
-                                        existEl.removeEventListener('error', done_2, false);
-                                        ready_2();
-                                    };
-                                    existEl.addEventListener('load', done_2, false);
-                                    existEl.addEventListener('error', done_2, false);
-                                    return null;
-                                }
-                                // 首次加载这个js文件
-                                var newScript = document.createElement('script');
-                                newScript.async = false;
-                                attrs.forEach(function (attr) {
-                                    var value = script.getAttribute(attr);
-                                    newScript.setAttribute(attr, value);
-                                });
-                                if (script.innerHTML &&
-                                    !script.getAttribute('src')) {
-                                    // eslint-disable-next-line no-new-func
-                                    new Function(script.innerHTML)();
-                                    if (window[res.data.id]) {
-                                        window[res.data.id].automount = false;
-                                    }
-                                }
-                                if (!script.src)
-                                    return script;
-                                var ready;
-                                scriptPromiseArr.push(new Promise(function (resolve) {
-                                    ready = resolve;
-                                }));
-                                var done = function () {
-                                    newScript.onload = null;
-                                    newScript.onerror = null;
-                                    console.log('genesis-remote script', newScript.src);
-                                    ready();
-                                };
-                                newScript.onload = done;
-                                newScript.onerror = done;
-                                return newScript;
-                            });
-                            var doc = document.createDocumentFragment();
-                            [].concat(styles, scripts).forEach(function (el) {
-                                if (!el)
-                                    return;
-                                doc.appendChild(el);
-                            });
-                            document.body.appendChild(doc);
-                            return Promise.all([
-                                Promise.all(stylePromiseArr).then(function () {
-                                    _this.html = res.data.html;
-                                }),
-                                Promise.all(scriptPromiseArr)
-                            ]).then(function () {
-                                var el = _this.$el.querySelector('[data-ssr-genesis-id="' +
-                                    res.data.id +
-                                    '"][data-server-rendered]');
-                                if (!el)
-                                    return;
-                                _this.installOptions = {
-                                    id: res.data.id,
-                                    name: res.data.name,
-                                    state: res.data.state,
-                                    url: res.data.url
-                                };
-                                _this.install();
-                            });
-                        });
-                    });
-                }
-            },
-            serverPrefetch: function () {
-                var _this = this;
-                if (this.serverCall === false)
-                    return;
-                return axios_1.default.get(this.url).then(function (res) {
-                    var ssrContext = _this.$root.$options.ssrContext;
-                    if (ssrContext && res.status === 200) {
-                        _this.html = res.data.html;
-                        res.data.automount = false;
-                        Object.assign(_this.remote, res.data);
-                        ssrContext.data.state[clientKey][_this.serverIndex] =
-                            res.data.id;
-                    }
-                });
+            // 组件渲染的下标
+            index: 0,
+            // 应用安装的id
+            appId: 0,
+            // 当前组件是否已销毁
+            destroyed: false
+        };
+    },
+    created: function () {
+        if (process.env.VUE_ENV === 'client') {
+            if (!this.$root.$options.clientOptions)
+                return;
+            this.initClient();
+        }
+        if (process.env.VUE_ENV === 'server') {
+            if (!this.$root.$options.renderContext)
+                return;
+            this.initServer();
+        }
+    },
+    render: function (h) {
+        return h('div', {
+            domProps: {
+                innerHTML: this.localData.html
             }
         });
-        _Vue.component('remote-view', RemoteView);
-    };
-    return RemoteView;
-}());
-exports.default = RemoteView;
+    },
+    mounted: function () {
+        var clientOptions = this.$root.$options.clientOptions;
+        if (!clientOptions) {
+            this.clientLoad();
+        }
+    },
+    beforeDestroy: function () {
+        if (this.appId) {
+            window.genesis.uninstall(this.appId);
+        }
+        this.destroyed = true;
+    },
+    methods: {
+        _fetch: function () {
+            var fetch = this.fetch;
+            if (process.env.VUE_ENV === 'server' &&
+                typeof this.serverFetch === 'function') {
+                fetch = this.serverFetch;
+            }
+            if (process.env.VUE_ENV === 'client' &&
+                typeof this.clientFetch === 'function') {
+                fetch = this.clientFetch;
+            }
+            if (typeof fetch !== 'function') {
+                return Promise.resolve(null);
+            }
+            var res = fetch();
+            if (isPromise(res)) {
+                return res.then(function (data) {
+                    if (typeof data !== 'object')
+                        return null;
+                    return data;
+                });
+            }
+            return Promise.resolve(null);
+        },
+        install: function () {
+            var _this = this;
+            this.$nextTick(function () {
+                var options = __assign(__assign({}, _this.installOptions), { el: _this.$el.firstChild });
+                if (options.el && window.genesis && !_this.destroyed) {
+                    _this.appId = window.genesis.install(options);
+                }
+            });
+        },
+        initServer: function () {
+            var context = this.$root.$options.renderContext;
+            var state = context.data.state;
+            var first = !state[remoteViewStateKey];
+            state[remoteViewStateKey] = state[remoteViewStateKey] || [];
+            this.index = state[remoteViewStateKey].length;
+            state[remoteViewStateKey].push(this.localData);
+            Object.defineProperty(this.localData, 'style', {
+                enumerable: false
+            });
+            Object.defineProperty(this.localData, 'script', {
+                enumerable: false
+            });
+            Object.defineProperty(this.localData, 'html', {
+                enumerable: false
+            });
+            if (!first)
+                return;
+            /**
+             * 渲染完成后，对js和样式进行去重
+             */
+            context.beforeRender(format_1.beforeRender);
+        },
+        initClient: function () {
+            var clientOptions = this.$root.$options
+                .clientOptions;
+            var state = clientOptions.state;
+            // 热更新可能会不存在数组，或者数组已经被清空了。
+            if (!state[remoteViewStateKey] ||
+                !state[remoteViewStateKey].length) {
+                return this.clientLoad();
+            }
+            var data = state[remoteViewStateKey].splice(0, 1)[0];
+            if (!data.id) {
+                // 这里服务器端加载失败，要调整到客户端加载
+                this.clientLoad();
+                return;
+            }
+            var el = document.querySelector("[data-ssr-genesis-id=\"" + data.id + "\"][data-server-rendered]");
+            if (!el)
+                return;
+            this.localData.html = el.parentNode.innerHTML;
+            this.installOptions = data;
+            this.install();
+        },
+        clientLoad: function () {
+            var _this = this;
+            this._fetch().then(function (data) {
+                if (data === null)
+                    return;
+                Promise.all([
+                    exports.loadStyle(data.style).then(function () {
+                        _this.localData = data;
+                    }),
+                    exports.loadScript(data.script).then(function () {
+                        window[data.id] = data.state;
+                    })
+                ]).then(function () {
+                    _this.installOptions = {
+                        id: data.id,
+                        name: data.name,
+                        state: data.state,
+                        url: data.url
+                    };
+                    _this.install();
+                });
+            });
+        }
+    },
+    serverPrefetch: function () {
+        var _this = this;
+        return this._fetch().then(function (data) {
+            if (data === null)
+                return;
+            var context = _this.$root.$options.renderContext;
+            if (!context && typeof context !== 'object') {
+                throw new TypeError('[remote-view] Need to pass context to the root instance of vue');
+            }
+            data.automount = false;
+            Object.assign(_this.localData, data);
+        });
+    }
+};
+exports.default = {
+    install: function (_Vue) {
+        _Vue.component('remote-view', vue_1.default.extend(exports.RemoteView));
+    }
+};
