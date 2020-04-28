@@ -219,32 +219,38 @@ exports.RemoteView = {
     },
     methods: {
         _fetch: function () {
-            var fetch = this.fetch;
-            if (process.env.VUE_ENV === 'server' &&
-                typeof this.serverFetch === 'function') {
-                fetch = this.serverFetch;
-            }
-            if (process.env.VUE_ENV === 'client' &&
-                typeof this.clientFetch === 'function') {
-                fetch = this.clientFetch;
-            }
-            if (typeof fetch !== 'function') {
+            try {
+                var fetch_1 = this.fetch;
+                if (process.env.VUE_ENV === 'server' &&
+                    typeof this.serverFetch === 'function') {
+                    fetch_1 = this.serverFetch;
+                }
+                if (process.env.VUE_ENV === 'client' &&
+                    typeof this.clientFetch === 'function') {
+                    fetch_1 = this.clientFetch;
+                }
+                if (typeof fetch_1 !== 'function') {
+                    return Promise.resolve(null);
+                }
+                var res = fetch_1();
+                if (isPromise(res)) {
+                    return res
+                        .then(function (data) {
+                        if (typeof data !== 'object')
+                            return null;
+                        return data;
+                    })
+                        .catch(function (e) {
+                        console.error('[remote-view] Error calling fetch', e);
+                        return null;
+                    });
+                }
                 return Promise.resolve(null);
             }
-            var res = fetch();
-            if (isPromise(res)) {
-                return res
-                    .then(function (data) {
-                    if (typeof data !== 'object')
-                        return null;
-                    return data;
-                })
-                    .catch(function (e) {
-                    console.error('[remote-view] Error calling fetch', e);
-                    return null;
-                });
+            catch (e) {
+                console.error('[remote-view] Error calling fetch', e);
+                return Promise.resolve(null);
             }
-            return Promise.resolve(null);
         },
         install: function () {
             var _this = this;

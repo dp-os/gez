@@ -224,35 +224,43 @@ export const RemoteView: any = {
     },
     methods: {
         _fetch(): Promise<RemoteViewData | null> {
-            let fetch = this.fetch;
-            if (
-                process.env.VUE_ENV === 'server' &&
-                typeof this.serverFetch === 'function'
-            ) {
-                fetch = this.serverFetch;
-            }
-            if (
-                process.env.VUE_ENV === 'client' &&
-                typeof this.clientFetch === 'function'
-            ) {
-                fetch = this.clientFetch;
-            }
-            if (typeof fetch !== 'function') {
+            try {
+                let fetch = this.fetch;
+                if (
+                    process.env.VUE_ENV === 'server' &&
+                    typeof this.serverFetch === 'function'
+                ) {
+                    fetch = this.serverFetch;
+                }
+                if (
+                    process.env.VUE_ENV === 'client' &&
+                    typeof this.clientFetch === 'function'
+                ) {
+                    fetch = this.clientFetch;
+                }
+                if (typeof fetch !== 'function') {
+                    return Promise.resolve(null);
+                }
+                const res = fetch();
+                if (isPromise(res)) {
+                    return res
+                        .then((data: RemoteViewData | null) => {
+                            if (typeof data !== 'object') return null;
+                            return data;
+                        })
+                        .catch((e: Error) => {
+                            console.error(
+                                '[remote-view] Error calling fetch',
+                                e
+                            );
+                            return null;
+                        });
+                }
+                return Promise.resolve(null);
+            } catch (e) {
+                console.error('[remote-view] Error calling fetch', e);
                 return Promise.resolve(null);
             }
-            const res = fetch();
-            if (isPromise(res)) {
-                return res
-                    .then((data: RemoteViewData | null) => {
-                        if (typeof data !== 'object') return null;
-                        return data;
-                    })
-                    .catch((e: Error) => {
-                        console.error('[remote-view] Error calling fetch', e);
-                        return null;
-                    });
-            }
-            return Promise.resolve(null);
         },
         install() {
             this.$nextTick(() => {
