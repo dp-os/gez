@@ -242,10 +242,15 @@ export const RemoteView: any = {
             }
             const res = fetch();
             if (isPromise(res)) {
-                return res.then((data: RemoteViewData | null) => {
-                    if (typeof data !== 'object') return null;
-                    return data;
-                });
+                return res
+                    .then((data: RemoteViewData | null) => {
+                        if (typeof data !== 'object') return null;
+                        return data;
+                    })
+                    .catch((e: Error) => {
+                        console.error('[remote-view] Error calling fetch', e);
+                        return null;
+                    });
             }
             return Promise.resolve(null);
         },
@@ -310,7 +315,7 @@ export const RemoteView: any = {
             this.install();
         },
         clientLoad() {
-            this._fetch().then((data: RemoteViewData) => {
+            return this._fetch().then((data: RemoteViewData) => {
                 if (data === null) return;
                 Promise.all([
                     loadStyle(data.style).then(() => {
