@@ -233,10 +233,15 @@ exports.RemoteView = {
             }
             var res = fetch();
             if (isPromise(res)) {
-                return res.then(function (data) {
+                return res
+                    .then(function (data) {
                     if (typeof data !== 'object')
                         return null;
                     return data;
+                })
+                    .catch(function (e) {
+                    console.error('[remote-view] Error calling fetch', e);
+                    return null;
                 });
             }
             return Promise.resolve(null);
@@ -297,7 +302,7 @@ exports.RemoteView = {
         },
         clientLoad: function () {
             var _this = this;
-            this._fetch().then(function (data) {
+            return this._fetch().then(function (data) {
                 if (data === null)
                     return;
                 Promise.all([
