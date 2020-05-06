@@ -1,5 +1,4 @@
 import Config from 'webpack-chain';
-import Ejs from 'ejs';
 import { ServerResponse, IncomingMessage } from 'http';
 import { SSR as SSRConstructor } from './ssr';
 import {
@@ -7,7 +6,6 @@ import {
     PluginManage as PluginManageConstructor
 } from './plugin';
 import { Renderer as RendererConstructor } from './renderer';
-import { Format as FormatConstructor } from './format';
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 namespace Genesis {
@@ -31,11 +29,6 @@ namespace Genesis {
      */
     export const PluginManage = PluginManageConstructor;
     export type PluginManage = PluginManageConstructor;
-    /**
-     * Render template
-     */
-    export const Format = FormatConstructor;
-    export type Format = FormatConstructor;
     /**
      * Webpack construction objectives
      */
@@ -180,7 +173,6 @@ namespace Genesis {
         req?: IncomingMessage;
         res?: ServerResponse;
         renderHtml: () => string;
-        format: Format;
         beforeRender: (cb: (context: RenderContext) => void) => void;
     }
 

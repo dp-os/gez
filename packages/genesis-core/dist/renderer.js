@@ -9,6 +9,7 @@ const fs_1 = __importDefault(require("fs"));
 const http_1 = require("http");
 const ejs_1 = __importDefault(require("ejs"));
 const crypto_1 = __importDefault(require("crypto"));
+const serialize_javascript_1 = __importDefault(require("serialize-javascript"));
 const vue_server_renderer_1 = require("vue-server-renderer");
 const ssr_1 = require("./ssr");
 const md5 = (content) => {
@@ -168,13 +169,31 @@ class Renderer {
                 html: '',
                 style: '',
                 script: '',
-                scriptState: '',
+                get scriptState() {
+                    const data = context.data;
+                    const script = { ...data };
+                    const arr = [
+                        'style',
+                        'html',
+                        'scriptState',
+                        'script',
+                        'resource'
+                    ];
+                    arr.forEach((k) => {
+                        Object.defineProperty(script, k, {
+                            enumerable: false
+                        });
+                    });
+                    const scriptJSON = serialize_javascript_1.default(script, {
+                        isJSON: true
+                    });
+                    return `<script data-ssr-genesis-name="${data.name}" data-ssr-genesis-id="${data.id}">window["${data.id}"]=${scriptJSON};</script>`;
+                },
                 state: {},
                 resource: [],
                 automount: true
             },
             mode: 'ssr-html',
-            format: new this.ssr.Format(this.ssr),
             renderHtml: () => this.compile(context.data),
             ssr: this.ssr,
             beforeRender: (cb) => {
@@ -219,14 +238,6 @@ class Renderer {
             context.data.automount = options.automount;
         }
         return context;
-    }
-    _mergeContextData(context, data) {
-        const { format } = context;
-        context.data.style = format.style(data);
-        context.data.html = format.html(data);
-        context.data.scriptState = format.scriptState(data);
-        context.data.script = format.script(data);
-        return context.data;
     }
     async _renderJson(context) {
         switch (context.mode) {
@@ -290,7 +301,6 @@ class Renderer {
                 resolve(data);
             });
         });
-        this._mergeContextData(context, data);
         await this.ssr.plugin.callHook('renderCompleted', context);
         return context.data;
     }
@@ -312,7 +322,6 @@ class Renderer {
         });
         const data = (await this.csrRenderer.renderToString(vm, context));
         data.html = `<div data-ssr-genesis-id="${data.id}"></div>`;
-        this._mergeContextData(context, data);
         await this.ssr.plugin.callHook('renderCompleted', context);
         return context.data;
     }

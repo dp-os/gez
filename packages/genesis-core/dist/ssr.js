@@ -7,16 +7,11 @@ const path_1 = __importDefault(require("path"));
 const process_1 = __importDefault(require("process"));
 const plugin_1 = require("./plugin");
 const renderer_1 = require("./renderer");
-const format_1 = require("./format");
 class SSR {
     /**
      * Constructor
      */
     constructor(options = {}) {
-        /**
-         * Template renderer
-         */
-        this.Format = format_1.Format;
         /**
          * Renderer
          */
@@ -123,28 +118,16 @@ class SSR {
         return path_1.default.resolve(this.outputDir, 'src/entry-server');
     }
     /**
-     * Name of manifest compiled by the client
-     */
-    get clientManifestName() {
-        return 'vue-ssr-client-manifest.json';
-    }
-    /**
      * Manifest file path of client
      */
     get outputClientManifestFile() {
-        return path_1.default.resolve(this.outputDirInServer, this.clientManifestName);
-    }
-    /**
-     * Name of manifest compiled by the server
-     */
-    get serverBundleName() {
-        return 'vue-ssr-server-bundle.json';
+        return path_1.default.resolve(this.outputDirInServer, 'vue-ssr-client-manifest.json');
     }
     /**
      * Manifest file path of server
      */
     get outputServerBundleFile() {
-        return path_1.default.resolve(this.outputDirInServer, this.serverBundleName);
+        return path_1.default.resolve(this.outputDirInServer, 'vue-ssr-server-bundle.json');
     }
     /**
      * Template path

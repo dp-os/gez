@@ -3,14 +3,8 @@ import process from 'process';
 import * as Genesis from './';
 import { PluginManage } from './plugin';
 import { Renderer } from './renderer';
-import { Format } from './format';
 
 export class SSR {
-    /**
-     * Template renderer
-     */
-
-    public Format = Format;
     /**
      * Renderer
      */

@@ -4,6 +4,7 @@ import fs from 'fs';
 import { ServerResponse, IncomingMessage } from 'http';
 import Ejs from 'ejs';
 import crypto from 'crypto';
+import serialize from 'serialize-javascript';
 import * as Genesis from './';
 
 import {
@@ -237,7 +238,6 @@ export class Renderer {
                 automount: true
             },
             mode: 'ssr-html',
-            format: new this.ssr.Format(this.ssr),
             renderHtml: () => this.compile(context.data),
             ssr: this.ssr,
             beforeRender: (cb) => {
@@ -248,6 +248,29 @@ export class Renderer {
             enumerable: false,
             value: [],
             writable: true
+        });
+        Object.defineProperty(context.data, 'scriptState', {
+            enumerable: false,
+            get() {
+                const data = context.data;
+                const script = { ...data };
+                const arr = [
+                    'style',
+                    'html',
+                    'scriptState',
+                    'script',
+                    'resource'
+                ];
+                arr.forEach((k) => {
+                    Object.defineProperty(script, k, {
+                        enumerable: false
+                    });
+                });
+                const scriptJSON: string = serialize(script, {
+                    isJSON: true
+                });
+                return `<script data-ssr-genesis-name="${data.name}" data-ssr-genesis-id="${data.id}">window["${data.id}"]=${scriptJSON};</script>`;
+            }
         });
         // set context
         if (options.req instanceof IncomingMessage) {
@@ -285,19 +308,6 @@ export class Renderer {
         }
 
         return context;
-    }
-
-    private _mergeContextData(
-        context: Genesis.RenderContext,
-        data: Genesis.RenderData
-    ): Genesis.RenderData {
-        const { format } = context;
-        context.data.style = format.style(data);
-        context.data.html = format.html(data);
-        context.data.scriptState = format.scriptState(data);
-        context.data.script = format.script(data);
-
-        return context.data;
     }
 
     private async _renderJson(
@@ -373,7 +383,6 @@ export class Renderer {
                 });
             }
         );
-        this._mergeContextData(context, data);
         await this.ssr.plugin.callHook('renderCompleted', context);
         return context.data;
     }
@@ -404,7 +413,6 @@ export class Renderer {
             context
         )) as any;
         data.html = `<div data-ssr-genesis-id="${data.id}"></div>`;
-        this._mergeContextData(context, data);
         await this.ssr.plugin.callHook('renderCompleted', context);
         return context.data;
     }
