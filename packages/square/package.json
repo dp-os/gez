@@ -2,7 +2,7 @@
   "name": "@fmfe/square",
   "main": "dist/index.js",
   "types": "types/index.d.ts",
-  "version": "0.0.53-alpha.1",
+  "version": "0.0.53-alpha.2",
   "description": "",
   "sideEffects": false,
   "postCompile": true,
@@ -19,11 +19,11 @@
   },
   "homepage": "https://fmfe.github.io/genesis-docs/",
   "repository": {
-      "type": "git",
-      "url": "git+https://github.com/fmfe/genesis.git"
+    "type": "git",
+    "url": "git+https://github.com/fmfe/genesis.git"
   },
   "bugs": {
-      "url": "https://github.com/fmfe/genesis/issues"
+    "url": "https://github.com/fmfe/genesis/issues"
   },
   "gitHead": "1a29b2505a05b5f7edf105590cd9c77979ea046f"
 }
