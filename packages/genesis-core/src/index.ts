@@ -1,4 +1,5 @@
 import Config from 'webpack-chain';
+import Vue from 'vue';
 import { ServerResponse, IncomingMessage } from 'http';
 import { SSR as SSRConstructor } from './ssr';
 import {
