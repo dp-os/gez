@@ -6,6 +6,8 @@ const bar_1 = require("./bar");
 const style_1 = require("./style");
 const babel_1 = require("./babel");
 const image_1 = require("./image");
+const font_1 = require("./font");
+const media_1 = require("./media");
 const templace_1 = require("./templace");
 class InstallPlugin extends genesis_core_1.Plugin {
     constructor(ssr) {
@@ -15,6 +17,8 @@ class InstallPlugin extends genesis_core_1.Plugin {
         ssr.plugin.use(style_1.StylePlugin);
         ssr.plugin.use(babel_1.BabelPlugin);
         ssr.plugin.use(image_1.ImagePlugin);
+        ssr.plugin.use(font_1.FontPlugin);
+        ssr.plugin.use(media_1.MediaPlugin);
         ssr.plugin.use(templace_1.TemplacePlugin);
     }
 }

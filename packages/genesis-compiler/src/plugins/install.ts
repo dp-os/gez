@@ -5,6 +5,8 @@ import { BarPlugin } from './bar';
 import { StylePlugin } from './style';
 import { BabelPlugin } from './babel';
 import { ImagePlugin } from './image';
+import { FontPlugin } from './font';
+import { MediaPlugin } from './media';
 import { TemplacePlugin } from './templace';
 
 export class InstallPlugin extends Plugin {
@@ -15,6 +17,8 @@ export class InstallPlugin extends Plugin {
         ssr.plugin.use(StylePlugin);
         ssr.plugin.use(BabelPlugin);
         ssr.plugin.use(ImagePlugin);
+        ssr.plugin.use(FontPlugin);
+        ssr.plugin.use(MediaPlugin);
         ssr.plugin.use(TemplacePlugin);
     }
 }
