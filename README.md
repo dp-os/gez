@@ -16,8 +16,8 @@ yarn start # 运行生产包
 [Genesis 文档](https://fmfe.github.io/genesis-docs/)
 
 ## 依赖说明
-|核心库|版本号|下载量|是否必须|说明|
-|:-|:-:|-:|-:|-:|
+|核心库|版本号|下载量|必须|说明|
+|:-|:-:|:-|:-|:-|
 |@fmfe/genesis-core|[![npm](https://img.shields.io/npm/v/@fmfe/genesis-core.svg)](https://www.npmjs.com/package/@fmfe/genesis-core) |[![npm](https://img.shields.io/npm/dm/@fmfe/genesis-core.svg)](https://www.npmjs.com/package/@fmfe/genesis-core)|是|提供基础的插件机制、SSR渲染逻辑、程序配置|
 |@fmfe/genesis-compiler|[![npm](https://img.shields.io/npm/v/@fmfe/genesis-compiler.svg)](https://www.npmjs.com/package/@fmfe/genesis-compiler) |[![npm](https://img.shields.io/npm/dm/@fmfe/genesis-compiler.svg)](https://www.npmjs.com/package/@fmfe/genesis-compiler)|是|负责编译程序以及在开发时编译，处理webpack的核心逻辑|
 |@fmfe/genesis-app|[![npm](https://img.shields.io/npm/v/@fmfe/genesis-app.svg)](https://www.npmjs.com/package/@fmfe/genesis-app) |[![npm](https://img.shields.io/npm/dm/@fmfe/genesis-app.svg)](https://www.npmjs.com/package/@fmfe/genesis-app)|否|快速创建应用，以及包装了 vue-router ，在微前端应用时支持多个 Router实例时特别有用|
