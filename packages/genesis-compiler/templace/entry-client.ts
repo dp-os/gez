@@ -120,10 +120,12 @@ const start = (createApp?: (data: ClientOptions) => Promise<Vue>) => {
         if (data.automount === false) return;
 
         delete window[id];
-        genesis.install({
-            ...data,
-            el
+        const options = data;
+        Object.defineProperty(options, 'el', {
+            enumerable: false,
+            value: el
         });
+        genesis.install(options);
     });
 };
 

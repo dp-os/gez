@@ -265,10 +265,15 @@ export const RemoteView: any = {
         install() {
             this.$nextTick(() => {
                 const options = {
-                    ...this.installOptions,
-                    el: this.$el.firstChild
+                    ...this.installOptions
                 };
+                if (!this.$el.firstChild) return;
+                Object.defineProperty(options, 'el', {
+                    enumerable: false,
+                    value: this.$el.firstChild
+                });
                 if (options.el && (window as any).genesis && !this.destroyed) {
+                    this.$emit('install', options);
                     this.appId = (window as any).genesis.install(options);
                 }
             });
@@ -333,12 +338,7 @@ export const RemoteView: any = {
                         (window as any)[data.id] = data.state;
                     })
                 ]).then(() => {
-                    this.installOptions = {
-                        id: data.id,
-                        name: data.name,
-                        state: data.state,
-                        url: data.url
-                    };
+                    this.installOptions = data;
                     this.install();
                 });
             });
