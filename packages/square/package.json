@@ -2,7 +2,7 @@
   "name": "@fmfe/square",
   "main": "dist/index.js",
   "types": "types/index.d.ts",
-  "version": "0.0.53-alpha.2",
+  "version": "0.0.53-alpha.3",
   "description": "",
   "sideEffects": false,
   "postCompile": true,
