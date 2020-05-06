@@ -1,11 +1,6 @@
 import * as Genesis from './';
 import { Renderer } from './renderer';
-import { Format } from './format';
 export declare class SSR {
-    /**
-     * Template renderer
-     */
-    Format: typeof Format;
     /**
      * Renderer
      */
@@ -72,17 +67,9 @@ export declare class SSR {
      */
     get entryServerFile(): string;
     /**
-     * Name of manifest compiled by the client
-     */
-    get clientManifestName(): string;
-    /**
      * Manifest file path of client
      */
     get outputClientManifestFile(): string;
-    /**
-     * Name of manifest compiled by the server
-     */
-    get serverBundleName(): string;
     /**
      * Manifest file path of server
      */

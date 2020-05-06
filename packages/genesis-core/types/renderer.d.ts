@@ -37,7 +37,6 @@ export declare class Renderer {
      */
     renderMiddleware(req: IncomingMessage, res: ServerResponse, next: (err: any) => void): Promise<void>;
     private _createContext;
-    private _mergeContextData;
     private _renderJson;
     /**
      * Render HTML

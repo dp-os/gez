@@ -4,7 +4,6 @@ import { ServerResponse, IncomingMessage } from 'http';
 import { SSR as SSRConstructor } from './ssr';
 import { Plugin as PluginConstructor, PluginManage as PluginManageConstructor } from './plugin';
 import { Renderer as RendererConstructor } from './renderer';
-import { Format as FormatConstructor } from './format';
 declare namespace Genesis {
     /**
      * SSR Constructor
@@ -26,11 +25,6 @@ declare namespace Genesis {
      */
     const PluginManage: typeof PluginManageConstructor;
     type PluginManage = PluginManageConstructor;
-    /**
-     * Render template
-     */
-    const Format: typeof FormatConstructor;
-    type Format = FormatConstructor;
     /**
      * Webpack construction objectives
      */
@@ -171,7 +165,6 @@ declare namespace Genesis {
         req?: IncomingMessage;
         res?: ServerResponse;
         renderHtml: () => string;
-        format: Format;
         beforeRender: (cb: (context: RenderContext) => void) => void;
     }
     interface RenderContextResource {
