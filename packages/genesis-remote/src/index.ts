@@ -364,10 +364,3 @@ export default {
         _Vue.component('remote-view', Vue.extend(RemoteView));
     }
 };
-
-declare module 'vue/types/options' {
-    interface ComponentOptions<V extends Vue> {
-        renderContext?: RenderContext;
-        clientOptions?: ClientOptions;
-    }
-}
