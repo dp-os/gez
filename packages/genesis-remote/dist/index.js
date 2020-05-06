@@ -255,8 +255,15 @@ exports.RemoteView = {
         install: function () {
             var _this = this;
             this.$nextTick(function () {
-                var options = __assign(__assign({}, _this.installOptions), { el: _this.$el.firstChild });
+                var options = __assign({}, _this.installOptions);
+                if (!_this.$el.firstChild)
+                    return;
+                Object.defineProperty(options, 'el', {
+                    enumerable: false,
+                    value: _this.$el.firstChild
+                });
                 if (options.el && window.genesis && !_this.destroyed) {
+                    _this.$emit('install', options);
                     _this.appId = window.genesis.install(options);
                 }
             });
@@ -319,12 +326,7 @@ exports.RemoteView = {
                         window[data.id] = data.state;
                     })
                 ]).then(function () {
-                    _this.installOptions = {
-                        id: data.id,
-                        name: data.name,
-                        state: data.state,
-                        url: data.url
-                    };
+                    _this.installOptions = data;
                     _this.install();
                 });
             });
