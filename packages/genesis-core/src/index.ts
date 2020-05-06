@@ -224,3 +224,10 @@ namespace Genesis {
 }
 
 export = Genesis;
+
+declare module 'vue/types/options' {
+    interface ComponentOptions<V extends Vue> {
+        renderContext?: Genesis.RenderContext;
+        clientOptions?: Genesis.ClientOptions;
+    }
+}

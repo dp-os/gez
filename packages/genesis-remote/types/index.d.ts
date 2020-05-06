@@ -1,5 +1,4 @@
 import Vue from 'vue';
-import { ClientOptions } from '@fmfe/genesis-core';
 export interface RemoteViewData {
     automount: boolean;
     html: string;
@@ -28,9 +27,3 @@ declare const _default: {
     install(_Vue: import("vue").VueConstructor<Vue>): void;
 };
 export default _default;
-declare module 'vue/types/options' {
-    interface ComponentOptions<V extends Vue> {
-        renderContext?: RenderContext;
-        clientOptions?: ClientOptions;
-    }
-}
