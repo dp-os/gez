@@ -169,26 +169,7 @@ class Renderer {
                 html: '',
                 style: '',
                 script: '',
-                get scriptState() {
-                    const data = context.data;
-                    const script = { ...data };
-                    const arr = [
-                        'style',
-                        'html',
-                        'scriptState',
-                        'script',
-                        'resource'
-                    ];
-                    arr.forEach((k) => {
-                        Object.defineProperty(script, k, {
-                            enumerable: false
-                        });
-                    });
-                    const scriptJSON = serialize_javascript_1.default(script, {
-                        isJSON: true
-                    });
-                    return `<script data-ssr-genesis-name="${data.name}" data-ssr-genesis-id="${data.id}">window["${data.id}"]=${scriptJSON};</script>`;
-                },
+                scriptState: '',
                 state: {},
                 resource: [],
                 automount: true
@@ -204,6 +185,29 @@ class Renderer {
             enumerable: false,
             value: [],
             writable: true
+        });
+        Object.defineProperty(context.data, 'scriptState', {
+            enumerable: false,
+            get() {
+                const data = context.data;
+                const script = { ...data };
+                const arr = [
+                    'style',
+                    'html',
+                    'scriptState',
+                    'script',
+                    'resource'
+                ];
+                arr.forEach((k) => {
+                    Object.defineProperty(script, k, {
+                        enumerable: false
+                    });
+                });
+                const scriptJSON = serialize_javascript_1.default(script, {
+                    isJSON: true
+                });
+                return `<script data-ssr-genesis-name="${data.name}" data-ssr-genesis-id="${data.id}">window["${data.id}"]=${scriptJSON};</script>`;
+            }
         });
         // set context
         if (options.req instanceof http_1.IncomingMessage) {
