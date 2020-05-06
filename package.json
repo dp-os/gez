@@ -26,6 +26,14 @@
     "types": "dist/index.d.ts",
     "author": "Followme",
     "license": "MIT",
+    "homepage": "https://fmfe.github.io/genesis-docs/",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/fmfe/genesis.git"
+    },
+    "bugs": {
+        "url": "https://github.com/fmfe/genesis/issues"
+    },
     "devDependencies": {
         "@fmfe/genesis-lint": "file:./packages/genesis-lint",
         "@types/jest": "^25.1.4",

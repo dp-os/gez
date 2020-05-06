@@ -57,5 +57,13 @@
     "@types/webpack-dev-middleware": "^2.0.3",
     "@types/webpack-hot-middleware": "^2.25.0",
     "loglevel": "^1.6.7"
+  },
+  "homepage": "https://fmfe.github.io/genesis-docs/",
+  "repository": {
+      "type": "git",
+      "url": "git+https://github.com/fmfe/genesis.git"
+  },
+  "bugs": {
+      "url": "https://github.com/fmfe/genesis/issues"
   }
 }

@@ -58,5 +58,13 @@
             "git add"
         ]
     },
+    "homepage": "https://fmfe.github.io/genesis-docs/",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/fmfe/genesis.git"
+    },
+    "bugs": {
+        "url": "https://github.com/fmfe/genesis/issues"
+    },
     "gitHead": "1a29b2505a05b5f7edf105590cd9c77979ea046f"
 }

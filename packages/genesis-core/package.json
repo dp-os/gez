@@ -21,5 +21,13 @@
   "devDependencies": {
     "@types/node": "^13.7.4",
     "@types/serialize-javascript": "^1.5.0"
+  },
+  "homepage": "https://fmfe.github.io/genesis-docs/",
+  "repository": {
+      "type": "git",
+      "url": "git+https://github.com/fmfe/genesis.git"
+  },
+  "bugs": {
+      "url": "https://github.com/fmfe/genesis/issues"
   }
 }

@@ -11,6 +11,14 @@
   "license": "MIT",
   "gitHead": "1a29b2505a05b5f7edf105590cd9c77979ea046f",
   "sideEffects": false,
+  "homepage": "https://fmfe.github.io/genesis-docs/",
+  "repository": {
+      "type": "git",
+      "url": "git+https://github.com/fmfe/genesis.git"
+  },
+  "bugs": {
+      "url": "https://github.com/fmfe/genesis/issues"
+  },
   "devDependencies": {
     "@fmfe/genesis-core": "^0.0.53-alpha.1"
   }
