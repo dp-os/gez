@@ -138,31 +138,23 @@ export class SSR {
     }
 
     /**
-     * Name of manifest compiled by the client
-     */
-    public get clientManifestName() {
-        return 'vue-ssr-client-manifest.json';
-    }
-
-    /**
      * Manifest file path of client
      */
     public get outputClientManifestFile() {
-        return path.resolve(this.outputDirInServer, this.clientManifestName);
-    }
-
-    /**
-     * Name of manifest compiled by the server
-     */
-    public get serverBundleName() {
-        return 'vue-ssr-server-bundle.json';
+        return path.resolve(
+            this.outputDirInServer,
+            'vue-ssr-client-manifest.json'
+        );
     }
 
     /**
      * Manifest file path of server
      */
     public get outputServerBundleFile() {
-        return path.resolve(this.outputDirInServer, this.serverBundleName);
+        return path.resolve(
+            this.outputDirInServer,
+            'vue-ssr-server-bundle.json'
+        );
     }
 
     /**
