@@ -13,7 +13,9 @@ yarn start # 运行生产包
 # open http://localhost:3000
 ```
 
-[Genesis 文档](https://fmfe.github.io/genesis-docs/)
+## 文档
+- [文档入口](https://fmfe.github.io/genesis-docs/)
+- [快速开始](https://fmfe.github.io/genesis-docs/guide/)
 
 ## 核心库说明
 |核心库|版本号|下载量|说明|
