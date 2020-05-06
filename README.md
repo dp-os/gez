@@ -17,6 +17,10 @@ yarn start # 运行生产包
 - [文档入口](https://fmfe.github.io/genesis-docs/)
 - [快速开始](https://fmfe.github.io/genesis-docs/guide/)
 
+
+## Codesandbox
+- [vue-genesis-templace](https://codesandbox.io/s/condescending-architecture-ifgpt) 一个最基础简单的例子
+
 ## 核心库说明
 |核心库|版本号|下载量|说明|
 |:-|:-:|:-|:-|
