@@ -12,13 +12,13 @@
   "gitHead": "1a29b2505a05b5f7edf105590cd9c77979ea046f",
   "sideEffects": false,
   "dependencies": {
-    "@types/ejs": "^3.0.0",
     "ejs": "^3.0.1",
     "serialize-javascript": "^3.0.0",
     "vue": "^2.6.11",
     "vue-server-renderer": "^2.6.11"
   },
   "devDependencies": {
+    "@types/ejs": "^3.0.0",
     "@types/node": "^13.7.4",
     "@types/serialize-javascript": "^1.5.0"
   },
