@@ -1,6 +1,6 @@
 {
     "name": "@fmfe/genesis-lint",
-    "version": "0.0.53",
+    "version": "0.0.54-alpha.0",
     "description": "",
     "main": "index.js",
     "scripts": {
