@@ -11,7 +11,7 @@
 npm install @fmfe/genesis-remote
 ```
 
-或者使用 yarn:
+或使用 yarn:
 
 ```sh
 yarn add @fmfe/genesis-remote
