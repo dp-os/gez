@@ -8,19 +8,19 @@ exports.createClientApp = async (options) => {
     if (typeof options !== 'object') {
         throw new Error('Option cannot be empty');
     }
-    const context = options.clientOptions;
+    const clientOptions = options.clientOptions;
     if (typeof options.clientOptions !== 'object') {
-        throw new Error('Option.context cannot be empty');
+        throw new Error('Option.clientOptions cannot be empty');
     }
-    const el = context.el;
+    const el = clientOptions.el;
     if (!el) {
         throw new Error('Server side DOM not found');
     }
     const { vueOptions, App } = options;
     const { router } = vueOptions || {};
     if (router) {
-        await router.replace(context.url).catch((err) => {
-            throw err || new Error(`router.push('${context.url}') error`);
+        await router.replace(clientOptions.url).catch((err) => {
+            throw err || new Error(`router.push('${clientOptions.url}') error`);
         });
         await new Promise((resolve, reject) => {
             router.onReady(resolve, (err) => {
@@ -30,6 +30,7 @@ exports.createClientApp = async (options) => {
     }
     const app = new vue_1.default({
         ...vueOptions,
+        clientOptions,
         render(h) {
             return h(App);
         }
@@ -58,6 +59,7 @@ exports.createServerApp = async (options) => {
     }
     const app = new vue_1.default({
         ...vueOptions,
+        renderContext: context,
         render(h) {
             return h(App);
         }
