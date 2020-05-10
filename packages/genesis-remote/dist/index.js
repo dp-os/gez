@@ -183,7 +183,9 @@ exports.RemoteView = {
             // 应用安装的id
             appId: 0,
             // 当前组件是否已销毁
-            destroyed: false
+            destroyed: false,
+            // 是否需要客户端加载远程组件
+            needClientLoad: true
         };
     },
     created: function () {
@@ -206,9 +208,11 @@ exports.RemoteView = {
         });
     },
     mounted: function () {
-        var clientOptions = this.$root.$options.clientOptions;
-        if (!clientOptions) {
+        if (this.needClientLoad) {
             this.clientLoad();
+        }
+        else {
+            this.$nextTick(this.install);
         }
     },
     beforeDestroy: function () {
@@ -296,22 +300,19 @@ exports.RemoteView = {
                 .clientOptions;
             var state = clientOptions.state;
             // 热更新可能会不存在数组，或者数组已经被清空了。
-            if (!state[remoteViewStateKey] ||
-                !state[remoteViewStateKey].length) {
-                return this.clientLoad();
-            }
-            var data = state[remoteViewStateKey].splice(0, 1)[0];
-            if (!data.id) {
-                // 这里服务器端加载失败，要调整到客户端加载
-                this.clientLoad();
+            if (!state[remoteViewStateKey] || !state[remoteViewStateKey].length)
                 return;
-            }
-            var el = document.querySelector("[data-ssr-genesis-id=\"" + data.id + "\"][data-server-rendered]");
+            var data = state[remoteViewStateKey].splice(0, 1)[0];
+            // 这里服务器端加载失败，要调整到客户端加载
+            if (!data.id)
+                return;
+            var el = document.querySelector("[data-ssr-genesis-id=\"" + data.id + "\"]");
             if (!el)
                 return;
             this.localData.html = el.parentNode.innerHTML;
-            this.installOptions = data;
-            this.install();
+            this.installOptions = __assign({}, data);
+            // 服务器端已经加载，客户端不需要再重新加载
+            this.needClientLoad = false;
         },
         clientLoad: function () {
             var _this = this;
@@ -320,13 +321,13 @@ exports.RemoteView = {
                     return;
                 Promise.all([
                     exports.loadStyle(data.style).then(function () {
-                        _this.localData = data;
+                        _this.localData = __assign({}, data);
                     }),
                     exports.loadScript(data.script).then(function () {
                         window[data.id] = data.state;
                     })
                 ]).then(function () {
-                    _this.installOptions = data;
+                    _this.installOptions = __assign({}, data);
                     _this.install();
                 });
             });
