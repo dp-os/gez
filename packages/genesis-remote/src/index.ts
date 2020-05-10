@@ -190,7 +190,9 @@ export const RemoteView: any = {
             // 应用安装的id
             appId: 0,
             // 当前组件是否已销毁
-            destroyed: false
+            destroyed: false,
+            // 是否需要客户端加载远程组件
+            needClientLoad: true
         };
     },
     created() {
@@ -211,9 +213,10 @@ export const RemoteView: any = {
         });
     },
     mounted() {
-        const clientOptions: ClientOptions = this.$root.$options.clientOptions;
-        if (!clientOptions) {
+        if (this.needClientLoad) {
             this.clientLoad();
+        } else {
+            this.$nextTick(this.install);
         }
     },
     beforeDestroy() {
@@ -307,38 +310,32 @@ export const RemoteView: any = {
                 .clientOptions;
             const state = clientOptions.state;
             // 热更新可能会不存在数组，或者数组已经被清空了。
-            if (
-                !state[remoteViewStateKey] ||
-                !state[remoteViewStateKey].length
-            ) {
-                return this.clientLoad();
-            }
-            const data = state[remoteViewStateKey].splice(0, 1)[0];
-            if (!data.id) {
-                // 这里服务器端加载失败，要调整到客户端加载
-                this.clientLoad();
+            if (!state[remoteViewStateKey] || !state[remoteViewStateKey].length)
                 return;
-            }
+            const data = state[remoteViewStateKey].splice(0, 1)[0];
+            // 这里服务器端加载失败，要调整到客户端加载
+            if (!data.id) return;
             const el: any = document.querySelector(
-                `[data-ssr-genesis-id="${data.id}"][data-server-rendered]`
+                `[data-ssr-genesis-id="${data.id}"]`
             );
             if (!el) return;
             this.localData.html = el.parentNode.innerHTML;
-            this.installOptions = data;
-            this.install();
+            this.installOptions = { ...data };
+            // 服务器端已经加载，客户端不需要再重新加载
+            this.needClientLoad = false;
         },
         clientLoad() {
             return this._fetch().then((data: RemoteViewData) => {
                 if (data === null) return;
                 Promise.all([
                     loadStyle(data.style).then(() => {
-                        this.localData = data;
+                        this.localData = { ...data };
                     }),
                     loadScript(data.script).then(() => {
                         (window as any)[data.id] = data.state;
                     })
                 ]).then(() => {
-                    this.installOptions = data;
+                    this.installOptions = { ...data };
                     this.install();
                 });
             });
