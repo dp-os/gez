@@ -1,6 +1,6 @@
 {
   "name": "@fmfe/genesis-core",
-  "version": "0.0.54-alpha.1",
+  "version": "0.0.54-alpha.2",
   "description": "",
   "main": "dist/index.js",
   "types": "types/index.d.ts",
