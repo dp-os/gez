@@ -106,7 +106,7 @@ namespace Genesis {
     /**
      * Render result
      */
-    export type RenderResul = RenderResultHtml | RenderResultJson;
+    export type RenderResult = RenderResultHtml | RenderResultJson;
     /**
      * Rendered HTML
      */
