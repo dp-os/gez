@@ -6,3 +6,4 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ## [0.0.41-beta.1](https://github.com/fmfe/genesis/compare/v0.0.41-beta.0...v0.0.41-beta.1) (2020-04-07)
 
 **Note:** Version bump only for package genesis
+ 
