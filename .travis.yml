@@ -6,6 +6,7 @@ env:
     - SERVICE_NAME=travis-pro
     - COVERALLS_REPO_TOKEN=9cdJAJEmw2GLKBfbnciQTu90nm1LiSHnt
 install:
+  - rm -rf node_modules
   - yarn cache clean
   - yarn install
 script:
