@@ -41,15 +41,15 @@ exports.createServerApp = async (options) => {
     if (!options.App) {
         throw new Error('options.App component cannot be empty');
     }
-    if (!options.context) {
-        throw new Error('options.context parameter cannot be empty');
+    if (!options.renderContext) {
+        throw new Error('options.renderContext parameter cannot be empty');
     }
-    const { App, context, vueOptions } = options;
+    const { App, renderContext, vueOptions } = options;
     const { router } = vueOptions || {};
     if (router) {
-        await router.replace(context.data.url).catch((err) => {
+        await router.replace(renderContext.data.url).catch((err) => {
             throw err ||
-                new Error(`router.replace('${context.data.url}') error`);
+                new Error(`router.replace('${renderContext.data.url}') error`);
         });
         await new Promise((resolve, reject) => {
             router.onReady(resolve, (err) => {
@@ -59,7 +59,7 @@ exports.createServerApp = async (options) => {
     }
     const app = new vue_1.default({
         ...vueOptions,
-        renderContext: context,
+        renderContext,
         render(h) {
             return h(App);
         }

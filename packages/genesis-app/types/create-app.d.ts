@@ -20,9 +20,9 @@ export interface CreateServerAppOptions {
      */
     App: typeof Vue;
     /**
-     * Client side rendering context
+     * Server side rendering context
      */
-    context: RenderContext;
+    renderContext: RenderContext;
     /**
      * Parameters of Vue
      */

@@ -4,3 +4,4 @@ src/**
 dist/**
 examples/**/dist/**
 coverage/**
+**.log
