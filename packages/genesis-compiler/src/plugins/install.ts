@@ -7,7 +7,7 @@ import { BabelPlugin } from './babel';
 import { ImagePlugin } from './image';
 import { FontPlugin } from './font';
 import { MediaPlugin } from './media';
-import { TemplacePlugin } from './templace';
+import { TemplatePlugin } from './template';
 
 export class InstallPlugin extends Plugin {
     public constructor(ssr: SSR) {
@@ -19,6 +19,6 @@ export class InstallPlugin extends Plugin {
         ssr.plugin.use(ImagePlugin);
         ssr.plugin.use(FontPlugin);
         ssr.plugin.use(MediaPlugin);
-        ssr.plugin.use(TemplacePlugin);
+        ssr.plugin.use(TemplatePlugin);
     }
 }

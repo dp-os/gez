@@ -101,8 +101,8 @@ export class Renderer {
             clientManifest: clientManifest
         };
 
-        const ejsTemplate = fs.existsSync(this.ssr.templaceFile)
-            ? fs.readFileSync(this.ssr.outputTemplaceFile, 'utf-8')
+        const ejsTemplate = fs.existsSync(this.ssr.templateFile)
+            ? fs.readFileSync(this.ssr.outputTemplateFile, 'utf-8')
             : defaultTemplate;
 
         this.ssrRenderer = createBundleRenderer(bundle, {

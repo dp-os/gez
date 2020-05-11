@@ -9,13 +9,13 @@ const genesis_core_1 = require("@fmfe/genesis-core");
 const write_1 = __importDefault(require("write"));
 const index_1 = require("../utils/index");
 const html_minifier_1 = require("html-minifier");
-class TemplacePlugin extends genesis_core_1.Plugin {
+class TemplatePlugin extends genesis_core_1.Plugin {
     async beforeCompiler() {
         const { ssr } = this;
         index_1.deleteFolder(ssr.outputDir);
-        if (fs_1.default.existsSync(ssr.templaceFile)) {
-            const text = fs_1.default.readFileSync(ssr.templaceFile, 'utf-8');
-            write_1.default.sync(ssr.outputTemplaceFile, html_minifier_1.minify(text, {
+        if (fs_1.default.existsSync(ssr.templateFile)) {
+            const text = fs_1.default.readFileSync(ssr.templateFile, 'utf-8');
+            write_1.default.sync(ssr.outputTemplateFile, html_minifier_1.minify(text, {
                 collapseInlineTagWhitespace: true,
                 collapseWhitespace: true,
                 collapseBooleanAttributes: true,
@@ -40,8 +40,8 @@ class TemplacePlugin extends genesis_core_1.Plugin {
         const srcDir = ssr.srcDir;
         const clientFilename = path_1.default.relative(outputDir, path_1.default.resolve(srcDir, './entry-client'));
         const serverFilename = path_1.default.relative(outputDir, path_1.default.resolve(srcDir, './entry-server'));
-        const writeDistSrcTemplace = (filename, options = {}) => {
-            let text = fs_1.default.readFileSync(path_1.default.resolve(__dirname, `../../templace/${filename}`), 'utf8');
+        const writeDistSrcTemplate = (filename, options = {}) => {
+            let text = fs_1.default.readFileSync(path_1.default.resolve(__dirname, `../../template/${filename}`), 'utf8');
             Object.keys(options).forEach((k) => {
                 const value = options[k];
                 text = text.replace(new RegExp(`\\\${{${k}}}`), value);
@@ -49,27 +49,27 @@ class TemplacePlugin extends genesis_core_1.Plugin {
             const outputDir = path_1.default.resolve(ssr.outputDir, './src');
             write_1.default.sync(path_1.default.resolve(outputDir, filename), text);
         };
-        writeDistSrcTemplace('entry-client.ts', {
+        writeDistSrcTemplate('entry-client.ts', {
             clientFilename
         });
-        writeDistSrcTemplace('entry-server.ts', {
+        writeDistSrcTemplate('entry-server.ts', {
             serverFilename
         });
-        const writeSrcTemplace = (filename) => {
-            const text = fs_1.default.readFileSync(path_1.default.resolve(__dirname, `../../templace/src/${filename}`), 'utf8');
+        const writeSrcTemplate = (filename) => {
+            const text = fs_1.default.readFileSync(path_1.default.resolve(__dirname, `../../template/src/${filename}`), 'utf8');
             const output = path_1.default.resolve(ssr.srcDir, filename);
             if (fs_1.default.existsSync(output))
                 return false;
             write_1.default.sync(output, text);
             return true;
         };
-        if (!writeSrcTemplace('entry-client.ts'))
+        if (!writeSrcTemplate('entry-client.ts'))
             return;
-        if (!writeSrcTemplace('entry-server.ts'))
+        if (!writeSrcTemplate('entry-server.ts'))
             return;
-        if (!writeSrcTemplace('app.vue'))
+        if (!writeSrcTemplate('app.vue'))
             return;
-        writeSrcTemplace('shims-vue.d.ts');
+        writeSrcTemplate('shims-vue.d.ts');
     }
     async afterCompiler(type) {
         const { ssr } = this;
@@ -79,4 +79,4 @@ class TemplacePlugin extends genesis_core_1.Plugin {
         }
     }
 }
-exports.TemplacePlugin = TemplacePlugin;
+exports.TemplatePlugin = TemplatePlugin;

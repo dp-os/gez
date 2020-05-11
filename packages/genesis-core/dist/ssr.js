@@ -132,7 +132,7 @@ class SSR {
     /**
      * Template path
      */
-    get templaceFile() {
+    get templateFile() {
         var _a, _b;
         return (((_b = (_a = this.options) === null || _a === void 0 ? void 0 : _a.build) === null || _b === void 0 ? void 0 : _b.template) ||
             path_1.default.resolve(this.srcDir, 'index.html'));
@@ -140,7 +140,7 @@ class SSR {
     /**
      * Template output path
      */
-    get outputTemplaceFile() {
+    get outputTemplateFile() {
         return path_1.default.resolve(this.outputDirInServer, 'index.html');
     }
     /**

@@ -5,14 +5,14 @@ import write from 'write';
 import { deleteFolder } from '../utils/index';
 import { minify } from 'html-minifier';
 
-export class TemplacePlugin extends Plugin {
+export class TemplatePlugin extends Plugin {
     public async beforeCompiler() {
         const { ssr } = this;
         deleteFolder(ssr.outputDir);
-        if (fs.existsSync(ssr.templaceFile)) {
-            const text = fs.readFileSync(ssr.templaceFile, 'utf-8');
+        if (fs.existsSync(ssr.templateFile)) {
+            const text = fs.readFileSync(ssr.templateFile, 'utf-8');
             write.sync(
-                ssr.outputTemplaceFile,
+                ssr.outputTemplateFile,
                 minify(text, {
                     collapseInlineTagWhitespace: true,
                     collapseWhitespace: true,
@@ -45,12 +45,12 @@ export class TemplacePlugin extends Plugin {
             outputDir,
             path.resolve(srcDir, './entry-server')
         );
-        const writeDistSrcTemplace = (
+        const writeDistSrcTemplate = (
             filename: string,
             options: { [x: string]: string } = {}
         ) => {
             let text = fs.readFileSync(
-                path.resolve(__dirname, `../../templace/${filename}`),
+                path.resolve(__dirname, `../../template/${filename}`),
                 'utf8'
             );
             Object.keys(options).forEach((k) => {
@@ -60,15 +60,15 @@ export class TemplacePlugin extends Plugin {
             const outputDir = path.resolve(ssr.outputDir, './src');
             write.sync(path.resolve(outputDir, filename), text);
         };
-        writeDistSrcTemplace('entry-client.ts', {
+        writeDistSrcTemplate('entry-client.ts', {
             clientFilename
         });
-        writeDistSrcTemplace('entry-server.ts', {
+        writeDistSrcTemplate('entry-server.ts', {
             serverFilename
         });
-        const writeSrcTemplace = (filename: string) => {
+        const writeSrcTemplate = (filename: string) => {
             const text = fs.readFileSync(
-                path.resolve(__dirname, `../../templace/src/${filename}`),
+                path.resolve(__dirname, `../../template/src/${filename}`),
                 'utf8'
             );
             const output = path.resolve(ssr.srcDir, filename);
@@ -76,10 +76,10 @@ export class TemplacePlugin extends Plugin {
             write.sync(output, text);
             return true;
         };
-        if (!writeSrcTemplace('entry-client.ts')) return;
-        if (!writeSrcTemplace('entry-server.ts')) return;
-        if (!writeSrcTemplace('app.vue')) return;
-        writeSrcTemplace('shims-vue.d.ts');
+        if (!writeSrcTemplate('entry-client.ts')) return;
+        if (!writeSrcTemplate('entry-server.ts')) return;
+        if (!writeSrcTemplate('app.vue')) return;
+        writeSrcTemplate('shims-vue.d.ts');
     }
 
     public async afterCompiler(type: CompilerType) {

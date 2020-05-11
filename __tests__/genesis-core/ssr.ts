@@ -65,11 +65,11 @@ test('check options.build.baseDir', async () => {
             value: 'dist/ssr-test/server/vue-ssr-server-bundle.json'
         },
         {
-            label: 'templaceFile',
+            label: 'templateFile',
             value: 'src/index.html'
         },
         {
-            label: 'outputTemplaceFile',
+            label: 'outputTemplateFile',
             value: 'dist/ssr-test/server/index.html'
         }
     ];
@@ -157,7 +157,7 @@ test('check options.build.template', async () => {
             template: path.resolve('./html/index.html')
         }
     });
-    await expect(ssr.templaceFile).toBe(path.resolve('./html/index.html'));
+    await expect(ssr.templateFile).toBe(path.resolve('./html/index.html'));
 });
 
 test('check options.isProd', async () => {

@@ -154,7 +154,7 @@ export class SSR {
     /**
      * Template path
      */
-    public get templaceFile() {
+    public get templateFile() {
         return (
             this.options?.build?.template ||
             path.resolve(this.srcDir, 'index.html')
@@ -164,7 +164,7 @@ export class SSR {
     /**
      * Template output path
      */
-    public get outputTemplaceFile() {
+    public get outputTemplateFile() {
         return path.resolve(this.outputDirInServer, 'index.html');
     }
 
