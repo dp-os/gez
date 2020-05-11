@@ -16,8 +16,7 @@
         "type-check": "tsc --noEmit",
         "test": "jest --coverage",
         "coveralls": "coveralls < coverage/lcov.info",
-        "semantic-release": "semantic-release pre && semantic-release post",
-        "lerna": "yarn test && lerna publish  --registry=https://registry.npmjs.org --force-publish"
+        "lerna": "lerna publish  --registry=https://registry.npmjs.org --force-publish --changelog-preset"
     },
     "sideEffects": [
         "*.css",
@@ -40,7 +39,6 @@
         "@types/jest": "^25.1.4",
         "coveralls": "^3.0.11",
         "jest": "^25.2.4",
-        "semantic-release": "^17.0.7",
         "vue": "^2.6.11",
         "vue-property-decorator": "^8.4.0"
     },
