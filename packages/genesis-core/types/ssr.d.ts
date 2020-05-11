@@ -77,11 +77,11 @@ export declare class SSR {
     /**
      * Template path
      */
-    get templaceFile(): string;
+    get templateFile(): string;
     /**
      * Template output path
      */
-    get outputTemplaceFile(): string;
+    get outputTemplateFile(): string;
     /**
      * Get the configuration of browsers
      */

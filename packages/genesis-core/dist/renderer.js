@@ -64,8 +64,8 @@ class Renderer {
             inject: false,
             clientManifest: clientManifest
         };
-        const ejsTemplate = fs_1.default.existsSync(this.ssr.templaceFile)
-            ? fs_1.default.readFileSync(this.ssr.outputTemplaceFile, 'utf-8')
+        const ejsTemplate = fs_1.default.existsSync(this.ssr.templateFile)
+            ? fs_1.default.readFileSync(this.ssr.outputTemplateFile, 'utf-8')
             : defaultTemplate;
         this.ssrRenderer = vue_server_renderer_1.createBundleRenderer(bundle, {
             ...renderOptions,

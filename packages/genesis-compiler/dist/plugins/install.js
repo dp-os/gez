@@ -8,7 +8,7 @@ const babel_1 = require("./babel");
 const image_1 = require("./image");
 const font_1 = require("./font");
 const media_1 = require("./media");
-const templace_1 = require("./templace");
+const template_1 = require("./template");
 class InstallPlugin extends genesis_core_1.Plugin {
     constructor(ssr) {
         super(ssr);
@@ -19,7 +19,7 @@ class InstallPlugin extends genesis_core_1.Plugin {
         ssr.plugin.use(image_1.ImagePlugin);
         ssr.plugin.use(font_1.FontPlugin);
         ssr.plugin.use(media_1.MediaPlugin);
-        ssr.plugin.use(templace_1.TemplacePlugin);
+        ssr.plugin.use(template_1.TemplatePlugin);
     }
 }
 exports.InstallPlugin = InstallPlugin;

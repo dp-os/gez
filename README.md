@@ -19,7 +19,7 @@ yarn start # 运行生产包
 
 
 ## Codesandbox
-- [vue-genesis-templace](https://codesandbox.io/s/condescending-architecture-ifgpt) 一个最基础简单的例子
+- [vue-genesis-template](https://codesandbox.io/s/condescending-architecture-ifgpt) 一个最基础简单的例子
 
 ## 核心库说明
 |核心库|版本号|下载量|说明|
