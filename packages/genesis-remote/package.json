@@ -1,6 +1,6 @@
 {
   "name": "@fmfe/genesis-remote",
-  "version": "0.0.54-alpha.2",
+  "version": "0.0.54-alpha.3",
   "description": "",
   "main": "dist/index.js",
   "types": "types/index.d.ts",
@@ -20,6 +20,6 @@
     "url": "https://github.com/fmfe/genesis/issues"
   },
   "devDependencies": {
-    "@fmfe/genesis-core": "^0.0.54-alpha.2"
+    "@fmfe/genesis-core": "^0.0.54-alpha.3"
   }
 }
