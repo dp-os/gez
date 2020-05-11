@@ -6,9 +6,10 @@ env:
     - SERVICE_NAME=travis-pro
     - COVERALLS_REPO_TOKEN=9cdJAJEmw2GLKBfbnciQTu90nm1LiSHnt
 install:
-  - npm install
+  - yarn cache clean
+  - yarn install
 script:
-  - npm run build:ts
-  - npm run build
-  - npm run test
-  - npm run coveralls
+  - yarn build:ts
+  - yarn build
+  - yarn test
+  - yarn coveralls
