@@ -101,8 +101,8 @@ export class Renderer {
             clientManifest: clientManifest
         };
 
-        const ejsTemplate = fs.existsSync(this.ssr.templateFile)
-            ? fs.readFileSync(this.ssr.outputTemplateFile, 'utf-8')
+        const ejsTemplate = fs.existsSync(this.ssr.templaceFile)
+            ? fs.readFileSync(this.ssr.outputTemplaceFile, 'utf-8')
             : defaultTemplate;
 
         this.ssrRenderer = createBundleRenderer(bundle, {
@@ -177,7 +177,7 @@ export class Renderer {
      */
     public async render<T extends Genesis.RenderMode = Genesis.RenderMode>(
         options: Genesis.RenderOptions<T> = {}
-    ): Promise<Genesis.RenderResul> {
+    ): Promise<Genesis.RenderResult> {
         const { ssr } = this;
         const context = this._createContext<T>(options);
         await ssr.plugin.callHook('renderBefore', context);

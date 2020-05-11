@@ -100,7 +100,7 @@ declare namespace Genesis {
     /**
      * Render result
      */
-    type RenderResul = RenderResultHtml | RenderResultJson;
+    type RenderResult = RenderResultHtml | RenderResultJson;
     /**
      * Rendered HTML
      */
