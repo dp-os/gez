@@ -32,7 +32,7 @@ export declare class Renderer {
     /**
      * General basic rendering function
      */
-    render<T extends Genesis.RenderMode = Genesis.RenderMode>(options?: Genesis.RenderOptions<T>): Promise<Genesis.RenderResult>;
+    render<T extends Genesis.RenderMode = Genesis.RenderMode>(options?: Genesis.RenderOptions<T>): Promise<Genesis.RenderResult<T>>;
     /**
      * Rendering Middleware
      */

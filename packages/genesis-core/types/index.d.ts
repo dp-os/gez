@@ -100,7 +100,7 @@ declare namespace Genesis {
     /**
      * Render result
      */
-    type RenderResult = RenderResultHtml | RenderResultJson;
+    type RenderResult<T extends RenderMode = RenderMode> = T extends Genesis.RenderModeHtml ? Genesis.RenderResultHtml : Genesis.RenderResultJson;
     /**
      * Rendered HTML
      */
