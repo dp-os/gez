@@ -15,6 +15,7 @@ export declare class Renderer {
      * Server side renderer
      */
     private ssrRenderer;
+    private clientManifest;
     constructor(ssr: Genesis.SSR, options?: Genesis.RendererOptions);
     /**
      * Hot update
