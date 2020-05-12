@@ -180,17 +180,17 @@ export class Renderer {
      */
     public async render<T extends Genesis.RenderMode = Genesis.RenderMode>(
         options: Genesis.RenderOptions<T> = {}
-    ): Promise<Genesis.RenderResult> {
+    ): Promise<Genesis.RenderResult<T>> {
         const { ssr } = this;
         const context = this._createContext<T>(options);
         await ssr.plugin.callHook('renderBefore', context);
         switch (context.mode) {
             case 'ssr-html':
             case 'csr-html':
-                return this._renderHtml(context);
+                return this._renderHtml(context) as any;
             case 'ssr-json':
             case 'csr-json':
-                return this._renderJson(context);
+                return this._renderJson(context) as any;
         }
     }
 
