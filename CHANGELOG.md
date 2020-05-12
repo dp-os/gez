@@ -1,6 +1,12 @@
 ## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.55-alpha.2...v0.0.1) (2020-05-12)
 
 
+### Features
+
+* **renderer:** 新增 clientManifest 属性 ([b3d50e3](https://github.com/fmfe/genesis/commit/b3d50e3e7a41bb5ba14f1ee22bc3f16bd549af68))
+* 添加 commitlint ([47fb55d](https://github.com/fmfe/genesis/commit/47fb55d042724ddd40b020484da2200c992261cb))
+
+
 
 ## [0.0.55-alpha.2](https://github.com/fmfe/genesis/compare/v0.0.55-alpha.1...v0.0.55-alpha.2) (2020-05-11)
 
