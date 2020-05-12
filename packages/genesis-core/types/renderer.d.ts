@@ -3,6 +3,7 @@ import { ServerResponse, IncomingMessage } from 'http';
 import * as Genesis from './';
 export declare class Renderer {
     ssr: Genesis.SSR;
+    clientManifest: Genesis.ClientManifest;
     /**
      * Client side renderer
      */
@@ -15,7 +16,6 @@ export declare class Renderer {
      * Server side renderer
      */
     private ssrRenderer;
-    private clientManifest;
     constructor(ssr: Genesis.SSR, options?: Genesis.RendererOptions);
     /**
      * Hot update
