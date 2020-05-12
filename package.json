@@ -35,6 +35,11 @@
     "bugs": {
         "url": "https://github.com/fmfe/genesis/issues"
     },
+    "config": {
+        "commitizen": {
+            "path": "cz-conventional-changelog"
+        }
+    },
     "devDependencies": {
         "@fmfe/genesis-lint": "file:./packages/genesis-lint",
         "@types/jest": "^25.1.4",
