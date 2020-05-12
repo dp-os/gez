@@ -1,4 +1,13 @@
-## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.55-alpha.2...v0.0.1) (2020-05-12)
+## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.55-alpha.3...v0.0.1) (2020-05-12)
+
+
+### Bug Fixes
+
+* **renderer:** 修复Renderer.render()方法返回的类型错误 ([922676d](https://github.com/fmfe/genesis/commit/922676dd33c390474bbc0edd9b7c7a19bc1e72df))
+
+
+
+## [0.0.55-alpha.3](https://github.com/fmfe/genesis/compare/v0.0.55-alpha.2...v0.0.55-alpha.3) (2020-05-12)
 
 
 ### Features
