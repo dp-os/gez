@@ -188,18 +188,20 @@ namespace Genesis {
         fileWithoutQuery: string;
         asType: string;
     }
+
+    export interface ClientManifest {
+        publicPath: string;
+        all: string[];
+        initial: string[];
+        async: string[];
+        modules: { [key: string]: number[] };
+    }
     /**
      * Options for rendering
      */
     export interface RendererOptions {
         client: {
-            data: {
-                publicPath: string;
-                all: string[];
-                initial: string[];
-                async: string[];
-                modules: { [key: string]: number[] };
-            };
+            data: ClientManifest;
             fs: any;
         };
         server: {

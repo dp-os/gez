@@ -72,6 +72,7 @@ class Renderer {
             runInNewContext: 'once'
         });
         this.csrRenderer = vue_server_renderer_1.createRenderer(renderOptions);
+        this.clientManifest = clientManifest;
         this.compile = ejs_1.default.compile(ejsTemplate);
         const bindArr = [
             'renderJson',

@@ -31,6 +31,7 @@ const modes: Genesis.RenderMode[] = [
 
 export class Renderer {
     public ssr: Genesis.SSR;
+    public clientManifest: Genesis.ClientManifest;
     /**
      * Client side renderer
      */
@@ -91,10 +92,11 @@ export class Renderer {
             return ctx.data;
         };
 
-        const clientManifest =
+        const clientManifest: Genesis.ClientManifest =
             options?.client?.data || require(this.ssr.outputClientManifestFile);
         const bundle =
             options?.server?.data || require(this.ssr.outputServerBundleFile);
+
         const renderOptions = {
             template,
             inject: false,
@@ -110,6 +112,7 @@ export class Renderer {
             runInNewContext: 'once'
         });
         this.csrRenderer = createRenderer(renderOptions);
+        this.clientManifest = clientManifest;
         this.compile = Ejs.compile(ejsTemplate);
 
         const bindArr = [

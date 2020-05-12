@@ -179,20 +179,21 @@ declare namespace Genesis {
         fileWithoutQuery: string;
         asType: string;
     }
+    interface ClientManifest {
+        publicPath: string;
+        all: string[];
+        initial: string[];
+        async: string[];
+        modules: {
+            [key: string]: number[];
+        };
+    }
     /**
      * Options for rendering
      */
     interface RendererOptions {
         client: {
-            data: {
-                publicPath: string;
-                all: string[];
-                initial: string[];
-                async: string[];
-                modules: {
-                    [key: string]: number[];
-                };
-            };
+            data: ClientManifest;
             fs: any;
         };
         server: {
