@@ -1,9 +1,4 @@
-import Vue from 'vue';
 import { Router } from '@fmfe/genesis-app';
-
-import RemoteView from '@fmfe/genesis-remote';
-import Default from './default.vue';
-Vue.use(RemoteView);
 
 export const createRouter = () => {
     const router = new Router({
@@ -16,10 +11,6 @@ export const createRouter = () => {
             {
                 path: '/error',
                 component: () => import('./views/error.vue')
-            },
-            {
-                path: '*',
-                component: Default
             }
         ]
     });
