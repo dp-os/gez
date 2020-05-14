@@ -5,17 +5,17 @@ import { SSR, Renderer } from '@fmfe/genesis-core';
 export const app = express();
 
 class SSRItems {
+    public layout = new SSR({
+        name: 'ssr-layout',
+        build: {
+            baseDir: path.resolve(__dirname, './examples/ssr-layout')
+        }
+    });
+
     public home = new SSR({
         name: 'ssr-home',
         build: {
             baseDir: path.resolve(__dirname, './examples/ssr-home')
-        }
-    });
-
-    public remote = new SSR({
-        name: 'ssr-remote',
-        build: {
-            baseDir: path.resolve(__dirname, './examples/ssr-remote')
         }
     });
 
@@ -41,31 +41,43 @@ export type RendererItems = Record<keyof SSRItems, Renderer>;
 export const ssr = new SSRItems();
 
 export const startApp = (renderer: RendererItems) => {
-    app.get('/about/', renderer.home.renderMiddleware);
-    app.get('/error/', renderer.home.renderMiddleware);
-    app.get('/api/remote/about/', (req, res, next) => {
-        const url = req.query.renderUrl;
-        if (typeof url !== 'string') {
-            return res.status(404).end();
-        }
-        renderer.about
-            .renderJson({ req, res, url })
-            .then((r) => {
-                res.send(r.data);
+    /**
+     * 渲染基本的页面布局
+     */
+    const layout: express.RequestHandler = async (req, res, next) => {
+        renderer.layout
+            .renderHtml({ req, res })
+            .then((result) => {
+                res.send(result.data);
+            })
+            .catch(next);
+    };
+    app.get('/', layout);
+    app.get('/about', layout);
+
+    /**
+     * 首页
+     */
+    app.get('/api/home', (req, res, next) => {
+        const url = String(req.query.renderUrl) || '/';
+        renderer.home
+            .renderJson({ url, req, res })
+            .then((result) => {
+                res.send(result.data);
             })
             .catch(next);
     });
-    app.get('/api/remote/common-header/', (req, res, next) => {
-        const url = req.query.renderUrl;
-        if (typeof url !== 'string') {
-            return res.status(404).end();
-        }
-        renderer.remote
-            .renderJson({ req, res, url })
-            .then((r) => res.send(r.data))
+    /**
+     * 关于我们
+     */
+    app.get('/api/about', (req, res, next) => {
+        const url = String(req.query.renderUrl) || '/';
+        renderer.about
+            .renderJson({ url, req, res })
+            .then((result) => {
+                res.send(result.data);
+            })
             .catch(next);
     });
-    app.get('/', renderer.home.renderMiddleware);
-
     app.listen(3000, () => console.log(`http://localhost:3000`));
 };
