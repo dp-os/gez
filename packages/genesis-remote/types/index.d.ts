@@ -24,6 +24,6 @@ export declare const loadScript: (html: string) => Promise<boolean[]>;
  */
 export declare const RemoteView: any;
 declare const _default: {
-    install(_Vue: import("vue").VueConstructor<Vue>): void;
+    install(_Vue: typeof Vue): void;
 };
 export default _default;

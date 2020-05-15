@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ImagePlugin = void 0;
 const genesis_core_1 = require("@fmfe/genesis-core");
 class ImagePlugin extends genesis_core_1.Plugin {
     chainWebpack({ config }) {

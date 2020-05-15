@@ -83,7 +83,11 @@ export class Renderer {
                 }
             );
             const { data } = ctx;
-            data.html += html;
+            if (html === '<!---->') {
+                data.html += `<div data-ssr-genesis-id="${data.id}"></div>`;
+            } else {
+                data.html += html;
+            }
             data.script += vueCtx.renderScripts();
             data.style += vueCtx.renderStyles();
             data.resource = [...data.resource, ...resource];

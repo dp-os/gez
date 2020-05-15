@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.StylePlugin = void 0;
 const extract_css_chunks_webpack_plugin_1 = __importDefault(require("extract-css-chunks-webpack-plugin"));
 const postcss_preset_env_1 = __importDefault(require("postcss-preset-env"));
 const cssnano_1 = __importDefault(require("cssnano"));

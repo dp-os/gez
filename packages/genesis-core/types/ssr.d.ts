@@ -85,7 +85,7 @@ export declare class SSR {
     /**
      * Get the configuration of browsers
      */
-    getBrowsers(env: keyof Genesis.Browsers): Genesis.Browserslist;
+    getBrowsers(env: keyof Genesis.Browsers): string | string[];
     /**
      * Create a renderer
      */

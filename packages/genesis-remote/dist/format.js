@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.beforeRender = void 0;
 var mergeArr = function (data, cb) {
     // 展开成一维数组
     var arr = [data];

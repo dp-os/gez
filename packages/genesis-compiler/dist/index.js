@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Watch = exports.Build = void 0;
 const build_1 = require("./build");
-exports.Build = build_1.Build;
+Object.defineProperty(exports, "Build", { enumerable: true, get: function () { return build_1.Build; } });
 const watch_1 = require("./webpack/watch");
-exports.Watch = watch_1.Watch;
+Object.defineProperty(exports, "Watch", { enumerable: true, get: function () { return watch_1.Watch; } });

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="show">
         <h2>关于我们</h2>
         <router-view></router-view>
     </div>
@@ -9,6 +9,14 @@ import Vue from 'vue';
 
 export default Vue.extend({
     name: 'app',
+    data() {
+        return {
+            show: false
+        };
+    },
+    mounted() {
+        this.show = true;
+    },
     methods: {
         back() {
             this.$router.back();

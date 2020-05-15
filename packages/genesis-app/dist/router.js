@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Router = exports.getLocation = void 0;
 const vue_1 = __importDefault(require("vue"));
 const vue_router_1 = __importDefault(require("vue-router"));
 vue_1.default.use(vue_router_1.default);
@@ -14,59 +15,62 @@ function getLocation(base) {
     return (path || '/') + window.location.search + window.location.hash;
 }
 exports.getLocation = getLocation;
-class GenesisAppRouter {
-    constructor() {
-        this.list = [];
-        this.syncing = false;
-        window.addEventListener('popstate', (e) => {
-            this.sync((router) => {
-                // Here is a Fang'f that vue-router does not disclose
-                const location = getLocation(router.base);
-                router.history.transitionTo(location);
+let GenesisAppRouter = /** @class */ (() => {
+    class GenesisAppRouter {
+        constructor() {
+            this.list = [];
+            this.syncing = false;
+            window.addEventListener('popstate', (e) => {
+                this.sync((router) => {
+                    // Here is a Fang'f that vue-router does not disclose
+                    const location = getLocation(router.base);
+                    router.history.transitionTo(location);
+                });
             });
-        });
-    }
-    set(router) {
-        if (this.list.indexOf(router) > -1)
-            return;
-        this.list.push(router);
-    }
-    clear(router) {
-        const index = this.list.indexOf(router);
-        this.list.splice(index, 1);
-    }
-    dispatchTarget(target) {
-        this.target = target;
-        return this;
-    }
-    sync(fn) {
-        if (this.syncing)
-            return;
-        this.syncing = true;
-        this.list.forEach((router) => {
-            if (this.target === router)
+        }
+        set(router) {
+            if (this.list.indexOf(router) > -1)
                 return;
-            fn(router);
-        });
-        this.target = null;
-        this.syncing = false;
-    }
-    push(location) {
-        this.sync((router) => {
-            if (router.currentRoute.fullPath === location)
+            this.list.push(router);
+        }
+        clear(router) {
+            const index = this.list.indexOf(router);
+            this.list.splice(index, 1);
+        }
+        dispatchTarget(target) {
+            this.target = target;
+            return this;
+        }
+        sync(fn) {
+            if (this.syncing)
                 return;
-            vue_router_1.default.prototype.push.call(router, location);
-        });
+            this.syncing = true;
+            this.list.forEach((router) => {
+                if (this.target === router)
+                    return;
+                fn(router);
+            });
+            this.target = null;
+            this.syncing = false;
+        }
+        push(location) {
+            this.sync((router) => {
+                if (router.currentRoute.fullPath === location)
+                    return;
+                vue_router_1.default.prototype.push.call(router, location);
+            });
+        }
+        replace(location) {
+            this.sync((router) => {
+                if (router.currentRoute.fullPath === location)
+                    return;
+                vue_router_1.default.prototype.replace.call(router, location);
+            });
+        }
     }
-    replace(location) {
-        this.sync((router) => {
-            if (router.currentRoute.fullPath === location)
-                return;
-            vue_router_1.default.prototype.replace.call(router, location);
-        });
-    }
-}
-GenesisAppRouter.key = '__genesisAppRouter';
+    GenesisAppRouter.key = '__genesisAppRouter';
+    return GenesisAppRouter;
+})();
 const getRoute = () => {
     if (typeof window === 'object') {
         const win = window;

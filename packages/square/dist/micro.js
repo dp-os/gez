@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Micro = exports.command = exports.log = void 0;
 const tms_js_1 = __importDefault(require("@fmfe/tms.js"));
 const vue_1 = __importDefault(require("vue"));
 const install_1 = require("./install");
@@ -18,81 +19,84 @@ const getType = (payload) => {
         .replace(/^(.*?) |]$/g, '')
         .toLowerCase();
 };
-class MicroBase {
-    constructor() {
-        this.rid = 0;
-        this.useCount = 0;
-        // 需要放到最后处理， 否则vue不会进行属性劫持
-        this.vm = new vue_1.default({
-            data: {
-                $$this: this
-            }
-        });
-        Object.defineProperty(this, 'vm', {
-            enumerable: false
-        });
-        Object.defineProperty(this, 'rid', {
-            enumerable: false
-        });
-        Object.defineProperty(this, 'useCount', {
-            enumerable: false
-        });
-        exports.log('Create examples');
-    }
-    static setVue(_Vue) {
-        if (this._Vue)
-            return;
-        this._Vue = _Vue;
-    }
-    static getVue() {
-        const _Vue = this._Vue;
-        if (!_Vue) {
-            throw new Error('Please install Vue.use(Micro);');
+let MicroBase = /** @class */ (() => {
+    class MicroBase {
+        constructor() {
+            this.rid = 0;
+            this.useCount = 0;
+            // 需要放到最后处理， 否则vue不会进行属性劫持
+            this.vm = new vue_1.default({
+                data: {
+                    $$this: this
+                }
+            });
+            Object.defineProperty(this, 'vm', {
+                enumerable: false
+            });
+            Object.defineProperty(this, 'rid', {
+                enumerable: false
+            });
+            Object.defineProperty(this, 'useCount', {
+                enumerable: false
+            });
+            exports.log('Create examples');
         }
-        return _Vue;
+        static setVue(_Vue) {
+            if (this._Vue)
+                return;
+            this._Vue = _Vue;
+        }
+        static getVue() {
+            const _Vue = this._Vue;
+            if (!_Vue) {
+                throw new Error('Please install Vue.use(Micro);');
+            }
+            return _Vue;
+        }
+        addUse() {
+            this.useCount++;
+        }
+        reduceUse() {
+            this.useCount--;
+        }
+        get isUse() {
+            return this.useCount > 0;
+        }
+        /**
+         * Registration module
+         */
+        register(name, v) {
+            const rid = `${name}_${++this.rid}`;
+            Micro.getVue().set(this, rid, v);
+            exports.log(`Registration module ${rid}`);
+            return rid;
+        }
+        /**
+         * Get module
+         */
+        getModule(rid) {
+            return this[rid];
+        }
+        /**
+         * Remove module
+         */
+        unregister(name, rid) {
+            Micro.getVue().delete(this, rid);
+            exports.log(`Remove module ${rid}`);
+        }
+        /**
+         * Destroy instance
+         */
+        destroy() {
+            exports.log('Destroy instance');
+            this.vm && this.vm.$destroy();
+            this._vm = null;
+        }
     }
-    addUse() {
-        this.useCount++;
-    }
-    reduceUse() {
-        this.useCount--;
-    }
-    get isUse() {
-        return this.useCount > 0;
-    }
-    /**
-     * Registration module
-     */
-    register(name, v) {
-        const rid = `${name}_${++this.rid}`;
-        Micro.getVue().set(this, rid, v);
-        exports.log(`Registration module ${rid}`);
-        return rid;
-    }
-    /**
-     * Get module
-     */
-    getModule(rid) {
-        return this[rid];
-    }
-    /**
-     * Remove module
-     */
-    unregister(name, rid) {
-        Micro.getVue().delete(this, rid);
-        exports.log(`Remove module ${rid}`);
-    }
-    /**
-     * Destroy instance
-     */
-    destroy() {
-        exports.log('Destroy instance');
-        this.vm && this.vm.$destroy();
-        this._vm = null;
-    }
-}
-MicroBase.install = install_1.install;
-MicroBase._Vue = null;
+    MicroBase.install = install_1.install;
+    MicroBase._Vue = null;
+    return MicroBase;
+})();
 const deepRecursionTms = (target, rid, fn) => {
     if (typeof target !== 'object' || Array.isArray(target))
         return;

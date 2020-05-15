@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.PluginManage = exports.Plugin = void 0;
 class Plugin {
     constructor(ssr) {
         this.ssr = ssr;

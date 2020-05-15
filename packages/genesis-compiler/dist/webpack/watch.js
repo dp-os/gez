@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Watch = exports.WatchClientConfig = void 0;
 const webpack_1 = __importDefault(require("webpack"));
 const memory_fs_1 = __importDefault(require("memory-fs"));
 const webpack_dev_middleware_1 = __importDefault(require("webpack-dev-middleware"));
