@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.microRegister = exports.forEachSquare = exports.R_NAME = void 0;
 const square_1 = require("./square");
 exports.R_NAME = '_MicroRegisterSquare';
 exports.forEachSquare = (square, cb) => {

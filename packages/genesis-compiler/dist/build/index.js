@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Build = void 0;
 const webpack_1 = __importDefault(require("webpack"));
 const chalk_1 = __importDefault(require("chalk"));
 const install_1 = require("../plugins/install");

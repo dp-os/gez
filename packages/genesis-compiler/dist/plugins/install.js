@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.InstallPlugin = void 0;
 const genesis_core_1 = require("@fmfe/genesis-core");
 const vue_1 = require("./vue");
 const bar_1 = require("./bar");

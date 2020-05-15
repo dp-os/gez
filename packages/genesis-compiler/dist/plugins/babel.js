@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.BabelPlugin = void 0;
 const genesis_core_1 = require("@fmfe/genesis-core");
 class BabelPlugin extends genesis_core_1.Plugin {
     chainWebpack({ target, config }) {

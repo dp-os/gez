@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.MediaPlugin = void 0;
 const genesis_core_1 = require("@fmfe/genesis-core");
 class MediaPlugin extends genesis_core_1.Plugin {
     chainWebpack({ config }) {

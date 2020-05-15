@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.install = void 0;
 const micro_1 = require("./micro");
 const square_1 = require("./square");
 const register_1 = require("./register");

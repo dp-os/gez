@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Renderer = void 0;
 const vue_1 = __importDefault(require("vue"));
 const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
@@ -49,7 +50,12 @@ class Renderer {
                 };
             });
             const { data } = ctx;
-            data.html += html;
+            if (html === '<!---->') {
+                data.html += `<div data-ssr-genesis-id="${data.id}"></div>`;
+            }
+            else {
+                data.html += html;
+            }
             data.script += vueCtx.renderScripts();
             data.style += vueCtx.renderStyles();
             data.resource = [...data.resource, ...resource];
