@@ -12,7 +12,6 @@ export class FontPlugin extends Plugin {
             .loader('file-loader')
             .options({
                 esModule: false,
-                publicPath: ssr.publicPath,
                 name: this.ssr.isProd
                     ? 'fonts/[name].[contenthash:8].[ext]'
                     : 'fonts/[path][name].[ext]'

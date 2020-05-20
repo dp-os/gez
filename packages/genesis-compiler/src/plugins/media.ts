@@ -12,7 +12,6 @@ export class MediaPlugin extends Plugin {
             .loader('file-loader')
             .options({
                 esModule: false,
-                publicPath: ssr.publicPath,
                 name: this.ssr.isProd
                     ? 'medias/[name].[contenthash:8].[ext]'
                     : 'medias/[path][name].[ext]'

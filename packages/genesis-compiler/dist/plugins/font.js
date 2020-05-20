@@ -14,7 +14,6 @@ class FontPlugin extends genesis_core_1.Plugin {
             .loader('file-loader')
             .options({
             esModule: false,
-            publicPath: ssr.publicPath,
             name: this.ssr.isProd
                 ? 'fonts/[name].[contenthash:8].[ext]'
                 : 'fonts/[path][name].[ext]'

@@ -12,7 +12,6 @@ export class ImagePlugin extends Plugin {
             .loader('file-loader')
             .options({
                 esModule: false,
-                publicPath: ssr.publicPath,
                 name: this.ssr.isProd
                     ? 'images/[name].[contenthash:8].[ext]'
                     : 'images/[path][name].[ext]'
