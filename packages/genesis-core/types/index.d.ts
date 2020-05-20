@@ -60,6 +60,10 @@ declare namespace Genesis {
          * Template file path
          */
         template?: string;
+        /**
+         * Static resource public path
+         */
+        publicPath?: string;
     }
     interface Browsers {
         client?: Browserslist;
@@ -79,10 +83,6 @@ declare namespace Genesis {
          * Production environment or not
          */
         isProd?: boolean;
-        /**
-         * Static resource public path
-         */
-        publicPath?: string;
         /**
          * CDN resource public path, Only valid in production mode
          */
