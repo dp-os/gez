@@ -16,12 +16,13 @@ export class SSR {
     /**
      * Plug in management
      */
-    public plugin: Genesis.PluginManage = new PluginManage(this);
+    public plugin: Genesis.PluginManage;
     /**
      * Constructor
      */
     public constructor(options: Genesis.Options = {}) {
         this.options = options;
+        this.plugin = new PluginManage(this);
         if ('name' in options && typeof options.name !== 'string') {
             throw new TypeError('Options.name can only be of string type');
         }
@@ -45,9 +46,14 @@ export class SSR {
      * The basic path of client static resource loading, which is '/ssr-genesis/' by default
      */
     public get publicPath() {
-        return `/${this.name}/`;
+        return this.options?.build?.publicPath || `/${this.name}/`;
     }
-
+    /**
+     * CDN resource public path, Only valid in production mode
+     */
+    public get cdnPublicPath() {
+        return this.options?.cdnPublicPath || '';
+    }
     /**
      * Project root
      */

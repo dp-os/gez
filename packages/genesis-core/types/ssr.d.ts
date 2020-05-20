@@ -30,6 +30,10 @@ export declare class SSR {
      */
     get publicPath(): string;
     /**
+     * CDN resource public path, Only valid in production mode
+     */
+    get cdnPublicPath(): string;
+    /**
      * Project root
      */
     get baseDir(): string;
