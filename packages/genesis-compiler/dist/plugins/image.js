@@ -14,7 +14,6 @@ class ImagePlugin extends genesis_core_1.Plugin {
             .loader('file-loader')
             .options({
             esModule: false,
-            publicPath: ssr.publicPath,
             name: this.ssr.isProd
                 ? 'images/[name].[contenthash:8].[ext]'
                 : 'images/[path][name].[ext]'
