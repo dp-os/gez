@@ -1,4 +1,13 @@
-## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.57-alpha.0...v0.0.1) (2020-05-20)
+## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.57-alpha.1...v0.0.1) (2020-05-20)
+
+
+### Bug Fixes
+
+* **genesis-compiler:** 修复静态资源 publicPath 没有读取 __webpack_require__.p 的bug ([40f6948](https://github.com/fmfe/genesis/commit/40f69483ebfaeb485ace20edab95057c4f5c511a))
+
+
+
+## [0.0.57-alpha.1](https://github.com/fmfe/genesis/compare/v0.0.57-alpha.0...v0.0.57-alpha.1) (2020-05-20)
 
 
 
