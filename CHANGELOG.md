@@ -1,4 +1,8 @@
-## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.56...v0.0.1) (2020-05-20)
+## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.57-alpha.0...v0.0.1) (2020-05-20)
+
+
+
+## [0.0.57-alpha.0](https://github.com/fmfe/genesis/compare/v0.0.56...v0.0.57-alpha.0) (2020-05-20)
 
 
 ### Features

@@ -16,8 +16,7 @@ class SSRItems {
         name: 'ssr-home',
         build: {
             baseDir: path.resolve(__dirname, './examples/ssr-home')
-        },
-        cdnPublicPath: 'https://cdn.followme-acceleration.com'
+        }
     });
 
     public about = new SSR({
