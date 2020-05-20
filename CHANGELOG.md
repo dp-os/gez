@@ -1,4 +1,13 @@
-## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.56-alpha.0...v0.0.1) (2020-05-16)
+## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.56...v0.0.1) (2020-05-20)
+
+
+### Features
+
+* **ssr&renderer:** SSR 对象新增选项 options.build.publicPath * options.cdnPublicPath ([49491e2](https://github.com/fmfe/genesis/commit/49491e27f3e091926fa88cfb9a426e6f68367703))
+
+
+
+## [0.0.56](https://github.com/fmfe/genesis/compare/v0.0.56-alpha.0...v0.0.56) (2020-05-16)
 
 
 
