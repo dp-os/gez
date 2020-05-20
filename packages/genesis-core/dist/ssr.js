@@ -17,11 +17,8 @@ class SSR {
          * Renderer
          */
         this.Renderer = renderer_1.Renderer;
-        /**
-         * Plug in management
-         */
-        this.plugin = new plugin_1.PluginManage(this);
         this.options = options;
+        this.plugin = new plugin_1.PluginManage(this);
         if ('name' in options && typeof options.name !== 'string') {
             throw new TypeError('Options.name can only be of string type');
         }
@@ -43,7 +40,15 @@ class SSR {
      * The basic path of client static resource loading, which is '/ssr-genesis/' by default
      */
     get publicPath() {
-        return `/${this.name}/`;
+        var _a;
+        return ((_a = this.options) === null || _a === void 0 ? void 0 : _a.publicPath) || `/${this.name}/`;
+    }
+    /**
+     * CDN resource public path, Only valid in production mode
+     */
+    get cdnPublicPath() {
+        var _a;
+        return ((_a = this.options) === null || _a === void 0 ? void 0 : _a.cdnPublicPath) || '';
     }
     /**
      * Project root

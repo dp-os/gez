@@ -96,11 +96,15 @@ export class Renderer {
             return ctx.data;
         };
 
-        const clientManifest: Genesis.ClientManifest =
-            options?.client?.data || require(this.ssr.outputClientManifestFile);
-        const bundle =
-            options?.server?.data || require(this.ssr.outputServerBundleFile);
-
+        const clientManifest: Genesis.ClientManifest = options?.client
+            ?.data || { ...require(this.ssr.outputClientManifestFile) };
+        const bundle = options?.server?.data || {
+            ...require(this.ssr.outputServerBundleFile)
+        };
+        if (ssr.isProd) {
+            clientManifest.publicPath =
+                ssr.cdnPublicPath + clientManifest.publicPath;
+        }
         const renderOptions = {
             template,
             inject: false,

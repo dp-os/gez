@@ -64,6 +64,10 @@ namespace Genesis {
          * Template file path
          */
         template?: string;
+        /**
+         * Static resource public path
+         */
+        publicPath?: string;
     }
 
     export interface Browsers {
@@ -85,6 +89,10 @@ namespace Genesis {
          * Production environment or not
          */
         isProd?: boolean;
+        /**
+         * CDN resource public path, Only valid in production mode
+         */
+        cdnPublicPath?: string;
     }
     /**
      * Hook parameter of webpack

@@ -79,6 +79,14 @@ declare namespace Genesis {
          * Production environment or not
          */
         isProd?: boolean;
+        /**
+         * Static resource public path
+         */
+        publicPath?: string;
+        /**
+         * CDN resource public path, Only valid in production mode
+         */
+        cdnPublicPath?: string;
     }
     /**
      * Hook parameter of webpack
