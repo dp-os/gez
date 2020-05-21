@@ -16,7 +16,8 @@ class SSRItems {
         name: 'ssr-home',
         build: {
             baseDir: path.resolve(__dirname, './examples/ssr-home')
-        }
+        },
+        cdnPublicPath: 'http://localhost:3000'
     });
 
     public about = new SSR({

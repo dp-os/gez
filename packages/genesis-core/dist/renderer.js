@@ -41,7 +41,7 @@ class Renderer {
         }
         this.ssr = ssr;
         const template = async (strHtml, ctx) => {
-            const html = strHtml.replace(/^(<[A-z]([A-z]|[0-9])+)/, `$1 data-ssr-genesis-id="${ctx.data.id}"`);
+            const html = strHtml.replace(/^(<[A-z]([A-z]|[0-9])+)/, `$1 ${this._createRootNodeAttr(ctx)}`);
             const vueCtx = ctx;
             const resource = vueCtx.getPreloadFiles().map((item) => {
                 return {
@@ -51,7 +51,7 @@ class Renderer {
             });
             const { data } = ctx;
             if (html === '<!---->') {
-                data.html += `<div data-ssr-genesis-id="${data.id}"></div>`;
+                data.html += `<div ${this._createRootNodeAttr(ctx)}></div>`;
             }
             else {
                 data.html += html;
@@ -98,6 +98,8 @@ class Renderer {
                 enumerable: false
             });
         });
+        process.env[`__webpack_public_path__${ssr.name}__`] =
+            ssr.cdnPublicPath + ssr.publicPath;
     }
     /**
      * Hot update
@@ -338,7 +340,7 @@ class Renderer {
             }
         });
         const data = (await this.csrRenderer.renderToString(vm, context));
-        data.html = `<div data-ssr-genesis-id="${data.id}"></div>`;
+        data.html = `<div ${this._createRootNodeAttr(context)}></div>`;
         await this.ssr.plugin.callHook('renderCompleted', context);
         return context.data;
     }
@@ -348,6 +350,12 @@ class Renderer {
     async _csrToString(context) {
         await this._csrToJson(context);
         return context.renderHtml();
+    }
+    _createRootNodeAttr(context) {
+        const { data, ssr } = context;
+        const baseUrl = encodeURIComponent(ssr.cdnPublicPath + ssr.publicPath);
+        const name = ssr.name;
+        return `data-ssr-genesis-id="${data.id}" data-ssr-genesis-name="${name}" data-ssr-genesis-base-url="${baseUrl}"`;
     }
 }
 exports.Renderer = Renderer;

@@ -71,7 +71,7 @@ export class Renderer {
         ): Promise<Genesis.RenderData> => {
             const html = strHtml.replace(
                 /^(<[A-z]([A-z]|[0-9])+)/,
-                `$1 data-ssr-genesis-id="${ctx.data.id}"`
+                `$1 ${this._createRootNodeAttr(ctx)}`
             );
             const vueCtx: any = ctx;
             const resource = vueCtx.getPreloadFiles().map(
@@ -84,7 +84,7 @@ export class Renderer {
             );
             const { data } = ctx;
             if (html === '<!---->') {
-                data.html += `<div data-ssr-genesis-id="${data.id}"></div>`;
+                data.html += `<div ${this._createRootNodeAttr(ctx)}></div>`;
             } else {
                 data.html += html;
             }
@@ -135,6 +135,8 @@ export class Renderer {
                 enumerable: false
             });
         });
+        process.env[`__webpack_public_path__${ssr.name}__`] =
+            ssr.cdnPublicPath + ssr.publicPath;
     }
 
     /**
@@ -423,7 +425,7 @@ export class Renderer {
             vm,
             context
         )) as any;
-        data.html = `<div data-ssr-genesis-id="${data.id}"></div>`;
+        data.html = `<div ${this._createRootNodeAttr(context)}></div>`;
         await this.ssr.plugin.callHook('renderCompleted', context);
         return context.data;
     }
@@ -436,5 +438,11 @@ export class Renderer {
     ): Promise<string> {
         await this._csrToJson(context);
         return context.renderHtml();
+    }
+    private _createRootNodeAttr(context: Genesis.RenderContext) {
+        const { data, ssr } = context;
+        const baseUrl = encodeURIComponent(ssr.cdnPublicPath + ssr.publicPath);
+        const name = ssr.name;
+        return `data-ssr-genesis-id="${data.id}" data-ssr-genesis-name="${name}" data-ssr-genesis-base-url="${baseUrl}"`;
     }
 }

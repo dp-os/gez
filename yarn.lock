@@ -867,17 +867,11 @@
   resolved "https://registry.npm.taobao.org/@csstools/convert-colors/download/@csstools/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"
   integrity sha1-rUldxBsS511YjG24uYNPCPoTHrc=
 
-"@fmfe/genesis-app@0.0.55":
-  version "0.0.55"
-  resolved "https://registry.npm.taobao.org/@fmfe/genesis-app/download/@fmfe/genesis-app-0.0.55.tgz#daff81d0ed806f7a4c9addd1ea0e8426829490a3"
-  integrity sha1-2v+B0O2Ab3pMmt3R6g6EJoKUkKM=
-  dependencies:
-    vue-router "^3.1.6"
+"@fmfe/genesis-app@file:./packages/genesis-app":
+  version "0.0.57-alpha.3"
 
-"@fmfe/genesis-compiler@0.0.55":
-  version "0.0.55"
-  resolved "https://registry.npm.taobao.org/@fmfe/genesis-compiler/download/@fmfe/genesis-compiler-0.0.55.tgz#bac6e2445c6271f10b528561b7c2e297d437ad07"
-  integrity sha1-usbiRFxicfELUoVht8Lil9Q3rQc=
+"@fmfe/genesis-compiler@file:./packages/genesis-compiler":
+  version "0.0.57-alpha.3"
   dependencies:
     "@babel/core" "^7.8.4"
     "@babel/plugin-proposal-class-properties" "^7.8.3"
@@ -916,20 +910,16 @@
     webpackbar "^4.0.0"
     write "^2.0.0"
 
-"@fmfe/genesis-core@0.0.55":
-  version "0.0.55"
-  resolved "https://registry.npm.taobao.org/@fmfe/genesis-core/download/@fmfe/genesis-core-0.0.55.tgz#b995f41dbded7ebf10b10285aa92f1f62b54d3cf"
-  integrity sha1-uZX0Hb3tfr8QsQKFqpLx9itU088=
+"@fmfe/genesis-core@file:./packages/genesis-core":
+  version "0.0.57-alpha.3"
   dependencies:
     ejs "^3.0.1"
     serialize-javascript "^3.0.0"
     vue "^2.6.11"
     vue-server-renderer "^2.6.11"
 
-"@fmfe/genesis-lint@0.0.55":
-  version "0.0.55"
-  resolved "https://registry.npm.taobao.org/@fmfe/genesis-lint/download/@fmfe/genesis-lint-0.0.55.tgz#70ec8b2bc02c1659fdb67931fbc928381b781897"
-  integrity sha1-cOyLK8AsFln9tnkx+8koOBt4GJc=
+"@fmfe/genesis-lint@file:./packages/genesis-lint":
+  version "0.0.57-alpha.3"
   dependencies:
     "@typescript-eslint/eslint-plugin" "^2.20.0"
     "@typescript-eslint/parser" "^2.20.0"
@@ -956,15 +946,11 @@
     typescript "^3.8.2"
     vue-eslint-parser "5.0.0"
 
-"@fmfe/genesis-remote@0.0.55":
-  version "0.0.55"
-  resolved "https://registry.npm.taobao.org/@fmfe/genesis-remote/download/@fmfe/genesis-remote-0.0.55.tgz#31771a01200577e9e7ded1679700347ccef7ec86"
-  integrity sha1-MXcaASAFd+nn3tFnlwA0fM737IY=
+"@fmfe/genesis-remote@file:./packages/genesis-remote":
+  version "0.0.57-alpha.3"
 
-"@fmfe/square@0.0.55":
-  version "0.0.55"
-  resolved "https://registry.npm.taobao.org/@fmfe/square/download/@fmfe/square-0.0.55.tgz#39b867751090a0532843bd4ac6fc9de267013a28"
-  integrity sha1-ObhndRCQoFMoQ71Kxvyd4mcBOig=
+"@fmfe/square@file:./packages/square":
+  version "0.0.57-alpha.3"
   dependencies:
     "@fmfe/tms.js" "^0.1.7"
 
@@ -10168,10 +10154,10 @@ vue-property-decorator@^8.4.0:
   dependencies:
     vue-class-component "^7.1.0"
 
-vue-router@^3.1.6:
-  version "3.1.6"
-  resolved "https://registry.npm.taobao.org/vue-router/download/vue-router-3.1.6.tgz#45f5a3a3843e31702c061dd829393554e4328f89"
-  integrity sha1-RfWjo4Q+MXAsBh3YKTk1VOQyj4k=
+vue-router@^3.2.0:
+  version "3.2.0"
+  resolved "http://npm.followme.com/vue-router/-/vue-router-3.2.0.tgz#da35195ffe37fdf0bec9f5f8f72781d2a7718815"
+  integrity sha1-2jUZX/43/fC+yfX49yeB0qdxiBU=
 
 vue-server-renderer@^2.6.11:
   version "2.6.11"
