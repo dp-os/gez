@@ -1,4 +1,13 @@
-## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.57-alpha.2...v0.0.1) (2020-05-20)
+## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.57-alpha.3...v0.0.1) (2020-05-21)
+
+
+### Bug Fixes
+
+* **#1:** ssr.options.cdnPublicPath 支持设置到 __webpack_require__.p ([5184461](https://github.com/fmfe/genesis/commit/5184461bfe07e3681442de8500e38d2c1f8eba8e)), closes [#1](https://github.com/fmfe/genesis/issues/1)
+
+
+
+## [0.0.57-alpha.3](https://github.com/fmfe/genesis/compare/v0.0.57-alpha.2...v0.0.57-alpha.3) (2020-05-20)
 
 
 
