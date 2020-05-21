@@ -63,8 +63,14 @@ export class TemplatePlugin extends Plugin {
         writeDistSrcTemplate('entry-client.ts', {
             clientFilename
         });
+        writeDistSrcTemplate('webpack-public-path-client.ts', {
+            clientFilename
+        });
         writeDistSrcTemplate('entry-server.ts', {
             serverFilename
+        });
+        writeDistSrcTemplate('webpack-public-path-server.ts', {
+            clientFilename
         });
         const writeSrcTemplate = (filename: string) => {
             const text = fs.readFileSync(

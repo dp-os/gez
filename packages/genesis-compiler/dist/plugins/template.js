@@ -53,8 +53,14 @@ class TemplatePlugin extends genesis_core_1.Plugin {
         writeDistSrcTemplate('entry-client.ts', {
             clientFilename
         });
+        writeDistSrcTemplate('webpack-public-path-client.ts', {
+            clientFilename
+        });
         writeDistSrcTemplate('entry-server.ts', {
             serverFilename
+        });
+        writeDistSrcTemplate('webpack-public-path-server.ts', {
+            clientFilename
         });
         const writeSrcTemplate = (filename) => {
             const text = fs_1.default.readFileSync(path_1.default.resolve(__dirname, `../../template/src/${filename}`), 'utf8');

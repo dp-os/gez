@@ -1,3 +1,4 @@
+import './webpack-public-path-client';
 import Vue from 'vue';
 import { ClientOptions } from '@fmfe/genesis-core';
 interface InstalledListItem {
@@ -108,7 +109,7 @@ const start = (createApp?: (data: ClientOptions) => Promise<Vue>) => {
         genesis.register(name, createApp);
     }
     const nodeList = document.querySelectorAll(
-        '[data-ssr-genesis-name="' + name + '"]'
+        'script[data-ssr-genesis-name="' + name + '"]'
     )!;
     const list: Element[] = Array.prototype.slice.call(nodeList);
     list.forEach((script) => {

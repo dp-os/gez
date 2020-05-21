@@ -41,7 +41,7 @@
         }
     },
     "devDependencies": {
-        "@fmfe/genesis-lint": "0.0.55",
+        "@fmfe/genesis-lint": "file:./packages/genesis-lint",
         "@types/jest": "^25.1.4",
         "commitlint-config-cz": "^0.13.1",
         "coveralls": "^3.0.11",
@@ -50,18 +50,19 @@
         "vue-property-decorator": "^8.4.0"
     },
     "dependencies": {
-        "@fmfe/genesis-app": "0.0.55",
-        "@fmfe/genesis-compiler": "0.0.55",
-        "@fmfe/genesis-core": "0.0.55",
-        "@fmfe/genesis-remote": "0.0.55",
-        "@fmfe/square": "0.0.55",
+        "@fmfe/genesis-app": "file:./packages/genesis-app",
+        "@fmfe/genesis-compiler": "file:./packages/genesis-compiler",
+        "@fmfe/genesis-core": "file:./packages/genesis-core",
+        "@fmfe/genesis-remote": "file:./packages/genesis-remote",
+        "@fmfe/square": "file:./packages/square",
         "@types/ejs": "^3.0.3",
         "@types/express": "^4.17.2",
         "@types/node": "^13.7.4",
         "axios": "^0.19.2",
         "express": "^4.17.1",
         "ts-node": "^8.6.2",
-        "typescript": "^3.8.2"
+        "typescript": "^3.8.2",
+        "vue-router": "^3.2.0"
     },
     "husky": {
         "hooks": {
