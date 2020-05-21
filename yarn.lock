@@ -868,10 +868,10 @@
   integrity sha1-rUldxBsS511YjG24uYNPCPoTHrc=
 
 "@fmfe/genesis-app@file:./packages/genesis-app":
-  version "0.0.57-alpha.3"
+  version "0.0.57-alpha.4"
 
 "@fmfe/genesis-compiler@file:./packages/genesis-compiler":
-  version "0.0.57-alpha.3"
+  version "0.0.57-alpha.4"
   dependencies:
     "@babel/core" "^7.8.4"
     "@babel/plugin-proposal-class-properties" "^7.8.3"
@@ -911,7 +911,7 @@
     write "^2.0.0"
 
 "@fmfe/genesis-core@file:./packages/genesis-core":
-  version "0.0.57-alpha.3"
+  version "0.0.57-alpha.4"
   dependencies:
     ejs "^3.0.1"
     serialize-javascript "^3.0.0"
@@ -919,7 +919,7 @@
     vue-server-renderer "^2.6.11"
 
 "@fmfe/genesis-lint@file:./packages/genesis-lint":
-  version "0.0.57-alpha.3"
+  version "0.0.57-alpha.4"
   dependencies:
     "@typescript-eslint/eslint-plugin" "^2.20.0"
     "@typescript-eslint/parser" "^2.20.0"
@@ -947,10 +947,10 @@
     vue-eslint-parser "5.0.0"
 
 "@fmfe/genesis-remote@file:./packages/genesis-remote":
-  version "0.0.57-alpha.3"
+  version "0.0.57-alpha.4"
 
 "@fmfe/square@file:./packages/square":
-  version "0.0.57-alpha.3"
+  version "0.0.57-alpha.4"
   dependencies:
     "@fmfe/tms.js" "^0.1.7"
 
@@ -10156,7 +10156,7 @@ vue-property-decorator@^8.4.0:
 
 vue-router@^3.2.0:
   version "3.2.0"
-  resolved "http://npm.followme.com/vue-router/-/vue-router-3.2.0.tgz#da35195ffe37fdf0bec9f5f8f72781d2a7718815"
+  resolved "https://registry.npm.taobao.org/vue-router/download/vue-router-3.2.0.tgz#da35195ffe37fdf0bec9f5f8f72781d2a7718815"
   integrity sha1-2jUZX/43/fC+yfX49yeB0qdxiBU=
 
 vue-server-renderer@^2.6.11:
