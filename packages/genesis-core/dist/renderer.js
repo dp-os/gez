@@ -67,10 +67,8 @@ class Renderer {
         const bundle = ((_d = options === null || options === void 0 ? void 0 : options.server) === null || _d === void 0 ? void 0 : _d.data) || {
             ...require(this.ssr.outputServerBundleFile)
         };
-        if (ssr.isProd) {
-            clientManifest.publicPath =
-                ssr.cdnPublicPath + clientManifest.publicPath;
-        }
+        clientManifest.publicPath =
+            ssr.cdnPublicPath + clientManifest.publicPath;
         const renderOptions = {
             template,
             inject: false,

@@ -52,6 +52,7 @@ export class SSR {
      * CDN resource public path, Only valid in production mode
      */
     public get cdnPublicPath() {
+        if (!this.isProd) return '';
         return this.options?.cdnPublicPath || '';
     }
     /**
