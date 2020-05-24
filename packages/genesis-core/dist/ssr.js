@@ -48,6 +48,8 @@ class SSR {
      */
     get cdnPublicPath() {
         var _a;
+        if (!this.isProd)
+            return '';
         return ((_a = this.options) === null || _a === void 0 ? void 0 : _a.cdnPublicPath) || '';
     }
     /**
