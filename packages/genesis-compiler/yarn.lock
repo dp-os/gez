@@ -844,10 +844,10 @@
   resolved "http://npm.followme.com/@csstools%2fconvert-colors/-/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"
   integrity sha1-rUldxBsS511YjG24uYNPCPoTHrc=
 
-"@fmfe/genesis-core@^0.0.124":
-  version "0.0.124"
-  resolved "http://npm.followme.com/@fmfe%2fgenesis-core/-/genesis-core-0.0.124.tgz#f3a6acdc97154f67940f0e99b445793bc5d60e1c"
-  integrity sha512-bqpkDBMqzTZ5rGpRt4YpXb8bhcpSxyvp3Ilfc4gV78NPUoz1KYIqeUcfu1445WMRFU+mX5OKBMZ7qDvgYzDS1A==
+"@fmfe/genesis-core@^0.0.57":
+  version "0.0.57"
+  resolved "http://npm.followme.com/@fmfe%2fgenesis-core/-/genesis-core-0.0.57.tgz#2338a20370a839f6266b11c54ff5e70cd6f1db62"
+  integrity sha1-IziiA3CoOfYmaxHFT/XnDNbx22I=
   dependencies:
     ejs "^3.0.1"
     serialize-javascript "^3.0.0"
@@ -1516,11 +1516,6 @@ buffer-from@^1.0.0:
   resolved "http://npm.followme.com/buffer-from/-/buffer-from-1.1.1.tgz#32713bc028f75c02fdb710d7c7bcec1f2c6070ef"
   integrity sha1-MnE7wCj3XAL9txDXx7zsHyxgcO8=
 
-buffer-json@^2.0.0:
-  version "2.0.0"
-  resolved "http://npm.followme.com/buffer-json/-/buffer-json-2.0.0.tgz#f73e13b1e42f196fe2fd67d001c7d7107edd7c23"
-  integrity sha1-9z4TseQvGW/i/WfQAcfXEH7dfCM=
-
 buffer-xor@^1.0.3:
   version "1.0.3"
   resolved "http://npm.followme.com/buffer-xor/-/buffer-xor-1.0.3.tgz#26e61ed1422fb70dd42e6e36729ed51d855fe8d9"
@@ -1575,18 +1570,6 @@ cache-base@^1.0.1:
     to-object-path "^0.3.0"
     union-value "^1.0.0"
     unset-value "^1.0.0"
-
-cache-loader@^4.1.0:
-  version "4.1.0"
-  resolved "http://npm.followme.com/cache-loader/-/cache-loader-4.1.0.tgz#9948cae353aec0a1fcb1eafda2300816ec85387e"
-  integrity sha1-mUjK41OuwKH8ser9ojAIFuyFOH4=
-  dependencies:
-    buffer-json "^2.0.0"
-    find-cache-dir "^3.0.0"
-    loader-utils "^1.2.3"
-    mkdirp "^0.5.1"
-    neo-async "^2.6.1"
-    schema-utils "^2.0.0"
 
 caller-callsite@^2.0.0:
   version "2.0.0"
@@ -2550,29 +2533,12 @@ find-cache-dir@^2.0.0, find-cache-dir@^2.1.0:
     make-dir "^2.0.0"
     pkg-dir "^3.0.0"
 
-find-cache-dir@^3.0.0:
-  version "3.3.1"
-  resolved "http://npm.followme.com/find-cache-dir/-/find-cache-dir-3.3.1.tgz#89b33fad4a4670daa94f855f7fbe31d6d84fe880"
-  integrity sha1-ibM/rUpGcNqpT4Vff74x1thP6IA=
-  dependencies:
-    commondir "^1.0.1"
-    make-dir "^3.0.2"
-    pkg-dir "^4.1.0"
-
 find-up@^3.0.0:
   version "3.0.0"
   resolved "http://npm.followme.com/find-up/-/find-up-3.0.0.tgz#49169f1d7993430646da61ecc5ae355c21c97b73"
   integrity sha1-SRafHXmTQwZG2mHsxa41XCHJe3M=
   dependencies:
     locate-path "^3.0.0"
-
-find-up@^4.0.0:
-  version "4.1.0"
-  resolved "http://npm.followme.com/find-up/-/find-up-4.1.0.tgz#97afe7d6cdc0bc5928584b7c8d7b16e8a9aa5d19"
-  integrity sha1-l6/n1s3AvFkoWEt8jXsW6KmqXRk=
-  dependencies:
-    locate-path "^5.0.0"
-    path-exists "^4.0.0"
 
 flatten@^1.0.2:
   version "1.0.3"
@@ -3367,13 +3333,6 @@ locate-path@^3.0.0:
     p-locate "^3.0.0"
     path-exists "^3.0.0"
 
-locate-path@^5.0.0:
-  version "5.0.0"
-  resolved "http://npm.followme.com/locate-path/-/locate-path-5.0.0.tgz#1afba396afd676a6d42504d0a67a3a7eb9f62aa0"
-  integrity sha1-Gvujlq/WdqbUJQTQpno6frn2KqA=
-  dependencies:
-    p-locate "^4.1.0"
-
 lodash._reinterpolate@^3.0.0:
   version "3.0.0"
   resolved "http://npm.followme.com/lodash._reinterpolate/-/lodash._reinterpolate-3.0.0.tgz#0ccf2d89166af03b3663c796538b75ac6e114d9d"
@@ -3409,11 +3368,6 @@ lodash@^4.17.13:
   resolved "http://npm.followme.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
   integrity sha1-tEf2ZwoEVbv+7dETku/zMOoJdUg=
 
-loglevel@^1.6.7:
-  version "1.6.7"
-  resolved "http://npm.followme.com/loglevel/-/loglevel-1.6.7.tgz#b3e034233188c68b889f5b862415306f565e2c56"
-  integrity sha1-s+A0IzGIxouIn1uGJBUwb1ZeLFY=
-
 loose-envify@^1.0.0:
   version "1.4.0"
   resolved "http://npm.followme.com/loose-envify/-/loose-envify-1.4.0.tgz#71ee51fa7be4caec1a63839f7e682d8132d30caf"
@@ -3448,13 +3402,6 @@ make-dir@^2.0.0:
   dependencies:
     pify "^4.0.1"
     semver "^5.6.0"
-
-make-dir@^3.0.2:
-  version "3.0.2"
-  resolved "http://npm.followme.com/make-dir/-/make-dir-3.0.2.tgz#04a1acbf22221e1d6ef43559f43e05a90dbb4392"
-  integrity sha1-BKGsvyIiHh1u9DVZ9D4FqQ27Q5I=
-  dependencies:
-    semver "^6.0.0"
 
 mamacro@^0.0.3:
   version "0.0.3"
@@ -3853,7 +3800,7 @@ os-browserify@^0.3.0:
   resolved "http://npm.followme.com/os-browserify/-/os-browserify-0.3.0.tgz#854373c7f5c2315914fc9bfc6bd8238fdda1ec27"
   integrity sha1-hUNzx/XCMVkU/Jv8a9gjj92h7Cc=
 
-p-limit@^2.0.0, p-limit@^2.2.0:
+p-limit@^2.0.0:
   version "2.2.2"
   resolved "http://npm.followme.com/p-limit/-/p-limit-2.2.2.tgz#61279b67721f5287aa1c13a9a7fbbc48c9291b1e"
   integrity sha1-YSebZ3IfUoeqHBOpp/u8SMkpGx4=
@@ -3866,13 +3813,6 @@ p-locate@^3.0.0:
   integrity sha1-Mi1poFwCZLJZl9n0DNiokasAZKQ=
   dependencies:
     p-limit "^2.0.0"
-
-p-locate@^4.1.0:
-  version "4.1.0"
-  resolved "http://npm.followme.com/p-locate/-/p-locate-4.1.0.tgz#a3428bb7088b3a60292f66919278b7c297ad4f07"
-  integrity sha1-o0KLtwiLOmApL2aRkni3wpetTwc=
-  dependencies:
-    p-limit "^2.2.0"
 
 p-try@^2.0.0:
   version "2.2.0"
@@ -3940,11 +3880,6 @@ path-exists@^3.0.0:
   resolved "http://npm.followme.com/path-exists/-/path-exists-3.0.0.tgz#ce0ebeaa5f78cb18925ea7d810d7b59b010fd515"
   integrity sha1-zg6+ql94yxiSXqfYENe1mwEP1RU=
 
-path-exists@^4.0.0:
-  version "4.0.0"
-  resolved "http://npm.followme.com/path-exists/-/path-exists-4.0.0.tgz#513bdbe2d3b95d7762e8c1137efa195c6c61b5b3"
-  integrity sha1-UTvb4tO5XXdi6METfvoZXGxhtbM=
-
 path-is-absolute@^1.0.0:
   version "1.0.1"
   resolved "http://npm.followme.com/path-is-absolute/-/path-is-absolute-1.0.1.tgz#174b9268735534ffbc7ace6bf53a5a9e1b5c5f5f"
@@ -3982,13 +3917,6 @@ pkg-dir@^3.0.0:
   integrity sha1-J0kCDyOe2ZCIGx9xIQ1R62UjvqM=
   dependencies:
     find-up "^3.0.0"
-
-pkg-dir@^4.1.0:
-  version "4.2.0"
-  resolved "http://npm.followme.com/pkg-dir/-/pkg-dir-4.2.0.tgz#f099133df7ede422e81d1d8448270eeb3e4261f3"
-  integrity sha1-8JkTPfft5CLoHR2ESCcO6z5CYfM=
-  dependencies:
-    find-up "^4.0.0"
 
 pkg-up@^3.1.0:
   version "3.1.0"
@@ -4999,7 +4927,7 @@ schema-utils@^1.0.0:
     ajv-errors "^1.0.0"
     ajv-keywords "^3.1.0"
 
-schema-utils@^2.0.0, schema-utils@^2.5.0, schema-utils@^2.6.0, schema-utils@^2.6.4:
+schema-utils@^2.5.0, schema-utils@^2.6.0, schema-utils@^2.6.4:
   version "2.6.5"
   resolved "http://npm.followme.com/schema-utils/-/schema-utils-2.6.5.tgz#c758f0a7e624263073d396e29cd40aa101152d8a"
   integrity sha1-x1jwp+YkJjBz05binNQKoQEVLYo=
@@ -5017,7 +4945,7 @@ semver@^5.4.1, semver@^5.5.0, semver@^5.5.1, semver@^5.6.0:
   resolved "http://npm.followme.com/semver/-/semver-5.7.1.tgz#a954f931aeba508d307bbf069eff0c01c96116f7"
   integrity sha1-qVT5Ma66UI0we78Gnv8MAclhFvc=
 
-semver@^6.0.0, semver@^6.3.0:
+semver@^6.3.0:
   version "6.3.0"
   resolved "http://npm.followme.com/semver/-/semver-6.3.0.tgz#ee0a64c8af5e8ceea67687b133761e1becbd1d3d"
   integrity sha1-7gpkyK9ejO6mdoexM3YeG+y9HT0=
@@ -5580,7 +5508,7 @@ unset-value@^1.0.0:
     has-value "^0.3.1"
     isobject "^3.0.0"
 
-upath@^1.1.1:
+upath@^1.1.1, upath@^1.2.0:
   version "1.2.0"
   resolved "http://npm.followme.com/upath/-/upath-1.2.0.tgz#8f66dbcd55a883acdae4408af8b035a5044c1894"
   integrity sha1-j2bbzVWog6za5ECK+LA1pQRMGJQ=
@@ -5795,13 +5723,6 @@ webpack-node-externals@^1.7.2:
   version "1.7.2"
   resolved "http://npm.followme.com/webpack-node-externals/-/webpack-node-externals-1.7.2.tgz#6e1ee79ac67c070402ba700ef033a9b8d52ac4e3"
   integrity sha1-bh7nmsZ8BwQCunAO8DOpuNUqxOM=
-
-webpack-post-compile-plugin@^1.0.0:
-  version "1.0.0"
-  resolved "http://npm.followme.com/webpack-post-compile-plugin/-/webpack-post-compile-plugin-1.0.0.tgz#a1bae348d4bb6ebcf2bd173cbc695ae8cc825278"
-  integrity sha1-obrjSNS7brzyvRc8vGla6MyCUng=
-  dependencies:
-    micromatch "^3.1.10"
 
 webpack-sources@^1.1.0, webpack-sources@^1.4.0, webpack-sources@^1.4.1:
   version "1.4.3"

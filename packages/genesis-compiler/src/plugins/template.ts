@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { Plugin, CompilerType } from '@fmfe/genesis-core';
 import write from 'write';
+import upath from 'upath';
 import { deleteFolder } from '../utils/index';
 import { minify } from 'html-minifier';
 
@@ -37,13 +38,11 @@ export class TemplatePlugin extends Plugin {
         }
         const outputDir = path.resolve(ssr.outputDir, './src');
         const srcDir = ssr.srcDir;
-        const clientFilename = path.relative(
-            outputDir,
-            path.resolve(srcDir, './entry-client')
+        const clientFilename = upath.toUnix(
+            path.relative(outputDir, path.resolve(srcDir, './entry-client'))
         );
-        const serverFilename = path.relative(
-            outputDir,
-            path.resolve(srcDir, './entry-server')
+        const serverFilename = upath.toUnix(
+            path.relative(outputDir, path.resolve(srcDir, './entry-server'))
         );
         const writeDistSrcTemplate = (
             filename: string,
