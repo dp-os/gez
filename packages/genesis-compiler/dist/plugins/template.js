@@ -8,6 +8,7 @@ const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const genesis_core_1 = require("@fmfe/genesis-core");
 const write_1 = __importDefault(require("write"));
+const upath_1 = __importDefault(require("upath"));
 const index_1 = require("../utils/index");
 const html_minifier_1 = require("html-minifier");
 class TemplatePlugin extends genesis_core_1.Plugin {
@@ -39,8 +40,8 @@ class TemplatePlugin extends genesis_core_1.Plugin {
         }
         const outputDir = path_1.default.resolve(ssr.outputDir, './src');
         const srcDir = ssr.srcDir;
-        const clientFilename = path_1.default.relative(outputDir, path_1.default.resolve(srcDir, './entry-client'));
-        const serverFilename = path_1.default.relative(outputDir, path_1.default.resolve(srcDir, './entry-server'));
+        const clientFilename = upath_1.default.toUnix(path_1.default.relative(outputDir, path_1.default.resolve(srcDir, './entry-client')));
+        const serverFilename = upath_1.default.toUnix(path_1.default.relative(outputDir, path_1.default.resolve(srcDir, './entry-server')));
         const writeDistSrcTemplate = (filename, options = {}) => {
             let text = fs_1.default.readFileSync(path_1.default.resolve(__dirname, `../../template/${filename}`), 'utf8');
             Object.keys(options).forEach((k) => {
