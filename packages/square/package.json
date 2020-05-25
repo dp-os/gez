@@ -3,7 +3,8 @@
   "main": "dist/index.js",
   "types": "types/index.d.ts",
   "version": "0.0.58-alpha.0",
-  "description": "",
+  "description": "Vue SSR Microfront",
+  "keywords": ["vue", "ssr", "Microfront"],
   "sideEffects": false,
   "postCompile": true,
   "scripts": {
