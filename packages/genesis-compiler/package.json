@@ -1,6 +1,6 @@
 {
   "name": "@fmfe/genesis-compiler",
-  "version": "0.0.57",
+  "version": "0.0.58-alpha.0",
   "description": "",
   "main": "dist/index.js",
   "types": "types/index.d.ts",
@@ -51,7 +51,7 @@
     "write": "^2.0.0"
   },
   "devDependencies": {
-    "@fmfe/genesis-core": "^0.0.57",
+    "@fmfe/genesis-core": "^0.0.58-alpha.0",
     "@types/memory-fs": "^0.3.2",
     "@types/node": "^13.7.4",
     "@types/webpack": "^4.41.6",

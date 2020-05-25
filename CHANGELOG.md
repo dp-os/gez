@@ -1,4 +1,13 @@
-## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.57-alpha.4...v0.0.1) (2020-05-24)
+## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.57...v0.0.1) (2020-05-25)
+
+
+### Bug Fixes
+
+* **genesis-compiler:** 修复window路径错误 [#2](https://github.com/fmfe/genesis/issues/2) ([ede5a10](https://github.com/fmfe/genesis/commit/ede5a10d704703c5184918a6ae934204448bc079))
+
+
+
+## [0.0.57](https://github.com/fmfe/genesis/compare/v0.0.57-alpha.4...v0.0.57) (2020-05-24)
 
 
 
