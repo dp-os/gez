@@ -1,8 +1,12 @@
 {
   "name": "@fmfe/genesis-remote",
-  "version": "0.0.58-alpha.0",
+  "version": "0.0.58",
   "description": "Vue SSR Microfront",
-  "keywords": ["vue", "ssr", "Microfront"],
+  "keywords": [
+    "vue",
+    "ssr",
+    "Microfront"
+  ],
   "main": "dist/index.js",
   "types": "types/index.d.ts",
   "scripts": {
@@ -21,6 +25,6 @@
     "url": "https://github.com/fmfe/genesis/issues"
   },
   "devDependencies": {
-    "@fmfe/genesis-core": "^0.0.58-alpha.0"
+    "@fmfe/genesis-core": "^0.0.58"
   }
 }
