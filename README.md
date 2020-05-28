@@ -4,6 +4,8 @@
 [![npm](https://img.shields.io/npm/dm/@fmfe/genesis-core.svg)](https://www.npmjs.com/package/@fmfe/genesis-core)
 [![npm](https://img.shields.io/npm/dt/@fmfe/genesis-core.svg)](https://www.npmjs.com/package/@fmfe/genesis-core)
 
+[![架构图](https://fmfe.github.io/genesis-docs/renderer.jpg)](https://fmfe.github.io/genesis-docs/guide/renderer.html)
+
 ## 快速开发
 ```bash
 yarn
