@@ -6,6 +6,12 @@
 
 [![架构图](https://fmfe.github.io/genesis-docs/renderer.jpg)](https://fmfe.github.io/genesis-docs/guide/renderer.html)
 
+## Genesis 是什么？
+- 它只是一个基于 Vue SSR 的渲染库，它提供了 `ssr-html`、`ssr-json`、`csr-html`、`csr-json`  四种的渲染模式。    
+- `HTML` 渲染模式，可以提升首屏的渲染速度以及对 SEO 更加的友好。
+- `JSON` 渲染模式，可以提供给 `Vue`、 `EJS`、`React` 等等，进行服务端渲染或者客户端渲染。
+- `微架构` 通过 `JSON` 渲染模式，提供 API 接口，不管是微前端，还是微服务，都可以让其它服务对结果进行渲染。
+
 ## 快速开发
 ```bash
 yarn
@@ -22,6 +28,12 @@ yarn start # 运行生产包
 
 ## Codesandbox
 - [vue-genesis-template](https://codesandbox.io/s/condescending-architecture-ifgpt) 一个最基础简单的例子
+
+## demo
+- [vue-genesis-templace](https://github.com/fmfe/vue-genesis-templace) 从零创建 SSR 项目
+- [genesis-router-demo](https://github.com/fmfe/genesis-router-demo) 使用了 vue-router 的 demo
+- [vue-genesis-micro](https://github.com/fmfe/vue-genesis-micro) 实现微前端、微服务聚合的 demo
+- [vue2-demo](https://github.com/lzxb/vue2-demo) 使用了 vuex、vue-router 的demo
 
 ## 核心库说明
 |核心库|版本号|下载量|说明|
