@@ -30,7 +30,7 @@ yarn start # 运行生产包
 - [vue-genesis-template](https://codesandbox.io/s/condescending-architecture-ifgpt) 一个最基础简单的例子
 
 ## demo
-- [vue-genesis-templace](https://github.com/fmfe/vue-genesis-templace) 从零创建 SSR 项目
+- [vue-genesis-template](https://github.com/fmfe/vue-genesis-template) 从零创建 SSR 项目
 - [genesis-router-demo](https://github.com/fmfe/genesis-router-demo) 使用了 vue-router 的 demo
 - [vue-genesis-micro](https://github.com/fmfe/vue-genesis-micro) 实现微前端、微服务聚合的 demo
 - [vue2-demo](https://github.com/lzxb/vue2-demo) 使用了 vuex、vue-router 的demo
