@@ -1,4 +1,14 @@
-## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.58-alpha.0...v0.0.1) (2020-05-25)
+## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.58...v0.0.1) (2020-06-03)
+
+
+### Features
+
+* **#4:** 添加 babel 钩子,允许插件修改 babel 的配置 ([c419213](https://github.com/fmfe/genesis/commit/c4192138eff7fb7fd5f0213fcd703a010b8b4005)), closes [#4](https://github.com/fmfe/genesis/issues/4)
+* 添加渲染图 ([685b94c](https://github.com/fmfe/genesis/commit/685b94c2ef732b9ed887589db97b502949b45e56))
+
+
+
+## [0.0.58](https://github.com/fmfe/genesis/compare/v0.0.58-alpha.0...v0.0.58) (2020-05-25)
 
 
 
