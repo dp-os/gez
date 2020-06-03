@@ -9,7 +9,7 @@ export class Build {
     public ssr: SSR;
     public constructor(ssr: SSR) {
         this.ssr = ssr;
-        ssr.plugin.use(InstallPlugin);
+        ssr.plugin.unshift(InstallPlugin);
     }
 
     public async start() {

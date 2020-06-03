@@ -12,7 +12,7 @@ const index_2 = require("../utils/index");
 class Build {
     constructor(ssr) {
         this.ssr = ssr;
-        ssr.plugin.use(install_1.InstallPlugin);
+        ssr.plugin.unshift(install_1.InstallPlugin);
     }
     async start() {
         const { ssr } = this;

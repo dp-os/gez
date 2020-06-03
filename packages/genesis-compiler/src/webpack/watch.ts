@@ -40,7 +40,7 @@ export class Watch extends BaseGenesis {
 
     public constructor(ssr: SSR) {
         super(ssr);
-        ssr.plugin.use(InstallPlugin);
+        ssr.plugin.unshift(InstallPlugin);
     }
 
     public get renderer() {

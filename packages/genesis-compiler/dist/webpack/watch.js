@@ -35,7 +35,7 @@ class Watch extends utils_1.BaseGenesis {
     constructor(ssr) {
         super(ssr);
         this.watchData = {};
-        ssr.plugin.use(install_1.InstallPlugin);
+        ssr.plugin.unshift(install_1.InstallPlugin);
     }
     get renderer() {
         if (!this._renderer) {
