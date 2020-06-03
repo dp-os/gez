@@ -26,6 +26,25 @@ export class BabelPlugin extends Plugin {
                 }
             ]
         ];
+        const presetsTS = [
+            [
+                'babel-preset-typescript-vue',
+                {
+                    allowNamespaces: true
+                }
+            ],
+            ...presets
+        ];
+        const babeljs = {
+            plugins,
+            presets
+        };
+        const babelts = {
+            plugins,
+            presets: presetsTS
+        };
+        this.ssr.plugin.callHook('babel', babeljs);
+        this.ssr.plugin.callHook('babel', babelts);
         const jsRule = config.module
             .rule('js')
             .test(/\.m?jsx?$/)
@@ -33,10 +52,7 @@ export class BabelPlugin extends Plugin {
             .end()
             .use('babel')
             .loader('babel-loader')
-            .options({
-                plugins,
-                presets
-            })
+            .options(babeljs)
             .end();
         config.module
             .rule('ts')
@@ -45,18 +61,7 @@ export class BabelPlugin extends Plugin {
             .end()
             .use('babel')
             .loader('babel-loader')
-            .options({
-                plugins,
-                presets: [
-                    [
-                        'babel-preset-typescript-vue',
-                        {
-                            allowNamespaces: true
-                        }
-                    ],
-                    ...presets
-                ]
-            })
+            .options(babelts)
             .end();
 
         if (isProd) {

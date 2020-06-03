@@ -12,13 +12,13 @@ import { TemplatePlugin } from './template';
 export class InstallPlugin extends Plugin {
     public constructor(ssr: SSR) {
         super(ssr);
-        ssr.plugin.use(BarPlugin);
-        ssr.plugin.use(VuePlugin);
-        ssr.plugin.use(StylePlugin);
-        ssr.plugin.use(BabelPlugin);
-        ssr.plugin.use(ImagePlugin);
-        ssr.plugin.use(FontPlugin);
-        ssr.plugin.use(MediaPlugin);
-        ssr.plugin.use(TemplatePlugin);
+        ssr.plugin.unshift(BarPlugin);
+        ssr.plugin.unshift(VuePlugin);
+        ssr.plugin.unshift(StylePlugin);
+        ssr.plugin.unshift(BabelPlugin);
+        ssr.plugin.unshift(ImagePlugin);
+        ssr.plugin.unshift(FontPlugin);
+        ssr.plugin.unshift(MediaPlugin);
+        ssr.plugin.unshift(TemplatePlugin);
     }
 }

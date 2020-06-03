@@ -12,6 +12,10 @@ export declare class Plugin {
      */
     chainWebpack(config: Genesis.WebpackHookParams): void;
     /**
+     * Modify the configuration of babel
+     */
+    babel(config: Genesis.BabelConfig): void;
+    /**
      * Execute after building production environment
      */
     afterCompiler(type: Genesis.CompilerType): void;
@@ -38,6 +42,10 @@ export declare class PluginManage {
      * Using a plug-in for SSR
      */
     use(P: typeof Plugin | Plugin): this;
+    /**
+     * Using a plug-in for SSR
+     */
+    unshift(P: typeof Plugin | Plugin): this;
     /**
      * Execute the hook of a plug-in asynchronously
      */

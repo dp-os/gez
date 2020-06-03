@@ -14,6 +14,10 @@ class Plugin {
      */
     chainWebpack(config) { }
     /**
+     * Modify the configuration of babel
+     */
+    babel(config) { }
+    /**
      * Execute after building production environment
      */
     afterCompiler(type) { }
@@ -44,6 +48,18 @@ class PluginManage {
         }
         else {
             this.plugins.push(new P(this.ssr));
+        }
+        return this;
+    }
+    /**
+     * Using a plug-in for SSR
+     */
+    unshift(P) {
+        if (P instanceof Plugin) {
+            this.plugins.unshift(P);
+        }
+        else {
+            this.plugins.unshift(new P(this.ssr));
         }
         return this;
     }

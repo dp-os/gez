@@ -16,6 +16,10 @@ export class Plugin {
      */
     public chainWebpack(config: Genesis.WebpackHookParams) {}
     /**
+     * Modify the configuration of babel
+     */
+    public babel(config: Genesis.BabelConfig) {}
+    /**
      * Execute after building production environment
      */
     public afterCompiler(type: Genesis.CompilerType) {}
@@ -50,6 +54,17 @@ export class PluginManage {
             this.plugins.push(P);
         } else {
             this.plugins.push(new P(this.ssr));
+        }
+        return this;
+    }
+    /**
+     * Using a plug-in for SSR
+     */
+    public unshift(P: typeof Plugin | Plugin) {
+        if (P instanceof Plugin) {
+            this.plugins.unshift(P);
+        } else {
+            this.plugins.unshift(new P(this.ssr));
         }
         return this;
     }

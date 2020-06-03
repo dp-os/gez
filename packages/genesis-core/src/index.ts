@@ -101,6 +101,10 @@ namespace Genesis {
         target: 'client' | 'server';
         config: Config;
     }
+    export interface BabelConfig {
+        plugins: any[];
+        presets: any[];
+    }
     /**
      * Render Type
      */

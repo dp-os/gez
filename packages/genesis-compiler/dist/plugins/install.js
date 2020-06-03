@@ -13,14 +13,14 @@ const template_1 = require("./template");
 class InstallPlugin extends genesis_core_1.Plugin {
     constructor(ssr) {
         super(ssr);
-        ssr.plugin.use(bar_1.BarPlugin);
-        ssr.plugin.use(vue_1.VuePlugin);
-        ssr.plugin.use(style_1.StylePlugin);
-        ssr.plugin.use(babel_1.BabelPlugin);
-        ssr.plugin.use(image_1.ImagePlugin);
-        ssr.plugin.use(font_1.FontPlugin);
-        ssr.plugin.use(media_1.MediaPlugin);
-        ssr.plugin.use(template_1.TemplatePlugin);
+        ssr.plugin.unshift(bar_1.BarPlugin);
+        ssr.plugin.unshift(vue_1.VuePlugin);
+        ssr.plugin.unshift(style_1.StylePlugin);
+        ssr.plugin.unshift(babel_1.BabelPlugin);
+        ssr.plugin.unshift(image_1.ImagePlugin);
+        ssr.plugin.unshift(font_1.FontPlugin);
+        ssr.plugin.unshift(media_1.MediaPlugin);
+        ssr.plugin.unshift(template_1.TemplatePlugin);
     }
 }
 exports.InstallPlugin = InstallPlugin;
