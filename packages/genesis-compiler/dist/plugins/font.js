@@ -7,7 +7,7 @@ class FontPlugin extends genesis_core_1.Plugin {
         const { ssr } = this;
         config.module
             .rule('font')
-            .test(/\.(eot|ttf|woff|woff2)$/i)
+            .test(/\.(otf|eot|ttf|woff|woff2)$/i)
             .include.add(this.ssr.srcIncludes)
             .end()
             .use('file')
