@@ -1,4 +1,13 @@
-## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.58...v0.0.1) (2020-06-03)
+## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.59-alpha.0...v0.0.1) (2020-06-06)
+
+
+### Features
+
+* **#5:** 支持 otf 文件 ([2ab934e](https://github.com/fmfe/genesis/commit/2ab934e6ce77fccf28aeaeef5a2207fbf58e2ace)), closes [#5](https://github.com/fmfe/genesis/issues/5)
+
+
+
+## [0.0.59-alpha.0](https://github.com/fmfe/genesis/compare/v0.0.58...v0.0.59-alpha.0) (2020-06-03)
 
 
 ### Features
