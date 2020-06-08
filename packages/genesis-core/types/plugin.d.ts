@@ -16,6 +16,10 @@ export declare class Plugin {
      */
     babel(config: Genesis.BabelConfig): void;
     /**
+     * Modify the configuration of postcss, See detail https://www.npmjs.com/package/postcss-loader
+     */
+    postcss(config: Genesis.PostcssOptions): void;
+    /**
      * Execute after building production environment
      */
     afterCompiler(type: Genesis.CompilerType): void;

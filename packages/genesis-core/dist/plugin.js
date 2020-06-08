@@ -18,6 +18,10 @@ class Plugin {
      */
     babel(config) { }
     /**
+     * Modify the configuration of postcss, See detail https://www.npmjs.com/package/postcss-loader
+     */
+    postcss(config) { }
+    /**
      * Execute after building production environment
      */
     afterCompiler(type) { }

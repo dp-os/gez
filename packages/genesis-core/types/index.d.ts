@@ -96,8 +96,19 @@ declare namespace Genesis {
         config: Config;
     }
     interface BabelConfig {
+        target: 'client' | 'server';
         plugins: any[];
         presets: any[];
+    }
+    interface PostcssOptions {
+        target: 'client' | 'server';
+        exec?: boolean;
+        parser?: any;
+        syntax?: any;
+        stringifier?: any;
+        config?: any;
+        plugins: any[];
+        sourceMap: boolean;
     }
     /**
      * Render Type

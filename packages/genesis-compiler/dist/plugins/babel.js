@@ -39,13 +39,23 @@ class BabelPlugin extends genesis_core_1.Plugin {
             ...presets
         ];
         const babeljs = {
+            target,
             plugins,
             presets
         };
         const babelts = {
+            target,
             plugins,
             presets: presetsTS
         };
+        Object.defineProperty(babeljs, 'target', {
+            writable: false,
+            enumerable: false
+        });
+        Object.defineProperty(babelts, 'target', {
+            writable: false,
+            enumerable: false
+        });
         this.ssr.plugin.callHook('babel', babeljs);
         this.ssr.plugin.callHook('babel', babelts);
         const jsRule = config.module
