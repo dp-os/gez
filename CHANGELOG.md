@@ -1,6 +1,11 @@
 ## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.59...v0.0.1) (2020-06-08)
 
 
+### Features
+
+* **#6:** 插件新增postcss钩子 ([35786d0](https://github.com/fmfe/genesis/commit/35786d0e800094e333d5bfcb857f357d5fa892a0)), closes [#6](https://github.com/fmfe/genesis/issues/6)
+
+
 
 ## [0.0.59](https://github.com/fmfe/genesis/compare/v0.0.59-alpha.0...v0.0.59) (2020-06-06)
 
