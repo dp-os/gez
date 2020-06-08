@@ -1,4 +1,4 @@
-import { Plugin, WebpackHookParams } from '@fmfe/genesis-core';
+import { Plugin, WebpackHookParams, BabelConfig } from '@fmfe/genesis-core';
 export class BabelPlugin extends Plugin {
     public chainWebpack({ target, config }: WebpackHookParams) {
         const { isProd } = this.ssr;
@@ -35,14 +35,24 @@ export class BabelPlugin extends Plugin {
             ],
             ...presets
         ];
-        const babeljs = {
+        const babeljs: BabelConfig = {
+            target,
             plugins,
             presets
         };
-        const babelts = {
+        const babelts: BabelConfig = {
+            target,
             plugins,
             presets: presetsTS
         };
+        Object.defineProperty(babeljs, 'target', {
+            writable: false,
+            enumerable: false
+        });
+        Object.defineProperty(babelts, 'target', {
+            writable: false,
+            enumerable: false
+        });
         this.ssr.plugin.callHook('babel', babeljs);
         this.ssr.plugin.callHook('babel', babelts);
         const jsRule = config.module

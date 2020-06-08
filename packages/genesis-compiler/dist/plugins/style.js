@@ -18,6 +18,15 @@ class StylePlugin extends genesis_core_1.Plugin {
             /\.less/,
             /\.p(ost)?css$/
         ];
+        const postcssConfig = {
+            target,
+            plugins: [],
+            sourceMap: false
+        };
+        Object.defineProperty(postcssConfig, 'target', {
+            writable: false,
+            enumerable: false
+        });
         if (isProd) {
             if (target === 'client') {
                 config.plugin('extract-css').use(extract_css_chunks_webpack_plugin_1.default, [
@@ -37,7 +46,22 @@ class StylePlugin extends genesis_core_1.Plugin {
                 })
                     .end();
             }
+            postcssConfig.plugins.push(...[
+                postcss_preset_env_1.default({
+                    browsers: ssr.getBrowsers('client')
+                }),
+                cssnano_1.default({
+                    preset: [
+                        'default',
+                        {
+                            mergeLonghand: false,
+                            cssDeclarationSorter: false
+                        }
+                    ]
+                })
+            ]);
         }
+        this.ssr.plugin.callHook('postcss', postcssConfig);
         const loaders = {
             'vue-style': {
                 name: 'vue-style',
@@ -68,27 +92,7 @@ class StylePlugin extends genesis_core_1.Plugin {
             postcss: {
                 name: 'postcss',
                 loader: 'postcss-loader',
-                options: {
-                    sourceMap: false,
-                    plugins: () => {
-                        if (!isProd)
-                            return [];
-                        return [
-                            postcss_preset_env_1.default({
-                                browsers: ssr.getBrowsers('client')
-                            }),
-                            cssnano_1.default({
-                                preset: [
-                                    'default',
-                                    {
-                                        mergeLonghand: false,
-                                        cssDeclarationSorter: false
-                                    }
-                                ]
-                            })
-                        ];
-                    }
-                }
+                options: postcssConfig
             },
             less: {
                 name: 'less',

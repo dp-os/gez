@@ -1,7 +1,7 @@
 import ExtractCssChunks from 'extract-css-chunks-webpack-plugin';
 import postcssPresetEnv from 'postcss-preset-env';
 import cssnano from 'cssnano';
-import { Plugin, WebpackHookParams } from '@fmfe/genesis-core';
+import { Plugin, WebpackHookParams, PostcssOptions } from '@fmfe/genesis-core';
 
 interface LoaderOptions {
     name: string;
@@ -29,6 +29,15 @@ export class StylePlugin extends Plugin {
             /\.less/,
             /\.p(ost)?css$/
         ];
+        const postcssConfig: PostcssOptions = {
+            target,
+            plugins: [],
+            sourceMap: false
+        };
+        Object.defineProperty(postcssConfig, 'target', {
+            writable: false,
+            enumerable: false
+        });
         if (isProd) {
             if (target === 'client') {
                 config.plugin('extract-css').use(ExtractCssChunks, [
@@ -47,7 +56,24 @@ export class StylePlugin extends Plugin {
                     })
                     .end();
             }
+            postcssConfig.plugins.push(
+                ...[
+                    postcssPresetEnv({
+                        browsers: ssr.getBrowsers('client')
+                    }),
+                    cssnano({
+                        preset: [
+                            'default',
+                            {
+                                mergeLonghand: false,
+                                cssDeclarationSorter: false
+                            }
+                        ]
+                    })
+                ]
+            );
         }
+        this.ssr.plugin.callHook('postcss', postcssConfig);
         const loaders: { [key: string]: LoaderOptions } = {
             'vue-style': {
                 name: 'vue-style',
@@ -78,26 +104,7 @@ export class StylePlugin extends Plugin {
             postcss: {
                 name: 'postcss',
                 loader: 'postcss-loader',
-                options: {
-                    sourceMap: false,
-                    plugins: () => {
-                        if (!isProd) return [];
-                        return [
-                            postcssPresetEnv({
-                                browsers: ssr.getBrowsers('client')
-                            }),
-                            cssnano({
-                                preset: [
-                                    'default',
-                                    {
-                                        mergeLonghand: false,
-                                        cssDeclarationSorter: false
-                                    }
-                                ]
-                            })
-                        ];
-                    }
-                }
+                options: postcssConfig
             },
             less: {
                 name: 'less',
