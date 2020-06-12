@@ -1,11 +1,14 @@
 import Webpack from 'webpack';
 import MFS from 'memory-fs';
+import chalk from 'chalk';
 import { SSR, Renderer } from '@fmfe/genesis-core';
 import WebpackDevMiddleware from 'webpack-dev-middleware';
 import WebpackHotMiddleware from 'webpack-hot-middleware';
 import { ClientConfig, ServerConfig } from '../webpack';
 import { BaseGenesis } from '../utils';
 import { InstallPlugin } from '../plugins/install';
+const error = chalk.bold.red;
+const warning = chalk.keyword('orange');
 
 export class WatchClientConfig extends ClientConfig {
     public constructor(ssr: SSR) {
@@ -93,10 +96,14 @@ export class Watch extends BaseGenesis {
         const clientOnDone = (stats) => {
             const jsonStats = stats.toJson();
             if (stats.hasErrors()) {
-                jsonStats.errors.forEach((err) => console.error(err));
+                jsonStats.errors.forEach((err: Error) =>
+                    console.log(error(err))
+                );
             }
             if (stats.hasWarnings()) {
-                jsonStats.warnings.forEach((err) => console.warn(err));
+                jsonStats.warnings.forEach((err: Error) =>
+                    console.log(warning(err))
+                );
             }
             if (stats.hasErrors()) return;
             this.watchData.client = {

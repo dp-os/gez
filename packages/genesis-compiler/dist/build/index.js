@@ -9,6 +9,8 @@ const chalk_1 = __importDefault(require("chalk"));
 const install_1 = require("../plugins/install");
 const index_1 = require("../webpack/index");
 const index_2 = require("../utils/index");
+const error = chalk_1.default.bold.red;
+const warning = chalk_1.default.keyword('orange');
 class Build {
     constructor(ssr) {
         this.ssr = ssr;
@@ -23,12 +25,12 @@ class Build {
                     const jsonStats = stats.toJson();
                     if (err || stats.hasErrors()) {
                         chalk_1.default.red(`${type} errors`);
-                        jsonStats.errors.forEach((err) => console.error(err));
+                        jsonStats.errors.forEach((err) => console.log(error(err)));
                         return resolve(false);
                     }
                     if (stats.hasWarnings()) {
                         chalk_1.default.yellow(`${type} warnings`);
-                        jsonStats.warnings.forEach((err) => console.warn(err));
+                        jsonStats.warnings.forEach((err) => console.log(warning(err)));
                     }
                     resolve(true);
                 });
@@ -41,6 +43,10 @@ class Build {
             build(`${ssr.name} build server`, await new index_1.ServerConfig(ssr).toConfig())
         ]);
         await ssr.plugin.callHook('afterCompiler', 'build');
+        if (values[0] === false || values[1] === false) {
+            console.log(error(`[@fmfe/genesis-compiler] ${ssr.name} Compilation failed, please check the code error`));
+            process.exitCode = 1;
+        }
         return values;
     }
 }
