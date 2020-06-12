@@ -1,4 +1,13 @@
-## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.59...v0.0.1) (2020-06-08)
+## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.60-alpha.0...v0.0.1) (2020-06-12)
+
+
+### Features
+
+* **#7:** genesis-compiler ([ff6093f](https://github.com/fmfe/genesis/commit/ff6093ff2909c4d3137540391e5dce550b564031)), closes [#7](https://github.com/fmfe/genesis/issues/7)
+
+
+
+## [0.0.60-alpha.0](https://github.com/fmfe/genesis/compare/v0.0.59...v0.0.60-alpha.0) (2020-06-08)
 
 
 ### Features

@@ -1,6 +1,6 @@
 {
   "name": "@fmfe/genesis-compiler",
-  "version": "0.0.60-alpha.0",
+  "version": "0.0.60-alpha.1",
   "description": "Vue SSR Microfront",
   "keywords": [
     "vue",
@@ -56,7 +56,7 @@
     "write": "^2.0.0"
   },
   "devDependencies": {
-    "@fmfe/genesis-core": "^0.0.60-alpha.0",
+    "@fmfe/genesis-core": "^0.0.60-alpha.1",
     "@types/memory-fs": "^0.3.2",
     "@types/node": "^13.7.4",
     "@types/webpack": "^4.41.6",
