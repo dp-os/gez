@@ -6,11 +6,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Watch = exports.WatchClientConfig = void 0;
 const webpack_1 = __importDefault(require("webpack"));
 const memory_fs_1 = __importDefault(require("memory-fs"));
+const chalk_1 = __importDefault(require("chalk"));
 const webpack_dev_middleware_1 = __importDefault(require("webpack-dev-middleware"));
 const webpack_hot_middleware_1 = __importDefault(require("webpack-hot-middleware"));
 const webpack_2 = require("../webpack");
 const utils_1 = require("../utils");
 const install_1 = require("../plugins/install");
+const error = chalk_1.default.bold.red;
+const warning = chalk_1.default.keyword('orange');
 class WatchClientConfig extends webpack_2.ClientConfig {
     constructor(ssr) {
         super(ssr);
@@ -85,10 +88,10 @@ class Watch extends utils_1.BaseGenesis {
         const clientOnDone = (stats) => {
             const jsonStats = stats.toJson();
             if (stats.hasErrors()) {
-                jsonStats.errors.forEach((err) => console.error(err));
+                jsonStats.errors.forEach((err) => console.log(error(err)));
             }
             if (stats.hasWarnings()) {
-                jsonStats.warnings.forEach((err) => console.warn(err));
+                jsonStats.warnings.forEach((err) => console.log(warning(err)));
             }
             if (stats.hasErrors())
                 return;

@@ -5,6 +5,9 @@ import { InstallPlugin } from '../plugins/install';
 import { ClientConfig, ServerConfig } from '../webpack/index';
 import { deleteFolder } from '../utils/index';
 
+const error = chalk.bold.red;
+const warning = chalk.keyword('orange');
+
 export class Build {
     public ssr: SSR;
     public constructor(ssr: SSR) {
@@ -17,16 +20,20 @@ export class Build {
         const build = (type: string, config) => {
             return new Promise<boolean>((resolve, reject) => {
                 const compiler = webpack(config);
-                compiler.run((err, stats) => {
+                compiler.run((err: Error, stats) => {
                     const jsonStats = stats.toJson();
                     if (err || stats.hasErrors()) {
                         chalk.red(`${type} errors`);
-                        jsonStats.errors.forEach((err) => console.error(err));
+                        jsonStats.errors.forEach((err: Error) =>
+                            console.log(error(err))
+                        );
                         return resolve(false);
                     }
                     if (stats.hasWarnings()) {
                         chalk.yellow(`${type} warnings`);
-                        jsonStats.warnings.forEach((err) => console.warn(err));
+                        jsonStats.warnings.forEach((err: Error) =>
+                            console.log(warning(err))
+                        );
                     }
                     resolve(true);
                 });
@@ -45,6 +52,14 @@ export class Build {
             )
         ]);
         await ssr.plugin.callHook('afterCompiler', 'build');
+        if (values[0] === false || values[1] === false) {
+            console.log(
+                error(
+                    `[@fmfe/genesis-compiler] ${ssr.name} Compilation failed, please check the code error`
+                )
+            );
+            process.exitCode = 1;
+        }
         return values;
     }
 }
