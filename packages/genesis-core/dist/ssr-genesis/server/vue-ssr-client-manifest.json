@@ -1,14 +1,14 @@
 {
   "publicPath": "/ssr-genesis/",
   "all": [
-    "css/app.ada9711b.css",
-    "js/app.9b38834f.js",
+    "css/app.3b5adcbe.css",
+    "js/app.d1651f2a.js",
     "js/runtime.bbbb70b8.js"
   ],
   "initial": [
     "js/runtime.bbbb70b8.js",
-    "css/app.ada9711b.css",
-    "js/app.9b38834f.js"
+    "css/app.3b5adcbe.css",
+    "js/app.d1651f2a.js"
   ],
   "async": [],
   "modules": {
@@ -68,7 +68,7 @@
       0,
       1
     ],
-    "591918d5": [
+    "6142294a": [
       0,
       1
     ],
@@ -104,7 +104,7 @@
       0,
       1
     ],
-    "3b28ea26": [
+    "7ad0a61a": [
       0,
       1
     ],
@@ -364,11 +364,11 @@
       0,
       1
     ],
-    "533dc27a": [
+    "4ca6f149": [
       0,
       1
     ],
-    "1946680d": [
+    "e0e78ada": [
       0,
       1
     ]
