@@ -127,7 +127,7 @@ export class StylePlugin extends Plugin {
                 lds.push(loaders.extract);
             }
             lds.push(isModule ? loaders['module-css'] : loaders.css);
-            if (isProd) {
+            if (postcssConfig.plugins.length > 0) {
                 lds.push(loaders.postcss);
             }
             return lds;

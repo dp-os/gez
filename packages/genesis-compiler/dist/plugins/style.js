@@ -116,7 +116,7 @@ class StylePlugin extends genesis_core_1.Plugin {
                 lds.push(loaders.extract);
             }
             lds.push(isModule ? loaders['module-css'] : loaders.css);
-            if (isProd) {
+            if (postcssConfig.plugins.length > 0) {
                 lds.push(loaders.postcss);
             }
             return lds;
