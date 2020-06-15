@@ -1,4 +1,13 @@
-## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.60-alpha.0...v0.0.1) (2020-06-12)
+## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.60-alpha.1...v0.0.1) (2020-06-15)
+
+
+### Bug Fixes
+
+* **#8:** 修复在开发环境上不启用 postcss 插件的bug ([4bd4724](https://github.com/fmfe/genesis/commit/4bd47246e6233cbdcd72e53d33284a882bce2e7e)), closes [#8](https://github.com/fmfe/genesis/issues/8)
+
+
+
+## [0.0.60-alpha.1](https://github.com/fmfe/genesis/compare/v0.0.60-alpha.0...v0.0.60-alpha.1) (2020-06-12)
 
 
 ### Features
