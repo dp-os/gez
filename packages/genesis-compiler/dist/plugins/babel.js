@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.BabelPlugin = void 0;
 const genesis_core_1 = require("@fmfe/genesis-core");
 class BabelPlugin extends genesis_core_1.Plugin {
-    chainWebpack({ target, config }) {
+    async chainWebpack({ target, config }) {
         const { isProd } = this.ssr;
         config.resolve.extensions.prepend('.js').prepend('.ts');
         const plugins = [
@@ -56,8 +56,8 @@ class BabelPlugin extends genesis_core_1.Plugin {
             writable: false,
             enumerable: false
         });
-        this.ssr.plugin.callHook('babel', babeljs);
-        this.ssr.plugin.callHook('babel', babelts);
+        await this.ssr.plugin.callHook('babel', babeljs);
+        await this.ssr.plugin.callHook('babel', babelts);
         const jsRule = config.module
             .rule('js')
             .test(/\.m?jsx?$/)

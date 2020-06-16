@@ -76,16 +76,12 @@ export class PluginManage {
     /**
      * Execute the hook of a plug-in asynchronously
      */
-    public callHook<T extends Exclude<keyof Plugin, 'ssr'>>(
+    public async callHook<T extends Exclude<keyof Plugin, 'ssr'>>(
         key: T,
         ...args: Parameters<Plugin[T]>
     ) {
-        const p = Promise.resolve();
-        this.plugins.forEach((plugin) => {
-            p.then(() => {
-                return (plugin as any)[key](...args);
-            });
-        });
-        return p;
+        for (const plugin of this.plugins) {
+            await (plugin as any)[key](...args);
+        }
     }
 }

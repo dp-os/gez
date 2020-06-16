@@ -70,14 +70,10 @@ class PluginManage {
     /**
      * Execute the hook of a plug-in asynchronously
      */
-    callHook(key, ...args) {
-        const p = Promise.resolve();
-        this.plugins.forEach((plugin) => {
-            p.then(() => {
-                return plugin[key](...args);
-            });
-        });
-        return p;
+    async callHook(key, ...args) {
+        for (const plugin of this.plugins) {
+            await plugin[key](...args);
+        }
     }
 }
 exports.PluginManage = PluginManage;

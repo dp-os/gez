@@ -9,7 +9,7 @@ const postcss_preset_env_1 = __importDefault(require("postcss-preset-env"));
 const cssnano_1 = __importDefault(require("cssnano"));
 const genesis_core_1 = require("@fmfe/genesis-core");
 class StylePlugin extends genesis_core_1.Plugin {
-    chainWebpack({ target, config }) {
+    async chainWebpack({ target, config }) {
         const { ssr } = this;
         const { isProd } = ssr;
         const srcIncludes = [
@@ -61,7 +61,7 @@ class StylePlugin extends genesis_core_1.Plugin {
                 })
             ]);
         }
-        this.ssr.plugin.callHook('postcss', postcssConfig);
+        await this.ssr.plugin.callHook('postcss', postcssConfig);
         const loaders = {
             'vue-style': {
                 name: 'vue-style',

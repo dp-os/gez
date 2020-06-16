@@ -1,6 +1,6 @@
 import { Plugin, WebpackHookParams, BabelConfig } from '@fmfe/genesis-core';
 export class BabelPlugin extends Plugin {
-    public chainWebpack({ target, config }: WebpackHookParams) {
+    public async chainWebpack({ target, config }: WebpackHookParams) {
         const { isProd } = this.ssr;
         config.resolve.extensions.prepend('.js').prepend('.ts');
         const plugins = [
@@ -53,8 +53,8 @@ export class BabelPlugin extends Plugin {
             writable: false,
             enumerable: false
         });
-        this.ssr.plugin.callHook('babel', babeljs);
-        this.ssr.plugin.callHook('babel', babelts);
+        await this.ssr.plugin.callHook('babel', babeljs);
+        await this.ssr.plugin.callHook('babel', babelts);
         const jsRule = config.module
             .rule('js')
             .test(/\.m?jsx?$/)
