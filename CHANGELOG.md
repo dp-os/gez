@@ -1,6 +1,11 @@
 ## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.60-alpha.2...v0.0.1) (2020-06-16)
 
 
+### Bug Fixes
+
+* **#8:** 修复插件没有串行执行的bug ([c6d7343](https://github.com/fmfe/genesis/commit/c6d7343dbe93845599ab754686c0644e6ea440c1)), closes [#8](https://github.com/fmfe/genesis/issues/8)
+
+
 
 ## [0.0.60-alpha.2](https://github.com/fmfe/genesis/compare/v0.0.60-alpha.1...v0.0.60-alpha.2) (2020-06-15)
 
