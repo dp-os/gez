@@ -20,7 +20,7 @@ interface RuleOptions {
     };
 }
 export class StylePlugin extends Plugin {
-    public chainWebpack({ target, config }: WebpackHookParams) {
+    public async chainWebpack({ target, config }: WebpackHookParams) {
         const { ssr } = this;
         const { isProd } = ssr;
         const srcIncludes = [
@@ -73,7 +73,7 @@ export class StylePlugin extends Plugin {
                 ]
             );
         }
-        this.ssr.plugin.callHook('postcss', postcssConfig);
+        await this.ssr.plugin.callHook('postcss', postcssConfig);
         const loaders: { [key: string]: LoaderOptions } = {
             'vue-style': {
                 name: 'vue-style',
