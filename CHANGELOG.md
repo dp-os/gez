@@ -1,8 +1,10 @@
-## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.60-alpha.2...v0.0.1) (2020-06-16)
+## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.60-alpha.3...v0.0.1) (2020-06-18)
 
 
 ### Bug Fixes
 
+* **#8:** build code ([a85581a](https://github.com/fmfe/genesis/commit/a85581a67a9fb1371f619728864edc179e6cddcd)), closes [#8](https://github.com/fmfe/genesis/issues/8)
+* **#8:** 修复插件同步执行的bug ([b9cfb7c](https://github.com/fmfe/genesis/commit/b9cfb7c503371565709b0d03d89b95664e8d5d67)), closes [#8](https://github.com/fmfe/genesis/issues/8)
 * **#8:** 修复插件没有串行执行的bug ([c6d7343](https://github.com/fmfe/genesis/commit/c6d7343dbe93845599ab754686c0644e6ea440c1)), closes [#8](https://github.com/fmfe/genesis/issues/8)
 
 
