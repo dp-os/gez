@@ -37,6 +37,12 @@ const app = new Vue({
 app.$square.count.$plus();
 app.$square.count.value // 1
 
+declare module '@fmfe/square/types/square' {
+    export interface Square {
+        count: Count;
+    }
+}
+
 ```
 
 ## Server-Side Rendering
