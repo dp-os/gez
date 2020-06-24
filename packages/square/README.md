@@ -48,9 +48,7 @@ declare module '@fmfe/square/types/square' {
 ## Server-Side Rendering
 ```ts
 // Server
-const micro = new Micro({
-    commits: state.commits || []
-});
+const micro = new Micro();
 state.commits = micro.createServerCommit();
 // Client
 const micro = new Micro({
