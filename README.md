@@ -4,7 +4,7 @@
 [![npm](https://img.shields.io/npm/dm/@fmfe/genesis-core.svg)](https://www.npmjs.com/package/@fmfe/genesis-core)
 [![npm](https://img.shields.io/npm/dt/@fmfe/genesis-core.svg)](https://www.npmjs.com/package/@fmfe/genesis-core)
 
-[![架构图](https://fmfe.github.io/genesis-docs/renderer.jpg)](https://fmfe.github.io/genesis-docs/guide/renderer.html)
+[![架构图](https://fmfe.github.io/genesis-docs/renderer.jpg?v=1)](https://fmfe.github.io/genesis-docs/guide/renderer.html)
 
 ## Genesis 是什么？
 - 它只是一个基于 Vue SSR 的渲染库，它提供了 `ssr-html`、`ssr-json`、`csr-html`、`csr-json`  四种的渲染模式。    
