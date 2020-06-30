@@ -7,10 +7,10 @@
 [![Architecture diagram](https://fmfe.github.io/genesis-docs/renderer.jpg?v=1)](https://fmfe.github.io/genesis-docs/guide/renderer.html)
 
 ## What is Genesis?
-- It is only a rendering Library Based on Vue SSR. It provides four rendering modes: `ssr-html`, `ssr-json`, `csr-html` and `csr-json`.    
-- `HTML` rendering mode, can improve the first screen rendering speed and more SEO friendly.
-- `JSON` rendering mode can be provided to `Vue`,`ejs`,`react`, etc. for server-side rendering or client-side rendering.
-- Microservices provide API interfaces through the `JSON` rendering mode. Whether it is a micro front end or a microservice, other services can render the results.
+- It is only a render Library Based on Vue SSR. It provides four render modes: `ssr-html`, `ssr-json`, `csr-html` and `csr-json`.    
+- `HTML` render mode, can improve the first screen render speed and more SEO friendly.
+- `JSON` render mode can be provided to `Vue`,`ejs`,`react`, etc. for server-side render or client-side render.
+- Microservices provide API interfaces through the `JSON` render mode. Whether it is a micro front end or a microservice, other services can render the results.
 
 ## Quick start
 ```bash
