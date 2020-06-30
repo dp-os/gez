@@ -10,7 +10,7 @@
 - It is only a render Library Based on Vue SSR. It provides four render modes: `ssr-html`, `ssr-json`, `csr-html` and `csr-json`.    
 - `HTML` render mode, can improve the first screen render speed and more SEO friendly.
 - `JSON` render mode can be used for `Vue`、 `EJS`、`React`, etc. for server-side render or client-side render.
-- Microservices provide API interfaces through the `JSON` render mode. Whether it is a micro front end or a microservice, other services can render the results.
+- Microservices provide API interfaces that uses `JSON` render mode to generate `HTML` structures which can be embedded into html pages on client-side or server-side.  
 
 ## Quick start
 ```bash
