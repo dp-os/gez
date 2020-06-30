@@ -26,7 +26,7 @@ yarn start # Run production package
 
 
 ## Codesandbox
-- [vue-genesis-template](https://codesandbox.io/s/condescending-architecture-ifgpt) 一个最基础简单的例子
+- [vue-genesis-template](https://codesandbox.io/s/condescending-architecture-ifgpt) One of the most basic and simple examples
 
 ## Demo
 - [vue-genesis-template](https://github.com/fmfe/vue-genesis-template) Create SSR project from zero
