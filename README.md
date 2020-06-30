@@ -4,13 +4,13 @@
 [![npm](https://img.shields.io/npm/dm/@fmfe/genesis-core.svg)](https://www.npmjs.com/package/@fmfe/genesis-core)
 [![npm](https://img.shields.io/npm/dt/@fmfe/genesis-core.svg)](https://www.npmjs.com/package/@fmfe/genesis-core)
 
-[![架构图](https://fmfe.github.io/genesis-docs/renderer.jpg?v=1)](https://fmfe.github.io/genesis-docs/guide/renderer.html)
+[![Architecture diagram](https://fmfe.github.io/genesis-docs/renderer.jpg?v=1)](https://fmfe.github.io/genesis-docs/guide/renderer.html)
 
-## Genesis 是什么？
-- 它只是一个基于 Vue SSR 的渲染库，它提供了 `ssr-html`、`ssr-json`、`csr-html`、`csr-json`  四种的渲染模式。    
-- `HTML` 渲染模式，可以提升首屏的渲染速度以及对 SEO 更加的友好。
-- `JSON` 渲染模式，可以提供给 `Vue`、 `EJS`、`React` 等等，进行服务端渲染或者客户端渲染。
-- `微架构` 通过 `JSON` 渲染模式，提供 API 接口，不管是微前端，还是微服务，都可以让其它服务对结果进行渲染。
+## What is Genesis?
+- It is only a rendering Library Based on Vue SSR. It provides four rendering modes: `ssr-html`, `ssr-json`, `csr-html` and `csr-json`.    
+- `HTML` rendering mode, can improve the first screen rendering speed and more SEO friendly.
+- `JSON` rendering mode can be provided to `Vue`,`ejs`,`react`, etc. for server-side rendering or client-side rendering.
+- Microservices provide API interfaces through the `JSON` rendering mode. Whether it is a micro front end or a microservice, other services can render the results.
 
 ## Quick start
 ```bash
@@ -34,7 +34,7 @@ yarn start # Run production package
 - [vue-genesis-micro](https://github.com/fmfe/vue-genesis-micro) 实现微前端、微服务聚合的 demo
 - [vue2-demo](https://github.com/lzxb/vue2-demo) 使用了 vuex、vue-router 的demo
 
-## 核心库说明
+## Core library description
 |核心库|版本号|下载量|说明|
 |:-|:-:|:-|:-|
 |[genesis-core](https://fmfe.github.io/genesis-docs/core/)|[![npm](https://img.shields.io/npm/v/@fmfe/genesis-core.svg)](https://www.npmjs.com/package/@fmfe/genesis-core) |[![npm](https://img.shields.io/npm/dm/@fmfe/genesis-core.svg)](https://www.npmjs.com/package/@fmfe/genesis-core)|提供基础的插件机制、SSR渲染逻辑、程序配置|
@@ -44,5 +44,5 @@ yarn start # Run production package
 |[square](https://www.npmjs.com/package/@fmfe/square)|[![npm](https://img.shields.io/npm/v/@fmfe/square.svg)](https://www.npmjs.com/package/@fmfe/square) |[![npm](https://img.shields.io/npm/dm/@fmfe/square.svg)](https://www.npmjs.com/package/@fmfe/square)|一个为了微模块设计的状态管理库|
 |[genesis-lint](https://www.npmjs.com/package/@fmfe/genesis-lint)|[![npm](https://img.shields.io/npm/v/@fmfe/genesis-lint.svg)](https://www.npmjs.com/package/@fmfe/genesis-lint) |[![npm](https://img.shields.io/npm/dm/@fmfe/genesis-lint.svg)](https://www.npmjs.com/package/@fmfe/genesis-lint)|一个代码规范的集成，包含了eslint和stylelint| 
 
-## 有哪些公司在使用
+## Which companies use it
 - [FOLLOWME5.0](https://www.followme.com/)
