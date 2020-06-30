@@ -9,7 +9,7 @@
 ## What is Genesis?
 - It is only a render Library Based on Vue SSR. It provides four render modes: `ssr-html`, `ssr-json`, `csr-html` and `csr-json`.    
 - `HTML` render mode, can improve the first screen render speed and more SEO friendly.
-- `JSON` render mode can be provided to `Vue`,`ejs`,`react`, etc. for server-side render or client-side render.
+- `JSON` render mode can be provided to `Vue`、 `EJS`、`React`, etc. for server-side render or client-side render.
 - Microservices provide API interfaces through the `JSON` render mode. Whether it is a micro front end or a microservice, other services can render the results.
 
 ## Quick start
