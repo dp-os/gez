@@ -1,4 +1,13 @@
-## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.60...v0.0.1) (2020-06-24)
+## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.61...v0.0.1) (2020-07-03)
+
+
+### Bug Fixes
+
+* **#16:** 修复ssr.srcIncludes 的bug ([6d21b66](https://github.com/fmfe/genesis/commit/6d21b66f90b60246b5fb87ae2f14d07d046aaaeb)), closes [#16](https://github.com/fmfe/genesis/issues/16)
+
+
+
+## [0.0.61](https://github.com/fmfe/genesis/compare/v0.0.60...v0.0.61) (2020-06-24)
 
 
 
