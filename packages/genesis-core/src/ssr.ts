@@ -108,16 +108,14 @@ export class SSR {
      */
     public get srcIncludes() {
         return [
-            ...(this.options?.build?.transpile || []),
+            ...this.transpile,
             this.srcDir,
             path.resolve(this.outputDir, './src')
         ];
     }
 
     public get transpile() {
-        const transpile: RegExp[] = Object.assign(
-            this.options?.build?.transpile || []
-        );
+        const transpile: RegExp[] = this.options?.build?.transpile || [];
 
         transpile.push(/@fmfe\/genesis-app/);
 
