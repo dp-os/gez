@@ -80,8 +80,9 @@ test('check options.build.baseDir', async () => {
             );
         })
     );
-    await expect(ssr.srcIncludes[0]).toBe(ssr.srcDir);
-    await expect(ssr.srcIncludes[1]).toBe(
+    await expect(String(ssr.srcIncludes[0])).toBe('/@fmfe\\/genesis-app/');
+    await expect(ssr.srcIncludes[1]).toBe(ssr.srcDir);
+    await expect(ssr.srcIncludes[2]).toBe(
         path.resolve(baseDir, 'dist/ssr-test/src')
     );
 });
