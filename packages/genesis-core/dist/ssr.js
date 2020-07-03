@@ -100,16 +100,15 @@ class SSR {
      * Directory to be compiled by webpack
      */
     get srcIncludes() {
-        var _a, _b;
         return [
-            ...(((_b = (_a = this.options) === null || _a === void 0 ? void 0 : _a.build) === null || _b === void 0 ? void 0 : _b.transpile) || []),
+            ...this.transpile,
             this.srcDir,
             path_1.default.resolve(this.outputDir, './src')
         ];
     }
     get transpile() {
         var _a, _b;
-        const transpile = Object.assign(((_b = (_a = this.options) === null || _a === void 0 ? void 0 : _a.build) === null || _b === void 0 ? void 0 : _b.transpile) || []);
+        const transpile = ((_b = (_a = this.options) === null || _a === void 0 ? void 0 : _a.build) === null || _b === void 0 ? void 0 : _b.transpile) || [];
         transpile.push(/@fmfe\/genesis-app/);
         return transpile;
     }
