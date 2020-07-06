@@ -1,4 +1,8 @@
-## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.61...v0.0.1) (2020-07-03)
+## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.62-alpha.0...v0.0.1) (2020-07-06)
+
+
+
+## [0.0.62-alpha.0](https://github.com/fmfe/genesis/compare/v0.0.61...v0.0.62-alpha.0) (2020-07-03)
 
 
 ### Bug Fixes
