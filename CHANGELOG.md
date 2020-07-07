@@ -1,4 +1,13 @@
-## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.62...v0.0.1) (2020-07-07)
+## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.63-alpha.0...v0.0.1) (2020-07-07)
+
+
+### Bug Fixes
+
+* 禁用 @typescript-eslint/no-invalid-this ([60344c2](https://github.com/fmfe/genesis/commit/60344c29c65e862b36435269bf6fa20dd52d5385))
+
+
+
+## [0.0.63-alpha.0](https://github.com/fmfe/genesis/compare/v0.0.62...v0.0.63-alpha.0) (2020-07-07)
 
 
 ### Features
