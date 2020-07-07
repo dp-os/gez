@@ -333,10 +333,10 @@ export const RemoteView: any = {
             const haveFlase = (arr: boolean[]) => {
                 for (let i = 0; i < arr.length; i++) {
                     if (arr[i] === false) {
-                        return false;
+                        return true;
                     }
                 }
-                return true;
+                return false;
             };
             return this._fetch().then((data: RemoteViewData) => {
                 if (data === null) return;
