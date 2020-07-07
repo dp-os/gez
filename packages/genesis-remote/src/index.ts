@@ -343,11 +343,11 @@ export const RemoteView: any = {
                 Promise.all([
                     loadStyle(data.style).then((arr) => {
                         this.localData = { ...data };
-                        return haveFlase(arr);
+                        return !haveFlase(arr);
                     }),
                     loadScript(data.script).then((arr) => {
                         (window as any)[data.id] = data.state;
-                        return haveFlase(arr);
+                        return !haveFlase(arr);
                     })
                 ]).then((arr) => {
                     this.installOptions = { ...data };
