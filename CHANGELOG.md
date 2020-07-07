@@ -1,4 +1,13 @@
-## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.62-alpha.0...v0.0.1) (2020-07-06)
+## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.62...v0.0.1) (2020-07-07)
+
+
+### Features
+
+* **#10:** support <RemoteView [@my-event](https://github.com/my-event)=myEvent /> ([91c59be](https://github.com/fmfe/genesis/commit/91c59beb37094fb8c4b2c176e6f89597c32294e1)), closes [#10](https://github.com/fmfe/genesis/issues/10)
+
+
+
+## [0.0.62](https://github.com/fmfe/genesis/compare/v0.0.62-alpha.0...v0.0.62) (2020-07-06)
 
 
 
