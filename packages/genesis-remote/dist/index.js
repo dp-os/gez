@@ -335,11 +335,11 @@ exports.RemoteView = {
                 Promise.all([
                     exports.loadStyle(data.style).then(function (arr) {
                         _this.localData = __assign({}, data);
-                        return haveFlase(arr);
+                        return !haveFlase(arr);
                     }),
                     exports.loadScript(data.script).then(function (arr) {
                         window[data.id] = data.state;
-                        return haveFlase(arr);
+                        return !haveFlase(arr);
                     })
                 ]).then(function (arr) {
                     _this.installOptions = __assign({}, data);
