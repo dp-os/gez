@@ -18,6 +18,7 @@ export default Vue.extend({
     },
     mounted() {
         this.installed = true;
+        this.$root.$emit('msg', '我是子服务发射的事件内容');
     },
     methods: {
         clsoe() {

@@ -260,7 +260,11 @@ exports.RemoteView = {
         install: function () {
             var _this = this;
             this.$nextTick(function () {
-                var options = __assign({}, _this.installOptions);
+                var options = __assign(__assign({}, _this.installOptions), { mounted: function (app) {
+                        Object.keys(_this.$listeners).forEach(function (name) {
+                            app.$on(name, _this.$listeners[name]);
+                        });
+                    } });
                 if (!_this.$el.firstChild)
                     return;
                 Object.defineProperty(options, 'el', {
@@ -317,19 +321,32 @@ exports.RemoteView = {
         },
         clientLoad: function () {
             var _this = this;
+            var haveFlase = function (arr) {
+                for (var i = 0; i < arr.length; i++) {
+                    if (arr[i] === false) {
+                        return false;
+                    }
+                }
+                return true;
+            };
             return this._fetch().then(function (data) {
                 if (data === null)
                     return;
                 Promise.all([
-                    exports.loadStyle(data.style).then(function () {
+                    exports.loadStyle(data.style).then(function (arr) {
                         _this.localData = __assign({}, data);
+                        return haveFlase(arr);
                     }),
-                    exports.loadScript(data.script).then(function () {
+                    exports.loadScript(data.script).then(function (arr) {
                         window[data.id] = data.state;
+                        return haveFlase(arr);
                     })
-                ]).then(function () {
+                ]).then(function (arr) {
                     _this.installOptions = __assign({}, data);
                     _this.install();
+                    if (haveFlase(arr)) {
+                        _this.$emit('error');
+                    }
                 });
             });
         }
