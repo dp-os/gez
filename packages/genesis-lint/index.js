@@ -47,6 +47,7 @@ module.exports = {
         'vue/component-definition-name-casing': ['error', 'kebab-case'],
         '@typescript-eslint/prefer-optional-chain': 'off',
         '@typescript-eslint/no-require-imports': 'off',
+        '@typescript-eslint/no-invalid-this': 'off',
         'no-template-curly-in-string': 'off',
         'vue/valid-template-root': 'off',
         camelcase: 'off',
