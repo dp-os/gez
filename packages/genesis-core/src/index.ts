@@ -176,6 +176,7 @@ namespace Genesis {
             [x: string]: any;
         };
         el: Element;
+        mounted?: (app: Vue) => void;
     }
     export interface RenderOptions<
         T extends Genesis.RenderMode = Genesis.RenderMode

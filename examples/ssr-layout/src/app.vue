@@ -46,6 +46,9 @@ export default Vue.extend({
                 return res.data;
             }
             return null;
+        },
+        onMsg(msg: string) {
+            console.log('>>>>>>>>>>>>>', msg);
         }
     }
 });

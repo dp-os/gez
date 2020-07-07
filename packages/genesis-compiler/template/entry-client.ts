@@ -7,6 +7,8 @@ interface InstalledListItem {
     options: ClientOptions;
 }
 
+const isFunc = (fn: any) => typeof fn === 'function';
+
 class Genesis {
     private applicationCenter = {};
     private installedList: InstalledListItem[] = [];
@@ -98,6 +100,9 @@ class Genesis {
                 );
             }
             app.$mount(item.options.el);
+            if (isFunc(item.options.mounted)) {
+                item.options.mounted(app);
+            }
         });
     }
 }

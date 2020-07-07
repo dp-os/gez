@@ -166,6 +166,7 @@ declare namespace Genesis {
             [x: string]: any;
         };
         el: Element;
+        mounted?: (app: Vue) => void;
     }
     interface RenderOptions<T extends Genesis.RenderMode = Genesis.RenderMode> {
         req?: IncomingMessage;

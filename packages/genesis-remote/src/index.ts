@@ -268,7 +268,12 @@ export const RemoteView: any = {
         install() {
             this.$nextTick(() => {
                 const options = {
-                    ...this.installOptions
+                    ...this.installOptions,
+                    mounted: (app: Vue) => {
+                        Object.keys(this.$listeners).forEach((name) => {
+                            app.$on(name, this.$listeners[name]);
+                        });
+                    }
                 };
                 if (!this.$el.firstChild) return;
                 Object.defineProperty(options, 'el', {
@@ -325,18 +330,31 @@ export const RemoteView: any = {
             this.needClientLoad = false;
         },
         clientLoad() {
+            const haveFlase = (arr: boolean[]) => {
+                for (let i = 0; i < arr.length; i++) {
+                    if (arr[i] === false) {
+                        return false;
+                    }
+                }
+                return true;
+            };
             return this._fetch().then((data: RemoteViewData) => {
                 if (data === null) return;
                 Promise.all([
-                    loadStyle(data.style).then(() => {
+                    loadStyle(data.style).then((arr) => {
                         this.localData = { ...data };
+                        return haveFlase(arr);
                     }),
-                    loadScript(data.script).then(() => {
+                    loadScript(data.script).then((arr) => {
                         (window as any)[data.id] = data.state;
+                        return haveFlase(arr);
                     })
-                ]).then(() => {
+                ]).then((arr) => {
                     this.installOptions = { ...data };
                     this.install();
+                    if (haveFlase(arr)) {
+                        this.$emit('error');
+                    }
                 });
             });
         }
