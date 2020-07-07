@@ -1,4 +1,13 @@
-## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.63-alpha.0...v0.0.1) (2020-07-07)
+## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.63-alpha.1...v0.0.1) (2020-07-07)
+
+
+### Bug Fixes
+
+* **#10:** bugfix haveFlase ([44252da](https://github.com/fmfe/genesis/commit/44252dacde27891b4e369e156656937bb6b84d98))
+
+
+
+## [0.0.63-alpha.1](https://github.com/fmfe/genesis/compare/v0.0.63-alpha.0...v0.0.63-alpha.1) (2020-07-07)
 
 
 ### Bug Fixes
