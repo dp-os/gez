@@ -131,11 +131,11 @@ exports.loadScript = function (html) {
             }
             else {
                 var newScript_1 = document.createElement('script');
-                var attrs = el.getAttributeNames();
+                var attrs = Object.values(el.attributes);
                 newScript_1.async = false;
                 attrs.forEach(function (attr) {
-                    var value = el.getAttribute(attr);
-                    newScript_1.setAttribute(attr, value);
+                    var value = el.getAttribute(attr.name);
+                    newScript_1.setAttribute(attr.name, value);
                 });
                 arr.push(onload(newScript_1, false));
                 installArr.push(newScript_1);

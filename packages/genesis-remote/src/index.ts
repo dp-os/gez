@@ -136,11 +136,11 @@ export const loadScript = (html: string): Promise<boolean[]> => {
                 return;
             } else {
                 const newScript = document.createElement('script');
-                const attrs = el.getAttributeNames();
+                const attrs = Object.values(el.attributes);
                 newScript.async = false;
                 attrs.forEach((attr) => {
-                    const value = el.getAttribute(attr)!;
-                    newScript.setAttribute(attr, value);
+                    const value = el.getAttribute(attr.name)!;
+                    newScript.setAttribute(attr.name, value);
                 });
                 arr.push(onload(newScript, false));
                 installArr.push(newScript);
