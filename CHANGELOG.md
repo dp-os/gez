@@ -1,4 +1,13 @@
-## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.63-alpha.3...v0.0.1) (2020-07-07)
+## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.63...v0.0.1) (2020-07-08)
+
+
+### Bug Fixes
+
+* 修复远程加载组件兼容性 ([f29af1e](https://github.com/fmfe/genesis/commit/f29af1e090c79cd8752757d7dfb9ef0a914a300d))
+
+
+
+## [0.0.63](https://github.com/fmfe/genesis/compare/v0.0.63-alpha.3...v0.0.63) (2020-07-07)
 
 
 
