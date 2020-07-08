@@ -1,6 +1,6 @@
 {
   "name": "@fmfe/genesis-core",
-  "version": "0.0.63",
+  "version": "0.0.64",
   "description": "Vue SSR Microfront",
   "keywords": [
     "vue",
