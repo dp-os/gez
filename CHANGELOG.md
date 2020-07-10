@@ -1,4 +1,13 @@
-## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.64...v0.0.1) (2020-07-10)
+## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.65-alpha.0...v0.0.1) (2020-07-10)
+
+
+### Bug Fixes
+
+* 屏蔽掉错误的报错 ([ca79543](https://github.com/fmfe/genesis/commit/ca7954315674268664c779e22f573fb2884de124))
+
+
+
+## [0.0.65-alpha.0](https://github.com/fmfe/genesis/compare/v0.0.64...v0.0.65-alpha.0) (2020-07-10)
 
 
 ### Bug Fixes
