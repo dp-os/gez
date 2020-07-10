@@ -121,7 +121,7 @@ export class Router extends VueRouter {
     }
 
     public async push(location: RawLocation) {
-        const url = this.resolve(location).href;
+        const url = this.resolve(location).route.fullPath;
         if (url === this.currentRoute.fullPath) return this.currentRoute;
         const sync = (url: string) => {
             if (this._isSync) {
@@ -137,12 +137,12 @@ export class Router extends VueRouter {
                 });
             });
         });
-        sync(url);
+        sync(v.fullPath);
         return v;
     }
 
     public async replace(location: RawLocation) {
-        const url = this.resolve(location).href;
+        const url = this.resolve(location).route.fullPath;
         const sync = (url: string) => {
             if (this._isSync) {
                 route.dispatchTarget(this).replace(url);
@@ -157,7 +157,7 @@ export class Router extends VueRouter {
                 });
             });
         });
-        sync(url);
+        sync(v.fullPath);
         return v;
     }
 
