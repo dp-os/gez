@@ -1,6 +1,11 @@
 ## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.65-alpha.1...v0.0.1) (2020-07-10)
 
 
+### Bug Fixes
+
+* 修复多次更改路由的bug ([480f92c](https://github.com/fmfe/genesis/commit/480f92cd99bf71c70d6ef4d75b188201eaddbcc1))
+
+
 
 ## [0.0.65-alpha.1](https://github.com/fmfe/genesis/compare/v0.0.65-alpha.0...v0.0.65-alpha.1) (2020-07-10)
 
