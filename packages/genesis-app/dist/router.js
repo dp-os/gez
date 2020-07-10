@@ -120,20 +120,40 @@ class Router extends vue_router_1.default {
         const url = this.resolve(location).href;
         if (url === this.currentRoute.fullPath)
             return this.currentRoute;
-        const v = await super.push(location);
-        if (this._isSync) {
-            route.dispatchTarget(this).push(url);
-            history.pushState({}, '', url);
-        }
+        const sync = (url) => {
+            if (this._isSync) {
+                route.dispatchTarget(this).push(url);
+                history.pushState({}, '', url);
+            }
+        };
+        const v = await super.push(location).catch((err) => {
+            setTimeout(() => {
+                if (this.currentRoute.fullPath === url)
+                    return;
+                sync(this.currentRoute.fullPath);
+            });
+            return Promise.reject(err);
+        });
+        sync(url);
         return v;
     }
     async replace(location) {
         const url = this.resolve(location).href;
-        const v = await super.replace(location);
-        if (this._isSync) {
-            route.dispatchTarget(this).replace(url);
-            history.replaceState({}, '', url);
-        }
+        const sync = (url) => {
+            if (this._isSync) {
+                route.dispatchTarget(this).replace(url);
+                history.replaceState({}, '', url);
+            }
+        };
+        const v = await super.replace(location).catch((err) => {
+            setTimeout(() => {
+                if (this.currentRoute.fullPath === url)
+                    return;
+                sync(this.currentRoute.fullPath);
+            });
+            return Promise.reject(err);
+        });
+        sync(url);
         return v;
     }
     go(n) {
