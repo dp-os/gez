@@ -1,4 +1,13 @@
-## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.63...v0.0.1) (2020-07-08)
+## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.64...v0.0.1) (2020-07-10)
+
+
+### Bug Fixes
+
+* 修复路由错误时,不同步历史记录的bug ([7833f27](https://github.com/fmfe/genesis/commit/7833f27844df40b05014aba8be352a258a5e9fbc))
+
+
+
+## [0.0.64](https://github.com/fmfe/genesis/compare/v0.0.63...v0.0.64) (2020-07-08)
 
 
 ### Bug Fixes
