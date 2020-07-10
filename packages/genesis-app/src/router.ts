@@ -26,17 +26,17 @@ class GenesisAppRouter {
         });
     }
 
-    public set(router: VueRouter) {
+    public set(router: any) {
         if (this.list.indexOf(router) > -1) return;
         this.list.push(router);
     }
 
-    public clear(router: VueRouter) {
+    public clear(router: any) {
         const index = this.list.indexOf(router);
         this.list.splice(index, 1);
     }
 
-    public dispatchTarget(target: VueRouter) {
+    public dispatchTarget(target: any) {
         this.target = target;
         return this;
     }
@@ -118,21 +118,39 @@ export class Router extends VueRouter {
     public async push(location: RawLocation) {
         const url = this.resolve(location).href;
         if (url === this.currentRoute.fullPath) return this.currentRoute;
-        const v = await super.push(location);
-        if (this._isSync) {
-            route.dispatchTarget(this).push(url);
-            history.pushState({}, '', url);
-        }
+        const sync = (url: string) => {
+            if (this._isSync) {
+                route.dispatchTarget(this).push(url);
+                history.pushState({}, '', url);
+            }
+        };
+        const v = await super.push(location).catch((err) => {
+            setTimeout(() => {
+                if (this.currentRoute.fullPath === url) return;
+                sync(this.currentRoute.fullPath);
+            });
+            return Promise.reject(err);
+        });
+        sync(url);
         return v;
     }
 
     public async replace(location: RawLocation) {
         const url = this.resolve(location).href;
-        const v = await super.replace(location);
-        if (this._isSync) {
-            route.dispatchTarget(this).replace(url);
-            history.replaceState({}, '', url);
-        }
+        const sync = (url: string) => {
+            if (this._isSync) {
+                route.dispatchTarget(this).replace(url);
+                history.replaceState({}, '', url);
+            }
+        };
+        const v = await super.replace(location).catch((err) => {
+            setTimeout(() => {
+                if (this.currentRoute.fullPath === url) return;
+                sync(this.currentRoute.fullPath);
+            });
+            return Promise.reject(err);
+        });
+        sync(url);
         return v;
     }
 
