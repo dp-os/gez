@@ -133,7 +133,6 @@ export class Router extends VueRouter {
             return new Promise<Route>((resolve, reject) => {
                 setTimeout(() => {
                     if (this.currentRoute.fullPath === url) return reject(err);
-                    sync(this.currentRoute.fullPath);
                     return resolve(this.currentRoute);
                 });
             });
@@ -154,7 +153,6 @@ export class Router extends VueRouter {
             return new Promise<Route>((resolve, reject) => {
                 setTimeout(() => {
                     if (this.currentRoute.fullPath === url) return reject(err);
-                    sync(this.currentRoute.fullPath);
                     return resolve(this.currentRoute);
                 });
             });
