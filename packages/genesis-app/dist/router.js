@@ -127,12 +127,14 @@ class Router extends vue_router_1.default {
             }
         };
         const v = await super.push(location).catch((err) => {
-            setTimeout(() => {
-                if (this.currentRoute.fullPath === url)
-                    return;
-                sync(this.currentRoute.fullPath);
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    if (this.currentRoute.fullPath === url)
+                        return reject(err);
+                    sync(this.currentRoute.fullPath);
+                    return resolve(this.currentRoute);
+                });
             });
-            return Promise.reject(err);
         });
         sync(url);
         return v;
@@ -146,12 +148,14 @@ class Router extends vue_router_1.default {
             }
         };
         const v = await super.replace(location).catch((err) => {
-            setTimeout(() => {
-                if (this.currentRoute.fullPath === url)
-                    return;
-                sync(this.currentRoute.fullPath);
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    if (this.currentRoute.fullPath === url)
+                        return reject(err);
+                    sync(this.currentRoute.fullPath);
+                    return resolve(this.currentRoute);
+                });
             });
-            return Promise.reject(err);
         });
         sync(url);
         return v;
