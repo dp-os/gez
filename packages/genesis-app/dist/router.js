@@ -131,7 +131,6 @@ class Router extends vue_router_1.default {
                 setTimeout(() => {
                     if (this.currentRoute.fullPath === url)
                         return reject(err);
-                    sync(this.currentRoute.fullPath);
                     return resolve(this.currentRoute);
                 });
             });
@@ -152,7 +151,6 @@ class Router extends vue_router_1.default {
                 setTimeout(() => {
                     if (this.currentRoute.fullPath === url)
                         return reject(err);
-                    sync(this.currentRoute.fullPath);
                     return resolve(this.currentRoute);
                 });
             });
