@@ -1,4 +1,13 @@
-## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.65-alpha.1...v0.0.1) (2020-07-10)
+## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.65-alpha.2...v0.0.1) (2020-07-10)
+
+
+### Bug Fixes
+
+* 修复路由重复push的bug ([28fcee4](https://github.com/fmfe/genesis/commit/28fcee4b5012d2ff525910cf74072b6d91f67a91))
+
+
+
+## [0.0.65-alpha.2](https://github.com/fmfe/genesis/compare/v0.0.65-alpha.1...v0.0.65-alpha.2) (2020-07-10)
 
 
 ### Bug Fixes
