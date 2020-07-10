@@ -1,5 +1,10 @@
 import Vue from 'vue';
-import VueRouter, { RouterOptions, RouterMode, RawLocation } from 'vue-router';
+import VueRouter, {
+    Route,
+    RouterOptions,
+    RouterMode,
+    RawLocation
+} from 'vue-router';
 
 Vue.use(VueRouter);
 
@@ -125,11 +130,13 @@ export class Router extends VueRouter {
             }
         };
         const v = await super.push(location).catch((err) => {
-            setTimeout(() => {
-                if (this.currentRoute.fullPath === url) return;
-                sync(this.currentRoute.fullPath);
+            return new Promise<Route>((resolve, reject) => {
+                setTimeout(() => {
+                    if (this.currentRoute.fullPath === url) return reject(err);
+                    sync(this.currentRoute.fullPath);
+                    return resolve(this.currentRoute);
+                });
             });
-            return Promise.reject(err);
         });
         sync(url);
         return v;
@@ -144,11 +151,13 @@ export class Router extends VueRouter {
             }
         };
         const v = await super.replace(location).catch((err) => {
-            setTimeout(() => {
-                if (this.currentRoute.fullPath === url) return;
-                sync(this.currentRoute.fullPath);
+            return new Promise<Route>((resolve, reject) => {
+                setTimeout(() => {
+                    if (this.currentRoute.fullPath === url) return reject(err);
+                    sync(this.currentRoute.fullPath);
+                    return resolve(this.currentRoute);
+                });
             });
-            return Promise.reject(err);
         });
         sync(url);
         return v;
