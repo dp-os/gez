@@ -1,18 +1,5 @@
 # @fmfe/genesis-remote
-> 远程组件，实现微前端的核心依赖
+> Remote components to realize the core dependency of micro front end
 
-使用文档请点击[这里](https://fmfe.github.io/genesis-docs/remote/)了解更多。
-
-## Install
-
-使用 npm:
-
-```sh
-npm install @fmfe/genesis-remote
-```
-
-或使用 yarn:
-
-```sh
-yarn add @fmfe/genesis-remote
-```
+## Document
+[简体中文](https://fmfe.github.io/genesis-docs/guide/)| [English](https://anish2690.github.io/genesis-docs-en/)
