@@ -1,4 +1,13 @@
-## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.65-alpha.3...v0.0.1) (2020-07-14)
+## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.65...v0.0.1) (2020-07-14)
+
+
+### Bug Fixes
+
+* 支持字体文件?参数 ([532b0ff](https://github.com/fmfe/genesis/commit/532b0ffb970b77389727d910495c40c5c17e06b1))
+
+
+
+## [0.0.65](https://github.com/fmfe/genesis/compare/v0.0.65-alpha.3...v0.0.65) (2020-07-14)
 
 
 
