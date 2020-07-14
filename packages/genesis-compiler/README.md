@@ -1,18 +1,5 @@
 # @fmfe/genesis-compiler
-> 仅限开发环境使用，负责编译程序以及在开发时编译，处理webpack的核心逻辑
+> It is only used in the development environment. It is responsible for compiling the program and compiling at the time of development, handling the core logic of webpack
 
-使用文档请点击[这里](https://fmfe.github.io/genesis-docs/compiler/)了解更多。
-
-## Install
-
-使用 npm:
-
-```sh
-npm install @fmfe/genesis-compiler -D
-```
-
-或使用 yarn:
-
-```sh
-yarn add @fmfe/genesis-compiler -D
-```
+## Document
+[简体中文](https://fmfe.github.io/genesis-docs/guide/)| [English](https://anish2690.github.io/genesis-docs-en/)

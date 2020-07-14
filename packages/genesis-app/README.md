@@ -1,18 +1,5 @@
 # @fmfe/genesis-app
-> 快速创建应用，包装了 vue-router ，在微前端应用时支持多个 Router实例时特别有用
+> It can quickly create applications and wrap Vue router, which is especially useful when supporting multiple router instances in micro front-end applications
 
-使用文档请点击[这里](https://fmfe.github.io/genesis-docs/app/)了解更多。
-
-## Install
-
-使用 npm:
-
-```sh
-npm install @fmfe/genesis-app
-```
-
-或使用 yarn:
-
-```sh
-yarn add @fmfe/genesis-app
-```
+## Document
+[简体中文](https://fmfe.github.io/genesis-docs/guide/)| [English](https://anish2690.github.io/genesis-docs-en/)
