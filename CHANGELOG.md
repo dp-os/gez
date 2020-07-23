@@ -1,4 +1,13 @@
-## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.65...v0.0.1) (2020-07-14)
+## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.66-alpha.0...v0.0.1) (2020-07-23)
+
+
+### Bug Fixes
+
+* **#25:** 修复远程组件,script标签加载失败 ([9fd93ec](https://github.com/fmfe/genesis/commit/9fd93ec6fa846cf93813ce093666eba94f5196f1)), closes [#25](https://github.com/fmfe/genesis/issues/25)
+
+
+
+## [0.0.66-alpha.0](https://github.com/fmfe/genesis/compare/v0.0.65...v0.0.66-alpha.0) (2020-07-14)
 
 
 ### Bug Fixes
