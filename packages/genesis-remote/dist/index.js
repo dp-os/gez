@@ -137,6 +137,7 @@ exports.loadScript = function (html) {
                     var value = el.getAttribute(attr.name);
                     newScript_1.setAttribute(attr.name, value);
                 });
+                newScript_1.src = el.src;
                 arr.push(onload(newScript_1, false));
                 installArr.push(newScript_1);
                 return;

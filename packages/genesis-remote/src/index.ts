@@ -142,6 +142,7 @@ export const loadScript = (html: string): Promise<boolean[]> => {
                     const value = el.getAttribute(attr.name)!;
                     newScript.setAttribute(attr.name, value);
                 });
+                newScript.src = el.src;
                 arr.push(onload(newScript, false));
                 installArr.push(newScript);
                 return;
