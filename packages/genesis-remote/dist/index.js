@@ -24,6 +24,21 @@ var isPromise = function (obj) {
         (typeof obj === 'object' || typeof obj === 'function') &&
         typeof obj.then === 'function');
 };
+//  Object.values 支持
+if (!Object.values) {
+    Object.values = function (obj) {
+        if (obj !== Object(obj))
+            throw new TypeError('Object.values called on a non-object');
+        var val = [];
+        var key;
+        for (key in obj) {
+            if (Object.prototype.hasOwnProperty.call(obj, key)) {
+                val.push(obj[key]);
+            }
+        }
+        return val;
+    };
+}
 /**
  * el 加载的元素
  * bool 在 doc 中是否已经存在

@@ -14,7 +14,8 @@ class BabelPlugin extends genesis_core_1.Plugin {
             [
                 '@babel/plugin-transform-runtime',
                 {
-                    corejs: false
+                    corejs: false,
+                    helpers: false
                 }
             ]
         ];
@@ -25,6 +26,12 @@ class BabelPlugin extends genesis_core_1.Plugin {
                     modules: false,
                     useBuiltIns: 'usage',
                     corejs: 3,
+                    include: [
+                        'es.array.*',
+                        'es.promise.*',
+                        'es.object.assign',
+                        'es.promise'
+                    ],
                     targets: this.ssr.getBrowsers(target)
                 }
             ]

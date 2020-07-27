@@ -11,7 +11,21 @@ const isPromise = (obj: any) => {
         typeof obj.then === 'function'
     );
 };
-
+//  Object.values 支持
+if (!Object.values) {
+    Object.values = function(obj: any) {
+        if (obj !== Object(obj))
+            throw new TypeError('Object.values called on a non-object');
+        const val = [];
+        let key: string | number;
+        for (key in obj) {
+            if (Object.prototype.hasOwnProperty.call(obj, key)) {
+                val.push(obj[key]);
+            }
+        }
+        return val;
+    };
+}
 export interface RemoteViewData {
     automount: boolean;
     html: string;

@@ -11,7 +11,8 @@ export class BabelPlugin extends Plugin {
             [
                 '@babel/plugin-transform-runtime',
                 {
-                    corejs: false
+                    corejs: false,
+                    helpers: false
                 }
             ]
         ];
@@ -22,6 +23,12 @@ export class BabelPlugin extends Plugin {
                     modules: false,
                     useBuiltIns: 'usage',
                     corejs: 3,
+                    include: [
+                        'es.array.*',
+                        'es.promise.*',
+                        'es.object.assign',
+                        'es.promise'
+                    ],
                     targets: this.ssr.getBrowsers(target)
                 }
             ]
