@@ -108,9 +108,7 @@ class SSR {
     }
     get transpile() {
         var _a, _b;
-        const transpile = ((_b = (_a = this.options) === null || _a === void 0 ? void 0 : _a.build) === null || _b === void 0 ? void 0 : _b.transpile) || [];
-        transpile.push(/@fmfe\/genesis-app/);
-        return transpile;
+        return ((_b = (_a = this.options) === null || _a === void 0 ? void 0 : _a.build) === null || _b === void 0 ? void 0 : _b.transpile) || [];
     }
     /**
      * Client side compile entry file

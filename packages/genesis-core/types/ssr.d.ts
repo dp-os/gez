@@ -61,7 +61,7 @@ export declare class SSR {
      * Directory to be compiled by webpack
      */
     get srcIncludes(): (string | RegExp)[];
-    get transpile(): RegExp[];
+    get transpile(): (string | RegExp)[];
     /**
      * Client side compile entry file
      */
@@ -89,7 +89,7 @@ export declare class SSR {
     /**
      * Get the configuration of browsers
      */
-    getBrowsers(env: keyof Genesis.Browsers): string | string[];
+    getBrowsers(env: keyof Genesis.Browsers): Genesis.Browserslist;
     /**
      * Create a renderer
      */
