@@ -80,9 +80,8 @@ test('check options.build.baseDir', async () => {
             );
         })
     );
-    await expect(String(ssr.srcIncludes[0])).toBe('/@fmfe\\/genesis-app/');
-    await expect(ssr.srcIncludes[1]).toBe(ssr.srcDir);
-    await expect(ssr.srcIncludes[2]).toBe(
+    await expect(ssr.srcIncludes[0]).toBe(ssr.srcDir);
+    await expect(ssr.srcIncludes[1]).toBe(
         path.resolve(baseDir, 'dist/ssr-test/src')
     );
 });
@@ -106,16 +105,13 @@ test('check options.build.outputDir', async () => {
 
 test('check options.build.transpile', async () => {
     const re = new RegExp('\\/test\\/');
-    let ssr = new SSR({
+    const ssr = new SSR({
         build: {
             transpile: [re]
         }
     });
     await expect(ssr.srcIncludes[0]).toBe(re);
     await expect(ssr.transpile[0]).toBe(re);
-
-    ssr = new SSR();
-    await expect(ssr.transpile[0].source).toBe('@fmfe\\/genesis-app');
 });
 
 test('check options.build.alias', async () => {
