@@ -49,7 +49,7 @@ namespace Genesis {
         /**
          * Which compiled directories are included
          */
-        transpile?: RegExp[];
+        transpile?: (RegExp | string)[];
         /**
          * alias settings
          */

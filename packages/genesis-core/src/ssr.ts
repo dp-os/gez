@@ -115,11 +115,7 @@ export class SSR {
     }
 
     public get transpile() {
-        const transpile: RegExp[] = this.options?.build?.transpile || [];
-
-        transpile.push(/@fmfe\/genesis-app/);
-
-        return transpile;
+        return this.options?.build?.transpile || [];
     }
 
     /**

@@ -1,8 +1,8 @@
 {
 	"compilerOptions": {
 		"baseUrl": "../../",
-		"target": "ES5",
-		"module": "commonjs",
+		"target": "esnext",
+		"module": "CommonJS",
         "moduleResolution": "node",
 		"allowSyntheticDefaultImports": true,
 		"declaration": true,
