@@ -1,4 +1,13 @@
-## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.66-alpha.1...v0.0.1) (2020-07-29)
+## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.66...v0.0.1) (2020-07-31)
+
+
+### Bug Fixes
+
+* **#23:** 尝试修复依赖不编译的问题 ([05c24ab](https://github.com/fmfe/genesis/commit/05c24ab1666890ad316010f668a9e38d17e2a1e4)), closes [#23](https://github.com/fmfe/genesis/issues/23)
+
+
+
+## [0.0.66](https://github.com/fmfe/genesis/compare/v0.0.66-alpha.1...v0.0.66) (2020-07-29)
 
 
 
