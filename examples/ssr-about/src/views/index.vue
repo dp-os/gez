@@ -1,7 +1,7 @@
 <template>
     <div class="about">
-        关于我们试试
-        <router-link to="/">返回首页</router-link>
+        Try about us
+        <router-link to="/">Home Page</router-link>
         <button @click="$router.back()">Back</button>
     </div>
 </template>

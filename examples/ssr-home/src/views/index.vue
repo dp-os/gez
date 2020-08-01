@@ -1,14 +1,15 @@
 <template>
     <div class="index">
-        <h2>你好世界！</h2>
-        <p v-if="show" @click="clsoe" class="text">
-            {{ installed ? '在客户端应该安装成功，点击我关闭!' : '未安装' }}
+        <h2>Hello world!</h2>
+        <p v-if="show" @click="close" class="text">
+            {{
+                installed
+                    ? 'The client should be installed successfully, click here to close!'
+                    : 'Not Installed'
+            }}
         </p>
-        <ul>
-            <li>
-                <router-link to="/about">关于我们</router-link>
-            </li>
-        </ul>
+
+        <router-link to="/about">About Us</router-link>
     </div>
 </template>
 <script lang="ts">
@@ -26,7 +27,7 @@ export default Vue.extend({
         this.installed = true;
     },
     methods: {
-        clsoe() {
+        close() {
             this.show = false;
         }
     }
