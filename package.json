@@ -60,6 +60,7 @@
         "@types/node": "^13.7.4",
         "axios": "^0.19.2",
         "express": "^4.17.1",
+        "tailwindcss": "^1.6.0",
         "ts-node": "^8.6.2",
         "typescript": "^3.8.2",
         "vue-router": "^3.2.0"
