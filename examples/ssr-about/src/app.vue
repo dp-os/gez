@@ -1,7 +1,10 @@
 <template>
-    <div v-if="show">
-        <h2>关于我们</h2>
-        <router-view></router-view>
+    <div v-if="show" class="app border-4 border-purple-700">
+        <span class="text-purple-700">#About</span>
+        <div class="content">
+            <h2>About Us Page</h2>
+            <router-view></router-view>
+        </div>
     </div>
 </template>
 <script lang="ts">
@@ -25,8 +28,8 @@ export default Vue.extend({
 });
 </script>
 <style lang="less" scoped>
-.app {
-    padding: 100px;
+.content {
+    padding: 100px 0;
     text-align: center;
 }
 </style>

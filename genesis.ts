@@ -43,7 +43,7 @@ export const ssr = new SSRItems();
 
 export const startApp = (renderer: RendererItems) => {
     /**
-     * 渲染基本的页面布局
+     * Render the basic page layout
      */
     const layout: express.RequestHandler = async (req, res, next) => {
         renderer.layout
@@ -57,7 +57,7 @@ export const startApp = (renderer: RendererItems) => {
     app.get('/about', layout);
 
     /**
-     * 首页
+     * Home
      */
     app.get('/api/home', (req, res, next) => {
         const url = String(req.query.renderUrl) || '/';
@@ -69,7 +69,7 @@ export const startApp = (renderer: RendererItems) => {
             .catch(next);
     });
     /**
-     * 关于我们
+     * About Us
      */
     app.get('/api/about', (req, res, next) => {
         const url = String(req.query.renderUrl) || '/';
