@@ -45,6 +45,7 @@
         "@types/jest": "^25.1.4",
         "commitlint-config-cz": "^0.13.1",
         "coveralls": "^3.0.11",
+        "cross-env": "^7.0.2",
         "jest": "^25.2.4",
         "vue": "^2.6.11",
         "vue-property-decorator": "^8.4.0"
@@ -60,6 +61,8 @@
         "@types/node": "^13.7.4",
         "axios": "^0.19.2",
         "express": "^4.17.1",
+        "sass": "^1.26.10",
+        "sass-loader": "^9.0.2",
         "tailwindcss": "^1.6.0",
         "ts-node": "^8.6.2",
         "typescript": "^3.8.2",

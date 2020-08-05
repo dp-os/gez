@@ -101,6 +101,13 @@ class StylePlugin extends genesis_core_1.Plugin {
                     sourceMap: false
                 }
             },
+            sass: {
+                name: 'sass',
+                loader: 'sass-loader',
+                options: {
+                    sourceMap: false
+                }
+            },
             extract: {
                 name: 'extract',
                 loader: extract_css_chunks_webpack_plugin_1.default.loader,
@@ -123,6 +130,9 @@ class StylePlugin extends genesis_core_1.Plugin {
         };
         const getLessLoader = (isModule = false) => {
             return [...getCssLoader(isModule), loaders.less];
+        };
+        const getSassLoader = (isModule = false) => {
+            return [...getCssLoader(isModule), loaders.sass];
         };
         const rules = [
             {
@@ -168,6 +178,29 @@ class StylePlugin extends genesis_core_1.Plugin {
                     normal: {
                         resourceQuery: '',
                         loaders: getLessLoader()
+                    }
+                }
+            },
+            {
+                name: 'sass',
+                match: /\.(sass|scss)$/,
+                includes: srcIncludes,
+                modules: {
+                    'vue-modules': {
+                        resourceQuery: /module/,
+                        loaders: getSassLoader(true)
+                    },
+                    vue: {
+                        resourceQuery: /\?vue/,
+                        loaders: getSassLoader()
+                    },
+                    'normal-modules': {
+                        resourceQuery: /\.module\.\w+$/,
+                        loaders: getSassLoader(true)
+                    },
+                    normal: {
+                        resourceQuery: '',
+                        loaders: getSassLoader()
                     }
                 }
             },

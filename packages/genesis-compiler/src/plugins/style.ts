@@ -113,6 +113,13 @@ export class StylePlugin extends Plugin {
                     sourceMap: false
                 }
             },
+            sass: {
+                name: 'sass',
+                loader: 'sass-loader',
+                options: {
+                    sourceMap: false
+                }
+            },
             extract: {
                 name: 'extract',
                 loader: ExtractCssChunks.loader as string,
@@ -134,6 +141,9 @@ export class StylePlugin extends Plugin {
         };
         const getLessLoader = (isModule = false) => {
             return [...getCssLoader(isModule), loaders.less];
+        };
+        const getSassLoader = (isModule = false) => {
+            return [...getCssLoader(isModule), loaders.sass];
         };
         const rules: RuleOptions[] = [
             {
@@ -179,6 +189,29 @@ export class StylePlugin extends Plugin {
                     normal: {
                         resourceQuery: '',
                         loaders: getLessLoader()
+                    }
+                }
+            },
+            {
+                name: 'sass',
+                match: /\.(sass|scss)$/,
+                includes: srcIncludes,
+                modules: {
+                    'vue-modules': {
+                        resourceQuery: /module/,
+                        loaders: getSassLoader(true)
+                    },
+                    vue: {
+                        resourceQuery: /\?vue/,
+                        loaders: getSassLoader()
+                    },
+                    'normal-modules': {
+                        resourceQuery: /\.module\.\w+$/,
+                        loaders: getSassLoader(true)
+                    },
+                    normal: {
+                        resourceQuery: '',
+                        loaders: getSassLoader()
                     }
                 }
             },

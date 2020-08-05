@@ -21,8 +21,10 @@ export default Vue.extend({
     name: 'app'
 });
 </script>
-<style lang="less" scoped>
+<style lang="scss" scoped>
+$--color-primary: #409eff !default;
 .content {
+    color: $--color-primary;
     text-align: center;
 }
 </style>
