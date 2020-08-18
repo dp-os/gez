@@ -1,6 +1,6 @@
 {
   "name": "@fmfe/genesis-remote",
-  "version": "0.0.69-alpha.0",
+  "version": "0.0.70-alpha.0",
   "description": "Vue SSR Microfront",
   "keywords": [
     "vue",
@@ -14,7 +14,7 @@
   },
   "author": "Followme",
   "license": "MIT",
-  "gitHead": "1a29b2505a05b5f7edf105590cd9c77979ea046f",
+  "gitHead": "7915e049a993e97d4ca22dc8b8b2c731481fc11e",
   "sideEffects": false,
   "homepage": "https://fmfe.github.io/genesis-docs/",
   "repository": {
@@ -25,6 +25,6 @@
     "url": "https://github.com/fmfe/genesis/issues"
   },
   "devDependencies": {
-    "@fmfe/genesis-core": "^0.0.69-alpha.0"
+    "@fmfe/genesis-core": "^0.0.70-alpha.0"
   }
 }
