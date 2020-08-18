@@ -45,9 +45,17 @@ export const createClientApp = async (options: CreateClientAppOptions) => {
     const { vueOptions, App } = options;
     const { router } = vueOptions || {};
     if (router) {
-        await router.replace(clientOptions.url).catch((err: Error) => {
-            throw err || new Error(`router.push('${clientOptions.url}') error`);
-        });
+        if ((router as any)._mode === 'abstract') {
+            await router.push(clientOptions.url).catch((err: Error) => {
+                throw err ||
+                    new Error(`router.push('${clientOptions.url}') error`);
+            });
+        } else {
+            await router.replace(clientOptions.url).catch((err: Error) => {
+                throw err ||
+                    new Error(`router.push('${clientOptions.url}') error`);
+            });
+        }
         await new Promise((resolve, reject) => {
             router.onReady(resolve, (err: Error) => {
                 reject(err || new Error('Vue router onReady error'));
