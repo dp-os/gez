@@ -1,4 +1,13 @@
-## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.68-alpha.0...v0.0.1) (2020-08-06)
+## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.68-alpha.1...v0.0.1) (2020-08-18)
+
+
+### Bug Fixes
+
+* router mode abstract ([4628f30](https://github.com/fmfe/genesis/commit/4628f308972ca2a64157ccfb8dd9f6ac7dc993d3))
+
+
+
+## [0.0.68-alpha.1](https://github.com/fmfe/genesis/compare/v0.0.68-alpha.0...v0.0.68-alpha.1) (2020-08-06)
 
 
 
