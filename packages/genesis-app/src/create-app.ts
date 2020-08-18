@@ -53,7 +53,7 @@ export const createClientApp = async (options: CreateClientAppOptions) => {
         } else {
             await router.replace(clientOptions.url).catch((err: Error) => {
                 throw err ||
-                    new Error(`router.push('${clientOptions.url}') error`);
+                    new Error(`router.replace('${clientOptions.url}') error`);
             });
         }
         await new Promise((resolve, reject) => {
