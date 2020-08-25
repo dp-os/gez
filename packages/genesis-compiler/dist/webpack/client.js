@@ -5,10 +5,7 @@ const base_1 = require("./base");
 class ClientConfig extends base_1.BaseConfig {
     constructor(ssr) {
         super(ssr, 'client');
-        this.config
-            .entry('app')
-            .add(this.ssr.entryClientFile)
-            .end();
+        this.config.entry('app').add(this.ssr.entryClientFile).end();
         this.config.output
             .path(this.ssr.outputDirInClient)
             .filename(this.ssr.isProd

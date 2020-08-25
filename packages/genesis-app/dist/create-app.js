@@ -22,14 +22,14 @@ exports.createClientApp = async (options) => {
     if (router) {
         if (router._mode === 'abstract') {
             await router.push(clientOptions.url).catch((err) => {
-                throw err ||
-                    new Error(`router.push('${clientOptions.url}') error`);
+                throw (err ||
+                    new Error(`router.push('${clientOptions.url}') error`));
             });
         }
         else {
             await router.replace(clientOptions.url).catch((err) => {
-                throw err ||
-                    new Error(`router.replace('${clientOptions.url}') error`);
+                throw (err ||
+                    new Error(`router.replace('${clientOptions.url}') error`));
             });
         }
         await new Promise((resolve, reject) => {
@@ -58,8 +58,8 @@ exports.createServerApp = async (options) => {
     const { router } = vueOptions || {};
     if (router) {
         await router.replace(renderContext.data.url).catch((err) => {
-            throw err ||
-                new Error(`router.replace('${renderContext.data.url}') error`);
+            throw (err ||
+                new Error(`router.replace('${renderContext.data.url}') error`));
         });
         await new Promise((resolve, reject) => {
             router.onReady(resolve, (err) => {

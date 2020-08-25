@@ -77,10 +77,7 @@ class BabelPlugin extends genesis_core_1.Plugin {
             .options(babelts)
             .end();
         if (isProd) {
-            jsRule
-                .use('thread-loader')
-                .loader('thread-loader')
-                .end();
+            jsRule.use('thread-loader').loader('thread-loader').end();
         }
     }
 }
