@@ -11,7 +11,7 @@ export class BaseGenesis {
 export const deleteFolder = (path: string) => {
     if (!fs.existsSync(path)) return;
     const files = fs.readdirSync(path);
-    files.forEach(function(file) {
+    files.forEach(function (file) {
         const curPath = path + '/' + file;
         if (fs.statSync(curPath).isDirectory()) {
             deleteFolder(curPath);

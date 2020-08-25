@@ -75,10 +75,7 @@ export class BabelPlugin extends Plugin {
             .end();
 
         if (isProd) {
-            jsRule
-                .use('thread-loader')
-                .loader('thread-loader')
-                .end();
+            jsRule.use('thread-loader').loader('thread-loader').end();
         }
     }
 }

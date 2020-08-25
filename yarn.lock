@@ -868,10 +868,10 @@
   integrity sha1-rUldxBsS511YjG24uYNPCPoTHrc=
 
 "@fmfe/genesis-app@file:./packages/genesis-app":
-  version "0.0.68-alpha.0"
+  version "0.0.70-alpha.0"
 
 "@fmfe/genesis-compiler@file:./packages/genesis-compiler":
-  version "0.0.68-alpha.0"
+  version "0.0.70-alpha.0"
   dependencies:
     "@babel/core" "^7.8.4"
     "@babel/plugin-proposal-class-properties" "^7.8.3"
@@ -912,7 +912,7 @@
     write "^2.0.0"
 
 "@fmfe/genesis-core@file:./packages/genesis-core":
-  version "0.0.68-alpha.0"
+  version "0.0.70-alpha.0"
   dependencies:
     ejs "^3.0.1"
     serialize-javascript "^3.0.0"
@@ -920,7 +920,7 @@
     vue-server-renderer "^2.6.11"
 
 "@fmfe/genesis-lint@file:./packages/genesis-lint":
-  version "0.0.68-alpha.0"
+  version "0.0.70-alpha.0"
   dependencies:
     "@typescript-eslint/eslint-plugin" "^2.20.0"
     "@typescript-eslint/parser" "^2.20.0"
@@ -939,6 +939,7 @@
     husky "^4.2.3"
     lint-staged "^9.5.0"
     postcss-html "^0.36.0"
+    prettier "2.1.0"
     stylelint "^12.0.1"
     stylelint-config-prettier "^8.0.1"
     stylelint-config-rational-order "^0.1.2"
@@ -948,10 +949,10 @@
     vue-eslint-parser "5.0.0"
 
 "@fmfe/genesis-remote@file:./packages/genesis-remote":
-  version "0.0.68-alpha.0"
+  version "0.0.70-alpha.0"
 
 "@fmfe/square@file:./packages/square":
-  version "0.0.68-alpha.0"
+  version "0.0.70-alpha.0"
   dependencies:
     "@fmfe/tms.js" "^0.1.7"
 
@@ -8136,6 +8137,11 @@ prettier-linter-helpers@^1.0.0:
   integrity sha1-0j1B/hN1ZG3i0BBNNFSjAIgCz3s=
   dependencies:
     fast-diff "^1.1.2"
+
+prettier@2.1.0:
+  version "2.1.0"
+  resolved "http://npm.followme.com/prettier/-/prettier-2.1.0.tgz#5a9789f767a243118c60f3e56d95cb6544914fbb"
+  integrity sha512-lz28cCbA1cDFHVuY8vvj6QuqOwIpyIfPUYkSl8AZ/vxH8qBXMMjE2knfLHCrZCmUsK/H1bg1P0tOo0dJkTJHvw==
 
 prettier@^1.18.2:
   version "1.19.1"

@@ -4,10 +4,7 @@ import { BaseConfig } from './base';
 export class ClientConfig extends BaseConfig {
     public constructor(ssr: Genesis.SSR) {
         super(ssr, 'client');
-        this.config
-            .entry('app')
-            .add(this.ssr.entryClientFile)
-            .end();
+        this.config.entry('app').add(this.ssr.entryClientFile).end();
         this.config.output
             .path(this.ssr.outputDirInClient)
             .filename(

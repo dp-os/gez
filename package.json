@@ -11,7 +11,7 @@
         "build:ts": "NODE_ENV=production tsc --build packages/**/tsconfig.json",
         "start": "NODE_ENV=production ts-node genesis.prod -p=tsconfig.json",
         "lint": "npm run lint:js && npm run lint:css",
-        "lint:js": "eslint . --ext .js,.ts,.vue --fix",
+        "lint:js": "eslint . --ext .js,.ts,.vue --fix --color",
         "lint:css": "stylelint . --syntax less --fix --ignore-path ./.stylelintignore | stylelint . --custom-syntax postcss-html --fix",
         "type-check": "tsc --noEmit",
         "test": "jest --coverage",

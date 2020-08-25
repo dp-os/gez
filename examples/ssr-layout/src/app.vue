@@ -2,7 +2,7 @@
     <div class="app border-4 border-green-700">
         <span class="text-green-700">#Layout</span>
         <header @click="plus" class="header bg-gray-100">
-            <div class="text-gray-700 text-2xl ">Page header {{ count }}</div>
+            <div class="text-gray-700 text-2xl">Page header {{ count }}</div>
             <div class="border m-2 p-2">
                 <div class="text-gray-500 text-sm">Router Instance Methods</div>
                 <button
@@ -18,9 +18,7 @@
                     Forward
                 </button>
             </div>
-            <div class="text-gray-500 text-sm">
-                Router link
-            </div>
+            <div class="text-gray-500 text-sm">Router link</div>
             <ul class="flex justify-center items-center p-2">
                 <li v-for="(navItem, index) in nav" :key="index">
                     <router-link :to="navItem.path" class="route-link">{{
