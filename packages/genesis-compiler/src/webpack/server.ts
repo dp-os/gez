@@ -5,10 +5,7 @@ import Genesis from '@fmfe/genesis-core';
 export class ServerConfig extends BaseConfig {
     public constructor(ssr: Genesis.SSR) {
         super(ssr, 'server');
-        this.config
-            .entry('app')
-            .add(this.ssr.entryServerFile)
-            .end();
+        this.config.entry('app').add(this.ssr.entryServerFile).end();
         this.config.output
             .path(this.ssr.outputDirInServer)
             .filename(

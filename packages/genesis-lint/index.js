@@ -48,6 +48,7 @@ module.exports = {
         '@typescript-eslint/prefer-optional-chain': 'off',
         '@typescript-eslint/no-require-imports': 'off',
         '@typescript-eslint/no-invalid-this': 'off',
+        '@typescript-eslint/no-loss-of-precision': 'off',
         'no-template-curly-in-string': 'off',
         'vue/valid-template-root': 'off',
         camelcase: 'off',
@@ -57,6 +58,7 @@ module.exports = {
                 tabWidth: 4,
                 useTabs: false,
                 semi: true,
+                trailingComma: 'none',
                 singleQuote: true,
                 bracketSpacing: true,
                 arrowParens: 'always'

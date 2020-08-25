@@ -3,3 +3,5 @@ node_modules/**
 .d.ts
 packages/**/dist/**
 packages/**/types/**
+examples/**/dist/**
+coverage/**
