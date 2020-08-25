@@ -19,84 +19,81 @@ const getType = (payload) => {
         .replace(/^(.*?) |]$/g, '')
         .toLowerCase();
 };
-let MicroBase = /** @class */ (() => {
-    class MicroBase {
-        constructor() {
-            this.rid = 0;
-            this.useCount = 0;
-            // 需要放到最后处理， 否则vue不会进行属性劫持
-            this.vm = new vue_1.default({
-                data: {
-                    $$this: this
-                }
-            });
-            Object.defineProperty(this, 'vm', {
-                enumerable: false
-            });
-            Object.defineProperty(this, 'rid', {
-                enumerable: false
-            });
-            Object.defineProperty(this, 'useCount', {
-                enumerable: false
-            });
-            exports.log('Create examples');
-        }
-        static setVue(_Vue) {
-            if (this._Vue)
-                return;
-            this._Vue = _Vue;
-        }
-        static getVue() {
-            const _Vue = this._Vue;
-            if (!_Vue) {
-                throw new Error('Please install Vue.use(Micro);');
+class MicroBase {
+    constructor() {
+        this.rid = 0;
+        this.useCount = 0;
+        // 需要放到最后处理， 否则vue不会进行属性劫持
+        this.vm = new vue_1.default({
+            data: {
+                $$this: this
             }
-            return _Vue;
-        }
-        addUse() {
-            this.useCount++;
-        }
-        reduceUse() {
-            this.useCount--;
-        }
-        get isUse() {
-            return this.useCount > 0;
-        }
-        /**
-         * Registration module
-         */
-        register(name, v) {
-            const rid = `${name}_${++this.rid}`;
-            Micro.getVue().set(this, rid, v);
-            exports.log(`Registration module ${rid}`);
-            return rid;
-        }
-        /**
-         * Get module
-         */
-        getModule(rid) {
-            return this[rid];
-        }
-        /**
-         * Remove module
-         */
-        unregister(name, rid) {
-            Micro.getVue().delete(this, rid);
-            exports.log(`Remove module ${rid}`);
-        }
-        /**
-         * Destroy instance
-         */
-        destroy() {
-            exports.log('Destroy instance');
-            this.vm && this.vm.$destroy();
-            this._vm = null;
-        }
+        });
+        Object.defineProperty(this, 'vm', {
+            enumerable: false
+        });
+        Object.defineProperty(this, 'rid', {
+            enumerable: false
+        });
+        Object.defineProperty(this, 'useCount', {
+            enumerable: false
+        });
+        exports.log('Create examples');
     }
-    MicroBase.install = install_1.install;
-    MicroBase._Vue = null;
-    return MicroBase;
-})();
+    static setVue(_Vue) {
+        if (this._Vue)
+            return;
+        this._Vue = _Vue;
+    }
+    static getVue() {
+        const _Vue = this._Vue;
+        if (!_Vue) {
+            throw new Error('Please install Vue.use(Micro);');
+        }
+        return _Vue;
+    }
+    addUse() {
+        this.useCount++;
+    }
+    reduceUse() {
+        this.useCount--;
+    }
+    get isUse() {
+        return this.useCount > 0;
+    }
+    /**
+     * Registration module
+     */
+    register(name, v) {
+        const rid = `${name}_${++this.rid}`;
+        Micro.getVue().set(this, rid, v);
+        exports.log(`Registration module ${rid}`);
+        return rid;
+    }
+    /**
+     * Get module
+     */
+    getModule(rid) {
+        return this[rid];
+    }
+    /**
+     * Remove module
+     */
+    unregister(name, rid) {
+        Micro.getVue().delete(this, rid);
+        exports.log(`Remove module ${rid}`);
+    }
+    /**
+     * Destroy instance
+     */
+    destroy() {
+        exports.log('Destroy instance');
+        this.vm && this.vm.$destroy();
+        this._vm = null;
+    }
+}
+MicroBase.install = install_1.install;
+MicroBase._Vue = null;
 const deepRecursionTms = (target, rid, fn) => {
     if (typeof target !== 'object' || Array.isArray(target))
         return;
