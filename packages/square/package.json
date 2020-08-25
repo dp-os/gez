@@ -2,7 +2,7 @@
   "name": "@fmfe/square",
   "main": "dist/index.js",
   "types": "types/index.d.ts",
-  "version": "0.0.70-alpha.1",
+  "version": "0.0.70-alpha.2",
   "description": "Vue SSR Microfront",
   "keywords": [
     "vue",
