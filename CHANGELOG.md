@@ -1,4 +1,13 @@
-## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.70-alpha.1...v0.0.1) (2020-08-25)
+## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.70-alpha.2...v0.0.1) (2020-08-28)
+
+
+### Bug Fixes
+
+* 修复babel插件重复添加的bug ([9671e18](https://github.com/fmfe/genesis/commit/9671e18547c7d5dbc213a2758392d40b7546451e))
+
+
+
+## [0.0.70-alpha.2](https://github.com/fmfe/genesis/compare/v0.0.70-alpha.1...v0.0.70-alpha.2) (2020-08-25)
 
 
 
