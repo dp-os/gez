@@ -37,12 +37,12 @@ export class BabelPlugin extends Plugin {
         ];
         const babeljs: BabelConfig = {
             target,
-            plugins,
-            presets
+            plugins: [...plugins],
+            presets: [...presets]
         };
         const babelts: BabelConfig = {
             target,
-            plugins,
+            plugins: [...plugins],
             presets: presetsTS
         };
         Object.defineProperty(babeljs, 'target', {

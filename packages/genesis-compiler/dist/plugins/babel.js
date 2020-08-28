@@ -40,12 +40,12 @@ class BabelPlugin extends genesis_core_1.Plugin {
         ];
         const babeljs = {
             target,
-            plugins,
-            presets
+            plugins: [...plugins],
+            presets: [...presets]
         };
         const babelts = {
             target,
-            plugins,
+            plugins: [...plugins],
             presets: presetsTS
         };
         Object.defineProperty(babeljs, 'target', {
