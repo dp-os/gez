@@ -4,7 +4,7 @@ export declare class Router extends VueRouter {
     private _mode;
     constructor(options?: RouterOptions);
     get _isSync(): boolean;
-    get routeState(): any;
+    get state(): any;
     push(location: RawLocation): Promise<Route>;
     pushState(location: RawLocation, data: any): Promise<Route>;
     replace(location: RawLocation): Promise<Route>;
@@ -15,6 +15,7 @@ export declare class Router extends VueRouter {
 }
 declare module 'vue-router/types/router' {
     interface VueRouter {
+        state: any;
         pushState(location: RawLocation, data: any): Promise<Route>;
         replaceState(location: RawLocation, data: any): Promise<Route>;
     }
