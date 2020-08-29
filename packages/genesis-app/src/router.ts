@@ -119,14 +119,20 @@ export class Router extends VueRouter {
     public get _isSync() {
         return this._mode === 'history' && !!route;
     }
+    public get routeState() {
+        return history.state || {};
+    }
 
     public async push(location: RawLocation) {
+        return this.pushState(location, null);
+    }
+    public async pushState(location: RawLocation, data: any) {
         const url = this.resolve(location).route.fullPath;
         if (url === this.currentRoute.fullPath) return this.currentRoute;
         const sync = (url: string) => {
             if (this._isSync) {
                 route.dispatchTarget(this).push(url);
-                history.pushState({}, '', url);
+                history.pushState(data, '', url);
             }
         };
         const v = await super.push(location).catch((err) => {
@@ -140,13 +146,15 @@ export class Router extends VueRouter {
         sync(v.fullPath);
         return v;
     }
-
-    public async replace(location: RawLocation) {
+    public replace(location: RawLocation) {
+        return this.replaceState(location, null);
+    }
+    public async replaceState(location: RawLocation, data: any) {
         const url = this.resolve(location).route.fullPath;
         const sync = (url: string) => {
             if (this._isSync) {
                 route.dispatchTarget(this).replace(url);
-                history.replaceState({}, '', url);
+                history.replaceState(data, '', url);
             }
         };
         const v = await super.replace(location).catch((err) => {
@@ -180,5 +188,14 @@ export class Router extends VueRouter {
             return history.forward();
         }
         return super.forward();
+    }
+}
+
+declare module 'vue-router/types/router' {
+    interface VueRouter {
+        // eslint-disable-next-line @typescript-eslint/method-signature-style
+        pushState(location: RawLocation, data: any): Promise<Route>;
+        // eslint-disable-next-line @typescript-eslint/method-signature-style
+        replaceState(location: RawLocation, data: any): Promise<Route>;
     }
 }

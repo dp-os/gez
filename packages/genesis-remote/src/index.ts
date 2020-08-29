@@ -129,23 +129,29 @@ export const loadScript = (html: string): Promise<boolean[]> => {
     };
     const installArr: Element[] = [];
     const forEach = (el: Element) => {
-        if (el instanceof HTMLScriptElement && el.src) {
-            const docLink = findOne(el.src);
-            if (docLink) {
-                arr.push(onload(docLink, true));
-                return;
-            } else {
-                const newScript = document.createElement('script');
-                const attrs = Object.values(el.attributes);
-                newScript.async = false;
-                attrs.forEach((attr) => {
-                    const value = el.getAttribute(attr.name)!;
-                    newScript.setAttribute(attr.name, value);
-                });
-                newScript.src = el.src;
-                arr.push(onload(newScript, false));
-                installArr.push(newScript);
-                return;
+        if (el instanceof HTMLScriptElement) {
+            if (el.src) {
+                const docLink = findOne(el.src);
+                if (docLink) {
+                    arr.push(onload(docLink, true));
+                    return;
+                } else {
+                    const newScript = document.createElement('script');
+                    const attrs = Object.values(el.attributes);
+                    newScript.async = false;
+                    attrs.forEach((attr) => {
+                        const value = el.getAttribute(attr.name)!;
+                        newScript.setAttribute(attr.name, value);
+                    });
+                    newScript.src = el.src;
+                    arr.push(onload(newScript, false));
+                    installArr.push(newScript);
+                    return;
+                }
+            } else if (el.innerHTML) {
+                // eslint-disable-next-line no-new-func
+                const run = new Function(el.innerHTML);
+                run();
             }
         }
         installArr.push(el);

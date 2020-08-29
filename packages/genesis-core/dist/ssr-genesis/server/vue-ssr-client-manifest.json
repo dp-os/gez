@@ -2,13 +2,13 @@
   "publicPath": "/ssr-genesis/",
   "all": [
     "css/app.ada9711b.css",
-    "js/app.556f2242.js",
+    "js/app.99dac8d9.js",
     "js/runtime.2ee51980.js"
   ],
   "initial": [
     "js/runtime.2ee51980.js",
     "css/app.ada9711b.css",
-    "js/app.556f2242.js"
+    "js/app.99dac8d9.js"
   ],
   "async": [],
   "modules": {

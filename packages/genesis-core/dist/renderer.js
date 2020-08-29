@@ -56,7 +56,11 @@ class Renderer {
             else {
                 data.html += html;
             }
-            data.script += vueCtx.renderScripts();
+            const baseUrl = encodeURIComponent(ssr.cdnPublicPath + ssr.publicPath);
+            data.script =
+                `<script>window["__webpack_public_path_${ssr.name}__"] = "${baseUrl}";</script>` +
+                    data.script +
+                    vueCtx.renderScripts();
             data.style += vueCtx.renderStyles();
             data.resource = [...data.resource, ...resource];
             ctx._subs.forEach((fn) => fn(ctx));
@@ -96,7 +100,7 @@ class Renderer {
                 enumerable: false
             });
         });
-        process.env[`__webpack_public_path__${ssr.name}__`] =
+        process.env[`__webpack_public_path_${ssr.name}__`] =
             ssr.cdnPublicPath + ssr.publicPath;
     }
     /**
@@ -351,9 +355,8 @@ class Renderer {
     }
     _createRootNodeAttr(context) {
         const { data, ssr } = context;
-        const baseUrl = encodeURIComponent(ssr.cdnPublicPath + ssr.publicPath);
         const name = ssr.name;
-        return `data-ssr-genesis-id="${data.id}" data-ssr-genesis-name="${name}" data-ssr-genesis-base-url="${baseUrl}"`;
+        return `data-ssr-genesis-id="${data.id}" data-ssr-genesis-name="${name}"`;
     }
 }
 exports.Renderer = Renderer;
