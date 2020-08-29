@@ -1,4 +1,13 @@
-## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.70-alpha.2...v0.0.1) (2020-08-28)
+## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.70-alpha.3...v0.0.1) (2020-08-29)
+
+
+### Features
+
+* router新增pushState ([7132f24](https://github.com/fmfe/genesis/commit/7132f24e9ae126f84f55d93b3c393a0d6fed5199))
+
+
+
+## [0.0.70-alpha.3](https://github.com/fmfe/genesis/compare/v0.0.70-alpha.2...v0.0.70-alpha.3) (2020-08-28)
 
 
 ### Bug Fixes

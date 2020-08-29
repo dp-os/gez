@@ -109,7 +109,7 @@ test('renderer.render', async () => {
     result = await renderer.render({ mode: 'csr-html' });
     await expect(result.context.mode).toBe('csr-html');
     await expect(result.context.data.html).toBe(
-        '<div data-ssr-genesis-id="8d07b00bc6ec949da008e624ef609b3d" data-ssr-genesis-name="ssr-home" data-ssr-genesis-base-url="%2Fssr-home%2F"></div>'
+        '<div data-ssr-genesis-id="8d07b00bc6ec949da008e624ef609b3d" data-ssr-genesis-name="ssr-home"></div>'
     );
     await expect(result.data).not.toBe(result.context.data.html);
     await expect(result.data).toBe(result.context.renderHtml());
@@ -122,7 +122,7 @@ test('renderer.render', async () => {
     await expect(result.context.mode).toBe('csr-json');
     await expect(result.context.data).toBe(result.data);
     await expect(result.context.data.html).toBe(
-        '<div data-ssr-genesis-id="8d07b00bc6ec949da008e624ef609b3d" data-ssr-genesis-name="ssr-home" data-ssr-genesis-base-url="%2Fssr-home%2F"></div>'
+        '<div data-ssr-genesis-id="8d07b00bc6ec949da008e624ef609b3d" data-ssr-genesis-name="ssr-home"></div>'
     );
 
     result = await renderer.render({ mode: 'ssr-test' as any });
@@ -157,7 +157,7 @@ test('renderer.renderHtml', async () => {
     await expect(result.data).toBe(result.data);
     await expect(result.context.mode).toBe('csr-html');
     await expect(result.context.data.html).toBe(
-        '<div data-ssr-genesis-id="8d07b00bc6ec949da008e624ef609b3d" data-ssr-genesis-name="ssr-home" data-ssr-genesis-base-url="%2Fssr-home%2F"></div>'
+        '<div data-ssr-genesis-id="8d07b00bc6ec949da008e624ef609b3d" data-ssr-genesis-name="ssr-home"></div>'
     );
 
     result = await renderer.renderHtml({ url: '/' });
@@ -175,7 +175,7 @@ test('renderer.renderJson', async () => {
     await expect(result.context.mode).toBe('csr-json');
     await expect(result.context.data).toBe(result.data);
     await expect(result.context.data.html).toBe(
-        '<div data-ssr-genesis-id="8d07b00bc6ec949da008e624ef609b3d" data-ssr-genesis-name="ssr-home" data-ssr-genesis-base-url="%2Fssr-home%2F"></div>'
+        '<div data-ssr-genesis-id="8d07b00bc6ec949da008e624ef609b3d" data-ssr-genesis-name="ssr-home"></div>'
     );
 
     result = await renderer.renderJson({ url: '/' });
