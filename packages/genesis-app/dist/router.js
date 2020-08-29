@@ -113,8 +113,8 @@ class Router extends vue_router_1.default {
     get _isSync() {
         return this._mode === 'history' && !!route;
     }
-    get routeState() {
-        return history.state || {};
+    get state() {
+        return history.state || null;
     }
     async push(location) {
         return this.pushState(location, null);
