@@ -1,4 +1,13 @@
-## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.70-alpha.3...v0.0.1) (2020-08-29)
+## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.70-alpha.4...v0.0.1) (2020-08-29)
+
+
+### Features
+
+* 支持router state ([e51df8b](https://github.com/fmfe/genesis/commit/e51df8b26c7fe191af94aadd46e8ba9b42ad6c52))
+
+
+
+## [0.0.70-alpha.4](https://github.com/fmfe/genesis/compare/v0.0.70-alpha.3...v0.0.70-alpha.4) (2020-08-29)
 
 
 ### Features
