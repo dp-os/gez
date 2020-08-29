@@ -113,14 +113,20 @@ class Router extends vue_router_1.default {
     get _isSync() {
         return this._mode === 'history' && !!route;
     }
+    get routeState() {
+        return history.state || {};
+    }
     async push(location) {
+        return this.pushState(location, null);
+    }
+    async pushState(location, data) {
         const url = this.resolve(location).route.fullPath;
         if (url === this.currentRoute.fullPath)
             return this.currentRoute;
         const sync = (url) => {
             if (this._isSync) {
                 route.dispatchTarget(this).push(url);
-                history.pushState({}, '', url);
+                history.pushState(data, '', url);
             }
         };
         const v = await super.push(location).catch((err) => {
@@ -135,12 +141,15 @@ class Router extends vue_router_1.default {
         sync(v.fullPath);
         return v;
     }
-    async replace(location) {
+    replace(location) {
+        return this.replaceState(location, null);
+    }
+    async replaceState(location, data) {
         const url = this.resolve(location).route.fullPath;
         const sync = (url) => {
             if (this._isSync) {
                 route.dispatchTarget(this).replace(url);
-                history.replaceState({}, '', url);
+                history.replaceState(data, '', url);
             }
         };
         const v = await super.replace(location).catch((err) => {

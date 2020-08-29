@@ -1,11 +1,7 @@
-const getPublicPath = () => {
-    const name = process.env.GENESIS_NAME;
-    const el: any = document.querySelector(`[data-ssr-genesis-name="${name}"]`);
-    const baseUrl = decodeURIComponent(
-        el?.dataset?.ssrGenesisBaseUrl || `/${name}/`
-    );
-    return baseUrl;
-};
+const baseUrl = decodeURIComponent(
+    (window as any)[`__webpack_public_path_${process.env.GENESIS_NAME}__`]
+);
+//
 /* eslint-disable no-undef */
 // @ts-ignore
-__webpack_public_path__ = getPublicPath();
+__webpack_public_path__ = baseUrl;
