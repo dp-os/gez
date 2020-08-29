@@ -119,8 +119,8 @@ export class Router extends VueRouter {
     public get _isSync() {
         return this._mode === 'history' && !!route;
     }
-    public get routeState() {
-        return history.state || {};
+    public get state() {
+        return history.state || null;
     }
 
     public async push(location: RawLocation) {
@@ -193,6 +193,7 @@ export class Router extends VueRouter {
 
 declare module 'vue-router/types/router' {
     interface VueRouter {
+        state: any;
         // eslint-disable-next-line @typescript-eslint/method-signature-style
         pushState(location: RawLocation, data: any): Promise<Route>;
         // eslint-disable-next-line @typescript-eslint/method-signature-style
