@@ -26,3 +26,12 @@ export default Vue.extend({
     text-align: center;
 }
 </style>
+<style lang="scss" scoped>
+$--color-primary: #409eff !default;
+.content {
+    .content {
+        color: $--color-primary;
+        text-align: center;
+    }
+}
+</style>

@@ -23,12 +23,7 @@ export class StylePlugin extends Plugin {
     public async chainWebpack({ target, config }: WebpackHookParams) {
         const { ssr } = this;
         const { isProd } = ssr;
-        const srcIncludes = [
-            ...ssr.srcIncludes,
-            /\.css/,
-            /\.less/,
-            /\.p(ost)?css$/
-        ];
+        const srcIncludes = [...ssr.srcIncludes, /\.css/];
         const postcssConfig: PostcssOptions = {
             target,
             plugins: [],
@@ -113,13 +108,20 @@ export class StylePlugin extends Plugin {
                     sourceMap: false
                 }
             },
+            sass: {
+                name: 'sass',
+                loader: 'sass-loader',
+                options: {
+                    sourceMap: false
+                }
+            },
             extract: {
                 name: 'extract',
                 loader: ExtractCssChunks.loader as string,
                 options: {}
             }
         };
-        const getCssLoader = (isModule = false) => {
+        const getCssLoader = ({ isModule = false } = {}) => {
             const lds: any[] = [];
             if (!isProd) {
                 lds.push(loaders['vue-style']);
@@ -132,8 +134,11 @@ export class StylePlugin extends Plugin {
             }
             return lds;
         };
-        const getLessLoader = (isModule = false) => {
-            return [...getCssLoader(isModule), loaders.less];
+        const getLessLoader = ({ isModule = false } = {}) => {
+            return [...getCssLoader({ isModule }), loaders.less];
+        };
+        const getSassLoader = ({ isModule = false } = {}) => {
+            return [...getCssLoader({ isModule }), loaders.sass];
         };
         const rules: RuleOptions[] = [
             {
@@ -143,7 +148,7 @@ export class StylePlugin extends Plugin {
                 modules: {
                     'vue-modules': {
                         resourceQuery: /module/,
-                        loaders: getCssLoader(true)
+                        loaders: getCssLoader({ isModule: true })
                     },
                     vue: {
                         resourceQuery: /\?vue/,
@@ -151,7 +156,7 @@ export class StylePlugin extends Plugin {
                     },
                     'normal-modules': {
                         resourceQuery: /\.module\.\w+$/,
-                        loaders: getCssLoader(true)
+                        loaders: getCssLoader({ isModule: true })
                     },
                     normal: {
                         resourceQuery: '',
@@ -162,11 +167,11 @@ export class StylePlugin extends Plugin {
             {
                 name: 'less',
                 match: /\.less$/,
-                includes: srcIncludes,
+                includes: [...srcIncludes, /\.less/],
                 modules: {
                     'vue-modules': {
                         resourceQuery: /module/,
-                        loaders: getLessLoader(true)
+                        loaders: getLessLoader({ isModule: true })
                     },
                     vue: {
                         resourceQuery: /\?vue/,
@@ -174,7 +179,7 @@ export class StylePlugin extends Plugin {
                     },
                     'normal-modules': {
                         resourceQuery: /\.module\.\w+$/,
-                        loaders: getLessLoader(true)
+                        loaders: getLessLoader({ isModule: true })
                     },
                     normal: {
                         resourceQuery: '',
@@ -185,11 +190,11 @@ export class StylePlugin extends Plugin {
             {
                 name: 'postcss',
                 match: /\.p(ost)?css$/,
-                includes: srcIncludes,
+                includes: [...srcIncludes, /\.p(ost)?css$/],
                 modules: {
                     'vue-modules': {
                         resourceQuery: /module/,
-                        loaders: getCssLoader(true)
+                        loaders: getCssLoader({ isModule: true })
                     },
                     vue: {
                         resourceQuery: /\?vue/,
@@ -197,11 +202,34 @@ export class StylePlugin extends Plugin {
                     },
                     'normal-modules': {
                         resourceQuery: /\.module\.\w+$/,
-                        loaders: getCssLoader(true)
+                        loaders: getCssLoader({ isModule: true })
                     },
                     normal: {
                         resourceQuery: '',
                         loaders: getCssLoader()
+                    }
+                }
+            },
+            {
+                name: 'sass',
+                match: /\.(sass|scss)$/,
+                includes: [...srcIncludes, /\.(sass|scss)$/],
+                modules: {
+                    'vue-modules': {
+                        resourceQuery: /module/,
+                        loaders: getSassLoader({ isModule: true })
+                    },
+                    vue: {
+                        resourceQuery: /\?vue/,
+                        loaders: getSassLoader()
+                    },
+                    'normal-modules': {
+                        resourceQuery: /\.module\.\w+$/,
+                        loaders: getSassLoader({ isModule: true })
+                    },
+                    normal: {
+                        resourceQuery: '',
+                        loaders: getSassLoader()
                     }
                 }
             }

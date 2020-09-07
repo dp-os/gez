@@ -12,12 +12,7 @@ class StylePlugin extends genesis_core_1.Plugin {
     async chainWebpack({ target, config }) {
         const { ssr } = this;
         const { isProd } = ssr;
-        const srcIncludes = [
-            ...ssr.srcIncludes,
-            /\.css/,
-            /\.less/,
-            /\.p(ost)?css$/
-        ];
+        const srcIncludes = [...ssr.srcIncludes, /\.css/];
         const postcssConfig = {
             target,
             plugins: [],
@@ -101,13 +96,20 @@ class StylePlugin extends genesis_core_1.Plugin {
                     sourceMap: false
                 }
             },
+            sass: {
+                name: 'sass',
+                loader: 'sass-loader',
+                options: {
+                    sourceMap: false
+                }
+            },
             extract: {
                 name: 'extract',
                 loader: extract_css_chunks_webpack_plugin_1.default.loader,
                 options: {}
             }
         };
-        const getCssLoader = (isModule = false) => {
+        const getCssLoader = ({ isModule = false } = {}) => {
             const lds = [];
             if (!isProd) {
                 lds.push(loaders['vue-style']);
@@ -121,8 +123,11 @@ class StylePlugin extends genesis_core_1.Plugin {
             }
             return lds;
         };
-        const getLessLoader = (isModule = false) => {
-            return [...getCssLoader(isModule), loaders.less];
+        const getLessLoader = ({ isModule = false } = {}) => {
+            return [...getCssLoader({ isModule }), loaders.less];
+        };
+        const getSassLoader = ({ isModule = false } = {}) => {
+            return [...getCssLoader({ isModule }), loaders.sass];
         };
         const rules = [
             {
@@ -132,7 +137,7 @@ class StylePlugin extends genesis_core_1.Plugin {
                 modules: {
                     'vue-modules': {
                         resourceQuery: /module/,
-                        loaders: getCssLoader(true)
+                        loaders: getCssLoader({ isModule: true })
                     },
                     vue: {
                         resourceQuery: /\?vue/,
@@ -140,7 +145,7 @@ class StylePlugin extends genesis_core_1.Plugin {
                     },
                     'normal-modules': {
                         resourceQuery: /\.module\.\w+$/,
-                        loaders: getCssLoader(true)
+                        loaders: getCssLoader({ isModule: true })
                     },
                     normal: {
                         resourceQuery: '',
@@ -151,11 +156,11 @@ class StylePlugin extends genesis_core_1.Plugin {
             {
                 name: 'less',
                 match: /\.less$/,
-                includes: srcIncludes,
+                includes: [...srcIncludes, /\.less/],
                 modules: {
                     'vue-modules': {
                         resourceQuery: /module/,
-                        loaders: getLessLoader(true)
+                        loaders: getLessLoader({ isModule: true })
                     },
                     vue: {
                         resourceQuery: /\?vue/,
@@ -163,7 +168,7 @@ class StylePlugin extends genesis_core_1.Plugin {
                     },
                     'normal-modules': {
                         resourceQuery: /\.module\.\w+$/,
-                        loaders: getLessLoader(true)
+                        loaders: getLessLoader({ isModule: true })
                     },
                     normal: {
                         resourceQuery: '',
@@ -174,11 +179,11 @@ class StylePlugin extends genesis_core_1.Plugin {
             {
                 name: 'postcss',
                 match: /\.p(ost)?css$/,
-                includes: srcIncludes,
+                includes: [...srcIncludes, /\.p(ost)?css$/],
                 modules: {
                     'vue-modules': {
                         resourceQuery: /module/,
-                        loaders: getCssLoader(true)
+                        loaders: getCssLoader({ isModule: true })
                     },
                     vue: {
                         resourceQuery: /\?vue/,
@@ -186,11 +191,34 @@ class StylePlugin extends genesis_core_1.Plugin {
                     },
                     'normal-modules': {
                         resourceQuery: /\.module\.\w+$/,
-                        loaders: getCssLoader(true)
+                        loaders: getCssLoader({ isModule: true })
                     },
                     normal: {
                         resourceQuery: '',
                         loaders: getCssLoader()
+                    }
+                }
+            },
+            {
+                name: 'sass',
+                match: /\.(sass|scss)$/,
+                includes: [...srcIncludes, /\.(sass|scss)$/],
+                modules: {
+                    'vue-modules': {
+                        resourceQuery: /module/,
+                        loaders: getSassLoader({ isModule: true })
+                    },
+                    vue: {
+                        resourceQuery: /\?vue/,
+                        loaders: getSassLoader()
+                    },
+                    'normal-modules': {
+                        resourceQuery: /\.module\.\w+$/,
+                        loaders: getSassLoader({ isModule: true })
+                    },
+                    normal: {
+                        resourceQuery: '',
+                        loaders: getSassLoader()
                     }
                 }
             }
