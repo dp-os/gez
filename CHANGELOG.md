@@ -1,4 +1,13 @@
-## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.70-alpha.4...v0.0.1) (2020-08-29)
+## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.70...v0.0.1) (2020-09-07)
+
+
+### Features
+
+* 添加sass支持 ([74ebcde](https://github.com/fmfe/genesis/commit/74ebcde90116b779957461bf71362bede16718c8))
+
+
+
+## [0.0.70](https://github.com/fmfe/genesis/compare/v0.0.70-alpha.4...v0.0.70) (2020-08-29)
 
 
 ### Features
