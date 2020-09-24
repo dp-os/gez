@@ -45,7 +45,7 @@ const mergePackage = () => {
         }
     };
     Object.assign(data, config);
-    const text = JSON.stringify(data, null, 4);
+    const text = JSON.stringify(data, null, 4) + '\n';
     fs.writeFileSync(packageFile, text);
     log(`已合并： ${packageFile}`);
 };
