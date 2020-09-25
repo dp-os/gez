@@ -1,4 +1,13 @@
-## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.70...v0.0.1) (2020-09-07)
+## [0.0.1](https://github.com/fmfe/genesis/compare/v0.0.71-alpha.0...v0.0.1) (2020-09-25)
+
+
+### Features
+
+* 写入package.json末尾加一行 ([ee8069b](https://github.com/fmfe/genesis/commit/ee8069b8386042355a66e316de29f39d79d6865d))
+
+
+
+## [0.0.71-alpha.0](https://github.com/fmfe/genesis/compare/v0.0.70...v0.0.71-alpha.0) (2020-09-07)
 
 
 ### Features
