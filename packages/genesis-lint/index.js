@@ -43,6 +43,18 @@ module.exports = {
                 order: ['template', 'script', 'style']
             }
         ],
+        'vue/html-self-closing': [
+            'error',
+            {
+                html: {
+                    void: 'never',
+                    normal: 'always',
+                    component: 'always'
+                },
+                svg: 'always',
+                math: 'always'
+            }
+        ],
         'vue/require-component-is': 'off',
         'vue/component-definition-name-casing': ['error', 'kebab-case'],
         '@typescript-eslint/prefer-optional-chain': 'off',
