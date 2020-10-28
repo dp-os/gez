@@ -3,7 +3,7 @@
         <span class="text-purple-700">#About</span>
         <div class="content">
             <h2>About Us Page</h2>
-            <router-view></router-view>
+            <router-view />
         </div>
     </div>
 </template>

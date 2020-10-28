@@ -15,7 +15,9 @@ class StylePlugin extends genesis_core_1.Plugin {
         const srcIncludes = [...ssr.srcIncludes, /\.css/];
         const postcssConfig = {
             target,
-            plugins: [],
+            postcssOptions: {
+                plugins: []
+            },
             sourceMap: false
         };
         Object.defineProperty(postcssConfig, 'target', {
@@ -41,7 +43,7 @@ class StylePlugin extends genesis_core_1.Plugin {
                 })
                     .end();
             }
-            postcssConfig.plugins.push(...[
+            postcssConfig.postcssOptions.plugins.push(...[
                 postcss_preset_env_1.default({
                     browsers: ssr.getBrowsers('client')
                 }),
@@ -118,7 +120,7 @@ class StylePlugin extends genesis_core_1.Plugin {
                 lds.push(loaders.extract);
             }
             lds.push(isModule ? loaders['module-css'] : loaders.css);
-            if (postcssConfig.plugins.length > 0) {
+            if (postcssConfig.postcssOptions.plugins.length > 0) {
                 lds.push(loaders.postcss);
             }
             return lds;

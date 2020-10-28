@@ -1,19 +1,19 @@
 <template>
     <div class="app border-4 border-green-700">
         <span class="text-green-700">#Layout</span>
-        <header @click="plus" class="header bg-gray-100">
+        <header class="header bg-gray-100" @click="plus">
             <div class="text-gray-700 text-2xl">Page header {{ count }}</div>
             <div class="border m-2 p-2">
                 <div class="text-gray-500 text-sm">Router Instance Methods</div>
                 <button
-                    @click="$router.back()"
                     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded h-10"
+                    @click="$router.back()"
                 >
                     Back
                 </button>
                 <button
-                    @click="$router.forward()"
                     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    @click="$router.forward()"
                 >
                     Forward
                 </button>
@@ -28,7 +28,7 @@
             </ul>
         </header>
         <main>
-            <remote-view :fetch="fetch" :key="$route.meta.remoteUrl" />
+            <remote-view :key="$route.meta.remoteUrl" :fetch="fetch" />
         </main>
     </div>
 </template>

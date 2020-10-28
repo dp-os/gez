@@ -60,7 +60,7 @@ export const startApp = (renderer: RendererItems) => {
      * Home
      */
     app.get('/api/home', (req, res, next) => {
-        const url = String(req.query.renderUrl) || '/';
+        const url = String(req.query.renderUrl || '/');
         renderer.home
             .renderJson({ url, req, res })
             .then((result) => {
@@ -72,7 +72,7 @@ export const startApp = (renderer: RendererItems) => {
      * About Us
      */
     app.get('/api/about', (req, res, next) => {
-        const url = String(req.query.renderUrl) || '/';
+        const url = String(req.query.renderUrl || '/');
         renderer.about
             .renderJson({ url, req, res })
             .then((result) => {

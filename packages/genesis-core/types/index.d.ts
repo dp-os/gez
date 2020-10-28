@@ -102,12 +102,12 @@ declare namespace Genesis {
     }
     interface PostcssOptions {
         target: 'client' | 'server';
-        exec?: boolean;
-        parser?: any;
-        syntax?: any;
-        stringifier?: any;
-        config?: any;
-        plugins: any[];
+        execute?: boolean;
+        postcssOptions: {
+            syntax?: string | object;
+            parser?: string | Object | Function;
+            plugins: any[];
+        };
         sourceMap: boolean;
     }
     /**

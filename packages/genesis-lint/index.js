@@ -37,6 +37,7 @@ module.exports = {
     rules: {
         'no-param-reassign': 'off',
         'max-params': ['error', 5],
+        'no-undef': 'off',
         'vue/component-tags-order': [
             'error',
             {
@@ -47,7 +48,7 @@ module.exports = {
             'error',
             {
                 html: {
-                    void: 'never',
+                    void: 'always',
                     normal: 'always',
                     component: 'always'
                 },

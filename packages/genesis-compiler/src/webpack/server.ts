@@ -18,7 +18,7 @@ export class ServerConfig extends BaseConfig {
         this.config.output.libraryTarget('commonjs2');
         this.config.externals(
             nodeExternals({
-                whitelist: [
+                allowlist: [
                     /\.css$/,
                     /\.less$/,
                     /\?vue&type=style/,

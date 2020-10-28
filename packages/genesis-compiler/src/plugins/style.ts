@@ -26,7 +26,9 @@ export class StylePlugin extends Plugin {
         const srcIncludes = [...ssr.srcIncludes, /\.css/];
         const postcssConfig: PostcssOptions = {
             target,
-            plugins: [],
+            postcssOptions: {
+                plugins: []
+            },
             sourceMap: false
         };
         Object.defineProperty(postcssConfig, 'target', {
@@ -51,7 +53,7 @@ export class StylePlugin extends Plugin {
                     })
                     .end();
             }
-            postcssConfig.plugins.push(
+            postcssConfig.postcssOptions.plugins.push(
                 ...[
                     postcssPresetEnv({
                         browsers: ssr.getBrowsers('client')
@@ -129,7 +131,7 @@ export class StylePlugin extends Plugin {
                 lds.push(loaders.extract);
             }
             lds.push(isModule ? loaders['module-css'] : loaders.css);
-            if (postcssConfig.plugins.length > 0) {
+            if (postcssConfig.postcssOptions.plugins.length > 0) {
                 lds.push(loaders.postcss);
             }
             return lds;
