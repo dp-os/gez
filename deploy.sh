@@ -2,6 +2,7 @@
 
 rm -rf node_modules
 yarn 
+./build-js.sh
 yarn build:ts
 yarn build
 yarn test
