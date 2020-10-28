@@ -19,7 +19,7 @@ class ServerConfig extends base_1.BaseConfig {
         this.config.devtool('source-map');
         this.config.output.libraryTarget('commonjs2');
         this.config.externals(webpack_node_externals_1.default({
-            whitelist: [
+            allowlist: [
                 /\.css$/,
                 /\.less$/,
                 /\?vue&type=style/,

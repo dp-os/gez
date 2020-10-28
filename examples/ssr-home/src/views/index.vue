@@ -1,7 +1,7 @@
 <template>
     <div class="index">
         <h2>Hello world!</h2>
-        <p v-if="show" @click="close" class="text">
+        <p v-if="show" class="text" @click="close">
             {{
                 installed
                     ? 'The client should be installed successfully, click here to close!'
