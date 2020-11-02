@@ -4,7 +4,7 @@
   "module": "dist/esm/index.js",
   "types": "types/index.d.ts",
   "sideEffects": false,
-  "version": "0.0.73",
+  "version": "0.0.74",
   "description": "Vue SSR Microfront",
   "keywords": [
     "vue",

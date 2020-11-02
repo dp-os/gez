@@ -1,6 +1,6 @@
 {
   "name": "@fmfe/genesis-compiler",
-  "version": "0.0.73",
+  "version": "0.0.74",
   "description": "Vue SSR Microfront",
   "keywords": [
     "vue",
@@ -18,19 +18,19 @@
   "license": "MIT",
   "gitHead": "7915e049a993e97d4ca22dc8b8b2c731481fc11e",
   "dependencies": {
-    "@babel/plugin-syntax-jsx": "7.12.1",
-    "babel-helper-vue-jsx-merge-props": "2.0.3",
-    "babel-plugin-transform-vue-jsx": "3.7.0",
-    "babel-plugin-syntax-jsx": "6.18.0",
     "@babel/core": "7.12.3",
     "@babel/plugin-proposal-class-properties": "7.12.1",
     "@babel/plugin-proposal-decorators": "7.12.1",
     "@babel/plugin-proposal-export-default-from": "7.12.1",
+    "@babel/plugin-syntax-jsx": "7.12.1",
     "@babel/plugin-transform-modules-commonjs": "7.12.1",
     "@babel/plugin-transform-runtime": "7.12.1",
     "@babel/preset-env": "7.12.1",
     "@babel/runtime": "7.12.1",
+    "babel-helper-vue-jsx-merge-props": "2.0.3",
     "babel-loader": "8.1.0",
+    "babel-plugin-syntax-jsx": "6.18.0",
+    "babel-plugin-transform-vue-jsx": "3.7.0",
     "babel-preset-typescript-vue": "1.1.1",
     "chalk": "4.1.0",
     "core-js": "3.6.5",
@@ -62,7 +62,7 @@
     "write": "2.0.0"
   },
   "devDependencies": {
-    "@fmfe/genesis-core": "^0.0.73",
+    "@fmfe/genesis-core": "^0.0.74",
     "@types/memory-fs": "0.3.2",
     "@types/node": "14.14.5",
     "@types/webpack": "4.41.23",
