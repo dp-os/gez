@@ -49,7 +49,7 @@ export class TemplatePlugin extends Plugin {
             options: { [x: string]: string } = {}
         ) => {
             let text = fs.readFileSync(
-                path.resolve(__dirname, `../../template/${filename}`),
+                path.resolve(__dirname, `../../../template/${filename}`),
                 'utf8'
             );
             Object.keys(options).forEach((k) => {
@@ -73,7 +73,7 @@ export class TemplatePlugin extends Plugin {
         });
         const writeSrcTemplate = (filename: string) => {
             const text = fs.readFileSync(
-                path.resolve(__dirname, `../../template/src/${filename}`),
+                path.resolve(__dirname, `../../../template/src/${filename}`),
                 'utf8'
             );
             const output = path.resolve(ssr.srcDir, filename);

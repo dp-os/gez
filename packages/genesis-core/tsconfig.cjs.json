@@ -1,0 +1,15 @@
+{
+	"compilerOptions": {
+		"baseUrl": "./",
+		"target": "es2018",
+		"module": "CommonJS",
+        "moduleResolution": "node",
+		"allowSyntheticDefaultImports": true,
+		"declaration": false,
+		"esModuleInterop": true,
+		"removeComments": false,
+		"experimentalDecorators": true,
+		"outDir": "./dist/cjs"
+	},
+	"exclude": ["template"]
+}

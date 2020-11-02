@@ -7,15 +7,16 @@
     "ssr",
     "Microfront"
   ],
-  "main": "dist/index.js",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
   "types": "types/index.d.ts",
+  "sideEffects": false,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Followme",
   "license": "MIT",
   "gitHead": "7915e049a993e97d4ca22dc8b8b2c731481fc11e",
-  "sideEffects": false,
   "dependencies": {
     "ejs": "3.1.5",
     "serialize-javascript": "5.0.1",
