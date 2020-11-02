@@ -1,3 +1,5 @@
+#!/bin/bash
+
 function build ()
 {
     echo "build ${1}"
