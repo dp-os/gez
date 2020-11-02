@@ -5,10 +5,9 @@
     "main": "dist/index.js",
     "scripts": {
         "dev": "ts-node genesis.dev -p=tsconfig.json",
-        "dev:ts": "NODE_ENV=production tsc --build packages/**/tsconfig.json --watch",
         "dev:test": "jest --watchAll  --coverage",
         "build": "rm -rf dist && NODE_ENV=production ts-node genesis.build -p=tsconfig.json",
-        "build:ts": "NODE_ENV=production tsc --build packages/**/tsconfig.json",
+        "build:ts": "./build-ts.sh",
         "start": "NODE_ENV=production ts-node genesis.prod -p=tsconfig.json",
         "lint": "npm run lint:js && npm run lint:css",
         "lint:js": "eslint . --ext .js,.ts,.vue --fix",
