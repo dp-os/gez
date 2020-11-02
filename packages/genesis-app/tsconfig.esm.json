@@ -12,5 +12,5 @@
 		"declarationDir": "./types",
 		"outDir": "./dist/esm"
 	},
-	"exclude": ["template"]
+	"exclude": ["template", "dist", "types"]
 }

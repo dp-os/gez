@@ -13,7 +13,8 @@ export class BabelPlugin extends Plugin {
                 {
                     corejs: false
                 }
-            ]
+            ],
+            ['transform-vue-jsx']
         ];
         const presets = [
             [
