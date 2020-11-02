@@ -16,7 +16,8 @@ class BabelPlugin extends genesis_core_1.Plugin {
                 {
                     corejs: false
                 }
-            ]
+            ],
+            ['transform-vue-jsx']
         ];
         const presets = [
             [

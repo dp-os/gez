@@ -3,12 +3,7 @@
         <span class="text-blue-700 text-left">#Home</span>
         <div class="content">
             <div class="flex justify-center">
-                <img
-                    src="./images/logo.svg"
-                    alt="LOGO"
-                    height="100"
-                    width="100"
-                />
+                <Logo />
             </div>
             <router-view />
         </div>
@@ -16,9 +11,13 @@
 </template>
 <script lang="ts">
 import Vue from 'vue';
+import { Logo } from './logo';
 
 export default Vue.extend({
-    name: 'app'
+    name: 'app',
+    components: {
+        Logo
+    }
 });
 </script>
 <style lang="less" scoped>

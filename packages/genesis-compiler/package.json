@@ -18,6 +18,10 @@
   "license": "MIT",
   "gitHead": "7915e049a993e97d4ca22dc8b8b2c731481fc11e",
   "dependencies": {
+    "@babel/plugin-syntax-jsx": "7.12.1",
+    "babel-helper-vue-jsx-merge-props": "2.0.3",
+    "babel-plugin-transform-vue-jsx": "3.7.0",
+    "babel-plugin-syntax-jsx": "6.18.0",
     "@babel/core": "7.12.3",
     "@babel/plugin-proposal-class-properties": "7.12.1",
     "@babel/plugin-proposal-decorators": "7.12.1",
