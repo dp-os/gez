@@ -1,0 +1,16 @@
+{
+	"compilerOptions": {
+		"baseUrl": "./",
+		"target": "ESNext",
+		"module": "ESNext",
+        "moduleResolution": "node",
+		"allowSyntheticDefaultImports": true,
+		"declaration": true,
+		"esModuleInterop": true,
+		"removeComments": false,
+		"experimentalDecorators": true,
+		"declarationDir": "./types",
+		"outDir": "./dist/esm"
+	},
+	"exclude": ["template"]
+}

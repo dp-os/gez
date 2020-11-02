@@ -1,7 +1,9 @@
 {
   "name": "@fmfe/square",
-  "main": "dist/index.js",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
   "types": "types/index.d.ts",
+  "sideEffects": false,
   "version": "0.0.73",
   "description": "Vue SSR Microfront",
   "keywords": [
@@ -9,8 +11,6 @@
     "ssr",
     "Microfront"
   ],
-  "sideEffects": false,
-  "postCompile": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

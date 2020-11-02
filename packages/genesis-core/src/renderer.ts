@@ -56,7 +56,7 @@ export class Renderer {
                         __dirname,
                         /src$/.test(__dirname)
                             ? '../dist/ssr-genesis'
-                            : './ssr-genesis'
+                            : '../ssr-genesis'
                     )
                 }
             });

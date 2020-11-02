@@ -253,7 +253,7 @@ namespace Genesis {
     }
     export type CompilerType = 'build' | 'watch';
 }
-
+// @ts-ignore
 export = Genesis;
 
 declare module 'vue/types/options' {
