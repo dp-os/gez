@@ -82,6 +82,7 @@ class Genesis {
                 const item = arr.splice(index, 1)[0];
                 const app = await item.app;
                 app && app.$destroy();
+                item.app = null;
             }
         }
     }
