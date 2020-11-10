@@ -101,6 +101,7 @@ class Genesis {
             app.$mount(item.options.el);
             if (typeof item.options.mounted === 'function') {
                 item.options.mounted(app);
+                item.options.mounted = null;
             }
         });
     }
