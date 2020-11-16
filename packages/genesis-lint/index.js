@@ -64,6 +64,13 @@ module.exports = {
         '@typescript-eslint/no-loss-of-precision': 'off',
         'no-template-curly-in-string': 'off',
         'vue/valid-template-root': 'off',
+        'vue/no-duplicate-attributes': [
+            'error',
+            {
+                allowCoexistClass: true,
+                allowCoexistStyle: true
+            }
+        ],
         camelcase: 'off',
         'prettier/prettier': [
             'error',
