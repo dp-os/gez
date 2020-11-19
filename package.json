@@ -10,8 +10,8 @@
         "build:ts": "./build-ts.sh",
         "start": "NODE_ENV=production ts-node genesis.prod -p=tsconfig.json",
         "lint": "npm run lint:js && npm run lint:css",
-        "lint:js": "eslint . --ext .js,.ts,.vue --fix",
-        "lint:css": "stylelint . --syntax less --fix --ignore-path ./.stylelintignore | stylelint . --custom-syntax postcss-html --fix",
+        "lint:js": "fm-eslint . --ext .js,.ts,.vue --fix",
+        "lint:css": "fm-stylelint . --syntax less --fix --ignore-path ./.stylelintignore | fm-stylelint . --custom-syntax postcss-html --fix",
         "type-check": "tsc --noEmit",
         "test": "jest --coverage",
         "coveralls": "coveralls < coverage/lcov.info",
@@ -72,16 +72,16 @@
     },
     "lint-staged": {
         "*.{ts,js}": [
-            "eslint --ext .js,.ts --fix",
+            "fm-eslint --ext .js,.ts --fix",
             "git add"
         ],
         "*.{css,less}": [
-            "stylelint --syntax less --fix",
+            "fm-stylelint --syntax less --fix",
             "git add"
         ],
         "*.{vue}": [
-            "eslint --ext .js,.ts --fix",
-            "stylelint --custom-syntax postcss-html --fix",
+            "fm-eslint --ext .js,.ts --fix",
+            "fm-stylelint --custom-syntax postcss-html --fix",
             "git add"
         ]
     }
