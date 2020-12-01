@@ -280,6 +280,7 @@ export const RemoteView: any = {
                         Object.keys(this.$listeners).forEach((name) => {
                             app.$on(name, this.$listeners[name]);
                         });
+                        this.$emit('mounted');
                     }
                 };
                 if (!this.$el.firstChild) return;
@@ -288,7 +289,7 @@ export const RemoteView: any = {
                     value: this.$el.firstChild
                 });
                 if (options.el && (window as any).genesis && !this.destroyed) {
-                    this.$emit('install', options);
+                    this.$emit('beforeInstall', options);
                     this.appId = (window as any).genesis.install(options);
                 }
             });
