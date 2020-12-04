@@ -151,6 +151,7 @@ export class Router extends VueRouter {
     }
     public async replaceState(location: RawLocation, data: any) {
         const url = this.resolve(location).route.fullPath;
+        if (url === this.currentRoute.fullPath) return this.currentRoute;
         const sync = (url: string) => {
             if (this._isSync) {
                 route.dispatchTarget(this).replace(url);
@@ -160,7 +161,7 @@ export class Router extends VueRouter {
         const v = await super.replace(location).catch((err) => {
             return new Promise<Route>((resolve, reject) => {
                 setTimeout(() => {
-                    if (this.currentRoute.fullPath === url) return reject(err);
+                    if (this.currentRoute.fullPath !== url) return reject(err);
                     return resolve(this.currentRoute);
                 });
             });
