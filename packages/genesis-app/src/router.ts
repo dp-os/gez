@@ -161,7 +161,7 @@ export class Router extends VueRouter {
         const v = await super.replace(location).catch((err) => {
             return new Promise<Route>((resolve, reject) => {
                 setTimeout(() => {
-                    if (this.currentRoute.fullPath !== url) return reject(err);
+                    if (this.currentRoute.fullPath === url) return reject(err);
                     return resolve(this.currentRoute);
                 });
             });

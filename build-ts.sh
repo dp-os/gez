@@ -5,7 +5,7 @@ function build ()
     echo "build ${1}"
     rm -rf ./node_modules/@fmfe/${1}/types
     rm -rf ./node_modules/@fmfe/${1}/dist
-    rm -rf ./packages/${1}/client
+    rm -rf ./packages/${1}/dist
     rm -rf ./packages/${1}/types
     rm -rf ./packages/${1}/tsconfig.json
     cp -r tsconfig.cjs.json ./packages/${1}/tsconfig.cjs.json
