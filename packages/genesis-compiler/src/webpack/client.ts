@@ -14,17 +14,18 @@ export class ClientConfig extends BaseConfig {
             );
         this.config.optimization.splitChunks({
             cacheGroups: {
-                default: {
-                    name: 'common',
-                    chunks: 'initial',
-                    minChunks: 2,
-                    priority: -20
-                },
                 vendors: {
-                    test: /node_modules[\\/](vue|vue-loader|vue-router|vuex|vue-meta|vue-class-component|core-js|@babel\/runtime|axios|regenerator-runtime)[\\/]/,
+                    name: `chunk-vendors`,
+                    test: /[\\/]node_modules[\\/]/,
+                    priority: -10,
+                    chunks: 'initial'
+                },
+                common: {
+                    name: `chunk-common`,
+                    minChunks: 2,
+                    priority: -20,
                     chunks: 'initial',
-                    name: 'vendors',
-                    priority: -15
+                    reuseExistingChunk: true
                 }
             }
         });

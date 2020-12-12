@@ -39,6 +39,7 @@ export class StylePlugin extends Plugin {
             if (target === 'client') {
                 config.plugin('extract-css').use(ExtractCssChunks, [
                     {
+                        ignoreOrder: true,
                         filename: 'css/[name].[contenthash:8].css',
                         chunkFilename: 'css/[name].[contenthash:8].css'
                     }
