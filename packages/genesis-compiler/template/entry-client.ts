@@ -73,18 +73,17 @@ class Genesis {
     }
 
     public async uninstall(appId: number) {
-        const index = -1;
         const arr = this.installedList;
-        // eslint-disable-next-line
-        for (let i = 0; i < arr.length; i++) {
-            const item = arr[i];
-            if (item.appId === appId) {
-                const item = arr.splice(index, 1)[0];
-                const app = await item.app;
-                app && app.$destroy();
-                item.app = null;
-            }
-        }
+        const index = arr.findIndex((item) => {
+            return item.appId === appId;
+        });
+        if (index === -1) return false;
+        const item = arr.splice(index, 1)[0];
+        const app = await item.app;
+        app && app.$destroy();
+        item.app = null;
+
+        return true;
     }
 
     private startInstall() {
