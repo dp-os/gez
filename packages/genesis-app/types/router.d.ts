@@ -19,4 +19,10 @@ declare module 'vue-router/types/router' {
         pushState(location: RawLocation, data: any): Promise<Route>;
         replaceState(location: RawLocation, data: any): Promise<Route>;
     }
+    interface RouterOptions {
+        /**
+         * Whether to synchronize to history when routing changes
+         */
+        isSyncHistory?: boolean;
+    }
 }

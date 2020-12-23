@@ -117,7 +117,14 @@ export class Router extends VueRouter {
     }
 
     public get _isSync() {
-        return this._mode === 'history' && !!route;
+        if (!route) {
+            return false;
+        }
+        const isSyncHistory = this.options.isSyncHistory;
+        if (typeof isSyncHistory === 'boolean') {
+            return isSyncHistory;
+        }
+        return this._mode === 'history';
     }
     public get state() {
         return history.state || null;
@@ -198,5 +205,11 @@ declare module 'vue-router/types/router' {
         pushState(location: RawLocation, data: any): Promise<Route>;
         // eslint-disable-next-line @typescript-eslint/method-signature-style
         replaceState(location: RawLocation, data: any): Promise<Route>;
+    }
+    interface RouterOptions {
+        /**
+         * Whether to synchronize to history when routing changes
+         */
+        isSyncHistory?: boolean;
     }
 }
