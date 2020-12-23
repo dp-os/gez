@@ -111,7 +111,14 @@ class Router extends vue_router_1.default {
         });
     }
     get _isSync() {
-        return this._mode === 'history' && !!route;
+        if (!route) {
+            return false;
+        }
+        const isSyncHistory = this.options.isSyncHistory;
+        if (typeof isSyncHistory === 'boolean') {
+            return isSyncHistory;
+        }
+        return this._mode === 'history';
     }
     get state() {
         return history.state || null;

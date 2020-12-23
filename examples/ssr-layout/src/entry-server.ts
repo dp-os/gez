@@ -6,7 +6,6 @@ import { createRouter } from './routes';
 import './main.css';
 
 export default async (renderContext: RenderContext): Promise<Vue> => {
-    console.log('????????????', ok.createServerApp.toString());
     return ok.createServerApp({
         App,
         renderContext,
