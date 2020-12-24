@@ -23,6 +23,6 @@ declare module 'vue-router/types/router' {
         /**
          * Whether to synchronize to history when routing changes
          */
-        isSyncHistory?: boolean;
+        syncHistory?: boolean;
     }
 }

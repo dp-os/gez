@@ -114,9 +114,9 @@ class Router extends vue_router_1.default {
         if (!route) {
             return false;
         }
-        const isSyncHistory = this.options.isSyncHistory;
-        if (typeof isSyncHistory === 'boolean') {
-            return isSyncHistory;
+        const syncHistory = this.options.syncHistory;
+        if (typeof syncHistory === 'boolean') {
+            return syncHistory;
         }
         return this._mode === 'history';
     }
