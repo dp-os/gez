@@ -201,10 +201,10 @@ export class Renderer {
         switch (context.mode) {
             case 'ssr-html':
             case 'csr-html':
-                return this._renderHtml(context) as any;
+                return this._renderHtml(context, context.mode) as any;
             case 'ssr-json':
             case 'csr-json':
-                return this._renderJson(context) as any;
+                return this._renderJson(context, context.mode) as any;
         }
     }
 
@@ -303,6 +303,7 @@ export class Renderer {
             context.mode = options.mode;
         }
         if (
+            options.state &&
             Object.prototype.toString.call(options.state) === '[object Object]'
         ) {
             context.data.state = options.state;
@@ -328,9 +329,10 @@ export class Renderer {
     }
 
     private async _renderJson(
-        context: Genesis.RenderContext
+        context: Genesis.RenderContext,
+        mode: Genesis.RenderModeJson
     ): Promise<Genesis.RenderResultJson> {
-        switch (context.mode) {
+        switch (mode) {
             case 'ssr-json':
                 return {
                     type: 'json',
@@ -350,9 +352,10 @@ export class Renderer {
      * Render HTML
      */
     private async _renderHtml(
-        context: Genesis.RenderContext
+        context: Genesis.RenderContext,
+        mode: Genesis.RenderModeHtml
     ): Promise<Genesis.RenderResultHtml> {
-        switch (context.mode) {
+        switch (mode) {
             case 'ssr-html':
                 return {
                     type: 'html',
@@ -388,18 +391,16 @@ export class Renderer {
     private async _ssrToJson(
         context: Genesis.RenderContext
     ): Promise<Genesis.RenderData> {
-        const data: Genesis.RenderData = await new Promise(
-            (resolve, reject) => {
-                this.ssrRenderer.renderToString(context, (err, data: any) => {
-                    if (err) {
-                        return reject(err);
-                    } else if (typeof data !== 'object') {
-                        reject(new Error('Vue no rendering results'));
-                    }
-                    resolve(data);
-                });
-            }
-        );
+        await new Promise((resolve, reject) => {
+            this.ssrRenderer.renderToString(context, (err, data: any) => {
+                if (err) {
+                    return reject(err);
+                } else if (typeof data !== 'object') {
+                    reject(new Error('Vue no rendering results'));
+                }
+                resolve(data);
+            });
+        });
         await this.ssr.plugin.callHook('renderCompleted', context);
         return context.data;
     }
