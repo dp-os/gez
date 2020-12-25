@@ -43,7 +43,7 @@ export const createClientApp = async (options: CreateClientAppOptions) => {
         throw new Error('Server side DOM not found');
     }
     const { vueOptions, App } = options;
-    const { router } = vueOptions || {};
+    const { router }: any = vueOptions || {};
     if (router) {
         if ((router as any)._mode === 'abstract') {
             await router.push(clientOptions.url).catch((err: Error) => {
