@@ -15,7 +15,6 @@
         "type-check": "tsc --noEmit",
         "test": "jest --coverage",
         "coveralls": "coveralls < coverage/lcov.info",
-        "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
         "lerna": "lerna publish  --registry=https://registry.npmjs.org --force-publish --changelog-preset"
     },
     "sideEffects": [
@@ -34,15 +33,9 @@
     "bugs": {
         "url": "https://github.com/fmfe/genesis/issues"
     },
-    "config": {
-        "commitizen": {
-            "path": "cz-conventional-changelog"
-        }
-    },
     "devDependencies": {
         "@fmfe/genesis-lint": "file:./packages/genesis-lint",
         "@types/jest": "^25.1.4",
-        "commitlint-config-cz": "^0.13.1",
         "coveralls": "^3.0.11",
         "jest": "^25.2.4",
         "vue": "^2.6.11",
