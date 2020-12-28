@@ -22,8 +22,13 @@ class Build {
             return new Promise((resolve, reject) => {
                 const compiler = webpack_1.default(config);
                 compiler.run((err, stats) => {
+                    if (err) {
+                        chalk_1.default.red(`${type} errors`);
+                        console.log(error(err));
+                        return;
+                    }
                     const jsonStats = stats.toJson();
-                    if (err || stats.hasErrors()) {
+                    if (stats.hasErrors()) {
                         chalk_1.default.red(`${type} errors`);
                         jsonStats.errors.forEach((err) => console.log(error(err)));
                         return resolve(false);

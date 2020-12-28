@@ -25,7 +25,7 @@ export class BaseConfig extends BaseGenesis {
         }
     }
 
-    public async toConfig(): webpack.Configuration {
+    public async toConfig(): Promise<webpack.Configuration> {
         await this.reday;
         return this.config.toConfig();
     }

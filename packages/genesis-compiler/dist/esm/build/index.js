@@ -16,8 +16,13 @@ export class Build {
             return new Promise((resolve, reject) => {
                 const compiler = webpack(config);
                 compiler.run((err, stats) => {
+                    if (err) {
+                        chalk.red(`${type} errors`);
+                        console.log(error(err));
+                        return;
+                    }
                     const jsonStats = stats.toJson();
-                    if (err || stats.hasErrors()) {
+                    if (stats.hasErrors()) {
                         chalk.red(`${type} errors`);
                         jsonStats.errors.forEach((err) => console.log(error(err)));
                         return resolve(false);

@@ -31,7 +31,12 @@ class ClientConfig extends base_1.BaseConfig {
         this.config.optimization.runtimeChunk({
             name: 'runtime'
         });
-        this.config.output.jsonpFunction(`webpack_jsonp_${this.ssr.name.replace(/[^A-z]/g, '_')}`);
+    }
+    async toConfig() {
+        const config = await super.toConfig();
+        const name = `webpack_jsonp_${this.ssr.name.replace(/[^A-z]/g, '_')}`;
+        config.output.chunkLoadingGlobal = name;
+        return config;
     }
 }
 exports.ClientConfig = ClientConfig;
