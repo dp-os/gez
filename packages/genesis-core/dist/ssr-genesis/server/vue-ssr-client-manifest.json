@@ -6,13 +6,13 @@
     "js/runtime.6f048fbb.js",
     "css/app.9850cca9.css"
   ],
-  "initial": [],
-  "async": [
-    "js/chunk-vendors.6486ffa4.js",
-    "js/app.75e78fc9.js",
+  "initial": [
     "js/runtime.6f048fbb.js",
-    "css/app.9850cca9.css"
+    "js/chunk-vendors.6486ffa4.js",
+    "css/app.9850cca9.css",
+    "js/app.75e78fc9.js"
   ],
+  "async": [],
   "modules": {
     "24355460": [
       0

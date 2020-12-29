@@ -12,9 +12,7 @@ class ServerConfig extends base_1.BaseConfig {
         this.config.entry('app').add(this.ssr.entryServerFile).end();
         this.config.output
             .path(this.ssr.outputDirInServer)
-            .filename(this.ssr.isProd
-            ? 'js/[name].[contenthash:8].js'
-            : 'js/[name].js');
+            .filename(this.ssr.isProd ? '[name].[contenthash:8].js' : '[name].js');
         this.config.target('node');
         this.config.devtool('source-map');
         this.config.output.libraryTarget('commonjs2');
