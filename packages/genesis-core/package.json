@@ -1,6 +1,6 @@
 {
   "name": "@fmfe/genesis-core",
-  "version": "0.0.88",
+  "version": "0.0.89",
   "description": "Vue SSR Microfront",
   "keywords": [
     "vue",
@@ -16,7 +16,7 @@
   },
   "author": "Followme",
   "license": "MIT",
-  "gitHead": "7915e049a993e97d4ca22dc8b8b2c731481fc11e",
+  "gitHead": "cc4878efafb070023b8d35b8594b10310cbf1424",
   "dependencies": {
     "ejs": "3.1.5",
     "serialize-javascript": "5.0.1",
