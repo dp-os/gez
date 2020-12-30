@@ -73,8 +73,6 @@ class Watch extends utils_1.BaseGenesis {
         serverCompiler.outputFileSystem = new memory_fs_1.default();
         this.devMiddleware = webpack_dev_middleware_1.default(clientCompiler, {
             publicPath: this.ssr.publicPath,
-            stats: 'none',
-            logLevel: 'error',
             index: false
         });
         this.hotMiddleware = webpack_hot_middleware_1.default(clientCompiler, {
@@ -104,6 +102,7 @@ class Watch extends utils_1.BaseGenesis {
             onReady();
         };
         const serverOnWatch = () => {
+            console.log('>>>', this.ssr.outputServerBundleFile);
             const data = JSON.parse(readFile(serverCompiler.outputFileSystem, this.ssr.outputServerBundleFile));
             this.watchData.server = {
                 fs: serverCompiler.outputFileSystem,
