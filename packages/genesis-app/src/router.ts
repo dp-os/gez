@@ -121,10 +121,7 @@ export class Router extends VueRouter {
             return false;
         }
         const syncHistory = this.options.syncHistory;
-        if (typeof syncHistory === 'boolean') {
-            return syncHistory;
-        }
-        return this._mode === 'history';
+        return syncHistory === true || this._mode === 'history';
     }
     public get state() {
         return history.state || null;

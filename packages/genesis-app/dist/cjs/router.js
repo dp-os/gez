@@ -115,10 +115,7 @@ class Router extends vue_router_1.default {
             return false;
         }
         const syncHistory = this.options.syncHistory;
-        if (typeof syncHistory === 'boolean') {
-            return syncHistory;
-        }
-        return this._mode === 'history';
+        return syncHistory === true || this._mode === 'history';
     }
     get state() {
         return history.state || null;
