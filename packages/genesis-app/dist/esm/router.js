@@ -108,7 +108,7 @@ export class Router extends VueRouter {
             return false;
         }
         const syncHistory = this.options.syncHistory;
-        return syncHistory === true || this._mode === 'history';
+        return (!!this.app && syncHistory === true) || this._mode === 'history';
     }
     get state() {
         return history.state || null;

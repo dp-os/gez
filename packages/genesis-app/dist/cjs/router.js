@@ -115,7 +115,7 @@ class Router extends vue_router_1.default {
             return false;
         }
         const syncHistory = this.options.syncHistory;
-        return syncHistory === true || this._mode === 'history';
+        return (!!this.app && syncHistory === true) || this._mode === 'history';
     }
     get state() {
         return history.state || null;
