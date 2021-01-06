@@ -6,15 +6,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Build = void 0;
 const webpack_1 = __importDefault(require("webpack"));
 const chalk_1 = __importDefault(require("chalk"));
+const analyzer_1 = require("../plugins/analyzer");
 const install_1 = require("../plugins/install");
 const index_1 = require("../webpack/index");
 const index_2 = require("../utils/index");
 const error = chalk_1.default.bold.red;
 const warning = chalk_1.default.keyword('orange');
 class Build {
-    constructor(ssr) {
+    constructor(ssr, options = {}) {
         this.ssr = ssr;
         ssr.plugin.unshift(install_1.InstallPlugin);
+        if (options.analyzer) {
+            ssr.plugin.use(analyzer_1.AnalyzerPlugin);
+        }
     }
     async start() {
         const { ssr } = this;
