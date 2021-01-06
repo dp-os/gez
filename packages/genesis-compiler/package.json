@@ -18,6 +18,7 @@
   "license": "MIT",
   "gitHead": "cc4878efafb070023b8d35b8594b10310cbf1424",
   "dependencies": {
+    "webpack-bundle-analyzer": "4.3.0",
     "@babel/core": "7.12.3",
     "@babel/plugin-proposal-class-properties": "7.12.1",
     "@babel/plugin-proposal-decorators": "7.12.1",

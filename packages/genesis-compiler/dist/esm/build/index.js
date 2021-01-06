@@ -1,14 +1,18 @@
 import webpack from 'webpack';
 import chalk from 'chalk';
+import { AnalyzerPlugin } from '../plugins/analyzer';
 import { InstallPlugin } from '../plugins/install';
 import { ClientConfig, ServerConfig } from '../webpack/index';
 import { deleteFolder } from '../utils/index';
 const error = chalk.bold.red;
 const warning = chalk.keyword('orange');
 export class Build {
-    constructor(ssr) {
+    constructor(ssr, options = {}) {
         this.ssr = ssr;
         ssr.plugin.unshift(InstallPlugin);
+        if (options.analyzer) {
+            ssr.plugin.use(AnalyzerPlugin);
+        }
     }
     async start() {
         const { ssr } = this;
