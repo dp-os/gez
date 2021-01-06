@@ -2,6 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ClientConfig = void 0;
 const base_1 = require("./base");
+const isCSS = (module) => {
+    return (module.resource &&
+        /node_modules/.test(module.resource) &&
+        /\.(vue|css|less|sass|scss)$/.test(module.resource));
+};
 class ClientConfig extends base_1.BaseConfig {
     constructor(ssr) {
         super(ssr, 'client');
@@ -14,17 +19,24 @@ class ClientConfig extends base_1.BaseConfig {
         this.config.optimization.splitChunks({
             cacheGroups: {
                 vendors: {
-                    name: `chunk-vendors`,
+                    name: 'vendors',
                     test: /[\\/]node_modules[\\/]/,
-                    priority: -10,
-                    chunks: 'initial'
+                    priority: -10
                 },
-                common: {
-                    name: `chunk-common`,
+                default: {
                     minChunks: 2,
                     priority: -20,
-                    chunks: 'initial',
-                    reuseExistingChunk: true
+                    test: (module) => {
+                        return isCSS(module);
+                    }
+                },
+                common: {
+                    name: 'common',
+                    minChunks: 2,
+                    priority: -25,
+                    test: (module) => {
+                        return !isCSS(module);
+                    }
                 }
             }
         });
