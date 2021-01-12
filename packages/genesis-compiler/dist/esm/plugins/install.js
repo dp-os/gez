@@ -7,6 +7,7 @@ import { ImagePlugin } from './image';
 import { FontPlugin } from './font';
 import { MediaPlugin } from './media';
 import { TemplatePlugin } from './template';
+import { WorkerPlugin } from './worker';
 export class InstallPlugin extends Plugin {
     constructor(ssr) {
         super(ssr);
@@ -18,5 +19,6 @@ export class InstallPlugin extends Plugin {
         ssr.plugin.unshift(FontPlugin);
         ssr.plugin.unshift(MediaPlugin);
         ssr.plugin.unshift(TemplatePlugin);
+        ssr.plugin.unshift(WorkerPlugin);
     }
 }
