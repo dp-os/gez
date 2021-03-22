@@ -15,7 +15,7 @@
         "type-check": "tsc --noEmit",
         "test": "jest --coverage",
         "coveralls": "coveralls < coverage/lcov.info",
-        "lerna": "lerna publish  --registry=https://registry.npmjs.org --force-publish --changelog-preset"
+        "lerna": "lerna publish  --registry=https://registry.npmjs.org --force-publish"
     },
     "sideEffects": [
         "*.css",
