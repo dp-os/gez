@@ -14,6 +14,8 @@ const utils_1 = require("../utils");
 const install_1 = require("../plugins/install");
 const error = chalk_1.default.bold.red;
 const warning = chalk_1.default.keyword('orange');
+// Ignore discard warning
+process.noDeprecation = true;
 class WatchClientConfig extends webpack_2.ClientConfig {
     constructor(ssr) {
         super(ssr);

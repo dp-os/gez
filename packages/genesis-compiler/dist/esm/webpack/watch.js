@@ -8,6 +8,8 @@ import { BaseGenesis } from '../utils';
 import { InstallPlugin } from '../plugins/install';
 const error = chalk.bold.red;
 const warning = chalk.keyword('orange');
+// Ignore discard warning
+process.noDeprecation = true;
 export class WatchClientConfig extends ClientConfig {
     constructor(ssr) {
         super(ssr);

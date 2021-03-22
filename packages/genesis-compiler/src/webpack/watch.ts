@@ -10,6 +10,9 @@ import { InstallPlugin } from '../plugins/install';
 const error = chalk.bold.red;
 const warning = chalk.keyword('orange');
 
+// Ignore discard warning
+(process as any).noDeprecation = true;
+
 export class WatchClientConfig extends ClientConfig {
     public constructor(ssr: SSR) {
         super(ssr);
