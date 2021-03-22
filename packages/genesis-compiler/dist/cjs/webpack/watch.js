@@ -37,6 +37,7 @@ const readFile = (fs, file) => {
 class Watch extends utils_1.BaseGenesis {
     constructor(ssr) {
         super(ssr);
+        this.mfs = new memory_fs_1.default();
         this.watchData = {};
         ssr.plugin.unshift(install_1.InstallPlugin);
     }
@@ -70,8 +71,10 @@ class Watch extends utils_1.BaseGenesis {
         ]);
         const clientCompiler = webpack_1.default(clientConfig);
         const serverCompiler = webpack_1.default(serverConfig);
-        serverCompiler.outputFileSystem = new memory_fs_1.default();
+        serverCompiler.outputFileSystem = this.mfs;
+        clientCompiler.outputFileSystem = this.mfs;
         this.devMiddleware = webpack_dev_middleware_1.default(clientCompiler, {
+            outputFileSystem: this.mfs,
             publicPath: this.ssr.publicPath,
             index: false
         });
@@ -94,8 +97,8 @@ class Watch extends utils_1.BaseGenesis {
             if (stats.hasErrors())
                 return;
             this.watchData.client = {
-                fs: this.devMiddleware.fileSystem,
-                data: JSON.parse(readFile(this.devMiddleware.fileSystem, this.ssr.outputClientManifestFile))
+                fs: this.mfs,
+                data: JSON.parse(readFile(this.mfs, this.ssr.outputClientManifestFile))
             };
             this.notify();
             clientDone = true;
@@ -103,7 +106,6 @@ class Watch extends utils_1.BaseGenesis {
         };
         const serverOnWatch = () => {
             const data = JSON.parse(readFile(serverCompiler.outputFileSystem, this.ssr.outputServerBundleFile));
-            console.log('>>>>>>', data);
             this.watchData.server = {
                 fs: serverCompiler.outputFileSystem,
                 data

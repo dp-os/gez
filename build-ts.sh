@@ -17,8 +17,8 @@ function build ()
     cp -r ./packages/${1}/types node_modules/@fmfe/${1}/types
 }
 
-build genesis-core
+# build genesis-core
 build genesis-compiler
-build genesis-app
-build genesis-remote
-build square
+# build genesis-app
+# build genesis-remote
+# build square

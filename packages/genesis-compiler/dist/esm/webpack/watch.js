@@ -30,6 +30,7 @@ const readFile = (fs, file) => {
 export class Watch extends BaseGenesis {
     constructor(ssr) {
         super(ssr);
+        this.mfs = new MFS();
         this.watchData = {};
         ssr.plugin.unshift(InstallPlugin);
     }
@@ -63,8 +64,10 @@ export class Watch extends BaseGenesis {
         ]);
         const clientCompiler = Webpack(clientConfig);
         const serverCompiler = Webpack(serverConfig);
-        serverCompiler.outputFileSystem = new MFS();
+        serverCompiler.outputFileSystem = this.mfs;
+        clientCompiler.outputFileSystem = this.mfs;
         this.devMiddleware = WebpackDevMiddleware(clientCompiler, {
+            outputFileSystem: this.mfs,
             publicPath: this.ssr.publicPath,
             index: false
         });
@@ -87,8 +90,8 @@ export class Watch extends BaseGenesis {
             if (stats.hasErrors())
                 return;
             this.watchData.client = {
-                fs: this.devMiddleware.fileSystem,
-                data: JSON.parse(readFile(this.devMiddleware.fileSystem, this.ssr.outputClientManifestFile))
+                fs: this.mfs,
+                data: JSON.parse(readFile(this.mfs, this.ssr.outputClientManifestFile))
             };
             this.notify();
             clientDone = true;
@@ -96,7 +99,6 @@ export class Watch extends BaseGenesis {
         };
         const serverOnWatch = () => {
             const data = JSON.parse(readFile(serverCompiler.outputFileSystem, this.ssr.outputServerBundleFile));
-            console.log('>>>>>>', data);
             this.watchData.server = {
                 fs: serverCompiler.outputFileSystem,
                 data

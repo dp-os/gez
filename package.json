@@ -43,9 +43,9 @@
         "sass": "^1.26.10",
         "@fmfe/genesis-core": "^0.0.87",
         "@types/memory-fs": "^0.3.2",
-        "@types/node": "^14.14.16",
-        "@types/webpack-dev-middleware": "^3.7.2",
-        "@types/webpack-hot-middleware": "^2.25.3"
+        "@types/node": "14.14.35",
+        "@types/webpack-dev-middleware": "4.1.0",
+        "@types/webpack-hot-middleware": "2.25.3"
     },
     "dependencies": {
         "@fmfe/genesis-app": "file:./packages/genesis-app",

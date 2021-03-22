@@ -38,6 +38,7 @@ interface WatchSubData {
 export class Watch extends BaseGenesis {
     public devMiddleware: any;
     public hotMiddleware: any;
+    public mfs = new MFS();
     private watchData: Partial<WatchSubData> = {};
     private _renderer: Renderer | null;
 
@@ -78,8 +79,10 @@ export class Watch extends BaseGenesis {
         ]);
         const clientCompiler = Webpack(clientConfig);
         const serverCompiler = Webpack(serverConfig);
-        serverCompiler.outputFileSystem = new MFS();
+        serverCompiler.outputFileSystem = this.mfs;
+        clientCompiler.outputFileSystem = this.mfs;
         this.devMiddleware = WebpackDevMiddleware(clientCompiler, {
+            outputFileSystem: this.mfs,
             publicPath: this.ssr.publicPath,
             index: false
         });
@@ -91,26 +94,19 @@ export class Watch extends BaseGenesis {
             aggregateTimeout: 300,
             poll: 1000
         };
-        const clientOnDone = (stats) => {
+        const clientOnDone = (stats: Webpack.Stats) => {
             const jsonStats = stats.toJson();
             if (stats.hasErrors()) {
-                jsonStats.errors.forEach((err: Error) =>
-                    console.log(error(err))
-                );
+                jsonStats.errors.forEach((err) => console.log(error(err)));
             }
             if (stats.hasWarnings()) {
-                jsonStats.warnings.forEach((err: Error) =>
-                    console.log(warning(err))
-                );
+                jsonStats.warnings.forEach((err) => console.log(warning(err)));
             }
             if (stats.hasErrors()) return;
             this.watchData.client = {
-                fs: this.devMiddleware.fileSystem,
+                fs: this.mfs,
                 data: JSON.parse(
-                    readFile(
-                        this.devMiddleware.fileSystem,
-                        this.ssr.outputClientManifestFile
-                    )
+                    readFile(this.mfs, this.ssr.outputClientManifestFile)
                 )
             };
             this.notify();
@@ -124,7 +120,6 @@ export class Watch extends BaseGenesis {
                     this.ssr.outputServerBundleFile
                 )
             );
-            console.log('>>>>>>', data);
             this.watchData.server = {
                 fs: serverCompiler.outputFileSystem,
                 data

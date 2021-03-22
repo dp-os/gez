@@ -1,3 +1,4 @@
+import MFS from 'memory-fs';
 import { SSR, Renderer } from '@fmfe/genesis-core';
 import { ClientConfig } from '../webpack';
 import { BaseGenesis } from '../utils';
@@ -7,6 +8,7 @@ export declare class WatchClientConfig extends ClientConfig {
 export declare class Watch extends BaseGenesis {
     devMiddleware: any;
     hotMiddleware: any;
+    mfs: MFS;
     private watchData;
     private _renderer;
     constructor(ssr: SSR);
