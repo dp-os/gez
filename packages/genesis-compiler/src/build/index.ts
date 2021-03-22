@@ -31,21 +31,21 @@ export class Build {
                 compiler.run((err: Error, stats) => {
                     if (err) {
                         chalk.red(`${type} errors`);
-                        console.log(error(err));
+                        console.log(error(err.stack || err.message));
                         return;
                     }
                     const jsonStats = stats.toJson();
                     if (stats.hasErrors()) {
                         chalk.red(`${type} errors`);
                         jsonStats.errors.forEach((err) =>
-                            console.log(error(err))
+                            console.log(error(err.message))
                         );
                         return resolve(false);
                     }
                     if (stats.hasWarnings()) {
                         chalk.yellow(`${type} warnings`);
                         jsonStats.warnings.forEach((err) =>
-                            console.log(warning(err))
+                            console.log(warning(err.message))
                         );
                     }
                     resolve(true);

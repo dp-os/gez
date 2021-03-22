@@ -84,10 +84,10 @@ export class Watch extends BaseGenesis {
         const clientOnDone = (stats) => {
             const jsonStats = stats.toJson();
             if (stats.hasErrors()) {
-                jsonStats.errors.forEach((err) => console.log(error(err)));
+                jsonStats.errors.forEach((err) => console.log(error(err.message)));
             }
             if (stats.hasWarnings()) {
-                jsonStats.warnings.forEach((err) => console.log(warning(err)));
+                jsonStats.warnings.forEach((err) => console.log(warning(err.message)));
             }
             if (stats.hasErrors())
                 return;
