@@ -44,8 +44,9 @@ export class VueClientPlugin {
                 const assetModules = stats.modules.filter(
                     (m) => m.assets.length
                 );
-                const fileToIndex = (file: string) =>
-                    manifest.all.indexOf(file);
+                const fileToIndex = (file: string | number) => {
+                    return manifest.all.indexOf(String(file));
+                };
                 stats.modules.forEach((m) => {
                     if (m.chunks.length !== 1) return;
                     const cid = m.chunks[0];

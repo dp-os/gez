@@ -1,6 +1,6 @@
 {
   "name": "@fmfe/genesis-compiler",
-  "version": "0.0.87",
+  "version": "0.0.94",
   "description": "Vue SSR Microfront",
   "keywords": [
     "vue",
@@ -16,7 +16,7 @@
   },
   "author": "Followme",
   "license": "MIT",
-  "gitHead": "7915e049a993e97d4ca22dc8b8b2c731481fc11e",
+  "gitHead": "cc4878efafb070023b8d35b8594b10310cbf1424",
   "dependencies": {
     "@babel/core": "^7.12.10",
     "@babel/plugin-proposal-class-properties": "7.12.1",
@@ -55,12 +55,22 @@
     "vue-style-loader": "4.1.2",
     "vue-template-compiler": "2.6.12",
     "webpack": "^5.11.1",
+    "webpack-bundle-analyzer": "4.3.0",
     "webpack-chain": "6.5.1",
     "webpack-dev-middleware": "^4.0.2",
     "webpack-hot-middleware": "2.25.0",
     "webpack-node-externals": "2.5.2",
     "webpackbar": "4.0.0",
+    "worker-loader": "3.0.7",
     "write": "2.0.0"
+  },
+  "devDependencies": {
+    "@fmfe/genesis-core": "^0.0.94",
+    "@types/memory-fs": "0.3.2",
+    "@types/node": "14.14.5",
+    "@types/webpack": "4.41.23",
+    "@types/webpack-dev-middleware": "3.7.2",
+    "@types/webpack-hot-middleware": "2.25.3"
   },
   "homepage": "https://fmfe.github.io/genesis-docs/",
   "repository": {

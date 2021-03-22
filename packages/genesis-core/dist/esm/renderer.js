@@ -142,10 +142,10 @@ export class Renderer {
         switch (context.mode) {
             case 'ssr-html':
             case 'csr-html':
-                return this._renderHtml(context);
+                return this._renderHtml(context, context.mode);
             case 'ssr-json':
             case 'csr-json':
-                return this._renderJson(context);
+                return this._renderJson(context, context.mode);
         }
     }
     /**
@@ -233,7 +233,8 @@ export class Renderer {
         if (options.mode && modes.indexOf(options.mode) > -1) {
             context.mode = options.mode;
         }
-        if (Object.prototype.toString.call(options.state) === '[object Object]') {
+        if (options.state &&
+            Object.prototype.toString.call(options.state) === '[object Object]') {
             context.data.state = options.state;
         }
         // set context data
@@ -254,8 +255,8 @@ export class Renderer {
         }
         return context;
     }
-    async _renderJson(context) {
-        switch (context.mode) {
+    async _renderJson(context, mode) {
+        switch (mode) {
             case 'ssr-json':
                 return {
                     type: 'json',
@@ -273,8 +274,8 @@ export class Renderer {
     /**
      * Render HTML
      */
-    async _renderHtml(context) {
-        switch (context.mode) {
+    async _renderHtml(context, mode) {
+        switch (mode) {
             case 'ssr-html':
                 return {
                     type: 'html',
@@ -305,7 +306,7 @@ export class Renderer {
      * The server renders a JSON
      */
     async _ssrToJson(context) {
-        const data = await new Promise((resolve, reject) => {
+        await new Promise((resolve, reject) => {
             this.ssrRenderer.renderToString(context, (err, data) => {
                 if (err) {
                     return reject(err);

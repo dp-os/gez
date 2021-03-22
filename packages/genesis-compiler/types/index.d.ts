@@ -1,3 +1,3 @@
-import { Build } from './build';
+import { Build, BuildOptions } from './build';
 import { Watch } from './webpack/watch';
-export { Build, Watch };
+export { Build, BuildOptions, Watch };

@@ -1,6 +1,7 @@
 import webpack from 'webpack';
 import chalk from 'chalk';
 import { SSR } from '@fmfe/genesis-core';
+import { AnalyzerPlugin } from '../plugins/analyzer';
 import { InstallPlugin } from '../plugins/install';
 import { ClientConfig, ServerConfig } from '../webpack/index';
 import { deleteFolder } from '../utils/index';
@@ -8,11 +9,18 @@ import { deleteFolder } from '../utils/index';
 const error = chalk.bold.red;
 const warning = chalk.keyword('orange');
 
+export interface BuildOptions {
+    analyzer?: boolean;
+}
+
 export class Build {
     public ssr: SSR;
-    public constructor(ssr: SSR) {
+    public constructor(ssr: SSR, options: BuildOptions = {}) {
         this.ssr = ssr;
         ssr.plugin.unshift(InstallPlugin);
+        if (options.analyzer) {
+            ssr.plugin.use(AnalyzerPlugin);
+        }
     }
 
     public async start() {

@@ -102,8 +102,8 @@ class Watch extends utils_1.BaseGenesis {
             onReady();
         };
         const serverOnWatch = () => {
-            console.log('>>>', this.ssr.outputServerBundleFile);
             const data = JSON.parse(readFile(serverCompiler.outputFileSystem, this.ssr.outputServerBundleFile));
+            console.log('>>>>>>', data);
             this.watchData.server = {
                 fs: serverCompiler.outputFileSystem,
                 data

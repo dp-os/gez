@@ -108,10 +108,7 @@ export class Router extends VueRouter {
             return false;
         }
         const syncHistory = this.options.syncHistory;
-        if (typeof syncHistory === 'boolean') {
-            return syncHistory;
-        }
-        return this._mode === 'history';
+        return (!!this.app && syncHistory === true) || this._mode === 'history';
     }
     get state() {
         return history.state || null;
@@ -126,7 +123,8 @@ export class Router extends VueRouter {
         const sync = (url) => {
             if (this._isSync) {
                 route.dispatchTarget(this).push(url);
-                history.pushState(data, '', url);
+                const newUrl = (this.options.base || '').replace(/\/$/, '') + url;
+                history.pushState(data, '', newUrl);
             }
         };
         const v = await super.push(location).catch((err) => {
@@ -149,7 +147,8 @@ export class Router extends VueRouter {
         const sync = (url) => {
             if (this._isSync) {
                 route.dispatchTarget(this).replace(url);
-                history.replaceState(data, '', url);
+                const newUrl = (this.options.base || '').replace(/\/$/, '') + url;
+                history.replaceState(data, '', newUrl);
             }
         };
         const v = await super.replace(location).catch((err) => {

@@ -1,6 +1,6 @@
 {
   "name": "@fmfe/genesis-app",
-  "version": "0.0.87",
+  "version": "0.0.94",
   "description": "Vue SSR Microfront",
   "keywords": [
     "vue",
@@ -28,5 +28,5 @@
   "bugs": {
     "url": "https://github.com/fmfe/genesis/issues"
   },
-  "gitHead": "7915e049a993e97d4ca22dc8b8b2c731481fc11e"
+  "gitHead": "cc4878efafb070023b8d35b8594b10310cbf1424"
 }

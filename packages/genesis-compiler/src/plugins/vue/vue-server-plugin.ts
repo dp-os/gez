@@ -36,11 +36,11 @@ export class VueServerPlugin {
             async (compilation) => {
                 const stats = compilation.getStats().toJson();
                 const entryName = Object.keys(stats.entrypoints)[0];
-                const entryInfo: EntryInfo = stats.entrypoints[entryName];
+                const entryInfo = stats.entrypoints[entryName];
 
                 if (!entryInfo) return;
-                const entryAssets: EntryInfoAssets[] = entryInfo.assets.filter(
-                    (item) => isJS(item.name)
+                const entryAssets = entryInfo.assets.filter((item) =>
+                    isJS(item.name)
                 );
                 if (entryAssets.length > 1) {
                     throw new Error(
@@ -64,7 +64,7 @@ export class VueServerPlugin {
                     }
                     return text;
                 };
-                stats.assets.forEach((asset: webpack.Asset) => {
+                stats.assets.forEach((asset) => {
                     const name = asset.name;
                     if (isJS(name)) {
                         bundle.files[name] = toString(

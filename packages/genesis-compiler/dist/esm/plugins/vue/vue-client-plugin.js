@@ -32,7 +32,9 @@ export class VueClientPlugin {
                 modules: {}
             };
             const assetModules = stats.modules.filter((m) => m.assets.length);
-            const fileToIndex = (file) => manifest.all.indexOf(file);
+            const fileToIndex = (file) => {
+                return manifest.all.indexOf(String(file));
+            };
             stats.modules.forEach((m) => {
                 if (m.chunks.length !== 1)
                     return;

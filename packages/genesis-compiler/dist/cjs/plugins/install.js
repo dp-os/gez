@@ -10,6 +10,7 @@ const image_1 = require("./image");
 const font_1 = require("./font");
 const media_1 = require("./media");
 const template_1 = require("./template");
+const worker_1 = require("./worker");
 class InstallPlugin extends genesis_core_1.Plugin {
     constructor(ssr) {
         super(ssr);
@@ -21,6 +22,7 @@ class InstallPlugin extends genesis_core_1.Plugin {
         ssr.plugin.unshift(font_1.FontPlugin);
         ssr.plugin.unshift(media_1.MediaPlugin);
         ssr.plugin.unshift(template_1.TemplatePlugin);
+        ssr.plugin.unshift(worker_1.WorkerPlugin);
     }
 }
 exports.InstallPlugin = InstallPlugin;

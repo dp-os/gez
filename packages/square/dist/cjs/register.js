@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.microRegister = exports.forEachSquare = exports.R_NAME = void 0;
 const square_1 = require("./square");
 exports.R_NAME = '_MicroRegisterSquare';
-exports.forEachSquare = (square, cb) => {
+const forEachSquare = (square, cb) => {
     if (square && typeof square === 'object') {
         Object.keys(square).forEach((name) => {
             if (typeof square[name] === 'function') {
@@ -12,6 +12,7 @@ exports.forEachSquare = (square, cb) => {
         });
     }
 };
+exports.forEachSquare = forEachSquare;
 exports.microRegister = {
     beforeCreate() {
         // 添加一次使用的记录
