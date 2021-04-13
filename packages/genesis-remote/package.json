@@ -1,6 +1,6 @@
 {
   "name": "@fmfe/genesis-remote",
-  "version": "0.0.94",
+  "version": "0.0.95",
   "description": "Vue SSR Microfront",
   "keywords": [
     "vue",
@@ -26,6 +26,6 @@
     "url": "https://github.com/fmfe/genesis/issues"
   },
   "devDependencies": {
-    "@fmfe/genesis-core": "^0.0.94"
+    "@fmfe/genesis-core": "^0.0.95"
   }
 }
