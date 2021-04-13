@@ -127,16 +127,16 @@ export class Router extends VueRouter {
                 history.pushState(data, '', newUrl);
             }
         };
+        let isError = false;
         const v = await super.push(location).catch((err) => {
-            return new Promise((resolve, reject) => {
-                setTimeout(() => {
-                    if (this.currentRoute.fullPath === url)
-                        return reject(err);
-                    return resolve(this.currentRoute);
-                });
-            });
+            isError = true;
+            if (typeof err !== 'undefined')
+                return Promise.reject(err);
+            return Promise.resolve(this.currentRoute);
         });
-        sync(v.fullPath);
+        if (!isError) {
+            sync(v.fullPath);
+        }
         return v;
     }
     replace(location) {
@@ -151,16 +151,16 @@ export class Router extends VueRouter {
                 history.replaceState(data, '', newUrl);
             }
         };
+        let isError = false;
         const v = await super.replace(location).catch((err) => {
-            return new Promise((resolve, reject) => {
-                setTimeout(() => {
-                    if (typeof err !== 'undefined')
-                        return resolve(err);
-                    return resolve(this.currentRoute);
-                });
-            });
+            isError = true;
+            if (typeof err !== 'undefined')
+                return Promise.reject(err);
+            return Promise.resolve(this.currentRoute);
         });
-        sync(v.fullPath);
+        if (!isError) {
+            sync(v.fullPath);
+        }
         return v;
     }
     go(n) {
