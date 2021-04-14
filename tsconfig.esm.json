@@ -9,6 +9,7 @@
 		"esModuleInterop": true,
 		"removeComments": false,
 		"experimentalDecorators": true,
+		"skipLibCheck": true,
 		"declarationDir": "./types",
 		"outDir": "./dist/esm"
 	},

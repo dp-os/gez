@@ -8,6 +8,7 @@
 		"declaration": false,
 		"esModuleInterop": true,
 		"removeComments": false,
+		"skipLibCheck": true,
 		"experimentalDecorators": true,
 		"outDir": "./dist/cjs"
 	},

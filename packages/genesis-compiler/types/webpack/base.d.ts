@@ -6,5 +6,5 @@ export declare class BaseConfig extends BaseGenesis {
     config: Config;
     reday: Promise<void>;
     constructor(ssr: Genesis.SSR, target: Genesis.WebpackBuildTarget);
-    toConfig(): webpack.Configuration;
+    toConfig(): Promise<webpack.Configuration>;
 }

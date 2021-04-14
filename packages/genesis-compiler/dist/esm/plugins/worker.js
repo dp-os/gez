@@ -5,13 +5,13 @@ export class WorkerPlugin extends Plugin {
         config.module
             .rule('worker')
             .test(/\.worker\.(c|m)?(t|j)s$/i)
-            .include.add(this.ssr.srcIncludes)
+            .include.add(ssr.srcIncludes)
             .end()
             .use('worker')
             .loader('worker-loader')
             .options({
             esModule: false,
-            filename: this.ssr.isProd
+            filename: ssr.isProd
                 ? 'worker/[name].[contenthash:8].[ext]'
                 : 'worker/[path][name].[ext]'
         });
