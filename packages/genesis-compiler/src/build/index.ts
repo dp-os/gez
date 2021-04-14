@@ -32,14 +32,14 @@ export class Build {
                     const jsonStats = stats.toJson();
                     if (err || stats.hasErrors()) {
                         chalk.red(`${type} errors`);
-                        jsonStats.errors.forEach((err: Error) =>
+                        jsonStats.errors.forEach((err) =>
                             console.log(error(err))
                         );
                         return resolve(false);
                     }
                     if (stats.hasWarnings()) {
                         chalk.yellow(`${type} warnings`);
-                        jsonStats.warnings.forEach((err: Error) =>
+                        jsonStats.warnings.forEach((err) =>
                             console.log(warning(err))
                         );
                     }
