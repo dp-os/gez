@@ -16,6 +16,9 @@ export function getLocation(base: string): string {
     return (path || '/') + window.location.search + window.location.hash;
 }
 
+function equalPath(path1: string, path2: string) {
+    return path1.replace(/\/$/, '') === path2.replace(/\/$/, '');
+}
 class GenesisAppRouter {
     public static key = '__genesisAppRouter';
     private list: VueRouter[] = [];
@@ -59,14 +62,14 @@ class GenesisAppRouter {
 
     public push(location: string) {
         this.sync((router) => {
-            if (router.currentRoute.fullPath === location) return;
+            if (equalPath(router.currentRoute.fullPath, location)) return;
             VueRouter.prototype.push.call(router, location);
         });
     }
 
     public replace(location: string) {
         this.sync((router) => {
-            if (router.currentRoute.fullPath === location) return;
+            if (equalPath(router.currentRoute.fullPath, location)) return;
             VueRouter.prototype.replace.call(router, location);
         });
     }

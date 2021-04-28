@@ -15,6 +15,9 @@ function getLocation(base) {
     return (path || '/') + window.location.search + window.location.hash;
 }
 exports.getLocation = getLocation;
+function equalPath(path1, path2) {
+    return path1.replace(/\/$/, '') === path2.replace(/\/$/, '');
+}
 class GenesisAppRouter {
     constructor() {
         this.list = [];
@@ -54,14 +57,14 @@ class GenesisAppRouter {
     }
     push(location) {
         this.sync((router) => {
-            if (router.currentRoute.fullPath === location)
+            if (equalPath(router.currentRoute.fullPath, location))
                 return;
             vue_router_1.default.prototype.push.call(router, location);
         });
     }
     replace(location) {
         this.sync((router) => {
-            if (router.currentRoute.fullPath === location)
+            if (equalPath(router.currentRoute.fullPath, location))
                 return;
             vue_router_1.default.prototype.replace.call(router, location);
         });
