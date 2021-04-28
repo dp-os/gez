@@ -18,7 +18,7 @@
   "license": "MIT",
   "devDependencies": {
     "vue": "2.6.12",
-    "vue-router": "3.5.1"
+    "vue-router": "3.1.6"
   },
   "homepage": "https://fmfe.github.io/genesis-docs/",
   "repository": {
