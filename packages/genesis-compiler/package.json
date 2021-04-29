@@ -1,6 +1,6 @@
 {
   "name": "@fmfe/genesis-compiler",
-  "version": "0.0.100",
+  "version": "0.0.101",
   "description": "Vue SSR Microfront",
   "keywords": [
     "vue",
@@ -64,7 +64,7 @@
     "write": "2.0.0"
   },
   "devDependencies": {
-    "@fmfe/genesis-core": "^0.0.100"
+    "@fmfe/genesis-core": "^0.0.101"
   },
   "homepage": "https://fmfe.github.io/genesis-docs/",
   "repository": {
