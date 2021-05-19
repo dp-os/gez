@@ -242,6 +242,7 @@ export class Renderer {
         options: Genesis.RenderOptions<T>
     ): Genesis.RenderContext {
         const context: Genesis.RenderContext = {
+            env: 'server',
             data: {
                 id: '',
                 name: this.ssr.name,
@@ -270,7 +271,7 @@ export class Renderer {
             enumerable: false,
             get() {
                 const data = context.data;
-                const script = { ...data };
+                const script = { ...data, env: 'client' };
                 const arr = [
                     'style',
                     'html',
@@ -305,7 +306,7 @@ export class Renderer {
         if (
             Object.prototype.toString.call(options.state) === '[object Object]'
         ) {
-            context.data.state = options.state;
+            context.data.state = options.state || {};
         }
         // set context data
         if (typeof options.url === 'string') {
@@ -344,6 +345,7 @@ export class Renderer {
                     context
                 };
         }
+        throw new TypeError(`No type ${context.mode}`);
     }
 
     /**
@@ -366,6 +368,7 @@ export class Renderer {
                     context
                 };
         }
+        throw new TypeError(`No type ${context.mode}`);
     }
 
     /**
@@ -388,18 +391,16 @@ export class Renderer {
     private async _ssrToJson(
         context: Genesis.RenderContext
     ): Promise<Genesis.RenderData> {
-        const data: Genesis.RenderData = await new Promise(
-            (resolve, reject) => {
-                this.ssrRenderer.renderToString(context, (err, data: any) => {
-                    if (err) {
-                        return reject(err);
-                    } else if (typeof data !== 'object') {
-                        reject(new Error('Vue no rendering results'));
-                    }
-                    resolve(data);
-                });
-            }
-        );
+        await new Promise((resolve, reject) => {
+            this.ssrRenderer.renderToString(context, (err, data: any) => {
+                if (err) {
+                    return reject(err);
+                } else if (typeof data !== 'object') {
+                    reject(new Error('Vue no rendering results'));
+                }
+                resolve(data);
+            });
+        });
         await this.ssr.plugin.callHook('renderCompleted', context);
         return context.data;
     }

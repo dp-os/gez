@@ -159,6 +159,7 @@ declare namespace Genesis {
         [x: string]: any;
     }
     interface ClientOptions {
+        env: 'client';
         url: string;
         id: string;
         name: string;
@@ -184,6 +185,7 @@ declare namespace Genesis {
      * Rendered context
      */
     interface RenderContext {
+        env: 'server';
         data: RenderData;
         mode: RenderMode;
         ssr: SSR;

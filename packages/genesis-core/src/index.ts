@@ -169,6 +169,7 @@ namespace Genesis {
         [x: string]: any;
     }
     export interface ClientOptions {
+        env: 'client';
         url: string;
         id: string;
         name: string;
@@ -196,6 +197,7 @@ namespace Genesis {
      * Rendered context
      */
     export interface RenderContext {
+        env: 'server';
         data: RenderData;
         mode: RenderMode;
         ssr: SSR;
@@ -258,7 +260,9 @@ export = Genesis;
 
 declare module 'vue/types/options' {
     interface ComponentOptions<V extends Vue> {
+        // @ts-ignore
         renderContext?: Genesis.RenderContext;
+        // @ts-ignore
         clientOptions?: Genesis.ClientOptions;
     }
 }

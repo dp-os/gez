@@ -124,7 +124,8 @@ const start = (createApp?: (data: ClientOptions) => Promise<Vue>) => {
         if (data.automount === false) return;
 
         delete window[id];
-        const options = data;
+        const options: ClientOptions = data;
+        options.env = 'client';
         Object.defineProperty(options, 'el', {
             enumerable: false,
             value: el
