@@ -7,13 +7,12 @@ exports.Micro = exports.command = exports.log = void 0;
 const tms_js_1 = __importDefault(require("@fmfe/tms.js"));
 const vue_1 = __importDefault(require("vue"));
 const install_1 = require("./install");
-const log = (log) => {
+exports.log = (log) => {
     if (process.env.NODE_ENV !== 'production') {
         // eslint-disable-next-line no-console
         console.log(`[micro] ${log}`);
     }
 };
-exports.log = log;
 const getType = (payload) => {
     return Object.prototype.toString
         .call(payload)
