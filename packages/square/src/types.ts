@@ -50,7 +50,7 @@ declare module 'vue/types/vue' {
 declare module 'vue/types/options' {
     interface ComponentOptions<V extends Vue> {
         micro?: Micro;
-        square?: Square;
+        square?: Partial<Square>;
     }
 }
 declare module 'vue/types/options' {
