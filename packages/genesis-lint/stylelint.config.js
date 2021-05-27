@@ -15,6 +15,7 @@ module.exports = {
                 'empty-line-between-groups': false
             }
         ],
+        'no-descending-specificity': null,
         'no-empty-source': null,
         'declaration-colon-newline-after': null,
         'font-family-no-missing-generic-family-keyword': null
