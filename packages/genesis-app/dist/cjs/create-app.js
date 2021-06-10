@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createServerApp = exports.createClientApp = void 0;
 const vue_1 = __importDefault(require("vue"));
-exports.createClientApp = async (options) => {
+const createClientApp = async (options) => {
     if (typeof options !== 'object') {
         throw new Error('Option cannot be empty');
     }
@@ -40,6 +40,7 @@ exports.createClientApp = async (options) => {
     }
     const app = new vue_1.default({
         ...vueOptions,
+        // @ts-ignore
         clientOptions,
         render(h) {
             return h(App);
@@ -47,7 +48,8 @@ exports.createClientApp = async (options) => {
     });
     return app;
 };
-exports.createServerApp = async (options) => {
+exports.createClientApp = createClientApp;
+const createServerApp = async (options) => {
     if (!options.App) {
         throw new Error('options.App component cannot be empty');
     }
@@ -69,6 +71,7 @@ exports.createServerApp = async (options) => {
     }
     const app = new vue_1.default({
         ...vueOptions,
+        // @ts-ignore
         renderContext,
         render(h) {
             return h(App);
@@ -76,3 +79,4 @@ exports.createServerApp = async (options) => {
     });
     return app;
 };
+exports.createServerApp = createServerApp;

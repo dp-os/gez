@@ -28,5 +28,5 @@ export interface CreateServerAppOptions {
      */
     vueOptions?: ComponentOptions<Vue>;
 }
-export declare const createClientApp: (options: CreateClientAppOptions) => Promise<import("vue/types/vue").CombinedVueInstance<Vue, object, object, object, Record<never, any>>>;
-export declare const createServerApp: (options: CreateServerAppOptions) => Promise<import("vue/types/vue").CombinedVueInstance<Vue, object, object, object, Record<never, any>>>;
+export declare const createClientApp: (options: CreateClientAppOptions) => Promise<import("vue/types/vue").CombinedVueInstance<Vue, object, import("vue/types/options").DefaultMethods<Vue>, import("vue/types/options").DefaultComputed, Record<string, any>>>;
+export declare const createServerApp: (options: CreateServerAppOptions) => Promise<import("vue/types/vue").CombinedVueInstance<Vue, object, import("vue/types/options").DefaultMethods<Vue>, import("vue/types/options").DefaultComputed, Record<string, any>>>;
