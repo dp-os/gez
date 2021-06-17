@@ -27,11 +27,6 @@ class Genesis {
                 `Application initialization method must be of string type`
             );
         }
-        if (this.applicationCenter[name]) {
-            throw new Error(
-                `${name} Application has been used, please change the name`
-            );
-        }
         this.applicationCenter[name] = createApp;
         this.startInstall();
     }
@@ -99,6 +94,7 @@ class Genesis {
             }
             app.$mount(item.options.el);
             if (typeof item.options.mounted === 'function') {
+                // @ts-ignore
                 item.options.mounted(app);
             }
         });
