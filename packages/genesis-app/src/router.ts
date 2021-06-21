@@ -89,13 +89,13 @@ const getRoute = (): GenesisAppRouter | null => {
 const route: GenesisAppRouter = getRoute();
 
 export class Router extends VueRouter {
-    private _mode: RouterMode = 'abstract';
+    protected sourceMode: RouterMode = 'abstract';
     public constructor(options: RouterOptions = {}) {
         super({
             ...options,
             mode: options.mode === 'history' ? 'abstract' : options.mode
         });
-        this._mode = options.mode;
+        this.sourceMode = options.mode;
         if (!this._isSync) return;
         route.set(this);
         let app = this.app;
@@ -124,7 +124,10 @@ export class Router extends VueRouter {
             return false;
         }
         const syncHistory = this.options.syncHistory;
-        return (!!this.app && syncHistory === true) || this._mode === 'history';
+        return (
+            (!!this.app && syncHistory === true) ||
+            this.sourceMode === 'history'
+        );
     }
     public get state() {
         return history.state || null;

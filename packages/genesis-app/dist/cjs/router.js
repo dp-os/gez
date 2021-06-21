@@ -88,8 +88,8 @@ class Router extends vue_router_1.default {
             ...options,
             mode: options.mode === 'history' ? 'abstract' : options.mode
         });
-        this._mode = 'abstract';
-        this._mode = options.mode;
+        this.sourceMode = 'abstract';
+        this.sourceMode = options.mode;
         if (!this._isSync)
             return;
         route.set(this);
@@ -118,7 +118,8 @@ class Router extends vue_router_1.default {
             return false;
         }
         const syncHistory = this.options.syncHistory;
-        return (!!this.app && syncHistory === true) || this._mode === 'history';
+        return ((!!this.app && syncHistory === true) ||
+            this.sourceMode === 'history');
     }
     get state() {
         return history.state || null;
