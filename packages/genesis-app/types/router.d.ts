@@ -3,7 +3,7 @@ export declare function getLocation(base: string): string;
 export declare class Router extends VueRouter {
     protected sourceMode: RouterMode;
     constructor(options?: RouterOptions);
-    get _isSync(): boolean;
+    private get _isSync();
     get state(): any;
     push(location: RawLocation): Promise<Route>;
     pushState(location: RawLocation, data: any): Promise<Route>;

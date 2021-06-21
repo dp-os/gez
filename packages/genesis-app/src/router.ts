@@ -119,7 +119,7 @@ export class Router extends VueRouter {
         });
     }
 
-    public get _isSync() {
+    private get _isSync() {
         if (!route) {
             return false;
         }
