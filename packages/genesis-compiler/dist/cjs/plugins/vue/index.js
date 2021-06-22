@@ -43,7 +43,6 @@ class VuePlugin extends genesis_core_1.Plugin {
         config.plugin('vue').use(plugin_1.default);
         config.plugin('define').use(webpack_1.default.DefinePlugin, [
             {
-                'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
                 'process.env.VUE_ENV': JSON.stringify(target),
                 'process.env.GENESIS_NAME': JSON.stringify(ssr.name)
             }
