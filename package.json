@@ -55,7 +55,6 @@
         "@fmfe/square": "file:./packages/square",
         "@types/ejs": "^3.0.3",
         "@types/express": "^4.17.2",
-        "@types/node": "^13.7.4",
         "axios": "^0.19.2",
         "express": "^4.17.1",
         "tailwindcss": "^1.6.0",

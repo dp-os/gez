@@ -40,6 +40,7 @@ const createClientApp = async (options) => {
     }
     const app = new vue_1.default({
         ...vueOptions,
+        // @ts-ignore
         clientOptions,
         render(h) {
             return h(App);
@@ -70,6 +71,7 @@ const createServerApp = async (options) => {
     }
     const app = new vue_1.default({
         ...vueOptions,
+        // @ts-ignore
         renderContext,
         render(h) {
             return h(App);

@@ -68,6 +68,7 @@ export const createClientApp = async (options: CreateClientAppOptions) => {
     }
     const app = new Vue({
         ...vueOptions,
+        // @ts-ignore
         clientOptions,
         render(h) {
             return h(App);
@@ -100,6 +101,7 @@ export const createServerApp = async (options: CreateServerAppOptions) => {
     }
     const app = new Vue({
         ...vueOptions,
+        // @ts-ignore
         renderContext,
         render(h) {
             return h(App);

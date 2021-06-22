@@ -179,6 +179,7 @@ class Renderer {
     }
     _createContext(options) {
         const context = {
+            env: 'server',
             data: {
                 id: '',
                 name: this.ssr.name,
@@ -207,7 +208,7 @@ class Renderer {
             enumerable: false,
             get() {
                 const data = context.data;
-                const script = { ...data };
+                const script = { ...data, env: 'client' };
                 const arr = [
                     'style',
                     'html',
@@ -276,6 +277,7 @@ class Renderer {
                     context
                 };
         }
+        throw new TypeError(`No type ${context.mode}`);
     }
     /**
      * Render HTML
@@ -295,6 +297,7 @@ class Renderer {
                     context
                 };
         }
+        throw new TypeError(`No type ${context.mode}`);
     }
     /**
      * Static file public path

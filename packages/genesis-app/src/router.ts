@@ -16,6 +16,9 @@ export function getLocation(base: string): string {
     return (path || '/') + window.location.search + window.location.hash;
 }
 
+function equalPath(path1: string, path2: string) {
+    return path1.replace(/\/$/, '') === path2.replace(/\/$/, '');
+}
 class GenesisAppRouter {
     public static key = '__genesisAppRouter';
     private list: VueRouter[] = [];
@@ -59,14 +62,14 @@ class GenesisAppRouter {
 
     public push(location: string) {
         this.sync((router) => {
-            if (router.currentRoute.fullPath === location) return;
+            if (equalPath(router.currentRoute.fullPath, location)) return;
             VueRouter.prototype.push.call(router, location);
         });
     }
 
     public replace(location: string) {
         this.sync((router) => {
-            if (router.currentRoute.fullPath === location) return;
+            if (equalPath(router.currentRoute.fullPath, location)) return;
             VueRouter.prototype.replace.call(router, location);
         });
     }
@@ -86,13 +89,13 @@ const getRoute = (): GenesisAppRouter | null => {
 const route: GenesisAppRouter = getRoute();
 
 export class Router extends VueRouter {
-    private _mode: RouterMode = 'abstract';
+    protected sourceMode: RouterMode = 'abstract';
     public constructor(options: RouterOptions = {}) {
         super({
             ...options,
             mode: options.mode === 'history' ? 'abstract' : options.mode
         });
-        this._mode = options.mode;
+        this.sourceMode = options.mode;
         if (!this._isSync) return;
         route.set(this);
         let app = this.app;
@@ -116,12 +119,15 @@ export class Router extends VueRouter {
         });
     }
 
-    public get _isSync() {
+    private get _isSync() {
         if (!route) {
             return false;
         }
         const syncHistory = this.options.syncHistory;
-        return (!!this.app && syncHistory === true) || this._mode === 'history';
+        return (
+            (!!this.app && syncHistory === true) ||
+            this.sourceMode === 'history'
+        );
     }
     public get state() {
         return history.state || null;
@@ -141,15 +147,15 @@ export class Router extends VueRouter {
                 history.pushState(data, '', newUrl);
             }
         };
+        let isError = false;
         const v = await super.push(location).catch((err) => {
-            return new Promise<Route>((resolve, reject) => {
-                setTimeout(() => {
-                    if (this.currentRoute.fullPath === url) return reject(err);
-                    return resolve(this.currentRoute);
-                });
-            });
+            isError = true;
+            if (typeof err !== 'undefined') return Promise.reject(err);
+            return Promise.resolve(this.currentRoute);
         });
-        sync(v.fullPath);
+        if (!isError) {
+            sync(v.fullPath);
+        }
         return v;
     }
     public replace(location: RawLocation) {
@@ -165,15 +171,15 @@ export class Router extends VueRouter {
                 history.replaceState(data, '', newUrl);
             }
         };
+        let isError = false;
         const v = await super.replace(location).catch((err) => {
-            return new Promise<Route>((resolve, reject) => {
-                setTimeout(() => {
-                    if (typeof err !== 'undefined') return resolve(err);
-                    return resolve(this.currentRoute);
-                });
-            });
+            isError = true;
+            if (typeof err !== 'undefined') return Promise.reject(err);
+            return Promise.resolve(this.currentRoute);
         });
-        sync(v.fullPath);
+        if (!isError) {
+            sync(v.fullPath);
+        }
         return v;
     }
 

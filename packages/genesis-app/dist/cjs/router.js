@@ -15,6 +15,9 @@ function getLocation(base) {
     return (path || '/') + window.location.search + window.location.hash;
 }
 exports.getLocation = getLocation;
+function equalPath(path1, path2) {
+    return path1.replace(/\/$/, '') === path2.replace(/\/$/, '');
+}
 class GenesisAppRouter {
     constructor() {
         this.list = [];
@@ -54,14 +57,14 @@ class GenesisAppRouter {
     }
     push(location) {
         this.sync((router) => {
-            if (router.currentRoute.fullPath === location)
+            if (equalPath(router.currentRoute.fullPath, location))
                 return;
             vue_router_1.default.prototype.push.call(router, location);
         });
     }
     replace(location) {
         this.sync((router) => {
-            if (router.currentRoute.fullPath === location)
+            if (equalPath(router.currentRoute.fullPath, location))
                 return;
             vue_router_1.default.prototype.replace.call(router, location);
         });
@@ -85,8 +88,8 @@ class Router extends vue_router_1.default {
             ...options,
             mode: options.mode === 'history' ? 'abstract' : options.mode
         });
-        this._mode = 'abstract';
-        this._mode = options.mode;
+        this.sourceMode = 'abstract';
+        this.sourceMode = options.mode;
         if (!this._isSync)
             return;
         route.set(this);
@@ -115,7 +118,8 @@ class Router extends vue_router_1.default {
             return false;
         }
         const syncHistory = this.options.syncHistory;
-        return (!!this.app && syncHistory === true) || this._mode === 'history';
+        return ((!!this.app && syncHistory === true) ||
+            this.sourceMode === 'history');
     }
     get state() {
         return history.state || null;
@@ -134,16 +138,16 @@ class Router extends vue_router_1.default {
                 history.pushState(data, '', newUrl);
             }
         };
+        let isError = false;
         const v = await super.push(location).catch((err) => {
-            return new Promise((resolve, reject) => {
-                setTimeout(() => {
-                    if (this.currentRoute.fullPath === url)
-                        return reject(err);
-                    return resolve(this.currentRoute);
-                });
-            });
+            isError = true;
+            if (typeof err !== 'undefined')
+                return Promise.reject(err);
+            return Promise.resolve(this.currentRoute);
         });
-        sync(v.fullPath);
+        if (!isError) {
+            sync(v.fullPath);
+        }
         return v;
     }
     replace(location) {
@@ -158,16 +162,16 @@ class Router extends vue_router_1.default {
                 history.replaceState(data, '', newUrl);
             }
         };
+        let isError = false;
         const v = await super.replace(location).catch((err) => {
-            return new Promise((resolve, reject) => {
-                setTimeout(() => {
-                    if (typeof err !== 'undefined')
-                        return resolve(err);
-                    return resolve(this.currentRoute);
-                });
-            });
+            isError = true;
+            if (typeof err !== 'undefined')
+                return Promise.reject(err);
+            return Promise.resolve(this.currentRoute);
         });
-        sync(v.fullPath);
+        if (!isError) {
+            sync(v.fullPath);
+        }
         return v;
     }
     go(n) {

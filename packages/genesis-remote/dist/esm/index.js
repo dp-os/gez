@@ -150,6 +150,10 @@ export const loadScript = (html) => {
 export const RemoteView = {
     name: 'remote-view',
     props: {
+        tagName: {
+            type: String,
+            default: 'div'
+        },
         fetch: {
             type: Function
         },
@@ -193,7 +197,7 @@ export const RemoteView = {
         }
     },
     render(h) {
-        return h('div', {
+        return h(this.tagName, {
             domProps: {
                 innerHTML: this.localData.html
             }
