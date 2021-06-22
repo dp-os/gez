@@ -14,15 +14,9 @@ module.exports = {
         'alloy/vue',
         'plugin:import/errors',
         'plugin:import/typescript',
-        'prettier',
-        'prettier/@typescript-eslint',
-        'prettier/babel',
-        'prettier/standard',
-        'prettier/unicorn',
-        'prettier/vue',
         'plugin:prettier/recommended'
     ],
-    plugins: ['@typescript-eslint', 'vue'],
+    plugins: ['vue'],
     parserOptions: {
         parser: '@typescript-eslint/parser',
         ecmaVersion: 2020,

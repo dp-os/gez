@@ -236,7 +236,7 @@ export class Renderer {
         }
         if (options.state &&
             Object.prototype.toString.call(options.state) === '[object Object]') {
-            context.data.state = options.state;
+            context.data.state = options.state || {};
         }
         // set context data
         if (typeof options.url === 'string') {

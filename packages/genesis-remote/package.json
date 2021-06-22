@@ -24,8 +24,5 @@
   },
   "bugs": {
     "url": "https://github.com/fmfe/genesis/issues"
-  },
-  "devDependencies": {
-    "@fmfe/genesis-core": "^1.0.1"
   }
 }

@@ -55,9 +55,8 @@ export class VueClientPlugin {
                         return;
                     }
                     const id = m.identifier.replace(/\s\w+$/, '');
-                    const files = (manifest.modules[hash(id)] = chunk.files.map(
-                        fileToIndex
-                    ));
+                    const files = (manifest.modules[hash(id)] =
+                        chunk.files.map(fileToIndex));
                     assetModules.forEach((m) => {
                         if (m.chunks.some((id) => id === cid)) {
                             files.push.apply(files, m.assets.map(fileToIndex));

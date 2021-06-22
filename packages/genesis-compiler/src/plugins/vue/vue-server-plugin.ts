@@ -72,11 +72,12 @@ export class VueServerPlugin {
                         );
                         const sourceMap = asset.info?.related?.sourceMap;
                         if (typeof sourceMap === 'string') {
-                            bundle.maps[
-                                sourceMap.replace(/\.map$/, '')
-                            ] = JSON.parse(
-                                toString(compilation.assets[sourceMap].source())
-                            );
+                            bundle.maps[sourceMap.replace(/\.map$/, '')] =
+                                JSON.parse(
+                                    toString(
+                                        compilation.assets[sourceMap].source()
+                                    )
+                                );
                         }
                     }
                     delete compilation.assets[name];
