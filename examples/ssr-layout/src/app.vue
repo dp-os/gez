@@ -6,30 +6,13 @@
             <div class="border m-2 p-2">
                 <div class="text-gray-500 text-sm">Router Instance Methods</div>
                 <button
-                    class="
-                        bg-blue-500
-                        hover:bg-blue-700
-                        text-white
-                        font-bold
-                        py-2
-                        px-4
-                        rounded
-                        h-10
-                    "
+                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded h-10"
                     @click="$router.back()"
                 >
                     Back
                 </button>
                 <button
-                    class="
-                        bg-blue-500
-                        hover:bg-blue-700
-                        text-white
-                        font-bold
-                        py-2
-                        px-4
-                        rounded
-                    "
+                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                     @click="$router.forward()"
                 >
                     Forward

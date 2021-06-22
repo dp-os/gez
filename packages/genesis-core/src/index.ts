@@ -129,10 +129,11 @@ namespace Genesis {
     /**
      * Render result
      */
-    export type RenderResult<T extends RenderMode = RenderMode> =
-        T extends Genesis.RenderModeHtml
-            ? Genesis.RenderResultHtml
-            : Genesis.RenderResultJson;
+    export type RenderResult<
+        T extends RenderMode = RenderMode
+    > = T extends Genesis.RenderModeHtml
+        ? Genesis.RenderResultHtml
+        : Genesis.RenderResultJson;
     /**
      * Rendered HTML
      */
