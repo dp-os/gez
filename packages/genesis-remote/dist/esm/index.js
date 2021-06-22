@@ -270,7 +270,7 @@ export const RemoteView = {
                     value: this.$el.firstChild
                 });
                 if (options.el && window.genesis && !this.destroyed) {
-                    this.$emit('beforeInstall', options);
+                    this.$emit('before-install', options);
                     this.appId = window.genesis.install(options);
                 }
             });

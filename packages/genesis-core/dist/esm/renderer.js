@@ -8,7 +8,7 @@ import serialize from 'serialize-javascript';
 import { createRenderer, createBundleRenderer } from 'vue-server-renderer';
 import { SSR } from './ssr';
 const md5 = (content) => {
-    var md5 = crypto.createHash('md5');
+    const md5 = crypto.createHash('md5');
     return md5.update(content).digest('hex');
 };
 const defaultTemplate = `<!DOCTYPE html><html><head><title>Vue SSR for Genesis</title><%-style%></head><body><%-html%><%-scriptState%><%-script%></body></html>`;

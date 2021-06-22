@@ -26,8 +26,10 @@ class MicroBase {
         this.useCount = 0;
         // 需要放到最后处理， 否则vue不会进行属性劫持
         this.vm = new vue_1.default({
-            data: {
-                $$this: this
+            data: function () {
+                return {
+                    $$this: this
+                };
             }
         });
         Object.defineProperty(this, 'vm', {

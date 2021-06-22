@@ -14,7 +14,7 @@ const serialize_javascript_1 = __importDefault(require("serialize-javascript"));
 const vue_server_renderer_1 = require("vue-server-renderer");
 const ssr_1 = require("./ssr");
 const md5 = (content) => {
-    var md5 = crypto_1.default.createHash('md5');
+    const md5 = crypto_1.default.createHash('md5');
     return md5.update(content).digest('hex');
 };
 const defaultTemplate = `<!DOCTYPE html><html><head><title>Vue SSR for Genesis</title><%-style%></head><body><%-html%><%-scriptState%><%-script%></body></html>`;

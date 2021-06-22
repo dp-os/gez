@@ -8,21 +8,21 @@ const path_1 = __importDefault(require("path"));
 const webpack_1 = __importDefault(require("webpack"));
 const plugin_1 = __importDefault(require("vue-loader/lib/plugin"));
 const genesis_core_1 = require("@fmfe/genesis-core");
-const vue_server_plugin_1 = require("./vue-server-plugin");
-const vue_client_plugin_1 = require("./vue-client-plugin");
+const client_plugin_1 = __importDefault(require("vue-server-renderer/client-plugin"));
+const server_plugin_1 = __importDefault(require("vue-server-renderer/server-plugin"));
 class VuePlugin extends genesis_core_1.Plugin {
     chainWebpack({ target, config }) {
         const { ssr } = this;
         switch (target) {
             case 'client':
-                config.plugin('vue-ssr-client').use(vue_client_plugin_1.VueClientPlugin, [
+                config.plugin('vue-ssr-client').use(client_plugin_1.default, [
                     {
                         filename: path_1.default.relative(ssr.outputDirInClient, ssr.outputClientManifestFile)
                     }
                 ]);
                 break;
             case 'server':
-                config.plugin('vue-ssr-server').use(new vue_server_plugin_1.VueServerPlugin({
+                config.plugin('vue-ssr-server').use(new server_plugin_1.default({
                     filename: path_1.default.relative(ssr.outputDirInServer, ssr.outputServerBundleFile)
                 }));
                 break;
