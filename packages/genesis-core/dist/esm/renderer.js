@@ -19,6 +19,20 @@ const modes = [
     'csr-json'
 ];
 export class Renderer {
+    ssr;
+    clientManifest;
+    /**
+     * Client side renderer
+     */
+    csrRenderer;
+    /**
+     * Render template functions
+     */
+    compile;
+    /**
+     * Server side renderer
+     */
+    ssrRenderer;
     constructor(ssr, options) {
         if ((!options?.client?.data || !options?.server?.data) &&
             (!fs.existsSync(ssr.outputClientManifestFile) ||

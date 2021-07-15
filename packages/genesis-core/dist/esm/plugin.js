@@ -1,4 +1,5 @@
 export class Plugin {
+    ssr;
     constructor(ssr) {
         this.ssr = ssr;
     }
@@ -32,11 +33,15 @@ export class Plugin {
     renderCompleted(context) { }
 }
 export class PluginManage {
+    /**
+     * Current SSR instance
+     */
+    ssr;
+    /**
+     * List of installed plug-ins
+     */
+    plugins = [];
     constructor(ssr) {
-        /**
-         * List of installed plug-ins
-         */
-        this.plugins = [];
         this.ssr = ssr;
     }
     /**

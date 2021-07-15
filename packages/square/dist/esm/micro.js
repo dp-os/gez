@@ -14,9 +14,24 @@ const getType = (payload) => {
         .toLowerCase();
 };
 class MicroBase {
+    static install = install;
+    static _Vue = null;
+    static setVue(_Vue) {
+        if (this._Vue)
+            return;
+        this._Vue = _Vue;
+    }
+    static getVue() {
+        const _Vue = this._Vue;
+        if (!_Vue) {
+            throw new Error('Please install Vue.use(Micro);');
+        }
+        return _Vue;
+    }
+    vm;
+    rid = 0;
+    useCount = 0;
     constructor() {
-        this.rid = 0;
-        this.useCount = 0;
         // 需要放到最后处理， 否则vue不会进行属性劫持
         this.vm = new Vue({
             data: {
@@ -33,18 +48,6 @@ class MicroBase {
             enumerable: false
         });
         log('Create examples');
-    }
-    static setVue(_Vue) {
-        if (this._Vue)
-            return;
-        this._Vue = _Vue;
-    }
-    static getVue() {
-        const _Vue = this._Vue;
-        if (!_Vue) {
-            throw new Error('Please install Vue.use(Micro);');
-        }
-        return _Vue;
     }
     addUse() {
         this.useCount++;
@@ -86,8 +89,6 @@ class MicroBase {
         this._vm = null;
     }
 }
-MicroBase.install = install;
-MicroBase._Vue = null;
 const deepRecursionTms = (target, rid, fn) => {
     if (typeof target !== 'object' || Array.isArray(target))
         return;
@@ -121,11 +122,11 @@ export function command({ micro, position, payloads, isShowError }) {
     }
 }
 export class Micro extends MicroBase {
+    debug = process.env.NODE_ENV !== 'production';
+    subs = [];
+    commits = [];
     constructor(options) {
         super();
-        this.debug = process.env.NODE_ENV !== 'production';
-        this.subs = [];
-        this.commits = [];
         Object.defineProperty(this, 'debug', {
             enumerable: false
         });
