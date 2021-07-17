@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ServerConfig = exports.ClientConfig = exports.BaseConfig = void 0;
 var base_1 = require("./base");
 Object.defineProperty(exports, "BaseConfig", { enumerable: true, get: function () { return base_1.BaseConfig; } });
 var client_1 = require("./client");

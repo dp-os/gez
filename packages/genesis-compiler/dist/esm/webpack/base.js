@@ -1,8 +1,6 @@
 import Config from 'webpack-chain';
 import { BaseGenesis } from '../utils';
 export class BaseConfig extends BaseGenesis {
-    config;
-    reday;
     constructor(ssr, target) {
         super(ssr);
         this.config = new Config();

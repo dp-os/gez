@@ -4,21 +4,13 @@ import { PluginManage } from './plugin';
 import { Renderer } from './renderer';
 export class SSR {
     /**
-     * Renderer
-     */
-    Renderer = Renderer;
-    /**
-     * Constructor options
-     */
-    options;
-    /**
-     * Plug in management
-     */
-    plugin;
-    /**
      * Constructor
      */
     constructor(options = {}) {
+        /**
+         * Renderer
+         */
+        this.Renderer = Renderer;
         this.options = options;
         this.plugin = new PluginManage(this);
         if ('name' in options && typeof options.name !== 'string') {

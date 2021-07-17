@@ -25,9 +25,8 @@ export function catchError(err) {
     return Promise.reject(err);
 }
 export class Sync {
-    list = [];
-    onPopstate;
     constructor() {
+        this.list = [];
         this.onPopstate = () => {
             this.to();
         };

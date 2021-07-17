@@ -7,7 +7,6 @@ import { deleteFolder } from '../utils/index';
 const error = chalk.bold.red;
 const warning = chalk.keyword('orange');
 export class Build {
-    ssr;
     constructor(ssr, options = {}) {
         this.ssr = ssr;
         ssr.plugin.unshift(InstallPlugin);

@@ -12,11 +12,9 @@ function equalPath(path1, path2) {
     return path1.replace(/\/$/, '') === path2.replace(/\/$/, '');
 }
 class GenesisAppRouter {
-    static key = '__genesisAppRouter';
-    list = [];
-    target;
-    syncing = false;
     constructor() {
+        this.list = [];
+        this.syncing = false;
         window.addEventListener('popstate', (e) => {
             this.sync((router) => {
                 // Here is a Fang'f that vue-router does not disclose
@@ -65,6 +63,7 @@ class GenesisAppRouter {
         });
     }
 }
+GenesisAppRouter.key = '__genesisAppRouter';
 const getRoute = () => {
     if (typeof window === 'object') {
         const win = window;
@@ -77,12 +76,12 @@ const getRoute = () => {
 };
 const route = getRoute();
 export class Router extends VueRouter {
-    sourceMode = 'abstract';
     constructor(options = {}) {
         super({
             ...options,
             mode: options.mode === 'history' ? 'abstract' : options.mode
         });
+        this.sourceMode = 'abstract';
         this.sourceMode = options.mode;
         if (!this._isSync)
             return;

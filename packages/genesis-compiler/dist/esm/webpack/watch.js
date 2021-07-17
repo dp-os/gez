@@ -28,12 +28,9 @@ const readFile = (fs, file) => {
     }
 };
 export class Watch extends BaseGenesis {
-    devMiddleware;
-    hotMiddleware;
-    watchData = {};
-    _renderer;
     constructor(ssr) {
         super(ssr);
+        this.watchData = {};
         ssr.plugin.unshift(InstallPlugin);
     }
     get renderer() {

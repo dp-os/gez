@@ -1,6 +1,5 @@
 import fs from 'fs';
 export class BaseGenesis {
-    ssr;
     constructor(ssr) {
         this.ssr = ssr;
     }
