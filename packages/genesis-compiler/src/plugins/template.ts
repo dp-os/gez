@@ -81,9 +81,10 @@ export class TemplatePlugin extends Plugin {
             write.sync(output, text);
             return true;
         };
+        if (!writeSrcTemplate('app.vue')) return;
+        if ((ssr as any /* genesis-cli CustomSSR */).noWebpackGenTemplate) return;
         if (!writeSrcTemplate('entry-client.ts')) return;
         if (!writeSrcTemplate('entry-server.ts')) return;
-        if (!writeSrcTemplate('app.vue')) return;
         writeSrcTemplate('shims-vue.d.ts');
     }
 

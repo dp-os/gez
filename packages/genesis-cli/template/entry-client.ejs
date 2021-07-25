@@ -1,0 +1,13 @@
+import { createClientApp } from '@fmfe/genesis-app';
+import { createRouter } from '<%= routerPath %>';
+import App from '<%= appPath %>';
+
+export default async (clientOptions) => {
+    return createClientApp({
+        App,
+        clientOptions,
+        vueOptions: {
+            router: createRouter(clientOptions.state)
+        }
+    });
+};

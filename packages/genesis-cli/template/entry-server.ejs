@@ -1,0 +1,13 @@
+import { createServerApp } from '@fmfe/genesis-app';
+import { createRouter } from '<%= routerPath %>';
+import App from '<%= appPath %>';
+
+export default async (renderContext) => {
+    return createServerApp({
+        App,
+        renderContext,
+        vueOptions: {
+            router: createRouter(renderContext.data.state)
+        }
+    });
+};
