@@ -6,12 +6,21 @@ import { GenesisConfig, ServiceOptions } from '../../types';
 export * from './constant'
 export * from './env'
 
+/**
+ * result is ('a', '/') => '/a', ('/a', '/') => '/a'
+ * @param str source string
+ * @param startStr need to str start string
+ */
 export function injectStart(str: string, startStr: string): string {
     return str.startsWith(startStr)
         ? str
         : startStr + str
 }
 
+/**
+ * Automatic upward search
+ * @param dir
+ */
 export function findConfigDir(dir: string): string {
     if (fs.existsSync(join(dir, CONFIG_FILE_NAME))) {
         return dir;
@@ -24,6 +33,9 @@ export function findConfigDir(dir: string): string {
         : findConfigDir(parentDir);
 }
 
+/**
+ * get GenesisConfig path. Automatic upward search
+ */
 export function getConfigPath() {
     const configDir = findConfigDir(ROOT);
     const configFile = join(configDir, CONFIG_FILE_NAME);
@@ -35,6 +47,9 @@ export function getConfigPath() {
     return configFile;
 }
 
+/**
+ * get GenesisConfig content
+ */
 export function getGenesisConfig(): GenesisConfig {
     const configFile = getConfigPath()
     delete require.cache[configFile];

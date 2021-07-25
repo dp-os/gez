@@ -1,7 +1,14 @@
 import Genesis, { SSR } from '@fmfe/genesis-core';
 import { ServiceOptions } from '../../types';
 
+/**
+ * CustomSSR
+ */
 export default class CustomSSR extends SSR {
+    /**
+     * create CustomSSR instance by options
+     * @param options
+     */
     static createInstanceByServiceOptions(options: ServiceOptions) {
 
         return new CustomSSR({
@@ -27,6 +34,12 @@ export default class CustomSSR extends SSR {
 
     public noWebpackGenTemplate = true;
 
+    /**
+     * @override
+     * @param options Genesis.Options
+     * @param _entryClientFile client entry file
+     * @param _entryServerFile server entry file
+     */
     public constructor(
         options: Genesis.Options = {},
         private _entryClientFile: string,

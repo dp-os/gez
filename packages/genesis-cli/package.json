@@ -9,10 +9,10 @@
         "lib",
         "template"
     ],
-    "main": "lib/index.js",
-    "typings": "lib/index.d.ts",
+    "main": "dist/index.js",
+    "typings": "dist/index.d.ts",
     "bin": {
-        "genesis": "./lib/bin/index.js"
+        "genesis": "./dist/bin/index.js"
     },
     "scripts": {
         "dev": "tsc --watch",
