@@ -7,6 +7,10 @@ import { Watch } from '@fmfe/genesis-compiler';
 import { Renderer, RenderMode, RenderOptions } from '@fmfe/genesis-core';
 import httpProxy, { ProxyTarget } from 'http-proxy';
 
+/**
+ * create Service
+ * @param options genesis config
+ */
 export async function createService(options: ServiceOptions): Promise<Express> {
     const app = await createExpress(options.port, false);
 

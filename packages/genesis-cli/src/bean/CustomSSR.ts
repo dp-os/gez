@@ -32,6 +32,9 @@ export default class CustomSSR extends SSR {
         this._entryClientFile = value;
     }
 
+    /**
+     * 不在 genesis-compiler 自动创建 entryClientFile 和 entryServerFile
+     */
     public noWebpackGenTemplate = true;
 
     /**
