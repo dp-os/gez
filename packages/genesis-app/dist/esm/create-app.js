@@ -14,7 +14,7 @@ export const createClientApp = async (options) => {
     const { vueOptions, App } = options;
     const { router } = vueOptions || {};
     if (router) {
-        if (router._mode === 'abstract') {
+        if (router.sourceMode === 'abstract') {
             await router.push(clientOptions.url).catch((err) => {
                 throw (err ||
                     new Error(`router.push('${clientOptions.url}') error`));
