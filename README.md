@@ -44,5 +44,7 @@ yarn start # Run production package
 |[square](https://www.npmjs.com/package/@fmfe/square)|[![npm](https://img.shields.io/npm/v/@fmfe/square.svg)](https://www.npmjs.com/package/@fmfe/square) |[![npm](https://img.shields.io/npm/dm/@fmfe/square.svg)](https://www.npmjs.com/package/@fmfe/square)|A state management library designed for micro modules|
 |[genesis-lint](https://www.npmjs.com/package/@fmfe/genesis-lint)|[![npm](https://img.shields.io/npm/v/@fmfe/genesis-lint.svg)](https://www.npmjs.com/package/@fmfe/genesis-lint) |[![npm](https://img.shields.io/npm/dm/@fmfe/genesis-lint.svg)](https://www.npmjs.com/package/@fmfe/genesis-lint)|A code guideline includes eslint and stylelint| 
 
-## Cooperative partners
-- [FOLLOWME5.0](https://www.followme.com/)
+## Use case
+- [FOLLOWME](https://www.followme.com/)
+- [DC](https://www.dcfx.co.id/)
+- [Maxco](https://www.maxco.co.id/)
