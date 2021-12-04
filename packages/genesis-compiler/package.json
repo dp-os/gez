@@ -1,6 +1,6 @@
 {
   "name": "@fmfe/genesis-compiler",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Vue SSR Microfront",
   "keywords": [
     "vue",
@@ -16,7 +16,7 @@
   },
   "author": "Followme",
   "license": "MIT",
-  "gitHead": "40994d32c8179be878760268d7e26f3152679321",
+  "gitHead": "1d78746ea4276916f32efa233ff645378f430282",
   "dependencies": {
     "@babel/core": "7.12.3",
     "@babel/plugin-proposal-class-properties": "7.12.1",
@@ -64,7 +64,7 @@
     "write": "2.0.0"
   },
   "devDependencies": {
-    "@fmfe/genesis-core": "1.0.5"
+    "@fmfe/genesis-core": "1.0.6"
   },
   "homepage": "https://fmfe.github.io/genesis-docs/",
   "repository": {
