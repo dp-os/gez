@@ -11,7 +11,7 @@ class BaseGenesis {
     }
 }
 exports.BaseGenesis = BaseGenesis;
-const deleteFolder = (path) => {
+exports.deleteFolder = (path) => {
     if (!fs_1.default.existsSync(path))
         return;
     const files = fs_1.default.readdirSync(path);
@@ -26,4 +26,3 @@ const deleteFolder = (path) => {
     });
     fs_1.default.rmdirSync(path);
 };
-exports.deleteFolder = deleteFolder;

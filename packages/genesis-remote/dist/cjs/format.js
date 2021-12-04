@@ -23,7 +23,7 @@ const mergeArr = (data, cb) => {
     mergeState(data.state, 1);
     return cb(arr);
 };
-const beforeRender = (context) => {
+exports.beforeRender = (context) => {
     const scriptSet = new Set();
     const styleSet = new Set();
     // js 去重
@@ -51,4 +51,3 @@ const beforeRender = (context) => {
         return text;
     });
 };
-exports.beforeRender = beforeRender;
