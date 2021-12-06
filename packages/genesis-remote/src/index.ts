@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/prefer-for-of */
-import Vue from 'vue';
 import { ClientOptions, RenderContext } from '@fmfe/genesis-core';
+import Vue from 'vue';
+
 import { beforeRender } from './format';
 const remoteViewStateKey = '__remote_view_state__';
 

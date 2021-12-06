@@ -1,4 +1,4 @@
-import { Plugin, WebpackHookParams, BabelConfig } from '@fmfe/genesis-core';
+import { BabelConfig, Plugin, WebpackHookParams } from '@fmfe/genesis-core';
 export class BabelPlugin extends Plugin {
     public async chainWebpack({ target, config }: WebpackHookParams) {
         const { isProd } = this.ssr;

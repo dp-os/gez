@@ -1,5 +1,5 @@
-import fs from 'fs';
 import Genesis from '@fmfe/genesis-core';
+import fs from 'fs';
 
 export class BaseGenesis {
     public ssr: Genesis.SSR;

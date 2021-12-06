@@ -1,6 +1,7 @@
 import './webpack-public-path-client';
-import Vue from 'vue';
+
 import { ClientOptions } from '@fmfe/genesis-core';
+import Vue from 'vue';
 interface InstalledListItem {
     appId: number;
     app: Promise<Vue> | null;

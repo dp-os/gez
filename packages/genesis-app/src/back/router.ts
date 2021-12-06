@@ -1,6 +1,7 @@
 import Vue from 'vue';
-import VueRouter, { RouterOptions, RawLocation } from 'vue-router';
-import { sync, catchError } from './sync';
+import VueRouter, { RawLocation, RouterOptions } from 'vue-router';
+
+import { catchError, sync } from './sync';
 
 Vue.use(VueRouter);
 

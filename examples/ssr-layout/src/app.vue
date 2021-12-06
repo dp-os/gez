@@ -33,9 +33,9 @@
     </div>
 </template>
 <script lang="ts">
-import Vue from 'vue';
-import axios from 'axios';
 import { RemoteView } from '@fmfe/genesis-remote';
+import axios from 'axios';
+import Vue from 'vue';
 
 export default Vue.extend({
     name: 'app',

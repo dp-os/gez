@@ -1,18 +1,18 @@
-import Vue from 'vue';
-import path from 'path';
-import fs from 'fs';
-import { ServerResponse, IncomingMessage } from 'http';
-import Ejs from 'ejs';
 import crypto from 'crypto';
+import Ejs from 'ejs';
+import fs from 'fs';
+import { IncomingMessage, ServerResponse } from 'http';
+import path from 'path';
 import serialize from 'serialize-javascript';
-import * as Genesis from './';
-
+import Vue from 'vue';
 import {
-    createRenderer,
-    Renderer as VueRenderer,
     BundleRenderer,
-    createBundleRenderer
+    createBundleRenderer,
+    createRenderer,
+    Renderer as VueRenderer
 } from 'vue-server-renderer';
+
+import * as Genesis from './';
 import { SSR } from './ssr';
 
 const md5 = (content: string) => {

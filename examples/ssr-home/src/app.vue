@@ -11,6 +11,7 @@
 </template>
 <script lang="ts">
 import Vue from 'vue';
+
 import { Logo } from './logo';
 
 export default Vue.extend({

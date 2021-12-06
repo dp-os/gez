@@ -22,7 +22,7 @@ module.exports = {
         'prettier/vue',
         'plugin:prettier/recommended'
     ],
-    plugins: ['@typescript-eslint', 'vue'],
+    plugins: ['@typescript-eslint', 'simple-import-sort', 'vue'],
     parserOptions: {
         parser: '@typescript-eslint/parser',
         ecmaVersion: 2020,
@@ -35,6 +35,7 @@ module.exports = {
     },
     globals: {},
     rules: {
+        'simple-import-sort/imports': 'error',
         'no-param-reassign': 'off',
         'max-params': ['error', 5],
         'no-undef': 'off',

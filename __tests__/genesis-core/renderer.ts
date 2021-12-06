@@ -1,9 +1,10 @@
 /* eslint-disable no-undef */
-import path from 'path';
 import { IncomingMessage, ServerResponse } from 'http';
 import { Socket } from 'net';
-import { SSR } from '../../packages/genesis-core/src/ssr';
+import path from 'path';
+
 import { Plugin } from '../../packages/genesis-core/src/plugin';
+import { SSR } from '../../packages/genesis-core/src/ssr';
 
 class Home extends SSR {
     public constructor() {

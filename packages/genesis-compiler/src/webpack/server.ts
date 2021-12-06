@@ -1,6 +1,7 @@
-import nodeExternals from 'webpack-node-externals';
-import { BaseConfig } from './base';
 import Genesis from '@fmfe/genesis-core';
+import nodeExternals from 'webpack-node-externals';
+
+import { BaseConfig } from './base';
 
 export class ServerConfig extends BaseConfig {
     public constructor(ssr: Genesis.SSR) {

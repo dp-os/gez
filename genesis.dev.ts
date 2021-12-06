@@ -1,8 +1,8 @@
 import { Watch } from '@fmfe/genesis-compiler';
-import { ssr, RendererItems, app, startApp } from './genesis';
-
 import { Plugin, PostcssOptions } from '@fmfe/genesis-core';
 import tailwindcss from 'tailwindcss';
+
+import { app, RendererItems, ssr, startApp } from './genesis';
 export class PostcssPlugin extends Plugin {
     public postcss(config: PostcssOptions) {
         config.postcssOptions.plugins.push(tailwindcss);
