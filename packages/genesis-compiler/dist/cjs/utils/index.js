@@ -11,14 +11,14 @@ class BaseGenesis {
     }
 }
 exports.BaseGenesis = BaseGenesis;
-const deleteFolder = (path) => {
+exports.deleteFolder = (path) => {
     if (!fs_1.default.existsSync(path))
         return;
     const files = fs_1.default.readdirSync(path);
     files.forEach(function (file) {
         const curPath = path + '/' + file;
         if (fs_1.default.statSync(curPath).isDirectory()) {
-            (0, exports.deleteFolder)(curPath);
+            exports.deleteFolder(curPath);
         }
         else {
             fs_1.default.unlinkSync(curPath);
@@ -26,4 +26,3 @@ const deleteFolder = (path) => {
     });
     fs_1.default.rmdirSync(path);
 };
-exports.deleteFolder = deleteFolder;

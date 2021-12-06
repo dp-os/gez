@@ -7,13 +7,12 @@ exports.Micro = exports.command = exports.log = void 0;
 const tms_js_1 = __importDefault(require("@fmfe/tms.js"));
 const vue_1 = __importDefault(require("vue"));
 const install_1 = require("./install");
-const log = (log) => {
+exports.log = (log) => {
     if (process.env.NODE_ENV !== 'production') {
         // eslint-disable-next-line no-console
         console.log(`[micro] ${log}`);
     }
 };
-exports.log = log;
 const getType = (payload) => {
     return Object.prototype.toString
         .call(payload)
@@ -39,7 +38,7 @@ class MicroBase {
         Object.defineProperty(this, 'useCount', {
             enumerable: false
         });
-        (0, exports.log)('Create examples');
+        exports.log('Create examples');
     }
     static setVue(_Vue) {
         if (this._Vue)
@@ -68,7 +67,7 @@ class MicroBase {
     register(name, v) {
         const rid = `${name}_${++this.rid}`;
         Micro.getVue().set(this, rid, v);
-        (0, exports.log)(`Registration module ${rid}`);
+        exports.log(`Registration module ${rid}`);
         return rid;
     }
     /**
@@ -82,13 +81,13 @@ class MicroBase {
      */
     unregister(name, rid) {
         Micro.getVue().delete(this, rid);
-        (0, exports.log)(`Remove module ${rid}`);
+        exports.log(`Remove module ${rid}`);
     }
     /**
      * Destroy instance
      */
     destroy() {
-        (0, exports.log)('Destroy instance');
+        exports.log('Destroy instance');
         this.vm && this.vm.$destroy();
         this._vm = null;
     }
@@ -163,7 +162,7 @@ class Micro extends MicroBase {
                         : event.payloads);
                 }
             };
-            (0, exports.log)(`订阅 Tms ${path}`);
+            exports.log(`订阅 Tms ${path}`);
             target.dep.addSub(target.dep[`_micro_observe_${rid}`]);
         });
         // 还原状态
@@ -188,7 +187,7 @@ class Micro extends MicroBase {
         super.unregister(name, rid);
         deepRecursionTms(unModule, [name], (target, path) => {
             target.dep.removeSub(target.dep[`_micro_observe_${rid}`]);
-            (0, exports.log)(`取消订阅 Tms ${path}`);
+            exports.log(`取消订阅 Tms ${path}`);
             // 释放内存
             target.dep[`_micro_observe_${rid}`] = null;
         });

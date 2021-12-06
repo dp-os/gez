@@ -24,7 +24,7 @@ class Build {
         const { ssr } = this;
         const build = (type, config) => {
             return new Promise((resolve, reject) => {
-                const compiler = (0, webpack_1.default)(config);
+                const compiler = webpack_1.default(config);
                 compiler.run((err, stats) => {
                     const jsonStats = stats.toJson();
                     if (err || stats.hasErrors()) {
@@ -40,7 +40,7 @@ class Build {
                 });
             });
         };
-        (0, index_1.deleteFolder)(ssr.outputDir);
+        index_1.deleteFolder(ssr.outputDir);
         await ssr.plugin.callHook('beforeCompiler', 'build');
         const values = await Promise.all([
             build(`${ssr.name} build client`, await new index_2.ClientConfig(ssr).toConfig()),

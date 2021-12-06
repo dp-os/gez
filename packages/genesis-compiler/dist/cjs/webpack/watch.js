@@ -68,16 +68,16 @@ class Watch extends utils_1.BaseGenesis {
             new WatchClientConfig(this.ssr).toConfig(),
             new webpack_2.ServerConfig(this.ssr).toConfig()
         ]);
-        const clientCompiler = (0, webpack_1.default)(clientConfig);
-        const serverCompiler = (0, webpack_1.default)(serverConfig);
+        const clientCompiler = webpack_1.default(clientConfig);
+        const serverCompiler = webpack_1.default(serverConfig);
         serverCompiler.outputFileSystem = new memory_fs_1.default();
-        this.devMiddleware = (0, webpack_dev_middleware_1.default)(clientCompiler, {
+        this.devMiddleware = webpack_dev_middleware_1.default(clientCompiler, {
             publicPath: this.ssr.publicPath,
             stats: 'none',
             logLevel: 'error',
             index: false
         });
-        this.hotMiddleware = (0, webpack_hot_middleware_1.default)(clientCompiler, {
+        this.hotMiddleware = webpack_hot_middleware_1.default(clientCompiler, {
             heartbeat: 5000,
             path: `${this.ssr.publicPath}webpack-hot-middleware`
         });
