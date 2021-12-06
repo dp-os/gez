@@ -147,7 +147,7 @@ insert_final_newline = true
     "eslint.options": {
         "configFile": "./.eslintrc.js"
     },
-    "stylelint.validate": ["css", "less", "vue"],
+    "stylelint.validate": ["css", "less", "html", "vue"],
     "editor.codeActionsOnSave": {
         "source.fixAll.eslint": true,
         "source.fixAll.stylelint": true
