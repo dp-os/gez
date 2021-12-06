@@ -4,20 +4,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TemplatePlugin = void 0;
-const fs_1 = __importDefault(require("fs"));
-const path_1 = __importDefault(require("path"));
 const genesis_core_1 = require("@fmfe/genesis-core");
-const write_1 = __importDefault(require("write"));
-const upath_1 = __importDefault(require("upath"));
-const index_1 = require("../utils/index");
+const fs_1 = __importDefault(require("fs"));
 const html_minifier_1 = require("html-minifier");
+const path_1 = __importDefault(require("path"));
+const upath_1 = __importDefault(require("upath"));
+const write_1 = __importDefault(require("write"));
+const index_1 = require("../utils/index");
 class TemplatePlugin extends genesis_core_1.Plugin {
     async beforeCompiler() {
         const { ssr } = this;
-        index_1.deleteFolder(ssr.outputDir);
+        (0, index_1.deleteFolder)(ssr.outputDir);
         if (fs_1.default.existsSync(ssr.templateFile)) {
             const text = fs_1.default.readFileSync(ssr.templateFile, 'utf-8');
-            write_1.default.sync(ssr.outputTemplateFile, html_minifier_1.minify(text, {
+            write_1.default.sync(ssr.outputTemplateFile, (0, html_minifier_1.minify)(text, {
                 collapseInlineTagWhitespace: true,
                 collapseWhitespace: true,
                 collapseBooleanAttributes: true,
@@ -83,7 +83,7 @@ class TemplatePlugin extends genesis_core_1.Plugin {
         const { ssr } = this;
         if (type === 'build') {
             const outputDir = path_1.default.resolve(ssr.outputDir, './src');
-            index_1.deleteFolder(outputDir);
+            (0, index_1.deleteFolder)(outputDir);
         }
     }
 }

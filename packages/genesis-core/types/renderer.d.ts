@@ -1,5 +1,5 @@
 /// <reference types="node" />
-import { ServerResponse, IncomingMessage } from 'http';
+import { IncomingMessage, ServerResponse } from 'http';
 import * as Genesis from './';
 export declare class Renderer {
     ssr: Genesis.SSR;

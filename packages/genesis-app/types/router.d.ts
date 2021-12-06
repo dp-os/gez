@@ -1,4 +1,4 @@
-import VueRouter, { Route, RouterOptions, RouterMode, RawLocation } from 'vue-router';
+import VueRouter, { RawLocation, Route, RouterMode, RouterOptions } from 'vue-router';
 export declare function getLocation(base: string): string;
 export declare class Router extends VueRouter {
     protected sourceMode: RouterMode;

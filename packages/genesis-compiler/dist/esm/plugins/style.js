@@ -1,7 +1,7 @@
+import { Plugin } from '@fmfe/genesis-core';
+import cssnano from 'cssnano';
 import ExtractCssChunks from 'extract-css-chunks-webpack-plugin';
 import postcssPresetEnv from 'postcss-preset-env';
-import cssnano from 'cssnano';
-import { Plugin } from '@fmfe/genesis-core';
 export class StylePlugin extends Plugin {
     async chainWebpack({ target, config }) {
         const { ssr } = this;

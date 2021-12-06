@@ -2,14 +2,14 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.InstallPlugin = void 0;
 const genesis_core_1 = require("@fmfe/genesis-core");
-const vue_1 = require("./vue");
-const bar_1 = require("./bar");
-const style_1 = require("./style");
 const babel_1 = require("./babel");
-const image_1 = require("./image");
+const bar_1 = require("./bar");
 const font_1 = require("./font");
+const image_1 = require("./image");
 const media_1 = require("./media");
+const style_1 = require("./style");
 const template_1 = require("./template");
+const vue_1 = require("./vue");
 const worker_1 = require("./worker");
 class InstallPlugin extends genesis_core_1.Plugin {
     constructor(ssr) {

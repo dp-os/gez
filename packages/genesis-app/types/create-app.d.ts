@@ -1,5 +1,5 @@
-import Vue, { ComponentOptions } from 'vue';
 import { ClientOptions, RenderContext } from '@fmfe/genesis-core';
+import Vue, { ComponentOptions } from 'vue';
 export interface CreateClientAppOptions {
     /**
      * Root render component

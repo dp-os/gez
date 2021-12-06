@@ -1,9 +1,9 @@
-import webpack from 'webpack';
 import chalk from 'chalk';
+import webpack from 'webpack';
 import { AnalyzerPlugin } from '../plugins/analyzer';
 import { InstallPlugin } from '../plugins/install';
-import { ClientConfig, ServerConfig } from '../webpack/index';
 import { deleteFolder } from '../utils/index';
+import { ClientConfig, ServerConfig } from '../webpack/index';
 const error = chalk.bold.red;
 const warning = chalk.keyword('orange');
 export class Build {

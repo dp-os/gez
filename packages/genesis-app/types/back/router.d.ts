@@ -1,4 +1,4 @@
-import VueRouter, { RouterOptions, RawLocation } from 'vue-router';
+import VueRouter, { RawLocation, RouterOptions } from 'vue-router';
 export declare class Router extends VueRouter {
     constructor(options?: RouterOptions);
     get state(): any;

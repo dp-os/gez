@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import { sync, catchError } from './sync';
+import { catchError, sync } from './sync';
 Vue.use(VueRouter);
 function createOptions(options = {}) {
     const temp = { ...options };

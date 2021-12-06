@@ -1,9 +1,9 @@
+import { Plugin } from '@fmfe/genesis-core';
 import path from 'path';
-import webpack from 'webpack';
+import VueLoaderPlugin from 'vue-loader/lib/plugin';
 import VueSSRClientPlugin from 'vue-server-renderer/client-plugin';
 import VueSSRServerPlugin from 'vue-server-renderer/server-plugin';
-import VueLoaderPlugin from 'vue-loader/lib/plugin';
-import { Plugin } from '@fmfe/genesis-core';
+import webpack from 'webpack';
 export class VuePlugin extends Plugin {
     chainWebpack({ target, config }) {
         const { ssr } = this;
