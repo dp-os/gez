@@ -15,5 +15,5 @@
             "message": "chore(release): publish %s"
         }
     },
-    "version": "1.0.3-alpha.0"
+    "version": "1.0.10-alpha.0"
 }
