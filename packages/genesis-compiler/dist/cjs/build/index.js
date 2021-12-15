@@ -4,12 +4,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Build = void 0;
-const webpack_1 = __importDefault(require("webpack"));
 const chalk_1 = __importDefault(require("chalk"));
+const webpack_1 = __importDefault(require("webpack"));
 const analyzer_1 = require("../plugins/analyzer");
 const install_1 = require("../plugins/install");
-const index_1 = require("../webpack/index");
-const index_2 = require("../utils/index");
+const index_1 = require("../utils/index");
+const index_2 = require("../webpack/index");
 const error = chalk_1.default.bold.red;
 const warning = chalk_1.default.keyword('orange');
 class Build {
@@ -24,7 +24,7 @@ class Build {
         const { ssr } = this;
         const build = (type, config) => {
             return new Promise((resolve, reject) => {
-                const compiler = webpack_1.default(config);
+                const compiler = (0, webpack_1.default)(config);
                 compiler.run((err, stats) => {
                     if (err) {
                         chalk_1.default.red(`${type} errors`);
@@ -45,11 +45,11 @@ class Build {
                 });
             });
         };
-        index_2.deleteFolder(ssr.outputDir);
+        (0, index_1.deleteFolder)(ssr.outputDir);
         await ssr.plugin.callHook('beforeCompiler', 'build');
         const values = await Promise.all([
-            build(`${ssr.name} build client`, await new index_1.ClientConfig(ssr).toConfig()),
-            build(`${ssr.name} build server`, await new index_1.ServerConfig(ssr).toConfig())
+            build(`${ssr.name} build client`, await new index_2.ClientConfig(ssr).toConfig()),
+            build(`${ssr.name} build server`, await new index_2.ServerConfig(ssr).toConfig())
         ]);
         await ssr.plugin.callHook('afterCompiler', 'build');
         if (values[0] === false || values[1] === false) {

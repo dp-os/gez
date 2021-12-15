@@ -16,7 +16,7 @@ module.exports = {
         'plugin:import/typescript',
         'plugin:prettier/recommended'
     ],
-    plugins: ['vue'],
+    plugins: ['vue', 'simple-import-sort'],
     parserOptions: {
         parser: '@typescript-eslint/parser',
         ecmaVersion: 2020,
@@ -29,6 +29,7 @@ module.exports = {
     },
     globals: {},
     rules: {
+        'simple-import-sort/imports': 'error',
         'no-param-reassign': 'off',
         'max-params': ['error', 5],
         'no-undef': 'off',

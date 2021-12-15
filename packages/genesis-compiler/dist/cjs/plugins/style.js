@@ -4,10 +4,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StylePlugin = void 0;
+const genesis_core_1 = require("@fmfe/genesis-core");
+const cssnano_1 = __importDefault(require("cssnano"));
 const extract_css_chunks_webpack_plugin_1 = __importDefault(require("extract-css-chunks-webpack-plugin"));
 const postcss_preset_env_1 = __importDefault(require("postcss-preset-env"));
-const cssnano_1 = __importDefault(require("cssnano"));
-const genesis_core_1 = require("@fmfe/genesis-core");
 class StylePlugin extends genesis_core_1.Plugin {
     async chainWebpack({ target, config }) {
         const { ssr } = this;
@@ -45,10 +45,10 @@ class StylePlugin extends genesis_core_1.Plugin {
                     .end();
             }
             postcssConfig.postcssOptions.plugins.push(...[
-                postcss_preset_env_1.default({
+                (0, postcss_preset_env_1.default)({
                     browsers: ssr.getBrowsers('client')
                 }),
-                cssnano_1.default({
+                (0, cssnano_1.default)({
                     preset: [
                         'default',
                         {

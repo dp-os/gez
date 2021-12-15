@@ -1,4 +1,5 @@
 import Genesis from '@fmfe/genesis-core';
+
 import { BaseConfig } from './base';
 
 const isCSS = (module: any) => {

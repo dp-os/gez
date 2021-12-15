@@ -1,5 +1,5 @@
-import WebpackBar from 'webpackbar';
 import { Plugin, WebpackHookParams } from '@fmfe/genesis-core';
+import WebpackBar from 'webpackbar';
 export class BarPlugin extends Plugin {
     public chainWebpack({ target, config }: WebpackHookParams) {
         const options =

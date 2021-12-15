@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
 		"baseUrl": "./",
-		"target": "ESNext",
+		"target": "ES2020",
 		"module": "ESNext",
         "moduleResolution": "node",
 		"allowSyntheticDefaultImports": true,

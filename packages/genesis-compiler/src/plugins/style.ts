@@ -1,7 +1,7 @@
+import { Plugin, PostcssOptions, WebpackHookParams } from '@fmfe/genesis-core';
+import cssnano from 'cssnano';
 import ExtractCssChunks from 'extract-css-chunks-webpack-plugin';
 import postcssPresetEnv from 'postcss-preset-env';
-import cssnano from 'cssnano';
-import { Plugin, WebpackHookParams, PostcssOptions } from '@fmfe/genesis-core';
 
 interface LoaderOptions {
     name: string;

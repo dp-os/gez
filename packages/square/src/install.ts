@@ -1,7 +1,8 @@
 import Vue from 'vue';
+
 import { Micro } from './micro';
-import { Square } from './square';
 import { microRegister, R_NAME, RegisterItem } from './register';
+import { Square } from './square';
 import { Types } from './types';
 
 /**

@@ -4,9 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Square = exports.Micro = exports.Tms = void 0;
+const tms_js_1 = __importDefault(require("@fmfe/tms.js"));
+exports.Tms = tms_js_1.default;
 const micro_1 = require("./micro");
 Object.defineProperty(exports, "Micro", { enumerable: true, get: function () { return micro_1.Micro; } });
 const square_1 = require("./square");
 Object.defineProperty(exports, "Square", { enumerable: true, get: function () { return square_1.Square; } });
-const tms_js_1 = __importDefault(require("@fmfe/tms.js"));
-exports.Tms = tms_js_1.default;

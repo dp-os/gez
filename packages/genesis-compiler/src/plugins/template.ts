@@ -1,10 +1,11 @@
+import { CompilerType, Plugin } from '@fmfe/genesis-core';
 import fs from 'fs';
-import path from 'path';
-import { Plugin, CompilerType } from '@fmfe/genesis-core';
-import write from 'write';
-import upath from 'upath';
-import { deleteFolder } from '../utils/index';
 import { minify } from 'html-minifier';
+import path from 'path';
+import upath from 'upath';
+import write from 'write';
+
+import { deleteFolder } from '../utils/index';
 
 export class TemplatePlugin extends Plugin {
     public async beforeCompiler() {

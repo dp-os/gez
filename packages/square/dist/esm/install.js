@@ -1,6 +1,6 @@
 import { Micro } from './micro';
-import { Square } from './square';
 import { microRegister, R_NAME } from './register';
+import { Square } from './square';
 /**
  * 安装 mixin
  */

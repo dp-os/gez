@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/prefer-for-of */
 import Vue from 'vue';
 import { beforeRender } from './format';
 const remoteViewStateKey = '__remote_view_state__';

@@ -1,5 +1,6 @@
 import express from 'express';
-import { RendererItems, ssr, app, startApp } from './genesis';
+
+import { app, RendererItems, ssr, startApp } from './genesis';
 
 const renderer: Partial<RendererItems> = {};
 

@@ -1,4 +1,4 @@
-import { Plugin, WebpackHookParams, BabelConfig } from '@fmfe/genesis-core';
+import { BabelConfig, Plugin, WebpackHookParams } from '@fmfe/genesis-core';
 export class BabelPlugin extends Plugin {
     public async chainWebpack({ target, config }: WebpackHookParams) {
         const { isProd } = this.ssr;
@@ -7,7 +7,12 @@ export class BabelPlugin extends Plugin {
             ['@babel/plugin-transform-modules-commonjs'],
             ['@babel/plugin-proposal-decorators', { legacy: true }],
             ['@babel/plugin-proposal-export-default-from'],
-            ['@babel/plugin-proposal-class-properties'],
+            ['@babel/plugin-proposal-class-properties', { loose: true }],
+            ['@babel/plugin-proposal-private-methods', { loose: true }],
+            [
+                '@babel/plugin-proposal-private-property-in-object',
+                { loose: true }
+            ],
             [
                 '@babel/plugin-transform-runtime',
                 {

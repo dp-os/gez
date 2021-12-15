@@ -1,10 +1,10 @@
-import fs from 'fs';
-import path from 'path';
 import { Plugin } from '@fmfe/genesis-core';
-import write from 'write';
-import upath from 'upath';
-import { deleteFolder } from '../utils/index';
+import fs from 'fs';
 import { minify } from 'html-minifier';
+import path from 'path';
+import upath from 'upath';
+import write from 'write';
+import { deleteFolder } from '../utils/index';
 export class TemplatePlugin extends Plugin {
     async beforeCompiler() {
         const { ssr } = this;

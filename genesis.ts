@@ -1,6 +1,6 @@
+import { Renderer, SSR } from '@fmfe/genesis-core';
 import express from 'express';
 import path from 'path';
-import { SSR, Renderer } from '@fmfe/genesis-core';
 
 export const app = express();
 

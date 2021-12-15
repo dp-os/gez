@@ -1,10 +1,10 @@
 /// <reference types="node" />
-import Config from 'webpack-chain';
+import { IncomingMessage, ServerResponse } from 'http';
 import Vue from 'vue';
-import { ServerResponse, IncomingMessage } from 'http';
-import { SSR as SSRConstructor } from './ssr';
+import Config from 'webpack-chain';
 import { Plugin as PluginConstructor, PluginManage as PluginManageConstructor } from './plugin';
 import { Renderer as RendererConstructor } from './renderer';
+import { SSR as SSRConstructor } from './ssr';
 declare namespace Genesis {
     /**
      * SSR Constructor

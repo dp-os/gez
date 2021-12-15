@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 import path from 'path';
+
 import { SSR } from '../../packages/genesis-core/src/ssr';
 
 test('check options.name', async () => {

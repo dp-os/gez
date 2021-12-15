@@ -16,7 +16,7 @@
   },
   "author": "Followme",
   "license": "MIT",
-  "gitHead": "40994d32c8179be878760268d7e26f3152679321",
+  "gitHead": "1d78746ea4276916f32efa233ff645378f430282",
   "dependencies": {
     "ejs": "3.1.6",
     "serialize-javascript": "6.0.0",

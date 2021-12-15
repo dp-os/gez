@@ -4,7 +4,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RemoteView = exports.loadScript = exports.loadStyle = void 0;
-/* eslint-disable @typescript-eslint/prefer-for-of */
 const vue_1 = __importDefault(require("vue"));
 const format_1 = require("./format");
 const remoteViewStateKey = '__remote_view_state__';
@@ -338,11 +337,11 @@ exports.RemoteView = {
                 if (data === null)
                     return;
                 Promise.all([
-                    exports.loadStyle(data.style).then((arr) => {
+                    (0, exports.loadStyle)(data.style).then((arr) => {
                         this.localData = { ...data };
                         return !haveFlase(arr);
                     }),
-                    exports.loadScript(data.script).then((arr) => {
+                    (0, exports.loadScript)(data.script).then((arr) => {
                         window[data.id] = data.state;
                         return !haveFlase(arr);
                     })

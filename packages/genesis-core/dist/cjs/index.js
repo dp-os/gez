@@ -1,7 +1,7 @@
 "use strict";
-const ssr_1 = require("./ssr");
 const plugin_1 = require("./plugin");
 const renderer_1 = require("./renderer");
+const ssr_1 = require("./ssr");
 // eslint-disable-next-line @typescript-eslint/no-namespace
 var Genesis;
 (function (Genesis) {

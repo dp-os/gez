@@ -4,14 +4,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Watch = exports.WatchClientConfig = void 0;
-const webpack_1 = __importDefault(require("webpack"));
-const memory_fs_1 = __importDefault(require("memory-fs"));
 const chalk_1 = __importDefault(require("chalk"));
+const memory_fs_1 = __importDefault(require("memory-fs"));
+const webpack_1 = __importDefault(require("webpack"));
 const webpack_dev_middleware_1 = __importDefault(require("webpack-dev-middleware"));
 const webpack_hot_middleware_1 = __importDefault(require("webpack-hot-middleware"));
-const webpack_2 = require("../webpack");
-const utils_1 = require("../utils");
 const install_1 = require("../plugins/install");
+const utils_1 = require("../utils");
+const webpack_2 = require("../webpack");
 const error = chalk_1.default.bold.red;
 const warning = chalk_1.default.keyword('orange');
 // Ignore discard warning
@@ -71,16 +71,16 @@ class Watch extends utils_1.BaseGenesis {
             new WatchClientConfig(this.ssr).toConfig(),
             new webpack_2.ServerConfig(this.ssr).toConfig()
         ]);
-        const clientCompiler = webpack_1.default(clientConfig);
-        const serverCompiler = webpack_1.default(serverConfig);
+        const clientCompiler = (0, webpack_1.default)(clientConfig);
+        const serverCompiler = (0, webpack_1.default)(serverConfig);
         serverCompiler.outputFileSystem = this.mfs;
         clientCompiler.outputFileSystem = this.mfs;
-        this.devMiddleware = webpack_dev_middleware_1.default(clientCompiler, {
+        this.devMiddleware = (0, webpack_dev_middleware_1.default)(clientCompiler, {
             outputFileSystem: this.mfs,
             publicPath: this.ssr.publicPath,
             index: false
         });
-        this.hotMiddleware = webpack_hot_middleware_1.default(clientCompiler, {
+        this.hotMiddleware = (0, webpack_hot_middleware_1.default)(clientCompiler, {
             heartbeat: 5000,
             path: `${this.ssr.publicPath}webpack-hot-middleware`
         });

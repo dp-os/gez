@@ -1,9 +1,9 @@
 import Vue from 'vue';
 import VueRouter, {
+    RawLocation,
     Route,
-    RouterOptions,
     RouterMode,
-    RawLocation
+    RouterOptions
 } from 'vue-router';
 
 Vue.use(VueRouter);

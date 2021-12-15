@@ -1,7 +1,7 @@
+import { Renderer, SSR } from '@fmfe/genesis-core';
 import MFS from 'memory-fs';
-import { SSR, Renderer } from '@fmfe/genesis-core';
-import { ClientConfig } from '../webpack';
 import { BaseGenesis } from '../utils';
+import { ClientConfig } from '../webpack';
 export declare class WatchClientConfig extends ClientConfig {
     constructor(ssr: SSR);
 }

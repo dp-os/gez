@@ -1,12 +1,12 @@
 import { Plugin } from '@fmfe/genesis-core';
-import { VuePlugin } from './vue';
-import { BarPlugin } from './bar';
-import { StylePlugin } from './style';
 import { BabelPlugin } from './babel';
-import { ImagePlugin } from './image';
+import { BarPlugin } from './bar';
 import { FontPlugin } from './font';
+import { ImagePlugin } from './image';
 import { MediaPlugin } from './media';
+import { StylePlugin } from './style';
 import { TemplatePlugin } from './template';
+import { VuePlugin } from './vue';
 import { WorkerPlugin } from './worker';
 export class InstallPlugin extends Plugin {
     constructor(ssr) {

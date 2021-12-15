@@ -1,5 +1,5 @@
-import Vue, { ComponentOptions } from 'vue';
 import { ClientOptions, RenderContext } from '@fmfe/genesis-core';
+import Vue, { ComponentOptions } from 'vue';
 
 export interface CreateClientAppOptions {
     /**
@@ -45,7 +45,7 @@ export const createClientApp = async (options: CreateClientAppOptions) => {
     const { vueOptions, App } = options;
     const { router }: any = vueOptions || {};
     if (router) {
-        if ((router as any)._mode === 'abstract') {
+        if ((router as any).sourceMode === 'abstract') {
             await router.push(clientOptions.url).catch((err: Error) => {
                 throw (
                     err ||

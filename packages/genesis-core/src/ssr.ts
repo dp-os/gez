@@ -1,5 +1,6 @@
 import path from 'path';
 import process from 'process';
+
 import * as Genesis from './';
 import { PluginManage } from './plugin';
 import { Renderer } from './renderer';

@@ -1,12 +1,13 @@
-import Webpack from 'webpack';
-import MFS from 'memory-fs';
+import { Renderer, SSR } from '@fmfe/genesis-core';
 import chalk from 'chalk';
-import { SSR, Renderer } from '@fmfe/genesis-core';
+import MFS from 'memory-fs';
+import Webpack from 'webpack';
 import WebpackDevMiddleware from 'webpack-dev-middleware';
 import WebpackHotMiddleware from 'webpack-hot-middleware';
-import { ClientConfig, ServerConfig } from '../webpack';
-import { BaseGenesis } from '../utils';
+
 import { InstallPlugin } from '../plugins/install';
+import { BaseGenesis } from '../utils';
+import { ClientConfig, ServerConfig } from '../webpack';
 const error = chalk.bold.red;
 const warning = chalk.keyword('orange');
 

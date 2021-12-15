@@ -1,8 +1,8 @@
+import { Plugin, WebpackHookParams } from '@fmfe/genesis-core';
 import path from 'path';
 import webpack from 'webpack';
 
 import VueLoaderPlugin from 'vue-loader/lib/plugin';
-import { Plugin, WebpackHookParams } from '@fmfe/genesis-core';
 import VueClientPlugin from 'vue-server-renderer/client-plugin';
 import VueServerPlugin from 'vue-server-renderer/server-plugin';
 

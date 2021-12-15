@@ -1,6 +1,6 @@
-import Config from 'webpack-chain';
-import webpack from 'webpack';
 import Genesis from '@fmfe/genesis-core';
+import webpack from 'webpack';
+import Config from 'webpack-chain';
 import { BaseGenesis } from '../utils';
 export declare class BaseConfig extends BaseGenesis {
     config: Config;

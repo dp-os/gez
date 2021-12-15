@@ -1,5 +1,6 @@
 import Tms from '@fmfe/tms.js';
 import Vue from 'vue';
+
 import { Micro } from './micro';
 import { Square } from './square';
 

@@ -1,5 +1,5 @@
-import WebpackBar from 'webpackbar';
 import { Plugin } from '@fmfe/genesis-core';
+import WebpackBar from 'webpackbar';
 export class BarPlugin extends Plugin {
     chainWebpack({ target, config }) {
         const options = target === 'client'

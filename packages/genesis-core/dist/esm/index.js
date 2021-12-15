@@ -1,6 +1,6 @@
-import { SSR as SSRConstructor } from './ssr';
 import { Plugin as PluginConstructor, PluginManage as PluginManageConstructor } from './plugin';
 import { Renderer as RendererConstructor } from './renderer';
+import { SSR as SSRConstructor } from './ssr';
 // eslint-disable-next-line @typescript-eslint/no-namespace
 var Genesis;
 (function (Genesis) {
