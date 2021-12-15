@@ -298,8 +298,7 @@ export const RemoteView = {
             context.beforeRender(beforeRender);
         },
         initClient() {
-            const clientOptions = this.$root.$options
-                .clientOptions;
+            const clientOptions = this.$root.$options.clientOptions;
             const state = clientOptions.state;
             // 热更新可能会不存在数组，或者数组已经被清空了。
             if (!state[remoteViewStateKey] || !state[remoteViewStateKey].length)

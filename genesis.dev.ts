@@ -1,6 +1,6 @@
 import { Watch } from '@fmfe/genesis-compiler';
-import { ssr, RendererItems, app, startApp } from './genesis';
 
+import { app, RendererItems, ssr, startApp } from './genesis';
 import { PostcssPlugin } from './genesis.plugin';
 
 ssr.layout.plugin.use(PostcssPlugin);

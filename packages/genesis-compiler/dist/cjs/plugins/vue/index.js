@@ -6,10 +6,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.VuePlugin = void 0;
 const genesis_core_1 = require("@fmfe/genesis-core");
 const path_1 = __importDefault(require("path"));
-const webpack_1 = __importDefault(require("webpack"));
 const plugin_1 = __importDefault(require("vue-loader/lib/plugin"));
 const client_plugin_1 = __importDefault(require("vue-server-renderer/client-plugin"));
 const server_plugin_1 = __importDefault(require("vue-server-renderer/server-plugin"));
+const webpack_1 = __importDefault(require("webpack"));
 class VuePlugin extends genesis_core_1.Plugin {
     chainWebpack({ target, config }) {
         const { ssr } = this;

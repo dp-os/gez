@@ -71,9 +71,9 @@ export const loadStyle = (html: string): Promise<boolean[]> => {
     const div = document.createElement('div');
     div.innerHTML = html;
     const arr: Promise<boolean>[] = [];
-    const linkArr = (document.querySelectorAll(
+    const linkArr = document.querySelectorAll(
         'link[rel=stylesheet][href]'
-    ) as any) as HTMLLinkElement[];
+    ) as any as HTMLLinkElement[];
     const findOne = (href: string): HTMLLinkElement | null => {
         for (let i = 0; i < linkArr.length; i++) {
             if (linkArr[i].href === href) {
@@ -117,9 +117,9 @@ export const loadScript = (html: string): Promise<boolean[]> => {
     const div = document.createElement('div');
     div.innerHTML = html;
     const arr: Promise<boolean>[] = [];
-    const scriptArr = (document.querySelectorAll(
+    const scriptArr = document.querySelectorAll(
         'script[src]'
-    ) as any) as HTMLScriptElement[];
+    ) as any as HTMLScriptElement[];
     const findOne = (src: string): HTMLScriptElement | null => {
         for (let i = 0; i < scriptArr.length; i++) {
             if (scriptArr[i].src === src) {
@@ -324,8 +324,8 @@ export const RemoteView: any = {
             context.beforeRender(beforeRender);
         },
         initClient() {
-            const clientOptions: ClientOptions = this.$root.$options
-                .clientOptions;
+            const clientOptions: ClientOptions =
+                this.$root.$options.clientOptions;
             const state = clientOptions.state;
             // 热更新可能会不存在数组，或者数组已经被清空了。
             if (!state[remoteViewStateKey] || !state[remoteViewStateKey].length)

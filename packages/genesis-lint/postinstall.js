@@ -25,9 +25,8 @@ const mergePackage = () => {
         scripts: {
             ...(data.scripts || {}),
             lint: 'npm run lint:js && npm run lint:css',
-            'lint:js': 'fm-eslint . --ext .js,.ts,.vue --fix',
-            'lint:css':
-                'fm-stylelint . --syntax less --fix --ignore-path ./.stylelintignore | fm-stylelint . --custom-syntax postcss-html --fix'
+            'lint:js': 'eslint . --ext .js,.ts,.vue --fix',
+            'lint:css': ''
         },
         husky: {
             hooks: {
@@ -35,11 +34,9 @@ const mergePackage = () => {
             }
         },
         'lint-staged': {
-            '*.{ts,js}': ['fm-eslint --ext .js,.ts --fix', 'git add'],
-            '*.{css,less}': ['fm-stylelint --syntax less --fix', 'git add'],
+            '*.{ts,js}': ['eslint --ext .js,.ts --fix', 'git add'],
             '*.{vue}': [
-                'fm-eslint --ext .js,.ts --fix',
-                'fm-stylelint --custom-syntax postcss-html --fix',
+                'eslint --ext .js,.ts --fix',
                 'git add'
             ]
         }

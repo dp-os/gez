@@ -12,7 +12,7 @@ test('check options.name', async () => {
         path.resolve(path.resolve(), 'dist/ssr-test')
     );
     await expect(
-        () => new SSR({ name: (10000 as any) as string }).name
+        () => new SSR({ name: 10000 as any as string }).name
     ).toThrowError('Options.name can only be of string type');
 });
 
@@ -105,7 +105,7 @@ test('check options.build.outputDir', async () => {
 });
 
 test('check options.build.transpile', async () => {
-    const re = new RegExp('\\/test\\/');
+    const re = /\/test\//;
     const ssr = new SSR({
         build: {
             transpile: [re]

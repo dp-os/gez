@@ -74,14 +74,14 @@ export class Renderer {
                 `$1 ${this._createRootNodeAttr(ctx)}`
             );
             const vueCtx: any = ctx;
-            const resource = vueCtx.getPreloadFiles().map(
-                (item: any): Genesis.RenderContextResource => {
+            const resource = vueCtx
+                .getPreloadFiles()
+                .map((item: any): Genesis.RenderContextResource => {
                     return {
                         file: `${this.ssr.publicPath}${item.file}`,
                         extension: item.extension
                     };
-                }
-            );
+                });
             const { data } = ctx;
             if (html === '<!---->') {
                 data.html += `<div ${this._createRootNodeAttr(ctx)}></div>`;

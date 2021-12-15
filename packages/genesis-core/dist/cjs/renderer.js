@@ -43,7 +43,9 @@ class Renderer {
         const template = async (strHtml, ctx) => {
             const html = strHtml.replace(/^(<[A-z]([A-z]|[0-9])+)/, `$1 ${this._createRootNodeAttr(ctx)}`);
             const vueCtx = ctx;
-            const resource = vueCtx.getPreloadFiles().map((item) => {
+            const resource = vueCtx
+                .getPreloadFiles()
+                .map((item) => {
                 return {
                     file: `${this.ssr.publicPath}${item.file}`,
                     extension: item.extension
