@@ -91,6 +91,7 @@ export default Vue.extend({
 .route-link {
     @apply text-blue-600 p-3;
 }
+
 .route-link:hover {
     @apply text-blue-800;
 }

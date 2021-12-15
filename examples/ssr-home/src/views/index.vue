@@ -38,6 +38,11 @@ export default Vue.extend({
     padding: 100px;
     text-align: center;
 }
+
+.index {
+    background: rgb(0 0 0 / 10%);
+}
+
 .text {
     color: #999;
     font-size: 14px;

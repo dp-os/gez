@@ -53,7 +53,7 @@ const onload = (el, bool) => {
 /**
  * 加载样式文件
  */
-exports.loadStyle = (html) => {
+const loadStyle = (html) => {
     const doc = document.createDocumentFragment();
     const div = document.createElement('div');
     div.innerHTML = html;
@@ -92,10 +92,11 @@ exports.loadStyle = (html) => {
     document.head.appendChild(doc);
     return Promise.all(arr);
 };
+exports.loadStyle = loadStyle;
 /**
  * 加载js文件
  */
-exports.loadScript = (html) => {
+const loadScript = (html) => {
     const doc = document.createDocumentFragment();
     const div = document.createElement('div');
     div.innerHTML = html;
@@ -149,6 +150,7 @@ exports.loadScript = (html) => {
     document.body.appendChild(doc);
     return Promise.all(arr);
 };
+exports.loadScript = loadScript;
 /**
  * 远程调用组件
  */
@@ -335,11 +337,11 @@ exports.RemoteView = {
                 if (data === null)
                     return;
                 Promise.all([
-                    exports.loadStyle(data.style).then((arr) => {
+                    (0, exports.loadStyle)(data.style).then((arr) => {
                         this.localData = { ...data };
                         return !haveFlase(arr);
                     }),
-                    exports.loadScript(data.script).then((arr) => {
+                    (0, exports.loadScript)(data.script).then((arr) => {
                         window[data.id] = data.state;
                         return !haveFlase(arr);
                     })

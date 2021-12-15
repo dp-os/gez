@@ -18,7 +18,7 @@ class ServerConfig extends base_1.BaseConfig {
         this.config.target('node');
         this.config.devtool('source-map');
         this.config.output.libraryTarget('commonjs2');
-        this.config.externals(webpack_node_externals_1.default({
+        this.config.externals((0, webpack_node_externals_1.default)({
             allowlist: [
                 /\.css$/,
                 /\.less$/,

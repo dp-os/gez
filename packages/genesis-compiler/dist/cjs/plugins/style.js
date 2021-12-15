@@ -45,10 +45,10 @@ class StylePlugin extends genesis_core_1.Plugin {
                     .end();
             }
             postcssConfig.postcssOptions.plugins.push(...[
-                postcss_preset_env_1.default({
+                (0, postcss_preset_env_1.default)({
                     browsers: ssr.getBrowsers('client')
                 }),
-                cssnano_1.default({
+                (0, cssnano_1.default)({
                     preset: [
                         'default',
                         {

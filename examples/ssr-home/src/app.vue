@@ -28,6 +28,7 @@ export default Vue.extend({
 </style>
 <style lang="scss" scoped>
 $--color-primary: #409eff;
+
 .content {
     color: $--color-primary;
 }

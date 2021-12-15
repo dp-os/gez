@@ -76,7 +76,7 @@ const installSquare = (_Vue) => {
         }
     });
 };
-exports.install = (_Vue) => {
+const install = (_Vue) => {
     micro_1.Micro.setVue(_Vue);
     if ('$micro' in _Vue.prototype)
         return;
@@ -84,3 +84,4 @@ exports.install = (_Vue) => {
     installMicro(_Vue);
     installSquare(_Vue);
 };
+exports.install = install;

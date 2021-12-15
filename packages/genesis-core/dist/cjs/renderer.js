@@ -81,11 +81,11 @@ class Renderer {
         const ejsTemplate = fs_1.default.existsSync(this.ssr.templateFile)
             ? fs_1.default.readFileSync(this.ssr.outputTemplateFile, 'utf-8')
             : defaultTemplate;
-        this.ssrRenderer = vue_server_renderer_1.createBundleRenderer(bundle, {
+        this.ssrRenderer = (0, vue_server_renderer_1.createBundleRenderer)(bundle, {
             ...renderOptions,
             runInNewContext: 'once'
         });
-        this.csrRenderer = vue_server_renderer_1.createRenderer(renderOptions);
+        this.csrRenderer = (0, vue_server_renderer_1.createRenderer)(renderOptions);
         this.clientManifest = clientManifest;
         this.compile = ejs_1.default.compile(ejsTemplate);
         const bindArr = [
@@ -221,7 +221,7 @@ class Renderer {
                         enumerable: false
                     });
                 });
-                const scriptJSON = serialize_javascript_1.default(script, {
+                const scriptJSON = (0, serialize_javascript_1.default)(script, {
                     isJSON: true
                 });
                 return `<script data-ssr-genesis-name="${data.name}" data-ssr-genesis-id="${data.id}">window["${data.id}"]=${scriptJSON};</script>`;
