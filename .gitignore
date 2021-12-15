@@ -6,3 +6,4 @@ examples/**/dist/**
 coverage/**
 **.log
 yarn.lock
+node_modules
