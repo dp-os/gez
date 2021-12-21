@@ -1,6 +1,6 @@
 {
   "name": "@fmfe/genesis-compiler",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "Vue SSR Microfront",
   "keywords": [
     "vue",
@@ -46,7 +46,7 @@
     "postcss-loader": "4.3.0",
     "postcss-preset-env": "7.0.2",
     "sass-loader": "10.2.0",
-    "style-loader": "3.3.1",
+    "style-loader": "2.0.0",
     "thread-loader": "3.0.4",
     "typescript": "4.5.4",
     "upath": "2.0.1",
@@ -65,7 +65,7 @@
     "write": "2.0.0"
   },
   "devDependencies": {
-    "@fmfe/genesis-core": "1.0.12"
+    "@fmfe/genesis-core": "1.0.13"
   },
   "homepage": "https://fmfe.github.io/genesis-docs/",
   "repository": {
