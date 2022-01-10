@@ -21,7 +21,7 @@ exports.microRegister = {
             micro.addUse();
         }
         // 安装
-        (0, exports.forEachSquare)(this.$options.register, (squares, name) => {
+        exports.forEachSquare(this.$options.register, (squares, name) => {
             const install = squares[name];
             if (!install)
                 return;

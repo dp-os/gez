@@ -86,7 +86,7 @@ export class Watch extends BaseGenesis {
         serverCompiler.outputFileSystem = this.mfs;
         clientCompiler.outputFileSystem = this.mfs;
         this.devMiddleware = WebpackDevMiddleware(clientCompiler, {
-            outputFileSystem: this.mfs,
+            outputFileSystem: this.mfs as any,
             publicPath: this.ssr.publicPath,
             index: false
         });

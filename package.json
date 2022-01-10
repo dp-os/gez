@@ -34,18 +34,20 @@
         "url": "https://github.com/fmfe/genesis/issues"
     },
     "devDependencies": {
+        "@fmfe/genesis-core": "^0.0.87",
         "@fmfe/genesis-lint": "file:./packages/genesis-lint",
         "@types/jest": "^25.1.4",
-        "coveralls": "^3.0.11",
-        "jest": "^25.2.4",
-        "vue": "^2.6.11",
-        "vue-property-decorator": "^8.4.0",
-        "sass": "^1.26.10",
-        "@fmfe/genesis-core": "^0.0.87",
         "@types/memory-fs": "^0.3.2",
         "@types/node": "14.14.35",
+        "@types/postcss-preset-env": "^6.7.3",
         "@types/webpack-dev-middleware": "4.1.0",
-        "@types/webpack-hot-middleware": "2.25.3"
+        "@types/webpack-hot-middleware": "2.25.3",
+        "coveralls": "^3.0.11",
+        "cssnano": "^5.0.15",
+        "jest": "^25.2.4",
+        "sass": "^1.26.10",
+        "vue": "^2.6.11",
+        "vue-property-decorator": "^8.4.0"
     },
     "dependencies": {
         "@fmfe/genesis-app": "file:./packages/genesis-app",
