@@ -9290,6 +9290,7 @@ var NativeModule = require('module');
 
 function createSandbox (context) {
   var sandbox = {
+    URL: URL,
     Buffer: Buffer,
     console: console,
     process: process,
