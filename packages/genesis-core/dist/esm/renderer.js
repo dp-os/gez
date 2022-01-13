@@ -72,7 +72,7 @@ export class Renderer {
         const renderOptions = {
             template,
             inject: false,
-            clientManifest: clientManifest
+            clientManifest
         };
         const ejsTemplate = fs.existsSync(this.ssr.templateFile)
             ? fs.readFileSync(this.ssr.outputTemplateFile, 'utf-8')
@@ -201,7 +201,7 @@ export class Renderer {
             enumerable: false,
             get() {
                 return {
-                    URL: URL
+                    URL
                 };
             }
         });
