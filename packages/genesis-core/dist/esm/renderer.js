@@ -195,6 +195,16 @@ export class Renderer {
                 context._subs.push(cb);
             }
         };
+        // Webpack5 升级，遇到的问题：https://github.com/vuejs/vue/issues/12418
+        // 在官网没有解决之前，暂时使用这种方案修复问题
+        Object.defineProperty(context, '_global', {
+            enumerable: false,
+            get() {
+                return {
+                    URL: URL
+                };
+            }
+        });
         Object.defineProperty(context, '_subs', {
             enumerable: false,
             value: [],

@@ -21,6 +21,11 @@ export class ServerConfig extends BaseConfig {
                 ...this.ssr.transpile
             ]
         }));
+        this.config.module.set('parser', {
+            javascript: {
+                url: false
+            }
+        });
         this.config.optimization.minimize(false);
     }
 }

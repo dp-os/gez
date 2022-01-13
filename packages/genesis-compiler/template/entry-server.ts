@@ -1,3 +1,8 @@
 import './webpack-public-path-server';
 
-export default require('${{serverFilename}}').default;
+const entry = require('${{serverFilename}}').default;
+
+export default function (context: any) {
+    Object.assign(global, context._global);
+    return entry(context);
+}

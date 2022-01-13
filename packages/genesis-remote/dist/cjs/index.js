@@ -336,11 +336,11 @@ exports.RemoteView = {
                 if (data === null)
                     return;
                 Promise.all([
-                    exports.loadStyle(data.style).then((arr) => {
+                    (0, exports.loadStyle)(data.style).then((arr) => {
                         this.localData = { ...data };
                         return !haveFlase(arr);
                     }),
-                    exports.loadScript(data.script).then((arr) => {
+                    (0, exports.loadScript)(data.script).then((arr) => {
                         window[data.id] = data.state;
                         return !haveFlase(arr);
                     })

@@ -41,7 +41,7 @@ class MicroBase {
         Object.defineProperty(this, 'useCount', {
             enumerable: false
         });
-        exports.log('Create examples');
+        (0, exports.log)('Create examples');
     }
     static setVue(_Vue) {
         if (this._Vue)
@@ -70,7 +70,7 @@ class MicroBase {
     register(name, v) {
         const rid = `${name}_${++this.rid}`;
         Micro.getVue().set(this, rid, v);
-        exports.log(`Registration module ${rid}`);
+        (0, exports.log)(`Registration module ${rid}`);
         return rid;
     }
     /**
@@ -84,13 +84,13 @@ class MicroBase {
      */
     unregister(name, rid) {
         Micro.getVue().delete(this, rid);
-        exports.log(`Remove module ${rid}`);
+        (0, exports.log)(`Remove module ${rid}`);
     }
     /**
      * Destroy instance
      */
     destroy() {
-        exports.log('Destroy instance');
+        (0, exports.log)('Destroy instance');
         this.vm && this.vm.$destroy();
         this._vm = null;
     }
@@ -165,7 +165,7 @@ class Micro extends MicroBase {
                         : event.payloads);
                 }
             };
-            exports.log(`订阅 Tms ${path}`);
+            (0, exports.log)(`订阅 Tms ${path}`);
             target.dep.addSub(target.dep[`_micro_observe_${rid}`]);
         });
         // 还原状态
@@ -190,7 +190,7 @@ class Micro extends MicroBase {
         super.unregister(name, rid);
         deepRecursionTms(unModule, [name], (target, path) => {
             target.dep.removeSub(target.dep[`_micro_observe_${rid}`]);
-            exports.log(`取消订阅 Tms ${path}`);
+            (0, exports.log)(`取消订阅 Tms ${path}`);
             // 释放内存
             target.dep[`_micro_observe_${rid}`] = null;
         });
