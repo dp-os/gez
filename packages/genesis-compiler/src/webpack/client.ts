@@ -22,28 +22,7 @@ export class ClientConfig extends BaseConfig {
                     : 'js/[name].js'
             );
         this.config.optimization.splitChunks({
-            cacheGroups: {
-                vendors: {
-                    name: 'vendors',
-                    test: /[\\/]node_modules[\\/]/,
-                    priority: -10
-                },
-                default: {
-                    minChunks: 2,
-                    priority: -20,
-                    test: (module: any) => {
-                        return isCSS(module);
-                    }
-                },
-                common: {
-                    name: 'common',
-                    minChunks: 2,
-                    priority: -25,
-                    test: (module: any) => {
-                        return !isCSS(module);
-                    }
-                }
-            }
+            chunks: 'all'
         });
         this.config.optimization.runtimeChunk({
             name: 'runtime'

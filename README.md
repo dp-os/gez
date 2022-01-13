@@ -44,8 +44,5 @@ yarn start # Run production package
 |[square](https://www.npmjs.com/package/@fmfe/square)|[![npm](https://img.shields.io/npm/v/@fmfe/square.svg)](https://www.npmjs.com/package/@fmfe/square) |[![npm](https://img.shields.io/npm/dm/@fmfe/square.svg)](https://www.npmjs.com/package/@fmfe/square)|A state management library designed for micro modules|
 |[genesis-lint](https://www.npmjs.com/package/@fmfe/genesis-lint)|[![npm](https://img.shields.io/npm/v/@fmfe/genesis-lint.svg)](https://www.npmjs.com/package/@fmfe/genesis-lint) |[![npm](https://img.shields.io/npm/dm/@fmfe/genesis-lint.svg)](https://www.npmjs.com/package/@fmfe/genesis-lint)|A code guideline includes eslint and stylelint| 
 
-## Use case
-- [FOLLOWME](https://www.followme.com/)
-- [DC](https://www.dcfx.co.id/)
-- [Maxco](https://www.maxco.co.id/)
-- [imTrader](https://www.imtrader.vip/)
+ ## 迁移webpack5待处理
+- 移除 output.jsonpFunction 使用 output.uniqueName
