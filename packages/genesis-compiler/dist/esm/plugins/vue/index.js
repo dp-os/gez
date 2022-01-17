@@ -19,6 +19,10 @@ export class VuePlugin extends Plugin {
                 config.plugin('vue-ssr-server').use(new VueServerPlugin({
                     filename: path.relative(ssr.outputDirInServer, ssr.outputServerBundleFile)
                 }));
+                config.plugin('import-url')
+                    .use(new webpack.ProvidePlugin({
+                    URL: ['url', 'URL']
+                }));
                 break;
         }
         config.resolve.extensions.add('.vue');

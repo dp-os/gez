@@ -18,7 +18,7 @@ const deleteFolder = (path) => {
     files.forEach(function (file) {
         const curPath = path + '/' + file;
         if (fs_1.default.statSync(curPath).isDirectory()) {
-            exports.deleteFolder(curPath);
+            (0, exports.deleteFolder)(curPath);
         }
         else {
             fs_1.default.unlinkSync(curPath);

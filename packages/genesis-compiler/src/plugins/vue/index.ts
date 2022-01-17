@@ -28,6 +28,11 @@ export class VuePlugin extends Plugin {
                         )
                     })
                 );
+                config.plugin('import-url').use(
+                    new webpack.ProvidePlugin({
+                        URL: ['url', 'URL']
+                    })
+                );
                 break;
         }
         config.resolve.extensions.add('.vue');

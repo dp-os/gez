@@ -25,6 +25,10 @@ class VuePlugin extends genesis_core_1.Plugin {
                 config.plugin('vue-ssr-server').use(new server_plugin_1.default({
                     filename: path_1.default.relative(ssr.outputDirInServer, ssr.outputServerBundleFile)
                 }));
+                config.plugin('import-url')
+                    .use(new webpack_1.default.ProvidePlugin({
+                    URL: ['url', 'URL']
+                }));
                 break;
         }
         config.resolve.extensions.add('.vue');

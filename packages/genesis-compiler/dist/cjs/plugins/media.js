@@ -8,15 +8,11 @@ class MediaPlugin extends genesis_core_1.Plugin {
         config.module
             .rule('media')
             .test(/\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/i)
-            .include.add(this.ssr.srcIncludes)
+            .include.add(ssr.srcIncludes)
             .end()
-            .use('file')
-            .loader('file-loader')
-            .options({
-            esModule: false,
-            name: this.ssr.isProd
-                ? 'medias/[name].[contenthash:8].[ext]'
-                : 'medias/[path][name].[ext]'
+            .set('type', 'asset/resource')
+            .set('generator', {
+            filename: 'images/[name].[hash][ext][query]'
         });
     }
 }

@@ -8,15 +8,11 @@ class FontPlugin extends genesis_core_1.Plugin {
         config.module
             .rule('font')
             .test(/\.(woff2?|eot|ttf|otf)(\?.*)?$/i)
-            .include.add(this.ssr.srcIncludes)
+            .include.add(ssr.srcIncludes)
             .end()
-            .use('file')
-            .loader('file-loader')
-            .options({
-            esModule: false,
-            name: this.ssr.isProd
-                ? 'fonts/[name].[contenthash:8].[ext]'
-                : 'fonts/[path][name].[ext]'
+            .set('type', 'asset/resource')
+            .set('generator', {
+            filename: 'images/[name].[hash][ext][query]'
         });
     }
 }
