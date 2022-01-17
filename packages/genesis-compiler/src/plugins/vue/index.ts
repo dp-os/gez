@@ -1,9 +1,11 @@
-import { Plugin, WebpackHookParams } from '@fmfe/genesis-core';
+import { CompilerType, Plugin, WebpackHookParams } from '@fmfe/genesis-core';
+import fs from 'fs';
 import path from 'path';
 import VueLoaderPlugin from 'vue-loader/lib/plugin';
 import VueClientPlugin from 'vue-server-renderer/client-plugin';
 import VueServerPlugin from 'vue-server-renderer/server-plugin';
 import webpack from 'webpack';
+import write from 'write';
 
 export class VuePlugin extends Plugin {
     public chainWebpack({ target, config }: WebpackHookParams) {
@@ -57,5 +59,23 @@ export class VuePlugin extends Plugin {
                 'process.env.GENESIS_NAME': JSON.stringify(ssr.name)
             }
         ]);
+    }
+    public afterCompiler(type: CompilerType) {
+        if (type === 'build') {
+            const text = fs.readFileSync(
+                this.ssr.outputServerBundleFile,
+                'utf8'
+            );
+            const data = JSON.parse(text);
+            const files = data.files;
+            Object.keys(files).forEach((name) => {
+                const fullPath = path.resolve(
+                    this.ssr.outputDirInServer,
+                    './js',
+                    name
+                );
+                write.sync(fullPath, files[name]);
+            });
+        }
     }
 }

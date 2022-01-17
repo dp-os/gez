@@ -10,7 +10,12 @@ const isCSS = (module) => {
 class ClientConfig extends base_1.BaseConfig {
     constructor(ssr) {
         super(ssr, 'client');
-        this.config.entry('app').add(this.ssr.entryClientFile).end();
+        this.config
+            .entry('app').
+            add(this.ssr.entryClientFile)
+            .end()
+            .output
+            .set('uniqueName', this.ssr.name);
         this.config.output
             .path(this.ssr.outputDirInClient)
             .filename(this.ssr.isProd
@@ -22,12 +27,6 @@ class ClientConfig extends base_1.BaseConfig {
         this.config.optimization.runtimeChunk({
             name: 'runtime'
         });
-    }
-    async toConfig() {
-        const config = await super.toConfig();
-        const name = `webpack_jsonp_${this.ssr.name.replace(/[^A-z]/g, '_')}`;
-        config.output.chunkLoadingGlobal = name;
-        return config;
     }
 }
 exports.ClientConfig = ClientConfig;

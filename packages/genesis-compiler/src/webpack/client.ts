@@ -13,7 +13,11 @@ const isCSS = (module: any) => {
 export class ClientConfig extends BaseConfig {
     public constructor(ssr: Genesis.SSR) {
         super(ssr, 'client');
-        this.config.entry('app').add(this.ssr.entryClientFile).end();
+        this.config
+            .entry('app')
+            .add(this.ssr.entryClientFile)
+            .end()
+            .output.set('uniqueName', this.ssr.name);
         this.config.output
             .path(this.ssr.outputDirInClient)
             .filename(
@@ -27,11 +31,5 @@ export class ClientConfig extends BaseConfig {
         this.config.optimization.runtimeChunk({
             name: 'runtime'
         });
-    }
-    public async toConfig() {
-        const config = await super.toConfig();
-        const name = `webpack_jsonp_${this.ssr.name.replace(/[^A-z]/g, '_')}`;
-        config.output.chunkLoadingGlobal = name;
-        return config;
     }
 }
