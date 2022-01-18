@@ -4,7 +4,7 @@ import Config from 'webpack-chain';
 import { BaseGenesis } from '../utils';
 export declare class BaseConfig extends BaseGenesis {
     config: Config;
-    reday: Promise<void>;
+    ready: Promise<void>;
     constructor(ssr: Genesis.SSR, target: Genesis.WebpackBuildTarget);
     toConfig(): Promise<webpack.Configuration>;
 }

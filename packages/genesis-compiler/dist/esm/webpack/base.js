@@ -7,10 +7,11 @@ export class BaseConfig extends BaseGenesis {
         this.config.mode(this.ssr.isProd ? 'production' : 'development');
         this.config.output.publicPath(this.ssr.publicPath);
         this.config.resolve.extensions.add('.js');
-        this.reday = this.ssr.plugin.callHook('chainWebpack', {
+        this.ready = this.ssr.plugin.callHook('chainWebpack', {
             target: target,
             config: this.config
         });
+        this.config.stats('errors-warnings');
         const alias = ssr.options?.build?.alias;
         if (typeof alias === 'object') {
             Object.keys(alias).forEach((k) => {
@@ -20,7 +21,7 @@ export class BaseConfig extends BaseGenesis {
         }
     }
     async toConfig() {
-        await this.reday;
+        await this.ready;
         return this.config.toConfig();
     }
 }

@@ -11,16 +11,13 @@ import { ClientConfig, ServerConfig } from '../webpack';
 const error = chalk.bold.red;
 const warning = chalk.keyword('orange');
 
-// Ignore discard warning
-(process as any).noDeprecation = true;
-
 export class WatchClientConfig extends ClientConfig {
     public constructor(ssr: SSR) {
         super(ssr);
         this.config
             .entry('app')
             .add(
-                `webpack-hot-middleware/client?path=${ssr.publicPath}webpack-hot-middleware&timeout=2000&overlay=false`
+                `webpack-hot-middleware/client?path=/__webpack__${ssr.publicPath}hot-middleware&timeout=2000&overlay=false`
             );
         this.config
             .plugin('webpack-hot-replacement')
@@ -92,7 +89,7 @@ export class Watch extends BaseGenesis {
         });
         this.hotMiddleware = WebpackHotMiddleware(clientCompiler, {
             heartbeat: 5000,
-            path: `${this.ssr.publicPath}webpack-hot-middleware`
+            path: `/__webpack__${this.ssr.publicPath}hot-middleware`
         });
         const watchOptions = {
             aggregateTimeout: 300,

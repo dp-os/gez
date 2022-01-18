@@ -6,17 +6,18 @@ import { BaseGenesis } from '../utils';
 
 export class BaseConfig extends BaseGenesis {
     public config: Config;
-    public reday: Promise<void>;
+    public ready: Promise<void>;
     public constructor(ssr: Genesis.SSR, target: Genesis.WebpackBuildTarget) {
         super(ssr);
         this.config = new Config();
         this.config.mode(this.ssr.isProd ? 'production' : 'development');
         this.config.output.publicPath(this.ssr.publicPath);
         this.config.resolve.extensions.add('.js');
-        this.reday = this.ssr.plugin.callHook('chainWebpack', {
-            target: target,
+        this.ready = this.ssr.plugin.callHook('chainWebpack', {
+            target,
             config: this.config
         });
+        this.config.stats('errors-warnings');
         const alias = ssr.options?.build?.alias;
         if (typeof alias === 'object') {
             Object.keys(alias).forEach((k) => {
@@ -27,7 +28,7 @@ export class BaseConfig extends BaseGenesis {
     }
 
     public async toConfig(): Promise<webpack.Configuration> {
-        await this.reday;
+        await this.ready;
         return this.config.toConfig();
     }
 }

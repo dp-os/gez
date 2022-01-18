@@ -14,14 +14,12 @@ const utils_1 = require("../utils");
 const webpack_2 = require("../webpack");
 const error = chalk_1.default.bold.red;
 const warning = chalk_1.default.keyword('orange');
-// Ignore discard warning
-process.noDeprecation = true;
 class WatchClientConfig extends webpack_2.ClientConfig {
     constructor(ssr) {
         super(ssr);
         this.config
             .entry('app')
-            .add(`webpack-hot-middleware/client?path=${ssr.publicPath}webpack-hot-middleware&timeout=2000&overlay=false`);
+            .add(`webpack-hot-middleware/client?path=/__webpack__${ssr.publicPath}hot-middleware&timeout=2000&overlay=false`);
         this.config
             .plugin('webpack-hot-replacement')
             .use(webpack_1.default.HotModuleReplacementPlugin);
@@ -82,7 +80,7 @@ class Watch extends utils_1.BaseGenesis {
         });
         this.hotMiddleware = (0, webpack_hot_middleware_1.default)(clientCompiler, {
             heartbeat: 5000,
-            path: `${this.ssr.publicPath}webpack-hot-middleware`
+            path: `/__webpack__${this.ssr.publicPath}hot-middleware`
         });
         const watchOptions = {
             aggregateTimeout: 300,
