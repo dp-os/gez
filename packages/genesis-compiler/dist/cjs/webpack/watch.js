@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Watch = exports.WatchClientConfig = void 0;
 const chalk_1 = __importDefault(require("chalk"));
-const memory_fs_1 = __importDefault(require("memory-fs"));
+const memfs_1 = require("memfs");
 const webpack_1 = __importDefault(require("webpack"));
 const webpack_dev_middleware_1 = __importDefault(require("webpack-dev-middleware"));
 const webpack_hot_middleware_1 = __importDefault(require("webpack-hot-middleware"));
@@ -37,7 +37,7 @@ const readFile = (fs, file) => {
 class Watch extends utils_1.BaseGenesis {
     constructor(ssr) {
         super(ssr);
-        this.mfs = new memory_fs_1.default();
+        this.mfs = memfs_1.Volume.fromJSON({});
         this.watchData = {};
         ssr.plugin.unshift(install_1.InstallPlugin);
     }

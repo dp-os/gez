@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import MFS from 'memory-fs';
+import { Volume } from 'memfs';
 import Webpack from 'webpack';
 import WebpackDevMiddleware from 'webpack-dev-middleware';
 import WebpackHotMiddleware from 'webpack-hot-middleware';
@@ -30,7 +30,7 @@ const readFile = (fs, file) => {
 export class Watch extends BaseGenesis {
     constructor(ssr) {
         super(ssr);
-        this.mfs = new MFS();
+        this.mfs = Volume.fromJSON({});
         this.watchData = {};
         ssr.plugin.unshift(InstallPlugin);
     }

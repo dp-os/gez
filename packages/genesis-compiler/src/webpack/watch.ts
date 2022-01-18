@@ -1,6 +1,7 @@
 import { Renderer, SSR } from '@fmfe/genesis-core';
 import chalk from 'chalk';
-import MFS from 'memory-fs';
+import webpack from 'webpack';
+import { Volume } from 'memfs';
 import Webpack from 'webpack';
 import WebpackDevMiddleware from 'webpack-dev-middleware';
 import WebpackHotMiddleware from 'webpack-hot-middleware';
@@ -39,7 +40,7 @@ interface WatchSubData {
 export class Watch extends BaseGenesis {
     public devMiddleware: any;
     public hotMiddleware: any;
-    public mfs = new MFS();
+    public mfs: webpack.Compiler['outputFileSystem'] = Volume.fromJSON({});
     private watchData: Partial<WatchSubData> = {};
     private _renderer: Renderer | null;
 

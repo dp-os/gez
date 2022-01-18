@@ -8,7 +8,7 @@ export class BaseConfig extends BaseGenesis {
         this.config.output.publicPath(this.ssr.publicPath);
         this.config.resolve.extensions.add('.js');
         this.ready = this.ssr.plugin.callHook('chainWebpack', {
-            target: target,
+            target,
             config: this.config
         });
         this.config.stats('errors-warnings');
