@@ -5,8 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.VuePlugin = void 0;
 const genesis_core_1 = require("@fmfe/genesis-core");
-const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
+const path_1 = __importDefault(require("path"));
 const plugin_1 = __importDefault(require("vue-loader/lib/plugin"));
 const client_plugin_1 = __importDefault(require("vue-server-renderer/client-plugin"));
 const server_plugin_1 = __importDefault(require("vue-server-renderer/server-plugin"));
@@ -58,7 +58,7 @@ class VuePlugin extends genesis_core_1.Plugin {
             const text = fs_1.default.readFileSync(this.ssr.outputServerBundleFile, 'utf8');
             const data = JSON.parse(text);
             const files = data.files;
-            Object.keys(files).forEach(name => {
+            Object.keys(files).forEach((name) => {
                 const fullPath = path_1.default.resolve(this.ssr.outputDirInServer, './js', name);
                 write_1.default.sync(fullPath, files[name]);
             });

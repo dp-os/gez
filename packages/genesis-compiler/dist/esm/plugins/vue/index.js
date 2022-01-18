@@ -1,6 +1,6 @@
 import { Plugin } from '@fmfe/genesis-core';
-import path from 'path';
 import fs from 'fs';
+import path from 'path';
 import VueLoaderPlugin from 'vue-loader/lib/plugin';
 import VueClientPlugin from 'vue-server-renderer/client-plugin';
 import VueServerPlugin from 'vue-server-renderer/server-plugin';
@@ -52,7 +52,7 @@ export class VuePlugin extends Plugin {
             const text = fs.readFileSync(this.ssr.outputServerBundleFile, 'utf8');
             const data = JSON.parse(text);
             const files = data.files;
-            Object.keys(files).forEach(name => {
+            Object.keys(files).forEach((name) => {
                 const fullPath = path.resolve(this.ssr.outputDirInServer, './js', name);
                 write.sync(fullPath, files[name]);
             });

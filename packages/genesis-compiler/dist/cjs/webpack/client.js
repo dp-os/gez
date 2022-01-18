@@ -2,20 +2,14 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ClientConfig = void 0;
 const base_1 = require("./base");
-const isCSS = (module) => {
-    return (module.resource &&
-        /node_modules/.test(module.resource) &&
-        /\.(vue|css|less|sass|scss)$/.test(module.resource));
-};
 class ClientConfig extends base_1.BaseConfig {
     constructor(ssr) {
         super(ssr, 'client');
         this.config
-            .entry('app').
-            add(this.ssr.entryClientFile)
+            .entry('app')
+            .add(this.ssr.entryClientFile)
             .end()
-            .output
-            .set('uniqueName', this.ssr.name);
+            .output.set('uniqueName', this.ssr.name);
         this.config.output
             .path(this.ssr.outputDirInClient)
             .filename(this.ssr.isProd
