@@ -32,23 +32,15 @@ const modes: Genesis.RenderMode[] = [
 export class Renderer {
     public ssr: Genesis.SSR;
     public clientManifest: Genesis.ClientManifest;
-    /**
-     * Client side renderer
-     */
-    private csrRenderer: VueRenderer;
+    private renderer: VueRenderer;
     /**
      * Render template functions
      */
     private compile: Ejs.TemplateFunction;
-    /**
-     * Server side renderer
-     */
-    private ssrRenderer: BundleRenderer;
-    public constructor(ssr: Genesis.SSR, options?: Genesis.RendererOptions) {
+    public constructor(ssr: Genesis.SSR) {
         if (
-            (!options?.client?.data || !options?.server?.data) &&
-            (!fs.existsSync(ssr.outputClientManifestFile) ||
-                !fs.existsSync(ssr.outputServerBundleFile))
+            !fs.existsSync(ssr.outputClientManifestFile) ||
+            !fs.existsSync(ssr.outputServerBundleFile)
         ) {
             ssr = new SSR({
                 build: {
@@ -102,11 +94,8 @@ export class Renderer {
             return ctx.data;
         };
 
-        const clientManifest: Genesis.ClientManifest = options?.client
-            ?.data || { ...require(this.ssr.outputClientManifestFile) };
-        const bundle = options?.server?.data || {
-            ...require(this.ssr.outputServerBundleFile)
-        };
+        const clientManifest: Genesis.ClientManifest = require(this.ssr
+            .outputClientManifestFile);
         clientManifest.publicPath =
             ssr.cdnPublicPath + clientManifest.publicPath;
         const renderOptions = {
@@ -119,11 +108,7 @@ export class Renderer {
             ? fs.readFileSync(this.ssr.outputTemplateFile, 'utf-8')
             : defaultTemplate;
 
-        this.ssrRenderer = createBundleRenderer(bundle, {
-            ...renderOptions,
-            runInNewContext: 'once'
-        });
-        this.csrRenderer = createRenderer(renderOptions);
+        this.renderer = createRenderer(renderOptions);
         this.clientManifest = clientManifest;
         this.compile = Ejs.compile(ejsTemplate);
 
@@ -142,15 +127,13 @@ export class Renderer {
         process.env[`__webpack_public_path_${ssr.name}__`] =
             ssr.cdnPublicPath + ssr.publicPath;
     }
-
     /**
-     * Hot update
+     * Reload the renderer
      */
-    public hotUpdate(options?: Genesis.RendererOptions) {
-        const renderer = new Renderer(this.ssr, options);
-        this.csrRenderer = renderer.csrRenderer;
+    public reload() {
+        const renderer = new Renderer(this.ssr);
+        this.renderer = renderer.renderer;
         this.compile = renderer.compile;
-        this.ssrRenderer = renderer.ssrRenderer;
     }
 
     /**
@@ -394,8 +377,13 @@ export class Renderer {
     private async _ssrToJson(
         context: Genesis.RenderContext
     ): Promise<Genesis.RenderData> {
+        const vm = new Vue({
+            render(h) {
+                return h('div');
+            }
+        });
         await new Promise((resolve, reject) => {
-            this.ssrRenderer.renderToString(context, (err, data: any) => {
+            this.renderer.renderToString(vm, context, (err, data: any) => {
                 if (err) {
                     return reject(err);
                 } else if (typeof data !== 'object') {
@@ -429,7 +417,7 @@ export class Renderer {
                 return h('div');
             }
         });
-        const data: Genesis.RenderData = (await this.csrRenderer.renderToString(
+        const data: Genesis.RenderData = (await this.renderer.renderToString(
             vm,
             context
         )) as any;

@@ -17,6 +17,7 @@ export class BaseConfig extends BaseGenesis {
             target,
             config: this.config
         });
+        this.config.output.pathinfo(false);
         this.config.stats('errors-warnings');
         const alias = ssr.options?.build?.alias;
         if (typeof alias === 'object') {
@@ -25,11 +26,6 @@ export class BaseConfig extends BaseGenesis {
                 this.config.resolve.alias.set(k, v);
             });
         }
-        this.config.module.set('parser', {
-            javascript: {
-                url: false
-            }
-        });
     }
 
     public async toConfig(): Promise<webpack.Configuration> {

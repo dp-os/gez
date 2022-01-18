@@ -18,6 +18,7 @@ class BaseConfig extends utils_1.BaseGenesis {
             target,
             config: this.config
         });
+        this.config.output.pathinfo(false);
         this.config.stats('errors-warnings');
         const alias = (_b = (_a = ssr.options) === null || _a === void 0 ? void 0 : _a.build) === null || _b === void 0 ? void 0 : _b.alias;
         if (typeof alias === 'object') {
@@ -26,11 +27,6 @@ class BaseConfig extends utils_1.BaseGenesis {
                 this.config.resolve.alias.set(k, v);
             });
         }
-        this.config.module.set('parser', {
-            javascript: {
-                url: false
-            }
-        });
     }
     async toConfig() {
         await this.ready;

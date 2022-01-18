@@ -4,23 +4,16 @@ import * as Genesis from './';
 export declare class Renderer {
     ssr: Genesis.SSR;
     clientManifest: Genesis.ClientManifest;
-    /**
-     * Client side renderer
-     */
-    private csrRenderer;
+    private renderer;
     /**
      * Render template functions
      */
     private compile;
+    constructor(ssr: Genesis.SSR);
     /**
-     * Server side renderer
+     * Reload the renderer
      */
-    private ssrRenderer;
-    constructor(ssr: Genesis.SSR, options?: Genesis.RendererOptions);
-    /**
-     * Hot update
-     */
-    hotUpdate(options?: Genesis.RendererOptions): void;
+    reload(): void;
     /**
      * Render JSON
      */

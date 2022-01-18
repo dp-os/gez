@@ -183,7 +183,8 @@ export class SSR {
     /**
      * Create a renderer
      */
-    public createRenderer(options?: Genesis.RendererOptions) {
+    public createRenderer() {
+        // @ts-ignore
         return new this.Renderer(this, options);
     }
 }

@@ -15,12 +15,11 @@ class ClientConfig extends base_1.BaseConfig {
             .filename(this.ssr.isProd
             ? 'js/[name].[contenthash:8].js'
             : 'js/[name].js');
+        this.config.devtool('eval');
         this.config.optimization.splitChunks({
             chunks: 'all'
         });
-        this.config.optimization.runtimeChunk({
-            name: 'runtime'
-        });
+        this.config.optimization.runtimeChunk(true);
     }
 }
 exports.ClientConfig = ClientConfig;

@@ -25,11 +25,8 @@ const modes = [
     'csr-json'
 ];
 class Renderer {
-    constructor(ssr, options) {
-        var _a, _b, _c, _d;
-        if ((!((_a = options === null || options === void 0 ? void 0 : options.client) === null || _a === void 0 ? void 0 : _a.data) || !((_b = options === null || options === void 0 ? void 0 : options.server) === null || _b === void 0 ? void 0 : _b.data)) &&
-            (!fs_1.default.existsSync(ssr.outputClientManifestFile) ||
-                !fs_1.default.existsSync(ssr.outputServerBundleFile))) {
+    constructor(ssr) {
+        if ((!fs_1.default.existsSync(ssr.outputClientManifestFile) || !fs_1.default.existsSync(ssr.outputServerBundleFile))) {
             ssr = new ssr_1.SSR({
                 build: {
                     outputDir: path_1.default.resolve(__dirname, /src$/.test(__dirname)
@@ -69,10 +66,7 @@ class Renderer {
             ctx._subs = [];
             return ctx.data;
         };
-        const clientManifest = ((_c = options === null || options === void 0 ? void 0 : options.client) === null || _c === void 0 ? void 0 : _c.data) || { ...require(this.ssr.outputClientManifestFile) };
-        const bundle = ((_d = options === null || options === void 0 ? void 0 : options.server) === null || _d === void 0 ? void 0 : _d.data) || {
-            ...require(this.ssr.outputServerBundleFile)
-        };
+        const clientManifest = require(this.ssr.outputClientManifestFile);
         clientManifest.publicPath =
             ssr.cdnPublicPath + clientManifest.publicPath;
         const renderOptions = {
@@ -83,11 +77,7 @@ class Renderer {
         const ejsTemplate = fs_1.default.existsSync(this.ssr.templateFile)
             ? fs_1.default.readFileSync(this.ssr.outputTemplateFile, 'utf-8')
             : defaultTemplate;
-        this.ssrRenderer = (0, vue_server_renderer_1.createBundleRenderer)(bundle, {
-            ...renderOptions,
-            runInNewContext: 'once'
-        });
-        this.csrRenderer = (0, vue_server_renderer_1.createRenderer)(renderOptions);
+        this.renderer = (0, vue_server_renderer_1.createRenderer)(renderOptions);
         this.clientManifest = clientManifest;
         this.compile = ejs_1.default.compile(ejsTemplate);
         const bindArr = [
@@ -106,13 +96,12 @@ class Renderer {
             ssr.cdnPublicPath + ssr.publicPath;
     }
     /**
-     * Hot update
+     * Reload the renderer
      */
-    hotUpdate(options) {
-        const renderer = new Renderer(this.ssr, options);
-        this.csrRenderer = renderer.csrRenderer;
+    reload() {
+        const renderer = new Renderer(this.ssr);
+        this.renderer = renderer.renderer;
         this.compile = renderer.compile;
-        this.ssrRenderer = renderer.ssrRenderer;
     }
     /**
      * Render JSON
@@ -317,8 +306,13 @@ class Renderer {
      * The server renders a JSON
      */
     async _ssrToJson(context) {
+        const vm = new vue_1.default({
+            render(h) {
+                return h('div');
+            }
+        });
         await new Promise((resolve, reject) => {
-            this.ssrRenderer.renderToString(context, (err, data) => {
+            this.renderer.renderToString(vm, context, (err, data) => {
                 if (err) {
                     return reject(err);
                 }
@@ -347,7 +341,7 @@ class Renderer {
                 return h('div');
             }
         });
-        const data = (await this.csrRenderer.renderToString(vm, context));
+        const data = (await this.renderer.renderToString(vm, context));
         data.html = `<div ${this._createRootNodeAttr(context)}></div>`;
         await this.ssr.plugin.callHook('renderCompleted', context);
         return context.data;

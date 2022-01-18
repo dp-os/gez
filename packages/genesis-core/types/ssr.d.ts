@@ -93,5 +93,5 @@ export declare class SSR {
     /**
      * Create a renderer
      */
-    createRenderer(options?: Genesis.RendererOptions): Renderer;
+    createRenderer(): Renderer;
 }

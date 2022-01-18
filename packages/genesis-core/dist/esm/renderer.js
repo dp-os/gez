@@ -5,7 +5,7 @@ import { IncomingMessage, ServerResponse } from 'http';
 import path from 'path';
 import serialize from 'serialize-javascript';
 import Vue from 'vue';
-import { createBundleRenderer, createRenderer } from 'vue-server-renderer';
+import { createRenderer } from 'vue-server-renderer';
 import { SSR } from './ssr';
 const md5 = (content) => {
     const md5 = crypto.createHash('md5');
@@ -19,10 +19,8 @@ const modes = [
     'csr-json'
 ];
 export class Renderer {
-    constructor(ssr, options) {
-        if ((!options?.client?.data || !options?.server?.data) &&
-            (!fs.existsSync(ssr.outputClientManifestFile) ||
-                !fs.existsSync(ssr.outputServerBundleFile))) {
+    constructor(ssr) {
+        if ((!fs.existsSync(ssr.outputClientManifestFile) || !fs.existsSync(ssr.outputServerBundleFile))) {
             ssr = new SSR({
                 build: {
                     outputDir: path.resolve(__dirname, /src$/.test(__dirname)
@@ -62,11 +60,7 @@ export class Renderer {
             ctx._subs = [];
             return ctx.data;
         };
-        const clientManifest = options?.client
-            ?.data || { ...require(this.ssr.outputClientManifestFile) };
-        const bundle = options?.server?.data || {
-            ...require(this.ssr.outputServerBundleFile)
-        };
+        const clientManifest = require(this.ssr.outputClientManifestFile);
         clientManifest.publicPath =
             ssr.cdnPublicPath + clientManifest.publicPath;
         const renderOptions = {
@@ -77,11 +71,7 @@ export class Renderer {
         const ejsTemplate = fs.existsSync(this.ssr.templateFile)
             ? fs.readFileSync(this.ssr.outputTemplateFile, 'utf-8')
             : defaultTemplate;
-        this.ssrRenderer = createBundleRenderer(bundle, {
-            ...renderOptions,
-            runInNewContext: 'once'
-        });
-        this.csrRenderer = createRenderer(renderOptions);
+        this.renderer = createRenderer(renderOptions);
         this.clientManifest = clientManifest;
         this.compile = Ejs.compile(ejsTemplate);
         const bindArr = [
@@ -100,13 +90,12 @@ export class Renderer {
             ssr.cdnPublicPath + ssr.publicPath;
     }
     /**
-     * Hot update
+     * Reload the renderer
      */
-    hotUpdate(options) {
-        const renderer = new Renderer(this.ssr, options);
-        this.csrRenderer = renderer.csrRenderer;
+    reload() {
+        const renderer = new Renderer(this.ssr);
+        this.renderer = renderer.renderer;
         this.compile = renderer.compile;
-        this.ssrRenderer = renderer.ssrRenderer;
     }
     /**
      * Render JSON
@@ -311,8 +300,13 @@ export class Renderer {
      * The server renders a JSON
      */
     async _ssrToJson(context) {
+        const vm = new Vue({
+            render(h) {
+                return h('div');
+            }
+        });
         await new Promise((resolve, reject) => {
-            this.ssrRenderer.renderToString(context, (err, data) => {
+            this.renderer.renderToString(vm, context, (err, data) => {
                 if (err) {
                     return reject(err);
                 }
@@ -341,7 +335,7 @@ export class Renderer {
                 return h('div');
             }
         });
-        const data = (await this.csrRenderer.renderToString(vm, context));
+        const data = (await this.renderer.renderToString(vm, context));
         data.html = `<div ${this._createRootNodeAttr(context)}></div>`;
         await this.ssr.plugin.callHook('renderCompleted', context);
         return context.data;

@@ -124,10 +124,10 @@ class Watch extends utils_1.BaseGenesis {
             return;
         const { ssr } = this;
         if (this._renderer) {
-            this._renderer.hotUpdate({ client, server });
+            this._renderer.reload();
         }
         else {
-            this._renderer = new ssr.Renderer(ssr, { client, server });
+            this._renderer = new ssr.Renderer(ssr);
         }
     }
 }

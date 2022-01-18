@@ -147,7 +147,8 @@ export class SSR {
     /**
      * Create a renderer
      */
-    createRenderer(options) {
+    createRenderer() {
+        // @ts-ignore
         return new this.Renderer(this, options);
     }
 }

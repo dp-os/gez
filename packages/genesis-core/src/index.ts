@@ -226,23 +226,6 @@ namespace Genesis {
         async: string[];
         modules: { [key: string]: number[] };
     }
-    /**
-     * Options for rendering
-     */
-    export interface RendererOptions {
-        client: {
-            data: ClientManifest;
-            fs: any;
-        };
-        server: {
-            data: {
-                entry: string;
-                files: { [x: string]: string };
-                maps: { [key: string]: RendererOptionsMap };
-            };
-            fs: any;
-        };
-    }
 
     export interface RendererOptionsMap {
         version: number;

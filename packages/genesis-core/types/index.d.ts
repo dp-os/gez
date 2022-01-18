@@ -214,27 +214,6 @@ declare namespace Genesis {
             [key: string]: number[];
         };
     }
-    /**
-     * Options for rendering
-     */
-    interface RendererOptions {
-        client: {
-            data: ClientManifest;
-            fs: any;
-        };
-        server: {
-            data: {
-                entry: string;
-                files: {
-                    [x: string]: string;
-                };
-                maps: {
-                    [key: string]: RendererOptionsMap;
-                };
-            };
-            fs: any;
-        };
-    }
     interface RendererOptionsMap {
         version: number;
         sources: string[];
