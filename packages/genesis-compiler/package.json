@@ -1,6 +1,6 @@
 {
   "name": "@fmfe/genesis-compiler",
-  "version": "2.0.1-alpha.7",
+  "version": "2.0.1-alpha.8",
   "description": "Vue SSR Microfront",
   "keywords": [
     "vue",
@@ -42,6 +42,7 @@
     "html-minifier": "4.0.0",
     "less": "4.1.2",
     "less-loader": "10.2.0",
+    "memfs": "3.4.1",
     "memory-fs": "0.5.0",
     "postcss": "8.4.5",
     "postcss-loader": "6.2.1",
@@ -62,7 +63,6 @@
     "webpack-hot-middleware": "2.25.1",
     "webpack-node-externals": "3.0.0",
     "webpackbar": "5.0.2",
-    "memfs": "3.4.1",
     "worker-loader": "3.0.8",
     "write": "2.0.0"
   },
