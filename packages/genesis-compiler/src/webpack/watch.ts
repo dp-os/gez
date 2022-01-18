@@ -1,7 +1,5 @@
 import { Renderer, SSR } from '@fmfe/genesis-core';
 import chalk from 'chalk';
-import webpack from 'webpack';
-import { Volume } from 'memfs';
 import Webpack from 'webpack';
 import WebpackDevMiddleware from 'webpack-dev-middleware';
 import WebpackHotMiddleware from 'webpack-hot-middleware';
@@ -40,7 +38,6 @@ interface WatchSubData {
 export class Watch extends BaseGenesis {
     public devMiddleware: any;
     public hotMiddleware: any;
-    public mfs: webpack.Compiler['outputFileSystem'] = Volume.fromJSON({});
     private watchData: Partial<WatchSubData> = {};
     private _renderer: Renderer | null;
 
@@ -81,13 +78,11 @@ export class Watch extends BaseGenesis {
         ]);
         const clientCompiler = Webpack(clientConfig);
         const serverCompiler = Webpack(serverConfig);
-        serverCompiler.outputFileSystem = this.mfs;
-        clientCompiler.outputFileSystem = this.mfs;
         this.devMiddleware = WebpackDevMiddleware(clientCompiler, {
-            outputFileSystem: this.mfs as any,
             publicPath: this.ssr.publicPath,
             index: false
         });
+        serverCompiler.outputFileSystem = clientCompiler.outputFileSystem;
         this.hotMiddleware = WebpackHotMiddleware(clientCompiler, {
             heartbeat: 5000,
             path: `/__webpack__${this.ssr.publicPath}hot-middleware`
@@ -110,9 +105,12 @@ export class Watch extends BaseGenesis {
             }
             if (stats.hasErrors()) return;
             this.watchData.client = {
-                fs: this.mfs,
+                fs: clientCompiler.outputFileSystem,
                 data: JSON.parse(
-                    readFile(this.mfs, this.ssr.outputClientManifestFile)
+                    readFile(
+                        clientCompiler.outputFileSystem,
+                        this.ssr.outputClientManifestFile
+                    )
                 )
             };
             this.notify();

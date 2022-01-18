@@ -25,6 +25,11 @@ export class BaseConfig extends BaseGenesis {
                 this.config.resolve.alias.set(k, v);
             });
         }
+        this.config.module.set('parser', {
+            javascript: {
+                url: false
+            }
+        });
     }
 
     public async toConfig(): Promise<webpack.Configuration> {

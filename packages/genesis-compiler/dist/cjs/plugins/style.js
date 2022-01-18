@@ -6,7 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.StylePlugin = void 0;
 const genesis_core_1 = require("@fmfe/genesis-core");
 const cssnano_1 = __importDefault(require("cssnano"));
-const extract_css_chunks_webpack_plugin_1 = __importDefault(require("extract-css-chunks-webpack-plugin"));
+// import ExtractCssChunks from 'extract-css-chunks-webpack-plugin';
+const mini_css_extract_plugin_1 = __importDefault(require("mini-css-extract-plugin"));
 const postcss_preset_env_1 = __importDefault(require("postcss-preset-env"));
 class StylePlugin extends genesis_core_1.Plugin {
     async chainWebpack({ target, config }) {
@@ -26,7 +27,7 @@ class StylePlugin extends genesis_core_1.Plugin {
         });
         if (isProd) {
             if (target === 'client') {
-                config.plugin('extract-css').use(extract_css_chunks_webpack_plugin_1.default, [
+                config.plugin('mini-css').use(mini_css_extract_plugin_1.default, [
                     {
                         ignoreOrder: true,
                         filename: 'css/[name].[contenthash:8].css',
@@ -108,7 +109,7 @@ class StylePlugin extends genesis_core_1.Plugin {
             },
             extract: {
                 name: 'extract',
-                loader: extract_css_chunks_webpack_plugin_1.default.loader,
+                loader: mini_css_extract_plugin_1.default.loader,
                 options: {}
             }
         };

@@ -28,11 +28,6 @@ export class ServerConfig extends BaseConfig {
                 ]
             })
         );
-        this.config.module.set('parser', {
-            javascript: {
-                url: false
-            }
-        });
         this.config.optimization.minimize(false);
     }
 }

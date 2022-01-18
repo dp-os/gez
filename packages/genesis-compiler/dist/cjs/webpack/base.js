@@ -26,6 +26,11 @@ class BaseConfig extends utils_1.BaseGenesis {
                 this.config.resolve.alias.set(k, v);
             });
         }
+        this.config.module.set('parser', {
+            javascript: {
+                url: false
+            }
+        });
     }
     async toConfig() {
         await this.ready;

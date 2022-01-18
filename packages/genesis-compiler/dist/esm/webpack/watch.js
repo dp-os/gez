@@ -1,5 +1,4 @@
 import chalk from 'chalk';
-import { Volume } from 'memfs';
 import Webpack from 'webpack';
 import WebpackDevMiddleware from 'webpack-dev-middleware';
 import WebpackHotMiddleware from 'webpack-hot-middleware';
@@ -30,7 +29,6 @@ const readFile = (fs, file) => {
 export class Watch extends BaseGenesis {
     constructor(ssr) {
         super(ssr);
-        this.mfs = Volume.fromJSON({});
         this.watchData = {};
         ssr.plugin.unshift(InstallPlugin);
     }
@@ -64,13 +62,11 @@ export class Watch extends BaseGenesis {
         ]);
         const clientCompiler = Webpack(clientConfig);
         const serverCompiler = Webpack(serverConfig);
-        serverCompiler.outputFileSystem = this.mfs;
-        clientCompiler.outputFileSystem = this.mfs;
         this.devMiddleware = WebpackDevMiddleware(clientCompiler, {
-            outputFileSystem: this.mfs,
             publicPath: this.ssr.publicPath,
             index: false
         });
+        serverCompiler.outputFileSystem = clientCompiler.outputFileSystem;
         this.hotMiddleware = WebpackHotMiddleware(clientCompiler, {
             heartbeat: 5000,
             path: `/__webpack__${this.ssr.publicPath}hot-middleware`
@@ -90,8 +86,8 @@ export class Watch extends BaseGenesis {
             if (stats.hasErrors())
                 return;
             this.watchData.client = {
-                fs: this.mfs,
-                data: JSON.parse(readFile(this.mfs, this.ssr.outputClientManifestFile))
+                fs: clientCompiler.outputFileSystem,
+                data: JSON.parse(readFile(clientCompiler.outputFileSystem, this.ssr.outputClientManifestFile))
             };
             this.notify();
             clientDone = true;

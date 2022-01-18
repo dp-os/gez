@@ -1,6 +1,7 @@
 import { Plugin } from '@fmfe/genesis-core';
 import cssnano from 'cssnano';
-import ExtractCssChunks from 'extract-css-chunks-webpack-plugin';
+// import ExtractCssChunks from 'extract-css-chunks-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import postcssPresetEnv from 'postcss-preset-env';
 export class StylePlugin extends Plugin {
     async chainWebpack({ target, config }) {
@@ -20,7 +21,7 @@ export class StylePlugin extends Plugin {
         });
         if (isProd) {
             if (target === 'client') {
-                config.plugin('extract-css').use(ExtractCssChunks, [
+                config.plugin('mini-css').use(MiniCssExtractPlugin, [
                     {
                         ignoreOrder: true,
                         filename: 'css/[name].[contenthash:8].css',
@@ -102,7 +103,7 @@ export class StylePlugin extends Plugin {
             },
             extract: {
                 name: 'extract',
-                loader: ExtractCssChunks.loader,
+                loader: MiniCssExtractPlugin.loader,
                 options: {}
             }
         };
