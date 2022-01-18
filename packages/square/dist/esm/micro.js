@@ -17,11 +17,11 @@ class MicroBase {
     constructor() {
         this.rid = 0;
         this.useCount = 0;
-        // 需要放到最后处理， 否则vue不会进行属性劫持
+        const self = this;
         this.vm = new Vue({
             data: function () {
                 return {
-                    $$this: this
+                    $$this: self
                 };
             }
         });
