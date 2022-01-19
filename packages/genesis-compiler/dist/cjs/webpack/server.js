@@ -27,6 +27,11 @@ class ServerConfig extends base_1.BaseConfig {
                 ...this.ssr.transpile
             ]
         }));
+        this.config.module.set('parser', {
+            javascript: {
+                url: 'relative'
+            }
+        });
         this.config.optimization.minimize(false);
     }
 }
