@@ -3,8 +3,9 @@ import path from 'path';
 import VueLoaderPlugin from 'vue-loader/lib/plugin';
 import VueClientPlugin from 'vue-server-renderer/client-plugin';
 import webpack from 'webpack';
-function isJS(file) { return /\.js(\?[^.]+)?$/.test(file); }
-;
+function isJS(file) {
+    return /\.js(\?[^.]+)?$/.test(file);
+}
 class VueSSRServerPlugin {
     apply(compiler) {
         const name = 'vue-server-plugin';
@@ -13,12 +14,11 @@ class VueSSRServerPlugin {
                 return;
             }
             const stage = webpack.Compilation['PROCESS_ASSETS_STAGE_OPTIMIZE_TRANSFER'];
-            compilation.hooks.processAssets.tapAsync({ name: name, stage: stage }, (assets, cb) => {
+            compilation.hooks.processAssets.tapAsync({ name, stage }, (assets, cb) => {
                 Object.keys(compilation.assets).forEach(function (name) {
                     if (isJS(name)) {
                         return;
                     }
-                    console.log('>>> delete', name);
                     delete compilation.assets[name];
                 });
                 cb();

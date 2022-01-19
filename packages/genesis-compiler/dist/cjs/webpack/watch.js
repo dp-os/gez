@@ -19,21 +19,13 @@ class WatchClientConfig extends webpack_2.ClientConfig {
         super(ssr);
         this.config
             .entry('app')
-            .add(`webpack-hot-middleware/client?path=/__webpack__${ssr.publicPath}hot-middleware&timeout=2000&overlay=false`);
+            .add(`webpack-hot-middleware/client?path=${ssr.publicPath}hot-middleware&timeout=2000&overlay=false`);
         this.config
             .plugin('webpack-hot-replacement')
             .use(webpack_1.default.HotModuleReplacementPlugin);
     }
 }
 exports.WatchClientConfig = WatchClientConfig;
-const readFile = (fs, file) => {
-    try {
-        return fs.readFileSync(file, 'utf-8');
-    }
-    catch (e) {
-        return null;
-    }
-};
 class Watch extends utils_1.BaseGenesis {
     constructor(ssr) {
         super(ssr);
@@ -76,7 +68,7 @@ class Watch extends utils_1.BaseGenesis {
         });
         this.hotMiddleware = (0, webpack_hot_middleware_1.default)(clientCompiler, {
             heartbeat: 5000,
-            path: `/__webpack__${this.ssr.publicPath}hot-middleware`
+            path: `${this.ssr.publicPath}hot-middleware`
         });
         const watchOptions = {
             aggregateTimeout: 300,

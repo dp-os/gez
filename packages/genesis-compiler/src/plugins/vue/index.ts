@@ -23,7 +23,6 @@ class VueSSRServerPlugin {
                         if (isJS(name)) {
                             return;
                         }
-                        console.log('>>> delete', name);
                         delete compilation.assets[name];
                     });
                     cb();

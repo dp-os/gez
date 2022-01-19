@@ -1,6 +1,6 @@
 <template>
     <div class="app border-4 border-green-700">
-        <span class="text-green-700">#Layout</span>
+        <span class="text-green-700">#Layout1</span>
         <header class="header bg-gray-100" @click="plus">
             <div class="text-gray-700 text-2xl">Page header {{ count }}</div>
             <div class="border m-2 p-2">
