@@ -1,5 +1,7 @@
 import { Plugin, WebpackHookParams } from '@fmfe/genesis-core';
 
+import { getFilename } from '../utils';
+
 export class MediaPlugin extends Plugin {
     public chainWebpack({ config }: WebpackHookParams) {
         const { ssr } = this;
@@ -10,7 +12,7 @@ export class MediaPlugin extends Plugin {
             .end()
             .set('type', 'asset/resource')
             .set('generator', {
-                filename: 'images/[name].[hash][ext][query]'
+                filename: 'media/[name].[hash][ext][query]'
             });
     }
 }

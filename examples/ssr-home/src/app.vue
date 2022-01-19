@@ -32,4 +32,8 @@ $--color-primary: #409eff;
 .content {
     color: $--color-primary;
 }
+
+.test {
+    background: url('./images/logo.svg');
+}
 </style>

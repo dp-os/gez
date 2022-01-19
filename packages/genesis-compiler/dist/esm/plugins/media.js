@@ -9,7 +9,7 @@ export class MediaPlugin extends Plugin {
             .end()
             .set('type', 'asset/resource')
             .set('generator', {
-            filename: 'images/[name].[hash][ext][query]'
+            filename: 'media/[name].[hash][ext][query]'
         });
     }
 }

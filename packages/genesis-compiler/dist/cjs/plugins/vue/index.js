@@ -9,6 +9,29 @@ const path_1 = __importDefault(require("path"));
 const plugin_1 = __importDefault(require("vue-loader/lib/plugin"));
 const client_plugin_1 = __importDefault(require("vue-server-renderer/client-plugin"));
 const webpack_1 = __importDefault(require("webpack"));
+function isJS(file) { return /\.js(\?[^.]+)?$/.test(file); }
+;
+class VueSSRServerPlugin {
+    apply(compiler) {
+        const name = 'vue-server-plugin';
+        compiler.hooks.compilation.tap(name, (compilation) => {
+            if (compilation.compiler !== compiler) {
+                return;
+            }
+            const stage = webpack_1.default.Compilation['PROCESS_ASSETS_STAGE_OPTIMIZE_TRANSFER'];
+            compilation.hooks.processAssets.tapAsync({ name: name, stage: stage }, (assets, cb) => {
+                Object.keys(compilation.assets).forEach(function (name) {
+                    if (isJS(name)) {
+                        return;
+                    }
+                    console.log('>>> delete', name);
+                    delete compilation.assets[name];
+                });
+                cb();
+            });
+        });
+    }
+}
 class VuePlugin extends genesis_core_1.Plugin {
     chainWebpack({ target, config }) {
         const { ssr } = this;
@@ -19,6 +42,9 @@ class VuePlugin extends genesis_core_1.Plugin {
                         filename: path_1.default.relative(ssr.outputDirInClient, ssr.outputClientManifestFile)
                     }
                 ]);
+                break;
+            case 'server':
+                config.plugin('vue-ssr-server').use(VueSSRServerPlugin);
                 break;
         }
         config.resolve.extensions.add('.vue');

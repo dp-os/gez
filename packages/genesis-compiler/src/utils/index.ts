@@ -8,6 +8,13 @@ export class BaseGenesis {
     }
 }
 
+export function getFilename(ssr: Genesis.SSR, type: string) {
+    if (ssr.isProd) {
+        return `${type}/[name].[contenthash:8].[ext]`;
+    }
+    return `${type}/[fullhash].[ext]`;
+}
+
 export const deleteFolder = (path: string) => {
     if (!fs.existsSync(path)) return;
     const files = fs.readdirSync(path);

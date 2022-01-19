@@ -1,9 +1,37 @@
-import { CompilerType, Plugin, WebpackHookParams } from '@fmfe/genesis-core';
-import fs from 'fs';
+import { Plugin, WebpackHookParams } from '@fmfe/genesis-core';
 import path from 'path';
 import VueLoaderPlugin from 'vue-loader/lib/plugin';
 import VueClientPlugin from 'vue-server-renderer/client-plugin';
 import webpack from 'webpack';
+
+function isJS(file: string) {
+    return /\.js(\?[^.]+)?$/.test(file);
+}
+class VueSSRServerPlugin {
+    public apply(compiler: webpack.Compiler) {
+        const name = 'vue-server-plugin';
+        compiler.hooks.compilation.tap(name, (compilation) => {
+            if (compilation.compiler !== compiler) {
+                return;
+            }
+            const stage =
+                webpack.Compilation['PROCESS_ASSETS_STAGE_OPTIMIZE_TRANSFER'];
+            compilation.hooks.processAssets.tapAsync(
+                { name, stage },
+                (assets, cb) => {
+                    Object.keys(compilation.assets).forEach(function (name) {
+                        if (isJS(name)) {
+                            return;
+                        }
+                        console.log('>>> delete', name);
+                        delete compilation.assets[name];
+                    });
+                    cb();
+                }
+            );
+        });
+    }
+}
 
 export class VuePlugin extends Plugin {
     public chainWebpack({ target, config }: WebpackHookParams) {
@@ -18,6 +46,9 @@ export class VuePlugin extends Plugin {
                         )
                     }
                 ]);
+                break;
+            case 'server':
+                config.plugin('vue-ssr-server').use(VueSSRServerPlugin);
                 break;
         }
         config.resolve.extensions.add('.vue');

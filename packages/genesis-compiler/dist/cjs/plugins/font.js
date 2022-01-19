@@ -12,7 +12,7 @@ class FontPlugin extends genesis_core_1.Plugin {
             .end()
             .set('type', 'asset/resource')
             .set('generator', {
-            filename: 'images/[name].[hash][ext][query]'
+            filename: 'fonts/[name].[hash][ext][query]'
         });
     }
 }

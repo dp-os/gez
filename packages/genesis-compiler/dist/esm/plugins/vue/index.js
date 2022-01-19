@@ -3,6 +3,29 @@ import path from 'path';
 import VueLoaderPlugin from 'vue-loader/lib/plugin';
 import VueClientPlugin from 'vue-server-renderer/client-plugin';
 import webpack from 'webpack';
+function isJS(file) { return /\.js(\?[^.]+)?$/.test(file); }
+;
+class VueSSRServerPlugin {
+    apply(compiler) {
+        const name = 'vue-server-plugin';
+        compiler.hooks.compilation.tap(name, (compilation) => {
+            if (compilation.compiler !== compiler) {
+                return;
+            }
+            const stage = webpack.Compilation['PROCESS_ASSETS_STAGE_OPTIMIZE_TRANSFER'];
+            compilation.hooks.processAssets.tapAsync({ name: name, stage: stage }, (assets, cb) => {
+                Object.keys(compilation.assets).forEach(function (name) {
+                    if (isJS(name)) {
+                        return;
+                    }
+                    console.log('>>> delete', name);
+                    delete compilation.assets[name];
+                });
+                cb();
+            });
+        });
+    }
+}
 export class VuePlugin extends Plugin {
     chainWebpack({ target, config }) {
         const { ssr } = this;
@@ -13,6 +36,9 @@ export class VuePlugin extends Plugin {
                         filename: path.relative(ssr.outputDirInClient, ssr.outputClientManifestFile)
                     }
                 ]);
+                break;
+            case 'server':
+                config.plugin('vue-ssr-server').use(VueSSRServerPlugin);
                 break;
         }
         config.resolve.extensions.add('.vue');
