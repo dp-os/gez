@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteFolder = exports.getFilename = exports.BaseGenesis = void 0;
+exports.deleteFolder = exports.BaseGenesis = void 0;
 const fs_1 = __importDefault(require("fs"));
 class BaseGenesis {
     constructor(ssr) {
@@ -11,13 +11,6 @@ class BaseGenesis {
     }
 }
 exports.BaseGenesis = BaseGenesis;
-function getFilename(ssr, type) {
-    if (ssr.isProd) {
-        return `${type}/[name].[contenthash:8].[ext]`;
-    }
-    return `${type}/[fullhash].[ext]`;
-}
-exports.getFilename = getFilename;
 const deleteFolder = (path) => {
     if (!fs_1.default.existsSync(path))
         return;

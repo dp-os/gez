@@ -4,12 +4,6 @@ export class BaseGenesis {
         this.ssr = ssr;
     }
 }
-export function getFilename(ssr, type) {
-    if (ssr.isProd) {
-        return `${type}/[name].[contenthash:8].[ext]`;
-    }
-    return `${type}/[fullhash].[ext]`;
-}
 export const deleteFolder = (path) => {
     if (!fs.existsSync(path))
         return;

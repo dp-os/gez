@@ -1,6 +1,5 @@
 import Genesis from '@fmfe/genesis-core';
 
-import { getFilename } from '../utils';
 import { BaseConfig } from './base';
 
 export class ClientConfig extends BaseConfig {

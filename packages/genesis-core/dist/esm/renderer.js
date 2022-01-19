@@ -340,6 +340,7 @@ export class Renderer {
      * The server renders a HTML
      */
     async _ssrToString(context) {
+        context._registeredComponents = new Set();
         await this._ssrToJson(context);
         return context.renderHtml();
     }

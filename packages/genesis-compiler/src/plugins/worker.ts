@@ -1,7 +1,5 @@
 import { Plugin, WebpackHookParams } from '@fmfe/genesis-core';
 
-import { getFilename } from '../utils';
-
 export class WorkerPlugin extends Plugin {
     public chainWebpack({ config }: WebpackHookParams) {
         const { ssr } = this;
@@ -14,7 +12,9 @@ export class WorkerPlugin extends Plugin {
             .loader('worker-loader')
             .options({
                 esModule: false,
-                filename: getFilename(ssr, 'worker')
+                filename: ssr.isProd
+                    ? 'worker/[name].[contenthash:8].[ext]'
+                    : 'worker/[path][name].[ext]'
             });
     }
 }

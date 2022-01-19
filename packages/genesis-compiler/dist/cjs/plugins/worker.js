@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.WorkerPlugin = void 0;
 const genesis_core_1 = require("@fmfe/genesis-core");
-const utils_1 = require("../utils");
 class WorkerPlugin extends genesis_core_1.Plugin {
     chainWebpack({ config }) {
         const { ssr } = this;
@@ -15,7 +14,9 @@ class WorkerPlugin extends genesis_core_1.Plugin {
             .loader('worker-loader')
             .options({
             esModule: false,
-            filename: (0, utils_1.getFilename)(ssr, 'worker')
+            filename: ssr.isProd
+                ? 'worker/[name].[contenthash:8].[ext]'
+                : 'worker/[path][name].[ext]'
         });
     }
 }

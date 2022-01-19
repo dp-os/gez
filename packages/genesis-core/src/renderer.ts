@@ -404,6 +404,7 @@ export class Renderer {
     private async _ssrToString(
         context: Genesis.RenderContext
     ): Promise<string> {
+        (context as any)._registeredComponents = new Set();
         await this._ssrToJson(context);
         return context.renderHtml();
     }

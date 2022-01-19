@@ -1,7 +1,5 @@
 import { Plugin, WebpackHookParams } from '@fmfe/genesis-core';
 
-import { getFilename } from '../utils';
-
 export class MediaPlugin extends Plugin {
     public chainWebpack({ config }: WebpackHookParams) {
         const { ssr } = this;
