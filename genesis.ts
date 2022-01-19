@@ -26,15 +26,6 @@ class SSRItems {
             baseDir: path.resolve(__dirname, './examples/ssr-about')
         }
     });
-
-    public genesis = new SSR({
-        build: {
-            outputDir: path.resolve(
-                __dirname,
-                './packages/genesis-core/dist/ssr-genesis'
-            )
-        }
-    });
 }
 
 export type RendererItems = Record<keyof SSRItems, Renderer>;
