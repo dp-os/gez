@@ -5,8 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Watch = exports.WatchClientConfig = void 0;
 const chalk_1 = __importDefault(require("chalk"));
-const webpack_1 = __importDefault(require("webpack"));
 const fs_1 = __importDefault(require("fs"));
+const webpack_1 = __importDefault(require("webpack"));
 const webpack_dev_middleware_1 = __importDefault(require("webpack-dev-middleware"));
 const webpack_hot_middleware_1 = __importDefault(require("webpack-hot-middleware"));
 const install_1 = require("../plugins/install");
@@ -111,7 +111,8 @@ class Watch extends utils_1.BaseGenesis {
     destroy() { }
     async notify() {
         const { ssr } = this;
-        if (!fs_1.default.existsSync(ssr.outputClientManifestFile) || !fs_1.default.existsSync(ssr.outputServerBundleFile)) {
+        if (!fs_1.default.existsSync(ssr.outputClientManifestFile) ||
+            !fs_1.default.existsSync(ssr.outputServerBundleFile)) {
             return;
         }
         if (this._renderer) {

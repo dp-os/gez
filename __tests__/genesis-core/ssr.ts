@@ -63,7 +63,7 @@ test('check options.build.baseDir', async () => {
         },
         {
             label: 'outputServerBundleFile',
-            value: 'dist/ssr-test/server/vue-ssr-server-bundle.json'
+            value: 'dist/ssr-test/server/app.js'
         },
         {
             label: 'templateFile',

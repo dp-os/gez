@@ -61,5 +61,4 @@ export declare class Renderer {
      * The client renders a HTML
      */
     private _csrToString;
-    private _createRootNodeAttr;
 }

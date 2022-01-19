@@ -23,56 +23,71 @@ async function createDefaultApp(renderContext) {
         }
     });
 }
+function createRootNodeAttr(context) {
+    const { data, ssr } = context;
+    const name = ssr.name;
+    return `data-ssr-genesis-id="${data.id}" data-ssr-genesis-name="${name}"`;
+}
+async function template(strHtml, ctx) {
+    const { ssr } = ctx;
+    const html = strHtml.replace(/^(<[A-z]([A-z]|[0-9])+)/, `$1 ${createRootNodeAttr(ctx)}`);
+    const vueCtx = ctx;
+    const resource = vueCtx
+        .getPreloadFiles()
+        .map((item) => {
+        return {
+            file: `${ssr.publicPath}${item.file}`,
+            extension: item.extension
+        };
+    });
+    const { data } = ctx;
+    if (html === '<!---->') {
+        data.html += `<div ${createRootNodeAttr(ctx)}></div>`;
+    }
+    else {
+        data.html += html;
+    }
+    const baseUrl = encodeURIComponent(ssr.cdnPublicPath + ssr.publicPath);
+    data.script =
+        `<script>window["__webpack_public_path_${ssr.name}__"] = "${baseUrl}";</script>` +
+            data.script +
+            vueCtx.renderScripts();
+    data.style += vueCtx.renderStyles();
+    data.resource = [...data.resource, ...resource];
+    ctx._subs.forEach((fn) => fn(ctx));
+    ctx._subs = [];
+    return ctx.data;
+}
 export class Renderer {
     constructor(ssr) {
+        this.clientManifest = {
+            publicPath: '',
+            all: [],
+            initial: [],
+            async: [],
+            modules: {}
+        };
         this._createApp = createDefaultApp;
         this.ssr = ssr;
         process.env[`__webpack_public_path_${ssr.name}__`] =
             ssr.cdnPublicPath + ssr.publicPath;
+        const renderOptions = {
+            template: template,
+            inject: false
+        };
         if (fs.existsSync(ssr.outputServerBundleFile)) {
             this._createApp = require(ssr.outputServerBundleFile)['default'];
         }
-        const template = async (strHtml, ctx) => {
-            const html = strHtml.replace(/^(<[A-z]([A-z]|[0-9])+)/, `$1 ${this._createRootNodeAttr(ctx)}`);
-            const vueCtx = ctx;
-            const resource = vueCtx
-                .getPreloadFiles()
-                .map((item) => {
-                return {
-                    file: `${this.ssr.publicPath}${item.file}`,
-                    extension: item.extension
-                };
-            });
-            const { data } = ctx;
-            if (html === '<!---->') {
-                data.html += `<div ${this._createRootNodeAttr(ctx)}></div>`;
-            }
-            else {
-                data.html += html;
-            }
-            const baseUrl = encodeURIComponent(ssr.cdnPublicPath + ssr.publicPath);
-            data.script =
-                `<script>window["__webpack_public_path_${ssr.name}__"] = "${baseUrl}";</script>` +
-                    data.script +
-                    vueCtx.renderScripts();
-            data.style += vueCtx.renderStyles();
-            data.resource = [...data.resource, ...resource];
-            ctx._subs.forEach((fn) => fn(ctx));
-            ctx._subs = [];
-            return ctx.data;
-        };
-        const clientManifest = require(ssr.outputClientManifestFile);
-        clientManifest.publicPath = ssr.cdnPublicPath + clientManifest.publicPath;
-        const renderOptions = {
-            template,
-            inject: false,
-            clientManifest
-        };
+        if (fs.existsSync(ssr.outputClientManifestFile)) {
+            const text = fs.readFileSync(ssr.outputClientManifestFile, 'utf-8');
+            const clientManifest = JSON.parse(text);
+            clientManifest.publicPath = ssr.cdnPublicPath + clientManifest.publicPath;
+            this.clientManifest = clientManifest;
+        }
         const ejsTemplate = fs.existsSync(this.ssr.templateFile)
             ? fs.readFileSync(this.ssr.outputTemplateFile, 'utf-8')
             : defaultTemplate;
         this.renderer = createRenderer(renderOptions);
-        this.clientManifest = clientManifest;
         this.compile = Ejs.compile(ejsTemplate);
         const bindArr = [
             'renderJson',
@@ -92,7 +107,7 @@ export class Renderer {
      */
     reload() {
         const { ssr } = this;
-        Object.keys(require.cache).forEach(filename => {
+        Object.keys(require.cache).forEach((filename) => {
             if (filename.indexOf(ssr.outputDirInServer) === 0) {
                 delete require.cache[filename];
             }
@@ -332,7 +347,7 @@ export class Renderer {
     async _csrToJson(context) {
         const vm = await createDefaultApp(context);
         const data = (await this.renderer.renderToString(vm, context));
-        data.html = `<div ${this._createRootNodeAttr(context)}></div>`;
+        data.html = `<div ${createRootNodeAttr(context)}></div>`;
         await this.ssr.plugin.callHook('renderCompleted', context);
         return context.data;
     }
@@ -342,10 +357,5 @@ export class Renderer {
     async _csrToString(context) {
         await this._csrToJson(context);
         return context.renderHtml();
-    }
-    _createRootNodeAttr(context) {
-        const { data, ssr } = context;
-        const name = ssr.name;
-        return `data-ssr-genesis-id="${data.id}" data-ssr-genesis-name="${name}"`;
     }
 }

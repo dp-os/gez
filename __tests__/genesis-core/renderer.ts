@@ -183,9 +183,9 @@ test('renderer.renderJson', async () => {
     await expect(result.context.mode).toBe('ssr-json');
 });
 
-test('renderer.hotUpdate', async () => {
+test('renderer.reload', async () => {
     const renderer = ssr.home.createRenderer();
-    await expect(() => renderer.hotUpdate()).not.toThrowError();
+    await expect(() => renderer.reload()).not.toThrowError();
 });
 
 test('renderer.renderMiddleware', async () => {

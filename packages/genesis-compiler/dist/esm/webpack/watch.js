@@ -1,6 +1,6 @@
 import chalk from 'chalk';
-import Webpack from 'webpack';
 import fs from 'fs';
+import Webpack from 'webpack';
 import WebpackDevMiddleware from 'webpack-dev-middleware';
 import WebpackHotMiddleware from 'webpack-hot-middleware';
 import { InstallPlugin } from '../plugins/install';
@@ -104,7 +104,8 @@ export class Watch extends BaseGenesis {
     destroy() { }
     async notify() {
         const { ssr } = this;
-        if (!fs.existsSync(ssr.outputClientManifestFile) || !fs.existsSync(ssr.outputServerBundleFile)) {
+        if (!fs.existsSync(ssr.outputClientManifestFile) ||
+            !fs.existsSync(ssr.outputServerBundleFile)) {
             return;
         }
         if (this._renderer) {
