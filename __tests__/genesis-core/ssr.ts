@@ -170,17 +170,3 @@ test('check options.isProd', async () => {
     ssr = new SSR();
     await expect(ssr.isProd).toBe(process.env.NODE_ENV === 'production');
 });
-
-test('check ssr.createRenderer()', async () => {
-    const ssr = new SSR();
-    const warn = console.warn;
-    let text = '';
-    console.warn = (s: string) => {
-        text = s;
-    };
-    ssr.createRenderer();
-    await expect(text).toBe(
-        `You have not built the application, please execute 'new Build(ssr).start()' build first, Now use the default`
-    );
-    console.warn = warn;
-});
