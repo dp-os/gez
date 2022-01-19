@@ -2,18 +2,11 @@ import crypto from 'crypto';
 import Ejs from 'ejs';
 import fs from 'fs';
 import { IncomingMessage, ServerResponse } from 'http';
-import path from 'path';
 import serialize from 'serialize-javascript';
 import Vue from 'vue';
-import {
-    BundleRenderer,
-    createBundleRenderer,
-    createRenderer,
-    Renderer as VueRenderer
-} from 'vue-server-renderer';
+import { createRenderer, Renderer as VueRenderer } from 'vue-server-renderer';
 
 import * as Genesis from './';
-import { SSR } from './ssr';
 
 const md5 = (content: string) => {
     const md5 = crypto.createHash('md5');
@@ -29,6 +22,14 @@ const modes: Genesis.RenderMode[] = [
     'csr-json'
 ];
 
+async function createDefaultApp(renderContext: Genesis.RenderContext) {
+    return new Vue({
+        render(h) {
+            return h('div');
+        }
+    });
+}
+
 export class Renderer {
     public ssr: Genesis.SSR;
     public clientManifest: Genesis.ClientManifest;
@@ -37,26 +38,16 @@ export class Renderer {
      * Render template functions
      */
     private compile: Ejs.TemplateFunction;
+    private _createApp = createDefaultApp;
     public constructor(ssr: Genesis.SSR) {
-        if (
-            !fs.existsSync(ssr.outputClientManifestFile) ||
-            !fs.existsSync(ssr.outputServerBundleFile)
-        ) {
-            ssr = new SSR({
-                build: {
-                    outputDir: path.resolve(
-                        __dirname,
-                        /src$/.test(__dirname)
-                            ? '../dist/ssr-genesis'
-                            : '../ssr-genesis'
-                    )
-                }
-            });
-            console.warn(
-                `You have not built the application, please execute 'new Build(ssr).start()' build first, Now use the default`
-            );
-        }
         this.ssr = ssr;
+        process.env[`__webpack_public_path_${ssr.name}__`] =
+            ssr.cdnPublicPath + ssr.publicPath;
+
+        if (fs.existsSync(ssr.outputServerBundleFile)) {
+            this._createApp = require(ssr.outputServerBundleFile)['default'];
+        }
+
         const template: any = async (
             strHtml: string,
             ctx: Genesis.RenderContext
@@ -94,8 +85,7 @@ export class Renderer {
             return ctx.data;
         };
 
-        const clientManifest: Genesis.ClientManifest = require(this.ssr
-            .outputClientManifestFile);
+        const clientManifest: Genesis.ClientManifest = require(ssr.outputClientManifestFile);
         clientManifest.publicPath =
             ssr.cdnPublicPath + clientManifest.publicPath;
         const renderOptions = {
@@ -124,16 +114,20 @@ export class Renderer {
                 enumerable: false
             });
         });
-        process.env[`__webpack_public_path_${ssr.name}__`] =
-            ssr.cdnPublicPath + ssr.publicPath;
     }
     /**
      * Reload the renderer
      */
     public reload() {
-        const renderer = new Renderer(this.ssr);
-        this.renderer = renderer.renderer;
-        this.compile = renderer.compile;
+        const { ssr } = this;
+        Object.keys(require.cache).forEach((filename) => {
+            if (filename.indexOf(ssr.outputDirInServer) === 0) {
+                delete require.cache[filename];
+            }
+        });
+        if (fs.existsSync(ssr.outputServerBundleFile)) {
+            this._createApp = require(ssr.outputServerBundleFile)['default'];
+        }
     }
 
     /**
@@ -377,11 +371,7 @@ export class Renderer {
     private async _ssrToJson(
         context: Genesis.RenderContext
     ): Promise<Genesis.RenderData> {
-        const vm = new Vue({
-            render(h) {
-                return h('div');
-            }
-        });
+        const vm = await this._createApp(context);
         await new Promise((resolve, reject) => {
             this.renderer.renderToString(vm, context, (err, data: any) => {
                 if (err) {
@@ -412,11 +402,7 @@ export class Renderer {
     private async _csrToJson(
         context: Genesis.RenderContext
     ): Promise<Genesis.RenderData> {
-        const vm = new Vue({
-            render(h) {
-                return h('div');
-            }
-        });
+        const vm = await createDefaultApp(context);
         const data: Genesis.RenderData = (await this.renderer.renderToString(
             vm,
             context

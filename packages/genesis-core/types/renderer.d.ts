@@ -9,6 +9,7 @@ export declare class Renderer {
      * Render template functions
      */
     private compile;
+    private _createApp;
     constructor(ssr: Genesis.SSR);
     /**
      * Reload the renderer

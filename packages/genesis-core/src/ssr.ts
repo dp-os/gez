@@ -147,10 +147,7 @@ export class SSR {
      * Manifest file path of server
      */
     public get outputServerBundleFile() {
-        return path.resolve(
-            this.outputDirInServer,
-            'vue-ssr-server-bundle.json'
-        );
+        return path.resolve(this.outputDirInServer, 'app.js');
     }
 
     /**
@@ -185,6 +182,6 @@ export class SSR {
      */
     public createRenderer() {
         // @ts-ignore
-        return new this.Renderer(this, options);
+        return new this.Renderer(this);
     }
 }

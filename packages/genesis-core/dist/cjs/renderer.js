@@ -8,11 +8,9 @@ const crypto_1 = __importDefault(require("crypto"));
 const ejs_1 = __importDefault(require("ejs"));
 const fs_1 = __importDefault(require("fs"));
 const http_1 = require("http");
-const path_1 = __importDefault(require("path"));
 const serialize_javascript_1 = __importDefault(require("serialize-javascript"));
 const vue_1 = __importDefault(require("vue"));
 const vue_server_renderer_1 = require("vue-server-renderer");
-const ssr_1 = require("./ssr");
 const md5 = (content) => {
     const md5 = crypto_1.default.createHash('md5');
     return md5.update(content).digest('hex');
@@ -24,19 +22,22 @@ const modes = [
     'ssr-json',
     'csr-json'
 ];
+async function createDefaultApp(renderContext) {
+    return new vue_1.default({
+        render(h) {
+            return h('div');
+        }
+    });
+}
 class Renderer {
     constructor(ssr) {
-        if ((!fs_1.default.existsSync(ssr.outputClientManifestFile) || !fs_1.default.existsSync(ssr.outputServerBundleFile))) {
-            ssr = new ssr_1.SSR({
-                build: {
-                    outputDir: path_1.default.resolve(__dirname, /src$/.test(__dirname)
-                        ? '../dist/ssr-genesis'
-                        : '../ssr-genesis')
-                }
-            });
-            console.warn(`You have not built the application, please execute 'new Build(ssr).start()' build first, Now use the default`);
-        }
+        this._createApp = createDefaultApp;
         this.ssr = ssr;
+        process.env[`__webpack_public_path_${ssr.name}__`] =
+            ssr.cdnPublicPath + ssr.publicPath;
+        if (fs_1.default.existsSync(ssr.outputServerBundleFile)) {
+            this._createApp = require(ssr.outputServerBundleFile)['default'];
+        }
         const template = async (strHtml, ctx) => {
             const html = strHtml.replace(/^(<[A-z]([A-z]|[0-9])+)/, `$1 ${this._createRootNodeAttr(ctx)}`);
             const vueCtx = ctx;
@@ -66,9 +67,8 @@ class Renderer {
             ctx._subs = [];
             return ctx.data;
         };
-        const clientManifest = require(this.ssr.outputClientManifestFile);
-        clientManifest.publicPath =
-            ssr.cdnPublicPath + clientManifest.publicPath;
+        const clientManifest = require(ssr.outputClientManifestFile);
+        clientManifest.publicPath = ssr.cdnPublicPath + clientManifest.publicPath;
         const renderOptions = {
             template,
             inject: false,
@@ -92,16 +92,20 @@ class Renderer {
                 enumerable: false
             });
         });
-        process.env[`__webpack_public_path_${ssr.name}__`] =
-            ssr.cdnPublicPath + ssr.publicPath;
     }
     /**
      * Reload the renderer
      */
     reload() {
-        const renderer = new Renderer(this.ssr);
-        this.renderer = renderer.renderer;
-        this.compile = renderer.compile;
+        const { ssr } = this;
+        Object.keys(require.cache).forEach(filename => {
+            if (filename.indexOf(ssr.outputDirInServer) === 0) {
+                delete require.cache[filename];
+            }
+        });
+        if (fs_1.default.existsSync(ssr.outputServerBundleFile)) {
+            this._createApp = require(ssr.outputServerBundleFile)['default'];
+        }
     }
     /**
      * Render JSON
@@ -306,11 +310,7 @@ class Renderer {
      * The server renders a JSON
      */
     async _ssrToJson(context) {
-        const vm = new vue_1.default({
-            render(h) {
-                return h('div');
-            }
-        });
+        const vm = await this._createApp(context);
         await new Promise((resolve, reject) => {
             this.renderer.renderToString(vm, context, (err, data) => {
                 if (err) {
@@ -336,11 +336,7 @@ class Renderer {
      * The client renders a JSON
      */
     async _csrToJson(context) {
-        const vm = new vue_1.default({
-            render(h) {
-                return h('div');
-            }
-        });
+        const vm = await createDefaultApp(context);
         const data = (await this.renderer.renderToString(vm, context));
         data.html = `<div ${this._createRootNodeAttr(context)}></div>`;
         await this.ssr.plugin.callHook('renderCompleted', context);

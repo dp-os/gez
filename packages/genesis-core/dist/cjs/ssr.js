@@ -132,7 +132,7 @@ class SSR {
      * Manifest file path of server
      */
     get outputServerBundleFile() {
-        return path_1.default.resolve(this.outputDirInServer, 'vue-ssr-server-bundle.json');
+        return path_1.default.resolve(this.outputDirInServer, 'app.js');
     }
     /**
      * Template path
@@ -163,7 +163,7 @@ class SSR {
      */
     createRenderer() {
         // @ts-ignore
-        return new this.Renderer(this, options);
+        return new this.Renderer(this);
     }
 }
 exports.SSR = SSR;

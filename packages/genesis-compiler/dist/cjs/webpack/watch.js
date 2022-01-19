@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Watch = exports.WatchClientConfig = void 0;
 const chalk_1 = __importDefault(require("chalk"));
 const webpack_1 = __importDefault(require("webpack"));
+const fs_1 = __importDefault(require("fs"));
 const webpack_dev_middleware_1 = __importDefault(require("webpack-dev-middleware"));
 const webpack_hot_middleware_1 = __importDefault(require("webpack-hot-middleware"));
 const install_1 = require("../plugins/install");
@@ -36,7 +37,6 @@ const readFile = (fs, file) => {
 class Watch extends utils_1.BaseGenesis {
     constructor(ssr) {
         super(ssr);
-        this.watchData = {};
         ssr.plugin.unshift(install_1.InstallPlugin);
     }
     get renderer() {
@@ -71,9 +71,9 @@ class Watch extends utils_1.BaseGenesis {
         const serverCompiler = (0, webpack_1.default)(serverConfig);
         this.devMiddleware = (0, webpack_dev_middleware_1.default)(clientCompiler, {
             publicPath: this.ssr.publicPath,
+            writeToDisk: true,
             index: false
         });
-        serverCompiler.outputFileSystem = clientCompiler.outputFileSystem;
         this.hotMiddleware = (0, webpack_hot_middleware_1.default)(clientCompiler, {
             heartbeat: 5000,
             path: `/__webpack__${this.ssr.publicPath}hot-middleware`
@@ -92,20 +92,11 @@ class Watch extends utils_1.BaseGenesis {
             }
             if (stats.hasErrors())
                 return;
-            this.watchData.client = {
-                fs: clientCompiler.outputFileSystem,
-                data: JSON.parse(readFile(clientCompiler.outputFileSystem, this.ssr.outputClientManifestFile))
-            };
             this.notify();
             clientDone = true;
             onReady();
         };
         const serverOnWatch = () => {
-            const data = JSON.parse(readFile(serverCompiler.outputFileSystem, this.ssr.outputServerBundleFile));
-            this.watchData.server = {
-                fs: serverCompiler.outputFileSystem,
-                data
-            };
             this.notify();
             serverDone = true;
             onReady();
@@ -119,10 +110,10 @@ class Watch extends utils_1.BaseGenesis {
     // 这里应该提供销毁实例的方法
     destroy() { }
     async notify() {
-        const { client, server } = this.watchData;
-        if (!client || !server)
-            return;
         const { ssr } = this;
+        if (!fs_1.default.existsSync(ssr.outputClientManifestFile) || !fs_1.default.existsSync(ssr.outputServerBundleFile)) {
+            return;
+        }
         if (this._renderer) {
             this._renderer.reload();
         }

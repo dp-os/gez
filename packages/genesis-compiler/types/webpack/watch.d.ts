@@ -7,7 +7,6 @@ export declare class WatchClientConfig extends ClientConfig {
 export declare class Watch extends BaseGenesis {
     devMiddleware: any;
     hotMiddleware: any;
-    private watchData;
     private _renderer;
     constructor(ssr: SSR);
     get renderer(): Renderer;

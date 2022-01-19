@@ -1,5 +1,6 @@
 import { Renderer, SSR } from '@fmfe/genesis-core';
 import chalk from 'chalk';
+import fs from 'fs';
 import Webpack from 'webpack';
 import WebpackDevMiddleware from 'webpack-dev-middleware';
 import WebpackHotMiddleware from 'webpack-hot-middleware';
@@ -38,7 +39,6 @@ interface WatchSubData {
 export class Watch extends BaseGenesis {
     public devMiddleware: any;
     public hotMiddleware: any;
-    private watchData: Partial<WatchSubData> = {};
     private _renderer: Renderer | null;
 
     public constructor(ssr: SSR) {
@@ -80,9 +80,9 @@ export class Watch extends BaseGenesis {
         const serverCompiler = Webpack(serverConfig);
         this.devMiddleware = WebpackDevMiddleware(clientCompiler, {
             publicPath: this.ssr.publicPath,
+            writeToDisk: true,
             index: false
         });
-        serverCompiler.outputFileSystem = clientCompiler.outputFileSystem;
         this.hotMiddleware = WebpackHotMiddleware(clientCompiler, {
             heartbeat: 5000,
             path: `/__webpack__${this.ssr.publicPath}hot-middleware`
@@ -104,30 +104,11 @@ export class Watch extends BaseGenesis {
                 );
             }
             if (stats.hasErrors()) return;
-            this.watchData.client = {
-                fs: clientCompiler.outputFileSystem,
-                data: JSON.parse(
-                    readFile(
-                        clientCompiler.outputFileSystem,
-                        this.ssr.outputClientManifestFile
-                    )
-                )
-            };
             this.notify();
             clientDone = true;
             onReady();
         };
         const serverOnWatch = () => {
-            const data = JSON.parse(
-                readFile(
-                    serverCompiler.outputFileSystem,
-                    this.ssr.outputServerBundleFile
-                )
-            );
-            this.watchData.server = {
-                fs: serverCompiler.outputFileSystem,
-                data
-            };
             this.notify();
             serverDone = true;
             onReady();
@@ -143,9 +124,13 @@ export class Watch extends BaseGenesis {
     public destroy() {}
 
     private async notify() {
-        const { client, server } = this.watchData;
-        if (!client || !server) return;
         const { ssr } = this;
+        if (
+            !fs.existsSync(ssr.outputClientManifestFile) ||
+            !fs.existsSync(ssr.outputServerBundleFile)
+        ) {
+            return;
+        }
         if (this._renderer) {
             this._renderer.reload();
         } else {

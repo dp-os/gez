@@ -66,7 +66,7 @@ export default Vue.extend({
             this.count++;
         },
         async fetch() {
-            const remoteUrl: string = this.$route.meta.remoteUrl;
+            const remoteUrl: string = this.$route.meta?.remoteUrl;
             const url = decodeURIComponent(this.$route.fullPath);
             const res = await axios.get(
                 `http://localhost:3000${remoteUrl}?renderUrl=${url}`

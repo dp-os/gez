@@ -2,11 +2,9 @@ import crypto from 'crypto';
 import Ejs from 'ejs';
 import fs from 'fs';
 import { IncomingMessage, ServerResponse } from 'http';
-import path from 'path';
 import serialize from 'serialize-javascript';
 import Vue from 'vue';
 import { createRenderer } from 'vue-server-renderer';
-import { SSR } from './ssr';
 const md5 = (content) => {
     const md5 = crypto.createHash('md5');
     return md5.update(content).digest('hex');
@@ -18,19 +16,22 @@ const modes = [
     'ssr-json',
     'csr-json'
 ];
+async function createDefaultApp(renderContext) {
+    return new Vue({
+        render(h) {
+            return h('div');
+        }
+    });
+}
 export class Renderer {
     constructor(ssr) {
-        if ((!fs.existsSync(ssr.outputClientManifestFile) || !fs.existsSync(ssr.outputServerBundleFile))) {
-            ssr = new SSR({
-                build: {
-                    outputDir: path.resolve(__dirname, /src$/.test(__dirname)
-                        ? '../dist/ssr-genesis'
-                        : '../ssr-genesis')
-                }
-            });
-            console.warn(`You have not built the application, please execute 'new Build(ssr).start()' build first, Now use the default`);
-        }
+        this._createApp = createDefaultApp;
         this.ssr = ssr;
+        process.env[`__webpack_public_path_${ssr.name}__`] =
+            ssr.cdnPublicPath + ssr.publicPath;
+        if (fs.existsSync(ssr.outputServerBundleFile)) {
+            this._createApp = require(ssr.outputServerBundleFile)['default'];
+        }
         const template = async (strHtml, ctx) => {
             const html = strHtml.replace(/^(<[A-z]([A-z]|[0-9])+)/, `$1 ${this._createRootNodeAttr(ctx)}`);
             const vueCtx = ctx;
@@ -60,9 +61,8 @@ export class Renderer {
             ctx._subs = [];
             return ctx.data;
         };
-        const clientManifest = require(this.ssr.outputClientManifestFile);
-        clientManifest.publicPath =
-            ssr.cdnPublicPath + clientManifest.publicPath;
+        const clientManifest = require(ssr.outputClientManifestFile);
+        clientManifest.publicPath = ssr.cdnPublicPath + clientManifest.publicPath;
         const renderOptions = {
             template,
             inject: false,
@@ -86,16 +86,20 @@ export class Renderer {
                 enumerable: false
             });
         });
-        process.env[`__webpack_public_path_${ssr.name}__`] =
-            ssr.cdnPublicPath + ssr.publicPath;
     }
     /**
      * Reload the renderer
      */
     reload() {
-        const renderer = new Renderer(this.ssr);
-        this.renderer = renderer.renderer;
-        this.compile = renderer.compile;
+        const { ssr } = this;
+        Object.keys(require.cache).forEach(filename => {
+            if (filename.indexOf(ssr.outputDirInServer) === 0) {
+                delete require.cache[filename];
+            }
+        });
+        if (fs.existsSync(ssr.outputServerBundleFile)) {
+            this._createApp = require(ssr.outputServerBundleFile)['default'];
+        }
     }
     /**
      * Render JSON
@@ -300,11 +304,7 @@ export class Renderer {
      * The server renders a JSON
      */
     async _ssrToJson(context) {
-        const vm = new Vue({
-            render(h) {
-                return h('div');
-            }
-        });
+        const vm = await this._createApp(context);
         await new Promise((resolve, reject) => {
             this.renderer.renderToString(vm, context, (err, data) => {
                 if (err) {
@@ -330,11 +330,7 @@ export class Renderer {
      * The client renders a JSON
      */
     async _csrToJson(context) {
-        const vm = new Vue({
-            render(h) {
-                return h('div');
-            }
-        });
+        const vm = await createDefaultApp(context);
         const data = (await this.renderer.renderToString(vm, context));
         data.html = `<div ${this._createRootNodeAttr(context)}></div>`;
         await this.ssr.plugin.callHook('renderCompleted', context);
