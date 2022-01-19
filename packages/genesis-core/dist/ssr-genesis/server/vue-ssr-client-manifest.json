@@ -1,14 +1,16 @@
 {
   "publicPath": "/ssr-genesis/",
   "all": [
-    "js/vendors-node_modules_babel_runtime_helpers_asyncToGenerator_js-node_modules_babel_runtime_hel-141652.js",
-    "js/runtime~app.js",
-    "js/app.js"
+    "js/562.c35aa1d6.js",
+    "js/app.c7b41722.js",
+    "js/runtime~app.661b2a9a.js",
+    "css/app.9bc68a40.css"
   ],
   "initial": [
-    "js/runtime~app.js",
-    "js/vendors-node_modules_babel_runtime_helpers_asyncToGenerator_js-node_modules_babel_runtime_hel-141652.js",
-    "js/app.js"
+    "js/runtime~app.661b2a9a.js",
+    "js/562.c35aa1d6.js",
+    "css/app.9bc68a40.css",
+    "js/app.c7b41722.js"
   ],
   "async": [],
   "modules": {
@@ -24,14 +26,9 @@
     "57226271": [
       0
     ],
-    "69920164": [
-      0
-    ],
-    "5dfcc030": [
-      2
-    ],
-    "a93dc258": [
-      0
+    "2e9a5e73": [
+      3,
+      1
     ],
     "383e6243": [
       0
@@ -72,23 +69,13 @@
     "53972a00": [
       0
     ],
-    "8a50dc32": [
-      2
+    "b695022c": [
+      3,
+      1
     ],
-    "0684ed66": [
-      2
-    ],
-    "4e7610fc": [
-      0
-    ],
-    "0827ac7b": [
-      0
-    ],
-    "125f97ad": [
-      0
-    ],
-    "092f6b74": [
-      0
+    "b2458efa": [
+      3,
+      1
     ],
     "40e9b004": [
       0
@@ -175,22 +162,8 @@
       0
     ],
     "4fc11ae7": [
-      2
-    ],
-    "619859dc": [
-      0
-    ],
-    "0a62d5ea": [
-      0
-    ],
-    "4c85e3c8": [
-      0
-    ],
-    "b2c1b478": [
-      0
-    ],
-    "5a73d608": [
-      0
+      3,
+      1
     ],
     "74294d6a": [
       0
@@ -276,25 +249,7 @@
     "bd157ade": [
       0
     ],
-    "152bcd6c": [
-      2
-    ],
-    "2fa629d6": [
-      2
-    ],
-    "66d09c12": [
-      2
-    ],
     "59a0502a": [
-      0
-    ],
-    "28e7354d": [
-      0
-    ],
-    "73a0f8bc": [
-      0
-    ],
-    "25797bac": [
       0
     ],
     "f741d594": [
@@ -342,14 +297,9 @@
     "cd15624c": [
       0
     ],
-    "508e108b": [
-      2
-    ],
-    "cd65954c": [
-      2
-    ],
-    "4c60d426": [
-      2
+    "f1d188c6": [
+      3,
+      1
     ],
     "1f85c7ee": [
       0
@@ -372,68 +322,36 @@
     "42c79272": [
       0
     ],
-    "7d1d5326": [
-      2
-    ],
-    "5aa809cb": [
-      0
+    "4d1ddc04": [
+      3,
+      1
     ],
     "4c6f1cfd": [
-      0
-    ],
-    "75f30af5": [
-      0
-    ],
-    "7988ceac": [
-      0
-    ],
-    "04c76f8c": [
       0
     ],
     "5baad274": [
       0
     ],
     "8da85372": [
-      1
-    ],
-    "0c744d0c": [
-      1
+      2
     ],
     "53ea0e9a": [
-      1
-    ],
-    "3c73c7d7": [
-      1
-    ],
-    "30ec2c0c": [
-      1
-    ],
-    "467f62b8": [
-      1
+      2
     ],
     "6fbc4fdc": [
-      1
+      2
     ],
     "691f1e8a": [
-      1
-    ],
-    "5c2d1380": [
-      1
+      2
     ],
     "34c750e2": [
-      1
-    ],
-    "130c4394": [
-      1
+      2
     ],
     "b8250572": [
-      1
-    ],
-    "f2cf3cd4": [
-      1
+      2
     ],
     "594d331d": [
-      1
+      2
     ]
   }
 }
