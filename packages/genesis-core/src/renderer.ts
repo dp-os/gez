@@ -404,6 +404,7 @@ export class Renderer {
     private async _ssrToString(
         context: Genesis.RenderContext
     ): Promise<string> {
+        // #12426 https://github.com/vuejs/vue/pull/12426
         (context as any)._registeredComponents = new Set();
         await this._ssrToJson(context);
         return context.renderHtml();
