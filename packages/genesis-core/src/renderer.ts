@@ -91,7 +91,7 @@ export class Renderer {
         process.env[`__webpack_public_path_${ssr.name}__`] =
             ssr.cdnPublicPath + ssr.publicPath;
 
-        const renderOptions: RendererOptions = {
+        const renderOptions: any = {
             template: template as any,
             inject: false
         };
@@ -105,6 +105,7 @@ export class Renderer {
                 ssr.cdnPublicPath + clientManifest.publicPath;
             this.clientManifest = clientManifest;
         }
+        renderOptions.clientManifest = this.clientManifest;
 
         const ejsTemplate = fs.existsSync(this.ssr.templateFile)
             ? fs.readFileSync(this.ssr.outputTemplateFile, 'utf-8')

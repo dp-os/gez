@@ -87,9 +87,11 @@ class Renderer {
         if (fs_1.default.existsSync(ssr.outputClientManifestFile)) {
             const text = fs_1.default.readFileSync(ssr.outputClientManifestFile, 'utf-8');
             const clientManifest = JSON.parse(text);
-            clientManifest.publicPath = ssr.cdnPublicPath + clientManifest.publicPath;
+            clientManifest.publicPath =
+                ssr.cdnPublicPath + clientManifest.publicPath;
             this.clientManifest = clientManifest;
         }
+        renderOptions.clientManifest = this.clientManifest;
         const ejsTemplate = fs_1.default.existsSync(this.ssr.templateFile)
             ? fs_1.default.readFileSync(this.ssr.outputTemplateFile, 'utf-8')
             : defaultTemplate;

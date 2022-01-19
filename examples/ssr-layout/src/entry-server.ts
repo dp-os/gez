@@ -1,5 +1,3 @@
-import './main.css';
-
 import * as ok from '@fmfe/genesis-app';
 import { RenderContext } from '@fmfe/genesis-core';
 import Vue from 'vue';
