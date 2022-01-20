@@ -346,6 +346,7 @@ class Renderer {
      * The server renders a HTML
      */
     async _ssrToString(context) {
+        // #12426 https://github.com/vuejs/vue/pull/12426
         context._registeredComponents = new Set();
         await this._ssrToJson(context);
         return context.renderHtml();

@@ -5,6 +5,7 @@ export class BaseConfig extends BaseGenesis {
         super(ssr);
         this.config = new Config();
         this.config.mode(this.ssr.isProd ? 'production' : 'development');
+        this.config.set('target', ssr.getBrowsers(target));
         this.config.output.publicPath(this.ssr.publicPath);
         this.config.resolve.extensions.add('.js');
         this.ready = this.ssr.plugin.callHook('chainWebpack', {

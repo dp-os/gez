@@ -27,8 +27,7 @@ export class BabelPlugin extends Plugin {
                 {
                     modules: false,
                     useBuiltIns: 'usage',
-                    corejs: 3,
-                    targets: this.ssr.getBrowsers(target)
+                    corejs: 3
                 }
             ]
         ];

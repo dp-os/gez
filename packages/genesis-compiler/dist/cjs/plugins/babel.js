@@ -30,8 +30,7 @@ class BabelPlugin extends genesis_core_1.Plugin {
                 {
                     modules: false,
                     useBuiltIns: 'usage',
-                    corejs: 3,
-                    targets: this.ssr.getBrowsers(target)
+                    corejs: 3
                 }
             ]
         ];

@@ -40,9 +40,7 @@ export class StylePlugin extends Plugin {
                     .end();
             }
             postcssConfig.postcssOptions.plugins.push(...[
-                postcssPresetEnv({
-                    browsers: ssr.getBrowsers('client')
-                }),
+                postcssPresetEnv(),
                 cssnano({
                     preset: [
                         'default',
