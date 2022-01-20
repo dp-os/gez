@@ -7,7 +7,6 @@ export class ServerConfig extends BaseConfig {
         this.config.output
             .path(this.ssr.outputDirInServer)
             .filename('[name].js');
-        this.config.target('node');
         this.config.devtool(false);
         this.config.output.libraryTarget('commonjs2');
         this.config.externals(nodeExternals({
