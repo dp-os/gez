@@ -172,8 +172,8 @@ export class SSR {
      */
     public getBrowsers(env: keyof Genesis.Browsers) {
         return (this.options?.build?.browsers || {
-            client: ['web', 'es2015'],
-            server: `node${process.versions.node}`
+            client: 'web',
+            server: 'node'
         })[env];
     }
 

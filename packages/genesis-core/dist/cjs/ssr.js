@@ -154,8 +154,8 @@ class SSR {
     getBrowsers(env) {
         var _a, _b;
         return (((_b = (_a = this.options) === null || _a === void 0 ? void 0 : _a.build) === null || _b === void 0 ? void 0 : _b.browsers) || {
-            client: ['web', 'es2015'],
-            server: `node${process_1.default.versions.node}`
+            client: 'web',
+            server: 'node'
         })[env];
     }
     /**
