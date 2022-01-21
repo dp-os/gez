@@ -1,3 +1,5 @@
+import './main.css';
+
 import { createClientApp } from '@fmfe/genesis-app';
 import { ClientOptions } from '@fmfe/genesis-core';
 import Vue from 'vue';
