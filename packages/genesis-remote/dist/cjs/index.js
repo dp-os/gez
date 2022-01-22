@@ -324,7 +324,7 @@ exports.RemoteView = {
             this.needClientLoad = false;
         },
         clientLoad() {
-            const haveFlase = (arr) => {
+            const haveFalse = (arr) => {
                 for (let i = 0; i < arr.length; i++) {
                     if (arr[i] === false) {
                         return true;
@@ -338,16 +338,16 @@ exports.RemoteView = {
                 Promise.all([
                     (0, exports.loadStyle)(data.style).then((arr) => {
                         this.localData = { ...data };
-                        return !haveFlase(arr);
+                        return !haveFalse(arr);
                     }),
                     (0, exports.loadScript)(data.script).then((arr) => {
                         window[data.id] = data.state;
-                        return !haveFlase(arr);
+                        return !haveFalse(arr);
                     })
                 ]).then((arr) => {
                     this.installOptions = { ...data };
                     this.install();
-                    if (haveFlase(arr)) {
+                    if (haveFalse(arr)) {
                         this.$emit('error');
                     }
                 });

@@ -15,7 +15,7 @@ class ClientConfig extends base_1.BaseConfig {
             .filename(this.ssr.isProd
             ? 'js/[name].[contenthash:8].js'
             : 'js/[name].js');
-        this.config.devtool('eval');
+        this.config.devtool(false);
         this.config.optimization.splitChunks({
             chunks: 'all'
         });

@@ -1,4 +1,5 @@
 import Genesis from '@fmfe/genesis-core';
+import webpack from 'webpack';
 
 import { BaseConfig } from './base';
 
@@ -17,7 +18,7 @@ export class ClientConfig extends BaseConfig {
                     ? 'js/[name].[contenthash:8].js'
                     : 'js/[name].js'
             );
-        this.config.devtool('eval');
+        this.config.devtool(false);
         this.config.optimization.splitChunks({
             chunks: 'all'
         });

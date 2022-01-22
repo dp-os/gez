@@ -105,7 +105,8 @@ const start = (createApp?: (data: ClientOptions) => Promise<Vue>) => {
     });
 };
 
-start(require('${{clientFilename}}').default);
+import('${{clientFilename}}').then(m => start(m.default));
+// start(require('${{clientFilename}}').default);
 
 declare global {
     interface Window {
