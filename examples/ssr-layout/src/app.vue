@@ -82,6 +82,7 @@ export default Vue.extend({
     }
 });
 </script>
+<style src="./main.css"></style>
 <style lang="less" scoped>
 .header {
     text-align: center;
