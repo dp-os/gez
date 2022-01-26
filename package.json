@@ -48,7 +48,9 @@
         "jest": "^25.2.4",
         "sass": "^1.26.10",
         "vue": "^2.6.11",
-        "vue-property-decorator": "^8.4.0"
+        "vue-property-decorator": "^8.4.0",
+        "@types/ejs": "^3.0.6",
+        "@types/express": "^4.17.2"
     },
     "dependencies": {
         "@fmfe/genesis-app": "file:./packages/genesis-app",
@@ -56,8 +58,6 @@
         "@fmfe/genesis-core": "file:./packages/genesis-core",
         "@fmfe/genesis-remote": "file:./packages/genesis-remote",
         "@fmfe/square": "file:./packages/square",
-        "@types/ejs": "^3.0.6",
-        "@types/express": "^4.17.2",
         "axios": "0.21.1",
         "express": "^4.17.1",
         "tailwindcss": "^1.6.0",
