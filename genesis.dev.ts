@@ -1,0 +1,1 @@
+import './examples/ssr-hub/genesis.dev';
