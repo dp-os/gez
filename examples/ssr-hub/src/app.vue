@@ -1,41 +1,32 @@
 <template>
-    <div class="app">
-        <h2>你好世界！</h2>
-        <p v-if="show" class="text" @click="close">
-            {{ installed ? '在客户端应该安装成功，点击我关闭!' : '未安装' }}
-        </p>
+    <div>
+        <vs-navbar v-model="activeItem" class="nabarx">
+            <template v-slot:title>
+                <vs-navbar-title> Genesis </vs-navbar-title>
+            </template>
+            <vs-navbar-item index="0">
+                <router-link to="/">Home</router-link>
+            </vs-navbar-item>
+            <vs-navbar-item index="1">
+                <router-link to="/about">About</router-link>
+            </vs-navbar-item>
+        </vs-navbar>
     </div>
 </template>
 <script lang="ts">
 import Vue from 'vue';
+import Vuesax from 'vuesax';
+
+Vue.use(Vuesax);
 
 export default Vue.extend({
     name: 'app',
     data() {
         return {
-            installed: false,
-            show: true
+            activeItem: 0,
+            search: ''
         };
-    },
-    mounted() {
-        this.installed = true;
-    },
-    methods: {
-        close() {
-            this.show = false;
-        }
     }
 });
 </script>
-<style lang="less" scoped>
-.app {
-    padding: 100px;
-    text-align: center;
-}
-
-.text {
-    color: #999;
-    font-size: 14px;
-    cursor: pointer;
-}
-</style>
+<style src="vuesax/dist/vuesax.css"></style>
