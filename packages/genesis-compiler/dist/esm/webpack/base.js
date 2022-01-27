@@ -9,7 +9,7 @@ export class BaseConfig extends BaseGenesis {
         const config = this.config = new Config();
         config.mode(this.ssr.isProd ? 'production' : 'development');
         config.set('target', ssr.getBrowsers(target));
-        config.output.publicPath(this.ssr.publicPath);
+        config.output.publicPath(target == 'client' ? 'auto' : this.ssr.publicPath);
         config.resolve.extensions.add('.js');
         this.ready = this.ssr.plugin.callHook('chainWebpack', {
             target,
@@ -43,14 +43,17 @@ export class BaseConfig extends BaseGenesis {
             }
             catch (e) { }
         }
+        const name = ssr.name.replace(/\W/g, '');
         config.plugin('module-federation').use(new webpack.container.ModuleFederationPlugin({
-            name: ssr.name.replace(/\W/g, ''),
+            name,
             filename: 'js/exposes.js',
             exposes,
             remotes,
-            remoteType: target === 'client' ? 'window' : 'commonjs-module',
             shared: {
                 'vue': {
+                    singleton: true
+                },
+                'vue-router': {
                     singleton: true
                 }
             }

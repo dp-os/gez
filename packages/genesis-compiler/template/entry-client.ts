@@ -1,3 +1,4 @@
+// @ts-nocheck
 import './webpack-public-path-client';
 
 import { ClientOptions } from '@fmfe/genesis-core';
@@ -105,8 +106,8 @@ const start = (createApp?: (data: ClientOptions) => Promise<Vue>) => {
     });
 };
 
-import('${{clientFilename}}').then(m => start(m.default));
-// start(require('${{clientFilename}}').default);
+// eslint-disable-next-line
+import('${{clientFilename}}').then((m) => start(m.default));
 
 declare global {
     interface Window {

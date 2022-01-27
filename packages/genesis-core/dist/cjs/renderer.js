@@ -88,7 +88,7 @@ class Renderer {
             const text = fs_1.default.readFileSync(ssr.outputClientManifestFile, 'utf-8');
             const clientManifest = JSON.parse(text);
             clientManifest.publicPath =
-                ssr.cdnPublicPath + clientManifest.publicPath;
+                ssr.cdnPublicPath + ssr.publicPath;
             this.clientManifest = clientManifest;
         }
         renderOptions.clientManifest = this.clientManifest;

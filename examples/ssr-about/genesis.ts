@@ -11,6 +11,7 @@ export const app = express();
  * 创建一个 SSR 实例
  */
 export const ssr = new SSR({
+    name: 'ssr-about',
     build: {
         baseDir: path.resolve(__dirname)
     }

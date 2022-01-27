@@ -35,10 +35,7 @@ const mergePackage = () => {
         },
         'lint-staged': {
             '*.{ts,js}': ['eslint --ext .js,.ts --fix', 'git add'],
-            '*.{vue}': [
-                'eslint --ext .js,.ts --fix',
-                'git add'
-            ]
+            '*.{vue}': ['eslint --ext .js,.ts --fix', 'git add']
         }
     };
     Object.assign(data, config);

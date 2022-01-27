@@ -1,4 +1,7 @@
 {
     "exposes": {},
-    "remotes": {}
+    "remotes": {
+        "ssrhome": "ssrhome@http://localhost:3001/ssr-home/js/exposes.js"
+
+    }
 }
