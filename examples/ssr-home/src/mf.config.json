@@ -1,0 +1,6 @@
+{
+    "exposes": {
+        "router": "./router.ts"
+    },
+    "remotes": {}
+}

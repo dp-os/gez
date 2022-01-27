@@ -24,5 +24,8 @@
   "bugs": {
     "url": "https://github.com/fmfe/genesis/issues"
   },
-  "gitHead": "1d78746ea4276916f32efa233ff645378f430282"
+  "gitHead": "1d78746ea4276916f32efa233ff645378f430282",
+  "peerDependencies": {
+    "vue": "^2.6.14"
+  }
 }

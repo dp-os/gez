@@ -86,6 +86,12 @@ export class SSR {
         return path.resolve(this.baseDir, './src');
     }
     /**
+     * Webpack Module Federation exposes folder
+     */
+    get mfConfigFile() {
+        return path.resolve(this.srcDir, './mf.config.json');
+    }
+    /**
      * Directory to be compiled by webpack
      */
     get srcIncludes() {
@@ -119,8 +125,8 @@ export class SSR {
     /**
      * Manifest file path of server
      */
-    get outputServerBundleFile() {
-        return path.resolve(this.outputDirInServer, 'app.js');
+    get outputServeAppFile() {
+        return path.resolve(this.outputDirInServer, 'js/app.js');
     }
     /**
      * Template path

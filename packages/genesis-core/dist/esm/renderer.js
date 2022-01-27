@@ -75,8 +75,8 @@ export class Renderer {
             template: template,
             inject: false
         };
-        if (fs.existsSync(ssr.outputServerBundleFile)) {
-            this._createApp = require(ssr.outputServerBundleFile)['default'];
+        if (fs.existsSync(ssr.outputServeAppFile)) {
+            this._createApp = require(ssr.outputServeAppFile)['default'];
         }
         if (fs.existsSync(ssr.outputClientManifestFile)) {
             const text = fs.readFileSync(ssr.outputClientManifestFile, 'utf-8');
@@ -114,8 +114,8 @@ export class Renderer {
                 delete require.cache[filename];
             }
         });
-        if (fs.existsSync(ssr.outputServerBundleFile)) {
-            this._createApp = require(ssr.outputServerBundleFile)['default'];
+        if (fs.existsSync(ssr.outputServeAppFile)) {
+            this._createApp = require(ssr.outputServeAppFile)['default'];
         }
     }
     /**

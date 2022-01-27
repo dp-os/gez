@@ -116,7 +116,7 @@ export class Watch extends BaseGenesis {
         const { ssr } = this;
         if (
             !fs.existsSync(ssr.outputClientManifestFile) ||
-            !fs.existsSync(ssr.outputServerBundleFile)
+            !fs.existsSync(ssr.outputServeAppFile)
         ) {
             return;
         }

@@ -58,6 +58,10 @@ export declare class SSR {
      */
     get srcDir(): string;
     /**
+     * Webpack Module Federation exposes folder
+     */
+    get mfConfigFile(): string;
+    /**
      * Directory to be compiled by webpack
      */
     get srcIncludes(): (string | RegExp)[];
@@ -77,7 +81,7 @@ export declare class SSR {
     /**
      * Manifest file path of server
      */
-    get outputServerBundleFile(): string;
+    get outputServeAppFile(): string;
     /**
      * Template path
      */

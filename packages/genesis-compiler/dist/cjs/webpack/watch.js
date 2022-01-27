@@ -104,7 +104,7 @@ class Watch extends utils_1.BaseGenesis {
     async notify() {
         const { ssr } = this;
         if (!fs_1.default.existsSync(ssr.outputClientManifestFile) ||
-            !fs_1.default.existsSync(ssr.outputServerBundleFile)) {
+            !fs_1.default.existsSync(ssr.outputServeAppFile)) {
             return;
         }
         if (this._renderer) {
