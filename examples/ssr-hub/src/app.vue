@@ -19,13 +19,6 @@ import Vuesax from 'vuesax';
 
 Vue.use(Vuesax);
 
-if (process.env.VUE_ENV === 'client') {
-    async function main() {
-        console.log('>>>>>>>', await import('ssrhome/router'));
-    }
-    main();
-}
-
 export default Vue.extend({
     name: 'app',
     data() {
@@ -34,7 +27,9 @@ export default Vue.extend({
             search: ''
         };
     },
-    async mounted() {}
+    async mounted() {
+        console.log(await import('ssr-home/router'))
+    }
 });
 </script>
 <style src="vuesax/dist/vuesax.css"></style>

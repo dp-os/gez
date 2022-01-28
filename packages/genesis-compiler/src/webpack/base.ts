@@ -6,6 +6,10 @@ import Config from 'webpack-chain';
 
 import { BaseGenesis } from '../utils';
 
+function fixName (name: string) {
+    return name.replace(/\W/g, '');
+}
+
 export class BaseConfig extends BaseGenesis {
     public config: Config;
     public ready: Promise<void>;
@@ -32,6 +36,7 @@ export class BaseConfig extends BaseGenesis {
             });
         }
         const exposes: Record<string, string> = {};
+        // "ssrhome": "ssrhome@http://localhost:3001/ssr-home/js/exposes.js"
         let remotes: Record<string, string> = {};
         if (fs.existsSync(ssr.mfConfigFile)) {
             const text = fs.readFileSync(ssr.mfConfigFile, 'utf-8');
@@ -44,15 +49,22 @@ export class BaseConfig extends BaseGenesis {
                         exposes[key] = fullPath;
                     });
                 }
-                if ('remotes' in data) {
-                    remotes = data.remotes;
+                if (Array.isArray(data.remotes)) {
+                    data.remotes.map(item => {
+                        return {
+                            name: item
+                        }
+                    }).forEach(item => {
+                        remotes[item.name] = `${fixName(item.name)}@http://localhost:3001/${item.name}/js/exposes.js`;
+                    });
                 }
             } catch (e) {}
         }
-        const name = ssr.name.replace(/\W/g, '');
+        const name = fixName(ssr.name);
+
         config.plugin('module-federation').use(
             new webpack.container.ModuleFederationPlugin({
-                name,
+                name: name,
                 filename: 'js/exposes.js',
                 exposes,
                 remotes,

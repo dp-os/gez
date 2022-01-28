@@ -1,12 +1,15 @@
-import webpack from 'webpack';
-import Config from 'webpack-chain';
 import fs from 'fs';
 import path from 'path';
+import webpack from 'webpack';
+import Config from 'webpack-chain';
 import { BaseGenesis } from '../utils';
+function fixName(name) {
+    return name.replace(/\W/g, '');
+}
 export class BaseConfig extends BaseGenesis {
     constructor(ssr, target) {
         super(ssr);
-        const config = this.config = new Config();
+        const config = (this.config = new Config());
         config.mode(this.ssr.isProd ? 'production' : 'development');
         config.set('target', ssr.getBrowsers(target));
         config.output.publicPath(target == 'client' ? 'auto' : this.ssr.publicPath);
@@ -24,33 +27,40 @@ export class BaseConfig extends BaseGenesis {
                 config.resolve.alias.set(k, v);
             });
         }
-        let exposes = {};
+        const exposes = {};
+        // "ssrhome": "ssrhome@http://localhost:3001/ssr-home/js/exposes.js"
         let remotes = {};
         if (fs.existsSync(ssr.mfConfigFile)) {
             const text = fs.readFileSync(ssr.mfConfigFile, 'utf-8');
             try {
                 const data = JSON.parse(text);
                 if ('exposes' in data) {
-                    Object.keys(data.exposes).forEach(key => {
+                    Object.keys(data.exposes).forEach((key) => {
                         const filename = data.exposes[key];
                         const fullPath = path.resolve(ssr.srcDir, filename);
                         exposes[key] = fullPath;
                     });
                 }
-                if ('remotes' in data) {
-                    remotes = data.remotes;
+                if (Array.isArray(data.remotes)) {
+                    data.remotes.map(item => {
+                        return {
+                            name: item
+                        };
+                    }).forEach(item => {
+                        remotes[item.name] = `${fixName(item.name)}@http://localhost:3001/${item.name}/js/exposes.js`;
+                    });
                 }
             }
             catch (e) { }
         }
-        const name = ssr.name.replace(/\W/g, '');
+        const name = fixName(ssr.name);
         config.plugin('module-federation').use(new webpack.container.ModuleFederationPlugin({
-            name,
+            name: name,
             filename: 'js/exposes.js',
             exposes,
             remotes,
             shared: {
-                'vue': {
+                vue: {
                     singleton: true
                 },
                 'vue-router': {
