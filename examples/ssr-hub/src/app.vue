@@ -28,7 +28,7 @@ export default Vue.extend({
         };
     },
     async mounted() {
-        console.log(await import('ssr-home/router'))
+        console.log(await import('ssr-home/router'));
     }
 });
 </script>

@@ -1,11 +1,5 @@
-import fs from 'fs';
-import path from 'path';
-import webpack from 'webpack';
 import Config from 'webpack-chain';
 import { BaseGenesis } from '../utils';
-function fixName(name) {
-    return name.replace(/\W/g, '');
-}
 export class BaseConfig extends BaseGenesis {
     constructor(ssr, target) {
         super(ssr);
@@ -27,47 +21,6 @@ export class BaseConfig extends BaseGenesis {
                 config.resolve.alias.set(k, v);
             });
         }
-        const exposes = {};
-        // "ssrhome": "ssrhome@http://localhost:3001/ssr-home/js/exposes.js"
-        let remotes = {};
-        if (fs.existsSync(ssr.mfConfigFile)) {
-            const text = fs.readFileSync(ssr.mfConfigFile, 'utf-8');
-            try {
-                const data = JSON.parse(text);
-                if ('exposes' in data) {
-                    Object.keys(data.exposes).forEach((key) => {
-                        const filename = data.exposes[key];
-                        const fullPath = path.resolve(ssr.srcDir, filename);
-                        exposes[key] = fullPath;
-                    });
-                }
-                if (Array.isArray(data.remotes)) {
-                    data.remotes.map(item => {
-                        return {
-                            name: item
-                        };
-                    }).forEach(item => {
-                        remotes[item.name] = `${fixName(item.name)}@http://localhost:3001/${item.name}/js/exposes.js`;
-                    });
-                }
-            }
-            catch (e) { }
-        }
-        const name = fixName(ssr.name);
-        config.plugin('module-federation').use(new webpack.container.ModuleFederationPlugin({
-            name: name,
-            filename: 'js/exposes.js',
-            exposes,
-            remotes,
-            shared: {
-                vue: {
-                    singleton: true
-                },
-                'vue-router': {
-                    singleton: true
-                }
-            }
-        }));
     }
     async toConfig() {
         await this.ready;

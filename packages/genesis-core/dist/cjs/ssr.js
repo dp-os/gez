@@ -9,14 +9,13 @@ const process_1 = __importDefault(require("process"));
 const plugin_1 = require("./plugin");
 const renderer_1 = require("./renderer");
 class SSR {
-    /**
-     * Constructor
-     */
     constructor(options = {}) {
         /**
          * Renderer
          */
         this.Renderer = renderer_1.Renderer;
+        this.entryName = 'app';
+        this.exposesEntryName = 'exposes';
         this.options = options;
         this.plugin = new plugin_1.PluginManage(this);
         if ('name' in options && typeof options.name !== 'string') {

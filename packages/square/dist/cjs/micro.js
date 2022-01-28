@@ -24,11 +24,10 @@ class MicroBase {
     constructor() {
         this.rid = 0;
         this.useCount = 0;
-        const self = this;
         this.vm = new vue_1.default({
-            data: function () {
+            data: () => {
                 return {
-                    $$this: self
+                    $$this: this
                 };
             }
         });

@@ -13,9 +13,8 @@ export declare class SSR {
      * Plug in management
      */
     plugin: Genesis.PluginManage;
-    /**
-     * Constructor
-     */
+    readonly entryName = "app";
+    readonly exposesEntryName = "exposes";
     constructor(options?: Genesis.Options);
     /**
      * Judge whether it is a production environment. By default, judge by process.env.NODE_ENV

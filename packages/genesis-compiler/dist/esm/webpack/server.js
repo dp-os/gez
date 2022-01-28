@@ -2,7 +2,7 @@ import { BaseConfig } from './base';
 export class ServerConfig extends BaseConfig {
     constructor(ssr) {
         super(ssr, 'server');
-        this.config.entry('app').add(this.ssr.entryServerFile).end();
+        this.config.entry(ssr.entryName).add(this.ssr.entryServerFile).end();
         this.config.output
             .path(this.ssr.outputDirInServer)
             .filename('js/[name].js');

@@ -8,6 +8,7 @@ import { StylePlugin } from './style';
 import { TemplatePlugin } from './template';
 import { VuePlugin } from './vue';
 import { WorkerPlugin } from './worker';
+import { ModuleFederationPlugin } from './module-federation';
 export class InstallPlugin extends Plugin {
     constructor(ssr) {
         super(ssr);
@@ -20,5 +21,6 @@ export class InstallPlugin extends Plugin {
         ssr.plugin.unshift(MediaPlugin);
         ssr.plugin.unshift(TemplatePlugin);
         ssr.plugin.unshift(WorkerPlugin);
+        ssr.plugin.unshift(ModuleFederationPlugin);
     }
 }

@@ -3,14 +3,13 @@ import process from 'process';
 import { PluginManage } from './plugin';
 import { Renderer } from './renderer';
 export class SSR {
-    /**
-     * Constructor
-     */
     constructor(options = {}) {
         /**
          * Renderer
          */
         this.Renderer = Renderer;
+        this.entryName = 'app';
+        this.exposesEntryName = 'exposes';
         this.options = options;
         this.plugin = new PluginManage(this);
         if ('name' in options && typeof options.name !== 'string') {

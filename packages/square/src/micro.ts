@@ -37,11 +37,10 @@ class MicroBase {
     private rid = 0;
     private useCount = 0;
     public constructor() {
-        const self = this;
         this.vm = new Vue({
-            data: function () {
+            data: () => {
                 return {
-                    $$this: self
+                    $$this: this
                 };
             }
         });

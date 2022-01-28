@@ -5,7 +5,7 @@ const base_1 = require("./base");
 class ServerConfig extends base_1.BaseConfig {
     constructor(ssr) {
         super(ssr, 'server');
-        this.config.entry('app').add(this.ssr.entryServerFile).end();
+        this.config.entry(ssr.entryName).add(this.ssr.entryServerFile).end();
         this.config.output
             .path(this.ssr.outputDirInServer)
             .filename('js/[name].js');

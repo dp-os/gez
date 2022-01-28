@@ -4,14 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BaseConfig = void 0;
-const fs_1 = __importDefault(require("fs"));
-const path_1 = __importDefault(require("path"));
-const webpack_1 = __importDefault(require("webpack"));
 const webpack_chain_1 = __importDefault(require("webpack-chain"));
 const utils_1 = require("../utils");
-function fixName(name) {
-    return name.replace(/\W/g, '');
-}
 class BaseConfig extends utils_1.BaseGenesis {
     constructor(ssr, target) {
         var _a, _b;
@@ -34,47 +28,6 @@ class BaseConfig extends utils_1.BaseGenesis {
                 config.resolve.alias.set(k, v);
             });
         }
-        const exposes = {};
-        // "ssrhome": "ssrhome@http://localhost:3001/ssr-home/js/exposes.js"
-        let remotes = {};
-        if (fs_1.default.existsSync(ssr.mfConfigFile)) {
-            const text = fs_1.default.readFileSync(ssr.mfConfigFile, 'utf-8');
-            try {
-                const data = JSON.parse(text);
-                if ('exposes' in data) {
-                    Object.keys(data.exposes).forEach((key) => {
-                        const filename = data.exposes[key];
-                        const fullPath = path_1.default.resolve(ssr.srcDir, filename);
-                        exposes[key] = fullPath;
-                    });
-                }
-                if (Array.isArray(data.remotes)) {
-                    data.remotes.map(item => {
-                        return {
-                            name: item
-                        };
-                    }).forEach(item => {
-                        remotes[item.name] = `${fixName(item.name)}@http://localhost:3001/${item.name}/js/exposes.js`;
-                    });
-                }
-            }
-            catch (e) { }
-        }
-        const name = fixName(ssr.name);
-        config.plugin('module-federation').use(new webpack_1.default.container.ModuleFederationPlugin({
-            name: name,
-            filename: 'js/exposes.js',
-            exposes,
-            remotes,
-            shared: {
-                vue: {
-                    singleton: true
-                },
-                'vue-router': {
-                    singleton: true
-                }
-            }
-        }));
     }
     async toConfig() {
         await this.ready;

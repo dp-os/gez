@@ -18,9 +18,8 @@ export class SSR {
      * Plug in management
      */
     public plugin: Genesis.PluginManage;
-    /**
-     * Constructor
-     */
+    public readonly entryName = 'app';
+    public readonly exposesEntryName = 'exposes';
     public constructor(options: Genesis.Options = {}) {
         this.options = options;
         this.plugin = new PluginManage(this);
@@ -138,7 +137,6 @@ export class SSR {
     public get entryServerFile() {
         return path.resolve(this.outputDir, 'src/entry-server');
     }
-
     /**
      * Manifest file path of client
      */
