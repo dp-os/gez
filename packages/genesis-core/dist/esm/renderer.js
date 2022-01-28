@@ -47,9 +47,9 @@ async function template(strHtml, ctx) {
     else {
         data.html += html;
     }
-    const baseUrl = encodeURIComponent(ssr.cdnPublicPath + ssr.publicPath);
+    const baseUrl = serialize(ssr.cdnPublicPath + ssr.publicPath, { isJSON: false, ignoreFunction: true });
     data.script =
-        `<script>window["__webpack_public_path_${ssr.name}__"] = "${baseUrl}";</script>` +
+        `<script>window["__webpack_public_path_${ssr.name}__"] = ${baseUrl};</script>` +
             data.script +
             vueCtx.renderScripts();
     data.style += vueCtx.renderStyles();
@@ -69,27 +69,7 @@ export class Renderer {
         };
         this._createApp = createDefaultApp;
         this.ssr = ssr;
-        process.env[`__webpack_public_path_${ssr.name}__`] =
-            ssr.cdnPublicPath + ssr.publicPath;
-        const renderOptions = {
-            template: template,
-            inject: false
-        };
-        if (fs.existsSync(ssr.outputServeAppFile)) {
-            this._createApp = require(ssr.outputServeAppFile)['default'];
-        }
-        if (fs.existsSync(ssr.outputClientManifestFile)) {
-            const text = fs.readFileSync(ssr.outputClientManifestFile, 'utf-8');
-            const clientManifest = JSON.parse(text);
-            clientManifest.publicPath = ssr.cdnPublicPath + ssr.publicPath;
-            this.clientManifest = clientManifest;
-        }
-        renderOptions.clientManifest = this.clientManifest;
-        const ejsTemplate = fs.existsSync(this.ssr.templateFile)
-            ? fs.readFileSync(this.ssr.outputTemplateFile, 'utf-8')
-            : defaultTemplate;
-        this.renderer = createRenderer(renderOptions);
-        this.compile = Ejs.compile(ejsTemplate);
+        this.reload();
         const bindArr = [
             'renderJson',
             'renderHtml',
@@ -108,14 +88,38 @@ export class Renderer {
      */
     reload() {
         const { ssr } = this;
-        Object.keys(require.cache).forEach((filename) => {
-            if (filename.indexOf(ssr.outputDirInServer) === 0) {
-                delete require.cache[filename];
-            }
-        });
-        if (fs.existsSync(ssr.outputServeAppFile)) {
-            this._createApp = require(ssr.outputServeAppFile)['default'];
+        if (this.renderer) {
+            Object.keys(require.cache).forEach((filename) => {
+                if (filename.indexOf(ssr.outputDirInServer) === 0) {
+                    delete require.cache[filename];
+                }
+            });
         }
+        global[`__webpack_public_path_${ssr.name}__`] = ssr.cdnPublicPath + ssr.publicPath;
+        const renderOptions = {
+            template: template,
+            inject: false
+        };
+        if (fs.existsSync(ssr.outputServeAppFile)) {
+            this._createApp = (...args) => {
+                return require(ssr.outputServeAppFile)['default'](...args);
+            };
+        }
+        else {
+            this._createApp = createDefaultApp;
+        }
+        if (fs.existsSync(ssr.outputClientManifestFile)) {
+            const text = fs.readFileSync(ssr.outputClientManifestFile, 'utf-8');
+            const clientManifest = JSON.parse(text);
+            clientManifest.publicPath = ssr.cdnPublicPath + ssr.publicPath;
+            this.clientManifest = clientManifest;
+        }
+        renderOptions.clientManifest = this.clientManifest;
+        const ejsTemplate = fs.existsSync(this.ssr.templateFile)
+            ? fs.readFileSync(this.ssr.outputTemplateFile, 'utf-8')
+            : defaultTemplate;
+        this.renderer = createRenderer(renderOptions);
+        this.compile = Ejs.compile(ejsTemplate);
     }
     /**
      * Render JSON

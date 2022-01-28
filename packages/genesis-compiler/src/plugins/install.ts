@@ -5,11 +5,11 @@ import { BarPlugin } from './bar';
 import { FontPlugin } from './font';
 import { ImagePlugin } from './image';
 import { MediaPlugin } from './media';
+import { ModuleFederationPlugin } from './module-federation';
 import { StylePlugin } from './style';
 import { TemplatePlugin } from './template';
 import { VuePlugin } from './vue';
 import { WorkerPlugin } from './worker';
-import { ModuleFederationPlugin } from './module-federation';
 
 export class InstallPlugin extends Plugin {
     public constructor(ssr: SSR) {

@@ -26,6 +26,7 @@
   },
   "gitHead": "1d78746ea4276916f32efa233ff645378f430282",
   "peerDependencies": {
+    "vue-router": "^3.0.0",
     "vue": "^2.6.14"
   }
 }

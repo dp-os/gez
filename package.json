@@ -42,6 +42,7 @@
         "@types/memory-fs": "^0.3.2",
         "@types/node": "14.14.35",
         "@types/postcss-preset-env": "^6.7.3",
+        "@types/serialize-javascript": "^5.0.2",
         "@types/webpack-dev-middleware": "4.1.0",
         "@types/webpack-hot-middleware": "2.25.3",
         "@types/write": "^2.0.1",
