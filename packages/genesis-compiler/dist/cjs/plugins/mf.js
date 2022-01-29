@@ -16,10 +16,10 @@ class MFPlugin extends genesis_core_1.Plugin {
     }
     chainWebpack({ config, target }) {
         const { ssr } = this;
-        const exposes = {};
-        const entryName = this.ssr.exposesEntryName;
-        const remotes = {};
         const mf = genesis_core_1.MF.get(ssr);
+        const exposes = {};
+        const entryName = mf.entryName;
+        const remotes = {};
         Object.keys(mf.exposes).forEach((key) => {
             const filename = mf.exposes[key];
             const fullPath = path_1.default.isAbsolute(filename)
@@ -28,8 +28,8 @@ class MFPlugin extends genesis_core_1.Plugin {
             exposes[key] = fullPath;
         });
         mf.remotes.forEach((item) => {
-            const varName = genesis_core_1.MF.varName(ssr.name);
-            const exposesVarName = genesis_core_1.MF.exposesVarName(ssr.name, item.name);
+            const varName = mf.name;
+            const exposesVarName = mf.getVarName(item.name);
             remotes[item.name] = `promise new Promise(resolve => {
                 var script = document.createElement('script')
                 script.src = window["${exposesVarName}"];
@@ -50,7 +50,7 @@ class MFPlugin extends genesis_core_1.Plugin {
               })
               `;
         });
-        const name = genesis_core_1.MF.varName(ssr.name);
+        const name = mf.name;
         config.plugin('module-federation').use(new webpack_1.default.container.ModuleFederationPlugin({
             name,
             filename: ssr.isProd
@@ -70,6 +70,7 @@ class MFPlugin extends genesis_core_1.Plugin {
     }
     afterCompiler(type) {
         const { ssr } = this;
+        const mf = genesis_core_1.MF.get(ssr);
         const clientVersion = this._getVersion(ssr.outputDirInClient);
         const serverVersion = this._getVersion(ssr.outputDirInServer);
         const files = this._getFiles();
@@ -80,13 +81,14 @@ class MFPlugin extends genesis_core_1.Plugin {
             serverVersion,
             files
         }, null, 4);
-        write_1.default.sync(path_1.default.resolve(ssr.outputDirInServer, `${ssr.exposesEntryName}.json`), text, { newline: true });
+        write_1.default.sync(path_1.default.resolve(ssr.outputDirInServer, `${mf.entryName}.json`), text, { newline: true });
     }
     _getVersion(root) {
         const { ssr } = this;
+        const mf = genesis_core_1.MF.get(ssr);
         let version = '';
         const files = find_1.default.fileSync(path_1.default.resolve(root, './js'));
-        const re = new RegExp(`${ssr.exposesEntryName}\\..{8}.js`);
+        const re = new RegExp(`${mf.entryName}\\..{8}.js`);
         const filename = files.find((filename) => {
             return re.test(filename);
         });

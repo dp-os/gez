@@ -14,7 +14,6 @@ export declare class SSR {
      */
     plugin: Genesis.PluginManage;
     readonly entryName = "app";
-    readonly exposesEntryName = "exposes";
     constructor(options?: Genesis.Options);
     /**
      * Judge whether it is a production environment. By default, judge by process.env.NODE_ENV
@@ -57,10 +56,6 @@ export declare class SSR {
      * Compile source entry directory
      */
     get srcDir(): string;
-    /**
-     * Webpack Module Federation exposes folder
-     */
-    get mfConfigFile(): string;
     /**
      * Directory to be compiled by webpack
      */

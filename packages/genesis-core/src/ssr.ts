@@ -20,7 +20,6 @@ export class SSR {
     public plugin: Genesis.PluginManage;
 
     public readonly entryName = 'app';
-    public readonly exposesEntryName = 'exposes';
     public constructor(options: Genesis.Options = {}) {
         this.options = options;
         this.plugin = new PluginManage(this);
@@ -105,12 +104,6 @@ export class SSR {
      */
     public get srcDir() {
         return path.resolve(this.baseDir, './src');
-    }
-    /**
-     * Webpack Module Federation exposes folder
-     */
-    public get mfConfigFile() {
-        return path.resolve(this.srcDir, './mf.config.json');
     }
 
     /**

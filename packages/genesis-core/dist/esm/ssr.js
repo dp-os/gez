@@ -9,7 +9,6 @@ export class SSR {
          */
         this.Renderer = Renderer;
         this.entryName = 'app';
-        this.exposesEntryName = 'exposes';
         this.options = options;
         this.plugin = new PluginManage(this);
         if ('name' in options && typeof options.name !== 'string') {
@@ -86,12 +85,6 @@ export class SSR {
      */
     get srcDir() {
         return path.resolve(this.baseDir, './src');
-    }
-    /**
-     * Webpack Module Federation exposes folder
-     */
-    get mfConfigFile() {
-        return path.resolve(this.srcDir, './mf.config.json');
     }
     /**
      * Directory to be compiled by webpack

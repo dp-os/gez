@@ -17,10 +17,10 @@ export class MFPlugin extends Plugin {
     }
     public chainWebpack({ config, target }: WebpackHookParams) {
         const { ssr } = this;
-        const exposes: Record<string, string> = {};
-        const entryName = this.ssr.exposesEntryName;
-        const remotes: Record<string, string> = {};
         const mf = MF.get(ssr);
+        const exposes: Record<string, string> = {};
+        const entryName = mf.entryName;
+        const remotes: Record<string, string> = {};
 
         Object.keys(mf.exposes).forEach((key) => {
             const filename = mf.exposes[key];
@@ -30,8 +30,8 @@ export class MFPlugin extends Plugin {
             exposes[key] = fullPath;
         });
         mf.remotes.forEach((item) => {
-            const varName = MF.varName(ssr.name);
-            const exposesVarName = MF.exposesVarName(ssr.name, item.name);
+            const varName = mf.name;
+            const exposesVarName = mf.getVarName(item.name);
             remotes[item.name] = `promise new Promise(resolve => {
                 var script = document.createElement('script')
                 script.src = window["${exposesVarName}"];
@@ -52,7 +52,7 @@ export class MFPlugin extends Plugin {
               })
               `;
         });
-        const name = MF.varName(ssr.name);
+        const name = mf.name;
 
         config.plugin('module-federation').use(
             new webpack.container.ModuleFederationPlugin({
@@ -75,6 +75,7 @@ export class MFPlugin extends Plugin {
     }
     public afterCompiler(type: CompilerType) {
         const { ssr } = this;
+        const mf = MF.get(ssr);
         const clientVersion = this._getVersion(ssr.outputDirInClient);
         const serverVersion = this._getVersion(ssr.outputDirInServer);
         const files = this._getFiles();
@@ -90,7 +91,7 @@ export class MFPlugin extends Plugin {
             4
         );
         write.sync(
-            path.resolve(ssr.outputDirInServer, `${ssr.exposesEntryName}.json`),
+            path.resolve(ssr.outputDirInServer, `${mf.entryName}.json`),
             text,
             { newline: true }
         );
@@ -98,9 +99,10 @@ export class MFPlugin extends Plugin {
 
     private _getVersion(root: string) {
         const { ssr } = this;
+        const mf = MF.get(ssr);
         let version = '';
         const files = find.fileSync(path.resolve(root, './js'));
-        const re = new RegExp(`${ssr.exposesEntryName}\\..{8}.js`);
+        const re = new RegExp(`${mf.entryName}\\..{8}.js`);
         const filename = files.find((filename) => {
             return re.test(filename);
         });
