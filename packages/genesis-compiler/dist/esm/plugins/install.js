@@ -1,6 +1,7 @@
 import { MF, Plugin } from '@fmfe/genesis-core';
 import { BabelPlugin } from './babel';
 import { BarPlugin } from './bar';
+import { DefinePlugin } from './define';
 import { FontPlugin } from './font';
 import { ImagePlugin } from './image';
 import { MediaPlugin } from './media';
@@ -9,7 +10,6 @@ import { StylePlugin } from './style';
 import { TemplatePlugin } from './template';
 import { VuePlugin } from './vue';
 import { WorkerPlugin } from './worker';
-import { DefinePlugin } from './define';
 export class InstallPlugin extends Plugin {
     constructor(ssr) {
         super(ssr);

@@ -5,4 +5,5 @@ export declare class MFPlugin extends Plugin {
     afterCompiler(type: CompilerType): void;
     private _getVersion;
     private _getFiles;
+    private _getFilename;
 }

@@ -81,11 +81,7 @@ export class MFPlugin extends Plugin {
         const { ssr } = this;
         const mf = MF.get(ssr);
         let version = '';
-        const files = find.fileSync(path.resolve(root, './js'));
-        const re = new RegExp(`${mf.entryName}\\..{8}.js`);
-        const filename = files.find((filename) => {
-            return re.test(filename);
-        });
+        const filename = this._getFilename(root);
         if (filename) {
             const arr = filename.split('.');
             version = arr[1];
@@ -101,5 +97,18 @@ export class MFPlugin extends Plugin {
             files[key] = text;
         });
         return files;
+    }
+    _getFilename(root) {
+        const { ssr } = this;
+        const mf = MF.get(ssr);
+        let filename = '';
+        if (fs.existsSync(root)) {
+            const files = find.fileSync(path.resolve(root, './js'));
+            const re = new RegExp(`${mf.entryName}\\..{8}.js`);
+            filename = files.find((filename) => {
+                return re.test(filename);
+            });
+        }
+        return filename;
     }
 }

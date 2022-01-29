@@ -13,7 +13,7 @@ class DefinePlugin extends genesis_core_1.Plugin {
             {
                 'process.env.VUE_ENV': JSON.stringify(target),
                 'process.env.GENESIS_NAME': JSON.stringify(ssr.name),
-                'process.env.PUBLIC_PATH_VAR_NAME': JSON.stringify(ssr.publicPathVarName),
+                'process.env.PUBLIC_PATH_VAR_NAME': JSON.stringify(ssr.publicPathVarName)
             }
         ]);
     }

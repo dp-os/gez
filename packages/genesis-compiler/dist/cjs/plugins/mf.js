@@ -87,11 +87,7 @@ class MFPlugin extends genesis_core_1.Plugin {
         const { ssr } = this;
         const mf = genesis_core_1.MF.get(ssr);
         let version = '';
-        const files = find_1.default.fileSync(path_1.default.resolve(root, './js'));
-        const re = new RegExp(`${mf.entryName}\\..{8}.js`);
-        const filename = files.find((filename) => {
-            return re.test(filename);
-        });
+        const filename = this._getFilename(root);
         if (filename) {
             const arr = filename.split('.');
             version = arr[1];
@@ -107,6 +103,19 @@ class MFPlugin extends genesis_core_1.Plugin {
             files[key] = text;
         });
         return files;
+    }
+    _getFilename(root) {
+        const { ssr } = this;
+        const mf = genesis_core_1.MF.get(ssr);
+        let filename = '';
+        if (fs_1.default.existsSync(root)) {
+            const files = find_1.default.fileSync(path_1.default.resolve(root, './js'));
+            const re = new RegExp(`${mf.entryName}\\..{8}.js`);
+            filename = files.find((filename) => {
+                return re.test(filename);
+            });
+        }
+        return filename;
     }
 }
 exports.MFPlugin = MFPlugin;
