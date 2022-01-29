@@ -60,7 +60,7 @@ async function template(strHtml: string, ctx: Genesis.RenderContext) {
         ignoreFunction: true
     });
     data.script =
-        `<script>window["${ssr.publicPathName}"] = ${baseUrl};</script>` +
+        `<script>window["${ssr.publicPathVarName}"] = ${baseUrl};</script>` +
         data.script +
         vueCtx.renderScripts();
     data.style += vueCtx.renderStyles();
@@ -113,7 +113,7 @@ export class Renderer {
                 }
             });
         }
-        global[ssr.publicPathName] = ssr.cdnPublicPath + ssr.publicPath;
+        global[ssr.publicPathVarName] = ssr.cdnPublicPath + ssr.publicPath;
 
         const renderOptions: any = {
             template: template as any,

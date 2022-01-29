@@ -66,11 +66,5 @@ export class VuePlugin extends Plugin {
                       }
             );
         config.plugin('vue').use(VueLoaderPlugin);
-        config.plugin('define').use(webpack.DefinePlugin, [
-            {
-                'process.env.VUE_ENV': JSON.stringify(target),
-                'process.env.GENESIS_NAME': JSON.stringify(ssr.name)
-            }
-        ]);
     }
 }

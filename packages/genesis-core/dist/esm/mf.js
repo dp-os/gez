@@ -1,9 +1,7 @@
 import serialize from 'serialize-javascript';
 import { Plugin } from './plugin';
+import { SSR } from './ssr';
 const mf = Symbol('mf');
-function varName(name) {
-    return name.replace(/\W/g, '_');
-}
 export class MFPlugin extends Plugin {
     renderBefore(context) {
         const { ssr } = this;
@@ -11,10 +9,9 @@ export class MFPlugin extends Plugin {
         const { remotes } = mf;
         if (remotes.length) {
             const arr = remotes.map((item) => {
-                const fullPath = item.publicPath +
-                    `/${item.name}/js/${mf.entryName}.js`;
+                const fullPath = item.publicPath + `/${item.name}/js/${mf.entryName}.js`;
                 const value = serialize(fullPath);
-                const name = mf.getVarName(item.name);
+                const name = mf.getWebpackPublicPathVarName(item.name);
                 return `window["${name}"] = ${value};`;
             });
             context.data.script += `<script>${arr.join('')}</script>`;
@@ -36,7 +33,7 @@ export class MF {
         return ssr[mf];
     }
     get name() {
-        return varName(this.ssr.name);
+        return SSR.fixVarName(this.ssr.name);
     }
     get exposes() {
         return this.options?.exposes || {};
@@ -44,8 +41,8 @@ export class MF {
     get remotes() {
         return this.options?.remotes || [];
     }
-    getVarName(name) {
-        return `__webpack_public_path_${this.name}_${varName(name)}`;
+    getWebpackPublicPathVarName(name) {
+        return `__webpack_public_path_${this.name}_${SSR.fixVarName(name)}`;
     }
     getExposes(version) { }
     getRemote() { }

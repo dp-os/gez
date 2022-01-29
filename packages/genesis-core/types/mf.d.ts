@@ -13,7 +13,7 @@ export declare class MF {
     get name(): string;
     get exposes(): Record<string, string>;
     get remotes(): Genesis.MFRemote[];
-    getVarName(name: string): string;
+    getWebpackPublicPathVarName(name: string): string;
     getExposes(version: string): void;
     getRemote(): void;
 }

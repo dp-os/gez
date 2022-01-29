@@ -28,8 +28,8 @@ class MFPlugin extends genesis_core_1.Plugin {
             exposes[key] = fullPath;
         });
         mf.remotes.forEach((item) => {
-            const varName = mf.name;
-            const exposesVarName = mf.getVarName(item.name);
+            const varName = genesis_core_1.SSR.fixVarName(item.name);
+            const exposesVarName = mf.getWebpackPublicPathVarName(item.name);
             remotes[item.name] = `promise new Promise(resolve => {
                 var script = document.createElement('script')
                 script.src = window["${exposesVarName}"];

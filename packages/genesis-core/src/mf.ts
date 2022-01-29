@@ -2,12 +2,9 @@ import serialize from 'serialize-javascript';
 
 import type * as Genesis from '.';
 import { Plugin } from './plugin';
+import { SSR } from './ssr';
 
 const mf = Symbol('mf');
-
-function varName(name: string) {
-    return name.replace(/\W/g, '_');
-}
 
 export class MFPlugin extends Plugin {
     public renderBefore(context: Genesis.RenderContext): void {
@@ -19,7 +16,7 @@ export class MFPlugin extends Plugin {
                 const fullPath =
                     item.publicPath + `/${item.name}/js/${mf.entryName}.js`;
                 const value = serialize(fullPath);
-                const name = mf.getVarName(item.name);
+                const name = mf.getWebpackPublicPathVarName(item.name);
                 return `window["${name}"] = ${value};`;
             });
             context.data.script += `<script>${arr.join('')}</script>`;
@@ -43,7 +40,7 @@ export class MF {
         ssr.plugin.use(MFPlugin);
     }
     public get name() {
-        return varName(this.ssr.name);
+        return SSR.fixVarName(this.ssr.name);
     }
     public get exposes() {
         return this.options?.exposes || {};
@@ -51,8 +48,8 @@ export class MF {
     public get remotes() {
         return this.options?.remotes || [];
     }
-    public getVarName(name: string) {
-        return `__webpack_public_path_${this.name}_${varName(name)}`;
+    public getWebpackPublicPathVarName(name: string) {
+        return `__webpack_public_path_${this.name}_${SSR.fixVarName(name)}`;
     }
     public getExposes(version: string) {}
     public getRemote() {}

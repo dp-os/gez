@@ -1,6 +1,7 @@
 import * as Genesis from './';
 import { Renderer } from './renderer';
 export declare class SSR {
+    static fixVarName(name: string): string;
     /**
      * Renderer
      */
@@ -27,7 +28,7 @@ export declare class SSR {
      * The basic path of client static resource loading, which is '/ssr-genesis/' by default
      */
     get publicPath(): string;
-    get publicPathName(): string;
+    get publicPathVarName(): string;
     /**
      * CDN resource public path, Only valid in production mode
      */

@@ -1,4 +1,3 @@
 /* eslint-disable no-undef */
 // @ts-ignore
-__webpack_public_path__ =
-    global[`__webpack_public_path_${process.env.GENESIS_NAME}__`];
+__webpack_public_path__ = global[process.env.PUBLIC_PATH_VAR_NAME];

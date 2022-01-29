@@ -6,6 +6,9 @@ import { PluginManage } from './plugin';
 import { Renderer } from './renderer';
 
 export class SSR {
+    public static fixVarName(name: string) {
+        return name.replace(/\W/g, '_');
+    }
     /**
      * Renderer
      */
@@ -48,8 +51,8 @@ export class SSR {
     public get publicPath() {
         return this.options?.build?.publicPath || `/${this.name}/`;
     }
-    public get publicPathName() {
-        return `__webpack_public_path_${this.name}__`;
+    public get publicPathVarName() {
+        return `__webpack_public_path_${SSR.fixVarName(this.name)}__`;
     }
     /**
      * CDN resource public path, Only valid in production mode

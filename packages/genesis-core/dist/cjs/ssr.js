@@ -21,6 +21,9 @@ class SSR {
             throw new TypeError('Options.name can only be of string type');
         }
     }
+    static fixVarName(name) {
+        return name.replace(/\W/g, '_');
+    }
     /**
      * Judge whether it is a production environment. By default, judge by process.env.NODE_ENV
      */
@@ -41,8 +44,8 @@ class SSR {
         var _a, _b;
         return ((_b = (_a = this.options) === null || _a === void 0 ? void 0 : _a.build) === null || _b === void 0 ? void 0 : _b.publicPath) || `/${this.name}/`;
     }
-    get publicPathName() {
-        return `__webpack_public_path_${this.name}__`;
+    get publicPathVarName() {
+        return `__webpack_public_path_${SSR.fixVarName(this.name)}__`;
     }
     /**
      * CDN resource public path, Only valid in production mode

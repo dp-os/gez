@@ -30,8 +30,8 @@ export class MFPlugin extends Plugin {
             exposes[key] = fullPath;
         });
         mf.remotes.forEach((item) => {
-            const varName = mf.name;
-            const exposesVarName = mf.getVarName(item.name);
+            const varName = SSR.fixVarName(item.name);
+            const exposesVarName = mf.getWebpackPublicPathVarName(item.name);
             remotes[item.name] = `promise new Promise(resolve => {
                 var script = document.createElement('script')
                 script.src = window["${exposesVarName}"];

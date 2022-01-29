@@ -61,12 +61,6 @@ class VuePlugin extends genesis_core_1.Plugin {
                 optimizeSSR: true
             });
         config.plugin('vue').use(plugin_1.default);
-        config.plugin('define').use(webpack_1.default.DefinePlugin, [
-            {
-                'process.env.VUE_ENV': JSON.stringify(target),
-                'process.env.GENESIS_NAME': JSON.stringify(ssr.name)
-            }
-        ]);
     }
 }
 exports.VuePlugin = VuePlugin;
