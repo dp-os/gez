@@ -1,6 +1,7 @@
 import { Plugin as PluginConstructor, PluginManage as PluginManageConstructor } from './plugin';
 import { Renderer as RendererConstructor } from './renderer';
 import { SSR as SSRConstructor } from './ssr';
+import { MF as MFConstructor } from './mf';
 // eslint-disable-next-line @typescript-eslint/no-namespace
 var Genesis;
 (function (Genesis) {
@@ -8,6 +9,7 @@ var Genesis;
      * SSR Constructor
      */
     Genesis.SSR = SSRConstructor;
+    Genesis.MF = MFConstructor;
     /**
      * Renderer Constructor
      */

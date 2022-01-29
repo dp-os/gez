@@ -2,6 +2,7 @@
 const plugin_1 = require("./plugin");
 const renderer_1 = require("./renderer");
 const ssr_1 = require("./ssr");
+const mf_1 = require("./mf");
 // eslint-disable-next-line @typescript-eslint/no-namespace
 var Genesis;
 (function (Genesis) {
@@ -9,6 +10,7 @@ var Genesis;
      * SSR Constructor
      */
     Genesis.SSR = ssr_1.SSR;
+    Genesis.MF = mf_1.MF;
     /**
      * Renderer Constructor
      */

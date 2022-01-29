@@ -8,6 +8,7 @@ import {
 } from './plugin';
 import { Renderer as RendererConstructor } from './renderer';
 import { SSR as SSRConstructor } from './ssr';
+import { MF as MFConstructor } from './mf';
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 namespace Genesis {
@@ -16,6 +17,8 @@ namespace Genesis {
      */
     export const SSR = SSRConstructor;
     export type SSR = SSRConstructor;
+    export const MF = MFConstructor;
+    export type MF = MFConstructor;
     /**
      * Renderer Constructor
      */

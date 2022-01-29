@@ -1,5 +1,6 @@
-import { Plugin, WebpackHookParams, CompilerType } from '@fmfe/genesis-core';
+import { Plugin, WebpackHookParams, CompilerType, SSR } from '@fmfe/genesis-core';
 export declare class MFPlugin extends Plugin {
+    constructor(ssr: SSR);
     chainWebpack({ config, target }: WebpackHookParams): void;
     afterCompiler(type: CompilerType): void;
     private _getVersion;

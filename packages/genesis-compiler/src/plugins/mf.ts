@@ -1,15 +1,14 @@
-import { Plugin, WebpackHookParams, CompilerType } from '@fmfe/genesis-core';
+import { Plugin, WebpackHookParams, CompilerType, MF, SSR } from '@fmfe/genesis-core';
 import fs from 'fs';
 import path from 'path';
 import webpack from 'webpack';
 import find from 'find';
 import write from 'write';
 
-function fixName(name: string) {
-    return name.replace(/\W/g, '');
-}
-
 export class MFPlugin extends Plugin {
+    public constructor (ssr: SSR) {
+        super(ssr);
+    }
     public chainWebpack({ config, target }: WebpackHookParams) {
         const { ssr } = this;
         const exposes: Record<string, string> = {};
@@ -34,16 +33,32 @@ export class MFPlugin extends Plugin {
                             };
                         })
                         .forEach((item) => {
-                            remotes[item.name] = `${fixName(
-                                item.name
-                            )}@http://localhost:3001/${
-                                item.name
-                            }/js/${entryName}.js`;
+                            const varName = MF.varName(ssr.name,);
+                            const exposesVarName = MF.exposesVarName(ssr.name, item.name);
+                            remotes[item.name] =  `promise new Promise(resolve => {
+                                var script = document.createElement('script')
+                                script.src = window["${exposesVarName}"];
+                                script.onload = function onload() {
+                                  var proxy = {
+                                    get: (request) => window["${varName}"].get(request),
+                                    init: (arg) => {
+                                      try {
+                                        return window["${varName}"].init(arg)
+                                      } catch(e) {
+                                        console.log('remote container already initialized')
+                                      }
+                                    }
+                                  }
+                                  resolve(proxy)
+                                }
+                                document.head.appendChild(script);
+                              })
+                              `;
                         });
                 }
             } catch (e) {}
         }
-        const name = fixName(ssr.name);
+        const name = MF.varName(ssr.name);
 
         config.plugin('module-federation').use(
             new webpack.container.ModuleFederationPlugin({

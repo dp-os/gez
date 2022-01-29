@@ -10,10 +10,10 @@ const path_1 = __importDefault(require("path"));
 const webpack_1 = __importDefault(require("webpack"));
 const find_1 = __importDefault(require("find"));
 const write_1 = __importDefault(require("write"));
-function fixName(name) {
-    return name.replace(/\W/g, '');
-}
 class MFPlugin extends genesis_core_1.Plugin {
+    constructor(ssr) {
+        super(ssr);
+    }
     chainWebpack({ config, target }) {
         const { ssr } = this;
         const exposes = {};
@@ -38,13 +38,33 @@ class MFPlugin extends genesis_core_1.Plugin {
                         };
                     })
                         .forEach((item) => {
-                        remotes[item.name] = `${fixName(item.name)}@http://localhost:3001/${item.name}/js/${entryName}.js`;
+                        const varName = genesis_core_1.MF.varName(ssr.name);
+                        const exposesVarName = genesis_core_1.MF.exposesVarName(ssr.name, item.name);
+                        remotes[item.name] = `promise new Promise(resolve => {
+                                var script = document.createElement('script')
+                                script.src = window["${exposesVarName}"];
+                                script.onload = function onload() {
+                                  var proxy = {
+                                    get: (request) => window["${varName}"].get(request),
+                                    init: (arg) => {
+                                      try {
+                                        return window["${varName}"].init(arg)
+                                      } catch(e) {
+                                        console.log('remote container already initialized')
+                                      }
+                                    }
+                                  }
+                                  resolve(proxy)
+                                }
+                                document.head.appendChild(script);
+                              })
+                              `;
                     });
                 }
             }
             catch (e) { }
         }
-        const name = fixName(ssr.name);
+        const name = genesis_core_1.MF.varName(ssr.name);
         config.plugin('module-federation').use(new webpack_1.default.container.ModuleFederationPlugin({
             name,
             filename: ssr.isProd

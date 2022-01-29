@@ -5,12 +5,15 @@ import Config from 'webpack-chain';
 import { Plugin as PluginConstructor, PluginManage as PluginManageConstructor } from './plugin';
 import { Renderer as RendererConstructor } from './renderer';
 import { SSR as SSRConstructor } from './ssr';
+import { MF as MFConstructor } from './mf';
 declare namespace Genesis {
     /**
      * SSR Constructor
      */
     const SSR: typeof SSRConstructor;
     type SSR = SSRConstructor;
+    const MF: typeof MFConstructor;
+    type MF = MFConstructor;
     /**
      * Renderer Constructor
      */
