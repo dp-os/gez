@@ -1,4 +1,4 @@
-import { Plugin } from '@fmfe/genesis-core';
+import { Plugin, MF } from '@fmfe/genesis-core';
 import { BabelPlugin } from './babel';
 import { BarPlugin } from './bar';
 import { FontPlugin } from './font';
@@ -21,6 +21,8 @@ export class InstallPlugin extends Plugin {
         ssr.plugin.unshift(MediaPlugin);
         ssr.plugin.unshift(TemplatePlugin);
         ssr.plugin.unshift(WorkerPlugin);
-        ssr.plugin.unshift(MFPlugin);
+        if (MF.is(ssr)) {
+            ssr.plugin.unshift(MFPlugin);
+        }
     }
 }

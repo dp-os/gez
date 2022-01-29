@@ -1,4 +1,4 @@
-import { Renderer, SSR } from '@fmfe/genesis-core';
+import { Renderer, SSR, MF } from '@fmfe/genesis-core';
 import express from 'express';
 import path from 'path';
 
@@ -14,6 +14,13 @@ export const ssr = new SSR({
     name: 'ssr-home',
     build: {
         baseDir: path.resolve(__dirname)
+    }
+});
+
+export const mf = new MF(ssr, {
+    exposes: {
+        "./router": "router.ts",
+        "./test": "test.ts"
     }
 });
 

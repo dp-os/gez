@@ -13,51 +13,36 @@ export class MFPlugin extends Plugin {
         const exposes = {};
         const entryName = this.ssr.exposesEntryName;
         const remotes = {};
-        if (fs.existsSync(ssr.mfConfigFile)) {
-            const text = fs.readFileSync(ssr.mfConfigFile, 'utf-8');
-            try {
-                const data = JSON.parse(text);
-                if ('exposes' in data) {
-                    Object.keys(data.exposes).forEach((key) => {
-                        const filename = data.exposes[key];
-                        const fullPath = path.resolve(ssr.srcDir, filename);
-                        exposes[key] = fullPath;
-                    });
+        const mf = MF.get(ssr);
+        Object.keys(mf.exposes).forEach((key) => {
+            const filename = mf.exposes[key];
+            const fullPath = path.isAbsolute(filename) ? filename : path.resolve(ssr.srcDir, filename);
+            exposes[key] = fullPath;
+        });
+        mf.remotes
+            .forEach((item) => {
+            const varName = MF.varName(ssr.name);
+            const exposesVarName = MF.exposesVarName(ssr.name, item.name);
+            remotes[item.name] = `promise new Promise(resolve => {
+                var script = document.createElement('script')
+                script.src = window["${exposesVarName}"];
+                script.onload = function onload() {
+                  var proxy = {
+                    get: (request) => window["${varName}"].get(request),
+                    init: (arg) => {
+                      try {
+                        return window["${varName}"].init(arg)
+                      } catch(e) {
+                        console.log('remote container already initialized')
+                      }
+                    }
+                  }
+                  resolve(proxy)
                 }
-                if (Array.isArray(data.remotes)) {
-                    data.remotes
-                        .map((item) => {
-                        return {
-                            name: item
-                        };
-                    })
-                        .forEach((item) => {
-                        const varName = MF.varName(ssr.name);
-                        const exposesVarName = MF.exposesVarName(ssr.name, item.name);
-                        remotes[item.name] = `promise new Promise(resolve => {
-                                var script = document.createElement('script')
-                                script.src = window["${exposesVarName}"];
-                                script.onload = function onload() {
-                                  var proxy = {
-                                    get: (request) => window["${varName}"].get(request),
-                                    init: (arg) => {
-                                      try {
-                                        return window["${varName}"].init(arg)
-                                      } catch(e) {
-                                        console.log('remote container already initialized')
-                                      }
-                                    }
-                                  }
-                                  resolve(proxy)
-                                }
-                                document.head.appendChild(script);
-                              })
-                              `;
-                    });
-                }
-            }
-            catch (e) { }
-        }
+                document.head.appendChild(script);
+              })
+              `;
+        });
         const name = MF.varName(ssr.name);
         config.plugin('module-federation').use(new webpack.container.ModuleFederationPlugin({
             name,

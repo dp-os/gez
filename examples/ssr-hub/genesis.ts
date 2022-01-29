@@ -1,4 +1,4 @@
-import { Renderer, SSR } from '@fmfe/genesis-core';
+import { Renderer, SSR, MF } from '@fmfe/genesis-core';
 import express from 'express';
 import path from 'path';
 
@@ -15,6 +15,16 @@ export const ssr = new SSR({
     build: {
         baseDir: path.resolve(__dirname)
     }
+});
+
+export const mf = new MF(ssr, {
+    remotes:  [
+        {
+            name: 'ssr-home',
+            publicPath: 'http://localhost:3001',
+            serverUrl: 'http://localhost:3001/exposes.json'
+        }
+    ]
 });
 
 /**

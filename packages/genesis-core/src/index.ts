@@ -38,6 +38,27 @@ namespace Genesis {
      * Webpack construction objectives
      */
     export type WebpackBuildTarget = 'client' | 'server';
+    export interface MFRemote {
+        /**
+         * Service name
+         */
+        name: string;
+        /**
+         * Client public path, for example: http://localhost:3001
+         */
+        publicPath: string;
+        /**
+         * Server request address, for example: http://localhost:3001/exposes.json
+         */
+        serverUrl: string;
+    }
+    export interface MFOptions {
+        /**
+         * Relative path or absolute path from src directory
+         */
+        exposes?: Record<string, string>;
+        remotes?: MFRemote[];
+    }
     /**
      * Build options
      */

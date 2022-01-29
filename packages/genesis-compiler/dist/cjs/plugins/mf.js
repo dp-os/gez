@@ -19,51 +19,36 @@ class MFPlugin extends genesis_core_1.Plugin {
         const exposes = {};
         const entryName = this.ssr.exposesEntryName;
         const remotes = {};
-        if (fs_1.default.existsSync(ssr.mfConfigFile)) {
-            const text = fs_1.default.readFileSync(ssr.mfConfigFile, 'utf-8');
-            try {
-                const data = JSON.parse(text);
-                if ('exposes' in data) {
-                    Object.keys(data.exposes).forEach((key) => {
-                        const filename = data.exposes[key];
-                        const fullPath = path_1.default.resolve(ssr.srcDir, filename);
-                        exposes[key] = fullPath;
-                    });
+        const mf = genesis_core_1.MF.get(ssr);
+        Object.keys(mf.exposes).forEach((key) => {
+            const filename = mf.exposes[key];
+            const fullPath = path_1.default.isAbsolute(filename) ? filename : path_1.default.resolve(ssr.srcDir, filename);
+            exposes[key] = fullPath;
+        });
+        mf.remotes
+            .forEach((item) => {
+            const varName = genesis_core_1.MF.varName(ssr.name);
+            const exposesVarName = genesis_core_1.MF.exposesVarName(ssr.name, item.name);
+            remotes[item.name] = `promise new Promise(resolve => {
+                var script = document.createElement('script')
+                script.src = window["${exposesVarName}"];
+                script.onload = function onload() {
+                  var proxy = {
+                    get: (request) => window["${varName}"].get(request),
+                    init: (arg) => {
+                      try {
+                        return window["${varName}"].init(arg)
+                      } catch(e) {
+                        console.log('remote container already initialized')
+                      }
+                    }
+                  }
+                  resolve(proxy)
                 }
-                if (Array.isArray(data.remotes)) {
-                    data.remotes
-                        .map((item) => {
-                        return {
-                            name: item
-                        };
-                    })
-                        .forEach((item) => {
-                        const varName = genesis_core_1.MF.varName(ssr.name);
-                        const exposesVarName = genesis_core_1.MF.exposesVarName(ssr.name, item.name);
-                        remotes[item.name] = `promise new Promise(resolve => {
-                                var script = document.createElement('script')
-                                script.src = window["${exposesVarName}"];
-                                script.onload = function onload() {
-                                  var proxy = {
-                                    get: (request) => window["${varName}"].get(request),
-                                    init: (arg) => {
-                                      try {
-                                        return window["${varName}"].init(arg)
-                                      } catch(e) {
-                                        console.log('remote container already initialized')
-                                      }
-                                    }
-                                  }
-                                  resolve(proxy)
-                                }
-                                document.head.appendChild(script);
-                              })
-                              `;
-                    });
-                }
-            }
-            catch (e) { }
-        }
+                document.head.appendChild(script);
+              })
+              `;
+        });
         const name = genesis_core_1.MF.varName(ssr.name);
         config.plugin('module-federation').use(new webpack_1.default.container.ModuleFederationPlugin({
             name,
