@@ -1,4 +1,4 @@
-import { Plugin, SSR, MF } from '@fmfe/genesis-core';
+import { MF, Plugin, SSR } from '@fmfe/genesis-core';
 
 import { BabelPlugin } from './babel';
 import { BarPlugin } from './bar';

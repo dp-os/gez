@@ -1,8 +1,8 @@
-import { Plugin, MF } from '@fmfe/genesis-core';
+import { MF, Plugin } from '@fmfe/genesis-core';
+import find from 'find';
 import fs from 'fs';
 import path from 'path';
 import webpack from 'webpack';
-import find from 'find';
 import write from 'write';
 export class MFPlugin extends Plugin {
     constructor(ssr) {
@@ -16,11 +16,12 @@ export class MFPlugin extends Plugin {
         const mf = MF.get(ssr);
         Object.keys(mf.exposes).forEach((key) => {
             const filename = mf.exposes[key];
-            const fullPath = path.isAbsolute(filename) ? filename : path.resolve(ssr.srcDir, filename);
+            const fullPath = path.isAbsolute(filename)
+                ? filename
+                : path.resolve(ssr.srcDir, filename);
             exposes[key] = fullPath;
         });
-        mf.remotes
-            .forEach((item) => {
+        mf.remotes.forEach((item) => {
             const varName = MF.varName(ssr.name);
             const exposesVarName = MF.exposesVarName(ssr.name, item.name);
             remotes[item.name] = `promise new Promise(resolve => {
@@ -79,8 +80,8 @@ export class MFPlugin extends Plugin {
         const { ssr } = this;
         let version = '';
         const files = find.fileSync(path.resolve(root, './js'));
-        const re = new RegExp(`${ssr.exposesEntryName}\..{8}\.js`);
-        const filename = files.find(filename => {
+        const re = new RegExp(`${ssr.exposesEntryName}\\..{8}.js`);
+        const filename = files.find((filename) => {
             return re.test(filename);
         });
         if (filename) {
@@ -92,7 +93,7 @@ export class MFPlugin extends Plugin {
     _getFiles() {
         const { ssr } = this;
         const files = {};
-        find.fileSync(path.resolve(ssr.outputDirInServer, './js')).forEach(filename => {
+        find.fileSync(path.resolve(ssr.outputDirInServer, './js')).forEach((filename) => {
             const text = fs.readFileSync(filename, 'utf-8');
             const key = path.relative(ssr.outputDirInServer, filename);
             files[key] = text;

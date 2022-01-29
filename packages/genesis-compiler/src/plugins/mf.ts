@@ -1,8 +1,14 @@
-import { Plugin, WebpackHookParams, CompilerType, MF, SSR } from '@fmfe/genesis-core';
+import {
+    CompilerType,
+    MF,
+    Plugin,
+    SSR,
+    WebpackHookParams
+} from '@fmfe/genesis-core';
+import find from 'find';
 import fs from 'fs';
 import path from 'path';
 import webpack from 'webpack';
-import find from 'find';
 import write from 'write';
 
 export class MFPlugin extends Plugin {
@@ -18,14 +24,15 @@ export class MFPlugin extends Plugin {
 
         Object.keys(mf.exposes).forEach((key) => {
             const filename = mf.exposes[key];
-            const fullPath = path.isAbsolute(filename) ? filename : path.resolve(ssr.srcDir, filename);
+            const fullPath = path.isAbsolute(filename)
+                ? filename
+                : path.resolve(ssr.srcDir, filename);
             exposes[key] = fullPath;
         });
-        mf.remotes
-            .forEach((item) => {
-                const varName = MF.varName(ssr.name,);
-                const exposesVarName = MF.exposesVarName(ssr.name, item.name);
-                remotes[item.name] = `promise new Promise(resolve => {
+        mf.remotes.forEach((item) => {
+            const varName = MF.varName(ssr.name);
+            const exposesVarName = MF.exposesVarName(ssr.name, item.name);
+            remotes[item.name] = `promise new Promise(resolve => {
                 var script = document.createElement('script')
                 script.src = window["${exposesVarName}"];
                 script.onload = function onload() {
@@ -44,7 +51,7 @@ export class MFPlugin extends Plugin {
                 document.head.appendChild(script);
               })
               `;
-            });
+        });
         const name = MF.varName(ssr.name);
 
         config.plugin('module-federation').use(
@@ -72,21 +79,29 @@ export class MFPlugin extends Plugin {
         const serverVersion = this._getVersion(ssr.outputDirInServer);
         const files = this._getFiles();
         const version = clientVersion + serverVersion;
-        const text = JSON.stringify({
-            version,
-            clientVersion,
-            serverVersion,
-            files
-        }, null, 4);
-        write.sync(path.resolve(ssr.outputDirInServer, `${ssr.exposesEntryName}.json`), text, { newline: true })
+        const text = JSON.stringify(
+            {
+                version,
+                clientVersion,
+                serverVersion,
+                files
+            },
+            null,
+            4
+        );
+        write.sync(
+            path.resolve(ssr.outputDirInServer, `${ssr.exposesEntryName}.json`),
+            text,
+            { newline: true }
+        );
     }
 
     private _getVersion(root: string) {
         const { ssr } = this;
         let version = '';
         const files = find.fileSync(path.resolve(root, './js'));
-        const re = new RegExp(`${ssr.exposesEntryName}\..{8}\.js`)
-        const filename = files.find(filename => {
+        const re = new RegExp(`${ssr.exposesEntryName}\\..{8}.js`);
+        const filename = files.find((filename) => {
             return re.test(filename);
         });
         if (filename) {
@@ -98,11 +113,13 @@ export class MFPlugin extends Plugin {
     private _getFiles() {
         const { ssr } = this;
         const files = {};
-        find.fileSync(path.resolve(ssr.outputDirInServer, './js')).forEach(filename => {
-            const text = fs.readFileSync(filename, 'utf-8');
-            const key = path.relative(ssr.outputDirInServer, filename);
-            files[key] = text;
-        })
+        find.fileSync(path.resolve(ssr.outputDirInServer, './js')).forEach(
+            (filename) => {
+                const text = fs.readFileSync(filename, 'utf-8');
+                const key = path.relative(ssr.outputDirInServer, filename);
+                files[key] = text;
+            }
+        );
         return files;
     }
 }

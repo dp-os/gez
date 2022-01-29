@@ -42,6 +42,9 @@ class SSR {
         var _a, _b;
         return ((_b = (_a = this.options) === null || _a === void 0 ? void 0 : _a.build) === null || _b === void 0 ? void 0 : _b.publicPath) || `/${this.name}/`;
     }
+    get publicPathName() {
+        return `__webpack_public_path_${this.name}__`;
+    }
     /**
      * CDN resource public path, Only valid in production mode
      */

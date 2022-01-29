@@ -58,7 +58,7 @@ async function template(strHtml, ctx) {
         ignoreFunction: true
     });
     data.script =
-        `<script>window["__webpack_public_path_${ssr.name}__"] = ${baseUrl};</script>` +
+        `<script>window["${ssr.publicPathName}"] = ${baseUrl};</script>` +
             data.script +
             vueCtx.renderScripts();
     data.style += vueCtx.renderStyles();
@@ -104,8 +104,7 @@ class Renderer {
                 }
             });
         }
-        global[`__webpack_public_path_${ssr.name}__`] =
-            ssr.cdnPublicPath + ssr.publicPath;
+        global[ssr.publicPathName] = ssr.cdnPublicPath + ssr.publicPath;
         const renderOptions = {
             template: template,
             inject: false

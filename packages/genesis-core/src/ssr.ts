@@ -49,6 +49,9 @@ export class SSR {
     public get publicPath() {
         return this.options?.build?.publicPath || `/${this.name}/`;
     }
+    public get publicPathName() {
+        return `__webpack_public_path_${this.name}__`;
+    }
     /**
      * CDN resource public path, Only valid in production mode
      */

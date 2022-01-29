@@ -28,6 +28,7 @@ export declare class SSR {
      * The basic path of client static resource loading, which is '/ssr-genesis/' by default
      */
     get publicPath(): string;
+    get publicPathName(): string;
     /**
      * CDN resource public path, Only valid in production mode
      */

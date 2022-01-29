@@ -5,10 +5,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MFPlugin = void 0;
 const genesis_core_1 = require("@fmfe/genesis-core");
+const find_1 = __importDefault(require("find"));
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const webpack_1 = __importDefault(require("webpack"));
-const find_1 = __importDefault(require("find"));
 const write_1 = __importDefault(require("write"));
 class MFPlugin extends genesis_core_1.Plugin {
     constructor(ssr) {
@@ -22,11 +22,12 @@ class MFPlugin extends genesis_core_1.Plugin {
         const mf = genesis_core_1.MF.get(ssr);
         Object.keys(mf.exposes).forEach((key) => {
             const filename = mf.exposes[key];
-            const fullPath = path_1.default.isAbsolute(filename) ? filename : path_1.default.resolve(ssr.srcDir, filename);
+            const fullPath = path_1.default.isAbsolute(filename)
+                ? filename
+                : path_1.default.resolve(ssr.srcDir, filename);
             exposes[key] = fullPath;
         });
-        mf.remotes
-            .forEach((item) => {
+        mf.remotes.forEach((item) => {
             const varName = genesis_core_1.MF.varName(ssr.name);
             const exposesVarName = genesis_core_1.MF.exposesVarName(ssr.name, item.name);
             remotes[item.name] = `promise new Promise(resolve => {
@@ -85,8 +86,8 @@ class MFPlugin extends genesis_core_1.Plugin {
         const { ssr } = this;
         let version = '';
         const files = find_1.default.fileSync(path_1.default.resolve(root, './js'));
-        const re = new RegExp(`${ssr.exposesEntryName}\..{8}\.js`);
-        const filename = files.find(filename => {
+        const re = new RegExp(`${ssr.exposesEntryName}\\..{8}.js`);
+        const filename = files.find((filename) => {
             return re.test(filename);
         });
         if (filename) {
@@ -98,7 +99,7 @@ class MFPlugin extends genesis_core_1.Plugin {
     _getFiles() {
         const { ssr } = this;
         const files = {};
-        find_1.default.fileSync(path_1.default.resolve(ssr.outputDirInServer, './js')).forEach(filename => {
+        find_1.default.fileSync(path_1.default.resolve(ssr.outputDirInServer, './js')).forEach((filename) => {
             const text = fs_1.default.readFileSync(filename, 'utf-8');
             const key = path_1.default.relative(ssr.outputDirInServer, filename);
             files[key] = text;

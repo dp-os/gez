@@ -1,13 +1,15 @@
 import type * as Genesis from '.';
 
-const mf = Symbol('mf')
+const mf = Symbol('mf');
 
 export class MF {
     public static varName(name: string) {
         return name.replace(/\W/g, '_');
     }
     public static exposesVarName(name: string, exposesEntryName: string) {
-        return `__webpack_public_path_${this.varName(name)}_${exposesEntryName}`
+        return `__webpack_public_path_${this.varName(
+            name
+        )}_${exposesEntryName}`;
     }
     public static is(ssr: Genesis.SSR) {
         return ssr[mf] instanceof MF;
@@ -17,7 +19,7 @@ export class MF {
     }
     public ssr: Genesis.SSR;
     public options: Genesis.MFOptions;
-    public constructor (ssr: Genesis.SSR, options: Genesis.MFOptions = {}) {
+    public constructor(ssr: Genesis.SSR, options: Genesis.MFOptions = {}) {
         this.ssr = ssr;
         this.options = options;
         ssr[mf] = this;
@@ -25,10 +27,10 @@ export class MF {
     public get name() {
         return MF.varName(this.ssr.name);
     }
-    public get exposes () {
+    public get exposes() {
         return this.options?.exposes || {};
     }
-    public get remotes () {
+    public get remotes() {
         return this.options?.remotes || [];
     }
     public getExposes(version: string) {}

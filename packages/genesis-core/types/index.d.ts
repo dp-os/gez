@@ -2,10 +2,10 @@
 import { IncomingMessage, ServerResponse } from 'http';
 import Vue from 'vue';
 import Config from 'webpack-chain';
+import { MF as MFConstructor } from './mf';
 import { Plugin as PluginConstructor, PluginManage as PluginManageConstructor } from './plugin';
 import { Renderer as RendererConstructor } from './renderer';
 import { SSR as SSRConstructor } from './ssr';
-import { MF as MFConstructor } from './mf';
 declare namespace Genesis {
     /**
      * SSR Constructor

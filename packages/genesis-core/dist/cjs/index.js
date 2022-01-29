@@ -1,8 +1,8 @@
 "use strict";
+const mf_1 = require("./mf");
 const plugin_1 = require("./plugin");
 const renderer_1 = require("./renderer");
 const ssr_1 = require("./ssr");
-const mf_1 = require("./mf");
 // eslint-disable-next-line @typescript-eslint/no-namespace
 var Genesis;
 (function (Genesis) {
