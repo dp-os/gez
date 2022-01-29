@@ -6,7 +6,7 @@ import serialize from 'serialize-javascript';
 import Vue from 'vue';
 import { createRenderer, Renderer as VueRenderer } from 'vue-server-renderer';
 
-import * as Genesis from './';
+import type * as Genesis from './';
 
 const md5 = (content: string) => {
     const md5 = crypto.createHash('md5');

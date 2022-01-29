@@ -18,6 +18,7 @@ export class SSR {
      * Plug in management
      */
     public plugin: Genesis.PluginManage;
+
     public readonly entryName = 'app';
     public readonly exposesEntryName = 'exposes';
     public constructor(options: Genesis.Options = {}) {

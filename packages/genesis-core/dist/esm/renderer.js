@@ -47,7 +47,10 @@ async function template(strHtml, ctx) {
     else {
         data.html += html;
     }
-    const baseUrl = serialize(ssr.cdnPublicPath + ssr.publicPath, { isJSON: false, ignoreFunction: true });
+    const baseUrl = serialize(ssr.cdnPublicPath + ssr.publicPath, {
+        isJSON: false,
+        ignoreFunction: true
+    });
     data.script =
         `<script>window["__webpack_public_path_${ssr.name}__"] = ${baseUrl};</script>` +
             data.script +
@@ -95,7 +98,8 @@ export class Renderer {
                 }
             });
         }
-        global[`__webpack_public_path_${ssr.name}__`] = ssr.cdnPublicPath + ssr.publicPath;
+        global[`__webpack_public_path_${ssr.name}__`] =
+            ssr.cdnPublicPath + ssr.publicPath;
         const renderOptions = {
             template: template,
             inject: false

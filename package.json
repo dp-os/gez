@@ -38,6 +38,7 @@
         "@fmfe/genesis-lint": "file:./packages/genesis-lint",
         "@types/ejs": "^3.0.6",
         "@types/express": "^4.17.2",
+        "@types/find": "^0.2.1",
         "@types/jest": "^25.1.4",
         "@types/memory-fs": "^0.3.2",
         "@types/node": "14.14.35",

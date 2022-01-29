@@ -1,6 +1,6 @@
 /// <reference types="node" />
 import { IncomingMessage, ServerResponse } from 'http';
-import * as Genesis from './';
+import type * as Genesis from './';
 export declare class Renderer {
     ssr: Genesis.SSR;
     clientManifest: Genesis.ClientManifest;
