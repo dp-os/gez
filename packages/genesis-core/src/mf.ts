@@ -1,3 +1,4 @@
+import path from 'path';
 import serialize from 'serialize-javascript';
 
 import type * as Genesis from '.';
@@ -47,6 +48,18 @@ export class MF {
     }
     public get remotes() {
         return this.options?.remotes || [];
+    }
+    public get outputExposesInfo() {
+        return path.resolve(
+            this.ssr.outputDirInServer,
+            'vue-ssr-server-exposes-info.json'
+        );
+    }
+    public get outputExposesFiles() {
+        return path.resolve(
+            this.ssr.outputDirInServer,
+            'vue-ssr-server-exposes-files.json'
+        );
     }
     public getWebpackPublicPathVarName(name: string) {
         return `__webpack_public_path_${this.name}_${SSR.fixVarName(name)}`;

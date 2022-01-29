@@ -79,22 +79,15 @@ export class MFPlugin extends Plugin {
         const clientVersion = this._getVersion(ssr.outputDirInClient);
         const serverVersion = this._getVersion(ssr.outputDirInServer);
         const files = this._getFiles();
-        const version = clientVersion + serverVersion;
-        const text = JSON.stringify(
-            {
-                version,
-                clientVersion,
-                serverVersion,
-                files
-            },
-            null,
-            4
-        );
-        write.sync(
-            path.resolve(ssr.outputDirInServer, `${mf.entryName}.json`),
-            text,
-            { newline: true }
-        );
+        this._write(mf.outputExposesInfo, {
+            clientVersion,
+            serverVersion
+        });
+        this._write(mf.outputExposesFiles, files);
+    }
+    private _write(filename: string, data: Record<string, string>) {
+        const text = JSON.stringify(data);
+        write.sync(filename, text, { newline: true });
     }
 
     private _getVersion(root: string) {

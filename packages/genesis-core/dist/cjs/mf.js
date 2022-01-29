@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MF = exports.MFPlugin = void 0;
+const path_1 = __importDefault(require("path"));
 const serialize_javascript_1 = __importDefault(require("serialize-javascript"));
 const plugin_1 = require("./plugin");
 const ssr_1 = require("./ssr");
@@ -49,6 +50,12 @@ class MF {
     get remotes() {
         var _a;
         return ((_a = this.options) === null || _a === void 0 ? void 0 : _a.remotes) || [];
+    }
+    get outputExposesInfo() {
+        return path_1.default.resolve(this.ssr.outputDirInServer, 'vue-ssr-server-exposes-info.json');
+    }
+    get outputExposesFiles() {
+        return path_1.default.resolve(this.ssr.outputDirInServer, 'vue-ssr-server-exposes-files.json');
     }
     getWebpackPublicPathVarName(name) {
         return `__webpack_public_path_${this.name}_${ssr_1.SSR.fixVarName(name)}`;
