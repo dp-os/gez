@@ -32,7 +32,9 @@ export class MFPlugin extends Plugin {
         mf.remotes.forEach((item) => {
             const varName = SSR.fixVarName(item.name);
             const exposesVarName = mf.getWebpackPublicPathVarName(item.name);
-            remotes[item.name] = `promise new Promise(resolve => {
+            remotes[
+                item.name
+            ] = `promise new Promise(function (resolve, reject) {
                 var script = document.createElement('script')
                 script.src = window["${exposesVarName}"];
                 script.onload = function onload() {
@@ -47,6 +49,10 @@ export class MFPlugin extends Plugin {
                     }
                   }
                   resolve(proxy)
+                }
+                script.onerror = function onerror() {
+
+                    document.head.removeChild(script);
                 }
                 document.head.appendChild(script);
               })

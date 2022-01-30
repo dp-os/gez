@@ -30,7 +30,7 @@ class MFPlugin extends genesis_core_1.Plugin {
         mf.remotes.forEach((item) => {
             const varName = genesis_core_1.SSR.fixVarName(item.name);
             const exposesVarName = mf.getWebpackPublicPathVarName(item.name);
-            remotes[item.name] = `promise new Promise(resolve => {
+            remotes[item.name] = `promise new Promise(function (resolve, reject) {
                 var script = document.createElement('script')
                 script.src = window["${exposesVarName}"];
                 script.onload = function onload() {
@@ -45,6 +45,10 @@ class MFPlugin extends genesis_core_1.Plugin {
                     }
                   }
                   resolve(proxy)
+                }
+                script.onerror = function onerror() {
+
+                    document.head.removeChild(script);
                 }
                 document.head.appendChild(script);
               })
