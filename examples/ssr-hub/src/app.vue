@@ -11,6 +11,7 @@
                 <router-link to="/about">About</router-link>
             </vs-navbar-item>
         </vs-navbar>
+        <router-view />
     </div>
 </template>
 <script lang="ts">
@@ -26,9 +27,6 @@ export default Vue.extend({
             activeItem: 0,
             search: ''
         };
-    },
-    async mounted() {
-        console.log(await import('ssr-home/router'));
     }
 });
 </script>

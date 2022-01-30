@@ -3,15 +3,16 @@ import Router, { RouteConfig } from 'vue-router';
 
 Vue.use(Router);
 
-export async function createRoutes(): Promise<RouteConfig[]> {
+export function createRoutes(): RouteConfig[] {
     return [];
 }
 
 export async function createRouter() {
-    const routes = await createRoutes();
-
+    const { createRoutes } = await import('ssr-home/router');
     return new Router({
         mode: 'history',
-        routes
+        routes: [
+            ...createRoutes()
+        ]
     });
 }

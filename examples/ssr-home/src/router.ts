@@ -3,8 +3,13 @@ import Router, { RouteConfig } from 'vue-router';
 
 Vue.use(Router);
 
-export async function createRoutes(): Promise<RouteConfig[]> {
-    return [];
+export function createRoutes(): RouteConfig[] {
+    return [
+        {
+            path: '/',
+            component: () => import('./views/index.vue').then(m => m.default)
+        }
+    ];
 }
 
 export async function createRouter() {

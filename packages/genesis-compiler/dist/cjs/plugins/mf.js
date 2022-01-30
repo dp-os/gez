@@ -30,6 +30,10 @@ class MFPlugin extends genesis_core_1.Plugin {
         mf.remotes.forEach((item) => {
             const varName = genesis_core_1.SSR.fixVarName(item.name);
             const exposesVarName = mf.getWebpackPublicPathVarName(item.name);
+            if (target === 'server' && item.name === 'ssr-home') {
+                remotes[item.name] = '/Volumes/work/github/genesis/examples/ssr-home/dist/ssr-home/server/js/exposes.js';
+                return;
+            }
             remotes[item.name] = `promise new Promise(function (resolve, reject) {
                 var script = document.createElement('script')
                 script.src = window["${exposesVarName}"];
@@ -61,6 +65,7 @@ class MFPlugin extends genesis_core_1.Plugin {
                 ? `js/${entryName}.[contenthash:8].js`
                 : `js/${entryName}.js`,
             exposes,
+            library: target === 'client' ? undefined : { type: 'commonjs-module' },
             remotes,
             shared: {
                 vue: {
