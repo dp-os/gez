@@ -22,19 +22,21 @@ export class MFPlugin extends Plugin {
         const entryName = mf.entryName;
         const remotes: Record<string, string> = {};
 
-        Object.keys(mf.exposes).forEach((key) => {
-            const filename = mf.exposes[key];
+        Object.keys(mf.options.exposes).forEach((key) => {
+            const filename = mf.options.exposes[key];
             const fullPath = path.isAbsolute(filename)
                 ? filename
                 : path.resolve(ssr.srcDir, filename);
             exposes[key] = fullPath;
         });
-        mf.remotes.forEach((item) => {
+        mf.options.remotes.forEach((item) => {
             const varName = SSR.fixVarName(item.name);
             const exposesVarName = mf.getWebpackPublicPathVarName(item.name);
-            if (target=== 'server' && item.name === 'ssr-home') {
-                remotes[item.name] = '/Volumes/work/github/genesis/examples/ssr-home/dist/ssr-home/server/js/exposes.js'
-                return
+            if (target === 'server' && item.name === 'ssr-home') {
+                remotes[
+                    item.name
+                ] = `promise new Promise(function(resolve) {resolve(require(global["${exposesVarName}"]))})`;
+                return;
             }
             remotes[
                 item.name
@@ -71,7 +73,10 @@ export class MFPlugin extends Plugin {
                     ? `js/${entryName}.[contenthash:8].js`
                     : `js/${entryName}.js`,
                 exposes,
-                library: target === 'client'? undefined : { type: 'commonjs-module' },
+                library:
+                    target === 'client'
+                        ? undefined
+                        : { type: 'commonjs-module' },
                 remotes,
                 shared: {
                     vue: {
@@ -90,13 +95,14 @@ export class MFPlugin extends Plugin {
         const clientVersion = this._getVersion(ssr.outputDirInClient);
         const serverVersion = this._getVersion(ssr.outputDirInServer);
         const files = this._getFiles();
-        this._write(mf.outputExposesInfo, {
+        this._write(mf.outputExposesVersion, [
             clientVersion,
-            serverVersion
-        });
+            serverVersion,
+            ssr.isProd
+        ]);
         this._write(mf.outputExposesFiles, files);
     }
-    private _write(filename: string, data: Record<string, string>) {
+    private _write(filename: string, data: any) {
         const text = JSON.stringify(data);
         write.sync(filename, text, { newline: true });
     }
@@ -104,7 +110,7 @@ export class MFPlugin extends Plugin {
     private _getVersion(root: string) {
         const { ssr } = this;
         const mf = MF.get(ssr);
-        let version = '';
+        let version = String(Date.now());
         const filename = this._getFilename(root);
         if (filename) {
             const arr = filename.split('.');

@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.StylePlugin = void 0;
 const genesis_core_1 = require("@fmfe/genesis-core");
 const cssnano_1 = __importDefault(require("cssnano"));
-// import ExtractCssChunks from 'extract-css-chunks-webpack-plugin';
 const mini_css_extract_plugin_1 = __importDefault(require("mini-css-extract-plugin"));
 const postcss_preset_env_1 = __importDefault(require("postcss-preset-env"));
 class StylePlugin extends genesis_core_1.Plugin {
@@ -26,25 +25,24 @@ class StylePlugin extends genesis_core_1.Plugin {
             enumerable: false
         });
         if (isProd) {
-            if (target === 'client') {
-                config.plugin('mini-css').use(mini_css_extract_plugin_1.default, [
-                    {
-                        ignoreOrder: true,
-                        filename: 'css/[name].[contenthash:8].css',
-                        chunkFilename: 'css/[name].[contenthash:8].css'
-                    }
-                ]);
-            }
-            else {
-                config.module
-                    .rule('vue')
-                    .use('vue')
-                    .tap((options = {}) => {
-                    options.extractCSS = true;
-                    return options;
-                })
-                    .end();
-            }
+            // if (target === 'client') {
+            //     config.plugin('mini-css').use(MiniCssExtractPlugin, [
+            //         {
+            //             ignoreOrder: true,
+            //             filename: 'css/[name].[contenthash:8].css',
+            //             chunkFilename: 'css/[name].[contenthash:8].css'
+            //         }
+            //     ]);
+            // } else {
+            //     config.module
+            //         .rule('vue')
+            //         .use('vue')
+            //         .tap((options = {}) => {
+            //             options.extractCSS = true;
+            //             return options;
+            //         })
+            //         .end();
+            // }
             postcssConfig.postcssOptions.plugins.push(...[
                 (0, postcss_preset_env_1.default)(),
                 (0, cssnano_1.default)({
@@ -113,12 +111,12 @@ class StylePlugin extends genesis_core_1.Plugin {
         };
         const getCssLoader = ({ isModule = false } = {}) => {
             const lds = [];
-            if (!isProd) {
-                lds.push(loaders['vue-style']);
-            }
-            else if (target === 'client') {
-                lds.push(loaders.extract);
-            }
+            lds.push(loaders['vue-style']);
+            // if (!isProd) {
+            // lds.push(loaders['vue-style']);
+            // } else if (target === 'client') {
+            //     lds.push(loaders.extract);
+            // }
             lds.push(isModule ? loaders['module-css'] : loaders.css);
             if (postcssConfig.postcssOptions.plugins.length > 0) {
                 lds.push(loaders.postcss);

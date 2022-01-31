@@ -18,6 +18,7 @@
   "license": "MIT",
   "gitHead": "1d78746ea4276916f32efa233ff645378f430282",
   "dependencies": {
+    "write": "2.0.0",
     "ejs": "3.1.6",
     "serialize-javascript": "6.0.0",
     "vue": "2.6.14",

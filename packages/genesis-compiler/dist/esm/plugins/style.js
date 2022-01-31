@@ -1,6 +1,5 @@
 import { Plugin } from '@fmfe/genesis-core';
 import cssnano from 'cssnano';
-// import ExtractCssChunks from 'extract-css-chunks-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import postcssPresetEnv from 'postcss-preset-env';
 export class StylePlugin extends Plugin {
@@ -20,25 +19,24 @@ export class StylePlugin extends Plugin {
             enumerable: false
         });
         if (isProd) {
-            if (target === 'client') {
-                config.plugin('mini-css').use(MiniCssExtractPlugin, [
-                    {
-                        ignoreOrder: true,
-                        filename: 'css/[name].[contenthash:8].css',
-                        chunkFilename: 'css/[name].[contenthash:8].css'
-                    }
-                ]);
-            }
-            else {
-                config.module
-                    .rule('vue')
-                    .use('vue')
-                    .tap((options = {}) => {
-                    options.extractCSS = true;
-                    return options;
-                })
-                    .end();
-            }
+            // if (target === 'client') {
+            //     config.plugin('mini-css').use(MiniCssExtractPlugin, [
+            //         {
+            //             ignoreOrder: true,
+            //             filename: 'css/[name].[contenthash:8].css',
+            //             chunkFilename: 'css/[name].[contenthash:8].css'
+            //         }
+            //     ]);
+            // } else {
+            //     config.module
+            //         .rule('vue')
+            //         .use('vue')
+            //         .tap((options = {}) => {
+            //             options.extractCSS = true;
+            //             return options;
+            //         })
+            //         .end();
+            // }
             postcssConfig.postcssOptions.plugins.push(...[
                 postcssPresetEnv(),
                 cssnano({
@@ -107,12 +105,12 @@ export class StylePlugin extends Plugin {
         };
         const getCssLoader = ({ isModule = false } = {}) => {
             const lds = [];
-            if (!isProd) {
-                lds.push(loaders['vue-style']);
-            }
-            else if (target === 'client') {
-                lds.push(loaders.extract);
-            }
+            lds.push(loaders['vue-style']);
+            // if (!isProd) {
+            // lds.push(loaders['vue-style']);
+            // } else if (target === 'client') {
+            //     lds.push(loaders.extract);
+            // }
             lds.push(isModule ? loaders['module-css'] : loaders.css);
             if (postcssConfig.postcssOptions.plugins.length > 0) {
                 lds.push(loaders.postcss);

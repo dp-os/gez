@@ -7,7 +7,7 @@ export function createRoutes(): RouteConfig[] {
     return [
         {
             path: '/',
-            component: () => import('./views/index.vue').then(m => m.default)
+            component: () => import('./views/index.vue').then((m) => m.default)
         }
     ];
 }

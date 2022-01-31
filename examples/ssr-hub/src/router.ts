@@ -11,8 +11,6 @@ export async function createRouter() {
     const { createRoutes } = await import('ssr-home/router');
     return new Router({
         mode: 'history',
-        routes: [
-            ...createRoutes()
-        ]
+        routes: [...createRoutes()]
     });
 }

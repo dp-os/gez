@@ -22,7 +22,7 @@ export const mf = new MF(ssr, {
         {
             name: 'ssr-home',
             publicPath: 'http://localhost:3001',
-            serverUrl: 'http://localhost:3001/exposes.json'
+            serverUrl: 'http://localhost:3001/api/exposes'
         }
     ]
 });
@@ -30,7 +30,8 @@ export const mf = new MF(ssr, {
 /**
  * 拿到渲染器后，启动应用程序
  */
-export const startApp = (renderer: Renderer) => {
+export const startApp = async (renderer: Renderer) => {
+    await mf.getRemote();
     /**
      * 使用默认渲染中间件进行渲染，你也可以调用更加底层的 renderer.renderJson 和 renderer.renderHtml 来实现渲染
      */

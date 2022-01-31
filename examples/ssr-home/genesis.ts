@@ -29,6 +29,14 @@ export const mf = new MF(ssr, {
  */
 export const startApp = (renderer: Renderer) => {
     /**
+     * 提供当前暴露的版本号
+     */
+    app.get('/api/exposes', async (req, res) => {
+        const data = await mf.getExposes(String(req.query.version));
+        res.send(data);
+    });
+
+    /**
      * 使用默认渲染中间件进行渲染，你也可以调用更加底层的 renderer.renderJson 和 renderer.renderHtml 来实现渲染
      */
     app.use(renderer.renderMiddleware);
