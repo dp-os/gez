@@ -4,11 +4,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ReadyPromise = exports.MF = exports.MFPlugin = void 0;
+const eventsource_1 = __importDefault(require("eventsource"));
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const serialize_javascript_1 = __importDefault(require("serialize-javascript"));
 const write_1 = __importDefault(require("write"));
-const eventsource_1 = __importDefault(require("eventsource"));
 const plugin_1 = require("./plugin");
 const ssr_1 = require("./ssr");
 const mf = Symbol('mf');
@@ -20,7 +20,6 @@ class RemoteItem {
         this.serverVersion = '';
         this.ready = new ReadyPromise();
         this.onMessage = (evt) => {
-            var _a;
             const data = JSON.parse(evt.data);
             const { name } = this.options;
             const { mf } = this;
@@ -41,10 +40,11 @@ class RemoteItem {
             global[varName] = path_1.default.resolve(this.ssr.outputDirInServer, `remotes/${name}/js/${mf.entryName}${version}.js`);
             // 当前服务已经初始化完成
             if (!this.ready.finished) {
-                console.log(`${this.options.name} done`);
                 this.ready.finish(true);
             }
-            (_a = this.renderer) === null || _a === void 0 ? void 0 : _a.reload();
+            if (this.renderer) {
+                this.renderer.reload();
+            }
         };
         this.ssr = ssr;
         this.options = options;
@@ -86,7 +86,7 @@ class RemoteItem {
 class Remote {
     constructor(ssr) {
         this.ssr = ssr;
-        this.items = this.mf.options.remotes.map(opts => new RemoteItem(ssr, opts));
+        this.items = this.mf.options.remotes.map((opts) => new RemoteItem(ssr, opts));
     }
     get mf() {
         return MF.get(this.ssr);
@@ -102,7 +102,7 @@ class Remote {
         return `<script>${arr.join('')}</script>`;
     }
     init(...args) {
-        return Promise.all(this.items.map(item => item.init(...args)));
+        return Promise.all(this.items.map((item) => item.init(...args)));
     }
 }
 class Exposes {
@@ -118,7 +118,7 @@ class Exposes {
         const newVersion = this.readText(this.mf.outputExposesVersion);
         if (version !== newVersion) {
             const text = this.readText(this.mf.outputExposesFiles);
-            text && cb(text);
+            text && cb(JSON.parse(text));
         }
         return () => {
             const index = this.subs.indexOf(cb);
@@ -131,7 +131,8 @@ class Exposes {
         const text = this.readText(this.mf.outputExposesFiles);
         if (!text)
             return;
-        this.subs.forEach(cb => cb(text));
+        const data = JSON.parse(text);
+        this.subs.forEach((cb) => cb(data));
     }
     readText(fullPath) {
         if (!fs_1.default.existsSync(fullPath)) {
@@ -154,6 +155,7 @@ class MFPlugin extends plugin_1.Plugin {
 exports.MFPlugin = MFPlugin;
 class MF {
     constructor(ssr, options = {}) {
+        var _a, _b;
         this.options = { remotes: [], exposes: {} };
         this.entryName = 'exposes';
         this.ssr = ssr;
@@ -163,6 +165,9 @@ class MF {
         this.exposes = new Exposes(ssr);
         this.remote = new Remote(ssr);
         ssr.plugin.use(this.mfPlugin);
+        if (((_b = (_a = ssr.options) === null || _a === void 0 ? void 0 : _a.build) === null || _b === void 0 ? void 0 : _b.extractCSS) !== false) {
+            throw new TypeError(`To use MF plug-in, build.extractCSS needs to be set to false`);
+        }
     }
     static is(ssr) {
         return ssr[mf] instanceof MF;
@@ -177,7 +182,7 @@ class MF {
         return path_1.default.resolve(this.ssr.outputDirInServer, 'vue-ssr-server-exposes-version.txt');
     }
     get outputExposesFiles() {
-        return path_1.default.resolve(this.ssr.outputDirInServer, 'vue-ssr-server-exposes-files.txt');
+        return path_1.default.resolve(this.ssr.outputDirInServer, 'vue-ssr-server-exposes-files.json');
     }
     getWebpackPublicPathVarName(name) {
         return `__webpack_public_path_${this.name}_${ssr_1.SSR.fixVarName(name)}`;

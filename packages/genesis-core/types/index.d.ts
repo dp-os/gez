@@ -59,6 +59,10 @@ declare namespace Genesis {
      */
     interface BuildOptions {
         /**
+         * Valid only in production environment
+         */
+        extractCSS?: boolean;
+        /**
          * Basic folder for the project
          */
         baseDir?: string;

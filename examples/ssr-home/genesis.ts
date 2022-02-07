@@ -13,6 +13,7 @@ export const app = express();
 export const ssr = new SSR({
     name: 'ssr-home',
     build: {
+        extractCSS: false,
         baseDir: path.resolve(__dirname)
     }
 });
@@ -36,8 +37,8 @@ export const startApp = (renderer: Renderer) => {
         res.setHeader('Connection', 'keep-alive');
         res.flushHeaders();
         // 监听导出的内容变化，发送数据
-        const unWatch = exposes.watch((text) => {
-            res.write(`data: ${JSON.stringify(JSON.parse(text))}\n\n`);
+        const unWatch = exposes.watch((data) => {
+            res.write(`data: ${JSON.stringify(data)}\n\n`);
         });
         // 监听请求关闭，取消监听
         res.on('close', () => {

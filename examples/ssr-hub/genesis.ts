@@ -13,6 +13,7 @@ export const app = express();
 export const ssr = new SSR({
     name: 'ssr-hub',
     build: {
+        extractCSS: false,
         baseDir: path.resolve(__dirname)
     }
 });
@@ -32,7 +33,6 @@ export const mf = new MF(ssr, {
  */
 export const startApp = async (renderer: Renderer) => {
     await mf.remote.init(renderer);
-    console.log('>>>>> done');
     /**
      * 使用默认渲染中间件进行渲染，你也可以调用更加底层的 renderer.renderJson 和 renderer.renderHtml 来实现渲染
      */

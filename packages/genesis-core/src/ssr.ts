@@ -45,6 +45,13 @@ export class SSR {
         return this.options.name || 'ssr-genesis';
     }
 
+    public get extractCSS() {
+        if (this.isProd) {
+            return this.options?.build?.extractCSS ?? true;
+        }
+        return false;
+    }
+
     /**
      * The basic path of client static resource loading, which is '/ssr-genesis/' by default
      */

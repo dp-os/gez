@@ -131,7 +131,7 @@ class Remote {
     }
 }
 
-type ExposesWatchCallback = (text: string) => void;
+type ExposesWatchCallback = (data: Data) => void;
 
 class Exposes {
     public ssr: Genesis.SSR;
@@ -147,7 +147,7 @@ class Exposes {
         const newVersion = this.readText(this.mf.outputExposesVersion);
         if (version !== newVersion) {
             const text = this.readText(this.mf.outputExposesFiles);
-            text && cb(text);
+            text && cb(JSON.parse(text));
         }
         return () => {
             const index = this.subs.indexOf(cb);
@@ -159,7 +159,8 @@ class Exposes {
     public emit() {
         const text = this.readText(this.mf.outputExposesFiles);
         if (!text) return;
-        this.subs.forEach((cb) => cb(text));
+        const data: Data = JSON.parse(text);
+        this.subs.forEach((cb) => cb(data));
     }
     public readText(fullPath: string) {
         if (!fs.existsSync(fullPath)) {
@@ -202,6 +203,11 @@ export class MF {
         this.exposes = new Exposes(ssr);
         this.remote = new Remote(ssr);
         ssr.plugin.use(this.mfPlugin);
+        if (ssr.options?.build?.extractCSS !== false) {
+            throw new TypeError(
+                `To use MF plug-in, build.extractCSS needs to be set to false`
+            );
+        }
     }
     public get name() {
         return SSR.fixVarName(this.ssr.name);
@@ -215,7 +221,7 @@ export class MF {
     public get outputExposesFiles() {
         return path.resolve(
             this.ssr.outputDirInServer,
-            'vue-ssr-server-exposes-files.txt'
+            'vue-ssr-server-exposes-files.json'
         );
     }
     public getWebpackPublicPathVarName(name: string) {

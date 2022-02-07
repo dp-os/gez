@@ -1,7 +1,13 @@
 import type * as Genesis from '.';
 import { Plugin } from './plugin';
-import { SSR } from './ssr';
 import type { Renderer } from './renderer';
+import { SSR } from './ssr';
+interface Data {
+    version: string;
+    clientVersion: string;
+    serverVersion: string;
+    files: {};
+}
 declare class RemoteItem {
     ssr: Genesis.SSR;
     options: Genesis.MFRemote;
@@ -27,7 +33,7 @@ declare class Remote {
     inject(): string;
     init(...args: Parameters<RemoteItem['init']>): Promise<void[]>;
 }
-declare type ExposesWatchCallback = (text: string) => void;
+declare type ExposesWatchCallback = (data: Data) => void;
 declare class Exposes {
     ssr: Genesis.SSR;
     private subs;

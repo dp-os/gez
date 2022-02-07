@@ -37,6 +37,13 @@ class SSR {
     get name() {
         return this.options.name || 'ssr-genesis';
     }
+    get extractCSS() {
+        var _a, _b, _c;
+        if (this.isProd) {
+            return (_c = (_b = (_a = this.options) === null || _a === void 0 ? void 0 : _a.build) === null || _b === void 0 ? void 0 : _b.extractCSS) !== null && _c !== void 0 ? _c : true;
+        }
+        return false;
+    }
     /**
      * The basic path of client static resource loading, which is '/ssr-genesis/' by default
      */

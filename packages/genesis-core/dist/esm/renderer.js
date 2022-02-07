@@ -113,9 +113,11 @@ export class Renderer {
         }
         if (fs.existsSync(ssr.outputClientManifestFile)) {
             const text = fs.readFileSync(ssr.outputClientManifestFile, 'utf-8');
-            const clientManifest = JSON.parse(text);
-            clientManifest.publicPath = ssr.cdnPublicPath + ssr.publicPath;
-            this.clientManifest = clientManifest;
+            if (text) {
+                const clientManifest = JSON.parse(text);
+                clientManifest.publicPath = ssr.cdnPublicPath + ssr.publicPath;
+                this.clientManifest = clientManifest;
+            }
         }
         renderOptions.clientManifest = this.clientManifest;
         const ejsTemplate = fs.existsSync(this.ssr.templateFile)

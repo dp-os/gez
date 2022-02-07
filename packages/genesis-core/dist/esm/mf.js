@@ -1,8 +1,8 @@
+import Eventsource from 'eventsource';
 import fs from 'fs';
 import path from 'path';
 import serialize from 'serialize-javascript';
 import write from 'write';
-import Eventsource from 'eventsource';
 import { Plugin } from './plugin';
 import { SSR } from './ssr';
 const mf = Symbol('mf');
@@ -34,10 +34,11 @@ class RemoteItem {
             global[varName] = path.resolve(this.ssr.outputDirInServer, `remotes/${name}/js/${mf.entryName}${version}.js`);
             // 当前服务已经初始化完成
             if (!this.ready.finished) {
-                console.log(`${this.options.name} done`);
                 this.ready.finish(true);
             }
-            this.renderer?.reload();
+            if (this.renderer) {
+                this.renderer.reload();
+            }
         };
         this.ssr = ssr;
         this.options = options;
@@ -79,7 +80,7 @@ class RemoteItem {
 class Remote {
     constructor(ssr) {
         this.ssr = ssr;
-        this.items = this.mf.options.remotes.map(opts => new RemoteItem(ssr, opts));
+        this.items = this.mf.options.remotes.map((opts) => new RemoteItem(ssr, opts));
     }
     get mf() {
         return MF.get(this.ssr);
@@ -95,7 +96,7 @@ class Remote {
         return `<script>${arr.join('')}</script>`;
     }
     init(...args) {
-        return Promise.all(this.items.map(item => item.init(...args)));
+        return Promise.all(this.items.map((item) => item.init(...args)));
     }
 }
 class Exposes {
@@ -111,7 +112,7 @@ class Exposes {
         const newVersion = this.readText(this.mf.outputExposesVersion);
         if (version !== newVersion) {
             const text = this.readText(this.mf.outputExposesFiles);
-            text && cb(text);
+            text && cb(JSON.parse(text));
         }
         return () => {
             const index = this.subs.indexOf(cb);
@@ -124,7 +125,8 @@ class Exposes {
         const text = this.readText(this.mf.outputExposesFiles);
         if (!text)
             return;
-        this.subs.forEach(cb => cb(text));
+        const data = JSON.parse(text);
+        this.subs.forEach((cb) => cb(data));
     }
     readText(fullPath) {
         if (!fs.existsSync(fullPath)) {
@@ -155,6 +157,9 @@ export class MF {
         this.exposes = new Exposes(ssr);
         this.remote = new Remote(ssr);
         ssr.plugin.use(this.mfPlugin);
+        if (ssr.options?.build?.extractCSS !== false) {
+            throw new TypeError(`To use MF plug-in, build.extractCSS needs to be set to false`);
+        }
     }
     static is(ssr) {
         return ssr[mf] instanceof MF;
@@ -169,7 +174,7 @@ export class MF {
         return path.resolve(this.ssr.outputDirInServer, 'vue-ssr-server-exposes-version.txt');
     }
     get outputExposesFiles() {
-        return path.resolve(this.ssr.outputDirInServer, 'vue-ssr-server-exposes-files.txt');
+        return path.resolve(this.ssr.outputDirInServer, 'vue-ssr-server-exposes-files.json');
     }
     getWebpackPublicPathVarName(name) {
         return `__webpack_public_path_${this.name}_${SSR.fixVarName(name)}`;
