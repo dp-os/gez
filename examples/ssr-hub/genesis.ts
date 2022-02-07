@@ -12,9 +12,11 @@ export const app = express();
 /**
  * 创建一个 SSR 实例
  */
+console.log(path.resolve('../shared/index.html'));
 export const ssr = new SSR({
     name: 'ssr-hub',
     build: {
+        template: path.resolve(__dirname, '../shared/index.html'),
         extractCSS: false,
         baseDir: path.resolve(__dirname),
         transpile: [/examples\/shared/]

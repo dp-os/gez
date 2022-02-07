@@ -16,6 +16,7 @@ export const ssr = new SSR({
     name: 'ssr-home',
     build: {
         extractCSS: false,
+        template: path.resolve(__dirname, '../shared/index.html'),
         baseDir: path.resolve(__dirname),
         transpile: [/examples\/shared/]
     }
