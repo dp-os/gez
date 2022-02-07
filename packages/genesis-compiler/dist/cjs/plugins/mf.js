@@ -31,7 +31,7 @@ class MFPlugin extends genesis_core_1.Plugin {
         mf.options.remotes.forEach((item) => {
             const varName = genesis_core_1.SSR.fixVarName(item.name);
             const exposesVarName = mf.getWebpackPublicPathVarName(item.name);
-            if (target === 'server' && item.name === 'ssr-home') {
+            if (target === 'server') {
                 remotes[item.name] = `promise new Promise(function(resolve) {resolve(require(global["${exposesVarName}"]))})`;
                 return;
             }

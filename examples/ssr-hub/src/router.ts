@@ -9,9 +9,11 @@ export function createRoutes(): RouteConfig[] {
 
 export async function createRouter() {
     /* eslint-disable import/no-unresolved */
-    const { createRoutes } = await import('ssr-home/router');
+    const { createRoutes: home } = await import('ssr-home/router');
+    /* eslint-disable import/no-unresolved */
+    const { createRoutes: about } = await import('ssr-about/router');
     return new Router({
         mode: 'history',
-        routes: [...createRoutes()]
+        routes: [...home(), ...about()]
     });
 }

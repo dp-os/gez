@@ -20,8 +20,7 @@ export const ssr = new SSR({
 
 export const mf = new MF(ssr, {
     exposes: {
-        './router': 'router.ts',
-        './test': 'test.ts'
+        './router': 'router.ts'
     }
 });
 

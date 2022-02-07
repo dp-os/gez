@@ -25,7 +25,7 @@ export class MFPlugin extends Plugin {
         mf.options.remotes.forEach((item) => {
             const varName = SSR.fixVarName(item.name);
             const exposesVarName = mf.getWebpackPublicPathVarName(item.name);
-            if (target === 'server' && item.name === 'ssr-home') {
+            if (target === 'server') {
                 remotes[item.name] = `promise new Promise(function(resolve) {resolve(require(global["${exposesVarName}"]))})`;
                 return;
             }

@@ -24,6 +24,11 @@ export const mf = new MF(ssr, {
             name: 'ssr-home',
             publicPath: 'http://localhost:3001',
             serverUrl: 'http://localhost:3001/api/eventsource/exposes'
+        },
+        {
+            name: 'ssr-about',
+            publicPath: 'http://localhost:3002',
+            serverUrl: 'http://localhost:3002/api/eventsource/exposes'
         }
     ]
 });
@@ -37,11 +42,13 @@ export const startApp = async (renderer: Renderer) => {
      * 使用默认渲染中间件进行渲染，你也可以调用更加底层的 renderer.renderJson 和 renderer.renderHtml 来实现渲染
      */
     app.use(async (req, res, next) => {
+        const now = Date.now();
         const data = await renderer.renderHtml({
             req,
             res,
             styleTagExtractCSS: true
         });
+        console.log(`render ${req.url} ${Date.now() - now}ms`);
         res.send(data.data);
     });
     /**
