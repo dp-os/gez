@@ -2,9 +2,11 @@ import crypto from 'crypto';
 import Ejs from 'ejs';
 import fs from 'fs';
 import { IncomingMessage, ServerResponse } from 'http';
+import path from 'path';
 import serialize from 'serialize-javascript';
 import Vue from 'vue';
 import { createRenderer, Renderer as VueRenderer } from 'vue-server-renderer';
+import write from 'write';
 
 import type * as Genesis from './';
 
@@ -246,6 +248,7 @@ export class Renderer {
                 resource: [],
                 automount: true
             },
+            styleTagExtractCSS: options.styleTagExtractCSS ?? false,
             mode: 'ssr-html',
             renderHtml: () => this.compile(context.data),
             ssr: this.ssr,
@@ -397,6 +400,7 @@ export class Renderer {
             });
         });
         await this.ssr.plugin.callHook('renderCompleted', context);
+        this._styleTagExtractCSS(context);
         return context.data;
     }
 
@@ -425,6 +429,7 @@ export class Renderer {
         )) as any;
         data.html = `<div ${createRootNodeAttr(context)}></div>`;
         await this.ssr.plugin.callHook('renderCompleted', context);
+        this._styleTagExtractCSS(context);
         return context.data;
     }
 
@@ -437,4 +442,36 @@ export class Renderer {
         await this._csrToJson(context);
         return context.renderHtml();
     }
+
+    private _styleTagExtractCSS(context: Genesis.RenderContext) {
+        const { cdnPublicPath, publicPath, isProd } = this.ssr;
+        if (!context.styleTagExtractCSS || !isProd) return;
+        const info = styleTagExtractCSS(context.data.style);
+        const filename = `first-screen-style/${md5(info.cssRules)}.css`;
+        const url = `${cdnPublicPath}${publicPath}${filename}`;
+        context.data.style =
+            info.value +
+            `<link rel="stylesheet" type="text/css" href="${url}">`;
+        const fullFilename = path.resolve(this.ssr.outputDirInClient, filename);
+        if (fs.existsSync(fullFilename)) {
+            return;
+        }
+        write.sync(fullFilename, info.cssRules);
+    }
+}
+
+export function styleTagExtractCSS(value: string) {
+    let cssRules = '';
+    const newValue = value.replace(
+        /<style[^>]*>([^<]*)<\/style>/g,
+        ($1, $2) => {
+            cssRules += $2;
+            return '';
+        }
+    );
+
+    return {
+        cssRules,
+        value: newValue
+    };
 }

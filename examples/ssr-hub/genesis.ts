@@ -36,7 +36,14 @@ export const startApp = async (renderer: Renderer) => {
     /**
      * 使用默认渲染中间件进行渲染，你也可以调用更加底层的 renderer.renderJson 和 renderer.renderHtml 来实现渲染
      */
-    app.use(renderer.renderMiddleware);
+    app.use(async (req, res, next) => {
+        const data = await renderer.renderHtml({
+            req,
+            res,
+            styleTagExtractCSS: true
+        });
+        res.send(data.data);
+    });
     /**
      * 监听端口
      */

@@ -217,6 +217,10 @@ namespace Genesis {
         id?: string;
         name?: string;
         automount?: boolean;
+        /**
+         * Extract tags from style files to CSS dynamically, Production environment enabled
+         */
+        styleTagExtractCSS?: boolean;
         state?: {
             [x: string]: any;
         };
@@ -231,6 +235,7 @@ namespace Genesis {
         ssr: SSR;
         req?: IncomingMessage;
         res?: ServerResponse;
+        styleTagExtractCSS: boolean;
         renderHtml: () => string;
         beforeRender: (cb: (context: RenderContext) => void) => void;
     }

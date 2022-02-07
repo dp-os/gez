@@ -3,14 +3,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Renderer = void 0;
+exports.styleTagExtractCSS = exports.Renderer = void 0;
 const crypto_1 = __importDefault(require("crypto"));
 const ejs_1 = __importDefault(require("ejs"));
 const fs_1 = __importDefault(require("fs"));
 const http_1 = require("http");
 const serialize_javascript_1 = __importDefault(require("serialize-javascript"));
 const vue_1 = __importDefault(require("vue"));
+const path_1 = __importDefault(require("path"));
 const vue_server_renderer_1 = require("vue-server-renderer");
+const write_1 = __importDefault(require("write"));
 const md5 = (content) => {
     const md5 = crypto_1.default.createHash('md5');
     return md5.update(content).digest('hex');
@@ -198,6 +200,7 @@ class Renderer {
         }
     }
     _createContext(options) {
+        var _a;
         const context = {
             env: 'server',
             data: {
@@ -210,8 +213,9 @@ class Renderer {
                 scriptState: '',
                 state: {},
                 resource: [],
-                automount: true
+                automount: true,
             },
+            styleTagExtractCSS: (_a = options.styleTagExtractCSS) !== null && _a !== void 0 ? _a : false,
             mode: 'ssr-html',
             renderHtml: () => this.compile(context.data),
             ssr: this.ssr,
@@ -348,6 +352,7 @@ class Renderer {
             });
         });
         await this.ssr.plugin.callHook('renderCompleted', context);
+        this._styleTagExtractCSS(context);
         return context.data;
     }
     /**
@@ -367,6 +372,7 @@ class Renderer {
         const data = (await this.renderer.renderToString(vm, context));
         data.html = `<div ${createRootNodeAttr(context)}></div>`;
         await this.ssr.plugin.callHook('renderCompleted', context);
+        this._styleTagExtractCSS(context);
         return context.data;
     }
     /**
@@ -376,5 +382,31 @@ class Renderer {
         await this._csrToJson(context);
         return context.renderHtml();
     }
+    _styleTagExtractCSS(context) {
+        const { cdnPublicPath, publicPath, isProd } = this.ssr;
+        if (!context.styleTagExtractCSS || !isProd)
+            return;
+        const info = styleTagExtractCSS(context.data.style);
+        const filename = `first-screen-style/${md5(info.cssRules)}.css`;
+        const url = `${cdnPublicPath}${publicPath}${filename}`;
+        context.data.style = info.value + `<link rel="stylesheet" type="text/css" href="${url}">`;
+        const fullFilename = path_1.default.resolve(this.ssr.outputDirInClient, filename);
+        if (fs_1.default.existsSync(fullFilename)) {
+            return;
+        }
+        write_1.default.sync(fullFilename, info.cssRules);
+    }
 }
 exports.Renderer = Renderer;
+function styleTagExtractCSS(value) {
+    let cssRules = '';
+    const newValue = value.replace(/<style[^>]*>([^<]*)<\/style>/g, ($1, $2) => {
+        cssRules += $2;
+        return '';
+    });
+    return {
+        cssRules,
+        value: newValue
+    };
+}
+exports.styleTagExtractCSS = styleTagExtractCSS;

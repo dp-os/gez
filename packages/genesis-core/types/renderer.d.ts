@@ -61,4 +61,9 @@ export declare class Renderer {
      * The client renders a HTML
      */
     private _csrToString;
+    private _styleTagExtractCSS;
 }
+export declare function styleTagExtractCSS(value: string): {
+    cssRules: string;
+    value: string;
+};

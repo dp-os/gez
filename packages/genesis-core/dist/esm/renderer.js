@@ -4,7 +4,9 @@ import fs from 'fs';
 import { IncomingMessage, ServerResponse } from 'http';
 import serialize from 'serialize-javascript';
 import Vue from 'vue';
+import path from 'path';
 import { createRenderer } from 'vue-server-renderer';
+import write from 'write';
 const md5 = (content) => {
     const md5 = crypto.createHash('md5');
     return md5.update(content).digest('hex');
@@ -204,8 +206,9 @@ export class Renderer {
                 scriptState: '',
                 state: {},
                 resource: [],
-                automount: true
+                automount: true,
             },
+            styleTagExtractCSS: options.styleTagExtractCSS ?? false,
             mode: 'ssr-html',
             renderHtml: () => this.compile(context.data),
             ssr: this.ssr,
@@ -342,6 +345,7 @@ export class Renderer {
             });
         });
         await this.ssr.plugin.callHook('renderCompleted', context);
+        this._styleTagExtractCSS(context);
         return context.data;
     }
     /**
@@ -361,6 +365,7 @@ export class Renderer {
         const data = (await this.renderer.renderToString(vm, context));
         data.html = `<div ${createRootNodeAttr(context)}></div>`;
         await this.ssr.plugin.callHook('renderCompleted', context);
+        this._styleTagExtractCSS(context);
         return context.data;
     }
     /**
@@ -370,4 +375,29 @@ export class Renderer {
         await this._csrToJson(context);
         return context.renderHtml();
     }
+    _styleTagExtractCSS(context) {
+        const { cdnPublicPath, publicPath, isProd } = this.ssr;
+        if (!context.styleTagExtractCSS || !isProd)
+            return;
+        const info = styleTagExtractCSS(context.data.style);
+        const filename = `first-screen-style/${md5(info.cssRules)}.css`;
+        const url = `${cdnPublicPath}${publicPath}${filename}`;
+        context.data.style = info.value + `<link rel="stylesheet" type="text/css" href="${url}">`;
+        const fullFilename = path.resolve(this.ssr.outputDirInClient, filename);
+        if (fs.existsSync(fullFilename)) {
+            return;
+        }
+        write.sync(fullFilename, info.cssRules);
+    }
+}
+export function styleTagExtractCSS(value) {
+    let cssRules = '';
+    const newValue = value.replace(/<style[^>]*>([^<]*)<\/style>/g, ($1, $2) => {
+        cssRules += $2;
+        return '';
+    });
+    return {
+        cssRules,
+        value: newValue
+    };
 }
