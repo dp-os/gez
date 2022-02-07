@@ -8,9 +8,9 @@ const crypto_1 = __importDefault(require("crypto"));
 const ejs_1 = __importDefault(require("ejs"));
 const fs_1 = __importDefault(require("fs"));
 const http_1 = require("http");
+const path_1 = __importDefault(require("path"));
 const serialize_javascript_1 = __importDefault(require("serialize-javascript"));
 const vue_1 = __importDefault(require("vue"));
-const path_1 = __importDefault(require("path"));
 const vue_server_renderer_1 = require("vue-server-renderer");
 const write_1 = __importDefault(require("write"));
 const md5 = (content) => {
@@ -213,7 +213,7 @@ class Renderer {
                 scriptState: '',
                 state: {},
                 resource: [],
-                automount: true,
+                automount: true
             },
             styleTagExtractCSS: (_a = options.styleTagExtractCSS) !== null && _a !== void 0 ? _a : false,
             mode: 'ssr-html',
@@ -389,7 +389,9 @@ class Renderer {
         const info = styleTagExtractCSS(context.data.style);
         const filename = `first-screen-style/${md5(info.cssRules)}.css`;
         const url = `${cdnPublicPath}${publicPath}${filename}`;
-        context.data.style = info.value + `<link rel="stylesheet" type="text/css" href="${url}">`;
+        context.data.style =
+            info.value +
+                `<link rel="stylesheet" type="text/css" href="${url}">`;
         const fullFilename = path_1.default.resolve(this.ssr.outputDirInClient, filename);
         if (fs_1.default.existsSync(fullFilename)) {
             return;
