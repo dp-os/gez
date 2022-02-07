@@ -64,14 +64,7 @@ export class MFPlugin extends Plugin {
                 ? undefined
                 : { type: 'commonjs-module' },
             remotes,
-            shared: {
-                vue: {
-                    singleton: true
-                },
-                'vue-router': {
-                    singleton: true
-                }
-            }
+            shared: mf.options.shared
         }));
     }
     afterCompiler(type) {

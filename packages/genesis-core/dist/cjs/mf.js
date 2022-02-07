@@ -156,7 +156,7 @@ exports.MFPlugin = MFPlugin;
 class MF {
     constructor(ssr, options = {}) {
         var _a, _b;
-        this.options = { remotes: [], exposes: {} };
+        this.options = { remotes: [], exposes: {}, shared: {} };
         this.entryName = 'exposes';
         this.ssr = ssr;
         Object.assign(this.options, options);

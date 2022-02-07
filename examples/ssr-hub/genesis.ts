@@ -2,6 +2,8 @@ import { MF, Renderer, SSR } from '@fmfe/genesis-core';
 import express from 'express';
 import path from 'path';
 
+import { shared } from '../shared/mf';
+
 /**
  * 创建一个应用程序
  */
@@ -14,7 +16,8 @@ export const ssr = new SSR({
     name: 'ssr-hub',
     build: {
         extractCSS: false,
-        baseDir: path.resolve(__dirname)
+        baseDir: path.resolve(__dirname),
+        transpile: [/examples\/shared/]
     }
 });
 
@@ -30,7 +33,8 @@ export const mf = new MF(ssr, {
             publicPath: 'http://localhost:3002',
             serverUrl: 'http://localhost:3002/api/eventsource/exposes'
         }
-    ]
+    ],
+    shared
 });
 
 /**

@@ -189,7 +189,11 @@ export class MF {
     public static get(ssr: Genesis.SSR): MF {
         return ssr[mf]!;
     }
-    public options: Required<Genesis.MFOptions> = { remotes: [], exposes: {} };
+    public options: Required<Genesis.MFOptions> = {
+        remotes: [],
+        exposes: {},
+        shared: {}
+    };
     public exposes: Exposes;
     public remote: Remote;
     public entryName = 'exposes';

@@ -148,7 +148,7 @@ export class MFPlugin extends Plugin {
 }
 export class MF {
     constructor(ssr, options = {}) {
-        this.options = { remotes: [], exposes: {} };
+        this.options = { remotes: [], exposes: {}, shared: {} };
         this.entryName = 'exposes';
         this.ssr = ssr;
         Object.assign(this.options, options);

@@ -1,33 +1,51 @@
 <template>
-    <div>
-        <vs-navbar v-model="activeItem" class="nabarx">
-            <template v-slot:title>
-                <vs-navbar-title> Genesis </vs-navbar-title>
-            </template>
-            <vs-navbar-item index="0">
-                <router-link to="/">Home</router-link>
-            </vs-navbar-item>
-            <vs-navbar-item index="1">
-                <router-link to="/about">About</router-link>
-            </vs-navbar-item>
-        </vs-navbar>
-        <router-view />
-    </div>
+    <el-container>
+        <el-header>
+            <ul class="list">
+                <li class="list-item">
+                    <router-link to="/">首页</router-link>
+                </li>
+                <li class="list-item">
+                    <router-link to="/about">关于我们</router-link>
+                </li>
+            </ul>
+        </el-header>
+        <el-main>
+            <router-view />
+        </el-main>
+    </el-container>
 </template>
 <script lang="ts">
 import Vue from 'vue';
-import Vuesax from 'vuesax';
-
-Vue.use(Vuesax);
 
 export default Vue.extend({
+    metaInfo() {
+        return {
+            link: [
+                {
+                    rel: 'stylesheet',
+                    href: 'https://unpkg.com/element-ui/lib/theme-chalk/index.css'
+                }
+            ]
+        };
+    },
     name: 'app',
     data() {
         return {
-            activeItem: 0,
-            search: ''
+            activeIndex: '1'
         };
     }
 });
 </script>
-<style src="vuesax/dist/vuesax.css"></style>
+<style lang="less" scoped>
+.list {
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.list-item {
+    padding: 0 5px;
+    list-style: none;
+}
+</style>

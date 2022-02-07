@@ -1,9 +1,3 @@
 <template>
-    <div class="index">首页</div>
+    <div>这是首页</div>
 </template>
-<style lang="less" scoped>
-.index {
-    padding: 50px;
-    background: #ccc;
-}
-</style>
