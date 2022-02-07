@@ -1,50 +1,76 @@
 import type * as Genesis from '.';
 import { Plugin } from './plugin';
-declare class Remote {
+import { SSR } from './ssr';
+import type { Renderer } from './renderer';
+declare class RemoteItem {
     ssr: Genesis.SSR;
     options: Genesis.MFRemote;
     version: string;
     clientVersion: string;
     serverVersion: string;
+    ready: ReadyPromise<true>;
+    private eventsource?;
+    private renderer?;
     constructor(ssr: Genesis.SSR, options: Genesis.MFRemote);
     get mf(): MF;
-    parse(version: string): void;
-    get(): Promise<void>;
+    parse(value: string): void;
+    init(renderer: Renderer): Promise<void>;
+    onMessage: (evt: MessageEvent) => void;
+    destroy(): void;
     inject(): string;
 }
-declare class Exposes {
-    ssr: Genesis.SSR;
+declare class Remote {
+    items: RemoteItem[];
+    ssr: SSR;
     constructor(ssr: Genesis.SSR);
     get mf(): MF;
-    get(version?: string): Promise<{
-        version: string;
-        files: {};
-    }>;
-    read(fullPath: string): any;
+    inject(): string;
+    init(...args: Parameters<RemoteItem['init']>): Promise<void[]>;
+}
+declare type ExposesWatchCallback = (text: string) => void;
+declare class Exposes {
+    ssr: Genesis.SSR;
+    private subs;
+    constructor(ssr: Genesis.SSR);
+    get mf(): MF;
+    watch(cb: ExposesWatchCallback, version?: string): () => void;
+    emit(): void;
+    readText(fullPath: string): string;
 }
 export declare class MFPlugin extends Plugin {
-    remotes: Remote[];
     constructor(ssr: Genesis.SSR);
-    getRemote(): Promise<void[]>;
+    get mf(): MF;
     renderBefore(context: Genesis.RenderContext): void;
 }
 export declare class MF {
     static is(ssr: Genesis.SSR): boolean;
     static get(ssr: Genesis.SSR): MF;
     options: Required<Genesis.MFOptions>;
+    exposes: Exposes;
+    remote: Remote;
     entryName: string;
     protected ssr: Genesis.SSR;
     protected mfPlugin: MFPlugin;
-    protected exposes: Exposes;
     constructor(ssr: Genesis.SSR, options?: Genesis.MFOptions);
     get name(): string;
     get outputExposesVersion(): string;
     get outputExposesFiles(): string;
     getWebpackPublicPathVarName(name: string): string;
-    getExposes(version: string): Promise<{
-        version: string;
-        files: {};
-    }>;
-    getRemote(): Promise<void[]>;
+}
+export declare class ReadyPromise<T> {
+    /**
+     * 执行完成
+     */
+    finish: (value: T) => void;
+    /**
+     * 等待执行完成
+     */
+    await: Promise<T>;
+    /**
+     * 是否已经执行完成
+     */
+    finished: boolean;
+    constructor();
+    get loading(): boolean;
 }
 export {};

@@ -3,8 +3,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MFPlugin = void 0;
+exports.contentHash = exports.MFPlugin = void 0;
 const genesis_core_1 = require("@fmfe/genesis-core");
+const crypto_1 = __importDefault(require("crypto"));
 const find_1 = __importDefault(require("find"));
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
@@ -85,21 +86,24 @@ class MFPlugin extends genesis_core_1.Plugin {
         const clientVersion = this._getVersion(ssr.outputDirInClient);
         const serverVersion = this._getVersion(ssr.outputDirInServer);
         const files = this._getFiles();
-        this._write(mf.outputExposesVersion, [
+        const data = {
+            version: contentHash(JSON.stringify(files)),
             clientVersion,
             serverVersion,
-            ssr.isProd
-        ]);
-        this._write(mf.outputExposesFiles, files);
-    }
-    _write(filename, data) {
+            files
+        };
         const text = JSON.stringify(data);
+        this._write(mf.outputExposesVersion, data.version);
+        this._write(mf.outputExposesFiles, text);
+        if (type === 'watch') {
+            mf.exposes.emit();
+        }
+    }
+    _write(filename, text) {
         write_1.default.sync(filename, text, { newline: true });
     }
     _getVersion(root) {
-        const { ssr } = this;
-        const mf = genesis_core_1.MF.get(ssr);
-        let version = String(Date.now());
+        let version = '';
         const filename = this._getFilename(root);
         if (filename) {
             const arr = filename.split('.');
@@ -132,3 +136,9 @@ class MFPlugin extends genesis_core_1.Plugin {
     }
 }
 exports.MFPlugin = MFPlugin;
+function contentHash(text) {
+    const hash = crypto_1.default.createHash('md5');
+    hash.update(text);
+    return hash.digest('hex');
+}
+exports.contentHash = contentHash;

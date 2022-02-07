@@ -28,12 +28,22 @@ export const mf = new MF(ssr, {
  * 拿到渲染器后，启动应用程序
  */
 export const startApp = (renderer: Renderer) => {
-    /**
-     * 提供当前暴露的版本号
-     */
-    app.get('/api/exposes', async (req, res) => {
-        const data = await mf.getExposes(String(req.query.version));
-        res.send(data);
+    const { exposes } = mf;
+    app.get('/api/eventsource/exposes', (req, res) => {
+        res.setHeader('Cache-Control', 'no-cache');
+        res.setHeader('Content-Type', 'text/event-stream');
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Connection', 'keep-alive');
+        res.flushHeaders();
+        // 监听导出的内容变化，发送数据
+        const unWatch = exposes.watch((text) => {
+            res.write(`data: ${JSON.stringify(JSON.parse(text))}\n\n`);
+        });
+        // 监听请求关闭，取消监听
+        res.on('close', () => {
+            unWatch();
+            res.end();
+        });
     });
 
     /**

@@ -1,69 +1,70 @@
 import fs from 'fs';
-import http from 'http';
 import path from 'path';
 import serialize from 'serialize-javascript';
 import write from 'write';
+import Eventsource from 'eventsource';
 import { Plugin } from './plugin';
 import { SSR } from './ssr';
 const mf = Symbol('mf');
 const separator = '-';
-class Remote {
+class RemoteItem {
     constructor(ssr, options) {
         this.version = '';
         this.clientVersion = '';
         this.serverVersion = '';
+        this.ready = new ReadyPromise();
+        this.onMessage = (evt) => {
+            const data = JSON.parse(evt.data);
+            const { name } = this.options;
+            const { mf } = this;
+            if (data.version === this.version) {
+                return;
+            }
+            this.version = data.version;
+            this.clientVersion = data.clientVersion;
+            this.serverVersion = data.serverVersion;
+            Object.keys(data.files).forEach((file) => {
+                const text = data.files[file];
+                const fullPath = path.resolve(this.ssr.outputDirInServer, `remotes/${name}/${file}`);
+                write.sync(fullPath, text);
+            });
+            const { serverVersion } = this;
+            const varName = mf.getWebpackPublicPathVarName(name);
+            const version = serverVersion ? `.${serverVersion}` : '';
+            global[varName] = path.resolve(this.ssr.outputDirInServer, `remotes/${name}/js/${mf.entryName}${version}.js`);
+            // 当前服务已经初始化完成
+            if (!this.ready.finished) {
+                console.log(`${this.options.name} done`);
+                this.ready.finish(true);
+            }
+            this.renderer?.reload();
+        };
         this.ssr = ssr;
         this.options = options;
     }
     get mf() {
         return MF.get(this.ssr);
     }
-    parse(version) {
-        const arr = version.split(separator);
-        if (arr.length === 3) {
-            this.version = version;
-            if (arr[2] === 'true') {
-                this.clientVersion = arr[0];
-                this.serverVersion = arr[1];
-                return;
-            }
-        }
-        this.clientVersion = '';
-        this.serverVersion = '';
+    parse(value) {
+        const [version = '', clientVersion = '', serverVersion = ''] = value.split(separator);
+        this.version = version;
+        this.clientVersion = clientVersion;
+        this.serverVersion = serverVersion;
     }
-    async get() {
-        const { name } = this.options;
-        const { mf } = this;
-        let serverUrl = this.options.serverUrl;
-        serverUrl += serverUrl.includes('?') ? '&' : '?';
-        serverUrl += `version=${this.version}`;
-        const res = await new Promise((resolve, reject) => {
-            http.get(serverUrl, (data) => {
-                let str = '';
-                data.on('data', (chunk) => {
-                    str += chunk;
-                });
-                data.on('end', () => {
-                    resolve(JSON.parse(str));
-                });
-                data.once('error', (err) => {
-                    reject(err);
-                });
-            });
-        });
-        if (res.version === this.version)
-            return;
-        this.parse(res.version);
-        Object.keys(res.files).forEach((file) => {
-            const text = res.files[file];
-            const fullPath = path.resolve(this.ssr.outputDirInServer, `remotes/${name}/${file}`);
-            write.sync(fullPath, text);
-        });
-        const { serverVersion } = this;
-        const varName = mf.getWebpackPublicPathVarName(name);
-        const version = serverVersion ? `.${serverVersion}` : '';
-        // /Volumes/work/github/genesis/examples/ssr-hub/dist/ssr-hub/server/remotes/ssr-home/exposes.13f20ccc.js
-        global[varName] = path.resolve(this.ssr.outputDirInServer, `remotes/${name}/js/${mf.entryName}${version}.js`);
+    async init(renderer) {
+        if (!this.eventsource) {
+            this.renderer = renderer;
+            this.eventsource = new Eventsource(this.options.serverUrl);
+            this.eventsource.addEventListener('message', this.onMessage);
+        }
+        await this.ready.await;
+    }
+    destroy() {
+        const { eventsource } = this;
+        if (eventsource) {
+            eventsource.removeEventListener('message', this.onMessage);
+            eventsource.close();
+        }
     }
     inject() {
         const { name, publicPath } = this.options;
@@ -75,48 +76,72 @@ class Remote {
         return `window["${varName}"] = ${value};`;
     }
 }
+class Remote {
+    constructor(ssr) {
+        this.ssr = ssr;
+        this.items = this.mf.options.remotes.map(opts => new RemoteItem(ssr, opts));
+    }
+    get mf() {
+        return MF.get(this.ssr);
+    }
+    inject() {
+        const { items } = this;
+        if (!items.length) {
+            return '';
+        }
+        const arr = items.map((item) => {
+            return item.inject();
+        });
+        return `<script>${arr.join('')}</script>`;
+    }
+    init(...args) {
+        return Promise.all(this.items.map(item => item.init(...args)));
+    }
+}
 class Exposes {
     constructor(ssr) {
+        this.subs = [];
         this.ssr = ssr;
     }
     get mf() {
         return MF.get(this.ssr);
     }
-    async get(version = '') {
-        const res = { version: '', files: {} };
-        res.version = this.read(this.mf.outputExposesVersion).join(separator);
-        if (res.version !== version) {
-            res.files = this.read(this.mf.outputExposesFiles);
+    watch(cb, version = '') {
+        this.subs.push(cb);
+        const newVersion = this.readText(this.mf.outputExposesVersion);
+        if (version !== newVersion) {
+            const text = this.readText(this.mf.outputExposesFiles);
+            text && cb(text);
         }
-        return res;
+        return () => {
+            const index = this.subs.indexOf(cb);
+            if (index > -1) {
+                this.subs.splice(index, 1);
+            }
+        };
     }
-    read(fullPath) {
+    emit() {
+        const text = this.readText(this.mf.outputExposesFiles);
+        if (!text)
+            return;
+        this.subs.forEach(cb => cb(text));
+    }
+    readText(fullPath) {
         if (!fs.existsSync(fullPath)) {
-            throw new Error(`${fullPath} file not found`);
+            return '';
         }
-        const text = fs.readFileSync(fullPath, { encoding: 'utf-8' });
-        return JSON.parse(text);
+        return fs.readFileSync(fullPath, { encoding: 'utf-8' });
     }
 }
 export class MFPlugin extends Plugin {
     constructor(ssr) {
         super(ssr);
-        const mf = MF.get(ssr);
-        this.remotes = mf.options.remotes.map((options) => new Remote(ssr, options));
     }
-    getRemote() {
-        return Promise.all(this.remotes.map((item) => {
-            return item.get();
-        }));
+    get mf() {
+        return MF.get(this.ssr);
     }
     renderBefore(context) {
-        const { remotes } = this;
-        if (remotes.length) {
-            const arr = remotes.map((item) => {
-                return item.inject();
-            });
-            context.data.script += `<script>${arr.join('')}</script>`;
-        }
+        context.data.script += this.mf.remote.inject();
     }
 }
 export class MF {
@@ -128,6 +153,7 @@ export class MF {
         ssr[mf] = this;
         this.mfPlugin = new MFPlugin(ssr);
         this.exposes = new Exposes(ssr);
+        this.remote = new Remote(ssr);
         ssr.plugin.use(this.mfPlugin);
     }
     static is(ssr) {
@@ -140,18 +166,29 @@ export class MF {
         return SSR.fixVarName(this.ssr.name);
     }
     get outputExposesVersion() {
-        return path.resolve(this.ssr.outputDirInServer, 'vue-ssr-server-exposes-version.json');
+        return path.resolve(this.ssr.outputDirInServer, 'vue-ssr-server-exposes-version.txt');
     }
     get outputExposesFiles() {
-        return path.resolve(this.ssr.outputDirInServer, 'vue-ssr-server-exposes-files.json');
+        return path.resolve(this.ssr.outputDirInServer, 'vue-ssr-server-exposes-files.txt');
     }
     getWebpackPublicPathVarName(name) {
         return `__webpack_public_path_${this.name}_${SSR.fixVarName(name)}`;
     }
-    getExposes(version) {
-        return this.exposes.get(version);
+}
+export class ReadyPromise {
+    constructor() {
+        /**
+         * 是否已经执行完成
+         */
+        this.finished = false;
+        this.await = new Promise((resolve) => {
+            this.finish = (value) => {
+                this.finished = true;
+                resolve(value);
+            };
+        });
     }
-    getRemote() {
-        return this.mfPlugin.getRemote();
+    get loading() {
+        return !this.finished;
     }
 }

@@ -8,6 +8,7 @@ export function createRoutes(): RouteConfig[] {
 }
 
 export async function createRouter() {
+    /* eslint-disable import/no-unresolved */
     const { createRoutes } = await import('ssr-home/router');
     return new Router({
         mode: 'history',

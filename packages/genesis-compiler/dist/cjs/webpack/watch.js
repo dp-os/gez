@@ -95,9 +95,7 @@ class Watch extends utils_1.BaseGenesis {
         };
         clientCompiler.hooks.done.tap('build done', clientOnDone);
         serverCompiler.watch(watchOptions, serverOnWatch);
-        return promise.then(async () => {
-            await this.ssr.plugin.callHook('afterCompiler', 'watch');
-        });
+        return promise;
     }
     // 这里应该提供销毁实例的方法
     destroy() { }
@@ -113,6 +111,7 @@ class Watch extends utils_1.BaseGenesis {
         else {
             this._renderer = new ssr.Renderer(ssr);
         }
+        await this.ssr.plugin.callHook('afterCompiler', 'watch');
     }
 }
 exports.Watch = Watch;

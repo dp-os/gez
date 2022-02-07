@@ -1,4 +1,5 @@
 import { MF, Plugin, SSR } from '@fmfe/genesis-core';
+import crypto from 'crypto';
 import find from 'find';
 import fs from 'fs';
 import path from 'path';
@@ -79,21 +80,24 @@ export class MFPlugin extends Plugin {
         const clientVersion = this._getVersion(ssr.outputDirInClient);
         const serverVersion = this._getVersion(ssr.outputDirInServer);
         const files = this._getFiles();
-        this._write(mf.outputExposesVersion, [
+        const data = {
+            version: contentHash(JSON.stringify(files)),
             clientVersion,
             serverVersion,
-            ssr.isProd
-        ]);
-        this._write(mf.outputExposesFiles, files);
-    }
-    _write(filename, data) {
+            files
+        };
         const text = JSON.stringify(data);
+        this._write(mf.outputExposesVersion, data.version);
+        this._write(mf.outputExposesFiles, text);
+        if (type === 'watch') {
+            mf.exposes.emit();
+        }
+    }
+    _write(filename, text) {
         write.sync(filename, text, { newline: true });
     }
     _getVersion(root) {
-        const { ssr } = this;
-        const mf = MF.get(ssr);
-        let version = String(Date.now());
+        let version = '';
         const filename = this._getFilename(root);
         if (filename) {
             const arr = filename.split('.');
@@ -124,4 +128,9 @@ export class MFPlugin extends Plugin {
         }
         return filename;
     }
+}
+export function contentHash(text) {
+    const hash = crypto.createHash('md5');
+    hash.update(text);
+    return hash.digest('hex');
 }

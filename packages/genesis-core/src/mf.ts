@@ -1,22 +1,33 @@
+import Eventsource from 'eventsource';
 import fs from 'fs';
-import http from 'http';
 import path from 'path';
 import serialize from 'serialize-javascript';
 import write from 'write';
 
 import type * as Genesis from '.';
 import { Plugin } from './plugin';
+import type { Renderer } from './renderer';
 import { SSR } from './ssr';
 
 const mf = Symbol('mf');
 const separator = '-';
 
-class Remote {
+interface Data {
+    version: string;
+    clientVersion: string;
+    serverVersion: string;
+    files: {};
+}
+
+class RemoteItem {
     public ssr: Genesis.SSR;
     public options: Genesis.MFRemote;
     public version = '';
     public clientVersion = '';
     public serverVersion = '';
+    public ready = new ReadyPromise<true>();
+    private eventsource?: Eventsource;
+    private renderer?: Renderer;
     public constructor(ssr: Genesis.SSR, options: Genesis.MFRemote) {
         this.ssr = ssr;
         this.options = options;
@@ -24,46 +35,34 @@ class Remote {
     public get mf() {
         return MF.get(this.ssr);
     }
-    public parse(version: string) {
-        const arr: string[] = version.split(separator);
-        if (arr.length === 3) {
-            this.version = version;
-            if (arr[2] === 'true') {
-                this.clientVersion = arr[0];
-                this.serverVersion = arr[1];
-                return;
-            }
-        }
-        this.clientVersion = '';
-        this.serverVersion = '';
+    public parse(value: string) {
+        const [version = '', clientVersion = '', serverVersion = ''] =
+            value.split(separator);
+
+        this.version = version;
+        this.clientVersion = clientVersion;
+        this.serverVersion = serverVersion;
     }
-    public async get() {
+    public async init(renderer: Renderer) {
+        if (!this.eventsource) {
+            this.renderer = renderer;
+            this.eventsource = new Eventsource(this.options.serverUrl);
+            this.eventsource.addEventListener('message', this.onMessage);
+        }
+        await this.ready.await;
+    }
+    public onMessage = (evt: MessageEvent) => {
+        const data: Data = JSON.parse(evt.data);
         const { name } = this.options;
         const { mf } = this;
-        let serverUrl = this.options.serverUrl;
-        serverUrl += serverUrl.includes('?') ? '&' : '?';
-        serverUrl += `version=${this.version}`;
-        const res = await new Promise<{
-            version: string;
-            files: Record<string, string>;
-        }>((resolve, reject) => {
-            http.get(serverUrl, (data) => {
-                let str = '';
-                data.on('data', (chunk: string) => {
-                    str += chunk;
-                });
-                data.on('end', () => {
-                    resolve(JSON.parse(str));
-                });
-                data.once('error', (err: unknown) => {
-                    reject(err);
-                });
-            });
-        });
-        if (res.version === this.version) return;
-        this.parse(res.version);
-        Object.keys(res.files).forEach((file) => {
-            const text = res.files[file];
+        if (data.version === this.version) {
+            return;
+        }
+        this.version = data.version;
+        this.clientVersion = data.clientVersion;
+        this.serverVersion = data.serverVersion;
+        Object.keys(data.files).forEach((file) => {
+            const text = data.files[file];
             const fullPath = path.resolve(
                 this.ssr.outputDirInServer,
                 `remotes/${name}/${file}`
@@ -77,6 +76,20 @@ class Remote {
             this.ssr.outputDirInServer,
             `remotes/${name}/js/${mf.entryName}${version}.js`
         );
+        // 当前服务已经初始化完成
+        if (!this.ready.finished) {
+            this.ready.finish(true);
+        }
+        if (this.renderer) {
+            this.renderer.reload();
+        }
+    };
+    public destroy() {
+        const { eventsource } = this;
+        if (eventsource) {
+            eventsource.removeEventListener('message', this.onMessage);
+            eventsource.close();
+        }
     }
     public inject() {
         const { name, publicPath } = this.options;
@@ -91,57 +104,80 @@ class Remote {
     }
 }
 
+class Remote {
+    public items: RemoteItem[];
+    public ssr: SSR;
+    public constructor(ssr: Genesis.SSR) {
+        this.ssr = ssr;
+        this.items = this.mf.options.remotes.map(
+            (opts) => new RemoteItem(ssr, opts)
+        );
+    }
+    public get mf() {
+        return MF.get(this.ssr);
+    }
+    public inject() {
+        const { items } = this;
+        if (!items.length) {
+            return '';
+        }
+        const arr = items.map((item) => {
+            return item.inject();
+        });
+        return `<script>${arr.join('')}</script>`;
+    }
+    public init(...args: Parameters<RemoteItem['init']>) {
+        return Promise.all(this.items.map((item) => item.init(...args)));
+    }
+}
+
+type ExposesWatchCallback = (text: string) => void;
+
 class Exposes {
     public ssr: Genesis.SSR;
+    private subs: ExposesWatchCallback[] = [];
     public constructor(ssr: Genesis.SSR) {
         this.ssr = ssr;
     }
     public get mf() {
         return MF.get(this.ssr);
     }
-    public async get(version = '') {
-        const res = { version: '', files: {} };
-        res.version = this.read(this.mf.outputExposesVersion).join(separator);
-        if (res.version !== version) {
-            res.files = this.read(this.mf.outputExposesFiles);
+    public watch(cb: ExposesWatchCallback, version = '') {
+        this.subs.push(cb);
+        const newVersion = this.readText(this.mf.outputExposesVersion);
+        if (version !== newVersion) {
+            const text = this.readText(this.mf.outputExposesFiles);
+            text && cb(text);
         }
-
-        return res;
+        return () => {
+            const index = this.subs.indexOf(cb);
+            if (index > -1) {
+                this.subs.splice(index, 1);
+            }
+        };
     }
-    public read(fullPath: string) {
+    public emit() {
+        const text = this.readText(this.mf.outputExposesFiles);
+        if (!text) return;
+        this.subs.forEach((cb) => cb(text));
+    }
+    public readText(fullPath: string) {
         if (!fs.existsSync(fullPath)) {
-            throw new Error(`${fullPath} file not found`);
+            return '';
         }
-        const text = fs.readFileSync(fullPath, { encoding: 'utf-8' });
-
-        return JSON.parse(text);
+        return fs.readFileSync(fullPath, { encoding: 'utf-8' });
     }
 }
 
 export class MFPlugin extends Plugin {
-    public remotes: Remote[];
     public constructor(ssr: Genesis.SSR) {
         super(ssr);
-        const mf = MF.get(ssr);
-        this.remotes = mf.options.remotes.map(
-            (options) => new Remote(ssr, options)
-        );
     }
-    public getRemote() {
-        return Promise.all(
-            this.remotes.map((item) => {
-                return item.get();
-            })
-        );
+    public get mf() {
+        return MF.get(this.ssr);
     }
     public renderBefore(context: Genesis.RenderContext): void {
-        const { remotes } = this;
-        if (remotes.length) {
-            const arr = remotes.map((item) => {
-                return item.inject();
-            });
-            context.data.script += `<script>${arr.join('')}</script>`;
-        }
+        context.data.script += this.mf.remote.inject();
     }
 }
 
@@ -153,16 +189,18 @@ export class MF {
         return ssr[mf]!;
     }
     public options: Required<Genesis.MFOptions> = { remotes: [], exposes: {} };
+    public exposes: Exposes;
+    public remote: Remote;
     public entryName = 'exposes';
     protected ssr: Genesis.SSR;
     protected mfPlugin: MFPlugin;
-    protected exposes: Exposes;
     public constructor(ssr: Genesis.SSR, options: Genesis.MFOptions = {}) {
         this.ssr = ssr;
         Object.assign(this.options, options);
         ssr[mf] = this;
         this.mfPlugin = new MFPlugin(ssr);
         this.exposes = new Exposes(ssr);
+        this.remote = new Remote(ssr);
         ssr.plugin.use(this.mfPlugin);
     }
     public get name() {
@@ -171,22 +209,42 @@ export class MF {
     public get outputExposesVersion() {
         return path.resolve(
             this.ssr.outputDirInServer,
-            'vue-ssr-server-exposes-version.json'
+            'vue-ssr-server-exposes-version.txt'
         );
     }
     public get outputExposesFiles() {
         return path.resolve(
             this.ssr.outputDirInServer,
-            'vue-ssr-server-exposes-files.json'
+            'vue-ssr-server-exposes-files.txt'
         );
     }
     public getWebpackPublicPathVarName(name: string) {
         return `__webpack_public_path_${this.name}_${SSR.fixVarName(name)}`;
     }
-    public getExposes(version: string) {
-        return this.exposes.get(version);
+}
+
+export class ReadyPromise<T> {
+    /**
+     * 执行完成
+     */
+    public finish!: (value: T) => void;
+    /**
+     * 等待执行完成
+     */
+    public await: Promise<T>;
+    /**
+     * 是否已经执行完成
+     */
+    public finished = false;
+    public constructor() {
+        this.await = new Promise<T>((resolve) => {
+            this.finish = (value: T) => {
+                this.finished = true;
+                resolve(value);
+            };
+        });
     }
-    public getRemote() {
-        return this.mfPlugin.getRemote();
+    public get loading() {
+        return !this.finished;
     }
 }

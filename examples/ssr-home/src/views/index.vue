@@ -1,5 +1,5 @@
 <template>
-    <div class="index">这是首页内容</div>
+    <div class="index">这是首页内容222101x</div>
 </template>
 <style lang="less" scoped>
 .index {

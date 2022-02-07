@@ -8,3 +8,4 @@ export declare class MFPlugin extends Plugin {
     private _getFiles;
     private _getFilename;
 }
+export declare function contentHash(text: string): string;
