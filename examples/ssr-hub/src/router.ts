@@ -1,5 +1,7 @@
 import Vue from 'vue';
 import Router, { RouteConfig } from 'vue-router';
+import { createRoutes as home } from 'ssr-home/router';
+import { createRoutes as about } from 'ssr-about/router';
 
 Vue.use(Router);
 
@@ -8,10 +10,6 @@ export function createRoutes(): RouteConfig[] {
 }
 
 export async function createRouter() {
-    /* eslint-disable import/no-unresolved */
-    const { createRoutes: home } = await import('ssr-home/router');
-    /* eslint-disable import/no-unresolved */
-    const { createRoutes: about } = await import('ssr-about/router');
     return new Router({
         mode: 'history',
         routes: [...home(), ...about()]

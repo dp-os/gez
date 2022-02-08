@@ -6,7 +6,6 @@ import write from 'write';
 import { Plugin } from './plugin';
 import { SSR } from './ssr';
 const mf = Symbol('mf');
-const separator = '-';
 class RemoteItem {
     constructor(ssr, options) {
         this.version = '';
@@ -45,12 +44,6 @@ class RemoteItem {
     }
     get mf() {
         return MF.get(this.ssr);
-    }
-    parse(value) {
-        const [version = '', clientVersion = '', serverVersion = ''] = value.split(separator);
-        this.version = version;
-        this.clientVersion = clientVersion;
-        this.serverVersion = serverVersion;
     }
     async init(renderer) {
         if (!this.eventsource) {
@@ -148,7 +141,11 @@ export class MFPlugin extends Plugin {
 }
 export class MF {
     constructor(ssr, options = {}) {
-        this.options = { remotes: [], exposes: {}, shared: {} };
+        this.options = {
+            remotes: [],
+            exposes: {},
+            shared: {}
+        };
         this.entryName = 'exposes';
         this.ssr = ssr;
         Object.assign(this.options, options);

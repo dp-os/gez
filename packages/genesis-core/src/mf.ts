@@ -10,7 +10,6 @@ import type { Renderer } from './renderer';
 import { SSR } from './ssr';
 
 const mf = Symbol('mf');
-const separator = '-';
 
 interface Data {
     version: string;
@@ -34,14 +33,6 @@ class RemoteItem {
     }
     public get mf() {
         return MF.get(this.ssr);
-    }
-    public parse(value: string) {
-        const [version = '', clientVersion = '', serverVersion = ''] =
-            value.split(separator);
-
-        this.version = version;
-        this.clientVersion = clientVersion;
-        this.serverVersion = serverVersion;
     }
     public async init(renderer: Renderer) {
         if (!this.eventsource) {

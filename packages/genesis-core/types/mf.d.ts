@@ -19,7 +19,6 @@ declare class RemoteItem {
     private renderer?;
     constructor(ssr: Genesis.SSR, options: Genesis.MFRemote);
     get mf(): MF;
-    parse(value: string): void;
     init(renderer: Renderer): Promise<void>;
     onMessage: (evt: MessageEvent) => void;
     destroy(): void;

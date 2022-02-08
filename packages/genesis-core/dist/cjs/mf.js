@@ -12,7 +12,6 @@ const write_1 = __importDefault(require("write"));
 const plugin_1 = require("./plugin");
 const ssr_1 = require("./ssr");
 const mf = Symbol('mf');
-const separator = '-';
 class RemoteItem {
     constructor(ssr, options) {
         this.version = '';
@@ -51,12 +50,6 @@ class RemoteItem {
     }
     get mf() {
         return MF.get(this.ssr);
-    }
-    parse(value) {
-        const [version = '', clientVersion = '', serverVersion = ''] = value.split(separator);
-        this.version = version;
-        this.clientVersion = clientVersion;
-        this.serverVersion = serverVersion;
     }
     async init(renderer) {
         if (!this.eventsource) {
@@ -156,7 +149,11 @@ exports.MFPlugin = MFPlugin;
 class MF {
     constructor(ssr, options = {}) {
         var _a, _b;
-        this.options = { remotes: [], exposes: {}, shared: {} };
+        this.options = {
+            remotes: [],
+            exposes: {},
+            shared: {}
+        };
         this.entryName = 'exposes';
         this.ssr = ssr;
         Object.assign(this.options, options);
