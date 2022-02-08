@@ -9,6 +9,7 @@ import { createRenderer, Renderer as VueRenderer } from 'vue-server-renderer';
 import write from 'write';
 
 import type * as Genesis from './';
+import { deleteRequireDirCache } from './shared';
 
 const md5 = (content: string) => {
     const md5 = crypto.createHash('md5');
@@ -109,11 +110,7 @@ export class Renderer {
     public reload() {
         const { ssr } = this;
         if (this.renderer) {
-            Object.keys(require.cache).forEach((filename) => {
-                if (filename.indexOf(ssr.outputDirInServer) === 0) {
-                    delete require.cache[filename];
-                }
-            });
+            deleteRequireDirCache(ssr.outputDirInServer);
         }
         global[ssr.publicPathVarName] = ssr.cdnPublicPath + ssr.publicPath;
 

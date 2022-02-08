@@ -1,6 +1,5 @@
 import type * as Genesis from '.';
 import { Plugin } from './plugin';
-import type { Renderer } from './renderer';
 import { SSR } from './ssr';
 interface Data {
     version: string;
@@ -16,10 +15,12 @@ declare class RemoteItem {
     serverVersion: string;
     ready: ReadyPromise<true>;
     private eventsource?;
-    private renderer?;
+    private remoteModule;
     constructor(ssr: Genesis.SSR, options: Genesis.MFRemote);
     get mf(): MF;
-    init(renderer: Renderer): Promise<void>;
+    get baseDir(): string;
+    init(): Promise<void>;
+    reset(): void;
     onMessage: (evt: MessageEvent) => void;
     destroy(): void;
     inject(): string;
@@ -31,6 +32,7 @@ declare class Remote {
     get mf(): MF;
     inject(): string;
     init(...args: Parameters<RemoteItem['init']>): Promise<void[]>;
+    reset(): void;
 }
 declare type ExposesWatchCallback = (data: Data) => void;
 declare class Exposes {

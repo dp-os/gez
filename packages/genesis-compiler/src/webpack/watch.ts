@@ -1,4 +1,4 @@
-import { Renderer, SSR } from '@fmfe/genesis-core';
+import { MF, Renderer, SSR } from '@fmfe/genesis-core';
 import chalk from 'chalk';
 import fs from 'fs';
 import Webpack from 'webpack';
@@ -120,6 +120,7 @@ export class Watch extends BaseGenesis {
         }
         if (this._renderer) {
             this._renderer.reload();
+            MF.get(ssr).remote.reset();
         } else {
             this._renderer = new ssr.Renderer(ssr);
         }

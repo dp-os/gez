@@ -11,7 +11,42 @@ const serialize_javascript_1 = __importDefault(require("serialize-javascript"));
 const write_1 = __importDefault(require("write"));
 const plugin_1 = require("./plugin");
 const ssr_1 = require("./ssr");
+const shared_1 = require("./shared");
 const mf = Symbol('mf');
+class RemoteModule {
+    constructor(remote) {
+        this.module = {
+            exports: {}
+        };
+        this.remote = remote;
+        const { mf } = remote;
+        const name = remote.options.name;
+        const varName = mf.getWebpackPublicPathVarName(name);
+        global[varName] = this;
+    }
+    async init(module) {
+        this.module = module;
+        await this.remote.init();
+        this.read();
+        return this.module.exports;
+    }
+    reset() {
+        this.module = {
+            exports: {}
+        };
+    }
+    reload() {
+        const { baseDir } = this.remote;
+        (0, shared_1.deleteRequireDirCache)(baseDir);
+        this.read();
+    }
+    read() {
+        const { serverVersion, mf, baseDir } = this.remote;
+        const version = serverVersion ? `.${serverVersion}` : '';
+        const filename = path_1.default.resolve(baseDir, `js/${mf.entryName}${version}.js`);
+        this.module.exports = require(filename);
+    }
+}
 class RemoteItem {
     constructor(ssr, options) {
         this.version = '';
@@ -20,8 +55,6 @@ class RemoteItem {
         this.ready = new ReadyPromise();
         this.onMessage = (evt) => {
             const data = JSON.parse(evt.data);
-            const { name } = this.options;
-            const { mf } = this;
             if (data.version === this.version) {
                 return;
             }
@@ -30,34 +63,34 @@ class RemoteItem {
             this.serverVersion = data.serverVersion;
             Object.keys(data.files).forEach((file) => {
                 const text = data.files[file];
-                const fullPath = path_1.default.resolve(this.ssr.outputDirInServer, `remotes/${name}/${file}`);
+                const fullPath = path_1.default.resolve(this.baseDir, file);
                 write_1.default.sync(fullPath, text);
             });
-            const { serverVersion } = this;
-            const varName = mf.getWebpackPublicPathVarName(name);
-            const version = serverVersion ? `.${serverVersion}` : '';
-            global[varName] = path_1.default.resolve(this.ssr.outputDirInServer, `remotes/${name}/js/${mf.entryName}${version}.js`);
+            this.remoteModule.reload();
             // 当前服务已经初始化完成
             if (!this.ready.finished) {
                 this.ready.finish(true);
             }
-            if (this.renderer) {
-                this.renderer.reload();
-            }
         };
         this.ssr = ssr;
         this.options = options;
+        this.remoteModule = new RemoteModule(this);
     }
     get mf() {
         return MF.get(this.ssr);
     }
-    async init(renderer) {
+    get baseDir() {
+        return path_1.default.resolve(this.ssr.outputDirInServer, `remotes/${this.options.name}`);
+    }
+    async init() {
         if (!this.eventsource) {
-            this.renderer = renderer;
             this.eventsource = new eventsource_1.default(this.options.serverUrl);
             this.eventsource.addEventListener('message', this.onMessage);
         }
         await this.ready.await;
+    }
+    reset() {
+        this.remoteModule.reset();
     }
     destroy() {
         const { eventsource } = this;
@@ -96,6 +129,9 @@ class Remote {
     }
     init(...args) {
         return Promise.all(this.items.map((item) => item.init(...args)));
+    }
+    reset() {
+        return this.items.forEach(item => item.reset());
     }
 }
 class Exposes {

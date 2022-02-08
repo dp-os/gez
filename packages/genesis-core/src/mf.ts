@@ -6,7 +6,7 @@ import write from 'write';
 
 import type * as Genesis from '.';
 import { Plugin } from './plugin';
-import type { Renderer } from './renderer';
+import { deleteRequireDirCache } from './shared';
 import { SSR } from './ssr';
 
 const mf = Symbol('mf');
@@ -18,6 +18,46 @@ interface Data {
     files: {};
 }
 
+class RemoteModule {
+    public remote: RemoteItem;
+    private module = {
+        exports: {}
+    };
+    public constructor(remote: RemoteItem) {
+        this.remote = remote;
+        const { mf } = remote;
+        const name = remote.options.name;
+        const varName = mf.getWebpackPublicPathVarName(name);
+        global[varName] = this;
+    }
+    public async init(module: any) {
+        this.module = module;
+        await this.remote.init();
+        this.read();
+        return this.module.exports;
+    }
+    public reset() {
+        this.module = {
+            exports: {}
+        };
+    }
+    public reload() {
+        const { baseDir } = this.remote;
+        deleteRequireDirCache(baseDir);
+        this.read();
+    }
+    public read() {
+        const { serverVersion, mf, baseDir } = this.remote;
+        const version = serverVersion ? `.${serverVersion}` : '';
+
+        const filename = path.resolve(
+            baseDir,
+            `js/${mf.entryName}${version}.js`
+        );
+        this.module.exports = require(filename);
+    }
+}
+
 class RemoteItem {
     public ssr: Genesis.SSR;
     public options: Genesis.MFRemote;
@@ -26,26 +66,33 @@ class RemoteItem {
     public serverVersion = '';
     public ready = new ReadyPromise<true>();
     private eventsource?: Eventsource;
-    private renderer?: Renderer;
+    private remoteModule: RemoteModule;
     public constructor(ssr: Genesis.SSR, options: Genesis.MFRemote) {
         this.ssr = ssr;
         this.options = options;
+        this.remoteModule = new RemoteModule(this);
     }
     public get mf() {
         return MF.get(this.ssr);
     }
-    public async init(renderer: Renderer) {
+    public get baseDir() {
+        return path.resolve(
+            this.ssr.outputDirInServer,
+            `remotes/${this.options.name}`
+        );
+    }
+    public async init() {
         if (!this.eventsource) {
-            this.renderer = renderer;
             this.eventsource = new Eventsource(this.options.serverUrl);
             this.eventsource.addEventListener('message', this.onMessage);
         }
         await this.ready.await;
     }
+    public reset() {
+        this.remoteModule.reset();
+    }
     public onMessage = (evt: MessageEvent) => {
         const data: Data = JSON.parse(evt.data);
-        const { name } = this.options;
-        const { mf } = this;
         if (data.version === this.version) {
             return;
         }
@@ -54,25 +101,13 @@ class RemoteItem {
         this.serverVersion = data.serverVersion;
         Object.keys(data.files).forEach((file) => {
             const text = data.files[file];
-            const fullPath = path.resolve(
-                this.ssr.outputDirInServer,
-                `remotes/${name}/${file}`
-            );
+            const fullPath = path.resolve(this.baseDir, file);
             write.sync(fullPath, text);
         });
-        const { serverVersion } = this;
-        const varName = mf.getWebpackPublicPathVarName(name);
-        const version = serverVersion ? `.${serverVersion}` : '';
-        global[varName] = path.resolve(
-            this.ssr.outputDirInServer,
-            `remotes/${name}/js/${mf.entryName}${version}.js`
-        );
+        this.remoteModule.reload();
         // 当前服务已经初始化完成
         if (!this.ready.finished) {
             this.ready.finish(true);
-        }
-        if (this.renderer) {
-            this.renderer.reload();
         }
     };
     public destroy() {
@@ -119,6 +154,9 @@ class Remote {
     }
     public init(...args: Parameters<RemoteItem['init']>) {
         return Promise.all(this.items.map((item) => item.init(...args)));
+    }
+    public reset() {
+        return this.items.forEach((item) => item.reset());
     }
 }
 

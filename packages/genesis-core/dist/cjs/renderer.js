@@ -13,6 +13,7 @@ const serialize_javascript_1 = __importDefault(require("serialize-javascript"));
 const vue_1 = __importDefault(require("vue"));
 const vue_server_renderer_1 = require("vue-server-renderer");
 const write_1 = __importDefault(require("write"));
+const shared_1 = require("./shared");
 const md5 = (content) => {
     const md5 = crypto_1.default.createHash('md5');
     return md5.update(content).digest('hex');
@@ -100,11 +101,7 @@ class Renderer {
     reload() {
         const { ssr } = this;
         if (this.renderer) {
-            Object.keys(require.cache).forEach((filename) => {
-                if (filename.indexOf(ssr.outputDirInServer) === 0) {
-                    delete require.cache[filename];
-                }
-            });
+            (0, shared_1.deleteRequireDirCache)(ssr.outputDirInServer);
         }
         global[ssr.publicPathVarName] = ssr.cdnPublicPath + ssr.publicPath;
         const renderOptions = {

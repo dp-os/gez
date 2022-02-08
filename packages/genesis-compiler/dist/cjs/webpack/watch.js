@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Watch = exports.WatchClientConfig = void 0;
+const genesis_core_1 = require("@fmfe/genesis-core");
 const chalk_1 = __importDefault(require("chalk"));
 const fs_1 = __importDefault(require("fs"));
 const webpack_1 = __importDefault(require("webpack"));
@@ -107,6 +108,7 @@ class Watch extends utils_1.BaseGenesis {
         }
         if (this._renderer) {
             this._renderer.reload();
+            genesis_core_1.MF.get(ssr).remote.reset();
         }
         else {
             this._renderer = new ssr.Renderer(ssr);

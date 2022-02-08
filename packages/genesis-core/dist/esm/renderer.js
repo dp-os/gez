@@ -7,6 +7,7 @@ import serialize from 'serialize-javascript';
 import Vue from 'vue';
 import { createRenderer } from 'vue-server-renderer';
 import write from 'write';
+import { deleteRequireDirCache } from './shared';
 const md5 = (content) => {
     const md5 = crypto.createHash('md5');
     return md5.update(content).digest('hex');
@@ -94,11 +95,7 @@ export class Renderer {
     reload() {
         const { ssr } = this;
         if (this.renderer) {
-            Object.keys(require.cache).forEach((filename) => {
-                if (filename.indexOf(ssr.outputDirInServer) === 0) {
-                    delete require.cache[filename];
-                }
-            });
+            deleteRequireDirCache(ssr.outputDirInServer);
         }
         global[ssr.publicPathVarName] = ssr.cdnPublicPath + ssr.publicPath;
         const renderOptions = {
