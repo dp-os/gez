@@ -90,7 +90,7 @@ class Watch extends utils_1.BaseGenesis {
             onReady();
         };
         const serverOnWatch = () => {
-            this.notify();
+            this.notify(true);
             serverDone = true;
             onReady();
         };
@@ -100,17 +100,17 @@ class Watch extends utils_1.BaseGenesis {
     }
     // 这里应该提供销毁实例的方法
     destroy() { }
-    async notify() {
+    async notify(isServer = false) {
         const { ssr } = this;
         if (!fs_1.default.existsSync(ssr.outputClientManifestFile) ||
             !fs_1.default.existsSync(ssr.outputServeAppFile)) {
             return;
         }
-        if (this._renderer) {
+        if (this._renderer && isServer) {
             this._renderer.reload();
             genesis_core_1.MF.get(ssr).remote.reset();
         }
-        else {
+        else if (!this._renderer) {
             this._renderer = new ssr.Renderer(ssr);
         }
         await this.ssr.plugin.callHook('afterCompiler', 'watch');

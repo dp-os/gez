@@ -44,6 +44,7 @@ class RemoteModule {
     public reload() {
         const { baseDir } = this.remote;
         deleteRequireDirCache(baseDir);
+        console.log(`MF reload ${this.remote.options.name}`);
         this.read();
     }
     public read() {
@@ -54,6 +55,9 @@ class RemoteModule {
             baseDir,
             `js/${mf.entryName}${version}.js`
         );
+        if (fs.readFileSync(filename, { encoding: 'utf-8' }).includes('这是首页test1')) {
+            console.log('>>>>>命中', filename)
+        }
         this.module.exports = require(filename);
     }
 }
@@ -96,14 +100,16 @@ class RemoteItem {
         if (data.version === this.version) {
             return;
         }
-        this.version = data.version;
-        this.clientVersion = data.clientVersion;
-        this.serverVersion = data.serverVersion;
+
         Object.keys(data.files).forEach((file) => {
             const text = data.files[file];
             const fullPath = path.resolve(this.baseDir, file);
             write.sync(fullPath, text);
         });
+        this.version = data.version;
+        this.clientVersion = data.clientVersion;
+        this.serverVersion = data.serverVersion;
+
         this.remoteModule.reload();
         // 当前服务已经初始化完成
         if (!this.ready.finished) {

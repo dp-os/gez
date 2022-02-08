@@ -4,8 +4,8 @@ import path from 'path';
 import serialize from 'serialize-javascript';
 import write from 'write';
 import { Plugin } from './plugin';
-import { SSR } from './ssr';
 import { deleteRequireDirCache } from './shared';
+import { SSR } from './ssr';
 const mf = Symbol('mf');
 class RemoteModule {
     constructor(remote) {
@@ -32,12 +32,16 @@ class RemoteModule {
     reload() {
         const { baseDir } = this.remote;
         deleteRequireDirCache(baseDir);
+        console.log(`MF reload ${this.remote.options.name}`);
         this.read();
     }
     read() {
         const { serverVersion, mf, baseDir } = this.remote;
         const version = serverVersion ? `.${serverVersion}` : '';
         const filename = path.resolve(baseDir, `js/${mf.entryName}${version}.js`);
+        if (fs.readFileSync(filename, { encoding: 'utf-8' }).includes('这是首页test1')) {
+            console.log('>>>>>命中', filename);
+        }
         this.module.exports = require(filename);
     }
 }
@@ -52,14 +56,14 @@ class RemoteItem {
             if (data.version === this.version) {
                 return;
             }
-            this.version = data.version;
-            this.clientVersion = data.clientVersion;
-            this.serverVersion = data.serverVersion;
             Object.keys(data.files).forEach((file) => {
                 const text = data.files[file];
                 const fullPath = path.resolve(this.baseDir, file);
                 write.sync(fullPath, text);
             });
+            this.version = data.version;
+            this.clientVersion = data.clientVersion;
+            this.serverVersion = data.serverVersion;
             this.remoteModule.reload();
             // 当前服务已经初始化完成
             if (!this.ready.finished) {
@@ -125,7 +129,7 @@ class Remote {
         return Promise.all(this.items.map((item) => item.init(...args)));
     }
     reset() {
-        return this.items.forEach(item => item.reset());
+        return this.items.forEach((item) => item.reset());
     }
 }
 class Exposes {

@@ -69,9 +69,7 @@ export class MFPlugin extends Plugin {
         config.plugin('module-federation').use(
             new webpack.container.ModuleFederationPlugin({
                 name,
-                filename: ssr.isProd
-                    ? `js/${entryName}.[contenthash:8].js`
-                    : `js/${entryName}.js`,
+                filename: `js/${entryName}.js`,
                 exposes,
                 library:
                     target === 'client'

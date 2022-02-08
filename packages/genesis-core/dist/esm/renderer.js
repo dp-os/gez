@@ -75,7 +75,7 @@ export class Renderer {
         };
         this._createApp = createDefaultApp;
         this.ssr = ssr;
-        this.reload();
+        this._load();
         const bindArr = [
             'renderJson',
             'renderHtml',
@@ -97,33 +97,7 @@ export class Renderer {
         if (this.renderer) {
             deleteRequireDirCache(ssr.outputDirInServer);
         }
-        global[ssr.publicPathVarName] = ssr.cdnPublicPath + ssr.publicPath;
-        const renderOptions = {
-            template: template,
-            inject: false
-        };
-        if (fs.existsSync(ssr.outputServeAppFile)) {
-            this._createApp = (...args) => {
-                return require(ssr.outputServeAppFile)['default'](...args);
-            };
-        }
-        else {
-            this._createApp = createDefaultApp;
-        }
-        if (fs.existsSync(ssr.outputClientManifestFile)) {
-            const text = fs.readFileSync(ssr.outputClientManifestFile, 'utf-8');
-            if (text) {
-                const clientManifest = JSON.parse(text);
-                clientManifest.publicPath = ssr.cdnPublicPath + ssr.publicPath;
-                this.clientManifest = clientManifest;
-            }
-        }
-        renderOptions.clientManifest = this.clientManifest;
-        const ejsTemplate = fs.existsSync(this.ssr.templateFile)
-            ? fs.readFileSync(this.ssr.outputTemplateFile, 'utf-8')
-            : defaultTemplate;
-        this.renderer = createRenderer(renderOptions);
-        this.compile = Ejs.compile(ejsTemplate);
+        this._load();
     }
     /**
      * Render JSON
@@ -387,6 +361,37 @@ export class Renderer {
             return;
         }
         write.sync(fullFilename, info.cssRules);
+    }
+    _load() {
+        const { ssr } = this;
+        global[ssr.publicPathVarName] = ssr.cdnPublicPath + ssr.publicPath;
+        const renderOptions = {
+            template: template,
+            inject: false
+        };
+        if (fs.existsSync(ssr.outputServeAppFile)) {
+            require(ssr.outputServeAppFile);
+            this._createApp = (...args) => {
+                return require(ssr.outputServeAppFile)['default'](...args);
+            };
+        }
+        else {
+            this._createApp = createDefaultApp;
+        }
+        if (fs.existsSync(ssr.outputClientManifestFile)) {
+            const text = fs.readFileSync(ssr.outputClientManifestFile, 'utf-8');
+            if (text) {
+                const clientManifest = JSON.parse(text);
+                clientManifest.publicPath = ssr.cdnPublicPath + ssr.publicPath;
+                this.clientManifest = clientManifest;
+            }
+        }
+        renderOptions.clientManifest = this.clientManifest;
+        const ejsTemplate = fs.existsSync(this.ssr.templateFile)
+            ? fs.readFileSync(this.ssr.outputTemplateFile, 'utf-8')
+            : defaultTemplate;
+        this.renderer = createRenderer(renderOptions);
+        this.compile = Ejs.compile(ejsTemplate);
     }
 }
 export function styleTagExtractCSS(value) {

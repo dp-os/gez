@@ -81,7 +81,7 @@ class Renderer {
         };
         this._createApp = createDefaultApp;
         this.ssr = ssr;
-        this.reload();
+        this._load();
         const bindArr = [
             'renderJson',
             'renderHtml',
@@ -103,33 +103,7 @@ class Renderer {
         if (this.renderer) {
             (0, shared_1.deleteRequireDirCache)(ssr.outputDirInServer);
         }
-        global[ssr.publicPathVarName] = ssr.cdnPublicPath + ssr.publicPath;
-        const renderOptions = {
-            template: template,
-            inject: false
-        };
-        if (fs_1.default.existsSync(ssr.outputServeAppFile)) {
-            this._createApp = (...args) => {
-                return require(ssr.outputServeAppFile)['default'](...args);
-            };
-        }
-        else {
-            this._createApp = createDefaultApp;
-        }
-        if (fs_1.default.existsSync(ssr.outputClientManifestFile)) {
-            const text = fs_1.default.readFileSync(ssr.outputClientManifestFile, 'utf-8');
-            if (text) {
-                const clientManifest = JSON.parse(text);
-                clientManifest.publicPath = ssr.cdnPublicPath + ssr.publicPath;
-                this.clientManifest = clientManifest;
-            }
-        }
-        renderOptions.clientManifest = this.clientManifest;
-        const ejsTemplate = fs_1.default.existsSync(this.ssr.templateFile)
-            ? fs_1.default.readFileSync(this.ssr.outputTemplateFile, 'utf-8')
-            : defaultTemplate;
-        this.renderer = (0, vue_server_renderer_1.createRenderer)(renderOptions);
-        this.compile = ejs_1.default.compile(ejsTemplate);
+        this._load();
     }
     /**
      * Render JSON
@@ -394,6 +368,37 @@ class Renderer {
             return;
         }
         write_1.default.sync(fullFilename, info.cssRules);
+    }
+    _load() {
+        const { ssr } = this;
+        global[ssr.publicPathVarName] = ssr.cdnPublicPath + ssr.publicPath;
+        const renderOptions = {
+            template: template,
+            inject: false
+        };
+        if (fs_1.default.existsSync(ssr.outputServeAppFile)) {
+            require(ssr.outputServeAppFile);
+            this._createApp = (...args) => {
+                return require(ssr.outputServeAppFile)['default'](...args);
+            };
+        }
+        else {
+            this._createApp = createDefaultApp;
+        }
+        if (fs_1.default.existsSync(ssr.outputClientManifestFile)) {
+            const text = fs_1.default.readFileSync(ssr.outputClientManifestFile, 'utf-8');
+            if (text) {
+                const clientManifest = JSON.parse(text);
+                clientManifest.publicPath = ssr.cdnPublicPath + ssr.publicPath;
+                this.clientManifest = clientManifest;
+            }
+        }
+        renderOptions.clientManifest = this.clientManifest;
+        const ejsTemplate = fs_1.default.existsSync(this.ssr.templateFile)
+            ? fs_1.default.readFileSync(this.ssr.outputTemplateFile, 'utf-8')
+            : defaultTemplate;
+        this.renderer = (0, vue_server_renderer_1.createRenderer)(renderOptions);
+        this.compile = ejs_1.default.compile(ejsTemplate);
     }
 }
 exports.Renderer = Renderer;

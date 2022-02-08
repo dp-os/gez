@@ -1,5 +1,5 @@
 <template>
-    <div>这是首页</div>
+    <div>这是首页test2</div>
 </template>
 <script lang="ts">
 import Vue from 'vue';

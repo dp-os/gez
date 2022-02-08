@@ -1,7 +1,7 @@
+import { createRoutes as about } from 'ssr-about/router';
+import { createRoutes as home } from 'ssr-home/router';
 import Vue from 'vue';
 import Router, { RouteConfig } from 'vue-router';
-import { createRoutes as home } from 'ssr-home/router';
-import { createRoutes as about } from 'ssr-about/router';
 
 Vue.use(Router);
 

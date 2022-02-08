@@ -62,6 +62,7 @@ export declare class Renderer {
      */
     private _csrToString;
     private _styleTagExtractCSS;
+    private _load;
 }
 export declare function styleTagExtractCSS(value: string): {
     cssRules: string;
