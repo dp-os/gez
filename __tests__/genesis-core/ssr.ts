@@ -62,10 +62,6 @@ test('check options.build.baseDir', async () => {
             value: 'dist/ssr-test/server/vue-ssr-client-manifest.json'
         },
         {
-            label: 'outputServerBundleFile',
-            value: 'dist/ssr-test/server/app.js'
-        },
-        {
             label: 'templateFile',
             value: 'src/index.html'
         },
@@ -124,29 +120,6 @@ test('check options.build.alias', async () => {
         }
     });
     await expect(ssr.options.build?.alias?.vue).toBe('vue.esm.min.js');
-});
-
-test('check options.build.browsers', async () => {
-    let ssr = new SSR({
-        build: {
-            browsers: {
-                client: ['ios >= 10'],
-                server: ['node >= 12']
-            }
-        }
-    });
-    await expect(ssr.getBrowsers('client')).toStrictEqual(['ios >= 10']);
-    await expect(ssr.getBrowsers('server')).toStrictEqual(['node >= 12']);
-
-    ssr = new SSR();
-    await expect(ssr.getBrowsers('client')).toStrictEqual([
-        'ie >= 9',
-        'ios >= 5',
-        'android >= 4.0'
-    ]);
-    await expect(ssr.getBrowsers('server')).toStrictEqual([
-        `node >= ${process.versions.node}`
-    ]);
 });
 
 test('check options.build.template', async () => {
