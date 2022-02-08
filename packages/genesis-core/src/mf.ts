@@ -6,7 +6,7 @@ import write from 'write';
 
 import type * as Genesis from '.';
 import { Plugin } from './plugin';
-import { deleteRequireDirCache } from './shared';
+import type { Renderer } from './renderer';
 import { SSR } from './ssr';
 
 const mf = Symbol('mf');
@@ -20,45 +20,31 @@ interface Data {
 
 class RemoteModule {
     public remote: RemoteItem;
-    private module = {
-        exports: {}
-    };
     public constructor(remote: RemoteItem) {
         this.remote = remote;
-        const { mf } = remote;
-        const name = remote.options.name;
+        global[this.varName] = this;
+    }
+    public get varName () {
+        const { mf, options } = this.remote;
+        const name = options.name;
         const varName = mf.getWebpackPublicPathVarName(name);
-        global[varName] = this;
+        return varName;
     }
-    public async init(module: any) {
-        this.module = module;
-        await this.remote.init();
-        this.read();
-        return this.module.exports;
-    }
-    public reset() {
-        this.module = {
-            exports: {}
-        };
-    }
-    public reload() {
-        const { baseDir } = this.remote;
-        deleteRequireDirCache(baseDir);
-        console.log(`MF reload ${this.remote.options.name}`);
-        this.read();
-    }
-    public read() {
+    public get filename () {
         const { serverVersion, mf, baseDir } = this.remote;
         const version = serverVersion ? `.${serverVersion}` : '';
 
-        const filename = path.resolve(
+        return path.resolve(
             baseDir,
             `js/${mf.entryName}${version}.js`
         );
-        if (fs.readFileSync(filename, { encoding: 'utf-8' }).includes('这是首页test1')) {
-            console.log('>>>>>命中', filename)
-        }
-        this.module.exports = require(filename);
+
+    }
+    public async init() {
+        await this.remote.init();
+    }
+    public destroy () {
+        delete global[this.varName]
     }
 }
 
@@ -71,6 +57,7 @@ class RemoteItem {
     public ready = new ReadyPromise<true>();
     private eventsource?: Eventsource;
     private remoteModule: RemoteModule;
+    private renderer?: Renderer;
     public constructor(ssr: Genesis.SSR, options: Genesis.MFRemote) {
         this.ssr = ssr;
         this.options = options;
@@ -85,15 +72,15 @@ class RemoteItem {
             `remotes/${this.options.name}`
         );
     }
-    public async init() {
+    public async init(renderer?: Renderer) {
+        if (renderer) {
+            this.renderer = renderer;
+        }
         if (!this.eventsource) {
             this.eventsource = new Eventsource(this.options.serverUrl);
             this.eventsource.addEventListener('message', this.onMessage);
         }
         await this.ready.await;
-    }
-    public reset() {
-        this.remoteModule.reset();
     }
     public onMessage = (evt: MessageEvent) => {
         const data: Data = JSON.parse(evt.data);
@@ -110,9 +97,12 @@ class RemoteItem {
         this.clientVersion = data.clientVersion;
         this.serverVersion = data.serverVersion;
 
-        this.remoteModule.reload();
-        // 当前服务已经初始化完成
-        if (!this.ready.finished) {
+        const name = this.options.name;
+        if (this.ready.finished) {
+            this.renderer?.reload();
+            console.log(`${name} remote dependent reload completed`);
+        } else {
+            console.log(`${name} remote dependent download completed`);
             this.ready.finish(true);
         }
     };
@@ -122,6 +112,7 @@ class RemoteItem {
             eventsource.removeEventListener('message', this.onMessage);
             eventsource.close();
         }
+        this.remoteModule.destroy();
     }
     public inject() {
         const { name, publicPath } = this.options;
@@ -160,9 +151,6 @@ class Remote {
     }
     public init(...args: Parameters<RemoteItem['init']>) {
         return Promise.all(this.items.map((item) => item.init(...args)));
-    }
-    public reset() {
-        return this.items.forEach((item) => item.reset());
     }
 }
 
@@ -222,7 +210,10 @@ export class MF {
         return ssr[mf] instanceof MF;
     }
     public static get(ssr: Genesis.SSR): MF {
-        return ssr[mf]!;
+        if (!this.is(ssr)) {
+            throw new TypeError(`SSR instance: MF instance not found`);
+        }
+        return ssr[mf];
     }
     public options: Required<Genesis.MFOptions> = {
         remotes: [],

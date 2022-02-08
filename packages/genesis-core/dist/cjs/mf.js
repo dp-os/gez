@@ -10,45 +10,29 @@ const path_1 = __importDefault(require("path"));
 const serialize_javascript_1 = __importDefault(require("serialize-javascript"));
 const write_1 = __importDefault(require("write"));
 const plugin_1 = require("./plugin");
-const shared_1 = require("./shared");
 const ssr_1 = require("./ssr");
 const mf = Symbol('mf');
 class RemoteModule {
     constructor(remote) {
-        this.module = {
-            exports: {}
-        };
         this.remote = remote;
-        const { mf } = remote;
-        const name = remote.options.name;
+        global[this.varName] = this;
+    }
+    get varName() {
+        const { mf, options } = this.remote;
+        const name = options.name;
         const varName = mf.getWebpackPublicPathVarName(name);
-        global[varName] = this;
+        return varName;
     }
-    async init(module) {
-        this.module = module;
-        await this.remote.init();
-        this.read();
-        return this.module.exports;
-    }
-    reset() {
-        this.module = {
-            exports: {}
-        };
-    }
-    reload() {
-        const { baseDir } = this.remote;
-        (0, shared_1.deleteRequireDirCache)(baseDir);
-        console.log(`MF reload ${this.remote.options.name}`);
-        this.read();
-    }
-    read() {
+    get filename() {
         const { serverVersion, mf, baseDir } = this.remote;
         const version = serverVersion ? `.${serverVersion}` : '';
-        const filename = path_1.default.resolve(baseDir, `js/${mf.entryName}${version}.js`);
-        if (fs_1.default.readFileSync(filename, { encoding: 'utf-8' }).includes('这是首页test1')) {
-            console.log('>>>>>命中', filename);
-        }
-        this.module.exports = require(filename);
+        return path_1.default.resolve(baseDir, `js/${mf.entryName}${version}.js`);
+    }
+    async init() {
+        await this.remote.init();
+    }
+    destroy() {
+        delete global[this.varName];
     }
 }
 class RemoteItem {
@@ -58,6 +42,7 @@ class RemoteItem {
         this.serverVersion = '';
         this.ready = new ReadyPromise();
         this.onMessage = (evt) => {
+            var _a;
             const data = JSON.parse(evt.data);
             if (data.version === this.version) {
                 return;
@@ -70,9 +55,13 @@ class RemoteItem {
             this.version = data.version;
             this.clientVersion = data.clientVersion;
             this.serverVersion = data.serverVersion;
-            this.remoteModule.reload();
-            // 当前服务已经初始化完成
-            if (!this.ready.finished) {
+            const name = this.options.name;
+            if (this.ready.finished) {
+                (_a = this.renderer) === null || _a === void 0 ? void 0 : _a.reload();
+                console.log(`${name} remote dependent reload completed`);
+            }
+            else {
+                console.log(`${name} remote dependent download completed`);
                 this.ready.finish(true);
             }
         };
@@ -86,15 +75,15 @@ class RemoteItem {
     get baseDir() {
         return path_1.default.resolve(this.ssr.outputDirInServer, `remotes/${this.options.name}`);
     }
-    async init() {
+    async init(renderer) {
+        if (renderer) {
+            this.renderer = renderer;
+        }
         if (!this.eventsource) {
             this.eventsource = new eventsource_1.default(this.options.serverUrl);
             this.eventsource.addEventListener('message', this.onMessage);
         }
         await this.ready.await;
-    }
-    reset() {
-        this.remoteModule.reset();
     }
     destroy() {
         const { eventsource } = this;
@@ -102,6 +91,7 @@ class RemoteItem {
             eventsource.removeEventListener('message', this.onMessage);
             eventsource.close();
         }
+        this.remoteModule.destroy();
     }
     inject() {
         const { name, publicPath } = this.options;
@@ -133,9 +123,6 @@ class Remote {
     }
     init(...args) {
         return Promise.all(this.items.map((item) => item.init(...args)));
-    }
-    reset() {
-        return this.items.forEach((item) => item.reset());
     }
 }
 class Exposes {
@@ -210,6 +197,9 @@ class MF {
         return ssr[mf] instanceof MF;
     }
     static get(ssr) {
+        if (!this.is(ssr)) {
+            throw new TypeError(`SSR instance: MF instance not found`);
+        }
         return ssr[mf];
     }
     get name() {

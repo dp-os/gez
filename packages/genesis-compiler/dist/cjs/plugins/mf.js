@@ -32,7 +32,12 @@ class MFPlugin extends genesis_core_1.Plugin {
             const varName = genesis_core_1.SSR.fixVarName(item.name);
             const exposesVarName = mf.getWebpackPublicPathVarName(item.name);
             if (target === 'server') {
-                const code = `promise (async function () { return global["${exposesVarName}"].init(module); })();`;
+                const code = `promise (async function () {
+var remoteModule = global["${exposesVarName}"];
+await remoteModule.init(); 
+return require(remoteModule.filename);
+})();
+`;
                 remotes[item.name] = code;
                 return;
             }

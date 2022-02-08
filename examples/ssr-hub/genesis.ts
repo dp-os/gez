@@ -43,6 +43,10 @@ export const mf = new MF(ssr, {
  */
 export const startApp = async (renderer: Renderer) => {
     /**
+     * 需要把渲染器传递进去，这样远程服务更新的时候，会自动调用运行最新代码
+     */
+    mf.remote.init(renderer)
+    /**
      * 使用默认渲染中间件进行渲染，你也可以调用更加底层的 renderer.renderJson 和 renderer.renderHtml 来实现渲染
      */
     app.use(async (req, res, next) => {

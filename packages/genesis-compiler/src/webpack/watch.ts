@@ -120,7 +120,6 @@ export class Watch extends BaseGenesis {
         }
         if (this._renderer && isServer) {
             this._renderer.reload();
-            MF.get(ssr).remote.reset();
         } else if (!this._renderer) {
             this._renderer = new ssr.Renderer(ssr);
         }
