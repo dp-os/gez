@@ -25,8 +25,15 @@ export class SSR {
     public readonly entryName = 'app';
 
     public sandboxGlobal: Record<string, any> = {
+        Buffer,
         console,
         process,
+        setTimeout,
+        setInterval,
+        setImmediate,
+        clearTimeout,
+        clearInterval,
+        clearImmediate,
         URL
     };
     public constructor(options: Genesis.Options = {}) {
