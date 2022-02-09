@@ -13,7 +13,6 @@ const serialize_javascript_1 = __importDefault(require("serialize-javascript"));
 const vue_1 = __importDefault(require("vue"));
 const vue_server_renderer_1 = require("vue-server-renderer");
 const write_1 = __importDefault(require("write"));
-const shared_1 = require("./shared");
 const node_vm_1 = require("./node-vm");
 const md5 = (content) => {
     const md5 = crypto_1.default.createHash('md5');
@@ -100,10 +99,6 @@ class Renderer {
      * Reload the renderer
      */
     reload() {
-        const { ssr } = this;
-        if (this.renderer) {
-            (0, shared_1.deleteRequireDirCache)(ssr.outputDirInServer);
-        }
         this._load();
     }
     /**

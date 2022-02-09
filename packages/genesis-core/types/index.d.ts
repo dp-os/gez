@@ -164,6 +164,10 @@ declare namespace Genesis {
          * CDN resource public path, Only valid in production mode
          */
         cdnPublicPath?: string;
+        /**
+         * In the sandbox environment, inject global variables
+         */
+        sandboxGlobal?: Record<string, any>;
     }
     /**
      * Hook parameter of webpack

@@ -25,6 +25,9 @@ class SSR {
         if ('name' in options && typeof options.name !== 'string') {
             throw new TypeError('Options.name can only be of string type');
         }
+        if (options.sandboxGlobal) {
+            Object.assign(this.sandboxGlobal, options.sandboxGlobal);
+        }
         this.sandboxGlobal.global = this.sandboxGlobal;
         Object.defineProperty(this.sandboxGlobal, this.publicPathVarName, {
             get: () => this.cdnPublicPath + this.publicPath

@@ -22,29 +22,28 @@ class RemoteModule {
     public remote: RemoteItem;
     public constructor(remote: RemoteItem) {
         this.remote = remote;
-        remote.ssr.sandboxGlobal[this.varName] = this;
+
+        Object.defineProperty(remote.ssr.sandboxGlobal, this.varName, {
+            get: () => this
+        });
     }
-    public get varName () {
+    public get varName() {
         const { mf, options } = this.remote;
         const name = options.name;
         const varName = mf.getWebpackPublicPathVarName(name);
         return varName;
     }
-    public get filename () {
+    public get filename() {
         const { serverVersion, mf, baseDir } = this.remote;
         const version = serverVersion ? `.${serverVersion}` : '';
 
-        return path.resolve(
-            baseDir,
-            `js/${mf.entryName}${version}.js`
-        );
-
+        return path.resolve(baseDir, `js/${mf.entryName}${version}.js`);
     }
     public async init() {
         await this.remote.init();
     }
-    public destroy () {
-        delete global[this.varName]
+    public destroy() {
+        delete global[this.varName];
     }
 }
 

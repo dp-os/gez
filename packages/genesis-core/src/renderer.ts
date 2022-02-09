@@ -9,7 +9,6 @@ import { createRenderer, Renderer as VueRenderer } from 'vue-server-renderer';
 import write from 'write';
 
 import type * as Genesis from './';
-import { deleteRequireDirCache } from './shared';
 import { NodeVM } from './node-vm';
 
 const md5 = (content: string) => {
@@ -109,10 +108,6 @@ export class Renderer {
      * Reload the renderer
      */
     public reload() {
-        const { ssr } = this;
-        if (this.renderer) {
-            deleteRequireDirCache(ssr.outputDirInServer);
-        }
         this._load();
     }
 
@@ -438,7 +433,7 @@ export class Renderer {
         if (fs.existsSync(ssr.outputServeAppFile)) {
             const vm = new NodeVM(ssr.outputServeAppFile, ssr.sandboxGlobal);
             this._createApp = (...args) => {
-                const createApp = vm.require()
+                const createApp = vm.require();
                 return createApp['default'](...args);
             };
         }

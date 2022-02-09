@@ -7,7 +7,6 @@ import serialize from 'serialize-javascript';
 import Vue from 'vue';
 import { createRenderer } from 'vue-server-renderer';
 import write from 'write';
-import { deleteRequireDirCache } from './shared';
 import { NodeVM } from './node-vm';
 const md5 = (content) => {
     const md5 = crypto.createHash('md5');
@@ -94,10 +93,6 @@ export class Renderer {
      * Reload the renderer
      */
     reload() {
-        const { ssr } = this;
-        if (this.renderer) {
-            deleteRequireDirCache(ssr.outputDirInServer);
-        }
         this._load();
     }
     /**

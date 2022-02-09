@@ -9,7 +9,9 @@ const mf = Symbol('mf');
 class RemoteModule {
     constructor(remote) {
         this.remote = remote;
-        remote.ssr.sandboxGlobal[this.varName] = this;
+        Object.defineProperty(remote.ssr.sandboxGlobal, this.varName, {
+            get: () => this
+        });
     }
     get varName() {
         const { mf, options } = this.remote;
