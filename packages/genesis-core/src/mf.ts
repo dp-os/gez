@@ -57,6 +57,7 @@ class RemoteItem {
     private eventsource?: Eventsource;
     private remoteModule: RemoteModule;
     private renderer?: Renderer;
+    private startTime = 0;
     public constructor(ssr: Genesis.SSR, options: Genesis.MFRemote) {
         this.ssr = ssr;
         this.options = options;
@@ -76,6 +77,7 @@ class RemoteItem {
             this.renderer = renderer;
         }
         if (!this.eventsource) {
+            this.startTime = Date.now();
             this.eventsource = new Eventsource(this.options.serverUrl);
             this.eventsource.addEventListener('message', this.onMessage);
         }
@@ -101,7 +103,11 @@ class RemoteItem {
             this.renderer?.reload();
             console.log(`${name} remote dependent reload completed`);
         } else {
-            console.log(`${name} remote dependent download completed`);
+            console.log(
+                `${name} remote dependent download completed ${
+                    Date.now() - this.startTime
+                }ms`
+            );
             this.ready.finish(true);
         }
     };

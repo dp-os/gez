@@ -1,7 +1,7 @@
-import vm from 'vm';
-import path from 'path';
 import fs from 'fs';
 import nativeModule from 'module';
+import path from 'path';
+import vm from 'vm';
 export class NodeVM {
     constructor(filename, sandbox = {}) {
         this.filename = filename;
@@ -24,7 +24,7 @@ export class NodeVM {
         const filename = require.resolve(id);
         const code = nativeModule.wrap(fs.readFileSync(filename, { encoding: 'utf-8' }));
         const factory = vm.runInNewContext(code, this.sandbox, {
-            filename: filename,
+            filename,
             displayErrors: true
         });
         const dirname = path.dirname(filename);
@@ -33,7 +33,11 @@ export class NodeVM {
             if (path.isAbsolute(id)) {
                 return this._require(id);
             }
-            return this._require(path.resolve(dirname, id));
+            const filename = path.posix.join(dirname, id);
+            if (fs.existsSync(filename)) {
+                return this._require(filename);
+            }
+            return require(id);
         };
         factory.call(module.exports, module.exports, _require, module, filename, dirname);
         files[id] = module.exports;

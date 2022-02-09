@@ -5,5 +5,5 @@ export declare class NodeVM {
     constructor(filename: string, sandbox?: Record<string, any>);
     require(): any;
     destroy(): void;
-    _require(id: string): any;
+    private _require;
 }

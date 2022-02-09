@@ -18,6 +18,7 @@ declare class RemoteItem {
     private eventsource?;
     private remoteModule;
     private renderer?;
+    private startTime;
     constructor(ssr: Genesis.SSR, options: Genesis.MFRemote);
     get mf(): MF;
     get baseDir(): string;

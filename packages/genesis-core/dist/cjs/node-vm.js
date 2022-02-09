@@ -4,10 +4,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NodeVM = void 0;
-const vm_1 = __importDefault(require("vm"));
-const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
 const module_1 = __importDefault(require("module"));
+const path_1 = __importDefault(require("path"));
+const vm_1 = __importDefault(require("vm"));
 class NodeVM {
     constructor(filename, sandbox = {}) {
         this.filename = filename;
@@ -30,7 +30,7 @@ class NodeVM {
         const filename = require.resolve(id);
         const code = module_1.default.wrap(fs_1.default.readFileSync(filename, { encoding: 'utf-8' }));
         const factory = vm_1.default.runInNewContext(code, this.sandbox, {
-            filename: filename,
+            filename,
             displayErrors: true
         });
         const dirname = path_1.default.dirname(filename);
@@ -39,7 +39,11 @@ class NodeVM {
             if (path_1.default.isAbsolute(id)) {
                 return this._require(id);
             }
-            return this._require(path_1.default.resolve(dirname, id));
+            const filename = path_1.default.posix.join(dirname, id);
+            if (fs_1.default.existsSync(filename)) {
+                return this._require(filename);
+            }
+            return require(id);
         };
         factory.call(module.exports, module.exports, _require, module, filename, dirname);
         files[id] = module.exports;

@@ -43,6 +43,7 @@ class RemoteItem {
         this.clientVersion = '';
         this.serverVersion = '';
         this.ready = new ReadyPromise();
+        this.startTime = 0;
         this.onMessage = (evt) => {
             var _a;
             const data = JSON.parse(evt.data);
@@ -63,7 +64,7 @@ class RemoteItem {
                 console.log(`${name} remote dependent reload completed`);
             }
             else {
-                console.log(`${name} remote dependent download completed`);
+                console.log(`${name} remote dependent download completed ${Date.now() - this.startTime}ms`);
                 this.ready.finish(true);
             }
         };
@@ -82,6 +83,7 @@ class RemoteItem {
             this.renderer = renderer;
         }
         if (!this.eventsource) {
+            this.startTime = Date.now();
             this.eventsource = new eventsource_1.default(this.options.serverUrl);
             this.eventsource.addEventListener('message', this.onMessage);
         }
