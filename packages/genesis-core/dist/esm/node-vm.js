@@ -5,6 +5,7 @@ import nativeModule from 'module';
 export class NodeVM {
     constructor(filename, sandbox = {}) {
         this.filename = filename;
+        // TODO: 这里可以使用代理，进一步避免内存泄漏
         this.sandbox = sandbox;
         this.files = {};
     }
