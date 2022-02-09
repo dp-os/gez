@@ -11,7 +11,8 @@ export class SSR {
         this.entryName = 'app';
         this.sandboxGlobal = {
             console,
-            process
+            process,
+            URL
         };
         this.options = options;
         this.plugin = new PluginManage(this);

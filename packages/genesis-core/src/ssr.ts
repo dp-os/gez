@@ -26,7 +26,8 @@ export class SSR {
 
     public sandboxGlobal: Record<string, any> = {
         console,
-        process
+        process,
+        URL
     };
     public constructor(options: Genesis.Options = {}) {
         this.options = options;

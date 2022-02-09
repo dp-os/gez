@@ -17,7 +17,8 @@ class SSR {
         this.entryName = 'app';
         this.sandboxGlobal = {
             console,
-            process: process_1.default
+            process: process_1.default,
+            URL
         };
         this.options = options;
         this.plugin = new plugin_1.PluginManage(this);
