@@ -15,6 +15,7 @@ export declare class SSR {
      */
     plugin: Genesis.PluginManage;
     readonly entryName = "app";
+    sandboxGlobal: Record<string, any>;
     constructor(options?: Genesis.Options);
     /**
      * Judge whether it is a production environment. By default, judge by process.env.NODE_ENV

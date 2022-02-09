@@ -23,12 +23,21 @@ export class SSR {
     public plugin: Genesis.PluginManage;
 
     public readonly entryName = 'app';
+
+    public sandboxGlobal: Record<string, any> = {
+        console,
+        process
+    };
     public constructor(options: Genesis.Options = {}) {
         this.options = options;
         this.plugin = new PluginManage(this);
         if ('name' in options && typeof options.name !== 'string') {
             throw new TypeError('Options.name can only be of string type');
         }
+        this.sandboxGlobal.global = this.sandboxGlobal;
+        Object.defineProperty(this.sandboxGlobal, this.publicPathVarName, {
+            get: () => this.cdnPublicPath + this.publicPath
+        });
     }
 
     /**

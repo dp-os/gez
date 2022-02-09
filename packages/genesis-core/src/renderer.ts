@@ -10,6 +10,7 @@ import write from 'write';
 
 import type * as Genesis from './';
 import { deleteRequireDirCache } from './shared';
+import { NodeVM } from './node-vm';
 
 const md5 = (content: string) => {
     const md5 = crypto.createHash('md5');
@@ -429,19 +430,17 @@ export class Renderer {
     }
     private _load() {
         const { ssr } = this;
-        global[ssr.publicPathVarName] = ssr.cdnPublicPath + ssr.publicPath;
-
         const renderOptions: any = {
             template: template as any,
             inject: false
         };
+        this._createApp = createDefaultApp;
         if (fs.existsSync(ssr.outputServeAppFile)) {
-            require(ssr.outputServeAppFile);
+            const vm = new NodeVM(ssr.outputServeAppFile, ssr.sandboxGlobal);
             this._createApp = (...args) => {
-                return require(ssr.outputServeAppFile)['default'](...args);
+                const createApp = vm.require()
+                return createApp['default'](...args);
             };
-        } else {
-            this._createApp = createDefaultApp;
         }
         if (fs.existsSync(ssr.outputClientManifestFile)) {
             const text = fs.readFileSync(ssr.outputClientManifestFile, 'utf-8');

@@ -9,11 +9,19 @@ export class SSR {
          */
         this.Renderer = Renderer;
         this.entryName = 'app';
+        this.sandboxGlobal = {
+            console,
+            process
+        };
         this.options = options;
         this.plugin = new PluginManage(this);
         if ('name' in options && typeof options.name !== 'string') {
             throw new TypeError('Options.name can only be of string type');
         }
+        this.sandboxGlobal.global = this.sandboxGlobal;
+        Object.defineProperty(this.sandboxGlobal, this.publicPathVarName, {
+            get: () => this.cdnPublicPath + this.publicPath
+        });
     }
     static fixVarName(name) {
         return name.replace(/\W/g, '_');

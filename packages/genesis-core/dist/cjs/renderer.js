@@ -14,6 +14,7 @@ const vue_1 = __importDefault(require("vue"));
 const vue_server_renderer_1 = require("vue-server-renderer");
 const write_1 = __importDefault(require("write"));
 const shared_1 = require("./shared");
+const node_vm_1 = require("./node-vm");
 const md5 = (content) => {
     const md5 = crypto_1.default.createHash('md5');
     return md5.update(content).digest('hex');
@@ -371,19 +372,17 @@ class Renderer {
     }
     _load() {
         const { ssr } = this;
-        global[ssr.publicPathVarName] = ssr.cdnPublicPath + ssr.publicPath;
         const renderOptions = {
             template: template,
             inject: false
         };
+        this._createApp = createDefaultApp;
         if (fs_1.default.existsSync(ssr.outputServeAppFile)) {
-            require(ssr.outputServeAppFile);
+            const vm = new node_vm_1.NodeVM(ssr.outputServeAppFile, ssr.sandboxGlobal);
             this._createApp = (...args) => {
-                return require(ssr.outputServeAppFile)['default'](...args);
+                const createApp = vm.require();
+                return createApp['default'](...args);
             };
-        }
-        else {
-            this._createApp = createDefaultApp;
         }
         if (fs_1.default.existsSync(ssr.outputClientManifestFile)) {
             const text = fs_1.default.readFileSync(ssr.outputClientManifestFile, 'utf-8');

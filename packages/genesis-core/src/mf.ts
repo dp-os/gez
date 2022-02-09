@@ -22,7 +22,7 @@ class RemoteModule {
     public remote: RemoteItem;
     public constructor(remote: RemoteItem) {
         this.remote = remote;
-        global[this.varName] = this;
+        remote.ssr.sandboxGlobal[this.varName] = this;
     }
     public get varName () {
         const { mf, options } = this.remote;

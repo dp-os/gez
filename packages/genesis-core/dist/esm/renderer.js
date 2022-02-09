@@ -8,6 +8,7 @@ import Vue from 'vue';
 import { createRenderer } from 'vue-server-renderer';
 import write from 'write';
 import { deleteRequireDirCache } from './shared';
+import { NodeVM } from './node-vm';
 const md5 = (content) => {
     const md5 = crypto.createHash('md5');
     return md5.update(content).digest('hex');
@@ -364,19 +365,17 @@ export class Renderer {
     }
     _load() {
         const { ssr } = this;
-        global[ssr.publicPathVarName] = ssr.cdnPublicPath + ssr.publicPath;
         const renderOptions = {
             template: template,
             inject: false
         };
+        this._createApp = createDefaultApp;
         if (fs.existsSync(ssr.outputServeAppFile)) {
-            require(ssr.outputServeAppFile);
+            const vm = new NodeVM(ssr.outputServeAppFile, ssr.sandboxGlobal);
             this._createApp = (...args) => {
-                return require(ssr.outputServeAppFile)['default'](...args);
+                const createApp = vm.require();
+                return createApp['default'](...args);
             };
-        }
-        else {
-            this._createApp = createDefaultApp;
         }
         if (fs.existsSync(ssr.outputClientManifestFile)) {
             const text = fs.readFileSync(ssr.outputClientManifestFile, 'utf-8');
