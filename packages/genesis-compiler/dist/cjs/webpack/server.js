@@ -16,7 +16,6 @@ class ServerConfig extends base_1.BaseConfig {
                 url: 'relative'
             }
         });
-        this.config.optimization.minimize(false);
     }
 }
 exports.ServerConfig = ServerConfig;

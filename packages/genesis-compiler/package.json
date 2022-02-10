@@ -58,7 +58,6 @@
     "webpack-chain": "6.5.1",
     "webpack-dev-middleware": "5.3.0",
     "webpack-hot-middleware": "2.25.1",
-    "webpack-node-externals": "3.0.0",
     "webpackbar": "5.0.2",
     "worker-loader": "3.0.8",
     "write": "2.0.0"

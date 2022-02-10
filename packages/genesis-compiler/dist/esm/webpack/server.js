@@ -13,6 +13,5 @@ export class ServerConfig extends BaseConfig {
                 url: 'relative'
             }
         });
-        this.config.optimization.minimize(false);
     }
 }

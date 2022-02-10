@@ -1,5 +1,4 @@
 import Genesis from '@fmfe/genesis-core';
-import nodeExternals from 'webpack-node-externals';
 
 import { BaseConfig } from './base';
 
@@ -17,6 +16,5 @@ export class ServerConfig extends BaseConfig {
                 url: 'relative'
             }
         });
-        this.config.optimization.minimize(false);
     }
 }
