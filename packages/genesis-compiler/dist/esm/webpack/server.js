@@ -2,13 +2,14 @@ import { BaseConfig } from './base';
 export class ServerConfig extends BaseConfig {
     constructor(ssr) {
         super(ssr, 'server');
-        this.config.entry(ssr.entryName).add(this.ssr.entryServerFile).end();
-        this.config.output
-            .path(this.ssr.outputDirInServer)
+        const { config } = this;
+        config.entry(ssr.entryName).add(ssr.entryServerFile).end();
+        config.output
+            .path(ssr.outputDirInServer)
             .filename('js/[name].js');
-        this.config.devtool(false);
-        this.config.output.libraryTarget('commonjs2');
-        this.config.module.set('parser', {
+        config.devtool(false);
+        config.output.libraryTarget('commonjs2');
+        config.module.set('parser', {
             javascript: {
                 url: 'relative'
             }
