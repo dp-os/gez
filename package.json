@@ -52,7 +52,7 @@
         "cssnano": "^5.0.15",
         "jest": "^25.2.4",
         "sass": "^1.26.10",
-        "vue": "^2.6.11",
+        "vue": "^2.6.14",
         "vue-property-decorator": "^8.4.0"
     },
     "dependencies": {

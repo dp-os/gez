@@ -16,15 +16,15 @@ class SSR {
         this.Renderer = renderer_1.Renderer;
         this.entryName = 'app';
         this.sandboxGlobal = {
-            Buffer: Buffer,
-            console: console,
+            Buffer,
+            console,
             process: process_1.default,
-            setTimeout: setTimeout,
-            setInterval: setInterval,
-            setImmediate: setImmediate,
-            clearTimeout: clearTimeout,
-            clearInterval: clearInterval,
-            clearImmediate: clearImmediate,
+            setTimeout,
+            setInterval,
+            setImmediate,
+            clearTimeout,
+            clearInterval,
+            clearImmediate,
             URL
         };
         this.options = options;

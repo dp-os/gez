@@ -60,9 +60,10 @@ return require(remoteModule.filename);
               `;
         });
         const name = mf.name;
+        const hash = ssr.isProd ? '.[contenthash:8]' : '';
         config.plugin('module-federation').use(new webpack.container.ModuleFederationPlugin({
             name,
-            filename: `js/${entryName}.js`,
+            filename: `js/${entryName}${hash}.js`,
             exposes,
             library: target === 'client'
                 ? undefined
