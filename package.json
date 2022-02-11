@@ -50,7 +50,6 @@
         "@types/write": "^2.0.1",
         "coveralls": "^3.0.11",
         "cssnano": "^5.0.15",
-        "dts-loader": "^0.1.6",
         "jest": "^25.2.4",
         "sass": "^1.26.10",
         "vue-property-decorator": "^8.4.0",

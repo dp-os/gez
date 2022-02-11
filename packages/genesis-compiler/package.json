@@ -1,6 +1,6 @@
 {
   "name": "@fmfe/genesis-compiler",
-  "version": "2.0.1-alpha.29",
+  "version": "2.0.1-alpha.30",
   "description": "Vue SSR Microfront",
   "keywords": [
     "vue",
@@ -36,6 +36,7 @@
     "core-js": "3.20.2",
     "css-loader": "6.5.1",
     "cssnano": "5.0.15",
+    "dts-loader": "^0.1.6",
     "file-loader": "6.2.0",
     "find": "0.3.0",
     "hash-sum": "2.0.0",
