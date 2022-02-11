@@ -1,6 +1,6 @@
 {
     "name": "@fmfe/genesis-lint",
-    "version": "2.0.1-alpha.27",
+    "version": "2.0.1-alpha.28",
     "description": "",
     "main": "index.js",
     "bin": {
@@ -75,5 +75,5 @@
     "bugs": {
         "url": "https://github.com/fmfe/genesis/issues"
     },
-    "gitHead": "1d78746ea4276916f32efa233ff645378f430282"
+    "gitHead": "6681dadad8d2af5a0b3700b589f277d6f4e5af4b"
 }
