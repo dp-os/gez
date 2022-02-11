@@ -9,9 +9,9 @@ const crypto_1 = __importDefault(require("crypto"));
 const find_1 = __importDefault(require("find"));
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
+const upath_1 = __importDefault(require("upath"));
 const webpack_1 = __importDefault(require("webpack"));
 const write_1 = __importDefault(require("write"));
-const upath_1 = __importDefault(require("upath"));
 const utils_1 = require("../utils");
 function getExposes(ssr, mf) {
     const exposes = {};

@@ -3,9 +3,9 @@ import crypto from 'crypto';
 import find from 'find';
 import fs from 'fs';
 import path from 'path';
+import upath from 'upath';
 import webpack from 'webpack';
 import write from 'write';
-import upath from 'upath';
 import { relativeFilename } from '../utils';
 function getExposes(ssr, mf) {
     const exposes = {};

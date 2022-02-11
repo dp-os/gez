@@ -65,7 +65,9 @@ class StylePlugin extends genesis_core_1.Plugin {
             'vue-style': {
                 name: 'vue-style',
                 loader: 'vue-style-loader',
-                options: {}
+                options: {
+                    ssrId: true
+                }
             },
             css: {
                 name: 'css',

@@ -1,6 +1,7 @@
 <template>
     <div>
         <h2>这是流程图</h2>
+        <p class="text">支持</p>
         <img src="../images/framework.jpeg" width="300" />
     </div>
 </template>
@@ -14,3 +15,13 @@ export default Vue.extend({
     }
 });
 </script>
+<style lang="less" scoped>
+h2 {
+    background: red;
+}
+</style>
+<style lang="less" scoped>
+.text {
+    font-weight: bold;
+}
+</style>

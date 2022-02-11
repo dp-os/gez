@@ -99,7 +99,7 @@ class RemoteItem {
         this.remoteModule.destroy();
     }
     inject() {
-        const { name, } = this.options;
+        const { name } = this.options;
         const { clientVersion, mf, baseUri } = this;
         let scriptText = '';
         const appendScript = (varName, value) => {
