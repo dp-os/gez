@@ -44,6 +44,7 @@ export declare class SSR {
      * Compiled output directory
      */
     get outputDir(): string;
+    get outputDirInTemplate(): string;
     /**
      * Client compile output directory
      */

@@ -9,19 +9,32 @@ import crypto from 'crypto';
 import find from 'find';
 import fs from 'fs';
 import path from 'path';
+import upath from 'upath';
 import webpack from 'webpack';
 import write from 'write';
+
+import { relativeFilename } from '../utils';
 
 function getExposes(ssr: SSR, mf: MF) {
     const exposes: Record<string, string> = {};
 
     Object.keys(mf.options.exposes).forEach((key) => {
         const filename = mf.options.exposes[key];
-        const fullPath = path.isAbsolute(filename)
+        const sourceFilename = path.isAbsolute(filename)
             ? filename
             : path.resolve(ssr.srcDir, filename);
+        const relativePath = relativeFilename(ssr.srcDir, sourceFilename);
+        const writeFilename = path.join(ssr.outputDirInTemplate, relativePath);
+        const webpackPublicPath: string = relativeFilename(
+            writeFilename,
+            path.resolve(ssr.outputDirInTemplate, 'webpack-public-path')
+        );
 
-        exposes[key] = fullPath;
+        const template = `import "${upath.toUnix(webpackPublicPath)}";
+export * from "${relativeFilename(writeFilename, sourceFilename)}";`;
+        write.sync(writeFilename, template);
+
+        exposes[key] = writeFilename;
     });
     return exposes;
 }

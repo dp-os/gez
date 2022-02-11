@@ -11,14 +11,22 @@ const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const webpack_1 = __importDefault(require("webpack"));
 const write_1 = __importDefault(require("write"));
+const upath_1 = __importDefault(require("upath"));
+const utils_1 = require("../utils");
 function getExposes(ssr, mf) {
     const exposes = {};
     Object.keys(mf.options.exposes).forEach((key) => {
         const filename = mf.options.exposes[key];
-        const fullPath = path_1.default.isAbsolute(filename)
+        const sourceFilename = path_1.default.isAbsolute(filename)
             ? filename
             : path_1.default.resolve(ssr.srcDir, filename);
-        exposes[key] = fullPath;
+        const relativePath = (0, utils_1.relativeFilename)(ssr.srcDir, sourceFilename);
+        const writeFilename = path_1.default.join(ssr.outputDirInTemplate, relativePath);
+        const webpackPublicPath = (0, utils_1.relativeFilename)(writeFilename, path_1.default.resolve(ssr.outputDirInTemplate, 'webpack-public-path'));
+        const template = `import "${upath_1.default.toUnix(webpackPublicPath)}";
+export * from "${(0, utils_1.relativeFilename)(writeFilename, sourceFilename)}";`;
+        write_1.default.sync(writeFilename, template);
+        exposes[key] = writeFilename;
     });
     return exposes;
 }

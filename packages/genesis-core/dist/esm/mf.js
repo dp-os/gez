@@ -14,7 +14,7 @@ class RemoteModule {
             get: () => this
         });
         Object.defineProperty(ssr.sandboxGlobal, SSR.getPublicPathVarName(remote.options.name), {
-            get: () => this.remote.publicPath
+            get: () => this.remote.baseUri
         });
     }
     get varName() {
@@ -75,8 +75,9 @@ class RemoteItem {
     get baseDir() {
         return path.resolve(this.ssr.outputDirInServer, `remotes/${this.options.name}`);
     }
-    get publicPath() {
-        return this.options.publicPath || '';
+    get baseUri() {
+        const base = this.options.publicPath || '';
+        return `${base}/${this.options.name}/`;
     }
     async init(renderer) {
         if (renderer) {
@@ -98,17 +99,17 @@ class RemoteItem {
         this.remoteModule.destroy();
     }
     inject() {
-        const { name, publicPath } = this.options;
-        const { clientVersion, mf } = this;
+        const { name, } = this.options;
+        const { clientVersion, mf, baseUri } = this;
         let scriptText = '';
         const appendScript = (varName, value) => {
             const val = serialize(value);
             scriptText += `window["${varName}"] = ${val};`;
         };
         const version = clientVersion ? `.${clientVersion}` : '';
-        const fullPath = publicPath + `/${name}/js/${mf.entryName}${version}.js`;
+        const fullPath = `${baseUri}js/${mf.entryName}${version}.js`;
         appendScript(mf.getWebpackPublicPathVarName(name), fullPath);
-        appendScript(SSR.getPublicPathVarName(name), this.publicPath);
+        appendScript(SSR.getPublicPathVarName(name), baseUri);
         return scriptText;
     }
 }
@@ -219,7 +220,7 @@ export class MF {
         return path.resolve(this.ssr.outputDirInServer, 'vue-ssr-server-exposes-files.json');
     }
     getWebpackPublicPathVarName(name) {
-        return `__webpack_public_path_${this.name}_${SSR.fixVarName(name)}`;
+        return `__webpack_public_path_${SSR.fixVarName(name)}_${this.entryName}`;
     }
 }
 export class ReadyPromise {

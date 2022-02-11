@@ -4,3 +4,4 @@ export declare class BaseGenesis {
     constructor(ssr: Genesis.SSR);
 }
 export declare const deleteFolder: (path: string) => void;
+export declare function relativeFilename(from: string, to: string): any;

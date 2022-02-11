@@ -1,4 +1,5 @@
 import fs from 'fs';
+import relative from 'relative';
 export class BaseGenesis {
     constructor(ssr) {
         this.ssr = ssr;
@@ -19,3 +20,10 @@ export const deleteFolder = (path) => {
     });
     fs.rmdirSync(path);
 };
+export function relativeFilename(from, to) {
+    let path = relative(from, to);
+    if (!path.startsWith('.')) {
+        path = `./` + path;
+    }
+    return path;
+}

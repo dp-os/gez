@@ -1,5 +1,6 @@
+/* eslint-disable */
 // @ts-nocheck
-import './webpack-public-path-server';
+import './webpack-public-path';
 
 const promise = import('${{serverFilename}}');
 

@@ -1,5 +1,6 @@
+/* eslint-disable */
 // @ts-nocheck
-import './webpack-public-path-client';
+import './webpack-public-path';
 
 import { ClientOptions } from '@fmfe/genesis-core';
 import Vue from 'vue';

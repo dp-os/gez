@@ -38,7 +38,7 @@ class TemplatePlugin extends genesis_core_1.Plugin {
                 useShortDoctype: true
             }));
         }
-        const outputDir = path_1.default.resolve(ssr.outputDir, './src');
+        const outputDir = ssr.outputDirInTemplate;
         const srcDir = ssr.srcDir;
         const clientFilename = upath_1.default.toUnix(path_1.default.relative(outputDir, path_1.default.resolve(srcDir, './entry-client')));
         const serverFilename = upath_1.default.toUnix(path_1.default.relative(outputDir, path_1.default.resolve(srcDir, './entry-server')));
@@ -48,20 +48,14 @@ class TemplatePlugin extends genesis_core_1.Plugin {
                 const value = options[k];
                 text = text.replace(new RegExp(`\\\${{${k}}}`), value);
             });
-            const outputDir = path_1.default.resolve(ssr.outputDir, './src');
             write_1.default.sync(path_1.default.resolve(outputDir, filename), text);
         };
         writeDistSrcTemplate('entry-client.ts', {
             clientFilename
         });
-        writeDistSrcTemplate('webpack-public-path-client.ts', {
-            clientFilename
-        });
+        writeDistSrcTemplate('webpack-public-path.ts');
         writeDistSrcTemplate('entry-server.ts', {
             serverFilename
-        });
-        writeDistSrcTemplate('webpack-public-path-server.ts', {
-            clientFilename
         });
         const writeSrcTemplate = (filename) => {
             const text = fs_1.default.readFileSync(path_1.default.resolve(__dirname, `../../../template/src/${filename}`), 'utf8');
@@ -82,7 +76,7 @@ class TemplatePlugin extends genesis_core_1.Plugin {
     async afterCompiler(type) {
         const { ssr } = this;
         if (type === 'build') {
-            const outputDir = path_1.default.resolve(ssr.outputDir, './src');
+            const outputDir = path_1.default.resolve(ssr.outputDirInTemplate);
             (0, index_1.deleteFolder)(outputDir);
         }
     }

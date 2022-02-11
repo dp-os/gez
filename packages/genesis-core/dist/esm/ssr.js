@@ -93,6 +93,9 @@ export class SSR {
         }
         return path.resolve(this.baseDir, `./dist/${this.name}`);
     }
+    get outputDirInTemplate() {
+        return path.resolve(this.outputDir, 'template');
+    }
     /**
      * Client compile output directory
      */
@@ -124,7 +127,7 @@ export class SSR {
         return [
             ...this.transpile,
             this.srcDir,
-            path.resolve(this.outputDir, './src')
+            path.resolve(this.outputDirInTemplate)
         ];
     }
     get transpile() {
@@ -134,13 +137,13 @@ export class SSR {
      * Client side compile entry file
      */
     get entryClientFile() {
-        return path.resolve(this.outputDir, 'src/entry-client');
+        return path.resolve(this.outputDirInTemplate, 'entry-client');
     }
     /**
      * Server side compile entry file
      */
     get entryServerFile() {
-        return path.resolve(this.outputDir, 'src/entry-server');
+        return path.resolve(this.outputDirInTemplate, 'entry-server');
     }
     /**
      * Manifest file path of client

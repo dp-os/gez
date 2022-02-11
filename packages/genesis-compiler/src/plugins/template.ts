@@ -37,7 +37,7 @@ export class TemplatePlugin extends Plugin {
                 })
             );
         }
-        const outputDir = path.resolve(ssr.outputDir, './src');
+        const outputDir = ssr.outputDirInTemplate;
         const srcDir = ssr.srcDir;
         const clientFilename = upath.toUnix(
             path.relative(outputDir, path.resolve(srcDir, './entry-client'))
@@ -57,20 +57,14 @@ export class TemplatePlugin extends Plugin {
                 const value = options[k];
                 text = text.replace(new RegExp(`\\\${{${k}}}`), value);
             });
-            const outputDir = path.resolve(ssr.outputDir, './src');
             write.sync(path.resolve(outputDir, filename), text);
         };
         writeDistSrcTemplate('entry-client.ts', {
             clientFilename
         });
-        writeDistSrcTemplate('webpack-public-path-client.ts', {
-            clientFilename
-        });
+        writeDistSrcTemplate('webpack-public-path.ts');
         writeDistSrcTemplate('entry-server.ts', {
             serverFilename
-        });
-        writeDistSrcTemplate('webpack-public-path-server.ts', {
-            clientFilename
         });
         const writeSrcTemplate = (filename: string) => {
             const text = fs.readFileSync(
@@ -91,7 +85,7 @@ export class TemplatePlugin extends Plugin {
     public async afterCompiler(type: CompilerType) {
         const { ssr } = this;
         if (type === 'build') {
-            const outputDir = path.resolve(ssr.outputDir, './src');
+            const outputDir = path.resolve(ssr.outputDirInTemplate);
             deleteFolder(outputDir);
         }
     }

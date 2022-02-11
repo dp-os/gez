@@ -24,7 +24,8 @@ export const ssr = new SSR({
 
 export const mf = new MF(ssr, {
     exposes: {
-        './router': 'router.ts'
+        './router': 'router.ts',
+        './test': 'views/test.js'
     },
     shared
 });

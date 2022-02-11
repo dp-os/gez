@@ -3,8 +3,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteFolder = exports.BaseGenesis = void 0;
+exports.relativeFilename = exports.deleteFolder = exports.BaseGenesis = void 0;
 const fs_1 = __importDefault(require("fs"));
+const relative_1 = __importDefault(require("relative"));
 class BaseGenesis {
     constructor(ssr) {
         this.ssr = ssr;
@@ -27,3 +28,11 @@ const deleteFolder = (path) => {
     fs_1.default.rmdirSync(path);
 };
 exports.deleteFolder = deleteFolder;
+function relativeFilename(from, to) {
+    let path = (0, relative_1.default)(from, to);
+    if (!path.startsWith('.')) {
+        path = `./` + path;
+    }
+    return path;
+}
+exports.relativeFilename = relativeFilename;

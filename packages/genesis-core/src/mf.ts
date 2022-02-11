@@ -30,7 +30,7 @@ class RemoteModule {
             ssr.sandboxGlobal,
             SSR.getPublicPathVarName(remote.options.name),
             {
-                get: () => this.remote.publicPath
+                get: () => this.remote.baseUri
             }
         );
     }
@@ -79,8 +79,9 @@ class RemoteItem {
             `remotes/${this.options.name}`
         );
     }
-    public get publicPath() {
-        return this.options.publicPath || '';
+    public get baseUri() {
+        const base = this.options.publicPath || '';
+        return `${base}/${this.options.name}/`;
     }
     public async init(renderer?: Renderer) {
         if (renderer) {
@@ -130,19 +131,18 @@ class RemoteItem {
         this.remoteModule.destroy();
     }
     public inject() {
-        const { name, publicPath } = this.options;
-        const { clientVersion, mf } = this;
+        const { name } = this.options;
+        const { clientVersion, mf, baseUri } = this;
         let scriptText = '';
         const appendScript = (varName: string, value: string) => {
             const val = serialize(value);
             scriptText += `window["${varName}"] = ${val};`;
         };
         const version = clientVersion ? `.${clientVersion}` : '';
-        const fullPath =
-            publicPath + `/${name}/js/${mf.entryName}${version}.js`;
+        const fullPath = `${baseUri}js/${mf.entryName}${version}.js`;
 
         appendScript(mf.getWebpackPublicPathVarName(name), fullPath);
-        appendScript(SSR.getPublicPathVarName(name), this.publicPath);
+        appendScript(SSR.getPublicPathVarName(name), baseUri);
 
         return scriptText;
     }
@@ -276,7 +276,9 @@ export class MF {
         );
     }
     public getWebpackPublicPathVarName(name: string) {
-        return `__webpack_public_path_${this.name}_${SSR.fixVarName(name)}`;
+        return `__webpack_public_path_${SSR.fixVarName(name)}_${
+            this.entryName
+        }`;
     }
 }
 

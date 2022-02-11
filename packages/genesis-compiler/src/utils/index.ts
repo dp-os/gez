@@ -1,5 +1,6 @@
 import Genesis from '@fmfe/genesis-core';
 import fs from 'fs';
+import relative from 'relative';
 
 export class BaseGenesis {
     public ssr: Genesis.SSR;
@@ -21,3 +22,11 @@ export const deleteFolder = (path: string) => {
     });
     fs.rmdirSync(path);
 };
+
+export function relativeFilename(from: string, to: string) {
+    let path = relative(from, to);
+    if (!path.startsWith('.')) {
+        path = `./` + path;
+    }
+    return path;
+}
