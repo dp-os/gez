@@ -7,17 +7,6 @@ import upath from 'upath';
 import webpack from 'webpack';
 import write from 'write';
 import { relativeFilename } from '../utils';
-function getExposes2(ssr, mf) {
-    const exposes = {};
-    Object.keys(mf.options.exposes).forEach((key) => {
-        const filename = mf.options.exposes[key];
-        const sourceFilename = path.isAbsolute(filename)
-            ? filename
-            : path.resolve(ssr.srcDir, filename);
-        exposes[key] = sourceFilename;
-    });
-    return exposes;
-}
 function getExposes(ssr, mf) {
     const exposes = {};
     Object.keys(mf.options.exposes).forEach((key) => {
@@ -97,18 +86,6 @@ export class MFPlugin extends Plugin {
             remotes: getRemotes(mf, target === 'server'),
             shared: mf.options.shared
         }));
-        config.module.rule('ts')
-            .test(/\.(t)sx?$/)
-            .include.add(this.ssr.srcIncludes)
-            .end()
-            .use('dts')
-            .loader('dts-loader')
-            .options({
-            name: ssr.name,
-            exposes: getExposes2(ssr, mf),
-            typesOutputDir: path.resolve(ssr.outputDirInServer, 'types')
-        })
-            .end();
     }
     afterCompiler(type) {
         const { ssr } = this;

@@ -36,7 +36,6 @@
     "core-js": "3.20.2",
     "css-loader": "6.5.1",
     "cssnano": "5.0.15",
-    "dts-loader": "^0.1.6",
     "file-loader": "6.2.0",
     "find": "0.3.0",
     "hash-sum": "2.0.0",

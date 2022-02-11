@@ -13,17 +13,6 @@ const upath_1 = __importDefault(require("upath"));
 const webpack_1 = __importDefault(require("webpack"));
 const write_1 = __importDefault(require("write"));
 const utils_1 = require("../utils");
-function getExposes2(ssr, mf) {
-    const exposes = {};
-    Object.keys(mf.options.exposes).forEach((key) => {
-        const filename = mf.options.exposes[key];
-        const sourceFilename = path_1.default.isAbsolute(filename)
-            ? filename
-            : path_1.default.resolve(ssr.srcDir, filename);
-        exposes[key] = sourceFilename;
-    });
-    return exposes;
-}
 function getExposes(ssr, mf) {
     const exposes = {};
     Object.keys(mf.options.exposes).forEach((key) => {
@@ -103,18 +92,6 @@ class MFPlugin extends genesis_core_1.Plugin {
             remotes: getRemotes(mf, target === 'server'),
             shared: mf.options.shared
         }));
-        config.module.rule('ts')
-            .test(/\.(t)sx?$/)
-            .include.add(this.ssr.srcIncludes)
-            .end()
-            .use('dts')
-            .loader('dts-loader')
-            .options({
-            name: ssr.name,
-            exposes: getExposes2(ssr, mf),
-            typesOutputDir: path_1.default.resolve(ssr.outputDirInServer, 'types')
-        })
-            .end();
     }
     afterCompiler(type) {
         const { ssr } = this;
