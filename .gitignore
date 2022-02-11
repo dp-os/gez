@@ -7,3 +7,4 @@ coverage/**
 **.log
 yarn.lock
 node_modules
+.wp_federation

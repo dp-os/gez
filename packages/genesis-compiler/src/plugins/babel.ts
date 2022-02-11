@@ -78,7 +78,6 @@ export class BabelPlugin extends Plugin {
             .loader('babel-loader')
             .options(babelts)
             .end();
-
         if (isProd) {
             jsRule.use('thread-loader').loader('thread-loader').end();
         }
