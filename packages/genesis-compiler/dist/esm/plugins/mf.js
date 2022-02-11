@@ -5,6 +5,58 @@ import fs from 'fs';
 import path from 'path';
 import webpack from 'webpack';
 import write from 'write';
+function getExposes(ssr, mf) {
+    const exposes = {};
+    Object.keys(mf.options.exposes).forEach((key) => {
+        const filename = mf.options.exposes[key];
+        const fullPath = path.isAbsolute(filename)
+            ? filename
+            : path.resolve(ssr.srcDir, filename);
+        exposes[key] = fullPath;
+    });
+    return exposes;
+}
+function getRemotes(mf, isServer) {
+    const remotes = {};
+    mf.options.remotes.forEach((item) => {
+        const varName = SSR.fixVarName(item.name);
+        const exposesVarName = mf.getWebpackPublicPathVarName(item.name);
+        if (isServer) {
+            const code = `promise (async function () {
+var remoteModule = global["${exposesVarName}"];
+await remoteModule.init(); 
+return require(remoteModule.filename);
+})();
+`;
+            remotes[item.name] = code;
+            return;
+        }
+        remotes[item.name] = `promise new Promise(function (resolve, reject) {
+            var script = document.createElement('script')
+            script.src = window["${exposesVarName}"];
+            script.onload = function onload() {
+              var proxy = {
+                get: (request) => window["${varName}"].get(request),
+                init: (arg) => {
+                  try {
+                    return window["${varName}"].init(arg)
+                  } catch(e) {
+                    console.log('remote container already initialized')
+                  }
+                }
+              }
+              resolve(proxy)
+            }
+            script.onerror = function onerror() {
+
+                document.head.removeChild(script);
+            }
+            document.head.appendChild(script);
+          })
+          `;
+    });
+    return remotes;
+}
 export class MFPlugin extends Plugin {
     constructor(ssr) {
         super(ssr);
@@ -12,63 +64,17 @@ export class MFPlugin extends Plugin {
     chainWebpack({ config, target }) {
         const { ssr } = this;
         const mf = MF.get(ssr);
-        const exposes = {};
         const entryName = mf.entryName;
-        const remotes = {};
-        Object.keys(mf.options.exposes).forEach((key) => {
-            const filename = mf.options.exposes[key];
-            const fullPath = path.isAbsolute(filename)
-                ? filename
-                : path.resolve(ssr.srcDir, filename);
-            exposes[key] = fullPath;
-        });
-        mf.options.remotes.forEach((item) => {
-            const varName = SSR.fixVarName(item.name);
-            const exposesVarName = mf.getWebpackPublicPathVarName(item.name);
-            if (target === 'server') {
-                const code = `promise (async function () {
-var remoteModule = global["${exposesVarName}"];
-await remoteModule.init(); 
-return require(remoteModule.filename);
-})();
-`;
-                remotes[item.name] = code;
-                return;
-            }
-            remotes[item.name] = `promise new Promise(function (resolve, reject) {
-                var script = document.createElement('script')
-                script.src = window["${exposesVarName}"];
-                script.onload = function onload() {
-                  var proxy = {
-                    get: (request) => window["${varName}"].get(request),
-                    init: (arg) => {
-                      try {
-                        return window["${varName}"].init(arg)
-                      } catch(e) {
-                        console.log('remote container already initialized')
-                      }
-                    }
-                  }
-                  resolve(proxy)
-                }
-                script.onerror = function onerror() {
-
-                    document.head.removeChild(script);
-                }
-                document.head.appendChild(script);
-              })
-              `;
-        });
         const name = mf.name;
         const hash = ssr.isProd ? '.[contenthash:8]' : '';
         config.plugin('module-federation').use(new webpack.container.ModuleFederationPlugin({
             name,
             filename: `js/${entryName}${hash}.js`,
-            exposes,
+            exposes: getExposes(ssr, mf),
             library: target === 'client'
                 ? undefined
                 : { type: 'commonjs-module' },
-            remotes,
+            remotes: getRemotes(mf, target === 'server'),
             shared: mf.options.shared
         }));
     }

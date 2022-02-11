@@ -37,6 +37,9 @@ export class SSR {
     static fixVarName(name) {
         return name.replace(/\W/g, '_');
     }
+    static getPublicPathVarName(name) {
+        return `__webpack_public_path_${SSR.fixVarName(name)}__`;
+    }
     /**
      * Judge whether it is a production environment. By default, judge by process.env.NODE_ENV
      */
@@ -62,7 +65,7 @@ export class SSR {
         return this.options?.build?.publicPath || `/${this.name}/`;
     }
     get publicPathVarName() {
-        return `__webpack_public_path_${SSR.fixVarName(this.name)}__`;
+        return SSR.getPublicPathVarName(this.name);
     }
     /**
      * CDN resource public path, Only valid in production mode

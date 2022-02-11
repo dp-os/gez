@@ -2,6 +2,7 @@ import * as Genesis from './';
 import { Renderer } from './renderer';
 export declare class SSR {
     static fixVarName(name: string): string;
+    static getPublicPathVarName(name: string): string;
     /**
      * Renderer
      */

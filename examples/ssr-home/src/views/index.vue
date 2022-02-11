@@ -1,5 +1,8 @@
 <template>
-    <div>这是首页</div>
+    <div>
+        <h2>这是流程图</h2>
+        <img src="../images/framework.jpeg" width="300" />
+    </div>
 </template>
 <script lang="ts">
 import Vue from 'vue';

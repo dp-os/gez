@@ -22,10 +22,17 @@ class RemoteModule {
     public remote: RemoteItem;
     public constructor(remote: RemoteItem) {
         this.remote = remote;
-
-        Object.defineProperty(remote.ssr.sandboxGlobal, this.varName, {
+        const { ssr } = remote;
+        Object.defineProperty(ssr.sandboxGlobal, this.varName, {
             get: () => this
         });
+        Object.defineProperty(
+            ssr.sandboxGlobal,
+            SSR.getPublicPathVarName(remote.options.name),
+            {
+                get: () => this.remote.publicPath
+            }
+        );
     }
     public get varName() {
         const { mf, options } = this.remote;
@@ -71,6 +78,9 @@ class RemoteItem {
             this.ssr.outputDirInServer,
             `remotes/${this.options.name}`
         );
+    }
+    public get publicPath() {
+        return this.options.publicPath || '';
     }
     public async init(renderer?: Renderer) {
         if (renderer) {
@@ -122,13 +132,19 @@ class RemoteItem {
     public inject() {
         const { name, publicPath } = this.options;
         const { clientVersion, mf } = this;
+        let scriptText = '';
+        const appendScript = (varName: string, value: string) => {
+            const val = serialize(value);
+            scriptText += `window["${varName}"] = ${val};`;
+        };
         const version = clientVersion ? `.${clientVersion}` : '';
         const fullPath =
             publicPath + `/${name}/js/${mf.entryName}${version}.js`;
-        const value = serialize(fullPath);
-        const varName = mf.getWebpackPublicPathVarName(name);
 
-        return `window["${varName}"] = ${value};`;
+        appendScript(mf.getWebpackPublicPathVarName(name), fullPath);
+        appendScript(SSR.getPublicPathVarName(name), this.publicPath);
+
+        return scriptText;
     }
 }
 

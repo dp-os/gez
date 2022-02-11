@@ -9,6 +9,9 @@ export class SSR {
     public static fixVarName(name: string) {
         return name.replace(/\W/g, '_');
     }
+    public static getPublicPathVarName(name: string) {
+        return `__webpack_public_path_${SSR.fixVarName(name)}__`;
+    }
     /**
      * Renderer
      */
@@ -80,7 +83,7 @@ export class SSR {
         return this.options?.build?.publicPath || `/${this.name}/`;
     }
     public get publicPathVarName() {
-        return `__webpack_public_path_${SSR.fixVarName(this.name)}__`;
+        return SSR.getPublicPathVarName(this.name);
     }
     /**
      * CDN resource public path, Only valid in production mode

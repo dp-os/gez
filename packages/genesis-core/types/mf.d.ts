@@ -22,6 +22,7 @@ declare class RemoteItem {
     constructor(ssr: Genesis.SSR, options: Genesis.MFRemote);
     get mf(): MF;
     get baseDir(): string;
+    get publicPath(): string;
     init(renderer?: Renderer): Promise<void>;
     onMessage: (evt: MessageEvent) => void;
     destroy(): void;

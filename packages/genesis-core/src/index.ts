@@ -46,7 +46,7 @@ namespace Genesis {
         /**
          * Client public path, for example: http://localhost:3001
          */
-        publicPath: string;
+        publicPath?: string;
         /**
          * Server request address, for example: http://localhost:3001/exposes.json
          */
