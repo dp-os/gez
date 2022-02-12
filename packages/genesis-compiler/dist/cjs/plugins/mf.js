@@ -12,6 +12,7 @@ const path_1 = __importDefault(require("path"));
 const upath_1 = __importDefault(require("upath"));
 const webpack_1 = __importDefault(require("webpack"));
 const write_1 = __importDefault(require("write"));
+const fflate_1 = __importDefault(require("fflate"));
 const utils_1 = require("../utils");
 function getExposes(ssr, mf) {
     const exposes = {};
@@ -96,24 +97,34 @@ class MFPlugin extends genesis_core_1.Plugin {
     afterCompiler(type) {
         const { ssr } = this;
         const mf = genesis_core_1.MF.get(ssr);
-        const clientVersion = this._getVersion(ssr.outputDirInClient);
-        const serverVersion = this._getVersion(ssr.outputDirInServer);
-        const files = this._getFiles();
+        if (!mf.haveExposes)
+            return;
+        const client = this._getVersion(ssr.outputDirInClient);
+        const server = this._getVersion(ssr.outputDirInServer);
         const data = {
-            version: contentHash(JSON.stringify(files)),
-            clientVersion,
-            serverVersion,
-            files
+            client,
+            server,
+            createTime: Date.now()
         };
-        const text = JSON.stringify(data);
-        this._write(mf.outputExposesVersion, data.version);
-        this._write(mf.outputExposesFiles, text);
+        this._write(mf.outputManifest, data);
+        this._zip(server || 'development');
         if (type === 'watch') {
             mf.exposes.emit();
         }
     }
-    _write(filename, text) {
-        write_1.default.sync(filename, text, { newline: true });
+    _write(filename, data) {
+        write_1.default.sync(filename, JSON.stringify(data, null, 4), { newline: true });
+    }
+    _zip(version) {
+        const { ssr } = this;
+        const mf = genesis_core_1.MF.get(ssr);
+        const files = {};
+        find_1.default.fileSync(path_1.default.resolve(ssr.outputDirInServer, './js')).forEach((filename) => {
+            const text = fs_1.default.readFileSync(filename);
+            files[path_1.default.basename(filename)] = text;
+        });
+        const zipped = fflate_1.default.zipSync(files);
+        write_1.default.sync(path_1.default.resolve(mf.output, `${version}.zip`), zipped);
     }
     _getVersion(root) {
         let version = '';
@@ -123,16 +134,6 @@ class MFPlugin extends genesis_core_1.Plugin {
             version = arr[1];
         }
         return version;
-    }
-    _getFiles() {
-        const { ssr } = this;
-        const files = {};
-        find_1.default.fileSync(path_1.default.resolve(ssr.outputDirInServer, './js')).forEach((filename) => {
-            const text = fs_1.default.readFileSync(filename, 'utf-8');
-            const key = path_1.default.relative(ssr.outputDirInServer, filename);
-            files[key] = text;
-        });
-        return files;
     }
     _getFilename(root) {
         const { ssr } = this;

@@ -52,6 +52,8 @@
     "thread-loader": "3.0.4",
     "typescript": "4.5.4",
     "upath": "2.0.1",
+    "mkdirp": "1.0.4",
+    "fflate": "0.7.3",
     "vue-loader": "15.9.8",
     "vue-server-renderer": "2.6.14",
     "vue-style-loader": "4.1.3",

@@ -19,8 +19,8 @@ interface Data {
 }
 
 class RemoteModule {
-    public remote: RemoteItem;
-    public constructor(remote: RemoteItem) {
+    public remote: Remote;
+    public constructor(remote: Remote) {
         this.remote = remote;
         const { ssr } = remote;
         Object.defineProperty(ssr.sandboxGlobal, this.varName, {
@@ -54,7 +54,7 @@ class RemoteModule {
     }
 }
 
-class RemoteItem {
+class Remote {
     public ssr: Genesis.SSR;
     public options: Genesis.MFRemote;
     public version = '';
@@ -89,7 +89,9 @@ class RemoteItem {
         }
         if (!this.eventsource) {
             this.startTime = Date.now();
-            this.eventsource = new Eventsource(this.options.serverUrl);
+            this.eventsource = new Eventsource(this.options.serverUrl, {
+                headers: {}
+            });
             this.eventsource.addEventListener('message', this.onMessage);
         }
         await this.ready.await;
@@ -148,13 +150,13 @@ class RemoteItem {
     }
 }
 
-class Remote {
-    public items: RemoteItem[];
+class RemoteGroup {
+    public items: Remote[];
     public ssr: SSR;
     public constructor(ssr: Genesis.SSR) {
         this.ssr = ssr;
         this.items = this.mf.options.remotes.map(
-            (opts) => new RemoteItem(ssr, opts)
+            (opts) => new Remote(ssr, opts)
         );
     }
     public get mf() {
@@ -170,7 +172,7 @@ class Remote {
         });
         return `<script>${arr.join('')}</script>`;
     }
-    public init(...args: Parameters<RemoteItem['init']>) {
+    public init(...args: Parameters<Remote['init']>) {
         return Promise.all(this.items.map((item) => item.init(...args)));
     }
 }
@@ -242,7 +244,7 @@ export class MF {
         shared: {}
     };
     public exposes: Exposes;
-    public remote: Remote;
+    public remote: RemoteGroup;
     public entryName = 'exposes';
     protected ssr: Genesis.SSR;
     protected mfPlugin: MFPlugin;
@@ -252,7 +254,7 @@ export class MF {
         ssr[mf] = this;
         this.mfPlugin = new MFPlugin(ssr);
         this.exposes = new Exposes(ssr);
-        this.remote = new Remote(ssr);
+        this.remote = new RemoteGroup(ssr);
         ssr.plugin.use(this.mfPlugin);
         if (ssr.options?.build?.extractCSS !== false) {
             throw new TypeError(
@@ -260,8 +262,17 @@ export class MF {
             );
         }
     }
+    public get haveExposes() {
+        return Object.keys(this.options.exposes).length > 0;
+    }
     public get name() {
         return SSR.fixVarName(this.ssr.name);
+    }
+    public get output() {
+        return path.resolve(this.ssr.outputDirInClient, 'node-exposes');
+    }
+    public get outputManifest() {
+        return path.resolve(this.output, 'manifest.json');
     }
     public get outputExposesVersion() {
         return path.resolve(

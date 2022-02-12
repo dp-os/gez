@@ -6,6 +6,7 @@ import {
     WebpackHookParams
 } from '@fmfe/genesis-core';
 import crypto from 'crypto';
+import fflate from 'fflate';
 import find from 'find';
 import fs from 'fs';
 import path from 'path';
@@ -82,7 +83,6 @@ return require(remoteModule.filename);
 
     return remotes;
 }
-
 export class MFPlugin extends Plugin {
     public constructor(ssr: SSR) {
         super(ssr);
@@ -112,26 +112,39 @@ export class MFPlugin extends Plugin {
     public afterCompiler(type: CompilerType) {
         const { ssr } = this;
         const mf = MF.get(ssr);
-        const clientVersion = this._getVersion(ssr.outputDirInClient);
-        const serverVersion = this._getVersion(ssr.outputDirInServer);
-        const files = this._getFiles();
+
+        if (!mf.haveExposes) return;
+
+        const client = this._getVersion(ssr.outputDirInClient);
+        const server = this._getVersion(ssr.outputDirInServer);
         const data = {
-            version: contentHash(JSON.stringify(files)),
-            clientVersion,
-            serverVersion,
-            files
+            client,
+            server,
+            createTime: Date.now()
         };
-        const text = JSON.stringify(data);
-        this._write(mf.outputExposesVersion, data.version);
-        this._write(mf.outputExposesFiles, text);
+        this._write(mf.outputManifest, data);
+
+        this._zip(server || 'development');
         if (type === 'watch') {
             mf.exposes.emit();
         }
     }
-    private _write(filename: string, text: string) {
-        write.sync(filename, text, { newline: true });
+    private _write(filename: string, data: Record<string, any>) {
+        write.sync(filename, JSON.stringify(data, null, 4), { newline: true });
     }
-
+    private _zip(version: string) {
+        const { ssr } = this;
+        const mf = MF.get(ssr);
+        const files: Record<string, any> = {};
+        find.fileSync(path.resolve(ssr.outputDirInServer, './js')).forEach(
+            (filename) => {
+                const text = fs.readFileSync(filename);
+                files[path.basename(filename)] = text;
+            }
+        );
+        const zipped = fflate.zipSync(files);
+        write.sync(path.resolve(mf.output, `${version}.zip`), zipped);
+    }
     private _getVersion(root: string) {
         let version = '';
         const filename = this._getFilename(root);
@@ -141,18 +154,6 @@ export class MFPlugin extends Plugin {
         }
 
         return version;
-    }
-    private _getFiles() {
-        const { ssr } = this;
-        const files = {};
-        find.fileSync(path.resolve(ssr.outputDirInServer, './js')).forEach(
-            (filename) => {
-                const text = fs.readFileSync(filename, 'utf-8');
-                const key = path.relative(ssr.outputDirInServer, filename);
-                files[key] = text;
-            }
-        );
-        return files;
     }
     private _getFilename(root: string): string {
         const { ssr } = this;

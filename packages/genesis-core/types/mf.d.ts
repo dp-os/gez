@@ -8,7 +8,7 @@ interface Data {
     serverVersion: string;
     files: {};
 }
-declare class RemoteItem {
+declare class Remote {
     ssr: Genesis.SSR;
     options: Genesis.MFRemote;
     version: string;
@@ -28,13 +28,13 @@ declare class RemoteItem {
     destroy(): void;
     inject(): string;
 }
-declare class Remote {
-    items: RemoteItem[];
+declare class RemoteGroup {
+    items: Remote[];
     ssr: SSR;
     constructor(ssr: Genesis.SSR);
     get mf(): MF;
     inject(): string;
-    init(...args: Parameters<RemoteItem['init']>): Promise<void[]>;
+    init(...args: Parameters<Remote['init']>): Promise<void[]>;
 }
 declare type ExposesWatchCallback = (data: Data) => void;
 declare class Exposes {
@@ -56,12 +56,15 @@ export declare class MF {
     static get(ssr: Genesis.SSR): MF;
     options: Required<Genesis.MFOptions>;
     exposes: Exposes;
-    remote: Remote;
+    remote: RemoteGroup;
     entryName: string;
     protected ssr: Genesis.SSR;
     protected mfPlugin: MFPlugin;
     constructor(ssr: Genesis.SSR, options?: Genesis.MFOptions);
+    get haveExposes(): boolean;
     get name(): string;
+    get output(): string;
+    get outputManifest(): string;
     get outputExposesVersion(): string;
     get outputExposesFiles(): string;
     getWebpackPublicPathVarName(name: string): string;

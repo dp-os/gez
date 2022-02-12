@@ -6,9 +6,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Watch = exports.WatchClientConfig = void 0;
 const chalk_1 = __importDefault(require("chalk"));
 const fs_1 = __importDefault(require("fs"));
+const path_1 = __importDefault(require("path"));
 const webpack_1 = __importDefault(require("webpack"));
 const webpack_dev_middleware_1 = __importDefault(require("webpack-dev-middleware"));
 const webpack_hot_middleware_1 = __importDefault(require("webpack-hot-middleware"));
+const mkdirp_1 = __importDefault(require("mkdirp"));
 const install_1 = require("../plugins/install");
 const utils_1 = require("../utils");
 const webpack_2 = require("../webpack");
@@ -63,8 +65,13 @@ class Watch extends utils_1.BaseGenesis {
         const serverCompiler = (0, webpack_1.default)(serverConfig);
         this.devMiddleware = (0, webpack_dev_middleware_1.default)(clientCompiler, {
             publicPath: this.ssr.publicPath,
-            writeToDisk: true,
-            index: false
+            index: false,
+            outputFileSystem: {
+                ...fs_1.default,
+                join: path_1.default.join.bind(path_1.default),
+                // @ts-ignore
+                mkdirp: mkdirp_1.default.bind(mkdirp_1.default)
+            }
         });
         this.hotMiddleware = (0, webpack_hot_middleware_1.default)(clientCompiler, {
             heartbeat: 5000,

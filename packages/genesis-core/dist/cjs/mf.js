@@ -41,7 +41,7 @@ class RemoteModule {
         delete global[this.varName];
     }
 }
-class RemoteItem {
+class Remote {
     constructor(ssr, options) {
         this.version = '';
         this.clientVersion = '';
@@ -92,7 +92,9 @@ class RemoteItem {
         }
         if (!this.eventsource) {
             this.startTime = Date.now();
-            this.eventsource = new eventsource_1.default(this.options.serverUrl);
+            this.eventsource = new eventsource_1.default(this.options.serverUrl, {
+                headers: {}
+            });
             this.eventsource.addEventListener('message', this.onMessage);
         }
         await this.ready.await;
@@ -120,10 +122,10 @@ class RemoteItem {
         return scriptText;
     }
 }
-class Remote {
+class RemoteGroup {
     constructor(ssr) {
         this.ssr = ssr;
-        this.items = this.mf.options.remotes.map((opts) => new RemoteItem(ssr, opts));
+        this.items = this.mf.options.remotes.map((opts) => new Remote(ssr, opts));
     }
     get mf() {
         return MF.get(this.ssr);
@@ -204,7 +206,7 @@ class MF {
         ssr[mf] = this;
         this.mfPlugin = new MFPlugin(ssr);
         this.exposes = new Exposes(ssr);
-        this.remote = new Remote(ssr);
+        this.remote = new RemoteGroup(ssr);
         ssr.plugin.use(this.mfPlugin);
         if (((_b = (_a = ssr.options) === null || _a === void 0 ? void 0 : _a.build) === null || _b === void 0 ? void 0 : _b.extractCSS) !== false) {
             throw new TypeError(`To use MF plug-in, build.extractCSS needs to be set to false`);
@@ -219,8 +221,17 @@ class MF {
         }
         return ssr[mf];
     }
+    get haveExposes() {
+        return Object.keys(this.options.exposes).length > 0;
+    }
     get name() {
         return ssr_1.SSR.fixVarName(this.ssr.name);
+    }
+    get output() {
+        return path_1.default.resolve(this.ssr.outputDirInClient, 'node-exposes');
+    }
+    get outputManifest() {
+        return path_1.default.resolve(this.output, 'manifest.json');
     }
     get outputExposesVersion() {
         return path_1.default.resolve(this.ssr.outputDirInServer, 'vue-ssr-server-exposes-version.txt');

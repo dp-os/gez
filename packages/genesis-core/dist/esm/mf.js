@@ -35,7 +35,7 @@ class RemoteModule {
         delete global[this.varName];
     }
 }
-class RemoteItem {
+class Remote {
     constructor(ssr, options) {
         this.version = '';
         this.clientVersion = '';
@@ -85,7 +85,9 @@ class RemoteItem {
         }
         if (!this.eventsource) {
             this.startTime = Date.now();
-            this.eventsource = new Eventsource(this.options.serverUrl);
+            this.eventsource = new Eventsource(this.options.serverUrl, {
+                headers: {}
+            });
             this.eventsource.addEventListener('message', this.onMessage);
         }
         await this.ready.await;
@@ -113,10 +115,10 @@ class RemoteItem {
         return scriptText;
     }
 }
-class Remote {
+class RemoteGroup {
     constructor(ssr) {
         this.ssr = ssr;
-        this.items = this.mf.options.remotes.map((opts) => new RemoteItem(ssr, opts));
+        this.items = this.mf.options.remotes.map((opts) => new Remote(ssr, opts));
     }
     get mf() {
         return MF.get(this.ssr);
@@ -195,7 +197,7 @@ export class MF {
         ssr[mf] = this;
         this.mfPlugin = new MFPlugin(ssr);
         this.exposes = new Exposes(ssr);
-        this.remote = new Remote(ssr);
+        this.remote = new RemoteGroup(ssr);
         ssr.plugin.use(this.mfPlugin);
         if (ssr.options?.build?.extractCSS !== false) {
             throw new TypeError(`To use MF plug-in, build.extractCSS needs to be set to false`);
@@ -210,8 +212,17 @@ export class MF {
         }
         return ssr[mf];
     }
+    get haveExposes() {
+        return Object.keys(this.options.exposes).length > 0;
+    }
     get name() {
         return SSR.fixVarName(this.ssr.name);
+    }
+    get output() {
+        return path.resolve(this.ssr.outputDirInClient, 'node-exposes');
+    }
+    get outputManifest() {
+        return path.resolve(this.output, 'manifest.json');
     }
     get outputExposesVersion() {
         return path.resolve(this.ssr.outputDirInServer, 'vue-ssr-server-exposes-version.txt');

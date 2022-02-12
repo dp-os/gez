@@ -1,8 +1,10 @@
 import chalk from 'chalk';
 import fs from 'fs';
+import path from 'path';
 import Webpack from 'webpack';
 import WebpackDevMiddleware from 'webpack-dev-middleware';
 import WebpackHotMiddleware from 'webpack-hot-middleware';
+import mkdirp from 'mkdirp';
 import { InstallPlugin } from '../plugins/install';
 import { BaseGenesis } from '../utils';
 import { ClientConfig, ServerConfig } from '../webpack';
@@ -56,8 +58,13 @@ export class Watch extends BaseGenesis {
         const serverCompiler = Webpack(serverConfig);
         this.devMiddleware = WebpackDevMiddleware(clientCompiler, {
             publicPath: this.ssr.publicPath,
-            writeToDisk: true,
-            index: false
+            index: false,
+            outputFileSystem: {
+                ...fs,
+                join: path.join.bind(path),
+                // @ts-ignore
+                mkdirp: mkdirp.bind(mkdirp)
+            }
         });
         this.hotMiddleware = WebpackHotMiddleware(clientCompiler, {
             heartbeat: 5000,

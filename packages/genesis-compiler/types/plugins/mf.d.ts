@@ -4,8 +4,8 @@ export declare class MFPlugin extends Plugin {
     chainWebpack({ config, target }: WebpackHookParams): void;
     afterCompiler(type: CompilerType): void;
     private _write;
+    private _zip;
     private _getVersion;
-    private _getFiles;
     private _getFilename;
 }
 export declare function contentHash(text: string): string;
