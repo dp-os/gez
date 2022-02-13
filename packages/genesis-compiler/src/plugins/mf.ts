@@ -118,16 +118,16 @@ export class MFPlugin extends Plugin {
         const client = this._getVersion(ssr.outputDirInClient);
         const server = this._getVersion(ssr.outputDirInServer);
         const data = {
-            client,
-            server,
-            dts: false,
-            createTime: Date.now()
+            c: client,
+            s: server,
+            d: 0,
+            t: Date.now()
         };
         const zipName = server || 'development';
         this._zip(path.resolve(ssr.outputDirInServer, './js'), zipName);
         const typeDir = path.resolve(ssr.baseDir, 'types');
         if (fs.existsSync(typeDir)) {
-            data.dts = this._zip(typeDir, `${zipName}-dts`);
+            data.d = Number(this._zip(typeDir, `${zipName}-dts`));
         }
         this._write(mf.outputManifest, data);
         if (type === 'watch') {

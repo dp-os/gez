@@ -36,6 +36,16 @@ export const mf = new MF(ssr, {
 });
 
 /**
+ * 重写 manifest.json 的响应逻辑，注意要在静态服务的请求之前添加处理函数
+ * 如果1分钟内有更新，则立即往下执行，响应请求
+ * 如果1分钟内没有更新，则再结束请求，避免对方太频繁轮询
+ */
+app.get(mf.manifestRoutePath, async (req, res, next) => {
+    const manifest = await mf.exposes.getManifest(Number(req.query.t), 10000);
+    res.send(manifest);
+});
+
+/**
  * 拿到渲染器后，启动应用程序
  */
 export const startApp = (renderer: Renderer) => {

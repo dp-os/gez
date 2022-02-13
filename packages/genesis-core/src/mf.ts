@@ -1,5 +1,6 @@
 import axios from 'axios';
 import fflate from 'fflate';
+import fs from 'fs';
 import http from 'http';
 import https from 'https';
 import path from 'path';
@@ -32,22 +33,23 @@ request.interceptors.request.use((axiosConfig) => {
     return axiosConfig;
 });
 
-const reZip = /\.zip$/;
-
-request.interceptors.response.use(async (axiosConfig) => {
-    const time = Date.now() - axiosConfig.config._startTime;
-    const url = axiosConfig.config.url || '';
-    if (reZip.test(url)) {
-        console.log(`Remote request: ${axiosConfig.config.url} ${time}ms`);
+request.interceptors.response.use(
+    async (axiosConfig) => {
+        const time = Date.now() - axiosConfig.config._startTime;
+        const url = axiosConfig.config.url || '';
+        console.log(`mf: ${url} ${time}ms`);
+        return Promise.resolve(axiosConfig);
+    },
+    (err) => {
+        return Promise.reject(err);
     }
-    return Promise.resolve(axiosConfig);
-});
+);
 
 interface ManifestJson {
-    createTime: number;
-    client: string;
-    server: string;
-    dts: boolean;
+    c: string;
+    s: string;
+    d: 0 | 1;
+    t: number;
 }
 
 class RemoteModule {
@@ -74,7 +76,7 @@ class RemoteModule {
     }
     public get filename() {
         const { manifest, mf, baseDir } = this.remote;
-        const version = manifest.server ? `.${manifest.server}` : '';
+        const version = manifest.s ? `.${manifest.s}` : '';
 
         return path.resolve(baseDir, `js/${mf.entryName}${version}.js`);
     }
@@ -86,15 +88,18 @@ class RemoteModule {
     }
 }
 
+function createManifest(): ManifestJson {
+    return {
+        c: '',
+        s: '',
+        t: 0,
+        d: 0
+    };
+}
 class Remote {
     public ssr: Genesis.SSR;
     public options: Genesis.MFRemote;
-    public manifest: ManifestJson = {
-        client: '',
-        server: '',
-        createTime: 0,
-        dts: false
-    };
+    public manifest: ManifestJson = createManifest();
     public ready = new ReadyPromise<true>();
     private remoteModule: RemoteModule;
     private renderer?: Renderer;
@@ -116,7 +121,7 @@ class Remote {
         return `${this.options.serverOrigin}/${this.options.name}/`;
     }
     public get baseDir() {
-        return this.getWrite(this.manifest.server);
+        return this.getWrite(this.manifest.s);
     }
     public async init(renderer?: Renderer) {
         if (renderer) {
@@ -137,18 +142,17 @@ class Remote {
     }
     public async fetch(): Promise<boolean> {
         const { manifest } = this;
-        const url = `${this.serverPublicPath}${entryDirName}/${manifestJsonName}`;
+        const url = `${this.serverPublicPath}${entryDirName}/${manifestJsonName}?t=${manifest.t}`;
         const res: ManifestJson = await request
             .get(url)
             .then((res) => res.data)
             .catch(() => null);
         if (res && typeof res === 'object') {
             // 服务端版本号一致，则不用下载
-            if (manifest.server && manifest.server === res.server) return true;
-            if (!manifest.server && manifest.createTime === res.createTime)
-                return true;
-            const baseName = res.server || 'development';
-            const baseDir = this.getWrite(res.server);
+            if (manifest.s && manifest.s === res.s) return true;
+            if (!manifest.s && manifest.t === res.t) return true;
+            const baseName = res.s || 'development';
+            const baseDir = this.getWrite(res.s);
             const arr: Promise<boolean>[] = [
                 this.download(`${baseName}.zip`, path.resolve(baseDir, 'js')),
                 this.downloadDts(res)
@@ -156,7 +160,6 @@ class Remote {
 
             const [ok] = await Promise.all(arr);
             if (ok) {
-                const name = this.options.name;
                 if (this.ready.loading) {
                     this.ready.finish(true);
                 } else {
@@ -165,16 +168,17 @@ class Remote {
                 this.manifest = res;
                 return true;
             }
+            return;
         }
-        console.log(`Request error: ${url}`);
+        console.log(`Request error: ${url}`, res);
         return false;
     }
     private async downloadDts(manifest: ManifestJson) {
         const { ssr } = this;
-        if (ssr.isProd || manifest.dts !== true) {
+        if (ssr.isProd || manifest.d !== 1) {
             return false;
         }
-        const baseName = manifest.server || 'development';
+        const baseName = manifest.s || 'development';
         const writeDir = path.resolve('node_modules', this.options.name);
         const packageJson = {
             name: this.options.name,
@@ -254,7 +258,7 @@ class Remote {
             const val = serialize(value);
             scriptText += `window["${varName}"] = ${val};`;
         };
-        const version = manifest.client ? `.${manifest.client}` : '';
+        const version = manifest.c ? `.${manifest.c}` : '';
         const fullPath = `${clientPublicPath}js/${mf.entryName}${version}.js`;
 
         appendScript(mf.getWebpackPublicPathVarName(name), fullPath);
@@ -265,8 +269,8 @@ class Remote {
 }
 
 class RemoteGroup {
-    public items: Remote[];
-    public ssr: SSR;
+    private items: Remote[];
+    private ssr: SSR;
     public constructor(ssr: Genesis.SSR) {
         this.ssr = ssr;
         this.items = this.mf.options.remotes.map(
@@ -299,17 +303,54 @@ type ExposesWatchCallback = () => void;
 class Exposes {
     public ssr: Genesis.SSR;
     private subs: ExposesWatchCallback[] = [];
+    public manifest: ManifestJson = createManifest();
     public constructor(ssr: Genesis.SSR) {
         this.ssr = ssr;
+        this.readManifest();
     }
     public get mf() {
         return MF.get(this.ssr);
     }
     public watch(cb: ExposesWatchCallback) {
-        this.subs.push(cb);
+        const wrap = () => {
+            return cb();
+        };
+        this.subs.push(wrap);
+        return () => {
+            const index = this.subs.indexOf(wrap);
+            if (index > -1) {
+                this.subs.splice(index, 1);
+            }
+        };
+    }
+    public getManifest(t = 0, maxAwait = 1000 * 60): Promise<ManifestJson> {
+        if (!t || t !== this.manifest.t) {
+            return Promise.resolve({ ...this.manifest });
+        }
+        return new Promise<ManifestJson>((resolve) => {
+            const timer = setTimeout(() => {
+                resolve({ ...this.manifest });
+            }, maxAwait);
+            this.watch(() => {
+                clearTimeout(timer);
+                resolve({ ...this.manifest });
+            });
+        });
     }
     public emit() {
+        this.readManifest();
         this.subs.forEach((cb) => cb());
+    }
+    private readManifest() {
+        const filename = this.mf.outputManifest;
+        if (!fs.existsSync(filename)) {
+            return;
+        }
+        const text = fs.readFileSync(filename, { encoding: 'utf-8' });
+        try {
+            const data = JSON.parse(text);
+            this.manifest = data;
+        } catch (e) {}
     }
 }
 
