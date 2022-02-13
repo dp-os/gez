@@ -48,7 +48,8 @@ class Remote {
         this.manifest = {
             client: '',
             server: '',
-            createTime: 0
+            createTime: 0,
+            dts: false
         };
         this.ready = new ReadyPromise();
         this.startTime = 0;
@@ -68,7 +69,7 @@ class Remote {
         return `${this.options.serverOrigin}/${this.options.name}/`;
     }
     get baseDir() {
-        return path_1.default.resolve(this.ssr.outputDirInServer, `remotes/${this.options.name}`);
+        return this.getWrite(this.manifest.server);
     }
     async init(renderer) {
         if (renderer) {
@@ -80,28 +81,58 @@ class Remote {
         }
         await this.ready.await;
     }
+    getWrite(server) {
+        const baseName = server || 'development';
+        return path_1.default.resolve(this.ssr.outputDirInServer, `remotes/${this.options.name}/${baseName}`);
+    }
     async connect() {
-        const { mf, manifest } = this;
+        var _a;
+        const { mf, manifest, ssr } = this;
         this.startTime = Date.now();
         const url = `${this.serverPublicPath}${entryDirName}/${manifestJsonName}`;
         const res = await axios_1.default.get(url).then((res) => res.data).catch(() => null);
-        if (res) {
+        if (res && typeof res === 'object') {
             // 服务端版本号一致，则不用下载
             if (manifest.server && manifest.server === res.server)
                 return;
             if (!manifest.server && manifest.createTime === res.createTime)
                 return;
-            await this.download(res);
-            this.manifest = res;
+            const baseName = res.server || 'development';
+            const baseDir = this.getWrite(res.server);
+            if (!ssr.isProd && res.client) {
+                const writeDir = path_1.default.resolve('node_modules', this.options.name);
+                const packageJson = {
+                    "name": this.options.name,
+                    "version": "1.0.0",
+                    "main": "index.js"
+                };
+                const ok = await this.download(`${baseName}-dts.zip`, writeDir, (name) => {
+                    const filename = name.replace(/\.d\.ts$/, '').replace(/\.vue$/, '');
+                    write_1.default.sync(path_1.default.resolve(writeDir, `${filename}.js`), `// Federation write module type`);
+                });
+                if (ok) {
+                    write_1.default.sync(path_1.default.resolve(writeDir, 'package.json'), JSON.stringify(packageJson, null, 4));
+                }
+            }
+            const ok = await this.download(`${baseName}.zip`, path_1.default.resolve(baseDir, 'js'));
+            if (ok) {
+                if (this.ready.loading) {
+                    console.log(`${this.options.name} download time is ${Date.now() - this.startTime}ms`);
+                    this.ready.finish(true);
+                }
+                else {
+                    console.log(`${this.options.name} updated time is ${Date.now() - this.startTime}ms`);
+                }
+                this.manifest = res;
+                (_a = this.renderer) === null || _a === void 0 ? void 0 : _a.reload();
+            }
         }
         else {
             console.log(`Request error: ${url}`);
         }
         this.timer = setTimeout(this.connect, mf.options.intervalTime);
     }
-    async download(data) {
-        var _a;
-        const zipName = (data.server || 'development') + '.zip';
+    async download(zipName, writeDir, cb) {
         const url = `${this.serverPublicPath}${entryDirName}/${zipName}`;
         const res = await axios_1.default.get(url, { responseType: 'arraybuffer' }).then((res) => res.data).catch(() => null);
         if (res) {
@@ -109,25 +140,20 @@ class Remote {
                 write_1.default.sync(path_1.default.resolve(`.${entryDirName}`, this.options.name, zipName), res);
                 const files = fflate_1.default.unzipSync(res);
                 Object.keys(files).forEach(name => {
-                    write_1.default.sync(path_1.default.resolve(this.baseDir, 'js', name), files[name]);
+                    write_1.default.sync(path_1.default.resolve(writeDir, name), files[name]);
+                    cb && cb(name);
                 });
             }
             catch (e) {
                 console.log(url, e);
-                return;
+                return false;
             }
-            if (this.ready.loading) {
-                console.log(`${this.options.name} download time is ${Date.now() - this.startTime}ms`);
-                this.ready.finish(true);
-            }
-            else {
-                console.log(`${this.options.name} updated time is ${Date.now() - this.startTime}ms`);
-            }
-            (_a = this.renderer) === null || _a === void 0 ? void 0 : _a.reload();
+            return true;
         }
         else {
             console.log(`${this.options.name} dependency download failed, The url is ${url}`);
         }
+        return false;
     }
     destroy() {
         this.timer && clearTimeout(this.timer);

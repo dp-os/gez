@@ -1,20 +1,16 @@
-import { createServerApp } from '@fmfe/genesis-app';
-import { RenderContext } from '@fmfe/genesis-core';
+import { ClientOptions } from '@fmfe/genesis-core';
+import { onVueCreated } from 'ssr-shared/vue-use';
 import Vue from 'vue';
 
-import { onVueCreated } from '../../shared/vue-use';
 import App from './app.vue';
-import { createRouter } from './router';
 
-export default async (renderContext: RenderContext): Promise<Vue> => {
-    const router = await createRouter();
-    const app = await createServerApp({
-        App,
-        renderContext,
-        vueOptions: {
-            router
+export default async (clientOptions: ClientOptions): Promise<Vue> => {
+    const app = await new Vue({
+        clientOptions,
+        render(h) {
+            return h(App);
         }
     });
-    onVueCreated(app, renderContext);
+    onVueCreated(app, clientOptions);
     return app;
 };

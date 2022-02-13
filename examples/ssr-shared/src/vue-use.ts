@@ -1,7 +1,8 @@
 import { ClientOptions, RenderContext } from '@fmfe/genesis-core';
-import ElementUI from 'element-ui';
 import Vue from 'vue';
-import VueMeta from 'vue-meta';
+
+import ElementUI from './element-ui';
+import VueMeta from './vue-meta';
 
 Vue.use(ElementUI).use(VueMeta);
 

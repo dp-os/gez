@@ -15,50 +15,31 @@ export const app = express();
 export const ssr = new SSR({
     name: 'ssr-hub',
     build: {
-        template: path.resolve(__dirname, '../shared/index.html'),
         extractCSS: false,
-        baseDir: path.resolve(__dirname),
-        transpile: [/examples\/shared/]
+        template: path.resolve('./index.html')
     }
 });
 
 export const mf = new MF(ssr, {
+    shared,
     remotes: [
         {
-            name: 'ssr-home',
-            clientOrigin: 'http://localhost:3001',
-            serverOrigin: 'http://localhost:3001'
-        },
-        {
-            name: 'ssr-about',
-            clientOrigin: 'http://localhost:3002',
-            serverOrigin: 'http://localhost:3002'
+            name: 'ssr-shared',
+            clientOrigin: 'http://localhost:3004',
+            serverOrigin: 'http://localhost:3004'
         }
-    ],
-    shared
+    ]
 });
 
 /**
  * 拿到渲染器后，启动应用程序
  */
-export const startApp = async (renderer: Renderer) => {
-    /**
-     * 需要把渲染器传递进去，这样远程服务更新的时候，会自动调用运行最新代码
-     */
+export const startApp = (renderer: Renderer) => {
     mf.remote.init(renderer);
     /**
      * 使用默认渲染中间件进行渲染，你也可以调用更加底层的 renderer.renderJson 和 renderer.renderHtml 来实现渲染
      */
-    app.use(async (req, res, next) => {
-        const now = Date.now();
-        const data = await renderer.renderHtml({
-            req,
-            res,
-            styleTagExtractCSS: true
-        });
-        console.log(`render ${req.url} ${Date.now() - now}ms`);
-        res.send(data.data);
-    });
+    app.use(renderer.renderMiddleware);
     /**
      * 监听端口
      */

@@ -1,51 +1,41 @@
 <template>
-    <el-container>
-        <el-header>
-            <ul class="list">
-                <li class="list-item">
-                    <router-link to="/">首页</router-link>
-                </li>
-                <li class="list-item">
-                    <router-link to="/about">关于我们</router-link>
-                </li>
-            </ul>
-        </el-header>
-        <el-main>
-            <router-view />
-        </el-main>
-    </el-container>
+    <div class="app">
+        <h2>你好世界！</h2>
+        <p v-if="show" class="text" @click="close">
+            {{ installed ? '在客户端应该安装成功，点击我关闭!' : '未安装' }}
+        </p>
+    </div>
 </template>
 <script lang="ts">
 import Vue from 'vue';
 
 export default Vue.extend({
-    metaInfo() {
-        return {
-            link: [
-                {
-                    rel: 'stylesheet',
-                    href: 'https://unpkg.com/element-ui/lib/theme-chalk/index.css'
-                }
-            ]
-        };
-    },
     name: 'app',
     data() {
         return {
-            activeIndex: '1'
+            installed: false,
+            show: true
         };
+    },
+    mounted() {
+        this.installed = true;
+    },
+    methods: {
+        close() {
+            this.show = false;
+        }
     }
 });
 </script>
 <style lang="less" scoped>
-.list {
-    display: flex;
-    margin: 0;
-    padding: 0;
+.app {
+    padding: 100px;
+    text-align: center;
 }
 
-.list-item {
-    padding: 0 5px;
-    list-style: none;
+.text {
+    color: #999;
+    font-size: 14px;
+    cursor: pointer;
 }
 </style>

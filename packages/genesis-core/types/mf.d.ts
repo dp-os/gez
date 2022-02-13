@@ -2,29 +2,31 @@ import type * as Genesis from '.';
 import { Plugin } from './plugin';
 import type { Renderer } from './renderer';
 import { SSR } from './ssr';
-interface Data {
-    version: string;
-    clientVersion: string;
-    serverVersion: string;
-    files: {};
+interface ManifestJson {
+    createTime: number;
+    client: string;
+    server: string;
+    dts: boolean;
 }
 declare class Remote {
     ssr: Genesis.SSR;
     options: Genesis.MFRemote;
-    version: string;
-    clientVersion: string;
-    serverVersion: string;
+    manifest: ManifestJson;
     ready: ReadyPromise<true>;
-    private eventsource?;
     private remoteModule;
     private renderer?;
     private startTime;
+    private timer?;
+    private already;
     constructor(ssr: Genesis.SSR, options: Genesis.MFRemote);
     get mf(): MF;
+    get clientPublicPath(): string;
+    get serverPublicPath(): string;
     get baseDir(): string;
-    get baseUri(): string;
     init(renderer?: Renderer): Promise<void>;
-    onMessage: (evt: MessageEvent) => void;
+    getWrite(server: string): string;
+    connect(): Promise<void>;
+    download(zipName: string, writeDir: string, cb?: (name: string) => void): Promise<boolean>;
     destroy(): void;
     inject(): string;
 }
@@ -36,15 +38,14 @@ declare class RemoteGroup {
     inject(): string;
     init(...args: Parameters<Remote['init']>): Promise<void[]>;
 }
-declare type ExposesWatchCallback = (data: Data) => void;
+declare type ExposesWatchCallback = () => void;
 declare class Exposes {
     ssr: Genesis.SSR;
     private subs;
     constructor(ssr: Genesis.SSR);
     get mf(): MF;
-    watch(cb: ExposesWatchCallback, version?: string): () => void;
+    watch(cb: ExposesWatchCallback): void;
     emit(): void;
-    readText(fullPath: string): string;
 }
 export declare class MFPlugin extends Plugin {
     constructor(ssr: Genesis.SSR);
@@ -65,8 +66,7 @@ export declare class MF {
     get name(): string;
     get output(): string;
     get outputManifest(): string;
-    get outputExposesVersion(): string;
-    get outputExposesFiles(): string;
+    get manifestRoutePath(): string;
     getWebpackPublicPathVarName(name: string): string;
 }
 export declare class ReadyPromise<T> {

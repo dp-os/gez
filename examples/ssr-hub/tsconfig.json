@@ -29,8 +29,8 @@
         ],
         "allowSyntheticDefaultImports": true,
         "paths": {
-          "ssr-shared/src/*": ["./src/*"],
-          "ssr-shared/*": ["./*"]
+          "ssr-hub/src/*": ["./src/*"],
+          "ssr-hub/*": ["./*"]
         },
     },
     "include": [

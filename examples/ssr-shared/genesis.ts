@@ -13,7 +13,7 @@ export const app = express();
  * 创建一个 SSR 实例
  */
 export const ssr = new SSR({
-    name: 'ssr-home',
+    name: 'ssr-shared',
     build: {
         extractCSS: false,
         template: path.resolve('./index.html')

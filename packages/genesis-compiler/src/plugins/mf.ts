@@ -120,11 +120,16 @@ export class MFPlugin extends Plugin {
         const data = {
             client,
             server,
+            dts: false,
             createTime: Date.now()
         };
+        const zipName = server || 'development';
+        this._zip(path.resolve(ssr.outputDirInServer, './js'), zipName);
+        const typeDir = path.resolve(ssr.baseDir, 'types');
+        if (fs.existsSync(typeDir)) {
+            data.dts = this._zip(typeDir, `${zipName}-dts`);
+        }
         this._write(mf.outputManifest, data);
-
-        this._zip(server || 'development');
         if (type === 'watch') {
             mf.exposes.emit();
         }
@@ -132,18 +137,20 @@ export class MFPlugin extends Plugin {
     private _write(filename: string, data: Record<string, any>) {
         write.sync(filename, JSON.stringify(data, null, 4), { newline: true });
     }
-    private _zip(version: string) {
+    private _zip(baseDir: string, name: string) {
         const { ssr } = this;
         const mf = MF.get(ssr);
         const files: Record<string, any> = {};
-        find.fileSync(path.resolve(ssr.outputDirInServer, './js')).forEach(
-            (filename) => {
-                const text = fs.readFileSync(filename);
-                files[path.basename(filename)] = text;
-            }
-        );
-        const zipped = fflate.zipSync(files);
-        write.sync(path.resolve(mf.output, `${version}.zip`), zipped);
+        find.fileSync(baseDir).forEach((filename) => {
+            const text = fs.readFileSync(filename);
+            files[path.basename(filename)] = text;
+        });
+        if (Object.keys(files).length > 0) {
+            const zipped = fflate.zipSync(files);
+            write.sync(path.resolve(mf.output, `${name}.zip`), zipped);
+            return true;
+        }
+        return false;
     }
     private _getVersion(root: string) {
         let version = '';

@@ -104,10 +104,16 @@ class MFPlugin extends genesis_core_1.Plugin {
         const data = {
             client,
             server,
+            dts: false,
             createTime: Date.now()
         };
+        const zipName = server || 'development';
+        this._zip(path_1.default.resolve(ssr.outputDirInServer, './js'), zipName);
+        const typeDir = path_1.default.resolve(ssr.baseDir, 'types');
+        if (fs_1.default.existsSync(typeDir)) {
+            data.dts = this._zip(typeDir, `${zipName}-dts`);
+        }
         this._write(mf.outputManifest, data);
-        this._zip(server || 'development');
         if (type === 'watch') {
             mf.exposes.emit();
         }
@@ -115,16 +121,20 @@ class MFPlugin extends genesis_core_1.Plugin {
     _write(filename, data) {
         write_1.default.sync(filename, JSON.stringify(data, null, 4), { newline: true });
     }
-    _zip(version) {
+    _zip(baseDir, name) {
         const { ssr } = this;
         const mf = genesis_core_1.MF.get(ssr);
         const files = {};
-        find_1.default.fileSync(path_1.default.resolve(ssr.outputDirInServer, './js')).forEach((filename) => {
+        find_1.default.fileSync(baseDir).forEach((filename) => {
             const text = fs_1.default.readFileSync(filename);
             files[path_1.default.basename(filename)] = text;
         });
-        const zipped = fflate_1.default.zipSync(files);
-        write_1.default.sync(path_1.default.resolve(mf.output, `${version}.zip`), zipped);
+        if (Object.keys(files).length > 0) {
+            const zipped = fflate_1.default.zipSync(files);
+            write_1.default.sync(path_1.default.resolve(mf.output, `${name}.zip`), zipped);
+            return true;
+        }
+        return false;
     }
     _getVersion(root) {
         let version = '';

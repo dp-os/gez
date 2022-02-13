@@ -27,9 +27,6 @@ export declare class SSR {
      */
     get name(): string;
     get extractCSS(): boolean;
-    /**
-     * The basic path of client static resource loading, which is '/ssr-genesis/' by default
-     */
     get publicPath(): string;
     get publicPathVarName(): string;
     /**
