@@ -5,10 +5,10 @@
     "main": "dist/index.js",
     "scripts": {
         "dev": "ts-node genesis.dev -p=tsconfig.json",
-        "dev:test": "jest --watchAll  --coverage",
         "build": "rm -rf dist && NODE_ENV=production ts-node genesis.build -p=tsconfig.json",
-        "build:ts": "./build-ts.sh",
         "start": "NODE_ENV=production ts-node genesis.prod -p=tsconfig.json",
+        "dev:test": "jest --watchAll  --coverage",
+        "build:ts": "./build-ts.sh",
         "lint": "npm run lint:js && npm run lint:css",
         "lint:js": "eslint . --ext .js,.ts,.vue --fix",
         "lint:css": "",
@@ -34,7 +34,7 @@
         "url": "https://github.com/fmfe/genesis/issues"
     },
     "devDependencies": {
-        "@fmfe/genesis-core": "^0.0.87",
+        "@fmfe/genesis-core": "file:./packages/genesis-core",
         "@fmfe/genesis-lint": "file:./packages/genesis-lint",
         "@types/ejs": "^3.0.6",
         "@types/eventsource": "^1.1.8",

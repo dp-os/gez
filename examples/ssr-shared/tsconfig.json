@@ -1,0 +1,51 @@
+{
+    "compilerOptions": {
+        "target": "esnext",
+        "module": "esnext",
+        "moduleResolution": "node",
+        "lib": [
+            "esnext",
+            "esnext.asynciterable",
+            "dom"
+        ],
+        "esModuleInterop": true,
+        "experimentalDecorators": true,
+        "allowJs": true,
+        "sourceMap": true,
+        "strict": true,
+        "noUnusedLocals": true,
+        "skipLibCheck": true,
+        "noImplicitAny": false,
+        "resolveJsonModule": true,
+        "declarationDir": "./dist/ssr-shared/node-exposes/types",
+        "baseUrl": "./",
+        "typeRoots": [
+            "./types/*",
+            "./src/types/*"
+        ],
+        "types": [
+            "@types/node"
+        ],
+        "allowSyntheticDefaultImports": true,
+        "paths": {
+          "ssr-shared/src/*": ["./src/*"],
+          "ssr-shared/*": ["./*"]
+        },
+    },
+    "include": [
+        "src"
+    ],
+    "exclude": ["dist/**"],
+    "ts-node": {
+        "compilerOptions": {
+            "noEmit": false,
+            "target": "es2018",
+            "module": "commonjs",
+            "moduleResolution": "node",
+            "allowSyntheticDefaultImports": true,
+            "declaration": true,
+            "esModuleInterop": true,
+            "outDir": "../dist"
+        }
+    }
+  }
