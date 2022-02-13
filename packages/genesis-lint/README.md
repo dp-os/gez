@@ -1,11 +1,11 @@
-# `genesis-app`
+# `genesis-lint`
 
 > TODO: description
 
 ## Usage
 
 ```
-const genesisApp = require('genesis-app');
+const genesisLint = require('genesis-lint');
 
 // TODO: DEMONSTRATE API
 ```

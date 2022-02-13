@@ -12,5 +12,6 @@
 		"experimentalDecorators": true,
 		"outDir": "./dist/cjs"
 	},
+	"include": ["src"],
 	"exclude": ["template", "dist", "types"]
 }

@@ -2,8 +2,6 @@ import { MF, Renderer, SSR } from '@fmfe/genesis-core';
 import express from 'express';
 import path from 'path';
 
-import { shared } from '../shared/mf';
-
 /**
  * 创建一个应用程序
  */
@@ -21,7 +19,11 @@ export const ssr = new SSR({
 });
 
 export const mf = new MF(ssr, {
-    shared,
+    shared: {
+        vue: {
+            singleton: true
+        }
+    },
     remotes: [
         {
             name: 'ssr-shared',

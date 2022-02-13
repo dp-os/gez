@@ -121,7 +121,7 @@ class Remote {
                 return;
             const baseName = res.server || 'development';
             const baseDir = this.getWrite(res.server);
-            if (!ssr.isProd && res.client) {
+            if (!ssr.isProd && res.dts) {
                 const writeDir = path.resolve(
                     'node_modules',
                     this.options.name

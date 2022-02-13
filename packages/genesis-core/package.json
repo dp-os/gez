@@ -12,18 +12,23 @@
   "types": "types/index.d.ts",
   "sideEffects": false,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "NODE_ENV=production tsc --build tsconfig.cjs.json && NODE_ENV=production tsc --build tsconfig.esm.json"
   },
   "author": "Followme",
   "license": "MIT",
   "gitHead": "6681dadad8d2af5a0b3700b589f277d6f4e5af4b",
   "dependencies": {
     "ejs": "3.1.6",
-    "eventsource": "1.1.0",
     "serialize-javascript": "6.0.0",
     "vue": "2.6.14",
+    "axios": "0.25.0",
     "vue-server-renderer": "2.6.14",
     "write": "2.0.0"
+  },
+  "devDependencies": {
+    "@types/serialize-javascript": "5.0.2",
+    "@types/ejs": "3.1.0",
+    "@types/write": "^2.0.1"
   },
   "homepage": "https://fmfe.github.io/genesis-docs/",
   "repository": {

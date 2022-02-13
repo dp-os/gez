@@ -1,77 +1,19 @@
 {
     "name": "genesis",
-    "version": "0.0.1",
-    "description": "",
-    "main": "dist/index.js",
+    "private": true,
+    "devDependencies": {
+        "lerna": "^4.0.0"
+    },
+    "workspaces": [
+        "packages/*",
+        "examples/*"
+    ],
     "scripts": {
-        "dev": "ts-node genesis.dev -p=tsconfig.json",
-        "build": "rm -rf dist && NODE_ENV=production ts-node genesis.build -p=tsconfig.json",
-        "start": "NODE_ENV=production ts-node genesis.prod -p=tsconfig.json",
-        "dev:test": "jest --watchAll  --coverage",
-        "build:ts": "./build-ts.sh",
+        "build:dts": "vue-tsc vue-tsc --declaration --emitDeclarationOnly",
+        "dev": "lerna run --stream --sort build",
         "lint": "npm run lint:js && npm run lint:css",
         "lint:js": "eslint . --ext .js,.ts,.vue --fix",
-        "lint:css": "",
-        "type-check": "tsc --noEmit",
-        "test": "jest --coverage",
-        "coveralls": "coveralls < coverage/lcov.info",
-        "lerna": "lerna publish  --registry=https://registry.npmjs.org --force-publish"
-    },
-    "sideEffects": [
-        "*.css",
-        "*.less",
-        "*.vue"
-    ],
-    "types": "dist/index.d.ts",
-    "author": "Followme",
-    "license": "MIT",
-    "homepage": "https://fmfe.github.io/genesis-docs/",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/fmfe/genesis.git"
-    },
-    "bugs": {
-        "url": "https://github.com/fmfe/genesis/issues"
-    },
-    "devDependencies": {
-        "@fmfe/genesis-core": "file:./packages/genesis-core",
-        "@fmfe/genesis-lint": "file:./packages/genesis-lint",
-        "@types/ejs": "^3.0.6",
-        "@types/eventsource": "^1.1.8",
-        "@types/express": "^4.17.2",
-        "@types/find": "^0.2.1",
-        "@types/jest": "^27.4.0",
-        "@types/memory-fs": "^0.3.2",
-        "@types/node": "^17.0.17",
-        "@types/postcss-preset-env": "^6.7.3",
-        "@types/serialize-javascript": "^5.0.2",
-        "@types/webpack-dev-middleware": "4.1.0",
-        "@types/webpack-hot-middleware": "2.25.3",
-        "@types/write": "^2.0.1",
-        "coveralls": "^3.0.11",
-        "cssnano": "^5.0.15",
-        "jest": "^25.2.4",
-        "sass": "^1.26.10",
-        "vue-property-decorator": "^8.4.0",
-        "vue-template-compiler": "2.6.14"
-    },
-    "dependencies": {
-        "@fmfe/genesis-app": "file:./packages/genesis-app",
-        "@fmfe/genesis-compiler": "file:./packages/genesis-compiler",
-        "@fmfe/genesis-core": "file:./packages/genesis-core",
-        "@fmfe/genesis-remote": "file:./packages/genesis-remote",
-        "@fmfe/square": "file:./packages/square",
-        "axios": "^0.25.0",
-        "element-ui": "^2.15.6",
-        "express": "4.17.2",
-        "ts-node": "10.4.0",
-        "typescript": "4.5.5",
-        "vue": "2.6.14",
-        "vue-meta": "^2.4.0",
-        "vue-router": "3.5.3",
-        "vue-server-renderer": "2.6.14",
-        "vue-tsc": "^0.31.3",
-        "vuetype": "^0.3.2"
+        "lint:css": ""
     },
     "husky": {
         "hooks": {

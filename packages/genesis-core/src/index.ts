@@ -55,7 +55,7 @@ namespace Genesis {
         /**
          * The polling interval of the server is 40ms by default
          */
-         intervalTime?: number;
+        intervalTime?: number;
         /**
          * Shared configuration of webpack modulefederationplugin plug-in
          * https://webpack.docschina.org/plugins/module-federation-plugin/#Specify-package-versions
@@ -212,8 +212,8 @@ namespace Genesis {
      */
     export type RenderResult<T extends RenderMode = RenderMode> =
         T extends Genesis.RenderModeHtml
-        ? Genesis.RenderResultHtml
-        : Genesis.RenderResultJson;
+            ? Genesis.RenderResultHtml
+            : Genesis.RenderResultJson;
     /**
      * Rendered HTML
      */
@@ -261,7 +261,7 @@ namespace Genesis {
     }
     export interface RenderOptions<
         T extends Genesis.RenderMode = Genesis.RenderMode
-        > {
+    > {
         req?: IncomingMessage;
         res?: ServerResponse;
         mode?: T;

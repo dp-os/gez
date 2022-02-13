@@ -1,19 +1,25 @@
 {
-  "name": "ssr-shared",
+  "name": "ssr-hub",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
     "dev": "ts-node genesis.dev -p=tsconfig.json",
+    "postinstall": "ts-node postinstall -p=tsconfig.json",
     "build": "vue-tsc --declaration --emitDeclarationOnly && rm -rf dist && NODE_ENV=production ts-node genesis.build -p=tsconfig.json",
     "start": "NODE_ENV=production ts-node genesis.prod -p=tsconfig.json"
   },
   "devDependencies": {
-    "@fmfe/genesis-compiler": "file:../../packages/genesis-compiler",
-    "vue": "^2.6.14"
+    "@fmfe/genesis-compiler": "2.0.1-alpha.30",
+    "element-ui": "^2.15.7",
+    "vue": "^2.6.14",
+    "vue-meta": "^2.4.0",
+    "vue-router": "^3.5.3",
+    "@types/express": "^4.17.13"
   },
   "dependencies": {
-    "@fmfe/genesis-core": "file:../../packages/genesis-core",
+    "@fmfe/genesis-core": "2.0.1-alpha.30",
+    "express": "^4.17.2",
     "ts-node": "^10.5.0"
   }
 }

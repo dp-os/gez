@@ -12,7 +12,7 @@
     "Microfront"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "NODE_ENV=production tsc --build tsconfig.cjs.json && NODE_ENV=production tsc --build tsconfig.esm.json"
   },
   "author": "Followme",
   "license": "MIT",

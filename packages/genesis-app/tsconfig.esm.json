@@ -13,5 +13,6 @@
 		"declarationDir": "./types",
 		"outDir": "./dist/esm"
 	},
+	"include": ["src"],
 	"exclude": ["template", "dist", "types"]
 }
