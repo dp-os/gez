@@ -6,13 +6,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.contentHash = exports.MFPlugin = void 0;
 const genesis_core_1 = require("@fmfe/genesis-core");
 const crypto_1 = __importDefault(require("crypto"));
+const fflate_1 = __importDefault(require("fflate"));
 const find_1 = __importDefault(require("find"));
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const upath_1 = __importDefault(require("upath"));
 const webpack_1 = __importDefault(require("webpack"));
 const write_1 = __importDefault(require("write"));
-const fflate_1 = __importDefault(require("fflate"));
 const utils_1 = require("../utils");
 function getExposes(ssr, mf) {
     const exposes = {};

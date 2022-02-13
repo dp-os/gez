@@ -1,7 +1,7 @@
-import Eventsource from 'eventsource';
-import fs from 'fs';
 import path from 'path';
 import serialize from 'serialize-javascript';
+import axios from 'axios';
+import fflate from 'fflate';
 import write from 'write';
 
 import type * as Genesis from '.';
@@ -10,12 +10,13 @@ import type { Renderer } from './renderer';
 import { SSR } from './ssr';
 
 const mf = Symbol('mf');
+const entryDirName = 'node-exposes';
+const manifestJsonName = 'manifest.json';
 
-interface Data {
-    version: string;
-    clientVersion: string;
-    serverVersion: string;
-    files: {};
+interface ManifestJson {
+    createTime: number;
+    client: string;
+    server: string;
 }
 
 class RemoteModule {
@@ -30,7 +31,7 @@ class RemoteModule {
             ssr.sandboxGlobal,
             SSR.getPublicPathVarName(remote.options.name),
             {
-                get: () => this.remote.baseUri
+                get: () => this.remote.clientPublicPath
             }
         );
     }
@@ -41,8 +42,8 @@ class RemoteModule {
         return varName;
     }
     public get filename() {
-        const { serverVersion, mf, baseDir } = this.remote;
-        const version = serverVersion ? `.${serverVersion}` : '';
+        const { manifest, mf, baseDir } = this.remote;
+        const version = manifest.server ? `.${manifest.server}` : '';
 
         return path.resolve(baseDir, `js/${mf.entryName}${version}.js`);
     }
@@ -57,21 +58,31 @@ class RemoteModule {
 class Remote {
     public ssr: Genesis.SSR;
     public options: Genesis.MFRemote;
-    public version = '';
-    public clientVersion = '';
-    public serverVersion = '';
+    public manifest: ManifestJson = {
+        client: '',
+        server: '',
+        createTime: 0
+    }
     public ready = new ReadyPromise<true>();
-    private eventsource?: Eventsource;
     private remoteModule: RemoteModule;
     private renderer?: Renderer;
     private startTime = 0;
+    private timer?: NodeJS.Timeout
+    private already = false;
     public constructor(ssr: Genesis.SSR, options: Genesis.MFRemote) {
         this.ssr = ssr;
         this.options = options;
         this.remoteModule = new RemoteModule(this);
+        this.connect = this.connect.bind(this);
     }
     public get mf() {
         return MF.get(this.ssr);
+    }
+    public get clientPublicPath() {
+        return `${this.options.clientOrigin}/${this.options.name}/`;
+    }
+    public get serverPublicPath() {
+        return `${this.options.serverOrigin}/${this.options.name}/`;
     }
     public get baseDir() {
         return path.resolve(
@@ -79,72 +90,75 @@ class Remote {
             `remotes/${this.options.name}`
         );
     }
-    public get baseUri() {
-        const base = this.options.publicPath || '';
-        return `${base}/${this.options.name}/`;
-    }
     public async init(renderer?: Renderer) {
         if (renderer) {
             this.renderer = renderer;
         }
-        if (!this.eventsource) {
-            this.startTime = Date.now();
-            this.eventsource = new Eventsource(this.options.serverUrl, {
-                headers: {}
-            });
-            this.eventsource.addEventListener('message', this.onMessage);
+        if (!this.already) {
+            this.already = true;
+            this.connect();
         }
         await this.ready.await;
     }
-    public onMessage = (evt: MessageEvent) => {
-        const data: Data = JSON.parse(evt.data);
-        if (data.version === this.version) {
-            return;
-        }
-
-        Object.keys(data.files).forEach((file) => {
-            const text = data.files[file];
-            const fullPath = path.resolve(this.baseDir, file);
-            write.sync(fullPath, text);
-        });
-        this.version = data.version;
-        this.clientVersion = data.clientVersion;
-        this.serverVersion = data.serverVersion;
-
-        const name = this.options.name;
-        if (this.ready.finished) {
-            this.renderer?.reload();
-            console.log(`${name} remote dependent reload completed`);
+    public async connect() {
+        const { mf, manifest } = this;
+        this.startTime = Date.now();
+        const url = `${this.serverPublicPath}${entryDirName}/${manifestJsonName}`;
+        const res: ManifestJson = await axios.get(url).then((res) => res.data).catch(() => null);
+        if (res) {
+            // 服务端版本号一致，则不用下载
+            if (manifest.server && manifest.server === res.server) return;
+            if (!manifest.server && manifest.createTime === res.createTime) return;
+            await this.download(res);
+            this.manifest = res;
         } else {
-            console.log(
-                `${name} remote dependent download completed ${
-                    Date.now() - this.startTime
-                }ms`
-            );
-            this.ready.finish(true);
+            console.log(`Request error: ${url}`);
         }
-    };
+        this.timer = setTimeout(this.connect, mf.options.intervalTime);
+    }
+    public async download(data: ManifestJson) {
+        const zipName = (data.server || 'development') + '.zip';
+        const url = `${this.serverPublicPath}${entryDirName}/${zipName}`;
+        const res = await axios.get(url, { responseType: 'arraybuffer' }).then((res) => res.data).catch(() => null);
+        if (res) {
+            try {
+                write.sync(path.resolve(`.${entryDirName}`, this.options.name, zipName), res);
+                const files = fflate.unzipSync(res);
+                Object.keys(files).forEach(name => {
+                    write.sync(path.resolve(this.baseDir, 'js', name), files[name]);
+                });
+            } catch(e) {
+                console.log(url, e);
+                return;
+            }
+            if (this.ready.loading) {
+                console.log(`${this.options.name} download time is ${Date.now() - this.startTime}ms`)
+                this.ready.finish(true);
+            } else {
+                console.log(`${this.options.name} updated time is ${Date.now() - this.startTime}ms`)
+            }
+            this.renderer?.reload();
+        } else {
+            console.log(`${this.options.name} dependency download failed, The url is ${url}`)
+        }
+    }
     public destroy() {
-        const { eventsource } = this;
-        if (eventsource) {
-            eventsource.removeEventListener('message', this.onMessage);
-            eventsource.close();
-        }
+        this.timer && clearTimeout(this.timer);
         this.remoteModule.destroy();
     }
     public inject() {
         const { name } = this.options;
-        const { clientVersion, mf, baseUri } = this;
+        const { manifest, mf, clientPublicPath } = this;
         let scriptText = '';
         const appendScript = (varName: string, value: string) => {
             const val = serialize(value);
             scriptText += `window["${varName}"] = ${val};`;
         };
-        const version = clientVersion ? `.${clientVersion}` : '';
-        const fullPath = `${baseUri}js/${mf.entryName}${version}.js`;
+        const version = manifest.client ? `.${manifest.client}` : '';
+        const fullPath = `${clientPublicPath}js/${mf.entryName}${version}.js`;
 
         appendScript(mf.getWebpackPublicPathVarName(name), fullPath);
-        appendScript(SSR.getPublicPathVarName(name), baseUri);
+        appendScript(SSR.getPublicPathVarName(name), clientPublicPath);
 
         return scriptText;
     }
@@ -177,7 +191,7 @@ class RemoteGroup {
     }
 }
 
-type ExposesWatchCallback = (data: Data) => void;
+type ExposesWatchCallback = () => void;
 
 class Exposes {
     public ssr: Genesis.SSR;
@@ -188,31 +202,11 @@ class Exposes {
     public get mf() {
         return MF.get(this.ssr);
     }
-    public watch(cb: ExposesWatchCallback, version = '') {
+    public watch(cb: ExposesWatchCallback) {
         this.subs.push(cb);
-        const newVersion = this.readText(this.mf.outputExposesVersion);
-        if (version !== newVersion) {
-            const text = this.readText(this.mf.outputExposesFiles);
-            text && cb(JSON.parse(text));
-        }
-        return () => {
-            const index = this.subs.indexOf(cb);
-            if (index > -1) {
-                this.subs.splice(index, 1);
-            }
-        };
     }
     public emit() {
-        const text = this.readText(this.mf.outputExposesFiles);
-        if (!text) return;
-        const data: Data = JSON.parse(text);
-        this.subs.forEach((cb) => cb(data));
-    }
-    public readText(fullPath: string) {
-        if (!fs.existsSync(fullPath)) {
-            return '';
-        }
-        return fs.readFileSync(fullPath, { encoding: 'utf-8' });
+        this.subs.forEach((cb) => cb());
     }
 }
 
@@ -240,6 +234,7 @@ export class MF {
     }
     public options: Required<Genesis.MFOptions> = {
         remotes: [],
+        intervalTime: 1000,
         exposes: {},
         shared: {}
     };
@@ -269,27 +264,17 @@ export class MF {
         return SSR.fixVarName(this.ssr.name);
     }
     public get output() {
-        return path.resolve(this.ssr.outputDirInClient, 'node-exposes');
+        return path.resolve(this.ssr.outputDirInClient, entryDirName);
     }
     public get outputManifest() {
-        return path.resolve(this.output, 'manifest.json');
+        return path.resolve(this.output, manifestJsonName);
     }
-    public get outputExposesVersion() {
-        return path.resolve(
-            this.ssr.outputDirInServer,
-            'vue-ssr-server-exposes-version.txt'
-        );
-    }
-    public get outputExposesFiles() {
-        return path.resolve(
-            this.ssr.outputDirInServer,
-            'vue-ssr-server-exposes-files.json'
-        );
+    public get manifestRoutePath() {
+        return `${this.ssr.publicPath}${entryDirName}/${manifestJsonName}`;
     }
     public getWebpackPublicPathVarName(name: string) {
-        return `__webpack_public_path_${SSR.fixVarName(name)}_${
-            this.entryName
-        }`;
+        return `__webpack_public_path_${SSR.fixVarName(name)}_${this.entryName
+            }`;
     }
 }
 

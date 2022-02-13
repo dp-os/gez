@@ -39,18 +39,9 @@ namespace Genesis {
      */
     export type WebpackBuildTarget = 'client' | 'server';
     export interface MFRemote {
-        /**
-         * Service name
-         */
         name: string;
-        /**
-         * Client public path, for example: http://localhost:3001
-         */
-        publicPath?: string;
-        /**
-         * Server request address, for example: http://localhost:3001/exposes.json
-         */
-        serverUrl: string;
+        clientOrigin: string;
+        serverOrigin: string;
     }
     export interface MFOptions {
         /**
@@ -61,6 +52,10 @@ namespace Genesis {
          * Remote service
          */
         remotes?: MFRemote[];
+        /**
+         * The polling interval of the server is 40ms by default
+         */
+         intervalTime?: number;
         /**
          * Shared configuration of webpack modulefederationplugin plug-in
          * https://webpack.docschina.org/plugins/module-federation-plugin/#Specify-package-versions
@@ -150,10 +145,6 @@ namespace Genesis {
          * Template file path
          */
         template?: string;
-        /**
-         * Static resource public path
-         */
-        publicPath?: string;
     }
 
     export interface Browsers {
@@ -221,8 +212,8 @@ namespace Genesis {
      */
     export type RenderResult<T extends RenderMode = RenderMode> =
         T extends Genesis.RenderModeHtml
-            ? Genesis.RenderResultHtml
-            : Genesis.RenderResultJson;
+        ? Genesis.RenderResultHtml
+        : Genesis.RenderResultJson;
     /**
      * Rendered HTML
      */
@@ -270,7 +261,7 @@ namespace Genesis {
     }
     export interface RenderOptions<
         T extends Genesis.RenderMode = Genesis.RenderMode
-    > {
+        > {
         req?: IncomingMessage;
         res?: ServerResponse;
         mode?: T;

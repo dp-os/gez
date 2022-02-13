@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h2>这是流程图12ss22</h2>
+        <h2>这是流程图</h2>
         <p class="text">支持</p>
         <img src="../images/framework.jpeg" width="300" />
     </div>

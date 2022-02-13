@@ -58,11 +58,8 @@ export class SSR {
         }
         return false;
     }
-    /**
-     * The basic path of client static resource loading, which is '/ssr-genesis/' by default
-     */
     get publicPath() {
-        return this.options?.build?.publicPath || `/${this.name}/`;
+        return `/${this.name}/`;
     }
     get publicPathVarName() {
         return SSR.getPublicPathVarName(this.name);

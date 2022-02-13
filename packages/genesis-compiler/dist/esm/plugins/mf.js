@@ -1,12 +1,12 @@
 import { MF, Plugin, SSR } from '@fmfe/genesis-core';
 import crypto from 'crypto';
+import fflate from 'fflate';
 import find from 'find';
 import fs from 'fs';
 import path from 'path';
 import upath from 'upath';
 import webpack from 'webpack';
 import write from 'write';
-import fflate from 'fflate';
 import { relativeFilename } from '../utils';
 function getExposes(ssr, mf) {
     const exposes = {};

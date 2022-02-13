@@ -26,13 +26,13 @@ export const mf = new MF(ssr, {
     remotes: [
         {
             name: 'ssr-home',
-            publicPath: 'http://localhost:3001',
-            serverUrl: 'http://localhost:3001/api/eventsource/exposes'
+            clientOrigin: 'http://localhost:3001',
+            serverOrigin: 'http://localhost:3001'
         },
         {
             name: 'ssr-about',
-            publicPath: 'http://localhost:3002',
-            serverUrl: 'http://localhost:3002/api/eventsource/exposes'
+            clientOrigin: 'http://localhost:3002',
+            serverOrigin: 'http://localhost:3002'
         }
     ],
     shared

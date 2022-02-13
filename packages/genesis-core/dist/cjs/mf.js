@@ -4,14 +4,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ReadyPromise = exports.MF = exports.MFPlugin = void 0;
-const eventsource_1 = __importDefault(require("eventsource"));
-const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const serialize_javascript_1 = __importDefault(require("serialize-javascript"));
+const axios_1 = __importDefault(require("axios"));
+const fflate_1 = __importDefault(require("fflate"));
 const write_1 = __importDefault(require("write"));
 const plugin_1 = require("./plugin");
 const ssr_1 = require("./ssr");
 const mf = Symbol('mf');
+const entryDirName = 'node-exposes';
+const manifestJsonName = 'manifest.json';
 class RemoteModule {
     constructor(remote) {
         this.remote = remote;
@@ -20,7 +22,7 @@ class RemoteModule {
             get: () => this
         });
         Object.defineProperty(ssr.sandboxGlobal, ssr_1.SSR.getPublicPathVarName(remote.options.name), {
-            get: () => this.remote.baseUri
+            get: () => this.remote.clientPublicPath
         });
     }
     get varName() {
@@ -30,8 +32,8 @@ class RemoteModule {
         return varName;
     }
     get filename() {
-        const { serverVersion, mf, baseDir } = this.remote;
-        const version = serverVersion ? `.${serverVersion}` : '';
+        const { manifest, mf, baseDir } = this.remote;
+        const version = manifest.server ? `.${manifest.server}` : '';
         return path_1.default.resolve(baseDir, `js/${mf.entryName}${version}.js`);
     }
     async init() {
@@ -43,82 +45,106 @@ class RemoteModule {
 }
 class Remote {
     constructor(ssr, options) {
-        this.version = '';
-        this.clientVersion = '';
-        this.serverVersion = '';
+        this.manifest = {
+            client: '',
+            server: '',
+            createTime: 0
+        };
         this.ready = new ReadyPromise();
         this.startTime = 0;
-        this.onMessage = (evt) => {
-            var _a;
-            const data = JSON.parse(evt.data);
-            if (data.version === this.version) {
-                return;
-            }
-            Object.keys(data.files).forEach((file) => {
-                const text = data.files[file];
-                const fullPath = path_1.default.resolve(this.baseDir, file);
-                write_1.default.sync(fullPath, text);
-            });
-            this.version = data.version;
-            this.clientVersion = data.clientVersion;
-            this.serverVersion = data.serverVersion;
-            const name = this.options.name;
-            if (this.ready.finished) {
-                (_a = this.renderer) === null || _a === void 0 ? void 0 : _a.reload();
-                console.log(`${name} remote dependent reload completed`);
-            }
-            else {
-                console.log(`${name} remote dependent download completed ${Date.now() - this.startTime}ms`);
-                this.ready.finish(true);
-            }
-        };
+        this.already = false;
         this.ssr = ssr;
         this.options = options;
         this.remoteModule = new RemoteModule(this);
+        this.connect = this.connect.bind(this);
     }
     get mf() {
         return MF.get(this.ssr);
     }
+    get clientPublicPath() {
+        return `${this.options.clientOrigin}/${this.options.name}/`;
+    }
+    get serverPublicPath() {
+        return `${this.options.serverOrigin}/${this.options.name}/`;
+    }
     get baseDir() {
         return path_1.default.resolve(this.ssr.outputDirInServer, `remotes/${this.options.name}`);
-    }
-    get baseUri() {
-        const base = this.options.publicPath || '';
-        return `${base}/${this.options.name}/`;
     }
     async init(renderer) {
         if (renderer) {
             this.renderer = renderer;
         }
-        if (!this.eventsource) {
-            this.startTime = Date.now();
-            this.eventsource = new eventsource_1.default(this.options.serverUrl, {
-                headers: {}
-            });
-            this.eventsource.addEventListener('message', this.onMessage);
+        if (!this.already) {
+            this.already = true;
+            this.connect();
         }
         await this.ready.await;
     }
-    destroy() {
-        const { eventsource } = this;
-        if (eventsource) {
-            eventsource.removeEventListener('message', this.onMessage);
-            eventsource.close();
+    async connect() {
+        const { mf, manifest } = this;
+        this.startTime = Date.now();
+        const url = `${this.serverPublicPath}${entryDirName}/${manifestJsonName}`;
+        const res = await axios_1.default.get(url).then((res) => res.data).catch(() => null);
+        if (res) {
+            // 服务端版本号一致，则不用下载
+            if (manifest.server && manifest.server === res.server)
+                return;
+            if (!manifest.server && manifest.createTime === res.createTime)
+                return;
+            await this.download(res);
+            this.manifest = res;
         }
+        else {
+            console.log(`Request error: ${url}`);
+        }
+        this.timer = setTimeout(this.connect, mf.options.intervalTime);
+    }
+    async download(data) {
+        var _a;
+        const zipName = (data.server || 'development') + '.zip';
+        const url = `${this.serverPublicPath}${entryDirName}/${zipName}`;
+        const res = await axios_1.default.get(url, { responseType: 'arraybuffer' }).then((res) => res.data).catch(() => null);
+        if (res) {
+            try {
+                write_1.default.sync(path_1.default.resolve(`.${entryDirName}`, this.options.name, zipName), res);
+                const files = fflate_1.default.unzipSync(res);
+                Object.keys(files).forEach(name => {
+                    write_1.default.sync(path_1.default.resolve(this.baseDir, 'js', name), files[name]);
+                });
+            }
+            catch (e) {
+                console.log(url, e);
+                return;
+            }
+            if (this.ready.loading) {
+                console.log(`${this.options.name} download time is ${Date.now() - this.startTime}ms`);
+                this.ready.finish(true);
+            }
+            else {
+                console.log(`${this.options.name} updated time is ${Date.now() - this.startTime}ms`);
+            }
+            (_a = this.renderer) === null || _a === void 0 ? void 0 : _a.reload();
+        }
+        else {
+            console.log(`${this.options.name} dependency download failed, The url is ${url}`);
+        }
+    }
+    destroy() {
+        this.timer && clearTimeout(this.timer);
         this.remoteModule.destroy();
     }
     inject() {
         const { name } = this.options;
-        const { clientVersion, mf, baseUri } = this;
+        const { manifest, mf, clientPublicPath } = this;
         let scriptText = '';
         const appendScript = (varName, value) => {
             const val = (0, serialize_javascript_1.default)(value);
             scriptText += `window["${varName}"] = ${val};`;
         };
-        const version = clientVersion ? `.${clientVersion}` : '';
-        const fullPath = `${baseUri}js/${mf.entryName}${version}.js`;
+        const version = manifest.client ? `.${manifest.client}` : '';
+        const fullPath = `${clientPublicPath}js/${mf.entryName}${version}.js`;
         appendScript(mf.getWebpackPublicPathVarName(name), fullPath);
-        appendScript(ssr_1.SSR.getPublicPathVarName(name), baseUri);
+        appendScript(ssr_1.SSR.getPublicPathVarName(name), clientPublicPath);
         return scriptText;
     }
 }
@@ -152,32 +178,11 @@ class Exposes {
     get mf() {
         return MF.get(this.ssr);
     }
-    watch(cb, version = '') {
+    watch(cb) {
         this.subs.push(cb);
-        const newVersion = this.readText(this.mf.outputExposesVersion);
-        if (version !== newVersion) {
-            const text = this.readText(this.mf.outputExposesFiles);
-            text && cb(JSON.parse(text));
-        }
-        return () => {
-            const index = this.subs.indexOf(cb);
-            if (index > -1) {
-                this.subs.splice(index, 1);
-            }
-        };
     }
     emit() {
-        const text = this.readText(this.mf.outputExposesFiles);
-        if (!text)
-            return;
-        const data = JSON.parse(text);
-        this.subs.forEach((cb) => cb(data));
-    }
-    readText(fullPath) {
-        if (!fs_1.default.existsSync(fullPath)) {
-            return '';
-        }
-        return fs_1.default.readFileSync(fullPath, { encoding: 'utf-8' });
+        this.subs.forEach((cb) => cb());
     }
 }
 class MFPlugin extends plugin_1.Plugin {
@@ -197,6 +202,7 @@ class MF {
         var _a, _b;
         this.options = {
             remotes: [],
+            intervalTime: 1000,
             exposes: {},
             shared: {}
         };
@@ -228,16 +234,13 @@ class MF {
         return ssr_1.SSR.fixVarName(this.ssr.name);
     }
     get output() {
-        return path_1.default.resolve(this.ssr.outputDirInClient, 'node-exposes');
+        return path_1.default.resolve(this.ssr.outputDirInClient, entryDirName);
     }
     get outputManifest() {
-        return path_1.default.resolve(this.output, 'manifest.json');
+        return path_1.default.resolve(this.output, manifestJsonName);
     }
-    get outputExposesVersion() {
-        return path_1.default.resolve(this.ssr.outputDirInServer, 'vue-ssr-server-exposes-version.txt');
-    }
-    get outputExposesFiles() {
-        return path_1.default.resolve(this.ssr.outputDirInServer, 'vue-ssr-server-exposes-files.json');
+    get manifestRoutePath() {
+        return `${this.ssr.publicPath}${entryDirName}/${manifestJsonName}`;
     }
     getWebpackPublicPathVarName(name) {
         return `__webpack_public_path_${ssr_1.SSR.fixVarName(name)}_${this.entryName}`;

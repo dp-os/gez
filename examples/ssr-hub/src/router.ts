@@ -1,4 +1,6 @@
+// @ts-ignore
 import { createRoutes as about } from 'ssr-about/router';
+// @ts-ignore
 import { createRoutes as home } from 'ssr-home/router';
 import Vue from 'vue';
 import Router, { RouteConfig } from 'vue-router';
