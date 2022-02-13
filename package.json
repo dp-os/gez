@@ -10,7 +10,7 @@
     ],
     "scripts": {
         "build:dts": "vue-tsc vue-tsc --declaration --emitDeclarationOnly",
-        "dev": "lerna run --stream --sort build",
+        "build": "lerna run --stream --sort build",
         "lint": "npm run lint:js && npm run lint:css",
         "lint:js": "eslint . --ext .js,.ts,.vue --fix",
         "lint:css": ""

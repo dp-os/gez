@@ -57,6 +57,7 @@ module.exports = {
         '@typescript-eslint/no-require-imports': 'off',
         '@typescript-eslint/no-invalid-this': 'off',
         '@typescript-eslint/no-loss-of-precision': 'off',
+        '@typescript-eslint/member-ordering': 'off',
         'no-template-curly-in-string': 'off',
         'vue/valid-template-root': 'off',
         'vue/no-duplicate-attributes': [

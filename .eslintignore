@@ -3,3 +3,5 @@ node_modules/**
 dist/**
 packages/**/dist/**
 examples/**/dist/**
+packages/**/types/**
+examples/**/types/**

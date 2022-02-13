@@ -75,7 +75,7 @@ class Remote {
         this.ssr = ssr;
         this.options = options;
         this.remoteModule = new RemoteModule(this);
-        this.connect = this.connect.bind(this);
+        this.fetch = this.fetch.bind(this);
     }
     public get mf() {
         return MF.get(this.ssr);
@@ -95,7 +95,7 @@ class Remote {
         }
         if (!this.already) {
             this.already = true;
-            this.connect();
+            this.polling();
         }
         await this.ready.await;
     }
@@ -106,8 +106,8 @@ class Remote {
             `remotes/${this.options.name}/${baseName}`
         );
     }
-    public async connect() {
-        const { mf, manifest, ssr } = this;
+    public async fetch(): Promise<boolean> {
+        const { manifest, ssr } = this;
         this.startTime = Date.now();
         const url = `${this.serverPublicPath}${entryDirName}/${manifestJsonName}`;
         const res: ManifestJson = await axios
@@ -116,9 +116,9 @@ class Remote {
             .catch(() => null);
         if (res && typeof res === 'object') {
             // 服务端版本号一致，则不用下载
-            if (manifest.server && manifest.server === res.server) return;
+            if (manifest.server && manifest.server === res.server) return true;
             if (!manifest.server && manifest.createTime === res.createTime)
-                return;
+                return true;
             const baseName = res.server || 'development';
             const baseDir = this.getWrite(res.server);
             if (!ssr.isProd && res.dts) {
@@ -156,29 +156,28 @@ class Remote {
                 path.resolve(baseDir, 'js')
             );
             if (ok) {
+                const time = Date.now() - this.startTime;
+                const name = this.options.name;
                 if (this.ready.loading) {
-                    console.log(
-                        `${this.options.name} download time is ${
-                            Date.now() - this.startTime
-                        }ms`
-                    );
+                    console.log(`${name} download time is ${time}ms`);
                     this.ready.finish(true);
                 } else {
-                    console.log(
-                        `${this.options.name} updated time is ${
-                            Date.now() - this.startTime
-                        }ms`
-                    );
+                    console.log(`${name} updated time is ${time}ms`);
                 }
                 this.manifest = res;
                 this.renderer?.reload();
+                return true;
             }
-        } else {
-            console.log(`Request error: ${url}`);
         }
-        this.timer = setTimeout(this.connect, mf.options.intervalTime);
+        console.log(`Request error: ${url}`);
+        return false;
     }
-    public async download(
+    private async polling() {
+        const { mf } = this;
+        await this.fetch();
+        this.timer = setTimeout(this.fetch, mf.options.intervalTime);
+    }
+    private async download(
         zipName: string,
         writeDir: string,
         cb?: (name: string) => void
@@ -261,6 +260,9 @@ class RemoteGroup {
     }
     public init(...args: Parameters<Remote['init']>) {
         return Promise.all(this.items.map((item) => item.init(...args)));
+    }
+    public fetch() {
+        return Promise.all(this.items.map((item) => item.fetch()));
     }
 }
 
