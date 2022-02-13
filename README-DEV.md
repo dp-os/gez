@@ -23,3 +23,6 @@ Vue SSR supports the use of Federated modules
 ```bash
 lerna link
 ```
+
+## 生产dts类型
+vue-tsc --declaration --emitDeclarationOnly

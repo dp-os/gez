@@ -5,8 +5,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "ts-node genesis.dev -p=tsconfig.json",
-    "postinstall": "ts-node postinstall -p=tsconfig.json",
-    "build": "vue-tsc --declaration --emitDeclarationOnly && rm -rf dist && NODE_ENV=production ts-node genesis.build -p=tsconfig.json",
+    "build": "npm run build:dts && rm -rf dist && NODE_ENV=production ts-node genesis.build -p=tsconfig.json",
+    "build:dts": "vue-tsc --declaration --emitDeclarationOnly",
     "start": "NODE_ENV=production ts-node genesis.prod -p=tsconfig.json"
   },
   "devDependencies": {

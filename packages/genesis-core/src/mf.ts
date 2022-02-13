@@ -1,5 +1,7 @@
 import axios from 'axios';
 import fflate from 'fflate';
+import http from 'http';
+import https from 'https';
 import path from 'path';
 import serialize from 'serialize-javascript';
 import write from 'write';
@@ -12,6 +14,34 @@ import { SSR } from './ssr';
 const mf = Symbol('mf');
 const entryDirName = 'node-exposes';
 const manifestJsonName = 'manifest.json';
+
+declare module 'axios' {
+    export interface AxiosRequestConfig {
+        _startTime?: number;
+        loggerText?: string;
+    }
+}
+
+const request = axios.create({
+    httpAgent: new http.Agent({ keepAlive: true }),
+    httpsAgent: new https.Agent({ keepAlive: true })
+});
+
+request.interceptors.request.use((axiosConfig) => {
+    axiosConfig._startTime = Date.now();
+    return axiosConfig;
+});
+
+const reZip = /\.zip$/;
+
+request.interceptors.response.use(async (axiosConfig) => {
+    const time = Date.now() - axiosConfig.config._startTime;
+    const url = axiosConfig.config.url || '';
+    if (reZip.test(url)) {
+        console.log(`Remote request: ${axiosConfig.config.url} ${time}ms`);
+    }
+    return Promise.resolve(axiosConfig);
+});
 
 interface ManifestJson {
     createTime: number;
@@ -68,14 +98,13 @@ class Remote {
     public ready = new ReadyPromise<true>();
     private remoteModule: RemoteModule;
     private renderer?: Renderer;
-    private startTime = 0;
     private timer?: NodeJS.Timeout;
     private already = false;
     public constructor(ssr: Genesis.SSR, options: Genesis.MFRemote) {
         this.ssr = ssr;
         this.options = options;
         this.remoteModule = new RemoteModule(this);
-        this.fetch = this.fetch.bind(this);
+        this.polling = this.polling.bind(this);
     }
     public get mf() {
         return MF.get(this.ssr);
@@ -107,10 +136,9 @@ class Remote {
         );
     }
     public async fetch(): Promise<boolean> {
-        const { manifest, ssr } = this;
-        this.startTime = Date.now();
+        const { manifest } = this;
         const url = `${this.serverPublicPath}${entryDirName}/${manifestJsonName}`;
-        const res: ManifestJson = await axios
+        const res: ManifestJson = await request
             .get(url)
             .then((res) => res.data)
             .catch(() => null);
@@ -121,61 +149,63 @@ class Remote {
                 return true;
             const baseName = res.server || 'development';
             const baseDir = this.getWrite(res.server);
-            if (!ssr.isProd && res.dts) {
-                const writeDir = path.resolve(
-                    'node_modules',
-                    this.options.name
-                );
-                const packageJson = {
-                    name: this.options.name,
-                    version: '1.0.0',
-                    main: 'index.js'
-                };
-                const ok = await this.download(
-                    `${baseName}-dts.zip`,
-                    writeDir,
-                    (name) => {
-                        const filename = name
-                            .replace(/\.d\.ts$/, '')
-                            .replace(/\.vue$/, '');
-                        write.sync(
-                            path.resolve(writeDir, `${filename}.js`),
-                            `// Federation write module type`
-                        );
-                    }
-                );
-                if (ok) {
-                    write.sync(
-                        path.resolve(writeDir, 'package.json'),
-                        JSON.stringify(packageJson, null, 4)
-                    );
-                }
-            }
-            const ok = await this.download(
-                `${baseName}.zip`,
-                path.resolve(baseDir, 'js')
-            );
+            const arr: Promise<boolean>[] = [
+                this.download(`${baseName}.zip`, path.resolve(baseDir, 'js')),
+                this.downloadDts(res)
+            ];
+
+            const [ok] = await Promise.all(arr);
             if (ok) {
-                const time = Date.now() - this.startTime;
                 const name = this.options.name;
                 if (this.ready.loading) {
-                    console.log(`${name} download time is ${time}ms`);
                     this.ready.finish(true);
                 } else {
-                    console.log(`${name} updated time is ${time}ms`);
+                    this.renderer?.reload();
                 }
                 this.manifest = res;
-                this.renderer?.reload();
                 return true;
             }
         }
         console.log(`Request error: ${url}`);
         return false;
     }
+    private async downloadDts(manifest: ManifestJson) {
+        const { ssr } = this;
+        if (ssr.isProd || manifest.dts !== true) {
+            return false;
+        }
+        const baseName = manifest.server || 'development';
+        const writeDir = path.resolve('node_modules', this.options.name);
+        const packageJson = {
+            name: this.options.name,
+            version: '1.0.0',
+            main: 'index.js'
+        };
+        const ok = await this.download(
+            `${baseName}-dts.zip`,
+            writeDir,
+            (name) => {
+                const filename = name
+                    .replace(/\.d\.ts$/, '')
+                    .replace(/\.vue$/, '');
+                write.sync(
+                    path.resolve(writeDir, `${filename}.js`),
+                    `// Federation write module type`
+                );
+            }
+        );
+        if (ok) {
+            write.sync(
+                path.resolve(writeDir, 'package.json'),
+                JSON.stringify(packageJson, null, 4)
+            );
+        }
+        return ok;
+    }
     private async polling() {
         const { mf } = this;
         await this.fetch();
-        this.timer = setTimeout(this.fetch, mf.options.intervalTime);
+        this.timer = setTimeout(this.polling, mf.options.intervalTime);
     }
     private async download(
         zipName: string,
@@ -183,20 +213,18 @@ class Remote {
         cb?: (name: string) => void
     ) {
         const url = `${this.serverPublicPath}${entryDirName}/${zipName}`;
-        const res = await axios
+        const cacheDir = path.resolve(
+            `.${entryDirName}`,
+            this.options.name,
+            zipName
+        );
+        const res = await request
             .get(url, { responseType: 'arraybuffer' })
             .then((res) => res.data)
             .catch(() => null);
         if (res) {
             try {
-                write.sync(
-                    path.resolve(
-                        `.${entryDirName}`,
-                        this.options.name,
-                        zipName
-                    ),
-                    res
-                );
+                write.sync(cacheDir, res);
                 const files = fflate.unzipSync(res);
                 Object.keys(files).forEach((name) => {
                     write.sync(path.resolve(writeDir, name), files[name]);
