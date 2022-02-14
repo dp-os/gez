@@ -41,8 +41,9 @@ export const mf = new MF(ssr, {
  * 如果1分钟内没有更新，则再结束请求，避免对方太频繁轮询
  */
 app.get(mf.manifestRoutePath, async (req, res, next) => {
-    const manifest = await mf.exposes.getManifest(Number(req.query.t), 10000);
-    res.send(manifest);
+    await mf.exposes.getManifest(Number(req.query.t), 10000);
+    //  继续往下执行，读取真实的静态资源文件
+    next();
 });
 
 /**
