@@ -426,7 +426,8 @@ export class MF {
         remotes: [],
         intervalTime: 1000,
         exposes: {},
-        shared: {}
+        shared: {},
+        typesDir: ''
     };
     public exposes: Exposes;
     public remote: RemoteGroup;

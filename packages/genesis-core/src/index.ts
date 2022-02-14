@@ -61,6 +61,10 @@ namespace Genesis {
          * https://webpack.docschina.org/plugins/module-federation-plugin/#Specify-package-versions
          */
         shared?: (string | SharedObject)[] | SharedObject;
+        /**
+         * d.ts declared directory
+         */
+        typesDir?: string;
     }
     export interface SharedObject {
         [index: string]: string | SharedConfig;
