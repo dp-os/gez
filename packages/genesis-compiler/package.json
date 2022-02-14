@@ -1,6 +1,6 @@
 {
   "name": "@fmfe/genesis-compiler",
-  "version": "2.0.1-alpha.30",
+  "version": "2.0.1-alpha.31",
   "description": "Vue SSR Microfront",
   "keywords": [
     "vue",
@@ -36,6 +36,7 @@
     "core-js": "3.20.2",
     "css-loader": "6.5.1",
     "cssnano": "5.0.15",
+    "fflate": "0.7.3",
     "file-loader": "6.2.0",
     "find": "0.3.0",
     "hash-sum": "2.0.0",
@@ -43,6 +44,7 @@
     "less": "4.1.2",
     "less-loader": "10.2.0",
     "mini-css-extract-plugin": "2.5.2",
+    "mkdirp": "1.0.4",
     "postcss": "8.4.5",
     "postcss-loader": "6.2.1",
     "postcss-preset-env": "7.2.0",
@@ -52,8 +54,6 @@
     "thread-loader": "3.0.4",
     "typescript": "4.5.4",
     "upath": "2.0.1",
-    "mkdirp": "1.0.4",
-    "fflate": "0.7.3",
     "vue-loader": "15.9.8",
     "vue-server-renderer": "2.6.14",
     "vue-style-loader": "4.1.3",
