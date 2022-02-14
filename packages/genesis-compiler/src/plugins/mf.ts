@@ -143,9 +143,9 @@ export class MFPlugin extends Plugin {
         const { ssr } = this;
         const mf = MF.get(ssr);
         const files: Record<string, any> = {};
-        find.fileSync(baseDir).forEach((filename) => {
+        find.fileSync(baseDir).forEach((filename: string) => {
             const text = fs.readFileSync(filename);
-            files[path.basename(filename)] = text;
+            files[path.relative(baseDir, filename)] = text;
         });
         if (Object.keys(files).length > 0) {
             const zipped = fflate.zipSync(files);
