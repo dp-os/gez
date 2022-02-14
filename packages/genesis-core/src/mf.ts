@@ -23,27 +23,31 @@ declare module 'axios' {
     }
 }
 
-const request = axios.create({
-    httpAgent: new http.Agent({ keepAlive: true }),
-    httpsAgent: new https.Agent({ keepAlive: true })
-});
+function createRequest() {
+    const request = axios.create({
+        httpAgent: new http.Agent({ keepAlive: true }),
+        httpsAgent: new https.Agent({ keepAlive: true })
+    });
 
-request.interceptors.request.use((axiosConfig) => {
-    axiosConfig._startTime = Date.now();
-    return axiosConfig;
-});
+    request.interceptors.request.use((axiosConfig) => {
+        axiosConfig._startTime = Date.now();
+        return axiosConfig;
+    });
 
-request.interceptors.response.use(
-    async (axiosConfig) => {
-        const time = Date.now() - axiosConfig.config._startTime;
-        const url = axiosConfig.config.url || '';
-        console.log(`mf: ${url} ${time}ms`);
-        return Promise.resolve(axiosConfig);
-    },
-    (err) => {
-        return Promise.reject(err);
-    }
-);
+    request.interceptors.response.use(
+        async (axiosConfig) => {
+            const time = Date.now() - axiosConfig.config._startTime;
+            const url = axiosConfig.config.url || '';
+            console.log(`mf: ${url} ${time}ms`);
+            return Promise.resolve(axiosConfig);
+        },
+        (err) => {
+            return Promise.reject(err);
+        }
+    );
+
+    return request;
+}
 
 interface ManifestJson {
     c: string;
@@ -96,20 +100,54 @@ function createManifest(): ManifestJson {
         d: 0
     };
 }
+
+class Json<T> {
+    public filename: string;
+    public data: T;
+    private _data: () => T;
+    public constructor(filename: string, _data: () => T) {
+        this.filename = filename;
+        this._data = _data;
+        this.data = this.get();
+    }
+    public get(): T {
+        const { filename } = this;
+        if (fs.existsSync(filename)) {
+            const text = fs.readFileSync(filename, { encoding: 'utf-8' });
+            return JSON.parse(text);
+        }
+        this.data = this._data();
+        return this.data;
+    }
+    public set(data: T) {
+        this.data = data;
+        const text = JSON.stringify(data, null, 4);
+        write.sync(this.filename, text);
+    }
+}
+
 class Remote {
     public ssr: Genesis.SSR;
     public options: Genesis.MFRemote;
-    public manifest: ManifestJson = createManifest();
     public ready = new ReadyPromise<true>();
     private remoteModule: RemoteModule;
     private renderer?: Renderer;
     private timer?: NodeJS.Timeout;
     private already = false;
+    private request = createRequest();
+    private manifestJson: Json<ManifestJson>;
     public constructor(ssr: Genesis.SSR, options: Genesis.MFRemote) {
         this.ssr = ssr;
         this.options = options;
         this.remoteModule = new RemoteModule(this);
         this.polling = this.polling.bind(this);
+        this.manifestJson = new Json<ManifestJson>(
+            path.resolve(this.writeBaseDir, 'manifest.json'),
+            createManifest
+        );
+    }
+    public get manifest() {
+        return this.manifestJson.data;
     }
     public get mf() {
         return MF.get(this.ssr);
@@ -123,6 +161,12 @@ class Remote {
     public get baseDir() {
         return this.getWrite(this.manifest.s);
     }
+    public get writeBaseDir() {
+        return path.resolve(
+            this.ssr.outputDirInServer,
+            `remotes/${this.options.name}`
+        );
+    }
     public async init(renderer?: Renderer) {
         if (renderer) {
             this.renderer = renderer;
@@ -135,15 +179,12 @@ class Remote {
     }
     public getWrite(server: string) {
         const baseName = server || 'development';
-        return path.resolve(
-            this.ssr.outputDirInServer,
-            `remotes/${this.options.name}/${baseName}`
-        );
+        return path.resolve(this.writeBaseDir, baseName);
     }
     public async fetch(): Promise<boolean> {
         const { manifest } = this;
         const url = `${this.serverPublicPath}${entryDirName}/${manifestJsonName}?t=${manifest.t}`;
-        const res: ManifestJson = await request
+        const res: ManifestJson = await this.request
             .get(url)
             .then((res) => res.data)
             .catch(() => null);
@@ -165,7 +206,7 @@ class Remote {
                 } else {
                     this.renderer?.reload();
                 }
-                this.manifest = res;
+                this.manifestJson.set(res);
                 return true;
             }
             return;
@@ -222,7 +263,7 @@ class Remote {
             this.options.name,
             zipName
         );
-        const res = await request
+        const res = await this.request
             .get(url, { responseType: 'arraybuffer' })
             .then((res) => res.data)
             .catch(() => null);
@@ -303,13 +344,16 @@ type ExposesWatchCallback = () => void;
 class Exposes {
     public ssr: Genesis.SSR;
     private subs: ExposesWatchCallback[] = [];
-    public manifest: ManifestJson = createManifest();
+    private manifestJson: Json<ManifestJson>;
     public constructor(ssr: Genesis.SSR) {
         this.ssr = ssr;
-        this.readManifest();
+        this.manifestJson = new Json(this.mf.outputManifest, createManifest);
     }
     public get mf() {
         return MF.get(this.ssr);
+    }
+    public get manifest() {
+        return this.manifestJson.data;
     }
     public watch(cb: ExposesWatchCallback) {
         const wrap = () => {
@@ -338,19 +382,8 @@ class Exposes {
         });
     }
     public emit() {
-        this.readManifest();
+        this.manifestJson.get();
         this.subs.forEach((cb) => cb());
-    }
-    private readManifest() {
-        const filename = this.mf.outputManifest;
-        if (!fs.existsSync(filename)) {
-            return;
-        }
-        const text = fs.readFileSync(filename, { encoding: 'utf-8' });
-        try {
-            const data = JSON.parse(text);
-            this.manifest = data;
-        } catch (e) {}
     }
 }
 
