@@ -236,9 +236,7 @@ class Remote {
             `${baseName}-dts.zip`,
             writeDir,
             (name) => {
-                const filename = name
-                    .replace(/\.d\.ts$/, '')
-                    .replace(/\.vue$/, '');
+                const filename = name.replace(/\.d\.ts$/, '');
                 write.sync(
                     path.resolve(writeDir, `${filename}.js`),
                     `// Federation write module type`
