@@ -145,6 +145,9 @@ class Remote {
             path.resolve(this.writeBaseDir, 'manifest.json'),
             createManifest
         );
+        if (this.manifest.t) {
+            this.downloadZip(this.manifest);
+        }
     }
     public get manifest() {
         return this.manifestJson.data;
@@ -192,26 +195,29 @@ class Remote {
             // 服务端版本号一致，则不用下载
             if (manifest.s && manifest.s === res.s) return true;
             if (!manifest.s && manifest.t === res.t) return true;
-            const baseName = res.s || 'development';
-            const baseDir = this.getWrite(res.s);
-            const arr: Promise<boolean>[] = [
-                this.download(`${baseName}.zip`, path.resolve(baseDir, 'js')),
-                this.downloadDts(res)
-            ];
-
-            const [ok] = await Promise.all(arr);
-            if (ok) {
-                if (this.ready.loading) {
-                    this.ready.finish(true);
-                } else {
-                    this.renderer?.reload();
-                }
-                this.manifestJson.set(res);
-                return true;
-            }
-            return;
+            return this.downloadZip(res);
         }
         console.log(`Request error: ${url}`, res);
+        return false;
+    }
+    private async downloadZip(res: ManifestJson): Promise<boolean> {
+        const baseName = res.s || 'development';
+        const baseDir = this.getWrite(res.s);
+        const arr: Promise<boolean>[] = [
+            this.download(`${baseName}.zip`, path.resolve(baseDir, 'js')),
+            this.downloadDts(res)
+        ];
+
+        const [ok] = await Promise.all(arr);
+        if (ok) {
+            if (this.ready.loading) {
+                this.ready.finish(true);
+            } else {
+                this.renderer?.reload();
+            }
+            this.manifestJson.set(res);
+            return true;
+        }
         return false;
     }
     private async downloadDts(manifest: ManifestJson) {
@@ -258,19 +264,26 @@ class Remote {
         cb?: (name: string) => void
     ) {
         const url = `${this.serverPublicPath}${entryDirName}/${zipName}`;
-        const cacheDir = path.resolve(
+        const cacheFilename = path.resolve(
             `.${entryDirName}`,
             this.options.name,
             zipName
         );
-        const res = await this.request
-            .get(url, { responseType: 'arraybuffer' })
-            .then((res) => res.data)
-            .catch(() => null);
-        if (res) {
+        let zipU8: Uint8Array | null;
+        // 判断本地缓存是否存在
+        if (fs.existsSync(cacheFilename)) {
+            zipU8 = new Uint8Array(fs.readFileSync(cacheFilename));
+            console.log(`Read cache: ${cacheFilename}`);
+        } else {
+            zipU8 = await this.request
+                .get(url, { responseType: 'arraybuffer' })
+                .then((res) => res.data)
+                .catch(() => null);
+        }
+        if (zipU8) {
             try {
-                write.sync(cacheDir, res);
-                const files = fflate.unzipSync(res);
+                write.sync(cacheFilename, zipU8);
+                const files = fflate.unzipSync(zipU8);
                 Object.keys(files).forEach((name) => {
                     write.sync(path.resolve(writeDir, name), files[name]);
                     cb && cb(name);

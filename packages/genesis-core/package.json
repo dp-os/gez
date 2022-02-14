@@ -12,6 +12,8 @@
   "types": "types/index.d.ts",
   "sideEffects": false,
   "scripts": {
+    "watch:cjs": "NODE_ENV=production tsc --build tsconfig.cjs.json --watch",
+    "watch:esm": "NODE_ENV=production tsc --build tsconfig.esm.json --watch",
     "build": "NODE_ENV=production tsc --build tsconfig.cjs.json && NODE_ENV=production tsc --build tsconfig.esm.json"
   },
   "author": "Followme",

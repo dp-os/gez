@@ -1,0 +1,1 @@
+concurrently "lerna run --scope @fmfe/genesis-core watch:cjs" "lerna run --scope @fmfe/genesis-core watch:esm" "lerna run --scope ssr-shared dev"  "lerna run --scope ssr-hub dev"
