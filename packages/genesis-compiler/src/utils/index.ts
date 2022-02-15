@@ -23,7 +23,7 @@ export const deleteFolder = (path: string) => {
     fs.rmdirSync(path);
 };
 
-export function relativeFilename(from: string, to: string) {
+export function relativeFilename(from: string, to: string): string {
     let path = relative(from, to);
     if (!path.startsWith('.')) {
         path = `./` + path;
