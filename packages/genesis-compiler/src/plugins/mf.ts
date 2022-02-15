@@ -24,6 +24,13 @@ function getExposes(ssr: SSR, mf: MF) {
         const sourceFilename = path.isAbsolute(filename)
             ? filename
             : path.resolve(ssr.srcDir, filename);
+        if (!fs.existsSync(sourceFilename)) {
+            return;
+        }
+        const sourceCode = fs.readFileSync(sourceFilename, {
+            encoding: 'utf-8'
+        });
+        const exportDefault = sourceCode.includes('export default');
         const relativePath = relativeFilename(ssr.srcDir, sourceFilename);
         const writeFilename = path.join(ssr.outputDirInTemplate, relativePath);
         const webpackPublicPath: string = relativeFilename(
@@ -34,9 +41,16 @@ function getExposes(ssr: SSR, mf: MF) {
             writeFilename,
             sourceFilename
         ).replace(/\.(j|t)s$/, '');
-        const template = `import "${upath.toUnix(webpackPublicPath)}";
-export * from "${sourcePath}";`;
-        write.sync(writeFilename, template);
+        const templateArr: string[] = [
+            `import "${upath.toUnix(webpackPublicPath)}";`,
+            `export * from "${sourcePath}";`
+        ];
+        if (exportDefault) {
+            templateArr.push(`import source from "${sourcePath}";`);
+            templateArr.push('export default source;');
+        }
+
+        write.sync(writeFilename, templateArr.join('\n\r'));
 
         exposes[key] = writeFilename;
     });

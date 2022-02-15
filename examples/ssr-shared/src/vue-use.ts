@@ -28,3 +28,5 @@ function appendText(data: Record<string, string>, key: string, value: string) {
         data[key] += value;
     }
 }
+
+export default 'ok';
