@@ -264,8 +264,9 @@ class Remote {
         cb?: (name: string) => void
     ) {
         const url = `${this.serverPublicPath}${entryDirName}/${zipName}`;
+        const cacheDir = path.resolve(`.${entryDirName}`);
         const cacheFilename = path.resolve(
-            `.${entryDirName}`,
+            cacheDir,
             this.options.name,
             zipName
         );
@@ -273,7 +274,9 @@ class Remote {
         // 判断本地缓存是否存在
         if (fs.existsSync(cacheFilename)) {
             zipU8 = new Uint8Array(fs.readFileSync(cacheFilename));
-            console.log(`Read cache: ${cacheFilename}`);
+            console.log(
+                `Read cache: ${path.relative(cacheDir, cacheFilename)}`
+            );
         } else {
             zipU8 = await this.request
                 .get(url, { responseType: 'arraybuffer' })
