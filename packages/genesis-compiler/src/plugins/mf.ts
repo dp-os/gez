@@ -32,7 +32,7 @@ function getExposes(ssr: SSR, mf: MF) {
         });
         const exportDefault = sourceCode.includes('export default');
         const relativePath = relativeFilename(ssr.srcDir, sourceFilename);
-        const writeFilename = path.join(ssr.outputDirInTemplate, relativePath);
+        let writeFilename = path.join(ssr.outputDirInTemplate, relativePath);
         const webpackPublicPath: string = relativeFilename(
             writeFilename,
             path.resolve(ssr.outputDirInTemplate, 'webpack-public-path')
@@ -49,7 +49,9 @@ function getExposes(ssr: SSR, mf: MF) {
             templateArr.push(`import source from "${sourcePath}";`);
             templateArr.push('export default source;');
         }
-
+        if (!/\.(j|t)s$/.test(writeFilename)) {
+            writeFilename += '.ts';
+        }
         write.sync(writeFilename, templateArr.join('\n\r'));
 
         exposes[key] = writeFilename;
