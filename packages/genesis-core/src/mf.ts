@@ -23,12 +23,12 @@ declare module 'axios' {
     }
 }
 
+const reZip = /\.zip$/;
 function createRequest() {
     const request = axios.create({
         httpAgent: new http.Agent({ keepAlive: true }),
         httpsAgent: new https.Agent({ keepAlive: true })
     });
-
     request.interceptors.request.use((axiosConfig) => {
         axiosConfig._startTime = Date.now();
         return axiosConfig;
@@ -38,7 +38,9 @@ function createRequest() {
         async (axiosConfig) => {
             const time = Date.now() - axiosConfig.config._startTime;
             const url = axiosConfig.config.url || '';
-            console.log(`mf: ${url} ${time}ms`);
+            if (reZip.test(url)) {
+                console.log(`mf: ${url} ${time}ms`);
+            }
             return Promise.resolve(axiosConfig);
         },
         (err) => {
