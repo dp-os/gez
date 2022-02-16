@@ -1,6 +1,6 @@
 {
   "name": "@fmfe/genesis-core",
-  "version": "2.0.1-alpha.42",
+  "version": "2.0.1-alpha.43",
   "description": "Vue SSR Microfront",
   "keywords": [
     "vue",
@@ -21,13 +21,13 @@
   "gitHead": "5a236f294d8fb59fd704eac4bf8ea9fd7a378907",
   "dependencies": {
     "axios": "0.25.0",
+    "del": "6.0.0",
     "ejs": "3.1.6",
     "fflate": "0.7.3",
     "serialize-javascript": "6.0.0",
     "vue": "2.6.14",
     "vue-server-renderer": "2.6.14",
-    "write": "2.0.0",
-    "del": "6.0.0"
+    "write": "2.0.0"
   },
   "devDependencies": {
     "@types/ejs": "3.1.0",
