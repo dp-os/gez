@@ -67,6 +67,9 @@
     "worker-loader": "3.0.8",
     "write": "2.0.0"
   },
+  "devDependencies": {
+    "@types/find": "0.2.1"
+  },
   "homepage": "https://fmfe.github.io/genesis-docs/",
   "repository": {
     "type": "git",
