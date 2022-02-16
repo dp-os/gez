@@ -1,4 +1,5 @@
 import axios from 'axios';
+import del from 'del';
 import fflate from 'fflate';
 import fs from 'fs';
 import http from 'http';
@@ -234,6 +235,7 @@ class Remote {
             version: '1.0.0',
             main: 'index.js'
         };
+        del.sync(writeDir);
         const ok = await this.download(
             `${baseName}-dts.zip`,
             writeDir,
