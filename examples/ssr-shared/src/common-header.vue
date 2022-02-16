@@ -1,5 +1,8 @@
 <template>
-    <header>这个是公共的头部4</header>
+    <header>
+        <img width="60" height="60" src="./logo.svg" />
+        Vue2 SSR
+    </header>
 </template>
 <script lang="ts">
 import Vue from 'vue';

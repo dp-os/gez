@@ -1,5 +1,6 @@
 <template>
     <div class="app">
+        <img width="100" height="100" src="./logo.svg" />
         <CommonHeader />
     </div>
 </template>
