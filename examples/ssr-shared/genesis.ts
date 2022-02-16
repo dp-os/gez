@@ -20,7 +20,8 @@ export const ssr = new SSR({
 
 export const mf = new MF(ssr, {
     exposes: {
-        './vue-use': 'vue-use.ts'
+        './vue-use': 'vue-use.ts',
+        './common-header.vue': 'common-header.vue'
     },
     shared: {
         vue: {
@@ -32,7 +33,11 @@ export const mf = new MF(ssr, {
         'element-ui': {
             singleton: true
         }
-    }
+    },
+    /**
+     * 读取本地生成的类型文件，生成给其它的远程模块调用，如果没有，可以使用 vue-tsc --declaration --emitDeclarationOnly 来生成
+     */
+    typesDir: path.resolve('./types')
 });
 
 /**

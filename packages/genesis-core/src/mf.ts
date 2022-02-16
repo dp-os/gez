@@ -53,9 +53,21 @@ function createRequest() {
 }
 
 interface ManifestJson {
+    /**
+     * client
+     */
     c: string;
+    /**
+     * server
+     */
     s: string;
+    /**
+     * dts
+     */
     d: 0 | 1;
+    /**
+     * create time
+     */
     t: number;
 }
 
@@ -188,8 +200,9 @@ class Remote {
         return path.resolve(this.writeBaseDir, baseName);
     }
     public async fetch(): Promise<boolean> {
-        const { manifest } = this;
-        const url = `${this.serverPublicPath}${entryDirName}/${manifestJsonName}?t=${manifest.t}`;
+        const { manifest, serverPublicPath } = this;
+        const nowTime = Date.now();
+        const url = `${serverPublicPath}${entryDirName}/${manifestJsonName}?t=${manifest.t}&n=${nowTime}`;
         const res: ManifestJson = await this.request
             .get(url)
             .then((res) => res.data)
@@ -203,12 +216,16 @@ class Remote {
         console.log(`Request error: ${url}`, res);
         return false;
     }
-    private async downloadZip(res: ManifestJson): Promise<boolean> {
-        const baseName = res.s || 'development';
-        const baseDir = this.getWrite(res.s);
+    private async downloadZip(manifest: ManifestJson): Promise<boolean> {
+        const baseName = manifest.s || 'development';
+        const baseDir = this.getWrite(manifest.s);
         const arr: Promise<boolean>[] = [
-            this.download(`${baseName}.zip`, path.resolve(baseDir, 'js')),
-            this.downloadDts(res)
+            this.download(
+                `${baseName}.zip`,
+                path.resolve(baseDir, 'js'),
+                !!manifest.s
+            ),
+            this.downloadDts(manifest)
         ];
 
         const [ok] = await Promise.all(arr);
@@ -218,7 +235,7 @@ class Remote {
             } else {
                 this.renderer?.reload();
             }
-            this.manifestJson.set(res);
+            this.manifestJson.set(manifest);
             return true;
         }
         return false;
@@ -239,6 +256,7 @@ class Remote {
         const ok = await this.download(
             `${baseName}-dts.zip`,
             writeDir,
+            !!manifest.s,
             (name) => {
                 const filename = name.replace(/\.d\.ts$/, '');
                 write.sync(
@@ -263,6 +281,7 @@ class Remote {
     private async download(
         zipName: string,
         writeDir: string,
+        readCache = true,
         cb?: (name: string) => void
     ) {
         const url = `${this.serverPublicPath}${entryDirName}/${zipName}`;
@@ -274,7 +293,7 @@ class Remote {
         );
         let zipU8: Uint8Array | null;
         // 判断本地缓存是否存在
-        if (fs.existsSync(cacheFilename)) {
+        if (readCache && fs.existsSync(cacheFilename)) {
             zipU8 = new Uint8Array(fs.readFileSync(cacheFilename));
             console.log(
                 `Read cache: ${path.relative(cacheDir, cacheFilename)}`
@@ -284,10 +303,11 @@ class Remote {
                 .get(url, { responseType: 'arraybuffer' })
                 .then((res) => res.data)
                 .catch(() => null);
+            // 写入缓存
+            write.sync(cacheFilename, zipU8);
         }
         if (zipU8) {
             try {
-                write.sync(cacheFilename, zipU8);
                 const files = fflate.unzipSync(zipU8);
                 Object.keys(files).forEach((name) => {
                     write.sync(path.resolve(writeDir, name), files[name]);

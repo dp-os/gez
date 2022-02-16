@@ -1,16 +1,17 @@
 <template>
     <div class="app">
-        <h2>你好世界！</h2>
-        <p v-if="show" class="text" @click="close">
-            {{ installed ? '在客户端应该安装成功，点击我关闭!' : '未安装' }}
-        </p>
+        <CommonHeader />
     </div>
 </template>
 <script lang="ts">
+import CommonHeader from 'ssr-shared/common-header.vue';
 import Vue from 'vue';
 
 export default Vue.extend({
     name: 'app',
+    components: {
+        CommonHeader
+    },
     data() {
         return {
             installed: false,
