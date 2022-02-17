@@ -22,13 +22,10 @@ export class BaseConfig extends BaseGenesis {
         });
         config.output.pathinfo(false);
         config.stats('errors-warnings');
-        const alias = ssr.options?.build?.alias;
-        if (typeof alias === 'object') {
-            Object.keys(alias).forEach((k) => {
-                const v = alias[k];
-                config.resolve.alias.set(k, v);
-            });
-        }
+        const alias = ssr.options?.build?.alias || {};
+        const fallback = ssr.options?.build?.fallback || {};
+        config.resolve.set('fallback', fallback);
+        config.resolve.set('alias', alias);
     }
 
     public async toConfig(): Promise<webpack.Configuration> {

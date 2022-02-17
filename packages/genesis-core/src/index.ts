@@ -141,6 +141,9 @@ namespace Genesis {
         alias?: {
             [x: string]: string;
         };
+        fallback?: {
+            [x: string]: string;
+        };
         /**
          * Configure build objectives, See https://github.com/browserslist/browserslist for details
          */
