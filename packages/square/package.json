@@ -4,7 +4,7 @@
   "module": "dist/esm/index.js",
   "types": "types/index.d.ts",
   "sideEffects": false,
-  "version": "2.0.1-alpha.47",
+  "version": "2.0.1-alpha.48",
   "description": "Vue SSR Microfront",
   "keywords": [
     "vue",
@@ -30,5 +30,5 @@
   "bugs": {
     "url": "https://github.com/fmfe/genesis/issues"
   },
-  "gitHead": "5a236f294d8fb59fd704eac4bf8ea9fd7a378907"
+  "gitHead": "e29fea637547c68974f4ad6e0345b3c3d802a9c2"
 }

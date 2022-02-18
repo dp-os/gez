@@ -90,6 +90,10 @@ export class Renderer {
     private _createApp = createDefaultApp;
     public constructor(ssr: Genesis.SSR) {
         this.ssr = ssr;
+        Object.defineProperty(ssr.sandboxGlobal, ssr.publicPathVarName, {
+            enumerable: true,
+            get: () => ssr.cdnPublicPath + ssr.publicPath
+        });
         this._load();
         const bindArr = [
             'renderJson',
