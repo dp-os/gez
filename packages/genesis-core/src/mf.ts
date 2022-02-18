@@ -77,12 +77,14 @@ class RemoteModule {
         this.remote = remote;
         const { ssr } = remote;
         Object.defineProperty(ssr.sandboxGlobal, this.varName, {
+            enumerable: true,
             get: () => this
         });
         Object.defineProperty(
             ssr.sandboxGlobal,
             SSR.getPublicPathVarName(remote.options.name),
             {
+                enumerable: true,
                 get: () => this.remote.clientPublicPath
             }
         );

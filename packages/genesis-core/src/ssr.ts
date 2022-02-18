@@ -51,6 +51,7 @@ export class SSR {
         }
         this.sandboxGlobal.global = this.sandboxGlobal;
         Object.defineProperty(this.sandboxGlobal, this.publicPathVarName, {
+            enumerable: true,
             get: () => this.cdnPublicPath + this.publicPath
         });
     }
