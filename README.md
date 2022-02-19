@@ -3,14 +3,37 @@
 [![npm](https://img.shields.io/npm/v/@fmfe/genesis-core.svg)](https://www.npmjs.com/package/@fmfe/genesis-core) 
 [![npm](https://img.shields.io/npm/dm/@fmfe/genesis-core.svg)](https://www.npmjs.com/package/@fmfe/genesis-core)
 [![npm](https://img.shields.io/npm/dt/@fmfe/genesis-core.svg)](https://www.npmjs.com/package/@fmfe/genesis-core)
+# Genesis
+一个基于Webpack module federation的轻量级Vue SSR框架
 
+### 优势
+- 编写简单的JS，就可以创建一个SSR项目
+- 基础灵活的API，可以在此基础上封装自己的框架
+- 开发依赖和生产依赖分包，在构建生产包时，应用更小化
+- 支持Webpack module federation的SSR解决方案
+- 支持TypeScript，开箱即用
+- 长期维护更新
+
+## 快速开始
+```bash
+# 创建目录
+mkdir ssr-demo
+# 移动到项目目录
+cd ssr-demo
+# 初始化项目信息
+yarn init
+# 安装生产依赖
+yarn add @fmfe/genesis-core express
+# 安装开发依赖
+yarn add @fmfe/genesis-compiler
+```
 ## 快速开发
 ```bash
 git clone git@github.com:fmfe/genesis.git
 cd genesis
 
 # 安装依赖
-lerna bootstrap --registry=https://registry.npmmirror.com
+lerna bootstrap
 
 # 编译 genesis核心库
 yarn build
