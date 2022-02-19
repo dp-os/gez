@@ -1,4 +1,3 @@
-import crypto from 'crypto';
 import Ejs from 'ejs';
 import fs from 'fs';
 import { IncomingMessage, ServerResponse } from 'http';
@@ -10,11 +9,7 @@ import write from 'write';
 
 import type * as Genesis from './';
 import { NodeVM } from './node-vm';
-
-const md5 = (content: string) => {
-    const md5 = crypto.createHash('md5');
-    return md5.update(content).digest('hex');
-};
+import { md5 } from './util';
 
 const defaultTemplate = `<!DOCTYPE html><html><head><title>Vue SSR for Genesis</title><%-style%></head><body><%-html%><%-scriptState%><%-script%></body></html>`;
 

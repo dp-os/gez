@@ -12,6 +12,7 @@ import type * as Genesis from '.';
 import { Plugin } from './plugin';
 import type { Renderer } from './renderer';
 import { SSR } from './ssr';
+import { md5 } from './util';
 
 const mf = Symbol('mf');
 const entryDirName = 'node-exposes';
@@ -42,12 +43,13 @@ class Logger {
         return this.log(`${name} is ready`);
     }
     public static log(text: string) {
-        return console.log(`[@fmfe/genesis-core] ${text}`);
+        return console.log(`genesis ${text}`);
     }
 }
 
 const reZip = /\.zip$/;
 function createRequest() {
+    let first = true;
     const request = axios.create({
         httpAgent: new http.Agent({ keepAlive: true }),
         httpsAgent: new https.Agent({ keepAlive: true })
@@ -61,8 +63,9 @@ function createRequest() {
         async (axiosConfig) => {
             const time = Date.now() - axiosConfig.config._startTime;
             const url = axiosConfig.config.url || '';
-            if (reZip.test(url)) {
-                Logger.log(`${url} download ${time}ms`);
+            if (reZip.test(url) || first) {
+                Logger.log(`${url} ${time}ms`);
+                first = false;
             }
             return Promise.resolve(axiosConfig);
         },
@@ -219,11 +222,29 @@ class RemoteZip {
                 code: 'no-update'
             };
         }
+        const { isProd } = this.remote.ssr;
+        let zipU8: Uint8Array | null = null;
+        const isCache = !isProd && !this.clean;
+        const cacheFilename = path.resolve(
+            __dirname,
+            'remotes',
+            `${md5(this.url)}.zip`
+        );
+        let isRemote = true;
+        if (isCache && fs.existsSync(cacheFilename)) {
+            zipU8 = new Uint8Array(fs.readFileSync(cacheFilename));
+            isRemote = false;
+        }
         const { writeDir, remote } = this;
-        const zipU8: Uint8Array | null = await remote.request
-            .get(this.url, { responseType: 'arraybuffer' })
-            .then((res) => res.data)
-            .catch(() => null);
+        if (!zipU8) {
+            zipU8 = await remote.request
+                .get(this.url, { responseType: 'arraybuffer' })
+                .then((res) => res.data)
+                .catch(() => null);
+            if (zipU8 && isCache) {
+                write.sync(cacheFilename, zipU8);
+            }
+        }
         if (!zipU8) {
             return {
                 ok: false,
@@ -251,7 +272,7 @@ class RemoteZip {
         });
         return {
             ok: true,
-            code: 'remote'
+            code: isRemote ? 'remote' : 'local'
         };
     }
 }
@@ -306,6 +327,12 @@ class Remote {
         }
         if (!this.already) {
             this.already = true;
+            const { ssr, manifest } = this;
+
+            if (!ssr.isProd && manifest.s) {
+                this.downloadZip(this.manifest);
+            }
+
             this.polling();
         }
         await this.ready.await;
