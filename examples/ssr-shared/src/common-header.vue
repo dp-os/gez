@@ -1,7 +1,7 @@
 <template>
     <header>
         <img width="60" height="60" src="./logo.svg" />
-        Vue2 SSR
+        test a image path2
     </header>
 </template>
 <script lang="ts">

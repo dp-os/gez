@@ -249,11 +249,6 @@ class Remote {
         }
         const baseName = manifest.s || 'development';
         const writeDir = path.resolve('node_modules', this.options.name);
-        const packageJson = {
-            name: this.options.name,
-            version: '1.0.0',
-            main: 'index.js'
-        };
         del.sync(writeDir);
         const ok = await this.download(
             `${baseName}-dts.zip`,
@@ -267,12 +262,6 @@ class Remote {
                 );
             }
         );
-        if (ok) {
-            write.sync(
-                path.resolve(writeDir, 'package.json'),
-                JSON.stringify(packageJson, null, 4)
-            );
-        }
         return ok;
     }
     private async polling() {

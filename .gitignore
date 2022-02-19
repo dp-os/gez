@@ -12,6 +12,7 @@ packages/**/*.log
 
 examples/**/.node-exposes/**
 examples/**/dist/**
+examples/**/types/**
 examples/**/tsconfig.cjs.json
 examples/**/tsconfig.esm.json
 examples/**/*.lock

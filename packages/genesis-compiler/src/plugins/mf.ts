@@ -76,28 +76,28 @@ return require(remoteModule.filename);
             return;
         }
         remotes[item.name] = `promise new Promise(function (resolve, reject) {
-            var script = document.createElement('script')
-            script.src = window["${exposesVarName}"];
-            script.onload = function onload() {
-              var proxy = {
-                get: (request) => window["${varName}"].get(request),
-                init: (arg) => {
-                  try {
+    var script = document.createElement("script")
+    script.src = window["${exposesVarName}"];
+    script.onload = function onload() {
+        var proxy = {
+            get: (request) => window["${varName}"].get(request),
+            init: (arg) => {
+                try {
                     return window["${varName}"].init(arg)
-                  } catch(e) {
+                } catch(e) {
                     console.log('remote container already initialized')
-                  }
                 }
-              }
-              resolve(proxy)
             }
-            script.onerror = function onerror() {
-
-                document.head.removeChild(script);
-            }
-            document.head.appendChild(script);
-          })
-          `;
+        };
+        resolve(proxy)
+    }
+    script.onerror = function onerror() {
+        document.head.removeChild(script);
+        reject(new Error("Load " + script.src + " failed"));
+        document.head.appendChild(script);
+    }
+});
+`;
     });
 
     return remotes;
@@ -147,6 +147,10 @@ export class MFPlugin extends Plugin {
         if (mf.options.typesDir) {
             const typeDir = path.resolve(mf.options.typesDir);
             if (fs.existsSync(typeDir)) {
+                this._write(path.resolve(typeDir, 'package.json'), {
+                    name: ssr.name,
+                    exposesManifest: data
+                });
                 data.d = Number(this._zip(typeDir, `${zipName}-dts`));
             }
         }
