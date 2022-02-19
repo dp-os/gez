@@ -12,6 +12,6 @@ function build ()
 }
 
 build genesis-core
-# build genesis-compiler
-# build genesis-app
-# build square
+build genesis-compiler
+build genesis-app
+build square

@@ -2,15 +2,21 @@
     "name": "genesis",
     "private": true,
     "devDependencies": {
-        "lerna": "^4.0.0"
+        "lerna": "^4.0.0",
+        "typescript": "^4.5.5",
+        "concurrently": "7.0.0"
     },
     "workspaces": [
         "packages/*",
         "examples/*"
     ],
     "scripts": {
-        "build:dts": "vue-tsc vue-tsc --declaration --emitDeclarationOnly",
-        "build": "lerna run --stream --sort build",
+        "build": "./script/build.sh",
+        "publish:all": "./script/publish.sh",
+        "example:build:dts": "./script/example.sh build:dts",
+        "example:build": "./script/example.sh build",
+        "example:start": "./script/example.sh start",
+        "example:dev": "./script/example-dev.sh",
         "lint": "npm run lint:js && npm run lint:css",
         "lint:js": "eslint . --ext .js,.ts,.vue --fix",
         "lint:css": ""

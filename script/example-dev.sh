@@ -1,0 +1,1 @@
+concurrently "lerna run --scope ssr-shared dev"  "lerna run --scope ssr-hub dev"

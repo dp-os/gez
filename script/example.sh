@@ -1,13 +1,11 @@
 #!/bin/bash
 
-function build ()
+function run ()
 {
-    echo "build ${1}"
     rm -rf ./examples/${1}/types
     cp -r tsconfig.cjs.json ./examples/${1}/tsconfig.cjs.json
     cp -r tsconfig.esm.json ./examples/${1}/tsconfig.esm.json
-    lerna run --scope=${1} build:dts
+    lerna run --scope=${1} ${2}
 }
-
-build ssr-shared
-build ssr-hub
+run ssr-shared ${1}
+run ssr-hub ${1}
