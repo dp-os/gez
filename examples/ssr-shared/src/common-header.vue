@@ -1,7 +1,7 @@
 <template>
     <header>
         <img width="60" height="60" src="./logo.svg" />
-        test a image path2
+        test a image path5
     </header>
 </template>
 <script lang="ts">

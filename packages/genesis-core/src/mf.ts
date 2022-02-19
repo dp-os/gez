@@ -16,11 +16,33 @@ import { SSR } from './ssr';
 const mf = Symbol('mf');
 const entryDirName = 'node-exposes';
 const manifestJsonName = 'manifest.json';
+const developmentZipName = 'development';
 
 declare module 'axios' {
     export interface AxiosRequestConfig {
         _startTime?: number;
         loggerText?: string;
+    }
+}
+
+class Logger {
+    public static requestFailed(url: string) {
+        return this.log(`${url} request failed`);
+    }
+    public static decompressionFailed(url: string) {
+        return this.log(`${url} decompression failed`);
+    }
+    public static reload(url: string) {
+        return this.log(`Hot update to ${url} code`);
+    }
+    public static readCache(url: string) {
+        return this.log(`${url} read local cache`);
+    }
+    public static ready(name: string) {
+        return this.log(`${name} is ready`);
+    }
+    public static log(text: string) {
+        return console.log(`[@fmfe/genesis-core] ${text}`);
     }
 }
 
@@ -40,7 +62,7 @@ function createRequest() {
             const time = Date.now() - axiosConfig.config._startTime;
             const url = axiosConfig.config.url || '';
             if (reZip.test(url)) {
-                console.log(`mf: ${url} ${time}ms`);
+                Logger.log(`${url} download ${time}ms`);
             }
             return Promise.resolve(axiosConfig);
         },
@@ -101,8 +123,12 @@ class RemoteModule {
 
         return path.resolve(baseDir, `js/${mf.entryName}${version}.js`);
     }
-    public async init() {
-        await this.remote.init();
+    public async fetch() {
+        if (this.remote.ready.loading) {
+            const success = await this.remote.fetch();
+            this.remote.fetchModuleError = !success;
+        }
+        return true;
     }
     public destroy() {
         delete global[this.varName];
@@ -127,10 +153,13 @@ class Json<T> {
         this._data = _data;
         this.data = this.get();
     }
-    public get(): T {
+    public get haveCache() {
         const { filename } = this;
-        if (fs.existsSync(filename)) {
-            const text = fs.readFileSync(filename, { encoding: 'utf-8' });
+        return fs.existsSync(filename);
+    }
+    public get(): T {
+        if (this.haveCache) {
+            const text = fs.readFileSync(this.filename, { encoding: 'utf-8' });
             return JSON.parse(text);
         }
         this.data = this._data();
@@ -143,6 +172,72 @@ class Json<T> {
     }
 }
 
+/**
+ * 下载对应的ZIP文件
+ */
+class RemoteZip {
+    private url: string;
+    private writeDir: string;
+    private remote: Remote;
+    private info: Json<{ version: string }>;
+    private version: string;
+    private clean: boolean;
+    public constructor({
+        remote,
+        writeDir,
+        url,
+        version,
+        clean
+    }: {
+        remote: Remote;
+        writeDir: string;
+        url: string;
+        version: string;
+        clean: boolean;
+    }) {
+        this.remote = remote;
+        this.writeDir = writeDir;
+        this.url = url;
+        this.version = version;
+        this.clean = clean;
+        this.info = new Json(path.resolve(writeDir, '.remote.json'), () => ({
+            version: ''
+        }));
+    }
+    public async download(): Promise<'no-update' | 'error' | 'remote'> {
+        const { info } = this;
+        // 如果和版本号一致，则不需要下载
+        if (info.haveCache && info.data.version === this.version) {
+            return 'no-update';
+        }
+        const { writeDir, remote } = this;
+        const zipU8: Uint8Array | null = await remote.request
+            .get(this.url, { responseType: 'arraybuffer' })
+            .then((res) => res.data)
+            .catch(() => null);
+        if (!zipU8) {
+            return 'error';
+        }
+        if (this.clean) {
+            del.sync(this.writeDir);
+        }
+        let files: Record<string, any> = {};
+        try {
+            files = fflate.unzipSync(zipU8);
+        } catch (e) {
+            Logger.decompressionFailed(this.url);
+            return 'error';
+        }
+        Object.keys(files).forEach((name) => {
+            write.sync(path.resolve(writeDir, name), files[name]);
+        });
+        info.set({
+            version: this.version
+        });
+        return 'remote';
+    }
+}
+
 class Remote {
     public ssr: Genesis.SSR;
     public options: Genesis.MFRemote;
@@ -151,7 +246,8 @@ class Remote {
     private renderer?: Renderer;
     private timer?: NodeJS.Timeout;
     private already = false;
-    private request = createRequest();
+    public fetchModuleError = false;
+    public request = createRequest();
     private manifestJson: Json<ManifestJson>;
     public constructor(ssr: Genesis.SSR, options: Genesis.MFRemote) {
         this.ssr = ssr;
@@ -162,7 +258,7 @@ class Remote {
             path.resolve(this.writeBaseDir, 'manifest.json'),
             createManifest
         );
-        if (this.manifest.t) {
+        if (ssr.isProd && this.manifest.s) {
             this.downloadZip(this.manifest);
         }
     }
@@ -198,7 +294,7 @@ class Remote {
         await this.ready.await;
     }
     public getWrite(server: string) {
-        const baseName = server || 'development';
+        const baseName = server || developmentZipName;
         return path.resolve(this.writeBaseDir, baseName);
     }
     public async fetch(): Promise<boolean> {
@@ -210,111 +306,66 @@ class Remote {
             .then((res) => res.data)
             .catch(() => null);
         if (res && typeof res === 'object') {
-            // 服务端版本号一致，则不用下载
-            if (manifest.s && manifest.s === res.s) return true;
-            if (!manifest.s && manifest.t === res.t) return true;
             return this.downloadZip(res);
+        } else {
+            Logger.requestFailed(url);
         }
-        console.log(`Request error: ${url}`, res);
         return false;
+    }
+    private getTargetUrl(target: string) {
+        const { serverPublicPath } = this;
+        return `${serverPublicPath}${entryDirName}/${target}`;
     }
     private async downloadZip(manifest: ManifestJson): Promise<boolean> {
-        const baseName = manifest.s || 'development';
-        const baseDir = this.getWrite(manifest.s);
-        const arr: Promise<boolean>[] = [
-            this.download(
-                `${baseName}.zip`,
-                path.resolve(baseDir, 'js'),
-                !!manifest.s
-            ),
-            this.downloadDts(manifest)
-        ];
-
-        const [ok] = await Promise.all(arr);
-        if (ok) {
-            if (this.ready.loading) {
-                this.ready.finish(true);
+        let url: string;
+        const writeDir: string = this.getWrite(manifest.s);
+        let version: string;
+        let clean: boolean;
+        // 是生产环境包
+        if (manifest.s) {
+            url = this.getTargetUrl(`${manifest.s}.zip`);
+            version = manifest.s;
+            clean = false;
+        } else {
+            url = this.getTargetUrl(`${developmentZipName}.zip`);
+            version = String(manifest.t);
+            clean = true;
+        }
+        const zip = new RemoteZip({
+            remote: this,
+            url,
+            writeDir,
+            version,
+            clean
+        });
+        const type = await zip.download();
+        const { ready } = this;
+        if (type === 'no-update') {
+            if (ready.loading) {
+                ready.finish(true);
+                Logger.readCache(url);
+            }
+        } else if (type === 'remote') {
+            if (ready.loading) {
+                ready.finish(true);
+                if (this.fetchModuleError) {
+                    this.renderer?.reload();
+                    Logger.reload(url);
+                } else {
+                    Logger.ready(url);
+                }
             } else {
                 this.renderer?.reload();
+                Logger.reload(url);
             }
             this.manifestJson.set(manifest);
-            return true;
         }
-        return false;
-    }
-    private async downloadDts(manifest: ManifestJson) {
-        const { ssr } = this;
-        if (ssr.isProd || manifest.d !== 1) {
-            return false;
-        }
-        const baseName = manifest.s || 'development';
-        const writeDir = path.resolve('node_modules', this.options.name);
-        del.sync(writeDir);
-        const ok = await this.download(
-            `${baseName}-dts.zip`,
-            writeDir,
-            !!manifest.s,
-            (name) => {
-                const filename = name.replace(/\.d\.ts$/, '');
-                write.sync(
-                    path.resolve(writeDir, `${filename}.js`),
-                    `// Federation write module type`
-                );
-            }
-        );
-        return ok;
+        return type !== 'error';
     }
     private async polling() {
         const { mf } = this;
         await this.fetch();
         this.timer = setTimeout(this.polling, mf.options.intervalTime);
-    }
-    private async download(
-        zipName: string,
-        writeDir: string,
-        readCache = true,
-        cb?: (name: string) => void
-    ) {
-        const url = `${this.serverPublicPath}${entryDirName}/${zipName}`;
-        const cacheDir = path.resolve(`.${entryDirName}`);
-        const cacheFilename = path.resolve(
-            cacheDir,
-            this.options.name,
-            zipName
-        );
-        let zipU8: Uint8Array | null;
-        // 判断本地缓存是否存在
-        if (readCache && fs.existsSync(cacheFilename)) {
-            zipU8 = new Uint8Array(fs.readFileSync(cacheFilename));
-            console.log(
-                `Read cache: ${path.relative(cacheDir, cacheFilename)}`
-            );
-        } else {
-            zipU8 = await this.request
-                .get(url, { responseType: 'arraybuffer' })
-                .then((res) => res.data)
-                .catch(() => null);
-            // 写入缓存
-            write.sync(cacheFilename, zipU8);
-        }
-        if (zipU8) {
-            try {
-                const files = fflate.unzipSync(zipU8);
-                Object.keys(files).forEach((name) => {
-                    write.sync(path.resolve(writeDir, name), files[name]);
-                    cb && cb(name);
-                });
-            } catch (e) {
-                console.log(url, e);
-                return false;
-            }
-            return true;
-        } else {
-            console.log(
-                `${this.options.name} dependency download failed, The url is ${url}`
-            );
-        }
-        return false;
     }
     public destroy() {
         this.timer && clearTimeout(this.timer);

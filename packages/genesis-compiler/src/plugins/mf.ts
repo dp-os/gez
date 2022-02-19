@@ -68,7 +68,10 @@ function getRemotes(mf: MF, isServer: boolean) {
         if (isServer) {
             const code = `promise (async function () {
 var remoteModule = global["${exposesVarName}"];
-await remoteModule.init(); 
+var success = await remoteModule.fetch(); 
+if (!success) {
+    throw new Error("${item.name} remote module download failed");
+}
 return require(remoteModule.filename);
 })();
 `;
@@ -143,7 +146,7 @@ export class MFPlugin extends Plugin {
             t: Date.now()
         };
         const zipName = server || 'development';
-        this._zip(path.resolve(ssr.outputDirInServer, './js'), zipName);
+        this._zip(path.resolve(ssr.outputDirInServer), zipName);
         if (mf.options.typesDir) {
             const typeDir = path.resolve(mf.options.typesDir);
             if (fs.existsSync(typeDir)) {
