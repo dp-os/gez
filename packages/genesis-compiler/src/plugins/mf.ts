@@ -68,10 +68,7 @@ function getRemotes(mf: MF, isServer: boolean) {
         if (isServer) {
             const code = `promise (async function () {
 var remoteModule = global["${exposesVarName}"];
-var success = await remoteModule.fetch(); 
-if (!success) {
-    throw new Error("${item.name} remote module download failed");
-}
+await remoteModule.fetch(); 
 return require(remoteModule.filename);
 })();
 `;

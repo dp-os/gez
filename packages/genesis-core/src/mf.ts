@@ -126,9 +126,12 @@ class RemoteModule {
     public async fetch() {
         if (this.remote.ready.loading) {
             const success = await this.remote.fetch();
-            this.remote.fetchModuleError = !success;
+            if (!success) {
+                throw new Error(
+                    `${this.remote.options.name} remote module download failed`
+                );
+            }
         }
-        return true;
     }
     public destroy() {
         delete global[this.varName];
@@ -204,11 +207,17 @@ class RemoteZip {
             version: ''
         }));
     }
-    public async download(): Promise<'no-update' | 'error' | 'remote'> {
+    public async download(): Promise<{
+        ok: boolean;
+        code: 'no-update' | 'error' | 'remote' | 'local';
+    }> {
         const { info } = this;
         // 如果和版本号一致，则不需要下载
         if (info.haveCache && info.data.version === this.version) {
-            return 'no-update';
+            return {
+                ok: true,
+                code: 'no-update'
+            };
         }
         const { writeDir, remote } = this;
         const zipU8: Uint8Array | null = await remote.request
@@ -216,7 +225,10 @@ class RemoteZip {
             .then((res) => res.data)
             .catch(() => null);
         if (!zipU8) {
-            return 'error';
+            return {
+                ok: false,
+                code: 'error'
+            };
         }
         if (this.clean) {
             del.sync(this.writeDir);
@@ -226,7 +238,10 @@ class RemoteZip {
             files = fflate.unzipSync(zipU8);
         } catch (e) {
             Logger.decompressionFailed(this.url);
-            return 'error';
+            return {
+                ok: false,
+                code: 'error'
+            };
         }
         Object.keys(files).forEach((name) => {
             write.sync(path.resolve(writeDir, name), files[name]);
@@ -234,7 +249,10 @@ class RemoteZip {
         info.set({
             version: this.version
         });
-        return 'remote';
+        return {
+            ok: true,
+            code: 'remote'
+        };
     }
 }
 
@@ -246,7 +264,6 @@ class Remote {
     private renderer?: Renderer;
     private timer?: NodeJS.Timeout;
     private already = false;
-    public fetchModuleError = false;
     public request = createRequest();
     private manifestJson: Json<ManifestJson>;
     public constructor(ssr: Genesis.SSR, options: Genesis.MFRemote) {
@@ -338,29 +355,22 @@ class Remote {
             version,
             clean
         });
-        const type = await zip.download();
+        const { ok, code } = await zip.download();
         const { ready } = this;
-        if (type === 'no-update') {
-            if (ready.loading) {
-                ready.finish(true);
-                Logger.readCache(url);
-            }
-        } else if (type === 'remote') {
-            if (ready.loading) {
-                ready.finish(true);
-                if (this.fetchModuleError) {
-                    this.renderer?.reload();
-                    Logger.reload(url);
-                } else {
-                    Logger.ready(url);
-                }
-            } else {
-                this.renderer?.reload();
-                Logger.reload(url);
-            }
-            this.manifestJson.set(manifest);
+        if (!ok) return false;
+        this.manifestJson.set(manifest);
+        if (code === 'local' || (ready.loading && code === 'no-update')) {
+            Logger.readCache(url);
         }
-        return type !== 'error';
+        if (code !== 'no-update') {
+            Logger.reload(url);
+            this.renderer?.reload();
+        }
+        if (ready.loading) {
+            Logger.ready(this.options.name);
+            ready.finish(true);
+        }
+        return true;
     }
     private async polling() {
         const { mf } = this;
