@@ -297,7 +297,7 @@ class Remote {
             createManifest
         );
         if (ssr.isProd && this.manifest.s) {
-            this.downloadZip(this.manifest);
+            this.download(this.manifest);
         }
     }
     public get manifest() {
@@ -330,7 +330,7 @@ class Remote {
             const { ssr, manifest } = this;
 
             if (!ssr.isProd && manifest.s) {
-                this.downloadZip(this.manifest);
+                this.download(this.manifest);
             }
 
             this.polling();
@@ -350,7 +350,7 @@ class Remote {
             .then((res) => res.data)
             .catch(() => null);
         if (res && typeof res === 'object') {
-            return this.downloadZip(res);
+            return this.download(res);
         } else {
             Logger.requestFailed(url);
         }
@@ -359,6 +359,38 @@ class Remote {
     private getTargetUrl(target: string) {
         const { serverPublicPath } = this;
         return `${serverPublicPath}${entryDirName}/${target}`;
+    }
+    public async download(manifest: ManifestJson): Promise<boolean> {
+        const arr: Promise<boolean>[] = [this.downloadZip(manifest)];
+        if (!this.ssr.isProd) {
+            arr.push(this.downloadDts(manifest));
+        }
+        const [ok] = await Promise.all(arr);
+
+        return ok;
+    }
+    private async downloadDts(manifest: ManifestJson): Promise<boolean> {
+        if (!manifest.d) {
+            return true;
+        }
+        const writeDir: string = path.resolve(
+            'node_modules',
+            this.options.name
+        );
+        const url = this.getTargetUrl(
+            `${manifest.s || developmentZipName}-dts.zip`
+        );
+        const version = String(manifest.t);
+        const clean = !manifest.s;
+        const zip = new RemoteZip({
+            remote: this,
+            url,
+            writeDir,
+            version,
+            clean
+        });
+        const res = await zip.download();
+        return res.ok;
     }
     private async downloadZip(manifest: ManifestJson): Promise<boolean> {
         let url: string;
