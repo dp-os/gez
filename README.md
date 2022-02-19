@@ -11,6 +11,7 @@ cd genesis
 
 # 安装依赖
 lerna bootstrap --registry=https://registry.npmmirror.com
+
 # 编译 genesis核心库
 yarn build
 # 编译例子，生成相关的dts类型文件，避免TS报错
