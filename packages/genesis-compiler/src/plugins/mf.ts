@@ -94,8 +94,8 @@ return require(remoteModule.filename);
     script.onerror = function onerror() {
         document.head.removeChild(script);
         reject(new Error("Load " + script.src + " failed"));
-        document.head.appendChild(script);
     }
+    document.head.appendChild(script);
 });
 `;
     });
