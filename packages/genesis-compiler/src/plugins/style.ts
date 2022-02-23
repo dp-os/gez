@@ -121,7 +121,9 @@ export class StylePlugin extends Plugin {
             extract: {
                 name: 'extract',
                 loader: MiniCssExtractPlugin.loader as string,
-                options: {}
+                options: {
+                    esModule: false
+                }
             }
         };
         const getCssLoader = ({ isModule = false } = {}) => {
