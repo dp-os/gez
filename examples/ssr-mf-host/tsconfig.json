@@ -29,8 +29,8 @@
         ],
         "allowSyntheticDefaultImports": true,
         "paths": {
-          "ssr-hub/src/*": ["./src/*"],
-          "ssr-hub/*": ["./*"]
+          "ssr-mf-host/src/*": ["./src/*"],
+          "ssr-mf-host/*": ["./*"]
         },
     },
     "include": [

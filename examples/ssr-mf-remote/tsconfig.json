@@ -29,8 +29,8 @@
         ],
         "allowSyntheticDefaultImports": true,
         "paths": {
-          "ssr-shared/src/*": ["./src/*"],
-          "ssr-shared/*": ["./*"]
+          "ssr-mf-remote/src/*": ["./src/*"],
+          "ssr-mf-remote/*": ["./*"]
         },
     },
     "include": [

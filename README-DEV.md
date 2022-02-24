@@ -12,7 +12,7 @@ lerna create 包名
 ## 添加一个开发包
 ```bash
 lerna add 依赖名称 --scope=包名 --dev
-lerna add ssr-shared --scope=express --dev
+lerna add ssr-mf-remote --scope=express --dev
 ```
 ## 添加一个生产包
 ```bash

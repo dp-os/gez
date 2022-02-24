@@ -1,5 +1,5 @@
 import { ClientOptions } from '@fmfe/genesis-core';
-import { onVueCreated } from 'ssr-shared/vue-use';
+import { onVueCreated } from 'ssr-mf-remote/vue-use';
 import Vue from 'vue';
 
 import App from './app.vue';

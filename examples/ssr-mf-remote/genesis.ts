@@ -11,7 +11,7 @@ export const app = express();
  * 创建一个 SSR 实例
  */
 export const ssr = new SSR({
-    name: 'ssr-shared',
+    name: 'ssr-mf-remote',
     build: {
         extractCSS: false,
         template: path.resolve('./index.html')

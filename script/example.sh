@@ -7,5 +7,5 @@ function run ()
     cp -r tsconfig.esm.json ./examples/${1}/tsconfig.esm.json
     lerna run --scope=${1} ${2}
 }
-run ssr-shared ${1}
-run ssr-hub ${1}
+run ssr-mf-remote ${1}
+run ssr-mf-host ${1}

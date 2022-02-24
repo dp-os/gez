@@ -1,1 +1,1 @@
-concurrently "lerna run --scope ssr-shared dev"  "lerna run --scope ssr-hub dev"
+concurrently "lerna run --scope ssr-mf-remote dev"  "lerna run --scope ssr-mf-host dev"

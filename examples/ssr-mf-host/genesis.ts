@@ -11,7 +11,7 @@ export const app = express();
  * 创建一个 SSR 实例
  */
 export const ssr = new SSR({
-    name: 'ssr-hub',
+    name: 'ssr-mf-host',
     build: {
         extractCSS: false,
         template: path.resolve('./index.html')
@@ -26,9 +26,9 @@ export const mf = new MF(ssr, {
     },
     remotes: [
         {
-            name: 'ssr-shared',
-            clientOrigin: 'http://localhost:3004',
-            serverOrigin: 'http://localhost:3004'
+            name: 'ssr-mf-remote',
+            clientOrigin: 'http://localhost:3002',
+            serverOrigin: 'http://localhost:3002'
         }
     ]
 });
@@ -45,5 +45,5 @@ export const startApp = (renderer: Renderer) => {
     /**
      * 监听端口
      */
-    app.listen(3000, () => console.log(`http://localhost:3000`));
+    app.listen(3001, () => console.log(`http://localhost:3001`));
 };
