@@ -143,11 +143,8 @@ app.use(
 startApp(renderer);
 
 ``` 
-## 命令封装
-为了简化执行命令，可以在`package.json`封装    
-开发：`yarn dev`    
-编译：`yarn build`     
-生产：`yarn start`     
+## 简化命令
+在`package.json`添加命令，简化执行命令
 ```json
 {
   "scripts": {
@@ -157,6 +154,7 @@ startApp(renderer);
   }
 }
 ```
-## 启动程序
-运行：`yarn dev`    
+开发：`yarn dev`    
+编译：`yarn build`     
+生产：`yarn start`    
 打开：`http://localhost:3000`    
