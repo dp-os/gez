@@ -1,0 +1,18 @@
+{
+  "name": "ssr-demo",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "node genesis.dev",
+    "build": "NODE_ENV=production node genesis.build",
+    "start": "NODE_ENV=production node genesis.prod"
+  },
+  "dependencies": {
+    "@fmfe/genesis-core": "^2.0.4",
+    "express": "^4.17.3"
+  },
+  "devDependencies": {
+    "@fmfe/genesis-compiler": "^2.0.4"
+  }
+}
