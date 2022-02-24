@@ -29,6 +29,9 @@ const ssr = new SSR({
       */
      name: 'ssr-demo'
 });
+/**
+ * 创建服务器
+ */
 const app = express();
 
 
@@ -38,12 +41,16 @@ const app = express();
  * @param {Renderer} renderer 
  */
 function startApp(renderer) {
+     /**
+      * 监听请求，执行渲染程序
+      */
      app.get(async (req, res, next) => {
-          const result = await renderer.renderHtml();
+          const result = await renderer.renderHtml({ req, res });
           res.send(result.data);
      });
-     app.use(renderer.renderMiddleware);
-
+     /**
+      * 监听3000端口
+      */
      app.listen(3000, () => console.log(`http://localhost:3000`));
 }
 
@@ -151,5 +158,5 @@ startApp(renderer);
 }
 ```
 ## 启动程序
-运行：npm run dev    
-打开：http://localhost:3000    
+运行：`npm run dev`    
+打开：`http://localhost:3000`    
