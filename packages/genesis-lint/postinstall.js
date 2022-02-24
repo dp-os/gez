@@ -25,8 +25,8 @@ const mergePackage = () => {
         scripts: {
             ...(data.scripts || {}),
             lint: 'npm run lint:js && npm run lint:css',
-            'lint:js': 'eslint . --ext .js,.ts,.vue --fix',
-            'lint:css': ''
+            'lint:js': 'genesis-eslint . --ext .js,.ts,.vue --fix',
+            'lint:css': 'genesis-stylelint **/*.{css,less,vue} --fix'
         },
         husky: {
             hooks: {
@@ -137,15 +137,22 @@ insert_final_newline = true
                 fs.mkdirSync(dir);
             },
             text: `{
-    // 使用项目配置规则
     "eslint.options": {
-        "configFile": "./.eslintrc.js"
+        "overrideConfigFile": ".eslintrc.js"
     },
-    "stylelint.validate": ["css", "less", "html", "vue"],
+    "stylelint.validate": [
+        "css",
+        "less",
+        "html",
+        "vue"
+    ],
     "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": true,
-        "source.fixAll.stylelint": true
+        "source.fixAll": true
     },
+    "eslint.alwaysShowStatus": false,
+    "stylelint.configFile": "stylelint.config.js",
+    "stylelint.packageManager": "yarn",
+    "eslint.packageManager": "yarn",
 }`
         }
     ];

@@ -18,8 +18,8 @@
         "example:start": "./script/example.sh start",
         "example:dev": "./script/example-dev.sh",
         "lint": "npm run lint:js && npm run lint:css",
-        "lint:js": "eslint . --ext .js,.ts,.vue --fix",
-        "lint:css": ""
+        "lint:js": "genesis-eslint . --ext .js,.ts,.vue --fix",
+        "lint:css": "genesis-stylelint **/*.{css,less,vue} --fix"
     },
     "husky": {
         "hooks": {

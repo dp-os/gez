@@ -1,5 +1,4 @@
 module.exports = {
-    // customSyntax: ['postcss-html', 'postcss-less'],
     extends: [
         'stylelint-config-html',
         'stylelint-config-standard',
@@ -20,6 +19,7 @@ module.exports = {
         'no-descending-specificity': null,
         'no-empty-source': null,
         'declaration-colon-newline-after': null,
-        'font-family-no-missing-generic-family-keyword': null
+        'font-family-no-missing-generic-family-keyword': null,
+        'selector-class-pattern': null
     }
 };

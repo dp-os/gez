@@ -1,11 +1,18 @@
 {
-    // 使用项目配置规则
     "eslint.options": {
-        "configFile": "./.eslintrc.js"
+        "overrideConfigFile": ".eslintrc.js"
     },
-    "stylelint.validate": ["css", "less", "html", "vue"],
+    "stylelint.validate": [
+        "css",
+        "less",
+        "html",
+        "vue"
+    ],
     "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": true,
-        "source.fixAll.stylelint": true
+        "source.fixAll": true
     },
+    "eslint.alwaysShowStatus": false,
+    "stylelint.configFile": "stylelint.config.js",
+    "stylelint.packageManager": "yarn",
+    "eslint.packageManager": "yarn",
 }

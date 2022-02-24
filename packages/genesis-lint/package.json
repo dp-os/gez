@@ -4,15 +4,12 @@
     "description": "",
     "main": "index.js",
     "bin": {
-        "fm-eslint": "./eslint.js",
-        "fm-stylelint": "./stylelint.js"
+        "genesis-eslint": "./bin/eslint.sh",
+        "genesis-stylelint": "./bin/stylelint.sh"
     },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "postinstall": "node postinstall.js",
-        "lint": "npm run lint:js && npm run lint:css",
-        "lint:css": "stylelint .{css,less,vue}",
-        "lint:js": "eslint . --ext .js,.ts,.vue --fix"
+        "postinstall": "node postinstall.js"
     },
     "author": "Followme",
     "license": "MIT",
@@ -38,7 +35,7 @@
         "postcss-html": "1.3.0",
         "postcss-less": "6.0.0",
         "prettier": "2.5.1",
-        "stylelint": "14.2.0",
+        "stylelint": "14.5.2",
         "stylelint-config-html": "1.0.0",
         "stylelint-config-prettier": "9.0.3",
         "stylelint-config-rational-order": "0.1.2",
