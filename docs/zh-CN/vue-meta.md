@@ -1,4 +1,4 @@
-# vue-meta
+# 管理HTML元数据
 我们希望可以在组件中管理页面的元信息，比如页面的标题、描述和关键词等等，得益于社区开源的[vue-meta](https://vue-meta.nuxtjs.org)，我们可以很轻松的实现。
 
 ## 安装依赖
@@ -32,7 +32,7 @@ Vue.use(VueMeta, {
 1. 需要在服务端获取vue-meta的配置
 2. 需要将这些配置，传入到SSR的模板文件中
 
-## 写入meta
+## 模板写入元数据
 在服务端`entry-server.ts`文件添加逻辑，让我们在模板文件中写入meta
 ```javascript
 export default async (renderContext: RenderContext): Promise<Vue> => {
@@ -70,7 +70,7 @@ export default async (renderContext: RenderContext): Promise<Vue> => {
 });
 ```
 
-## 读取mata
+## 模板读取元数据
 项目根目录下创建`index.html`，读取上面写入的meta
 ```html
 <!DOCTYPE html>
