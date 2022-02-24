@@ -5,13 +5,13 @@
 [![npm](https://img.shields.io/npm/dm/@fmfe/genesis-core.svg)](https://www.npmjs.com/package/@fmfe/genesis-core)
 [![npm](https://img.shields.io/npm/dt/@fmfe/genesis-core.svg)](https://www.npmjs.com/package/@fmfe/genesis-core)
 
-一个基于Vue`Webpack module federation`的轻量级Vue SSR框架
+一个简单而强大的Vue SSR框架
 
-### 🚀 优势
+## 🚀 优势
 - ✨ 编写简单的JS，就可以创建一个`SSR`项目    
-- 🍀 基础灵活的API，可以在此基础上封装自己的框架    
+- 🍀 基础灵活的API，可以在此基础上二次封装
 - 🙅 开发依赖和生产依赖分包，在构建生产包时，应用更小化    
-- 🤝 支持`Webpack module federation`的`SSR`解决方案    
+- 🤝 支持`Webpack module federation`
 - 👍 支持`TypeScript`，开箱即用    
 - 🛠 长期维护更新    
 
