@@ -17,6 +17,13 @@
 
 ## 🚪 引导
 - [快速开始](./docs/zh-CN/quick-start.md)
+    - [创建文件](./docs/zh-CN/quick-start.md#创建文件)
+        - [genesis.js](./docs/zh-CN/quick-start.md#genesisjs)
+        - [genesis.dev.js](./docs/zh-CN/quick-start.md#genesisdevjs)
+        - [genesis.build.js](./docs/zh-CN/quick-start.md#genesisbuildjs)
+        - [genesis.prod.js](./docs/zh-CN/quick-start.md#genesisprodjs)
+    - [简化命令](./docs/zh-CN/quick-start.md#简化命令)
+    - [例子代码](./docs/zh-CN/quick-start.md#例子代码)
 ## 🏃 本地开发
 ```bash
 git clone git@github.com:fmfe/genesis.git
