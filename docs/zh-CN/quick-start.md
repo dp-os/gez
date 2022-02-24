@@ -144,10 +144,10 @@ startApp(renderer);
 
 ``` 
 ## 命令封装
-为了简化命令，可以在`package.json`配置脚本
-开发执行：`npm run dev`
-编译执行：`npm run build`
-生产执行：`npm run start`
+为了简化执行命令，可以在`package.json`封装    
+开发：`npm run dev`    
+编译：`npm run build`     
+生产：`npm run start`     
 ```json
 {
   "scripts": {
