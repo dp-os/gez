@@ -1,21 +1,22 @@
+# Genesis
 [![Build Status](https://travis-ci.org/fmfe/genesis.svg?branch=master)](https://travis-ci.org/fmfe/genesis)
 [![Coverage Status](https://coveralls.io/repos/github/fmfe/genesis/badge.svg?branch=master)](https://coveralls.io/github/fmfe/genesis?branch=master)
 [![npm](https://img.shields.io/npm/v/@fmfe/genesis-core.svg)](https://www.npmjs.com/package/@fmfe/genesis-core) 
 [![npm](https://img.shields.io/npm/dm/@fmfe/genesis-core.svg)](https://www.npmjs.com/package/@fmfe/genesis-core)
 [![npm](https://img.shields.io/npm/dt/@fmfe/genesis-core.svg)](https://www.npmjs.com/package/@fmfe/genesis-core)
-# Genesis
-一个基于Webpack module federation的轻量级Vue SSR框架
+
+一个基于Vue`Webpack module federation`的轻量级Vue SSR框架
 
 ### 🚀 优势
-- ✨ 编写简单的JS，就可以创建一个SSR项目    
+- ✨ 编写简单的JS，就可以创建一个`SSR`项目    
 - 🍀 基础灵活的API，可以在此基础上封装自己的框架    
 - 🙅 开发依赖和生产依赖分包，在构建生产包时，应用更小化    
-- 🤝 支持Webpack module federation的SSR解决方案    
-- 👍 支持TypeScript，开箱即用    
+- 🤝 支持`Webpack module federation`的`SSR`解决方案    
+- 👍 支持`TypeScript`，开箱即用    
 - 🛠 长期维护更新    
 
 ## 🚪 引导
-[快速开始](./docs/zh-CN/quick-start.md)
+- [快速开始](./docs/zh-CN/quick-start.md)
 ## 🏃 本地开发
 ```bash
 git clone git@github.com:fmfe/genesis.git
