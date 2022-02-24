@@ -13,7 +13,8 @@ yarn add @fmfe/genesis-compiler -D
 # 创建启动文件
 touch genesis.js genesis.dev.js genesis.prod.js genesis.build.js
 ```
-## genesis.js
+## 创建文件
+### genesis.js
 创建`ssr`、`app`实例和`startApp`方法
 ```javascript
 const { SSR, Renderer } = require('@fmfe/genesis-core');
@@ -50,7 +51,7 @@ exports.ssr = ssr;
 exports.app = app;
 exports.startApp = startApp;
 ```
-## genesis.dev.js
+### genesis.dev.js
 开发时程序启动，执行命令：`node genesis.dev`
 ```javascript
 const { Watch } = require('@fmfe/genesis-compiler');
@@ -86,7 +87,7 @@ const start = async () => {
 start();
 ```
 
-## genesis.build.js
+### genesis.build.js
 构建生产应用代码，执行命令：`NODE_ENV=production node genesis.build`，编译内容将会输出在`dist`目录里面
 ```javascript
 const { Build } = require('@fmfe/genesis-compiler');
@@ -107,7 +108,7 @@ start();
 
 ```
 
-## genesis.prod.js
+### genesis.prod.js
 执行编译完成后的代码，执行命令：`NODE_ENV=production node genesis.prod`
 ```javascript
 const express = require('express');
@@ -149,6 +150,6 @@ startApp(renderer);
   }
 }
 ```
-### 启动程序
+## 启动程序
 运行：npm run dev    
 打开：http://localhost:3000    
