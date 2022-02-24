@@ -24,6 +24,12 @@
         - [genesis.prod.js](./docs/zh-CN/quick-start.md#genesisprodjs)
     - [简化命令](./docs/zh-CN/quick-start.md#简化命令)
     - [例子代码](./docs/zh-CN/quick-start.md#例子代码)
+- [vue-meta](./docs/zh-CN/vue-meta.md)
+    - [安装依赖](./docs/zh-CN/vue-meta.md#安装依赖)
+    - [快速使用](./docs/zh-CN/vue-meta.md#快速使用)
+    - [写入meta](./docs/zh-CN/vue-meta.md#写入meta)
+    - [读取mata](./docs/zh-CN/vue-meta.md#读取mata)
+
 ## 🏃 本地开发
 ```bash
 git clone git@github.com:fmfe/genesis.git
