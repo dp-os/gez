@@ -30,7 +30,7 @@ yarn add @fmfe/genesis-compiler -D
 touch genesis.js genesis.dev.js genesis.prod.js genesis.build.js
 ```
 ### genesis.js
-创建`SSR`、`express`对象和`startApp`方法
+创建`ssr`、`app`实例和`startApp`方法
 ```javascript
 const { SSR, Renderer } = require('@fmfe/genesis-core');
 const express = require('express');
