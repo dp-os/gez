@@ -137,9 +137,6 @@ insert_final_newline = true
                 fs.mkdirSync(dir);
             },
             text: `{
-    "eslint.options": {
-        "overrideConfigFile": ".eslintrc.js"
-    },
     "stylelint.validate": [
         "css",
         "less",
@@ -148,11 +145,7 @@ insert_final_newline = true
     ],
     "editor.codeActionsOnSave": {
         "source.fixAll": true
-    },
-    "eslint.alwaysShowStatus": false,
-    "stylelint.configFile": "stylelint.config.js",
-    "stylelint.packageManager": "yarn",
-    "eslint.packageManager": "yarn",
+    }
 }`
         }
     ];

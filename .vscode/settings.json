@@ -1,7 +1,4 @@
 {
-    "eslint.options": {
-        "overrideConfigFile": ".eslintrc.js"
-    },
     "stylelint.validate": [
         "css",
         "less",
@@ -10,9 +7,5 @@
     ],
     "editor.codeActionsOnSave": {
         "source.fixAll": true
-    },
-    "eslint.alwaysShowStatus": false,
-    "stylelint.configFile": "stylelint.config.js",
-    "stylelint.packageManager": "yarn",
-    "eslint.packageManager": "yarn",
+    }
 }
