@@ -15,7 +15,7 @@
 - 👍 支持`TypeScript`，开箱即用    
 - 🛠 长期维护更新    
 
-## 🚪 引导
+## 📚 文档
 - [快速开始](./docs/zh-CN/quick-start.md)
     - [创建文件](./docs/zh-CN/quick-start.md#创建文件)
         - [genesis.js](./docs/zh-CN/quick-start.md#genesisjs)
@@ -30,7 +30,7 @@
     - [模板写入元数据](./docs/zh-CN/vue-meta.md#写入meta)
     - [模板读取元数据](./docs/zh-CN/vue-meta.md#读取mata)
 
-## 🏃 本地开发
+## 💻 本地开发
 ```bash
 git clone git@github.com:fmfe/genesis.git
 cd genesis
