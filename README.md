@@ -30,6 +30,7 @@ yarn add @fmfe/genesis-compiler -D
 touch genesis.js genesis.dev.js genesis.prod.js genesis.build.js
 ```
 ### genesis.js
+创建`SSR`、`express`对象和`startApp`方法
 ```javascript
 const { SSR, Renderer } = require('@fmfe/genesis-core');
 const express = require('express');
@@ -52,7 +53,7 @@ const app = express();
  * @param {Renderer} renderer 
  */
 function startApp(renderer) {
-     exports.app.get(async (req, res, next) => {
+     app.get(async (req, res, next) => {
           const result = await renderer.renderHtml();
           res.send(result.data);
      });
@@ -66,6 +67,7 @@ exports.app = app;
 exports.startApp = startApp;
 ```
 ### genesis.dev.js
+开发时程序启动，执行命令：`node genesis.dev`
 ```javascript
 const { Watch } = require('@fmfe/genesis-compiler');
 const { ssr, app, startApp } = require('./genesis');
@@ -101,6 +103,7 @@ start();
 ```
 
 ### genesis.build.js
+构建生产应用代码，执行命令：`NODE_ENV=production node genesis.build`，编译内容将会输出在`dist`目录里面
 ```javascript
 const { Build } = require('@fmfe/genesis-compiler');
 
@@ -121,6 +124,7 @@ start();
 ```
 
 ### genesis.prod.js
+执行编译完成后的代码，执行命令：`NODE_ENV=production node genesis.prod`
 ```javascript
 const express = require('express');
 const { app, ssr, startApp } = require('./genesis');
@@ -147,7 +151,21 @@ app.use(
 startApp(renderer);
 
 ``` 
-## 快速开发
+### 命令封装
+为了简化命令，可以在`package.json`配置脚本
+开发执行：`npm run dev`
+编译执行：`npm run build`
+生产执行：`npm run start`
+```json
+{
+  "scripts": {
+    "dev": "node genesis.dev",
+    "build": "NODE_ENV=production node genesis.build",
+    "start": "NODE_ENV=production node genesis.prod"
+  }
+}
+```
+## 本地开发
 ```bash
 git clone git@github.com:fmfe/genesis.git
 cd genesis
