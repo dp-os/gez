@@ -45,7 +45,7 @@ namespace Genesis {
     }
     export interface MFOptions {
         /**
-         * Relative path or absolute path from src directory
+         * You can use absolute or relative paths
          */
         exposes?: Record<string, string>;
         /**
