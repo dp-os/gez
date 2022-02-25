@@ -46,15 +46,15 @@ function writeJson(filename, json) {
     fs.writeFileSync(filename, text + '\n', { encoding: 'utf-8' });
 }
 
-async function runCommandList(list) {
+async function runCommandList(list, command) {
     const arr = [...list];
     const item = arr.shift();
     if (!item) {
         return;
     }
     const name = item.packageJson.name;
-    await $`lerna run --scope=${name} build`;
-    return runCommandList(arr);
+    await $([`lerna run --scope=${name} ${command}`]);
+    return runCommandList(arr, command);
 }
 
 class Examples {
@@ -85,7 +85,10 @@ class Examples {
         return $([text]);
     }
     build() {
-        return runCommandList(this.list);
+        return runCommandList(this.list, 'build');
+    }
+    typeCheck() {
+        return runCommandList(this.list, 'type-check');
     }
     async start() {
         const arr = this.list.map((item) => {
@@ -117,7 +120,7 @@ class Packages {
         );
     }
     build() {
-        return runCommandList(this.list);
+        return runCommandList(this.list, 'build');
     }
 }
 
@@ -131,7 +134,9 @@ async function main() {
             case 'build':
                 return examples.build();
             case 'start':
-                return examples.build();
+                return examples.start();
+            case 'type-check':
+                return examples.typeCheck();
         }
     } else if (argv.packages) {
         const packages = new Packages();

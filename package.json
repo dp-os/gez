@@ -15,6 +15,7 @@
         "build": "zx script/index.js --examples build",
         "start": "zx script/index.js --examples start",
         "dev": "zx script/index.js --examples dev",
+        "type-check": "zx script/index.js --examples type-check",
         "build:packages": "zx script/index.js --packages build",
         "lint": "npm run lint:js && npm run lint:css",
         "lint:js": "genesis-eslint . --ext .js,.ts,.vue --fix",

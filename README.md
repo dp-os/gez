@@ -16,7 +16,7 @@
 - 🍀 基础灵活的API，可以在此基础上二次封装
 - 🙅 开发依赖和生产依赖分包，在构建生产包时，应用更小化    
 - 🤝 支持`Webpack module federation`
-- 👍 支持`TypeScript`，开箱即用    
+- 👍 支持`TypeScript`，生成`dts`和类型检查，开箱即用    
 - 🛠 长期维护更新    
 
 ## 📚 文档
@@ -48,20 +48,28 @@ cd genesis
 
 # 安装依赖
 lerna bootstrap
+```
 
+### 命令说明
+```bash
 # 编译依赖包
 yarn build:packages
-
-# 运行例子，浏览器打开查看
+# 运行例子
 yarn dev
-
 # 编译例子
 yarn build
 # 生产环境运行例子
 yarn examples:start
-
+# 例子类型检查
+yarn type-check
+# 代码风格检查
+yarn lint
+# JS 代码风格检查
+yarn lint:js
+# CSS 代码风格检查
+yarn lint:css
 ```
-例子打开地址：
-- http://localhost:3000
-- http://localhost:3001
-- http://localhost:3002
+### 例子说明
+- 快速入门：http://localhost:3000
+- `Webpack module federation`导入模块：http://localhost:3001
+- `Webpack module federation`导出模块：http://localhost:3002
