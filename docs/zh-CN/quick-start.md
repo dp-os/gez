@@ -221,6 +221,7 @@ startApp(renderer);
   }
 }
 ```
+命令说明：    
 ```bash
 # 开发环境启动
 npm run dev
