@@ -7,7 +7,7 @@ yarn add vue-meta
 ```
 
 ## 快速使用
-```javascript
+```typescript
 import Vue from 'vue';
 import VueMeta from 'vue-meta';
  
@@ -17,7 +17,7 @@ Vue.use(VueMeta, {
 });
 
 ```
-```javascript
+```typescript
 // Component.vue
 {
   metaInfo: {
