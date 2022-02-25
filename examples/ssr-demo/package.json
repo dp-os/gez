@@ -4,10 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "genesis-ts-node genesis.dev -p=tsconfig.json",
-    "build": "npm run build:dts && rm -rf dist && NODE_ENV=production genesis-ts-node genesis.build -p=tsconfig.json",
+    "dev": "genesis-ts-node --project=./tsconfig.node.json genesis.dev",
+    "build": "rm -rf dist && npm run build:dts && npm run build:vue && npm run build:node",
+    "build:node": "NODE_ENV=production genesis-tsc --build tsconfig.node.json",
+    "build:vue": "NODE_ENV=production genesis-ts-node --project=./tsconfig.node.json genesis.build",
     "build:dts": "genesis-vue-tsc --declaration --emitDeclarationOnly",
-    "start": "NODE_ENV=production genesis-ts-node genesis.prod -p=tsconfig.json"
+    "start": "NODE_ENV=production node dist/genesis.prod"
   },
   "author": "",
   "license": "ISC",
