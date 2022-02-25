@@ -8,8 +8,9 @@
         "genesis-stylelint": "./bin/stylelint.sh"
     },
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "postinstall": "node postinstall.js"
+        "build:cjs": "NODE_ENV=production genesis-tsc --build tsconfig.cjs.json",
+        "build:esm": "NODE_ENV=production genesis-tsc --build tsconfig.esm.json",
+        "build": "rm -rf dist types && npm run build:cjs && npm run build:esm"
     },
     "author": "Followme",
     "license": "MIT",

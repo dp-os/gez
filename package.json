@@ -3,7 +3,8 @@
     "private": true,
     "devDependencies": {
         "concurrently": "7.0.0",
-        "lerna": "^4.0.0"
+        "lerna": "^4.0.0",
+        "zx": "^5.1.0"
     },
     "workspaces": [
         "packages/*",
@@ -12,10 +13,9 @@
     "scripts": {
         "build": "./script/build.sh",
         "publish:all": "./script/publish.sh",
-        "example:build:dts": "./script/example.sh build:dts",
         "example:build": "./script/example.sh build",
         "example:start": "./script/example.sh start",
-        "example:dev": "./script/example-dev.sh",
+        "example:dev": "./script/example-dev.sh dev",
         "lint": "npm run lint:js && npm run lint:css",
         "lint:js": "genesis-eslint . --ext .js,.ts,.vue --fix",
         "lint:css": "genesis-stylelint **/*.{css,less,vue} --fix"

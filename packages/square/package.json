@@ -1,34 +1,36 @@
 {
-  "name": "@fmfe/square",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
-  "types": "types/index.d.ts",
-  "sideEffects": false,
-  "version": "2.0.4",
-  "description": "Vue SSR Microfront",
-  "keywords": [
-    "vue",
-    "ssr",
-    "Microfront"
-  ],
-  "scripts": {
-    "build": "NODE_ENV=production genesis-tsc --build tsconfig.cjs.json && NODE_ENV=production genesis-tsc --build tsconfig.esm.json"
-  },
-  "author": "Followme",
-  "license": "MIT",
-  "devDependencies": {
-    "vue": "^2.6.14"
-  },
-  "dependencies": {
-    "@fmfe/tms.js": "^0.1.7"
-  },
-  "homepage": "https://fmfe.github.io/genesis-docs/",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/fmfe/genesis.git"
-  },
-  "bugs": {
-    "url": "https://github.com/fmfe/genesis/issues"
-  },
-  "gitHead": "e29fea637547c68974f4ad6e0345b3c3d802a9c2"
+    "name": "@fmfe/square",
+    "main": "dist/cjs/index.js",
+    "module": "dist/esm/index.js",
+    "types": "types/index.d.ts",
+    "sideEffects": false,
+    "version": "2.0.4",
+    "description": "Vue SSR Microfront",
+    "keywords": [
+        "vue",
+        "ssr",
+        "Microfront"
+    ],
+    "scripts": {
+        "build:cjs": "NODE_ENV=production genesis-tsc --build tsconfig.cjs.json",
+        "build:esm": "NODE_ENV=production genesis-tsc --build tsconfig.esm.json",
+        "build": "rm -rf dist types && npm run build:cjs && npm run build:esm"
+    },
+    "author": "Followme",
+    "license": "MIT",
+    "devDependencies": {
+        "vue": "^2.6.14"
+    },
+    "dependencies": {
+        "@fmfe/tms.js": "^0.1.7"
+    },
+    "homepage": "https://fmfe.github.io/genesis-docs/",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/fmfe/genesis.git"
+    },
+    "bugs": {
+        "url": "https://github.com/fmfe/genesis/issues"
+    },
+    "gitHead": "e29fea637547c68974f4ad6e0345b3c3d802a9c2"
 }

@@ -3,50 +3,22 @@
         "target": "esnext",
         "module": "esnext",
         "moduleResolution": "node",
-        "lib": [
-            "esnext",
-            "esnext.asynciterable",
-            "dom"
-        ],
         "esModuleInterop": true,
         "experimentalDecorators": true,
         "allowJs": true,
         "sourceMap": true,
         "strict": true,
+        "noEmit": false,
         "noUnusedLocals": true,
         "skipLibCheck": true,
         "noImplicitAny": false,
         "resolveJsonModule": true,
+        "baseUrl": "./",
         "declaration": true,
         "declarationDir": "./types",
-        "baseUrl": "./",
-        "typeRoots": [
-            "./types/*",
-            "./src/types/*"
-        ],
         "types": [
             "@types/node"
         ],
-        "allowSyntheticDefaultImports": true,
-        "paths": {
-          "ssr-mf-remote/src/*": ["./src/*"],
-          "ssr-mf-remote/*": ["./*"]
-        },
-    },
-    "include": [
-        "src"
-    ],
-    "exclude": ["dist/**"],
-    "ts-node": {
-        "compilerOptions": {
-            "noEmit": false,
-            "target": "es2018",
-            "module": "commonjs",
-            "moduleResolution": "node",
-            "allowSyntheticDefaultImports": true,
-            "declaration": true,
-            "esModuleInterop": true,
-            "outDir": "../dist"
-        }
+        "allowSyntheticDefaultImports": true
     }
-  }
+}
