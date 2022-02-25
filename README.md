@@ -52,13 +52,8 @@ lerna bootstrap
 # 编译 genesis核心库
 yarn build
 # 编译例子，生成相关的dts类型文件，避免TS报错
-yarn example:build:dts
+yarn examples:build
 # 启动例子，浏览器打开: http://localhost:3000
-yarn example:dev
-
-# 例子构建生产代码运行
-yarn example:build:dts # 生产类型文件
-yarn example:build # 编译代码
-yarn example:start # 运行刚编译的代码
+yarn examples:start
 
 ```
