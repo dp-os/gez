@@ -1,11 +1,1 @@
-# `genesis-app`
-
-> TODO: description
-
-## Usage
-
-```
-const genesisApp = require('genesis-app');
-
-// TODO: DEMONSTRATE API
-```
+# @fmfe/genesis-app
