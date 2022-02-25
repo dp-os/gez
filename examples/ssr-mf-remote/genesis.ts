@@ -20,8 +20,8 @@ export const ssr = new SSR({
 
 export const mf = new MF(ssr, {
     exposes: {
-        './vue-use': 'vue-use.ts',
-        './common-header.vue': 'common-header.vue'
+        './src/vue-use': './src/vue-use.ts',
+        './src/common-header.vue': './src/common-header.vue'
     },
     shared: {
         vue: {

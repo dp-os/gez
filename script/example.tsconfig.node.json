@@ -13,6 +13,8 @@
         "outDir": "./dist"
     },
     "exclude": [
-        "src"
+        "src",
+        "dist",
+        "types"
     ]
 }

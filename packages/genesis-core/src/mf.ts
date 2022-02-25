@@ -121,10 +121,10 @@ class RemoteModule {
         return varName;
     }
     public get filename() {
-        const { manifest, mf, baseDir } = this.remote;
+        const { manifest, mf, writeDir } = this.remote;
         const version = manifest.s ? `.${manifest.s}` : '';
 
-        return path.resolve(baseDir, `js/${mf.entryName}${version}.js`);
+        return path.resolve(writeDir, `js/${mf.entryName}${version}.js`);
     }
     public async fetch() {
         if (this.remote.ready.loading) {
@@ -293,7 +293,7 @@ class Remote {
         this.remoteModule = new RemoteModule(this);
         this.polling = this.polling.bind(this);
         this.manifestJson = new Json<ManifestJson>(
-            path.resolve(this.writeBaseDir, 'manifest.json'),
+            path.resolve(this.writeDir, 'manifest.json'),
             createManifest
         );
         if (ssr.isProd && this.manifest.s) {
@@ -312,10 +312,7 @@ class Remote {
     public get serverPublicPath() {
         return `${this.options.serverOrigin}/${this.options.name}/`;
     }
-    public get baseDir() {
-        return this.getWrite(this.manifest.s);
-    }
-    public get writeBaseDir() {
+    public get writeDir() {
         return path.resolve(
             this.ssr.outputDirInServer,
             `remotes/${this.options.name}`
@@ -336,10 +333,6 @@ class Remote {
             this.polling();
         }
         await this.ready.await;
-    }
-    public getWrite(server: string) {
-        const baseName = server || developmentZipName;
-        return path.resolve(this.writeBaseDir, baseName);
     }
     public async fetch(): Promise<boolean> {
         const { manifest, serverPublicPath } = this;
@@ -394,7 +387,7 @@ class Remote {
     }
     private async downloadZip(manifest: ManifestJson): Promise<boolean> {
         let url: string;
-        const writeDir: string = this.getWrite(manifest.s);
+        const writeDir: string = this.writeDir;
         let version: string;
         let clean: boolean;
         // 是生产环境包

@@ -1,0 +1,1 @@
+cp -r ../ssr-mf-remote/types node_modules/ssr-mf-remote

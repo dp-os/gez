@@ -23,7 +23,7 @@ function getExposes(ssr: SSR, mf: MF) {
         const filename = mf.options.exposes[key];
         const sourceFilename = path.isAbsolute(filename)
             ? filename
-            : path.resolve(ssr.srcDir, filename);
+            : path.resolve(ssr.baseDir, filename);
         if (!fs.existsSync(sourceFilename)) {
             return;
         }
@@ -31,7 +31,7 @@ function getExposes(ssr: SSR, mf: MF) {
             encoding: 'utf-8'
         });
         const exportDefault = sourceCode.includes('export default');
-        const relativePath = relativeFilename(ssr.srcDir, sourceFilename);
+        const relativePath = relativeFilename(ssr.baseDir, sourceFilename);
         let writeFilename = path.join(ssr.outputDirInTemplate, relativePath);
         const webpackPublicPath: string = relativeFilename(
             writeFilename,
@@ -147,11 +147,13 @@ export class MFPlugin extends Plugin {
         if (mf.options.typesDir) {
             const typeDir = path.resolve(mf.options.typesDir);
             if (fs.existsSync(typeDir)) {
-                this._write(path.resolve(typeDir, 'package.json'), {
-                    name: ssr.name,
-                    exposesManifest: data
+                const packageJsonPath = path.resolve(typeDir, 'package.json');
+                this._write(packageJsonPath, {
+                    name: ssr.name
                 });
                 data.d = Number(this._zip(typeDir, `${zipName}-dts`));
+
+                fs.unlinkSync(packageJsonPath);
             }
         }
         this._write(mf.outputManifest, data);
