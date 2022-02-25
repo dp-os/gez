@@ -51,25 +51,9 @@ lerna bootstrap
 ```
 
 ### 命令说明
-```bash
-# 编译依赖包
-yarn build:packages
-# 运行例子
-yarn dev
-# 编译例子
-yarn build
-# 生产环境运行例子
-yarn examples:start
-# 例子类型检查
-yarn type-check
-# 代码风格检查
-yarn lint
-# JS 代码风格检查
-yarn lint:js
-# CSS 代码风格检查
-yarn lint:css
-```
-### 例子说明
-- 快速入门：http://localhost:3000
-- `Webpack module federation`导入模块：http://localhost:3001
-- `Webpack module federation`导出模块：http://localhost:3002
+- 编译核心依赖 `yarn build:packages`
+- 例子运行开发 `yarn dev`
+- 例子编译生产 `yarn build`
+- 例子运行生产 `yarn start`
+- 例子类型检查 `yarn type-check`
+- 代码风格检查 `yarn lint`

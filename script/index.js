@@ -46,6 +46,10 @@ function writeJson(filename, json) {
     fs.writeFileSync(filename, text + '\n', { encoding: 'utf-8' });
 }
 
+function lerna(name, command) {
+    return `FORCE_COLOR=1 lerna run --scope=${name} ${command} --stream`;
+}
+
 async function runCommandList(list, command) {
     const arr = [...list];
     const item = arr.shift();
@@ -53,7 +57,7 @@ async function runCommandList(list, command) {
         return;
     }
     const name = item.packageJson.name;
-    await $([`lerna run --scope=${name} ${command}`]);
+    await $([lerna(name, command)]);
     return runCommandList(arr, command);
 }
 
@@ -79,9 +83,9 @@ class Examples {
     async dev() {
         const arr = this.list.map((item) => {
             const name = item.packageJson.name;
-            return `"lerna run --scope=${name} dev"`;
+            return `"${lerna(name, 'dev')}"`;
         });
-        const text = 'concurrently ' + arr.join(' ');
+        const text = 'concurrently --raw ' + arr.join(' ');
         return $([text]);
     }
     build() {
@@ -93,7 +97,7 @@ class Examples {
     async start() {
         const arr = this.list.map((item) => {
             const name = item.packageJson.name;
-            return `"lerna run --scope=${name} start"`;
+            return `"${lerna(name, 'start')}"`;
         });
         const text = 'concurrently ' + arr.join(' ');
         return $([text]);
