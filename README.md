@@ -27,8 +27,8 @@
 - [管理HTML元数据](./docs/zh-CN/vue-meta.md)
     - [安装依赖](./docs/zh-CN/vue-meta.md#安装依赖)
     - [快速使用](./docs/zh-CN/vue-meta.md#快速使用)
-    - [模板写入元数据](./docs/zh-CN/vue-meta.md#写入meta)
-    - [模板读取元数据](./docs/zh-CN/vue-meta.md#读取mata)
+    - [模板写入元数据](./docs/zh-CN/vue-meta.md#模板写入元数据)
+    - [模板读取元数据](./docs/zh-CN/vue-meta.md#模板读取元数据)
 
 ## 💻 本地开发
 ```bash
