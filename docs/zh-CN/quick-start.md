@@ -11,38 +11,34 @@ npm install @fmfe/genesis-core
 # 安装开发依赖
 npm install @fmfe/genesis-compiler -D
 ```
-## TS 运行时
-文档内所有的例子都基于 `ts` 进行编写，关于如何在 `Node` 运行 `ts` ，请了解 [ts-node](https://github.com/TypeStrong/ts-node)。如果你不想使用 `ts`或者已安装，可以跳过这个步骤，只需要将文档的例子，修改成 `js` 语法即可
-```bash
-npm install ts-node typescript -g
-```
 ## HTTP 服务
 因为 `Genesis` 不具备创建 HTTP 服务的能力，所以这里我们还需要安装 `Express` 。如果你选择了其它的框架，可以跳过这一步，并且将例子中的代码，转换成对应框架的代码即可
 ```bash
 npm install express
 # 安装相关TS的类型库
-npm install @types/express @types/node -D
+npm install @types/express -D
 ```
 ## 例子实现
 下面将会实现一个最基础的 SSR 项目，它会使用到三个核心概念 `SSR`、`Build`、`Renderer`
 ### 目录结构
 在你的项目根目录创建下面四个文件，当然了你也可以使用其它的文件名字
 ```bash
-touch genesis.ts genesis.dev.ts genesis.prod.ts genesis.build.ts tsconfig.json
+touch genesis.ts genesis.dev.ts genesis.prod.ts genesis.build.ts tsconfig.json tsconfig.node.json
 ```
 ```
 .
-├── genesis.ts       // 核心业务逻辑入口
-├── genesis.build.ts // 编译生产环境代码
-├── genesis.dev.ts   // dev环境启动入口
-├── genesis.prod.ts  // 生产环境启动入口
-├── tsconfig.json    // TS 的配置文件
+├── genesis.ts          // 核心业务逻辑入口
+├── genesis.build.ts    // 编译生产环境代码
+├── genesis.dev.ts      // dev环境启动入口
+├── genesis.prod.ts     // 生产环境启动入口
+├── tsconfig.json       // TS的配置文件
+├── tsconfig.node.json  // TS node的配置文件
 └── package.json
 ```
 ### genesis.ts
 ```ts
+import { Renderer, SSR } from '@fmfe/genesis-core';
 import express from 'express';
-import { SSR, Renderer } from '@fmfe/genesis-core';
 
 /**
  * 创建一个应用程序
@@ -59,9 +55,16 @@ export const ssr = new SSR();
  */
 export const startApp = (renderer: Renderer) => {
     /**
-     * 使用默认渲染中间件进行渲染，你也可以调用更加底层的 renderer.renderJson 和 renderer.renderHtml 来实现渲染
+     * 请求进来，渲染html
      */
-    app.use(renderer.renderMiddleware);
+    app.get('*', async (req, res, next) => {
+        try {
+            const result = await renderer.renderHtml({ req, res });
+            res.send(result.data);
+        } catch (e) {
+            next(e);
+        }
+    });
     /**
      * 监听端口
      */
@@ -163,51 +166,77 @@ startApp(renderer);
         "allowJs": true,
         "sourceMap": true,
         "strict": true,
-        "noEmit": true,
+        "noEmit": false,
         "noUnusedLocals": true,
         "skipLibCheck": true,
         "noImplicitAny": false,
         "resolveJsonModule": true,
         "baseUrl": "./",
-        "typeRoots": [
-            "./types/*"
-        ],
+        "declaration": true,
+        "declarationDir": "./types",
         "types": [
             "@types/node"
         ],
         "allowSyntheticDefaultImports": true
-    },
-    "ts-node": {
-        "compilerOptions": {
-            "target": "es2018",
-            "module": "commonjs",
-            "moduleResolution": "node",
-            "allowSyntheticDefaultImports": true,
-            "declaration": true,
-            "esModuleInterop": true,
-            "outDir": "../dist"
-        }
     }
 }
 ```
-这里提供了一份常见的 ts 配置，你可以根据自己的需要进行调整
+这是一份公共的TS配置
+### tsconfig.node.json
+```json
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "sourceMap": false,
+        "noEmit": false,
+        "target": "ES2018",
+        "module": "CommonJS",
+        "moduleResolution": "node",
+        "allowSyntheticDefaultImports": true,
+        "declaration": false,
+        "declarationDir": null,
+        "esModuleInterop": true,
+        "outDir": "./dist"
+    },
+    "exclude": [
+        "src",
+        "dist",
+        "types"
+    ]
+}
+```
+这是`node`环境运行时使用的TS配置
 ### package.json
 ```json
 {
   "scripts": {
-    "dev": "ts-node genesis.dev -p=tsconfig.json",
-    "build": "rm -rf dist && NODE_ENV=production ts-node genesis.build -p=tsconfig.json",
-    "start": "NODE_ENV=production ts-node genesis.prod -p=tsconfig.json"
+        "dev": "genesis-ts-node --project=./tsconfig.node.json genesis.dev",
+        "build": "rm -rf dist types && npm run build:dts && npm run build:vue && npm run build:node",
+        "build:node": "NODE_ENV=production genesis-tsc --build tsconfig.node.json",
+        "build:vue": "NODE_ENV=production genesis-ts-node --project=./tsconfig.node.json genesis.build",
+        "build:dts": "genesis-vue-tsc --declaration --emitDeclarationOnly",
+        "type-check": "genesis-vue-tsc --noEmit",
+        "start": "NODE_ENV=production node dist/genesis.prod"
   }
 }
 ```
 ```bash
 # 开发环境启动
 npm run dev
-# 打包生产环境代码
+# 打包生产环境
 npm run build
+# 编译Node环境代码
+npm run build:node
+# 编译Vue环境代码
+npm run build:vue
+# 编译项目的TS类型文件
+npm run build:dts
+# 执行项目的类型检查
+npm run type-check
 # 生产环境运行
 npm run start
 ```
+`@fmfe/genesis-compiler`封装了`genesis-tsc`、`genesis-ts-node`、`genesis-vue-tsc`三个命令，你可以快速的创建TS项目。如果你使用了`Webpack module federation`，`genesis-vue-tsc`创建的类型文件，还可以提供给其它的服务使用
+
 将常用命令添加到 `npm script` 中，可以让我们各个快速的启动应用   
 执行 `npm run dev`命令，在浏览器中访问 `http://localhost:3000`
