@@ -5,8 +5,8 @@
         <polygon id="path-1" points="0.00316933638 0.0313501144 135.014954 0.0313501144 135.014954 148.876161 0.00316933638 148.876161"></polygon>
         <polygon id="path-3" points="4.57665904e-05 0.105560641 135.559085 0.105560641 135.559085 148.169336 4.57665904e-05 148.169336"></polygon>
     </defs>
-    <g id="ssr" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="编组" transform="translate(32.000000, 0.000000)">
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g transform="translate(32.000000, 0.000000)">
             <g transform="translate(0.343249, 0.083524)">
                 <mask id="mask-2" fill="white">
                     <use xlink:href="#path-1"></use>
