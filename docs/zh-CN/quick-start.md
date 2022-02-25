@@ -21,8 +21,7 @@ npm install express
 npm install @types/express -D
 ```
 ## 例子实现
-下面将会实现一个最基础的 SSR 项目，它会使用到三个核心概念 `SSR`、`Build`、`Renderer`
-### 目录结构
+下面将会实现一个最基础的 SSR 项目，它会使用到三个核心概念 `SSR`、`Build`、`Renderer`    
 在你的项目根目录创建下面四个文件，当然了你也可以使用其它的文件名字
 ```bash
 touch genesis.ts genesis.dev.ts genesis.prod.ts genesis.build.ts tsconfig.json tsconfig.node.json
@@ -242,3 +241,6 @@ npm run start
 
 将常用命令添加到 `npm script` 中，可以让我们各个快速的启动应用   
 执行 `npm run dev`命令，在浏览器中访问 `http://localhost:3000`
+## 能力拓展
+Genesis 具备完整的构建`CSR`、`SSR`、`SSG`项目的能力，并且可以支持`Webpack module federation`，构建大型项目的能力，提供了`Webpack module federation`完整的TS类型支持的能力。
+
