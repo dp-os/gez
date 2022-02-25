@@ -31,7 +31,7 @@
       - [tsconfig.json](./docs/zh-CN/quick-start.md#tsconfigjson)
       - [tsconfig.node.json](./docs/zh-CN/quick-start.md#tsconfignodejson)
       - [package.json](./docs/zh-CN/quick-start.md#packagejson)
-    - [能力拓展](./docs/zh-CN/quick-start.md#能力拓展)
+    - [全部的能力](./docs/zh-CN/quick-start.md#全部的能力)
 - [管理HTML元数据](./docs/zh-CN/vue-meta.md)
     - [安装依赖](./docs/zh-CN/vue-meta.md#安装依赖)
     - [快速使用](./docs/zh-CN/vue-meta.md#快速使用)
