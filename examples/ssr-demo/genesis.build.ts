@@ -1,6 +1,6 @@
-const { Build } = require('@fmfe/genesis-compiler');
+import { Build } from '@fmfe/genesis-compiler';
 
-const { ssr } = require('./genesis');
+import { ssr } from './genesis';
 
 const start = () => {
     /**

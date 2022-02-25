@@ -1,18 +1,22 @@
 {
   "name": "ssr-demo",
   "version": "1.0.0",
+  "description": "",
   "main": "index.js",
-  "license": "MIT",
   "scripts": {
-    "dev": "node genesis.dev",
-    "build": "NODE_ENV=production node genesis.build",
-    "start": "NODE_ENV=production node genesis.prod"
+    "dev": "ts-node genesis.dev -p=tsconfig.json",
+    "build": "rm -rf dist && NODE_ENV=production ts-node genesis.build -p=tsconfig.json",
+    "start": "NODE_ENV=production ts-node genesis.prod -p=tsconfig.json"
   },
+  "author": "",
+  "license": "ISC",
   "dependencies": {
     "@fmfe/genesis-core": "^2.0.4",
     "express": "^4.17.3"
   },
   "devDependencies": {
-    "@fmfe/genesis-compiler": "^2.0.4"
+    "@fmfe/genesis-compiler": "^2.0.4",
+    "@types/express": "^4.17.13",
+    "@types/node": "^17.0.21"
   }
 }

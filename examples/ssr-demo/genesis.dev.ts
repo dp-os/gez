@@ -1,5 +1,6 @@
-const { Watch } = require('@fmfe/genesis-compiler');
-const { ssr, app, startApp } = require('./genesis');
+import { Watch } from '@fmfe/genesis-compiler';
+
+import { app, ssr, startApp } from './genesis';
 
 const start = async () => {
     /**
@@ -14,7 +15,6 @@ const start = async () => {
      * 拿到观察实例上对应的渲染器
      */
     const renderer = watch.renderer;
-
     /**
      * 静态资源中间件
      */
