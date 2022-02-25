@@ -6,28 +6,30 @@ import { BaseGenesis } from '../utils';
 
 export class BaseConfig extends BaseGenesis {
     public config: Config;
-    public reday: Promise<void>;
+    public ready: Promise<void>;
     public constructor(ssr: Genesis.SSR, target: Genesis.WebpackBuildTarget) {
         super(ssr);
-        this.config = new Config();
-        this.config.mode(this.ssr.isProd ? 'production' : 'development');
-        this.config.output.publicPath(this.ssr.publicPath);
-        this.config.resolve.extensions.add('.js');
-        this.reday = this.ssr.plugin.callHook('chainWebpack', {
-            target: target,
-            config: this.config
+        const config = (this.config = new Config());
+        config.mode(this.ssr.isProd ? 'production' : 'development');
+        config.set('target', ssr.getBrowsers(target));
+        config.output.publicPath(
+            target == 'client' ? 'auto' : this.ssr.publicPath
+        );
+        config.resolve.extensions.add('.js');
+        this.ready = this.ssr.plugin.callHook('chainWebpack', {
+            target,
+            config
         });
-        const alias = ssr.options?.build?.alias;
-        if (typeof alias === 'object') {
-            Object.keys(alias).forEach((k) => {
-                const v = alias[k];
-                this.config.resolve.alias.set(k, v);
-            });
-        }
+        config.output.pathinfo(false);
+        config.stats('errors-warnings');
+        const alias = ssr.options?.build?.alias || {};
+        const fallback = ssr.options?.build?.fallback || {};
+        config.resolve.set('fallback', fallback);
+        config.resolve.set('alias', alias);
     }
 
     public async toConfig(): Promise<webpack.Configuration> {
-        await this.reday;
+        await this.ready;
         return this.config.toConfig();
     }
 }

@@ -14,15 +14,9 @@ module.exports = {
         'alloy/vue',
         'plugin:import/errors',
         'plugin:import/typescript',
-        'prettier',
-        'prettier/@typescript-eslint',
-        'prettier/babel',
-        'prettier/standard',
-        'prettier/unicorn',
-        'prettier/vue',
         'plugin:prettier/recommended'
     ],
-    plugins: ['@typescript-eslint', 'simple-import-sort', 'vue'],
+    plugins: ['vue', 'simple-import-sort'],
     parserOptions: {
         parser: '@typescript-eslint/parser',
         ecmaVersion: 2020,
@@ -63,6 +57,7 @@ module.exports = {
         '@typescript-eslint/no-require-imports': 'off',
         '@typescript-eslint/no-invalid-this': 'off',
         '@typescript-eslint/no-loss-of-precision': 'off',
+        '@typescript-eslint/member-ordering': 'off',
         'no-template-curly-in-string': 'off',
         'vue/valid-template-root': 'off',
         'vue/no-duplicate-attributes': [

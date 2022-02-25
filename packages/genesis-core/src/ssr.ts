@@ -6,6 +6,12 @@ import { PluginManage } from './plugin';
 import { Renderer } from './renderer';
 
 export class SSR {
+    public static fixVarName(name: string) {
+        return name.replace(/\W/g, '_');
+    }
+    public static getPublicPathVarName(name: string) {
+        return `__webpack_public_path_${SSR.fixVarName(name)}__`;
+    }
     /**
      * Renderer
      */
@@ -18,15 +24,32 @@ export class SSR {
      * Plug in management
      */
     public plugin: Genesis.PluginManage;
-    /**
-     * Constructor
-     */
+
+    public readonly entryName = 'app';
+
+    public sandboxGlobal: Record<string, any> = {
+        Buffer,
+        console,
+        process,
+        setTimeout,
+        setInterval,
+        setImmediate,
+        clearTimeout,
+        clearInterval,
+        clearImmediate,
+        URL
+    };
     public constructor(options: Genesis.Options = {}) {
         this.options = options;
         this.plugin = new PluginManage(this);
         if ('name' in options && typeof options.name !== 'string') {
             throw new TypeError('Options.name can only be of string type');
         }
+
+        if (options.sandboxGlobal) {
+            Object.assign(this.sandboxGlobal, options.sandboxGlobal);
+        }
+        this.sandboxGlobal.global = this.sandboxGlobal;
     }
 
     /**
@@ -43,11 +66,18 @@ export class SSR {
         return this.options.name || 'ssr-genesis';
     }
 
-    /**
-     * The basic path of client static resource loading, which is '/ssr-genesis/' by default
-     */
+    public get extractCSS() {
+        if (this.isProd) {
+            return this.options?.build?.extractCSS ?? true;
+        }
+        return false;
+    }
+
     public get publicPath() {
-        return this.options?.build?.publicPath || `/${this.name}/`;
+        return `/${this.name}/`;
+    }
+    public get publicPathVarName() {
+        return SSR.getPublicPathVarName(this.name);
     }
     /**
      * CDN resource public path, Only valid in production mode
@@ -74,6 +104,10 @@ export class SSR {
             return path.resolve(this.baseDir, this.options.build.outputDir);
         }
         return path.resolve(this.baseDir, `./dist/${this.name}`);
+    }
+
+    public get outputDirInTemplate() {
+        return path.resolve(this.outputDir, 'template');
     }
 
     /**
@@ -111,7 +145,7 @@ export class SSR {
         return [
             ...this.transpile,
             this.srcDir,
-            path.resolve(this.outputDir, './src')
+            path.resolve(this.outputDirInTemplate)
         ];
     }
 
@@ -123,16 +157,15 @@ export class SSR {
      * Client side compile entry file
      */
     public get entryClientFile() {
-        return path.resolve(this.outputDir, 'src/entry-client');
+        return path.resolve(this.outputDirInTemplate, 'entry-client');
     }
 
     /**
      * Server side compile entry file
      */
     public get entryServerFile() {
-        return path.resolve(this.outputDir, 'src/entry-server');
+        return path.resolve(this.outputDirInTemplate, 'entry-server');
     }
-
     /**
      * Manifest file path of client
      */
@@ -146,11 +179,8 @@ export class SSR {
     /**
      * Manifest file path of server
      */
-    public get outputServerBundleFile() {
-        return path.resolve(
-            this.outputDirInServer,
-            'vue-ssr-server-bundle.json'
-        );
+    public get outputServeAppFile() {
+        return path.resolve(this.outputDirInServer, 'js/app.js');
     }
 
     /**
@@ -175,15 +205,16 @@ export class SSR {
      */
     public getBrowsers(env: keyof Genesis.Browsers) {
         return (this.options?.build?.browsers || {
-            client: ['ie >= 9', 'ios >= 5', 'android >= 4.0'],
-            server: [`node >= ${process.versions.node}`]
+            client: 'web',
+            server: 'node'
         })[env];
     }
 
     /**
      * Create a renderer
      */
-    public createRenderer(options?: Genesis.RendererOptions) {
-        return new this.Renderer(this, options);
+    public createRenderer() {
+        // @ts-ignore
+        return new this.Renderer(this);
     }
 }

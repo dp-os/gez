@@ -1,4 +1,6 @@
-import './webpack-public-path-client';
+/* eslint-disable */
+// @ts-nocheck
+import './webpack-public-path';
 
 import { ClientOptions } from '@fmfe/genesis-core';
 import Vue from 'vue';
@@ -20,14 +22,6 @@ class Genesis {
         name: string,
         createApp: (data: ClientOptions) => Promise<Vue>
     ) {
-        if (typeof name !== 'string') {
-            throw new Error(`Application name must be of string type`);
-        }
-        if (typeof createApp !== 'function') {
-            throw new Error(
-                `Application initialization method must be of string type`
-            );
-        }
         this.applicationCenter[name] = createApp;
         this.startInstall();
     }
@@ -40,24 +34,6 @@ class Genesis {
      * options.url 当前应用的url
      */
     public install(options: ClientOptions): number {
-        if (typeof options !== 'object') {
-            throw new TypeError('Options must be the object type');
-        }
-        if (!(options.el instanceof HTMLElement)) {
-            throw new TypeError('Options.el must be the HTMLElement');
-        }
-        if (typeof options.id !== 'string') {
-            throw new TypeError('Options.id must be the string type');
-        }
-        if (typeof options.name !== 'string') {
-            throw new TypeError('Options.name must be the string type');
-        }
-        if (typeof options.state !== 'object') {
-            throw new TypeError('Options.state must be the object type');
-        }
-        if (typeof options.url !== 'string') {
-            throw new TypeError('Options.url must be the string type');
-        }
         const appId = ++this.appId;
         this.installedList.push({
             appId,
@@ -131,7 +107,8 @@ const start = (createApp?: (data: ClientOptions) => Promise<Vue>) => {
     });
 };
 
-start(require('${{clientFilename}}').default);
+// eslint-disable-next-line
+import('${{clientFilename}}').then((m) => start(m.default));
 
 declare global {
     interface Window {

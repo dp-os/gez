@@ -25,9 +25,8 @@ const mergePackage = () => {
         scripts: {
             ...(data.scripts || {}),
             lint: 'npm run lint:js && npm run lint:css',
-            'lint:js': 'fm-eslint . --ext .js,.ts,.vue --fix',
-            'lint:css':
-                'fm-stylelint . --syntax less --fix --ignore-path ./.stylelintignore | fm-stylelint . --custom-syntax postcss-html --fix'
+            'lint:js': 'genesis-eslint . --ext .js,.ts,.vue --fix',
+            'lint:css': 'genesis-stylelint **/*.{css,less,vue} --fix'
         },
         husky: {
             hooks: {
@@ -35,13 +34,8 @@ const mergePackage = () => {
             }
         },
         'lint-staged': {
-            '*.{ts,js}': ['fm-eslint --ext .js,.ts --fix', 'git add'],
-            '*.{css,less}': ['fm-stylelint --syntax less --fix', 'git add'],
-            '*.{vue}': [
-                'fm-eslint --ext .js,.ts --fix',
-                'fm-stylelint --custom-syntax postcss-html --fix',
-                'git add'
-            ]
+            '*.{ts,js}': ['eslint --ext .js,.ts --fix', 'git add'],
+            '*.{vue}': ['eslint --ext .js,.ts --fix', 'git add']
         }
     };
     Object.assign(data, config);
@@ -143,15 +137,15 @@ insert_final_newline = true
                 fs.mkdirSync(dir);
             },
             text: `{
-    // 使用项目配置规则
-    "eslint.options": {
-        "configFile": "./.eslintrc.js"
-    },
-    "stylelint.validate": ["css", "less", "html", "vue"],
+    "stylelint.validate": [
+        "css",
+        "less",
+        "html",
+        "vue"
+    ],
     "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": true,
-        "source.fixAll.stylelint": true
-    },
+        "source.fixAll": true
+    }
 }`
         }
     ];

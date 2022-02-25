@@ -1,6 +1,6 @@
 import { Plugin, PostcssOptions, WebpackHookParams } from '@fmfe/genesis-core';
 import cssnano from 'cssnano';
-import ExtractCssChunks from 'extract-css-chunks-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import postcssPresetEnv from 'postcss-preset-env';
 
 interface LoaderOptions {
@@ -35,30 +35,31 @@ export class StylePlugin extends Plugin {
             writable: false,
             enumerable: false
         });
+        const extractCSS = ssr.extractCSS;
         if (isProd) {
-            if (target === 'client') {
-                config.plugin('extract-css').use(ExtractCssChunks, [
-                    {
-                        ignoreOrder: true,
-                        filename: 'css/[name].[contenthash:8].css',
-                        chunkFilename: 'css/[name].[contenthash:8].css'
-                    }
-                ]);
-            } else {
-                config.module
-                    .rule('vue')
-                    .use('vue')
-                    .tap((options = {}) => {
-                        options.extractCSS = true;
-                        return options;
-                    })
-                    .end();
+            if (extractCSS) {
+                if (target === 'client') {
+                    config.plugin('mini-css').use(MiniCssExtractPlugin, [
+                        {
+                            ignoreOrder: true,
+                            filename: 'css/[name].[contenthash:8].css',
+                            chunkFilename: 'css/[name].[contenthash:8].css'
+                        }
+                    ]);
+                } else {
+                    config.module
+                        .rule('vue')
+                        .use('vue')
+                        .tap((options = {}) => {
+                            options.extractCSS = true;
+                            return options;
+                        })
+                        .end();
+                }
             }
             postcssConfig.postcssOptions.plugins.push(
                 ...[
-                    postcssPresetEnv({
-                        browsers: ssr.getBrowsers('client')
-                    }),
+                    postcssPresetEnv(),
                     cssnano({
                         preset: [
                             'default',
@@ -77,8 +78,7 @@ export class StylePlugin extends Plugin {
                 name: 'vue-style',
                 loader: 'vue-style-loader',
                 options: {
-                    sourceMap: false,
-                    showMode: false
+                    ssrId: true
                 }
             },
             css: {
@@ -120,13 +120,16 @@ export class StylePlugin extends Plugin {
             },
             extract: {
                 name: 'extract',
-                loader: ExtractCssChunks.loader as string,
-                options: {}
+                loader: MiniCssExtractPlugin.loader as string,
+                options: {
+                    esModule: false
+                }
             }
         };
         const getCssLoader = ({ isModule = false } = {}) => {
             const lds: any[] = [];
-            if (!isProd) {
+            lds.push(loaders['vue-style']);
+            if (!isProd || extractCSS === false) {
                 lds.push(loaders['vue-style']);
             } else if (target === 'client') {
                 lds.push(loaders.extract);

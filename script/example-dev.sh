@@ -1,0 +1,1 @@
+concurrently "lerna run --scope ssr-mf-remote dev"  "lerna run --scope ssr-mf-host dev"

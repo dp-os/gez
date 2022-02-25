@@ -1,0 +1,18 @@
+{
+	"compilerOptions": {
+		"baseUrl": "./",
+		"target": "ES2020",
+		"module": "ESNext",
+        "moduleResolution": "node",
+		"allowSyntheticDefaultImports": true,
+		"declaration": true,
+		"esModuleInterop": true,
+		"removeComments": false,
+		"experimentalDecorators": true,
+		"skipLibCheck": true,
+		"declarationDir": "./types",
+		"outDir": "./dist/esm"
+	},
+	"include": ["src"],
+	"exclude": ["template", "dist", "types"]
+}

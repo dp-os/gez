@@ -1,7 +1,7 @@
 dist/**
 node_modules/**
-.d.ts
+dist/**
 packages/**/dist/**
-packages/**/types/**
 examples/**/dist/**
-coverage/**
+packages/**/types/**
+examples/**/types/**

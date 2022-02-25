@@ -1,0 +1,25 @@
+{
+    "name": "ssr-demo",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "dev": "genesis-ts-node --project=./tsconfig.node.json genesis.dev",
+        "build": "rm -rf dist types && npm run build:dts && npm run build:vue && npm run build:node",
+        "build:node": "NODE_ENV=production genesis-tsc --build tsconfig.node.json",
+        "build:vue": "NODE_ENV=production genesis-ts-node --project=./tsconfig.node.json genesis.build",
+        "build:dts": "genesis-vue-tsc --declaration --emitDeclarationOnly",
+        "type-check": "genesis-vue-tsc --noEmit",
+        "start": "NODE_ENV=production node dist/genesis.prod"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@fmfe/genesis-core": "^2.0.4",
+        "express": "^4.17.3"
+    },
+    "devDependencies": {
+        "@fmfe/genesis-compiler": "^2.0.4",
+        "@types/express": "^4.17.13"
+    }
+}

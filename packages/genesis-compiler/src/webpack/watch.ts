@@ -1,6 +1,8 @@
-import { Renderer, SSR } from '@fmfe/genesis-core';
+import { MF, Renderer, SSR } from '@fmfe/genesis-core';
 import chalk from 'chalk';
-import MFS from 'memory-fs';
+import fs from 'fs';
+import mkdirp from 'mkdirp';
+import path from 'path';
 import Webpack from 'webpack';
 import WebpackDevMiddleware from 'webpack-dev-middleware';
 import WebpackHotMiddleware from 'webpack-hot-middleware';
@@ -17,29 +19,17 @@ export class WatchClientConfig extends ClientConfig {
         this.config
             .entry('app')
             .add(
-                `webpack-hot-middleware/client?path=${ssr.publicPath}webpack-hot-middleware&timeout=2000&overlay=false`
+                `webpack-hot-middleware/client?path=${ssr.publicPath}hot-middleware&timeout=2000&overlay=false`
             );
         this.config
             .plugin('webpack-hot-replacement')
             .use(Webpack.HotModuleReplacementPlugin);
     }
 }
-const readFile = (fs, file) => {
-    try {
-        return fs.readFileSync(file, 'utf-8');
-    } catch (e) {
-        return null;
-    }
-};
 
-interface WatchSubData {
-    client: { data: any; fs: any };
-    server: { data: any; fs: any };
-}
 export class Watch extends BaseGenesis {
     public devMiddleware: any;
     public hotMiddleware: any;
-    private watchData: Partial<WatchSubData> = {};
     private _renderer: Renderer | null;
 
     public constructor(ssr: SSR) {
@@ -79,80 +69,67 @@ export class Watch extends BaseGenesis {
         ]);
         const clientCompiler = Webpack(clientConfig);
         const serverCompiler = Webpack(serverConfig);
-        serverCompiler.outputFileSystem = new MFS();
         this.devMiddleware = WebpackDevMiddleware(clientCompiler, {
             publicPath: this.ssr.publicPath,
-            stats: 'none',
-            logLevel: 'error',
-            index: false
+            index: false,
+            outputFileSystem: {
+                ...fs,
+                join: path.join.bind(path),
+                // @ts-ignore
+                mkdirp: mkdirp.bind(mkdirp)
+            }
         });
         this.hotMiddleware = WebpackHotMiddleware(clientCompiler, {
             heartbeat: 5000,
-            path: `${this.ssr.publicPath}webpack-hot-middleware`
+            path: `${this.ssr.publicPath}hot-middleware`
         });
         const watchOptions = {
             aggregateTimeout: 300,
             poll: 1000
         };
-        const clientOnDone = (stats) => {
+        const clientOnDone = (stats: Webpack.Stats) => {
             const jsonStats = stats.toJson();
             if (stats.hasErrors()) {
-                jsonStats.errors.forEach((err: Error) =>
-                    console.log(error(err))
+                jsonStats.errors.forEach((err) =>
+                    console.log(error(err.message))
                 );
             }
             if (stats.hasWarnings()) {
-                jsonStats.warnings.forEach((err: Error) =>
-                    console.log(warning(err))
+                jsonStats.warnings.forEach((err) =>
+                    console.log(warning(err.message))
                 );
             }
             if (stats.hasErrors()) return;
-            this.watchData.client = {
-                fs: this.devMiddleware.fileSystem,
-                data: JSON.parse(
-                    readFile(
-                        this.devMiddleware.fileSystem,
-                        this.ssr.outputClientManifestFile
-                    )
-                )
-            };
             this.notify();
             clientDone = true;
             onReady();
         };
         const serverOnWatch = () => {
-            const data = JSON.parse(
-                readFile(
-                    serverCompiler.outputFileSystem,
-                    this.ssr.outputServerBundleFile
-                )
-            );
-            this.watchData.server = {
-                fs: serverCompiler.outputFileSystem,
-                data
-            };
-            this.notify();
+            this.notify(true);
             serverDone = true;
             onReady();
         };
         clientCompiler.hooks.done.tap('build done', clientOnDone);
         serverCompiler.watch(watchOptions, serverOnWatch);
-        return promise.then(async () => {
-            await this.ssr.plugin.callHook('afterCompiler', 'watch');
-        });
+        return promise;
     }
 
     // 这里应该提供销毁实例的方法
     public destroy() {}
 
-    private async notify() {
-        const { client, server } = this.watchData;
-        if (!client || !server) return;
+    private async notify(isServer = false) {
         const { ssr } = this;
-        if (this._renderer) {
-            this._renderer.hotUpdate({ client, server });
-        } else {
-            this._renderer = new ssr.Renderer(ssr, { client, server });
+        if (
+            !fs.existsSync(ssr.outputClientManifestFile) ||
+            !fs.existsSync(ssr.outputServeAppFile)
+        ) {
+            return;
         }
+        if (this._renderer && isServer) {
+            this._renderer.reload();
+        } else if (!this._renderer) {
+            this._renderer = new ssr.Renderer(ssr);
+        }
+        await this.ssr.plugin.callHook('afterCompiler', 'watch');
     }
 }

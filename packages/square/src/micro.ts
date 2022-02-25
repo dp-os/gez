@@ -37,10 +37,11 @@ class MicroBase {
     private rid = 0;
     private useCount = 0;
     public constructor() {
-        // 需要放到最后处理， 否则vue不会进行属性劫持
         this.vm = new Vue({
-            data: {
-                $$this: this
+            data: () => {
+                return {
+                    $$this: this
+                };
             }
         });
         Object.defineProperty(this, 'vm', {

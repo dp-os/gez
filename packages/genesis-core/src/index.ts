@@ -2,6 +2,7 @@ import { IncomingMessage, ServerResponse } from 'http';
 import Vue from 'vue';
 import Config from 'webpack-chain';
 
+import { MF as MFConstructor } from './mf';
 import {
     Plugin as PluginConstructor,
     PluginManage as PluginManageConstructor
@@ -16,6 +17,8 @@ namespace Genesis {
      */
     export const SSR = SSRConstructor;
     export type SSR = SSRConstructor;
+    export const MF = MFConstructor;
+    export type MF = MFConstructor;
     /**
      * Renderer Constructor
      */
@@ -35,10 +38,91 @@ namespace Genesis {
      * Webpack construction objectives
      */
     export type WebpackBuildTarget = 'client' | 'server';
+    export interface MFRemote {
+        name: string;
+        clientOrigin: string;
+        serverOrigin: string;
+    }
+    export interface MFOptions {
+        /**
+         * You can use absolute or relative paths
+         */
+        exposes?: Record<string, string>;
+        /**
+         * Remote service
+         */
+        remotes?: MFRemote[];
+        /**
+         * The polling interval of the server is 40ms by default
+         */
+        intervalTime?: number;
+        /**
+         * Shared configuration of webpack modulefederationplugin plug-in
+         * https://webpack.docschina.org/plugins/module-federation-plugin/#Specify-package-versions
+         */
+        shared?: (string | SharedObject)[] | SharedObject;
+        /**
+         * d.ts declared directory
+         */
+        typesDir?: string;
+    }
+    export interface SharedObject {
+        [index: string]: string | SharedConfig;
+    }
+    export interface SharedConfig {
+        /**
+         * Include the provided and fallback module directly instead behind an async request. This allows to use this shared module in initial load too. All possible shared modules need to be eager too.
+         */
+        eager?: boolean;
+
+        /**
+         * Provided module that should be provided to share scope. Also acts as fallback module if no shared module is found in share scope or version isn't valid. Defaults to the property name.
+         */
+        import?: string | false;
+
+        /**
+         * Package name to determine required version from description file. This is only needed when package name can't be automatically determined from request.
+         */
+        packageName?: string;
+
+        /**
+         * Version requirement from module in share scope.
+         */
+        requiredVersion?: string | false;
+
+        /**
+         * Module is looked up under this key from the share scope.
+         */
+        shareKey?: string;
+
+        /**
+         * Share scope name.
+         */
+        shareScope?: string;
+
+        /**
+         * Allow only a single version of the shared module in share scope (disabled by default).
+         */
+        singleton?: boolean;
+
+        /**
+         * Do not accept shared module if version is not valid (defaults to yes, if local fallback module is available and shared module is not a singleton, otherwise no, has no effect if there is no required version specified).
+         */
+        strictVersion?: boolean;
+
+        /**
+         * Version of the provided module. Will replace lower matching versions, but not higher.
+         */
+        version?: string | false;
+    }
     /**
      * Build options
      */
     export interface BuildOptions {
+        /**
+         * Valid only in production environment
+         */
+        extractCSS?: boolean;
         /**
          * Basic folder for the project
          */
@@ -57,6 +141,9 @@ namespace Genesis {
         alias?: {
             [x: string]: string;
         };
+        fallback?: {
+            [x: string]: string | boolean;
+        };
         /**
          * Configure build objectives, See https://github.com/browserslist/browserslist for details
          */
@@ -65,10 +152,6 @@ namespace Genesis {
          * Template file path
          */
         template?: string;
-        /**
-         * Static resource public path
-         */
-        publicPath?: string;
     }
 
     export interface Browsers {
@@ -94,6 +177,10 @@ namespace Genesis {
          * CDN resource public path, Only valid in production mode
          */
         cdnPublicPath?: string;
+        /**
+         * In the sandbox environment, inject global variables
+         */
+        sandboxGlobal?: Record<string, any>;
     }
     /**
      * Hook parameter of webpack
@@ -130,11 +217,10 @@ namespace Genesis {
     /**
      * Render result
      */
-    export type RenderResult<
-        T extends RenderMode = RenderMode
-    > = T extends Genesis.RenderModeHtml
-        ? Genesis.RenderResultHtml
-        : Genesis.RenderResultJson;
+    export type RenderResult<T extends RenderMode = RenderMode> =
+        T extends Genesis.RenderModeHtml
+            ? Genesis.RenderResultHtml
+            : Genesis.RenderResultJson;
     /**
      * Rendered HTML
      */
@@ -190,6 +276,10 @@ namespace Genesis {
         id?: string;
         name?: string;
         automount?: boolean;
+        /**
+         * Extract tags from style files to CSS dynamically, Production environment enabled
+         */
+        styleTagExtractCSS?: boolean;
         state?: {
             [x: string]: any;
         };
@@ -204,6 +294,7 @@ namespace Genesis {
         ssr: SSR;
         req?: IncomingMessage;
         res?: ServerResponse;
+        styleTagExtractCSS: boolean;
         renderHtml: () => string;
         beforeRender: (cb: (context: RenderContext) => void) => void;
     }
@@ -226,23 +317,6 @@ namespace Genesis {
         initial: string[];
         async: string[];
         modules: { [key: string]: number[] };
-    }
-    /**
-     * Options for rendering
-     */
-    export interface RendererOptions {
-        client: {
-            data: ClientManifest;
-            fs: any;
-        };
-        server: {
-            data: {
-                entry: string;
-                files: { [x: string]: string };
-                maps: { [key: string]: RendererOptionsMap };
-            };
-            fs: any;
-        };
     }
 
     export interface RendererOptionsMap {

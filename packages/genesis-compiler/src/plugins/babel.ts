@@ -27,8 +27,7 @@ export class BabelPlugin extends Plugin {
                 {
                     modules: false,
                     useBuiltIns: 'usage',
-                    corejs: 3,
-                    targets: this.ssr.getBrowsers(target)
+                    corejs: 3
                 }
             ]
         ];
@@ -79,7 +78,6 @@ export class BabelPlugin extends Plugin {
             .loader('babel-loader')
             .options(babelts)
             .end();
-
         if (isProd) {
             jsRule.use('thread-loader').loader('thread-loader').end();
         }
