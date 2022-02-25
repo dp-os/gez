@@ -11,7 +11,9 @@ npm install @fmfe/genesis-core
 # 安装开发依赖
 npm install @fmfe/genesis-compiler -D
 ```
-## HTTP 服务
+## TS的支持
+Genesis 默认提供了完整的TS开箱即用的能力，如果你不使用TS，将文档中的TS代码，修改成JS即可。
+## Express
 因为 `Genesis` 不具备创建 HTTP 服务的能力，所以这里我们还需要安装 `Express` 。如果你选择了其它的框架，可以跳过这一步，并且将例子中的代码，转换成对应框架的代码即可
 ```bash
 npm install express
