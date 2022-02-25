@@ -76,17 +76,24 @@ class Examples {
             })
         );
     }
-    dev() {}
+    async dev() {
+        const arr = this.list.map((item) => {
+            const name = item.packageJson.name;
+            return `"lerna run --scope=${name} dev"`;
+        });
+        const text = 'concurrently ' + arr.join(' ');
+        return $([text]);
+    }
     build() {
         return runCommandList(this.list);
     }
-    start() {
-        return Promise.all(
-            this.list.map((item) => {
-                const name = item.packageJson.name;
-                return $`lerna run --scope=${name} start`;
-            })
-        );
+    async start() {
+        const arr = this.list.map((item) => {
+            const name = item.packageJson.name;
+            return `"lerna run --scope=${name} start"`;
+        });
+        const text = 'concurrently ' + arr.join(' ');
+        return $([text]);
     }
 }
 

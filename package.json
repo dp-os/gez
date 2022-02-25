@@ -11,11 +11,11 @@
         "examples/*"
     ],
     "scripts": {
-        "build": "zx script/index.js --packages build",
         "publish:all": "./script/publish.sh",
-        "examples:build": "zx script/index.js --examples build",
-        "examples:start": "zx script/index.js --examples start",
-        "examples:dev": "zx script/index.js --examples dev",
+        "build": "zx script/index.js --examples build",
+        "start": "zx script/index.js --examples start",
+        "dev": "zx script/index.js --examples dev",
+        "build:packages": "zx script/index.js --packages build",
         "lint": "npm run lint:js && npm run lint:css",
         "lint:js": "genesis-eslint . --ext .js,.ts,.vue --fix",
         "lint:css": "genesis-stylelint **/*.{css,less,vue} --fix",

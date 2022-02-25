@@ -49,11 +49,19 @@ cd genesis
 # 安装依赖
 lerna bootstrap
 
-# 编译 genesis核心库
+# 编译依赖包
+yarn build:packages
+
+# 运行例子，浏览器打开查看
+yarn dev
+
+# 编译例子
 yarn build
-# 编译例子，生成相关的dts类型文件，避免TS报错
-yarn examples:build
-# 启动例子，浏览器打开: http://localhost:3000
+# 生产环境运行例子
 yarn examples:start
 
 ```
+例子打开地址：
+- http://localhost:3000
+- http://localhost:3001
+- http://localhost:3002
