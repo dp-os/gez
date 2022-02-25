@@ -2,9 +2,8 @@
     "name": "genesis",
     "private": true,
     "devDependencies": {
-        "lerna": "^4.0.0",
-        "typescript": "^4.5.5",
-        "concurrently": "7.0.0"
+        "concurrently": "7.0.0",
+        "lerna": "^4.0.0"
     },
     "workspaces": [
         "packages/*",

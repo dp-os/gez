@@ -12,7 +12,7 @@
   "types": "types/index.d.ts",
   "sideEffects": false,
   "scripts": {
-    "build": "NODE_ENV=production tsc --build tsconfig.cjs.json && NODE_ENV=production tsc --build tsconfig.esm.json"
+    "build": "NODE_ENV=production genesis-tsc --build tsconfig.cjs.json && NODE_ENV=production genesis-tsc --build tsconfig.esm.json"
   },
   "author": "Followme",
   "license": "MIT",
@@ -26,11 +26,6 @@
   },
   "gitHead": "e29fea637547c68974f4ad6e0345b3c3d802a9c2",
   "devDependencies": {
-    "vue": "^2.6.14",
-    "vue-router": "^3.0.0"
-  },
-  "peerDependencies": {
-    "vue": "^2.6.14",
-    "vue-router": "^3.0.0"
+    "vue": "^2.6.14"
   }
 }

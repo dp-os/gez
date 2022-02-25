@@ -5,10 +5,10 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "dev": "ts-node genesis.dev -p=tsconfig.json",
-    "build": "npm run build:dts && rm -rf dist && NODE_ENV=production ts-node genesis.build -p=tsconfig.json",
-    "build:dts": "vue-tsc --declaration --emitDeclarationOnly",
-    "start": "NODE_ENV=production ts-node genesis.prod -p=tsconfig.json"
+    "dev": "genesis-ts-node genesis.dev -p=tsconfig.json",
+    "build": "npm run build:dts && rm -rf dist && NODE_ENV=production genesis-ts-node genesis.build -p=tsconfig.json",
+    "build:dts": "genesis-vue-tsc --declaration --emitDeclarationOnly",
+    "start": "NODE_ENV=production genesis-ts-node genesis.prod -p=tsconfig.json"
   },
   "devDependencies": {
     "@fmfe/genesis-compiler": "2.0.4",
@@ -20,7 +20,6 @@
   },
   "dependencies": {
     "@fmfe/genesis-core": "2.0.4",
-    "express": "^4.17.2",
-    "ts-node": "^10.5.0"
+    "express": "^4.17.2"
   }
 }
