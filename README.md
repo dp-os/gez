@@ -37,11 +37,11 @@
     - [快速使用](./docs/zh-CN/vue-meta.md#快速使用)
     - [模板写入元数据](./docs/zh-CN/vue-meta.md#模板写入元数据)
     - [模板读取元数据](./docs/zh-CN/vue-meta.md#模板读取元数据)
-- [@fmfe/genesis-core](./packages/genesis-core/README.md)
-- [@fmfe/genesis-compiler](./packages/genesis-compiler/README.md)
-- [@fmfe/genesis-app](./packages/genesis-app/README.md)
-- [@fmfe/square](./packages/square/README.md)
-- [@fmfe/genesis-lint](./packages/genesis-lint/README.md)
+- [@fmfe/genesis-core](./packages/genesis-core/README.md) TODO
+- [@fmfe/genesis-compiler](./packages/genesis-compiler/README.md) TODO
+- [@fmfe/genesis-app](./packages/genesis-app/README.md) TODO
+- [@fmfe/square](./packages/square/README.md) TODO
+- [@fmfe/genesis-lint](./packages/genesis-lint/README.md) TODO
 ## 💻 本地开发
 ```bash
 git clone git@github.com:fmfe/genesis.git
