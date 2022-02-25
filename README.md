@@ -1,6 +1,7 @@
+<img src="./logo.svg" width="120">    
+
 # Genesis
 
-<img src="./logo.svg" width="120">    
 
 [![Build Status](https://travis-ci.org/fmfe/genesis.svg?branch=master)](https://travis-ci.org/fmfe/genesis)
 [![Coverage Status](https://coveralls.io/repos/github/fmfe/genesis/badge.svg?branch=master)](https://coveralls.io/github/fmfe/genesis?branch=master)
