@@ -11,6 +11,7 @@
         "examples/*"
     ],
     "scripts": {
+        "bootstrap": "lerna bootstrap",
         "publish:all": "./script/publish.sh",
         "build": "zx script/index.js --examples build",
         "start": "zx script/index.js --examples start",

@@ -46,11 +46,13 @@
 git clone git@github.com:fmfe/genesis.git
 cd genesis
 
-# 安装依赖
-lerna bootstrap
+yarn bootstrap
+yarn build:packages
+yarn dev
 ```
 
 ### 命令说明
+- 安装项目依赖 `yarn bootstrap`
 - 编译核心依赖 `yarn build:packages`
 - 例子运行开发 `yarn dev`
 - 例子编译生产 `yarn build`
