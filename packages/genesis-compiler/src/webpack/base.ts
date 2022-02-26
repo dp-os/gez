@@ -11,7 +11,7 @@ export class BaseConfig extends BaseGenesis {
         super(ssr);
         const config = (this.config = new Config());
         config.mode(this.ssr.isProd ? 'production' : 'development');
-        config.set('target', ssr.getBrowsers(target));
+        config.set('target', ssr.getBuildTarget(target));
         config.output.publicPath(
             target == 'client' ? 'auto' : this.ssr.publicPath
         );

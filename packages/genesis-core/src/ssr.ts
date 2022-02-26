@@ -97,12 +97,6 @@ export class SSR {
      * Compiled output directory
      */
     public get outputDir() {
-        if (this.options?.build?.outputDir) {
-            if (path.isAbsolute(this.options.build.outputDir)) {
-                return this.options.build.outputDir;
-            }
-            return path.resolve(this.baseDir, this.options.build.outputDir);
-        }
         return path.resolve(this.baseDir, `./dist/${this.name}`);
     }
 
@@ -203,8 +197,8 @@ export class SSR {
     /**
      * Get the configuration of browsers
      */
-    public getBrowsers(env: keyof Genesis.Browsers) {
-        return (this.options?.build?.browsers || {
+    public getBuildTarget(env: keyof Genesis.Target) {
+        return (this.options?.build?.target || {
             client: 'web',
             server: 'node'
         })[env];

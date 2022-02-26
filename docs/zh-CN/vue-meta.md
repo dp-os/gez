@@ -72,7 +72,7 @@ export default async (renderContext: RenderContext): Promise<Vue> => {
 ```
 
 ## 模板读取元数据
-项目根目录下创建`index.html`，读取上面写入的meta
+`src`目录下创建`index.html`，读取上面写入的meta
 ```html
 <!DOCTYPE html>
 <html <%-meta.htmlAttrs%>>
@@ -94,12 +94,4 @@ export default async (renderContext: RenderContext): Promise<Vue> => {
 </body>
 
 </html>
-```
-修改`genesis.ts`文件中`SSR`对象的选项
-```javascript
-export const ssr = new SSR({
-    build: {
-        template: path.resolve('index.html')
-    }
-});
 ```

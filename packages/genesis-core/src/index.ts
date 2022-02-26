@@ -128,35 +128,34 @@ namespace Genesis {
          */
         baseDir?: string;
         /**
-         * Basic directory for compiling output
-         */
-        outputDir?: string;
-        /**
          * Which compiled directories are included
          */
         transpile?: (RegExp | string)[];
         /**
          * alias settings
          */
-        alias?: {
-            [x: string]: string;
-        };
-        fallback?: {
-            [x: string]: string | boolean;
-        };
+        alias?: Record<string, string>;
+
+        fallback?: Record<string, string | boolean>;
         /**
-         * Configure build objectives, See https://github.com/browserslist/browserslist for details
+         * Webpack build target https://webpack.js.org/configuration/target/
          */
-        browsers?: Browsers;
+        target?: Target;
         /**
          * Template file path
          */
         template?: string;
     }
 
-    export interface Browsers {
-        client?: Browserslist;
-        server?: Browserslist;
+    export interface Target {
+        /**
+         * Server build target
+         */
+        server?: string;
+        /**
+         * Client build target
+         */
+        client?: string;
     }
 
     export type Browserslist = string | string[];
