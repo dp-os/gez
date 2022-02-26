@@ -37,7 +37,20 @@
     - [快速使用](./docs/zh-CN/vue-meta.md#快速使用)
     - [模板写入元数据](./docs/zh-CN/vue-meta.md#模板写入元数据)
     - [模板读取元数据](./docs/zh-CN/vue-meta.md#模板读取元数据)
-- [@fmfe/genesis-core](./packages/genesis-core/README.md) TODO
+- [@fmfe/genesis-core](./packages/genesis-core/README.md)
+  - [SSR](./packages/genesis-core/README.md#ssr)
+    - [Options](./packages/genesis-core/README.md#options)
+      - [name](./packages/genesis-core/README.md#name)
+      - [isProd](./packages/genesis-core/README.md#isprod)
+      - [cdnPublicPath](./packages/genesis-core/README.md#cdnpublicpath)
+      - [sandboxGlobal](./packages/genesis-core/README.md#sandboxglobal)
+      - [build.extractCSS](./packages/genesis-core/README.md#buildextractcss)
+      - [build.baseDir](./packages/genesis-core/README.md#buildbasedir)
+      - [build.transpile](./packages/genesis-core/README.md#buildtranspile)
+      - [build.alias](./packages/genesis-core/README.md#buildalias)
+      - [build.fallback](./packages/genesis-core/README.md#buildfallback)
+      - [build.template](./packages/genesis-core/README.md#buildtemplate)
+      - [build.target](./packages/genesis-core/README.md#buildtarget)
 - [@fmfe/genesis-compiler](./packages/genesis-compiler/README.md) TODO
 - [@fmfe/genesis-app](./packages/genesis-app/README.md) TODO
 - [@fmfe/square](./packages/square/README.md) TODO
