@@ -1,4 +1,5 @@
 # MF
+这是对`Webpack module federation`插件的封装，它使得你可以轻松的构建Vue SSR的`Module federation`应用程序
 ## 属性
 ### options
   - 说明：你传入的选项
