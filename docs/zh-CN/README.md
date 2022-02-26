@@ -16,7 +16,7 @@
   - [快速使用](./vue-meta.md#快速使用)
   - [模板写入元数据](./vue-meta.md#模板写入元数据)
   - [模板读取元数据](./vue-meta.md#模板读取元数据)
-- @fmfe/genesis-core
+- [@fmfe/genesis-core](https://github.com/fmfe/genesis/tree/master/packages/genesis-core)
   - [SSR 选项](./ssr-options.md#选项)
     - [name](./ssr-options.md#name)
     - [isProd](./ssr-options.md#isprod)
