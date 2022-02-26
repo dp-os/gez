@@ -26,7 +26,7 @@
 git clone git@github.com:fmfe/genesis.git
 cd genesis
 
-yarn bootstrap
+yarn install
 yarn build:packages
 yarn dev
 ```
