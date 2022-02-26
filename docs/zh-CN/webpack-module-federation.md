@@ -11,6 +11,8 @@ Genesis2.0 是目前Vue2在SSR方面，唯一支持`Webpack module federation`�
 MF是`module federation`首字母的缩写，一个服务既可以是`host`端，也可以是`remote`端。
 
 需要特别注意的是使用`MF`插件使用，不再支持抽离外部CSS文件，因为在`host`端的时候，是无法得知`remote`端抽离出来的外部CSS文件信息。为了解决这个问题，在`renderer.renderHtml`函数中新增了个参数`styleTagExtractCSS`，当值为`true`时，会把当前页面渲染出来的style标签的内容，抽离到独立的CSS文件中。因为每个页面渲染出来的style标签的内容都不一样，所以可能会生成很多的CSS文件，请酌情考虑后再启用。
+
+[点击这里查看MF的API文档](./mf-instance.md)
 ### host端
 ```ts
 import { MF, SSR } from '@fmfe/genesis-core';
