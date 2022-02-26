@@ -80,6 +80,18 @@
     - [方法](./docs/zh-CN/ssr-instance.md#%E6%96%B9%E6%B3%95)
       - [getBuildTarget](./docs/zh-CN/ssr-instance.md#getbuildtarget)
       - [createRenderer](./docs/zh-CN/ssr-instance.md#createrenderer)
+  - [Renderer](./docs/zh-CN/renderer-instance.md#renderer)
+    - [属性](./docs/zh-CN/renderer-instance.md#%E5%B1%9E%E6%80%A7)
+      - [ssr](./docs/zh-CN/renderer-instance.md#ssr)
+      - [clientManifest](./docs/zh-CN/renderer-instance.md#clientmanifest)
+      - [staticPublicPath](./docs/zh-CN/renderer-instance.md#staticpublicpath)
+      - [staticDir](./docs/zh-CN/renderer-instance.md#staticdir)
+    - [方法](./docs/zh-CN/renderer-instance.md#%E6%96%B9%E6%B3%95)
+      - [reload](./docs/zh-CN/renderer-instance.md#reload)
+      - [renderJson](./docs/zh-CN/renderer-instance.md#renderjson)
+      - [renderHtml](./docs/zh-CN/renderer-instance.md#renderhtml)
+      - [render](./docs/zh-CN/renderer-instance.md#render)
+      - [renderMiddleware](./docs/zh-CN/renderer-instance.md#rendermiddleware)
 - [@fmfe/genesis-compiler](./packages/genesis-compiler/README.md) TODO
 - [@fmfe/genesis-app](./packages/genesis-app/README.md) TODO
 - [@fmfe/square](./packages/square/README.md) TODO
