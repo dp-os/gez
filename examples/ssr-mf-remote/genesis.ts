@@ -23,6 +23,9 @@ export const ssr = new SSR({
  * 创建MF实例
  */
 export const mf = new MF(ssr, {
+    /**
+     * 配置当前模块导出的文件，建议导出的命名和原模块的命名一致，这样就能和TS类型生成的文件名一致，获得更好的类型支持
+     */
     exposes: {
         './src/vue-use': './src/vue-use.ts',
         './src/common-header.vue': './src/common-header.vue'
