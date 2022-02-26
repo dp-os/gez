@@ -197,7 +197,7 @@ mf.remote.fetch();
 {
     "scripts": {
         "postinstall": "genesis-ts-node --project=./tsconfig.node.json postinstall.ts"
-    },
+    }
 }
 ```
 
