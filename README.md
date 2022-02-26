@@ -38,7 +38,7 @@
   - [模板写入元数据](./docs/zh-CN/vue-meta.md#模板写入元数据)
   - [模板读取元数据](./docs/zh-CN/vue-meta.md#模板读取元数据)
 - [@fmfe/genesis-core](./packages/genesis-core/README.md)
-  - [SSR Options](./docs/zh-CN/ssr-options.md#options)
+  - [SSR 选项](./docs/zh-CN/ssr-options.md#选项)
     - [name](./docs/zh-CN/ssr-options.md#name)
     - [isProd](./docs/zh-CN/ssr-options.md#isprod)
     - [cdnPublicPath](./docs/zh-CN/ssr-options.md#cdnpublicpath)

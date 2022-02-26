@@ -305,7 +305,6 @@ export class Renderer {
                     context
                 };
         }
-        throw new TypeError(`No type ${context.mode}`);
     }
 
     /**
@@ -329,7 +328,6 @@ export class Renderer {
                     context
                 };
         }
-        throw new TypeError(`No type ${context.mode}`);
     }
 
     /**
@@ -343,7 +341,7 @@ export class Renderer {
      * Static file directory
      */
     public get staticDir() {
-        return this.ssr.staticDir;
+        return this.ssr.outputDirInClient;
     }
 
     /**

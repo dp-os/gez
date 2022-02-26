@@ -1,8 +1,8 @@
 # SSR
-## Options
+## 选项
 ```ts
 const ssr = new SSR({
-    // options
+    // 选项
 });
 ```
 ### name

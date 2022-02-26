@@ -119,13 +119,6 @@ export class SSR {
     }
 
     /**
-     * Static file directory
-     */
-    public get staticDir() {
-        return path.resolve(this.outputDir, './client');
-    }
-
-    /**
      * Compile source entry directory
      */
     public get srcDir() {
@@ -208,7 +201,6 @@ export class SSR {
      * Create a renderer
      */
     public createRenderer() {
-        // @ts-ignore
         return new this.Renderer(this);
     }
 }

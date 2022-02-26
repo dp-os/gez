@@ -128,7 +128,7 @@ export class Watch extends BaseGenesis {
         if (this._renderer && isServer) {
             this._renderer.reload();
         } else if (!this._renderer) {
-            this._renderer = new ssr.Renderer(ssr);
+            this._renderer = ssr.createRenderer();
         }
         await this.ssr.plugin.callHook('afterCompiler', 'watch');
     }
