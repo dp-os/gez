@@ -1,6 +1,7 @@
 import {
     CompilerType,
     MF,
+    MFManifestJson,
     Plugin,
     SSR,
     WebpackHookParams
@@ -111,7 +112,7 @@ export class MFPlugin extends Plugin {
         const mf = MF.get(ssr);
         const entryName = mf.entryName;
 
-        const name = mf.name;
+        const name = mf.varName;
         const hash = ssr.isProd ? '.[contenthash:8]' : '';
         const exposes = getExposes(ssr, mf);
         config.plugin('module-federation').use(
@@ -136,7 +137,7 @@ export class MFPlugin extends Plugin {
 
         const client = this._getVersion(ssr.outputDirInClient);
         const server = this._getVersion(ssr.outputDirInServer);
-        const data = {
+        const data: MFManifestJson = {
             c: client,
             s: server,
             d: 0,

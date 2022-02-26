@@ -66,6 +66,24 @@ namespace Genesis {
          */
         typesDir?: string;
     }
+    export interface MFManifestJson {
+        /**
+         * client
+         */
+        c: string;
+        /**
+         * server
+         */
+        s: string;
+        /**
+         * dts, 1 = have, 0 = not have
+         */
+        d: number;
+        /**
+         * build time
+         */
+        t: number;
+    }
     export interface SharedObject {
         [index: string]: string | SharedConfig;
     }

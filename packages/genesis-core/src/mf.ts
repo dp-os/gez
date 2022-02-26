@@ -77,24 +77,7 @@ function createRequest() {
     return request;
 }
 
-interface ManifestJson {
-    /**
-     * client
-     */
-    c: string;
-    /**
-     * server
-     */
-    s: string;
-    /**
-     * dts
-     */
-    d: 0 | 1;
-    /**
-     * create time
-     */
-    t: number;
-}
+type ManifestJson = Genesis.MFManifestJson;
 
 class RemoteModule {
     public remote: Remote;
@@ -580,7 +563,7 @@ export class MF {
     public get haveExposes() {
         return Object.keys(this.options.exposes).length > 0;
     }
-    public get name() {
+    public get varName() {
         return SSR.fixVarName(this.ssr.name);
     }
     public get output() {

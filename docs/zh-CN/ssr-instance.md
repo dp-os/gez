@@ -89,4 +89,4 @@ console.log(ssr.name);
   - 类型：`getBuildTarget(env: keyof Genesis.Target): string`
 ### createRenderer
   - 说明：创建Renderer的实例
-  - 类型：`createRenderer(): Renderer;`
+  - 类型：`createRenderer(): Renderer`
