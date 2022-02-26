@@ -9,7 +9,7 @@
 [![npm](https://img.shields.io/npm/dm/@fmfe/genesis-core.svg)](https://www.npmjs.com/package/@fmfe/genesis-core)
 [![npm](https://img.shields.io/npm/dt/@fmfe/genesis-core.svg)](https://www.npmjs.com/package/@fmfe/genesis-core)
 
-🔥一个简单而强大的Vue SSR框架🔥
+🔥一个简单而强大的Vue(2) SSR框架🔥
 
 ## 🚀 优势
 - ✨ 编写简单的JS，就可以创建一个`SSR`项目    
