@@ -1,28 +1,30 @@
-## 常用命令说明
-
-### 安装全部工程的依赖
-```bash
-lerna clean # 清理依赖
-lerna bootstrap # 安装依赖
-```
-### 添加一个包
-```bash
-lerna create 包名
-```
-## 添加一个开发包
-```bash
-lerna add 依赖名称 --scope=包名 --dev
-lerna add ssr-mf-remote --scope=express --dev
-```
-## 添加一个生产包
-```bash
-lerna add 依赖名称 --scope=包名 --dev
-```
-Vue SSR supports the use of Federated modules
-### 将相互依赖的所有包Symlink链接在一起 
-```bash
-lerna link
-```
-
-## 生产dts类型
-vue-tsc --declaration --emitDeclarationOnly
+- [SSR 实例](./docs/zh-CN/ssr-instance.md#ssr)
+  - [属性](./docs/zh-CN/ssr-instance.md#%E5%B1%9E%E6%80%A7)
+    - [Renderer](./docs/zh-CN/ssr-instance.md#renderer)
+    - [options](./docs/zh-CN/ssr-instance.md#options)
+    - [plugin](./docs/zh-CN/ssr-instance.md#plugin)
+    - [entryName](./docs/zh-CN/ssr-instance.md#entryname)
+    - [sandboxGlobal](./docs/zh-CN/ssr-instance.md#sandboxglobal)
+    - [isProd](./docs/zh-CN/ssr-instance.md#isprod)
+    - [name](./docs/zh-CN/ssr-instance.md#name)
+    - [extractCSS](./docs/zh-CN/ssr-instance.md#extractcss)
+    - [publicPath](./docs/zh-CN/ssr-instance.md#publicpath)
+    - [publicPathVarName](./docs/zh-CN/ssr-instance.md#publicpathvarname)
+    - [cdnPublicPath](./docs/zh-CN/ssr-instance.md#cdnpublicpath)
+    - [baseDir](./docs/zh-CN/ssr-instance.md#basedir)
+    - [outputDir](./docs/zh-CN/ssr-instance.md#outputdir)
+    - [outputDirInTemplate](./docs/zh-CN/ssr-instance.md#outputdirintemplate)
+    - [outputDirInClient](./docs/zh-CN/ssr-instance.md#outputdirinclient)
+    - [outputDirInServer](./docs/zh-CN/ssr-instance.md#outputdirinserver)
+    - [srcDir](./docs/zh-CN/ssr-instance.md#srcdir)
+    - [srcIncludes](./docs/zh-CN/ssr-instance.md#srcincludes)
+    - [transpile](./docs/zh-CN/ssr-instance.md#transpile)
+    - [entryClientFile](./docs/zh-CN/ssr-instance.md#entryclientfile)
+    - [entryServerFile](./docs/zh-CN/ssr-instance.md#entryserverfile)
+    - [outputClientManifestFile](./docs/zh-CN/ssr-instance.md#outputclientmanifestfile)
+    - [outputServeAppFile](./docs/zh-CN/ssr-instance.md#outputserveappfile)
+    - [templateFile](./docs/zh-CN/ssr-instance.md#templatefile)
+    - [outputTemplateFile](./docs/zh-CN/ssr-instance.md#outputtemplatefile)
+  - [方法](./docs/zh-CN/ssr-instance.md#%E6%96%B9%E6%B3%95)
+    - [getBuildTarget](./docs/zh-CN/ssr-instance.md#getbuildtarget)
+    - [createRenderer](./docs/zh-CN/ssr-instance.md#createrenderer)
