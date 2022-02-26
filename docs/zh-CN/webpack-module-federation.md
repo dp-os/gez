@@ -115,7 +115,7 @@ export const mf = new MF(ssr, {
 });
 ```
 ## Node端实现`module federation`原理
-`module federation`在纯粹的`CSR`项目中比较容易实现，但是在`SSR`项目中需要在服务端运行一个Node程序，目前`Webpack`对此并没有一个好的解决方案，所以在服务端自己实现`module federation`下载和执行过程
+`module federation`在纯粹的`CSR`项目中比较容易实现，但是在`SSR`项目中需要在服务端运行一个Node程序，目前`Webpack`对此并没有一个好的解决方案，所以Genesis自己实现了Node端`module federation`下载和执行过程
 
 ### 编译阶段
 如果你的项目导出了远程模块，在编译阶段`client`的文件夹中会多出一个`node-exposes`文件夹，让我们来看看这几个文件的作用都是什么吧。    
