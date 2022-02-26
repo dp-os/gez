@@ -180,3 +180,26 @@ app.get(mf.manifestRoutePath, async (req, res, next) => {
     next();
 });
 ```
+
+## 安装依赖时，自动下载远程模块的类型文件
+在项目目录创建`postinstall.ts`，调用`mf.remote.fetch`方法拉取远程模块和类型
+```ts
+import { mf } from './genesis';
+
+/**
+ * 下载远程模块，如果远程模块有类型文件提供，则会一并下载
+ */
+mf.remote.fetch();
+
+```
+为了在依赖安装完成后，能执行这个代码，我们还需要在`package.json`配置执行的命令
+```json
+{
+    "scripts": {
+        "postinstall": "genesis-ts-node --project=./tsconfig.node.json postinstall.ts"
+    },
+}
+```
+
+## 最后
+到这里，我们已经完整实现了`MF`的全部功能，如果你觉得还有疑问的地方，欢迎在[issues](https://github.com/fmfe/genesis/issues)中讨论
