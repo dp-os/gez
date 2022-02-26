@@ -37,11 +37,25 @@ export const mf = new MF(ssr, {
  * 拿到渲染器后，启动应用程序
  */
 export const startApp = (renderer: Renderer) => {
+    /**
+     * 初始化远程模块
+     */
     mf.remote.init(renderer);
     /**
-     * 使用默认渲染中间件进行渲染，你也可以调用更加底层的 renderer.renderJson 和 renderer.renderHtml 来实现渲染
+     * 轮询远程模块
      */
-    app.use(renderer.renderMiddleware);
+    mf.remote.polling();
+    /**
+     * 请求进来，渲染html
+     */
+    app.get('*', async (req, res, next) => {
+        try {
+            const result = await renderer.renderHtml({ req, res });
+            res.send(result.data);
+        } catch (e) {
+            next(e);
+        }
+    });
     /**
      * 监听端口
      */

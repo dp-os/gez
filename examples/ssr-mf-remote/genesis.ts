@@ -46,8 +46,13 @@ export const mf = new MF(ssr, {
  * 如果1分钟内没有更新，则再结束请求，避免对方太频繁轮询
  */
 app.get(mf.manifestRoutePath, async (req, res, next) => {
-    await mf.exposes.getManifest(Number(req.query.t), 10000);
-    //  继续往下执行，读取真实的静态资源文件
+    // host端传过来的编译时间
+    const t = Number(req.query.t);
+    // 最大等待时间
+    const maxAwait = 1000 * 60;
+    // 尝试等待manifest.json新的文件
+    await mf.exposes.getManifest(t, maxAwait);
+    // 继续往下执行，读取真实的静态资源文件
     next();
 });
 
@@ -56,9 +61,16 @@ app.get(mf.manifestRoutePath, async (req, res, next) => {
  */
 export const startApp = (renderer: Renderer) => {
     /**
-     * 使用默认渲染中间件进行渲染，你也可以调用更加底层的 renderer.renderJson 和 renderer.renderHtml 来实现渲染
+     * 请求进来，渲染html
      */
-    app.use(renderer.renderMiddleware);
+    app.get('*', async (req, res, next) => {
+        try {
+            const result = await renderer.renderHtml({ req, res });
+            res.send(result.data);
+        } catch (e) {
+            next(e);
+        }
+    });
     /**
      * 监听端口
      */

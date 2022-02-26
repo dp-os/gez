@@ -260,6 +260,12 @@ class RemoteZip {
     }
 }
 
+enum PollingStatus {
+    noStart,
+    polling,
+    stop
+}
+
 class Remote {
     public ssr: Genesis.SSR;
     public options: Genesis.MFRemote;
@@ -270,6 +276,7 @@ class Remote {
     private already = false;
     public request = createRequest();
     private manifestJson: Json<ManifestJson>;
+    private pollingStatus: PollingStatus = PollingStatus.noStart;
     public constructor(ssr: Genesis.SSR, options: Genesis.MFRemote) {
         this.ssr = ssr;
         this.options = options;
@@ -312,8 +319,6 @@ class Remote {
             if (!ssr.isProd && manifest.s) {
                 this.download(this.manifest);
             }
-
-            this.polling();
         }
         await this.ready.await;
     }
@@ -407,10 +412,25 @@ class Remote {
         }
         return true;
     }
-    private async polling() {
+    /**
+     * 开始轮询
+     */
+    public async polling() {
+        if (this.pollingStatus === PollingStatus.polling) {
+            return;
+        }
+        this.pollingStatus = PollingStatus.polling;
+        await this.ready.await;
         const { mf } = this;
         await this.fetch();
         this.timer = setTimeout(this.polling, mf.options.intervalTime);
+    }
+    /**
+     * 停止轮询
+     */
+    public async stopPolling() {
+        clearTimeout(this.timer);
+        this.pollingStatus = PollingStatus.stop;
     }
     public destroy() {
         this.timer && clearTimeout(this.timer);
@@ -461,6 +481,12 @@ class RemoteGroup {
     }
     public fetch() {
         return Promise.all(this.items.map((item) => item.fetch()));
+    }
+    public polling() {
+        return Promise.all(this.items.map((item) => item.polling()));
+    }
+    public stopPolling() {
+        return Promise.all(this.items.map((item) => item.stopPolling()));
     }
 }
 
