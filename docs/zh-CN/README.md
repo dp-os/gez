@@ -13,6 +13,7 @@
     - [tsconfig.node.json](./quick-start.md#tsconfignodejson)
     - [package.json](./quick-start.md#packagejson)
   - [✨ 全部的能力](./quick-start.md#全部的能力)
+- [😎 Webpack module federation](./webpack-module-federation.md)
 - [💥 管理HTML元数据](./vue-meta.md)
   - [⬇️ 安装依赖](./vue-meta.md#安装依赖)
   - [🔨 快速使用](./vue-meta.md#快速使用)
