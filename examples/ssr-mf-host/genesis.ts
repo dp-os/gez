@@ -37,8 +37,17 @@ export const mf = new MF(ssr, {
     },
     remotes: [
         {
+            /**
+             * 服务名称
+             */
             name: 'ssr-mf-remote',
+            /**
+             * 客户端的远程模块下载源，程序会自动拼接：http://localhost:3002/[服务名称]/node-exposes/[文件名]
+             */
             clientOrigin: 'http://localhost:3002',
+            /**
+             * 服务端的远程模块下载源，程序会自动拼接：http://localhost:3002/[服务名称]/node-exposes/[文件名]
+             */
             serverOrigin: 'http://localhost:3002'
         }
     ]

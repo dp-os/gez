@@ -11,8 +11,7 @@
         "build:vue": "NODE_ENV=production genesis-ts-node --project=./tsconfig.node.json genesis.build",
         "build:dts": "genesis-vue-tsc --declaration --emitDeclarationOnly",
         "type-check": "genesis-vue-tsc --noEmit",
-        "start": "NODE_ENV=production node dist/genesis.prod",
-        "postinstall": "genesis-ts-node --project=./tsconfig.node.json postinstall.ts"
+        "start": "NODE_ENV=production node dist/genesis.prod"
     },
     "devDependencies": {
         "@fmfe/genesis-compiler": "2.0.6",
