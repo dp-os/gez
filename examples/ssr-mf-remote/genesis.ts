@@ -13,17 +13,28 @@ export const app = express();
 export const ssr = new SSR({
     name: 'ssr-mf-remote',
     build: {
-        extractCSS: false,
-        template: path.resolve('./index.html')
+        /**
+         * 使用了MF，这个值必须设置为false
+         */
+        extractCSS: false
     }
 });
-
+/**
+ * 创建MF实例
+ */
 export const mf = new MF(ssr, {
     exposes: {
         './src/vue-use': './src/vue-use.ts',
         './src/common-header.vue': './src/common-header.vue'
     },
+    /**
+     * 共享依赖
+     */
     shared: {
+        /**
+         * 注意！！！
+         * Vue需要设置单例，否则页面会出现异常
+         */
         vue: {
             singleton: true
         },
@@ -65,7 +76,10 @@ export const startApp = (renderer: Renderer) => {
      */
     app.get('*', async (req, res, next) => {
         try {
-            const result = await renderer.renderHtml({ req, res });
+            const result = await renderer.renderHtml({
+                req,
+                res
+            });
             res.send(result.data);
         } catch (e) {
             next(e);

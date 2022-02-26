@@ -7,6 +7,99 @@ Genesis2.0 是目前Vue2在SSR方面，唯一支持`Webpack module federation`�
 
 直达今天，我们终于完成了全部的功能开发，并已经在公司内部的项目开始升级，将远程组件修改成新的`module federation`的方式调用。在这个过程中，我们顺利解决了`module federation`对TS类型不支持的问题，并且可以对所有的`module federation`入口文件强缓存
 
+## 使用MF插件
+MF是`module federation`首字母的缩写，一个服务既可以是`host`端，也可以是`remote`端。
+
+需要特别注意的是使用`MF`插件使用，不再支持抽离外部CSS文件，因为在`host`端的时候，是无法得知`remote`端抽离出来的外部CSS文件信息。为了解决这个问题，在`renderer.renderHtml`函数中新增了个参数`styleTagExtractCSS`，当值为`true`时，会把当前页面渲染出来的style标签的内容，抽离到独立的CSS文件中。因为每个页面渲染出来的style标签的内容都不一样，所以可能会生成很多的CSS文件，请酌情考虑后再启用。
+### host端
+```ts
+import { MF, SSR } from '@fmfe/genesis-core';
+/**
+ * 创建一个 SSR 实例
+ */
+export const ssr = new SSR({
+    name: 'ssr-mf-host',
+    build: {
+        /**
+         * 使用了MF，这个值必须设置为false
+         */
+        extractCSS: false
+    }
+});
+
+/**
+ * 创建MF实例
+ */
+export const mf = new MF(ssr, {
+    /**
+     * 共享依赖
+     */
+    shared: {
+        /**
+         * 注意！！！
+         * Vue需要设置单例，否则页面会出现异常
+         */
+        vue: {
+            singleton: true
+        }
+    },
+    remotes: [
+        {
+            name: 'ssr-mf-remote',
+            clientOrigin: 'http://localhost:3002',
+            serverOrigin: 'http://localhost:3002'
+        }
+    ]
+});
+
+```
+### remote端
+```ts
+import { MF, SSR } from '@fmfe/genesis-core';
+/**
+ * 创建一个 SSR 实例
+ */
+export const ssr = new SSR({
+    name: 'ssr-mf-remote',
+    build: {
+        /**
+         * 使用了MF，这个值必须设置为false
+         */
+        extractCSS: false
+    }
+});
+/**
+ * 创建MF实例
+ */
+export const mf = new MF(ssr, {
+    exposes: {
+        './src/vue-use': './src/vue-use.ts',
+        './src/common-header.vue': './src/common-header.vue'
+    },
+    /**
+     * 共享依赖
+     */
+    shared: {
+        /**
+         * 注意！！！
+         * Vue需要设置单例，否则页面会出现异常
+         */
+        vue: {
+            singleton: true
+        },
+        'vue-router': {
+            singleton: true
+        },
+        'element-ui': {
+            singleton: true
+        }
+    },
+    /**
+     * 读取本地生成的类型文件，生成给其它的远程模块调用，如果没有，可以使用 vue-tsc --declaration --emitDeclarationOnly 来生成
+     */
+    typesDir: path.resolve('./types')
+});
+```
 ## Node端实现`module federation`原理
 `module federation`在纯粹的`CSR`项目中比较容易实现，但是在`SSR`项目中需要在服务端运行一个Node程序，目前`Webpack`对此并没有一个好的解决方案，所以在服务端自己实现`module federation`下载和执行过程
 
