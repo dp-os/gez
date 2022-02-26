@@ -46,7 +46,7 @@ export const mf = new MF(ssr, {
         }
     },
     /**
-     * 读取本地生成的类型文件，生成给其它的远程模块调用，如果没有，可以使用 vue-tsc --declaration --emitDeclarationOnly 来生成
+     * 读取本地生成的类型文件，生成给其它的远程模块调用
      */
     typesDir: path.resolve('./types')
 });
