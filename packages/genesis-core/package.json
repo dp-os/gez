@@ -5,7 +5,8 @@
     "keywords": [
         "vue",
         "ssr",
-        "Microfront"
+        "Microfront",
+        "module-federation"
     ],
     "main": "dist/cjs/index.js",
     "module": "dist/esm/index.js",
