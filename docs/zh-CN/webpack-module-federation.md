@@ -30,10 +30,10 @@ Genesis2.0 是目前Vue2在SSR方面，唯一支持`Webpack module federation`�
   - `t` 是当前构建完成的时间戳，如果本地已经下载过远程模块，`MF`发送请求的时候会把这个`t`的参数带过去，通过比较两个不同的`t`值来判断是否发布了新的版本
 
 - `e608c015.zip`    
-这是将构建出来的`server`目录下的全部内容，打包成的一个`zip`文件，放到`client/node-exposes`的目录中，方便其它的服务请求下载运行
+    这是将构建出来的`server`目录下的全部内容，打包成的一个`zip`文件，放到`client/node-exposes`的目录中，方便其它的服务请求下载运行
 
 - `e608c015-dts.zip`
-如果你给`MF`插件指定了类型文件生成的目录，插件便会生成一个`zip`文件，这样其它服务端在开发阶段，程序会下载`e608c015-dts.zip`这个文件，并且解压到`node_modules`目录中，就能得到完整的TS类型支持
+    如果你给`MF`插件指定了类型文件生成的目录，插件便会生成一个`zip`文件，这样其它服务端在开发阶段，程序会下载`e608c015-dts.zip`这个文件，并且解压到`node_modules`目录中，就能得到完整的TS类型支持
 
 ### 运行阶段
 ![image](https://user-images.githubusercontent.com/8424643/155848245-0648d356-91aa-4672-8eea-4cea2a714c02.png)
