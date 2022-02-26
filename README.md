@@ -17,7 +17,7 @@
 - 🙅 开发依赖和生产依赖分包，在构建生产包时，应用更小化    
 - 🤝 支持`Webpack module federation`
 - 👍 支持`TypeScript`，生成`dts`和类型检查，开箱即用    
-- 🛠 长期维护更新    
+- 🛠 长期维护更新，`issues`处理及时    
 
 ## 📚 文档
 - [中文文档](./docs/zh-CN/README.md)
