@@ -91,7 +91,3 @@
       - [remote.inject](./mf-instance.md#remoteinject)
       - [remote.init](./mf-instance.md#remoteinit)
       - [remote.fetch](./mf-instance.md#remotefetch)
-- [@fmfe/genesis-compiler](./packages/genesis-compiler/README.md) TODO
-- [@fmfe/genesis-app](./packages/genesis-app/README.md) TODO
-- [@fmfe/square](./packages/square/README.md) TODO
-- [@fmfe/genesis-lint](./packages/genesis-lint/README.md) TODO
