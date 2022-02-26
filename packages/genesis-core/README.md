@@ -1,6 +1,9 @@
 # @fmfe/genesis-core
 这是`Genesis`的核心库，提供了`SSR`、`Renderer`和`MF`
+```ts
+import { MF, Renderer, SSR } from '@fmfe/genesis-core';
 
+```
 ## SSR
 ### Options
 ```ts
