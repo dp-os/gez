@@ -1,6 +1,6 @@
 {
     "name": "@fmfe/genesis-compiler",
-    "version": "2.0.6-alpha.0",
+    "version": "2.0.6-alpha.1",
     "description": "Vue SSR Microfront",
     "bin": {
         "genesis-ts-node": "./bin/ts-node.sh",

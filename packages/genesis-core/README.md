@@ -12,4 +12,4 @@ import { MF, Renderer, SSR } from '@fmfe/genesis-core';
 
 ```
 ## 文档
-- [SSR Options](./docs/zh-CN/ssr-options.md)
+- [SSR Options](https://github.com/fmfe/genesis/blob/master/packages/genesis-core/docs/zh-CN/ssr-options.md#options)
