@@ -80,7 +80,7 @@ export default createApp([...home, ...about]);
 ```
 上面的提供了一个`createApp`函数，接收的参数是一个路由配置，我们在服务端的时候，就可以使用`module federation`在`entry-server.ts`文件中执行这个方法，并传入当前的服务的路由，所以我们只需要在`entry-client.ts`和`entry-server.ts`分别注册不同的路由即可实现上述路由分发
 
-让我们看看其它服务是怎么去使用它的
+让我们看看其它服务是怎么去使用它的    
 `entry-client.ts`
 ```ts
 export { default } from 'ssr-mf-home/src/common/create-app-client';
