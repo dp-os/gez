@@ -15,5 +15,3 @@ examples/**/dist/**
 examples/**/types/**
 examples/**/*.lock
 examples/**/*.log
-examples/**/tsconfig.json
-examples/**/tsconfig.node.json
