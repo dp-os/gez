@@ -1,7 +1,7 @@
 <template>
     <div class="app">
         <div>
-            <img src="../images/logo.svg" width="120" />
+            <img src="../images/logo.svg" width="120" height="120" alt="logo" />
         </div>
         <ul>
             <li>

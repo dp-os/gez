@@ -179,7 +179,11 @@ startApp(renderer);
             "@types/node"
         ],
         "allowSyntheticDefaultImports": true
-    }
+    },
+    "exclude": [
+        "dist",
+        "types"
+    ]
 }
 ```
 这是一份公共的TS配置
@@ -200,9 +204,9 @@ startApp(renderer);
         "outDir": "./dist"
     },
     "exclude": [
-        "src",
         "dist",
-        "types"
+        "types",
+        "src"
     ]
 }
 ```

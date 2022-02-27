@@ -2,7 +2,7 @@
     <div>
         <h2>ssr-mf-about</h2>
         我是关于我们 <br />
-        <img src="../images/logo.svg" width="60" />
+        <img src="../images/logo.svg" width="60" height="60" alt="logo" />
     </div>
 </template>
 <script lang="ts">
