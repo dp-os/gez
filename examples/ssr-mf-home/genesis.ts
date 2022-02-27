@@ -43,8 +43,8 @@ export const mf = new MF(ssr, {
         }
     },
     exposes: {
-        './src/common/client': 'src/common/client.ts',
-        './src/common/common': 'src/common/common.ts'
+        './src/common/create-app-client': 'src/common/create-app-client.ts',
+        './src/common/create-app': 'src/common/create-app.ts'
     },
     remotes: [
         {

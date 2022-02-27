@@ -1,1 +1,1 @@
-export { default } from './common/client';
+export { default } from './common/create-app-client';
