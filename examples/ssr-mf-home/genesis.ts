@@ -81,10 +81,6 @@ export const startApp = (renderer: Renderer) => {
      */
     mf.remote.polling();
     /**
-     * 轮询远程模块
-     */
-    mf.remote.polling();
-    /**
      * 请求进来，渲染html
      */
     app.get('/', async (req, res, next) => {
