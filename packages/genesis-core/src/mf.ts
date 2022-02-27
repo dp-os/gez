@@ -479,8 +479,14 @@ class RemoteGroup {
     public init(...args: Parameters<Remote['init']>) {
         return Promise.all(this.items.map((item) => item.init(...args)));
     }
-    public fetch() {
-        return Promise.all(this.items.map((item) => item.fetch()));
+    public fetch(name?: string) {
+        let arr = this.items;
+        if (name) {
+            arr = arr.filter((item) => {
+                return item.options.name === name;
+            });
+        }
+        return Promise.all(arr.map((item) => item.fetch()));
     }
     public polling() {
         return Promise.all(this.items.map((item) => item.polling()));

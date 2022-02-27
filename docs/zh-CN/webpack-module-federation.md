@@ -195,6 +195,15 @@ app.get(mf.manifestRoutePath, async (req, res, next) => {
 });
 ```
 
+如果你不喜欢使用轮询的方式，可以自己编写接口，等其它服务发布完成后，手动触发服务的热更新接口，并且返回状态判断是否更新成功
+```ts
+app.get('/hot-reload/:name', async (req, res, next) => {
+    const result = await mf.remote.fetch(req.params.name);
+
+    res.send({ ok: !result.includes(false) });
+});
+```
+
 ## 安装依赖时，自动下载远程模块的类型文件
 在项目目录创建`postinstall.ts`，调用`mf.remote.fetch`方法拉取远程模块和类型
 ```ts
