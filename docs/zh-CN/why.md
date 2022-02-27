@@ -102,3 +102,11 @@ export default createApp(routes);
 这里提供了完整的demo，有兴趣的可以看看代码
 - [ssr-mf-home](https://github.com/fmfe/genesis/tree/master/examples/ssr-mf-home)
 - [ssr-mf-about](https://github.com/fmfe/genesis/tree/master/examples/ssr-mf-about)
+
+## 公共服务
+在实际的开发中，我们还可以将`vue`、`vue-router`、`vue-meta`等等的第三方依赖，在一个公共服务导出，然后其它的服务来调用这个公共服务的依赖，它使用起来，可能是这样的。
+```ts
+import Vue from 'ssr-commom/vue';
+import Router from 'ssr-commom/vue-router';
+import Meta from 'ssr-commom/vue-meta';
+```
