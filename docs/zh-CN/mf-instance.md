@@ -51,8 +51,8 @@
   - 说明：远程模块初始化方法，提前初始化，可以在用户访问的时候更快的下载完成远程的模块
   - 类型：`init(...args: Parameters<Remote['init']>): Promise<void[]>;`
 ### remote.fetch
-  - 说明：你可以在`npm`的`postinstall`钩子中调用这个方法，在安装依赖的时候就能下载远程模块和它提供的TS类型包，这样本地开发时，不需要启动程序，也可以获取正确远程模块TS类型
-  - 类型：`fetch(): Promise<boolean[]>;`
+  - 说明：你可以在`npm`的`postinstall`钩子中调用这个方法，在安装依赖的时候就能下载远程模块和它提供的TS类型包，这样本地开发时，不需要启动程序，也可以获取正确远程模块TS类型，如果传入名称，则只拉取某个服务的远程模块
+  - 类型：`fetch(name?:string): Promise<boolean[]>;`
 ### remote.polling
   - 说明：启动一个监听程序，不断的轮询远程模块的`manifest.son`文件是否变化，如果发生变化，就会下载新的模块，并且热重载程序
   - 类型：`polling(): Promise<void[]>;`
