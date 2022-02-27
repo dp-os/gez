@@ -27,9 +27,24 @@ export const mf = new MF(ssr, {
      * 配置当前模块导出的文件，建议导出的命名和原模块的命名一致，这样就能和TS类型生成的文件名一致，获得更好的类型支持
      */
     exposes: {
-        './src/vue-use': './src/vue-use.ts',
-        './src/common-header.vue': './src/common-header.vue'
+        './src/routes': './src/routes.ts'
     },
+    remotes: [
+        {
+            /**
+             * 服务名称
+             */
+            name: 'ssr-mf-home',
+            /**
+             * 客户端的远程模块下载源，程序会自动拼接：http://localhost:3001/[服务名称]/node-exposes/[文件名]
+             */
+            clientOrigin: 'http://localhost:3001',
+            /**
+             * 服务端的远程模块下载源，程序会自动拼接：http://localhost:3001/[服务名称]/node-exposes/[文件名]
+             */
+            serverOrigin: 'http://localhost:3001'
+        }
+    ],
     /**
      * 共享依赖
      */
@@ -51,7 +66,7 @@ export const mf = new MF(ssr, {
     /**
      * 读取本地生成的类型文件，生成给其它的远程模块调用
      */
-    typesDir: path.resolve('./types')
+    typesDir: path.resolve('./types/ssr-mf-about')
 });
 
 /**
@@ -75,9 +90,17 @@ app.get(mf.manifestRoutePath, async (req, res, next) => {
  */
 export const startApp = (renderer: Renderer) => {
     /**
+     * 初始化远程模块
+     */
+    mf.remote.init(renderer);
+    /**
+     * 轮询远程模块
+     */
+    mf.remote.polling();
+    /**
      * 请求进来，渲染html
      */
-    app.get('*', async (req, res, next) => {
+    app.get('/about', async (req, res, next) => {
         try {
             const result = await renderer.renderHtml({
                 req,

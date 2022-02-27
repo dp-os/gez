@@ -1,5 +1,6 @@
 import { MF, Renderer, SSR } from '@fmfe/genesis-core';
 import express from 'express';
+import path from 'path';
 
 /**
  * 创建一个应用程序
@@ -35,6 +36,10 @@ export const mf = new MF(ssr, {
             singleton: true
         }
     },
+    exposes: {
+        './src/common/client': 'src/common/client.ts',
+        './src/common/common': 'src/common/common.ts'
+    },
     remotes: [
         {
             /**
@@ -50,7 +55,11 @@ export const mf = new MF(ssr, {
              */
             serverOrigin: 'http://localhost:3002'
         }
-    ]
+    ],
+    /**
+     * 读取本地生成的类型文件，生成给其它的远程模块调用
+     */
+    typesDir: path.resolve('./types/ssr-mf-about')
 });
 
 /**
@@ -66,9 +75,13 @@ export const startApp = (renderer: Renderer) => {
      */
     mf.remote.polling();
     /**
+     * 轮询远程模块
+     */
+    mf.remote.polling();
+    /**
      * 请求进来，渲染html
      */
-    app.get('*', async (req, res, next) => {
+    app.get('/', async (req, res, next) => {
         try {
             const result = await renderer.renderHtml({
                 req,

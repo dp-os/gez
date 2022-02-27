@@ -79,23 +79,58 @@ function createRequest() {
 
 type ManifestJson = Genesis.MFManifestJson;
 
-class RemoteModule {
-    public remote: Remote;
-    public constructor(remote: Remote) {
-        this.remote = remote;
-        const { ssr } = remote;
+/**
+ * VM 运行时注入的全局变量
+ */
+abstract class VMRuntimeInject {
+    public ssr: SSR;
+    public constructor(ssr: SSR) {
+        this.ssr = ssr;
+    }
+    /**
+     * global 当前对象注入的变量名称
+     */
+    public abstract get varName(): string;
+    /**
+     * 远程模块的入口文件
+     */
+    public abstract get filename(): string;
+    /**
+     * 执行注入
+     */
+    public inject() {
+        const { ssr } = this;
         Object.defineProperty(ssr.sandboxGlobal, this.varName, {
             enumerable: true,
             get: () => this
         });
+    }
+    /**
+     * 获取远程模块
+     */
+    public abstract fetch(): Promise<void>;
+}
+
+class VMRuntimeInjectRemote extends VMRuntimeInject {
+    public remote: Remote;
+    public constructor(remote: Remote) {
+        super(remote.ssr);
+        this.remote = remote;
+        this.inject();
         Object.defineProperty(
-            ssr.sandboxGlobal,
-            SSR.getPublicPathVarName(remote.options.name),
+            remote.ssr.sandboxGlobal,
+            this.publicPathVarName,
             {
                 enumerable: true,
-                get: () => this.remote.clientPublicPath
+                get: () => this.clientPublicPath
             }
         );
+    }
+    public get publicPathVarName(): string {
+        return SSR.getPublicPathVarName(this.remote.options.name);
+    }
+    public get clientPublicPath(): string {
+        return this.remote.clientPublicPath;
     }
     public get varName() {
         const { mf, options } = this.remote;
@@ -121,6 +156,40 @@ class RemoteModule {
     }
     public destroy() {
         delete global[this.varName];
+    }
+}
+
+class VMRuntimeInjectSelf extends VMRuntimeInject {
+    public manifestJson: Json<ManifestJson>;
+    public constructor(ssr: SSR) {
+        super(ssr);
+
+        this.manifestJson = new Json<ManifestJson>(
+            MF.get(ssr).outputManifest,
+            createManifest
+        );
+        if (!ssr.isProd) {
+            this.manifestJson.set(createManifest());
+        }
+    }
+    public get varName(): string {
+        return MF.get(this.ssr).getWebpackPublicPathVarName(this.ssr.name);
+    }
+    public get filename() {
+        const { ssr, manifestJson } = this;
+        const mf = MF.get(ssr);
+        const output = ssr.outputDirInServer;
+        const version = manifestJson.data.s ? `.${manifestJson.data.s}` : '';
+
+        return path.resolve(output, `js/${mf.entryName}${version}.js`);
+    }
+    public async fetch() {}
+    public injectHTML(): string {
+        const { ssr, manifestJson } = this;
+        const mf = MF.get(ssr);
+        const version = manifestJson.data.c ? `.${manifestJson.data.c}` : '';
+        const value = `${ssr.cdnPublicPath}${ssr.publicPath}js/${mf.entryName}${version}.js`;
+        return `window["${this.varName}"] = ${serialize(value)};`;
     }
 }
 
@@ -270,7 +339,7 @@ class Remote {
     public ssr: Genesis.SSR;
     public options: Genesis.MFRemote;
     public ready = new ReadyPromise<true>();
-    private remoteModule: RemoteModule;
+    private remoteModule: VMRuntimeInjectRemote;
     private renderer?: Renderer;
     private timer?: NodeJS.Timeout;
     private already = false;
@@ -280,7 +349,7 @@ class Remote {
     public constructor(ssr: Genesis.SSR, options: Genesis.MFRemote) {
         this.ssr = ssr;
         this.options = options;
-        this.remoteModule = new RemoteModule(this);
+        this.remoteModule = new VMRuntimeInjectRemote(this);
         this.polling = this.polling.bind(this);
         this.manifestJson = new Json<ManifestJson>(
             path.resolve(this.writeDir, 'manifest.json'),
@@ -420,7 +489,6 @@ class Remote {
             return;
         }
         this.pollingStatus = PollingStatus.polling;
-        await this.ready.await;
         const { mf } = this;
         await this.fetch();
         this.timer = setTimeout(this.polling, mf.options.intervalTime);
@@ -447,8 +515,10 @@ class Remote {
         const version = manifest.c ? `.${manifest.c}` : '';
         const fullPath = `${clientPublicPath}js/${mf.entryName}${version}.js`;
 
-        appendScript(mf.getWebpackPublicPathVarName(name), fullPath);
+        // 注入静态资源公共变量名称
         appendScript(SSR.getPublicPathVarName(name), clientPublicPath);
+        // 注入远程模块公共路径的变量名称
+        appendScript(mf.getWebpackPublicPathVarName(name), fullPath);
 
         return scriptText;
     }
@@ -457,11 +527,19 @@ class Remote {
 class RemoteGroup {
     private items: Remote[];
     private ssr: SSR;
+    private injectSelf?: VMRuntimeInjectSelf;
     public constructor(ssr: Genesis.SSR) {
         this.ssr = ssr;
         this.items = this.mf.options.remotes.map(
             (opts) => new Remote(ssr, opts)
         );
+        if (MF.get(ssr).haveExposes) {
+            // 自己调用自己的模块联邦
+            // eslint-disable-next-line no-new
+            const injectSelf = new VMRuntimeInjectSelf(ssr);
+            injectSelf.inject();
+            this.injectSelf = injectSelf;
+        }
     }
     public get mf() {
         return MF.get(this.ssr);
@@ -474,6 +552,9 @@ class RemoteGroup {
         const arr = items.map((item) => {
             return item.inject();
         });
+        if (this.injectSelf) {
+            arr.push(this.injectSelf.injectHTML());
+        }
         return `<script>${arr.join('')}</script>`;
     }
     public init(...args: Parameters<Remote['init']>) {

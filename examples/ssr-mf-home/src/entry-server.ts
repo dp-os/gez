@@ -1,16 +1,4 @@
-import { ClientOptions } from '@fmfe/genesis-core';
-import { onVueCreated } from 'ssr-mf-about/src/vue-use';
-import Vue from 'vue';
+import { createApp } from './common/common';
+import { routes } from './routes';
 
-import App from './app.vue';
-
-export default async (clientOptions: ClientOptions): Promise<Vue> => {
-    const app = await new Vue({
-        clientOptions,
-        render(h) {
-            return h(App);
-        }
-    });
-    onVueCreated(app, clientOptions);
-    return app;
-};
+export default createApp(routes);

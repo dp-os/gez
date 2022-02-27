@@ -22,7 +22,6 @@
         "allowSyntheticDefaultImports": true
     },
     "exclude": [
-        "src",
         "dist",
         "types"
     ]

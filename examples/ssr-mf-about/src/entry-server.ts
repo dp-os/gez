@@ -1,16 +1,5 @@
-import { RenderContext } from '@fmfe/genesis-core';
-import Vue from 'vue';
+import { createApp } from 'ssr-mf-home/src/common/common';
 
-import App from './app.vue';
-import { onVueCreated } from './vue-use';
+import { routes } from './routes';
 
-export default async (renderContext: RenderContext): Promise<Vue> => {
-    const app = await new Vue({
-        renderContext,
-        render(h) {
-            return h(App);
-        }
-    });
-    onVueCreated(app, renderContext);
-    return app;
-};
+export default createApp(routes);

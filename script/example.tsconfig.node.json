@@ -11,5 +11,10 @@
         "declarationDir": null,
         "esModuleInterop": true,
         "outDir": "./dist"
-    }
+    },
+    "exclude": [
+        "dist",
+        "types",
+        "src"
+    ]
 }

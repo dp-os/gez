@@ -60,7 +60,7 @@ function getExposes(ssr: SSR, mf: MF) {
     return exposes;
 }
 
-function getRemotes(mf: MF, isServer: boolean) {
+function getRemotes(ssr: SSR, mf: MF, isServer: boolean) {
     const remotes: Record<string, string> = {};
 
     mf.options.remotes.forEach((item) => {
@@ -69,6 +69,9 @@ function getRemotes(mf: MF, isServer: boolean) {
         if (isServer) {
             const code = `promise (async function () {
 var remoteModule = global["${exposesVarName}"];
+if (!remoteModule) {
+    throw new TypeError("global[\\"${exposesVarName}\\"] does not exist")
+}
 await remoteModule.fetch(); 
 return require(remoteModule.filename);
 })();
@@ -78,7 +81,7 @@ return require(remoteModule.filename);
         }
         remotes[item.name] = `promise new Promise(function (resolve, reject) {
     var script = document.createElement("script")
-    script.src = window["${exposesVarName}"];
+    script.src = window["${exposesVarName}"] ||  window["${ssr.publicPathVarName}"];
     script.onload = function onload() {
         var proxy = {
             get: (request) => window["${varName}"].get(request),
@@ -124,7 +127,7 @@ export class MFPlugin extends Plugin {
                     target === 'client'
                         ? undefined
                         : { type: 'commonjs-module' },
-                remotes: getRemotes(mf, target === 'server'),
+                remotes: getRemotes(ssr, mf, target === 'server'),
                 shared: mf.options.shared
             })
         );
