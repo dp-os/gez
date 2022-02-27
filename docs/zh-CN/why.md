@@ -8,13 +8,13 @@ Genesis的诞生就是为了探索SSR微服务的架构，在经历了1.0的远�
 
 
 ## 微服务架构
-![image](https://user-images.githubusercontent.com/8424643/155874150-076364f8-9c8e-4db2-95be-ea15c6ce1bab.png)
+![image](https://user-images.githubusercontent.com/8424643/155875020-cb6b7eb6-65b2-42e6-b27a-62fd5b635cc9.png)
 
 在后端的架构中，很容易实现将不同的路由，转发到不同的服务中，现在有了`Genesis`我们也可以做到，根据用户请求不同的路由，转发到不同的服务渲染HTML，但是客户端的时候，它又是一个整体，能够无刷新的切换到不同服务的页面，而实现这一切关键的秘诀就在于`module federation`     
 
 一个SSR的应用程序，通常会分为`entry-client.ts`和`entry-server.ts`两个入口文件，我们可以在一个公共的服务中导出两个文件，一个是提供了完整的客户端运行函数，里面注册了全部服务的路由，另外一个文件则导出一个`createApp`的函数，可以传入一个路由的配置，在服务端运行的时候，我们只需要注册当前服务提供的路由即可
 
-我们假设有这样的两个文件
+我们假设`ssr-mf-home`服务有这样的两个文件
 
 `src/common/create-app.ts`
 ```ts
@@ -67,8 +67,7 @@ function appendText(data: Record<string, string>, key: string, value: string) {
 }
 
 ```
-
-`src/common/client.ts`
+`src/common/create-app-client.ts`
 ```ts
 import { routes as about } from 'ssr-mf-about/src/routes';
 
@@ -78,3 +77,27 @@ import { createApp } from './common';
 export default createApp([...home, ...about]);
 
 ```
+上面的提供了一个`createApp`函数，接收的参数是一个路由配置，我们在服务端的时候，就可以使用`module federation`在`entry-server.ts`文件中执行这个方法，并传入当前的服务的路由，所以我们只需要在`entry-client.ts`和`entry-server.ts`分别注册不同的路由即可实现上述路由分发
+
+让我们看看其它服务是怎么去使用它的
+`entry-client.ts`
+```ts
+export { default } from 'ssr-mf-home/src/common/create-app-client';
+```
+客户端的入口文件，我们直接返回公共服务提供的统一`createApp`方法
+
+
+`entry-server.ts`
+```ts
+import { createApp } from 'ssr-mf-home/src/common/create-app';
+
+import { routes } from './routes';
+
+export default createApp(routes);
+
+```
+服务端入口文件，则只创建当前服务的路由
+
+这里提供了完整的demo，有兴趣的可以看看代码
+- [ssr-mf-home](https://github.com/fmfe/genesis/tree/master/examples/ssr-mf-home)
+- [ssr-mf-about](https://github.com/fmfe/genesis/tree/master/examples/ssr-mf-about)
