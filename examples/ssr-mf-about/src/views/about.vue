@@ -9,6 +9,11 @@
 import Vue from 'vue';
 
 export default Vue.extend({
-    name: 'about'
+    name: 'about',
+    metaInfo() {
+        return {
+            title: '关于'
+        };
+    }
 });
 </script>

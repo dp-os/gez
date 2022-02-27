@@ -59,7 +59,7 @@ export const mf = new MF(ssr, {
         'vue-router': {
             singleton: true
         },
-        'element-ui': {
+        'vue-meta': {
             singleton: true
         }
     },

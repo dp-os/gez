@@ -8,6 +8,11 @@
 import Vue from 'vue';
 
 export default Vue.extend({
-    name: 'home'
+    name: 'home',
+    metaInfo() {
+        return {
+            title: '首页'
+        };
+    }
 });
 </script>

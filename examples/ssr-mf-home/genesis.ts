@@ -34,6 +34,12 @@ export const mf = new MF(ssr, {
          */
         vue: {
             singleton: true
+        },
+        'vue-router': {
+            singleton: true
+        },
+        'vue-meta': {
+            singleton: true
         }
     },
     exposes: {
