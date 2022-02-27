@@ -7,13 +7,15 @@
 我们只需要在`renderContext.data.state`对象上设置你的状态即可，Genesis会把这个对象的可序列化内容下发到客户端
 ```ts
 export default async (renderContext: RenderContext): Promise<Vue> => {
+    renderContext.beforeRender(() => {
+        renderContext.data.state.vuexState = store.state;
+    });
     const app = new Vue({
         store,
         // options
     });
-    renderContext.beforeRender(() => {
-        renderContext.data.state.vuexState = app.$store.state;
-    });
+
+    return app;
 });
 ```
 
@@ -28,6 +30,7 @@ export default async (clientOptions: ClientOptions): Promise<Vue> => {
         store,
         // options
     });
+    return app;
 });
 ```
 
