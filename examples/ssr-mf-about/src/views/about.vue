@@ -1,7 +1,8 @@
 <template>
     <div>
         <h2>ssr-mf-about</h2>
-        我是关于我们
+        我是关于我们 <br />
+        <img src="../images/logo.svg" width="60" />
     </div>
 </template>
 <script lang="ts">
