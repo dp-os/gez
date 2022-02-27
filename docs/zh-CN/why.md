@@ -69,6 +69,7 @@ function appendText(data: Record<string, string>, key: string, value: string) {
 ```
 `src/common/create-app-client.ts`
 ```ts
+// 可以在这里，统一引入所有服务的路由配置
 import { routes as about } from 'ssr-mf-about/src/routes';
 
 import { routes as home } from '../routes';
