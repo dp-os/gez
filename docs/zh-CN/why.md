@@ -110,3 +110,6 @@ import Vue from 'ssr-commom/vue';
 import Router from 'ssr-commom/vue-router';
 import Meta from 'ssr-commom/vue-meta';
 ```
+
+## 最后
+看完上面的，相信你为什么选择Genesis应该有了自己的答案
