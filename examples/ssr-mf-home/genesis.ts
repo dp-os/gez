@@ -10,7 +10,7 @@ export const app = express();
  * 创建一个 SSR 实例
  */
 export const ssr = new SSR({
-    name: 'ssr-mf-host',
+    name: 'ssr-mf-home',
     build: {
         /**
          * 使用了MF，这个值必须设置为false
@@ -40,7 +40,7 @@ export const mf = new MF(ssr, {
             /**
              * 服务名称
              */
-            name: 'ssr-mf-remote',
+            name: 'ssr-mf-about',
             /**
              * 客户端的远程模块下载源，程序会自动拼接：http://localhost:3002/[服务名称]/node-exposes/[文件名]
              */

@@ -5,7 +5,7 @@
     </div>
 </template>
 <script lang="ts">
-import CommonHeader from 'ssr-mf-remote/src/common-header.vue';
+import CommonHeader from 'ssr-mf-about/src/common-header.vue';
 import Vue from 'vue';
 
 export default Vue.extend({

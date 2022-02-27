@@ -6,7 +6,7 @@ const path = require('path');
 const baseDir = path.resolve();
 const scriptDir = path.resolve('script');
 
-const examplesNames = ['ssr-demo', 'ssr-mf-remote', 'ssr-mf-host'];
+const examplesNames = ['ssr-demo', 'ssr-mf-about', 'ssr-mf-home'];
 const packagesNames = [
     'genesis-core',
     'genesis-compiler',

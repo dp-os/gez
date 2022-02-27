@@ -11,7 +11,7 @@ export const app = express();
  * 创建一个 SSR 实例
  */
 export const ssr = new SSR({
-    name: 'ssr-mf-remote',
+    name: 'ssr-mf-about',
     build: {
         /**
          * 使用了MF，这个值必须设置为false
