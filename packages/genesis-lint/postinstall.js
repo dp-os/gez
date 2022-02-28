@@ -67,10 +67,9 @@ const initConfigFile = () => {
         {
             file: eslintrcFile,
             text: `module.exports = {
-    extends: [
-        require.resolve('${package.name}')
-    ]
-}
+    extends: [require.resolve('@fmfe/genesis-lint')]
+};
+
 `
         },
         {
