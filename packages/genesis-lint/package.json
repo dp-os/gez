@@ -1,6 +1,6 @@
 {
     "name": "@fmfe/genesis-lint",
-    "version": "2.0.8",
+    "version": "2.0.9",
     "description": "",
     "main": "index.js",
     "bin": {
@@ -10,7 +10,8 @@
     "scripts": {
         "build:cjs": "NODE_ENV=production genesis-tsc --build tsconfig.cjs.json",
         "build:esm": "NODE_ENV=production genesis-tsc --build tsconfig.esm.json",
-        "build": "rm -rf dist types && npm run build:cjs && npm run build:esm"
+        "build": "rm -rf dist types && npm run build:cjs && npm run build:esm",
+        "postinstall": "node postinstall.js"
     },
     "author": "Followme",
     "license": "MIT",
