@@ -4,8 +4,8 @@
     "description": "",
     "main": "index.js",
     "bin": {
-        "genesis-eslint": "./bin/eslint.sh",
-        "genesis-stylelint": "./bin/stylelint.sh"
+        "genesis-eslint": "./node_modules/.bin/eslint",
+        "genesis-stylelint": "./node_modules/.bin/stylelint"
     },
     "scripts": {
         "build:cjs": "NODE_ENV=production genesis-tsc --build tsconfig.cjs.json",
