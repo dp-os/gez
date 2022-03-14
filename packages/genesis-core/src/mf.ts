@@ -391,10 +391,11 @@ class Remote {
         }
         await this.ready.await;
     }
-    public async fetch(): Promise<boolean> {
+    public async fetch(postinstall = false): Promise<boolean> {
         const { manifest, serverPublicPath } = this;
         const nowTime = Date.now();
-        const url = `${serverPublicPath}${entryDirName}/${manifestJsonName}?t=${manifest.t}&n=${nowTime}`;
+        const t = postinstall ? 0 : manifest.t;
+        const url = `${serverPublicPath}${entryDirName}/${manifestJsonName}?t=${t}&n=${nowTime}`;
         const res: ManifestJson = await this.request
             .get(url)
             .then((res) => res.data)
@@ -568,6 +569,10 @@ class RemoteGroup {
             });
         }
         return Promise.all(arr.map((item) => item.fetch()));
+    }
+    public postinstall() {
+        const arr = this.items;
+        return Promise.all(arr.map((item) => item.fetch(true)));
     }
     public polling() {
         return Promise.all(this.items.map((item) => item.polling()));
