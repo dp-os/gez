@@ -491,14 +491,18 @@ class Remote {
         }
         this.pollingStatus = PollingStatus.polling;
         const { mf } = this;
-        await this.fetch();
-        this.timer = setTimeout(this.polling, mf.options.intervalTime);
+        const start = async () => {
+            await this.fetch();
+            this.timer = setTimeout(start, mf.options.intervalTime);
+        };
+
+        return start();
     }
     /**
      * 停止轮询
      */
     public async stopPolling() {
-        clearTimeout(this.timer);
+        this.timer && clearTimeout(this.timer);
         this.pollingStatus = PollingStatus.stop;
     }
     public destroy() {
