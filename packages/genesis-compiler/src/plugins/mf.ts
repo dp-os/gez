@@ -38,10 +38,12 @@ function getExposes(ssr: SSR, mf: MF) {
             writeFilename,
             path.resolve(ssr.outputDirInTemplate, 'webpack-public-path')
         );
-        const sourcePath = relativeFilename(
-            writeFilename,
-            sourceFilename
-        ).replace(/\.(j|t)s$/, '');
+        const sourcePath = upath.toUnix(
+            relativeFilename(writeFilename, sourceFilename).replace(
+                /\.(j|t)s$/,
+                ''
+            )
+        );
         const templateArr: string[] = [
             `import "${upath.toUnix(webpackPublicPath)}";`,
             `export * from "${sourcePath}";`
