@@ -3,9 +3,9 @@
     "version": "2.0.13",
     "description": "Vue SSR Microfront",
     "bin": {
-        "genesis-ts-node": "./node_modules/.bin/ts-node",
-        "genesis-tsc": "./node_modules/.bin/tsc",
-        "genesis-vue-tsc": "./node_modules/.bin/vue-tsc"
+        "genesis-ts-node": "./bin/ts-node.js",
+        "genesis-tsc": "./bin/tsc.js",
+        "genesis-vue-tsc": "./bin/vue-tsc.js"
     },
     "keywords": [
         "vue",
