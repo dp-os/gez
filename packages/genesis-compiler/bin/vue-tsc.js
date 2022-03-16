@@ -1,2 +1,2 @@
 #!/usr/bin/env node
-require('../node_modules/.bin/vue-tsc');
+require('vue-tsc/bin/vue-tsc');

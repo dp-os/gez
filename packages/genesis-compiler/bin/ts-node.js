@@ -1,2 +1,2 @@
 #!/usr/bin/env node
-require('../node_modules/.bin/ts-node').main();
+require('ts-node/dist/bin').main();
