@@ -225,10 +225,11 @@ mf.remote.fetch();
 ```json
 {
     "scripts": {
-        "postinstall": "genesis-ts-node --project=./tsconfig.node.json postinstall.ts"
+        "postinstall": "genesis-try-ts-node --project=./tsconfig.node.json postinstall.ts"
     }
 }
 ```
-
+`小知识`：    
+为什么是使用`genesis-try-ts-node`命令而不是`genesis-ts-node`命令，是因为安装生产依赖时，`@fmfe/genesis-compiler`不会被安装，`genesis-ts-node`也就不存在，为了避免报错，所以又包装了一个`genesis-try-ts-node`命令来防止安装生产依赖时报错
 ## 最后
 到这里，我们已经完整实现了`MF`的全部功能，如果你觉得还有疑问的地方，欢迎在[issues](https://github.com/fmfe/genesis/issues)中讨论
