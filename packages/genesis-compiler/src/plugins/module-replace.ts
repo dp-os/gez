@@ -12,8 +12,12 @@ export class ModuleReplacePlugin extends Plugin {
                 (resource) => {
                     if (resource.request in moduleReplace) {
                         const value = moduleReplace[resource.request];
-                        resource.request =
+                        const request =
                             typeof value === 'string' ? value : value(resource);
+
+                        if (resource.contextInfo.issuer !== request) {
+                            resource.request = request;
+                        }
                     }
                 }
             ]);
