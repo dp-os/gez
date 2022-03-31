@@ -163,6 +163,7 @@ namespace Genesis {
          * Template file path
          */
         template?: string;
+        moduleReplace: Record<string, string | ((request: string) => string)>;
     }
 
     export interface Target {

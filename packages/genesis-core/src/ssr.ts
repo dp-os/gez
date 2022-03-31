@@ -180,6 +180,10 @@ export class SSR {
         );
     }
 
+    public get moduleReplace() {
+        return this.options.build.moduleReplace || {};
+    }
+
     /**
      * Template output path
      */
