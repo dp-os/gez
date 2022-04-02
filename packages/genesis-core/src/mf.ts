@@ -346,6 +346,7 @@ class Remote {
     private already = false;
     public request = createRequest();
     private manifestJson: Json<ManifestJson>;
+    private clientManifestJson: Json<ClientManifest>;
     private pollingStatus: PollingStatus = PollingStatus.noStart;
     public constructor(ssr: Genesis.SSR, options: Genesis.MFRemote) {
         this.ssr = ssr;
@@ -355,6 +356,18 @@ class Remote {
         this.manifestJson = new Json<ManifestJson>(
             path.resolve(this.writeDir, 'manifest.json'),
             createManifest
+        );
+        this.clientManifestJson = new Json<ClientManifest>(
+            path.resolve(this.writeDir, 'vue-ssr-client-manifest.json'),
+            () => {
+                return {
+                    publicPath: '',
+                    all: [],
+                    async: [],
+                    initial: [],
+                    modules: {}
+                };
+            }
         );
         if (ssr.isProd && this.manifest.s) {
             this.download(this.manifest);
@@ -393,19 +406,7 @@ class Remote {
         await this.ready.await;
     }
     public getClientManifest() {
-        const json = new Json<ClientManifest>(
-            path.resolve(this.writeDir, 'vue-ssr-client-manifest.json'),
-            () => {
-                return {
-                    publicPath: '',
-                    all: [],
-                    async: [],
-                    initial: [],
-                    modules: {}
-                };
-            }
-        );
-        const data = json.get();
+        const data = this.clientManifestJson.data;
         data.publicPath = this.clientPublicPath;
         return data;
     }
@@ -487,6 +488,7 @@ class Remote {
         const { ready } = this;
         if (!ok) return false;
         this.manifestJson.set(manifest);
+        this.clientManifestJson.get();
         if (code === 'local' || (ready.loading && code === 'no-update')) {
             Logger.readCache(url);
         }
