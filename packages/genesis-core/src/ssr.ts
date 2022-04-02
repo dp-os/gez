@@ -181,7 +181,7 @@ export class SSR {
     }
 
     public get moduleReplace() {
-        return this.options.build.moduleReplace || {};
+        return this.options?.build?.moduleReplace || {};
     }
 
     /**

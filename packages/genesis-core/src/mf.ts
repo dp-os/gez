@@ -78,6 +78,7 @@ function createRequest() {
 }
 
 type ManifestJson = Genesis.MFManifestJson;
+type ClientManifest = Genesis.ClientManifest;
 
 /**
  * VM 运行时注入的全局变量
@@ -391,6 +392,23 @@ class Remote {
         }
         await this.ready.await;
     }
+    public getClientManifest() {
+        const json = new Json<ClientManifest>(
+            path.resolve(this.writeDir, 'vue-ssr-client-manifest.json'),
+            () => {
+                return {
+                    publicPath: '',
+                    all: [],
+                    async: [],
+                    initial: [],
+                    modules: {}
+                };
+            }
+        );
+        const data = json.get();
+        data.publicPath = this.clientPublicPath;
+        return data;
+    }
     public async fetch(postinstall = false): Promise<boolean> {
         const { manifest, serverPublicPath } = this;
         const nowTime = Date.now();
@@ -573,6 +591,15 @@ class RemoteGroup {
             });
         }
         return Promise.all(arr.map((item) => item.fetch()));
+    }
+    public getClientManifest(name?: string) {
+        let arr = this.items;
+        if (name) {
+            arr = arr.filter((item) => {
+                return item.options.name === name;
+            });
+        }
+        return arr.map((item) => item.getClientManifest());
     }
     public postinstall() {
         const arr = this.items;
