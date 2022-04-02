@@ -219,9 +219,10 @@ class Json<T> {
     public get(): T {
         if (this.haveCache) {
             const text = fs.readFileSync(this.filename, { encoding: 'utf-8' });
-            return JSON.parse(text);
+            this.data = JSON.parse(text);
+        } else {
+            this.data = this._data();
         }
-        this.data = this._data();
         return this.data;
     }
     public set(data: T) {
