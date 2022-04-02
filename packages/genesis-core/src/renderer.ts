@@ -216,6 +216,7 @@ export class Renderer {
             mode: 'ssr-html',
             renderHtml: () => this.compile(context.data),
             ssr: this.ssr,
+            renderer: this,
             beforeRender: (cb) => {
                 (context as any)._subs.push(cb);
             }

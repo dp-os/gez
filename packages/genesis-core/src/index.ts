@@ -310,6 +310,7 @@ namespace Genesis {
         data: RenderData;
         mode: RenderMode;
         ssr: SSR;
+        renderer: Renderer;
         req?: IncomingMessage;
         res?: ServerResponse;
         styleTagExtractCSS: boolean;
