@@ -36,11 +36,15 @@ const onload = (el, bool) => {
         const load = () => {
             el._loadArr.forEach((fn) => fn());
             el._loading = false;
+            el.removeEventListener('load', load, false);
+            el.removeEventListener('error', error, false);
             resolve(true);
         };
         const error = () => {
             el._loadArr.forEach((fn) => fn());
             el._loading = false;
+            el.removeEventListener('load', load, false);
+            el.removeEventListener('error', error, false);
             resolve(false);
         };
         el.addEventListener('load', load, false);
