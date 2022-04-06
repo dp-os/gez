@@ -29,7 +29,6 @@ const onload = (el, bool) => {
     if (el._loading === true) {
         return new Promise((resolve) => {
             el._loadArr.push(resolve);
-            el._loadArr = [];
         });
     }
     // 首次加载
