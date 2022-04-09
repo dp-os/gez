@@ -39,3 +39,7 @@ yarn dev
 - 例子运行生产 `yarn start`
 - 例子类型检查 `yarn type-check`
 - 代码风格检查 `yarn lint`
+
+## CHANGELOG
+- 2.0.29
+  - 修复window模块路径错误[#62](https://github.com/fmfe/genesis/issues/62)
