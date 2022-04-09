@@ -40,7 +40,7 @@ export class NodeVM {
             if (path.isAbsolute(id)) {
                 return this._require(id);
             }
-            const filename = path.posix.join(dirname, id);
+            const filename = path.resolve(dirname, id);
             if (fs.existsSync(filename)) {
                 return this._require(filename);
             }
