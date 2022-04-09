@@ -17,7 +17,7 @@
 - 🙅 开发依赖和生产依赖分包，在构建生产包时，应用更小化    
 - 🤝 支持`Webpack module federation`
 - 👍 支持`TypeScript`，生成`dts`和类型检查，开箱即用    
-- 🛠 长期维护更新，`issues`处理及时    
+- 🛠 长期维护更新，`issues`处理及时
 
 ## 📚 文档
 - [中文文档](./docs/zh-CN/README.md)
@@ -39,6 +39,13 @@ yarn dev
 - 例子运行生产 `yarn start`
 - 例子类型检查 `yarn type-check`
 - 代码风格检查 `yarn lint`
+
+## 里程碑
+- 2022
+  - 4月2日，耗时一个月，首个超过15个SSR微服务的大型项目发布上线
+  - 3月份，基于`Webpack module federation`正式发布2.0版本
+- 2020年
+  - 项目立项，提出远程组件概念在(FOLLOWME5.0)[https://www.followme.com/]首次大规模应用
 
 ## CHANGELOG
 - 2.0.29
