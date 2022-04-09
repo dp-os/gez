@@ -45,7 +45,7 @@ yarn dev
   - 4月2日，耗时一个月，首个超过15个SSR微服务的大型项目发布上线
   - 3月份，基于`Webpack module federation`正式发布2.0版本
 - 2020年
-  - 项目立项，提出远程组件概念在(FOLLOWME5.0)[https://www.followme.com/]首次大规模应用
+  - 项目立项，提出远程组件概念在[FOLLOWME5.0](https://www.followme.com/)首次大规模应用
 
 ## CHANGELOG
 - 2.0.29
