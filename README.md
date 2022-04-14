@@ -31,6 +31,12 @@ yarn build:packages
 yarn dev
 ```
 
+## 完全体
+- [ ] (支持Vue2)
+- [ ] (支持Vue3)
+- [ ] (支持React)
+- [ ] (支持混合渲染)
+
 ## 🧰 命令说明
 - 安装项目依赖 `yarn bootstrap`
 - 编译核心依赖 `yarn build:packages`
@@ -46,7 +52,3 @@ yarn dev
   - 3月份，基于`Webpack module federation`正式发布2.0版本
 - 2020年
   - 项目立项，提出远程组件概念在[FOLLOWME5.0](https://www.followme.com/)首次大规模应用
-
-## CHANGELOG
-- 2.0.29
-  - 修复window模块路径错误[#62](https://github.com/fmfe/genesis/issues/62)
