@@ -270,7 +270,7 @@ namespace Genesis {
         script: string;
         scriptState: string;
         resource: RenderContextResource[];
-        automount: boolean;
+        autoMount: boolean;
         [x: string]: any;
     }
     export interface ClientOptions {
@@ -293,7 +293,7 @@ namespace Genesis {
         url?: string;
         id?: string;
         name?: string;
-        automount?: boolean;
+        autoMount?: boolean;
         /**
          * Extract tags from style files to CSS dynamically, Production environment enabled
          */

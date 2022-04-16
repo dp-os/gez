@@ -94,7 +94,7 @@ const start = (createApp?: (data: ClientOptions) => Promise<Vue>) => {
         const el = document.querySelector('[data-ssr-genesis-id="' + id + '"]');
         if (!el) return;
         const data = window[id];
-        if (data.automount === false) return;
+        if (data.autoMount === false) return;
 
         delete window[id];
         const options: ClientOptions = data;

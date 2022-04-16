@@ -210,7 +210,7 @@ export class Renderer {
                 scriptState: '',
                 state: {},
                 resource: [],
-                automount: true
+                autoMount: true
             },
             styleTagExtractCSS: options.styleTagExtractCSS ?? false,
             mode: 'ssr-html',
@@ -281,8 +281,8 @@ export class Renderer {
         if (typeof options.name === 'string') {
             context.data.name = options.name;
         }
-        if (typeof options.automount === 'boolean') {
-            context.data.automount = options.automount;
+        if (typeof options.autoMount === 'boolean') {
+            context.data.autoMount = options.autoMount;
         }
 
         return context;
