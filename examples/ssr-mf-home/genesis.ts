@@ -84,7 +84,6 @@ export const startApp = (renderer: Renderer) => {
      * 请求进来，渲染html
      */
     app.get('/', async (req, res, next) => {
-        console.log(mf.remote.getClientManifest());
         try {
             const result = await renderer.renderHtml({
                 req,
