@@ -59,3 +59,6 @@
 ### remote.polling
   - 说明：停止监听程序
   - 类型：`stopPolling(): Promise<void[]>;`
+### remote.getClientManifest
+  - 说明：获取对应服务的`vue-ssr-client-manifest.json`文件内容
+  - 类型：`getClientManifest(name?: string): Genesis.ClientManifest[]`
