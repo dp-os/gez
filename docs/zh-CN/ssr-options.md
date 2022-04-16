@@ -164,3 +164,17 @@ const ssr = new SSR({
     }
 });
 ```
+### build.moduleReplace
+  - 说明：重定向模块，如果你使用了`module federation`，你可能会希望将Vue指向到其它服务导出的Vue实例
+  - 类型：`Record<string, string | ((request: string) => string)>`
+  - 默认值：`{}`
+  - 例子：
+```ts
+const ssr = new SSR({
+    build: {
+      moduleReplace: {
+        'vue': 'ssr-common/vue'
+      }
+    }
+});
+```
