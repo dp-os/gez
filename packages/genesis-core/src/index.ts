@@ -200,20 +200,21 @@ namespace Genesis {
          */
         sandboxGlobal?: Record<string, any>;
     }
+
     /**
      * Hook parameter of webpack
      */
     export interface WebpackHookParams {
-        target: 'client' | 'server';
+        target: WebpackBuildTarget;
         config: Config;
     }
     export interface BabelConfig {
-        target: 'client' | 'server';
+        target: WebpackBuildTarget;
         plugins: any[];
         presets: any[];
     }
     export interface PostcssOptions {
-        target: 'client' | 'server';
+        target: WebpackBuildTarget;
         execute?: boolean;
         postcssOptions: {
             syntax?: string | object;
