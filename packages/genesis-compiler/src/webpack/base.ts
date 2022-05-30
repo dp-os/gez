@@ -13,7 +13,7 @@ export class BaseConfig extends BaseGenesis {
         config.mode(this.ssr.isProd ? 'production' : 'development');
         config.set('target', ssr.getBuildTarget(target));
         config.output.publicPath(
-            target == 'client' ? 'auto' : this.ssr.publicPath
+            target === 'client' ? 'auto' : this.ssr.publicPath
         );
         config.resolve.extensions.add('.js');
         this.ready = this.ssr.plugin.callHook('chainWebpack', {
@@ -25,7 +25,9 @@ export class BaseConfig extends BaseGenesis {
         const alias = ssr.options?.build?.alias || {};
         const fallback = ssr.options?.build?.fallback || {};
         config.resolve.set('fallback', fallback);
-        config.resolve.set('alias', alias);
+        Object.entries(alias).forEach(([key, value]) => {
+            config.resolve.alias.set(key, value as string);
+        });
     }
 
     public async toConfig(): Promise<webpack.Configuration> {
