@@ -1,3 +1,4 @@
+import { AxiosRequestConfig } from 'axios';
 import { IncomingMessage, ServerResponse } from 'http';
 import Vue from 'vue';
 import Config from 'webpack-chain';
@@ -42,6 +43,7 @@ namespace Genesis {
         name: string;
         clientOrigin: string;
         serverOrigin: string;
+        serverRequestConfig?: AxiosRequestConfig;
     }
     export interface MFOptions {
         /**

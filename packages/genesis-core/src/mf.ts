@@ -61,7 +61,7 @@ function createRequest() {
 
     request.interceptors.response.use(
         async (axiosConfig) => {
-            const time = Date.now() - axiosConfig.config._startTime;
+            const time = Date.now() - (axiosConfig.config._startTime || 0);
             const url = axiosConfig.config.url || '';
             if (reZip.test(url) || first) {
                 Logger.log(`${url} ${time}ms`);
@@ -292,7 +292,10 @@ class RemoteZip {
         const { writeDir, remote } = this;
         if (!zipU8) {
             zipU8 = await remote.request
-                .get(this.url, { responseType: 'arraybuffer' })
+                .get(this.url, {
+                    ...this.remote.requestConfig,
+                    responseType: 'arraybuffer'
+                })
                 .then((res) => res.data)
                 .catch(() => null);
             if (zipU8 && isCache) {
@@ -374,6 +377,9 @@ class Remote {
             this.download(this.manifest);
         }
     }
+    public get requestConfig() {
+        return this.options.serverRequestConfig || {};
+    }
     public get manifest() {
         return this.manifestJson.data;
     }
@@ -417,7 +423,7 @@ class Remote {
         const t = postinstall ? 0 : manifest.t;
         const url = `${serverPublicPath}${entryDirName}/${manifestJsonName}?t=${t}&n=${nowTime}`;
         const res: ManifestJson = await this.request
-            .get(url)
+            .get(url, this.requestConfig)
             .then((res) => res.data)
             .catch(() => null);
         if (res && typeof res === 'object') {
