@@ -1,7 +1,9 @@
 # CHANGELOG
-- 2.1.1
+- 2.1.2
   - 修复Window别名不生效[详情](https://github.com/fmfe/genesis/pull/68)
   - `MFRemote`新增`serverRequestConfig`
+- 2.1.1
+  - 不可用
 - 2.1.0
   - 调整`automount`修改成`autoMount`，[详情](https://github.com/fmfe/genesis/commit/5ff83cf796a8b69dd8c0db5fc42a53b7a7369ce8)
   - 优化类型[详情](https://github.com/fmfe/genesis/commit/de0211a0bee68562e254b55130791e857df14da1)
