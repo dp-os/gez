@@ -73,6 +73,7 @@
         "webpack-dev-middleware": "5.3.0",
         "webpack-hot-middleware": "2.25.1",
         "webpackbar": "5.0.2",
+        "terser-webpack-plugin": "5.3.3",
         "worker-loader": "3.0.8",
         "write": "2.0.0"
     },

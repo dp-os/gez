@@ -1,4 +1,5 @@
 import Genesis from '@fmfe/genesis-core';
+import TerserPlugin from 'terser-webpack-plugin';
 import webpack from 'webpack';
 import Config from 'webpack-chain';
 
@@ -28,6 +29,14 @@ export class BaseConfig extends BaseGenesis {
         Object.entries(alias).forEach(([key, value]) => {
             config.resolve.alias.set(key, value as string);
         });
+        config.optimization.set('minimize', true);
+        config.optimization.set('minimizer', [
+            new TerserPlugin({
+                terserOptions: {
+                    keep_classnames: true
+                }
+            })
+        ]);
     }
 
     public async toConfig(): Promise<webpack.Configuration> {
