@@ -1,4 +1,6 @@
 # CHANGELOG
+- 2.1.4
+  - 修复`terser-webpack-plugin`压缩两次的BUG
 - 2.1.3
   - `terser-webpack-plugin`压缩时，keep_classnames默认为true，避免本地开发时，调用远程组件，Vue报错`Do not use built-in or reserved HTML elements as component`
 - 2.1.2

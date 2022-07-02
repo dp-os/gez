@@ -29,7 +29,7 @@ export class BaseConfig extends BaseGenesis {
         Object.entries(alias).forEach(([key, value]) => {
             config.resolve.alias.set(key, value as string);
         });
-        config.optimization.set('minimize', true);
+        config.optimization.set('minimize', false);
         config.optimization.set('minimizer', [
             new TerserPlugin({
                 terserOptions: {
