@@ -1,4 +1,6 @@
 # CHANGELOG
+- 2.1.6
+  - 移除`terser-webpack-plugin`
 - 2.1.5
   - 修复`terser-webpack-plugin`开发环境不需要压缩
 - 2.1.4
