@@ -29,14 +29,16 @@ export class BaseConfig extends BaseGenesis {
         Object.entries(alias).forEach(([key, value]) => {
             config.resolve.alias.set(key, value as string);
         });
-        config.optimization.set('minimize', false);
-        config.optimization.set('minimizer', [
-            new TerserPlugin({
-                terserOptions: {
-                    keep_classnames: true
-                }
-            })
-        ]);
+        if (ssr.isProd) {
+            config.optimization.set('minimize', false);
+            config.optimization.set('minimizer', [
+                new TerserPlugin({
+                    terserOptions: {
+                        keep_classnames: true
+                    }
+                })
+            ]);
+        }
     }
 
     public async toConfig(): Promise<webpack.Configuration> {
