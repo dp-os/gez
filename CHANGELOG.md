@@ -1,7 +1,6 @@
 # CHANGELOG
 - 2.1.5
   - 修复`terser-webpack-plugin`开发环境不需要压缩
-# CHANGELOG
 - 2.1.4
   - 修复`terser-webpack-plugin`压缩两次的BUG
 - 2.1.3
