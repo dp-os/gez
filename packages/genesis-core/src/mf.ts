@@ -30,6 +30,9 @@ class Logger {
     public static requestFailed(url: string) {
         return this.log(`${url} request failed`);
     }
+    public static noConfig(url: string) {
+        return this.log(`${url} Baseurl is not configured`);
+    }
     public static decompressionFailed(url: string) {
         return this.log(`${url} decompression failed`);
     }
@@ -419,9 +422,13 @@ class Remote {
     }
     public async fetch(postinstall = false): Promise<boolean> {
         const { manifest, serverPublicPath } = this;
-        const nowTime = Date.now();
         const t = postinstall ? 0 : manifest.t;
+        const nowTime = Date.now();
         const url = `${serverPublicPath}${entryDirName}/${manifestJsonName}?t=${t}&n=${nowTime}`;
+        if (!serverPublicPath) {
+            Logger.noConfig(url);
+            return false;
+        }
         const res: ManifestJson = await this.request
             .get(url, this.requestConfig)
             .then((res) => res.data)
