@@ -1,4 +1,6 @@
 # CHANGELOG
+- 2.1.7
+  - 升级Vue`2.7`
 - 2.1.6
   - 移除`terser-webpack-plugin`
 - 2.1.5

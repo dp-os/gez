@@ -1,4 +1,8 @@
 {
+    "vueCompilerOptions": {
+        "target": 2.7,
+        "jsx": "preserve"
+    },
     "compilerOptions": {
         "target": "esnext",
         "module": "esnext",

@@ -357,9 +357,7 @@ export = Genesis;
 
 declare module 'vue/types/options' {
     interface ComponentOptions<V extends Vue> {
-        // @ts-ignore
         renderContext?: Genesis.RenderContext;
-        // @ts-ignore
         clientOptions?: Genesis.ClientOptions;
     }
 }

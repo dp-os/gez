@@ -1,6 +1,6 @@
 {
     "name": "@fmfe/genesis-core",
-    "version": "2.1.6",
+    "version": "2.1.7-alpha.0",
     "description": "Vue SSR Microfront",
     "keywords": [
         "vue",
@@ -30,7 +30,7 @@
         "fflate": "0.7.3",
         "serialize-javascript": "6.0.0",
         "vue": "2.6.14",
-        "vue-server-renderer": "2.6.14",
+        "vue-server-renderer": "^2.7.0",
         "write": "2.0.0"
     },
     "devDependencies": {
