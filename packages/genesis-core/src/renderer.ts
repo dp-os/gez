@@ -440,6 +440,10 @@ export class Renderer {
             if (text) {
                 const clientManifest: Genesis.ClientManifest = JSON.parse(text);
                 clientManifest.publicPath = ssr.cdnPublicPath + ssr.publicPath;
+                if (!ssr.isProd) {
+                    // fix https://github.com/fmfe/genesis/issues/71
+                    removeHotUpdateFiles(clientManifest);
+                }
                 this.clientManifest = clientManifest;
             }
         }
@@ -452,6 +456,16 @@ export class Renderer {
         this.renderer = createRenderer(renderOptions);
         this.compile = Ejs.compile(ejsTemplate);
     }
+}
+
+function testHotUpdate(file: string) {
+    return !/\.hot-update.js(on)?$/.test(file);
+}
+
+function removeHotUpdateFiles(manifest: Genesis.ClientManifest) {
+    manifest.all = manifest.all.filter(testHotUpdate);
+    manifest.async = manifest.async.filter(testHotUpdate);
+    manifest.initial = manifest.initial.filter(testHotUpdate);
 }
 
 export function styleTagExtractCSS(value: string) {
