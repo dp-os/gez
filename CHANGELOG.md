@@ -1,7 +1,9 @@
 # CHANGELOG
+- 2.1.8
+  - 修复热更新报错的问题[#71](https://github.com/fmfe/genesis/issues/71)
+  - 升级其它若干依赖
 - 2.1.7
   - 升级Vue`2.7`
-  - 修复热更新报错的问题[#71](https://github.com/fmfe/genesis/issues/71)
 - 2.1.6
   - 移除`terser-webpack-plugin`
 - 2.1.5
