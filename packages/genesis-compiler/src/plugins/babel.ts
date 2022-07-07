@@ -31,35 +31,27 @@ export class BabelPlugin extends Plugin {
                 }
             ]
         ];
-        const presetsTS = [
-            [
-                'babel-preset-typescript-vue',
-                {
-                    allowNamespaces: true
-                }
-            ],
-            ...presets
-        ];
-        const babeljs: BabelConfig = {
+        const presetsTS = [['@babel/preset-typescript'], ...presets];
+        const babelJS: BabelConfig = {
             target,
             plugins: [...plugins],
             presets: [...presets]
         };
-        const babelts: BabelConfig = {
+        const babelTS: BabelConfig = {
             target,
             plugins: [...plugins],
             presets: presetsTS
         };
-        Object.defineProperty(babeljs, 'target', {
+        Object.defineProperty(babelJS, 'target', {
             writable: false,
             enumerable: false
         });
-        Object.defineProperty(babelts, 'target', {
+        Object.defineProperty(babelTS, 'target', {
             writable: false,
             enumerable: false
         });
-        await this.ssr.plugin.callHook('babel', babeljs);
-        await this.ssr.plugin.callHook('babel', babelts);
+        await this.ssr.plugin.callHook('babel', babelJS);
+        await this.ssr.plugin.callHook('babel', babelTS);
         const jsRule = config.module
             .rule('js')
             .test(/\.m?jsx?$/)
@@ -67,7 +59,7 @@ export class BabelPlugin extends Plugin {
             .end()
             .use('babel')
             .loader('babel-loader')
-            .options(babeljs)
+            .options(babelJS)
             .end();
         config.module
             .rule('ts')
@@ -76,7 +68,7 @@ export class BabelPlugin extends Plugin {
             .end()
             .use('babel')
             .loader('babel-loader')
-            .options(babelts)
+            .options(babelTS)
             .end();
         if (isProd) {
             jsRule.use('thread-loader').loader('thread-loader').end();

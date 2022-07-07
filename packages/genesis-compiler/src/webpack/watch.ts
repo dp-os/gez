@@ -1,5 +1,4 @@
-import { MF, Renderer, SSR } from '@fmfe/genesis-core';
-import chalk from 'chalk';
+import { Renderer, SSR } from '@fmfe/genesis-core';
 import fs from 'fs';
 import mkdirp from 'mkdirp';
 import path from 'path';
@@ -10,8 +9,6 @@ import WebpackHotMiddleware from 'webpack-hot-middleware';
 import { InstallPlugin } from '../plugins/install';
 import { BaseGenesis } from '../utils';
 import { ClientConfig, ServerConfig } from '../webpack';
-const error = chalk.bold.red;
-const warning = chalk.keyword('orange');
 
 export class WatchClientConfig extends ClientConfig {
     public constructor(ssr: SSR) {
@@ -49,10 +46,10 @@ export class Watch extends BaseGenesis {
     }
 
     public async start() {
-        let ready: Function;
+        let ready: Function | null;
         let clientDone = false;
         let serverDone = false;
-        let promise = new Promise<void>((resolve) => {
+        let promise: Promise<void> | null = new Promise<void>((resolve) => {
             ready = resolve;
         });
         const onReady = () => {
@@ -88,17 +85,6 @@ export class Watch extends BaseGenesis {
             poll: 1000
         };
         const clientOnDone = (stats: Webpack.Stats) => {
-            const jsonStats = stats.toJson();
-            if (stats.hasErrors()) {
-                jsonStats.errors.forEach((err) =>
-                    console.log(error(err.message))
-                );
-            }
-            if (stats.hasWarnings()) {
-                jsonStats.warnings.forEach((err) =>
-                    console.log(warning(err.message))
-                );
-            }
             if (stats.hasErrors()) return;
             this.notify();
             clientDone = true;
