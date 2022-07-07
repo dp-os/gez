@@ -202,9 +202,10 @@ export class MFPlugin extends Plugin {
         if (fs.existsSync(root)) {
             const files = find.fileSync(path.resolve(root, './js'));
             const re = new RegExp(`${mf.entryName}\\..{8}.js`);
-            filename = files.find((filename) => {
-                return re.test(filename);
-            });
+            filename =
+                files.find((filename) => {
+                    return re.test(filename);
+                }) || '';
         }
         return filename;
     }

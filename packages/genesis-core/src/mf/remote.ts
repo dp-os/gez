@@ -1,84 +1,23 @@
-import axios from 'axios';
 import del from 'del';
 import fflate from 'fflate';
 import fs from 'fs';
-import http from 'http';
-import https from 'https';
 import path from 'path';
 import serialize from 'serialize-javascript';
 import write from 'write';
 
-import type * as Genesis from '.';
-import { Plugin } from './plugin';
-import type { Renderer } from './renderer';
-import { SSR } from './ssr';
-import { md5 } from './util';
-
-const mf = Symbol('mf');
-const entryDirName = 'node-exposes';
-const manifestJsonName = 'manifest.json';
+import type * as Genesis from '..';
+import type { Renderer } from '../renderer';
+import { SSR } from '../ssr';
+import { md5 } from '../util';
+import { type MF } from '.';
+import { Base } from './base';
+import { ENTRY_DIR_NAME, MANIFEST_JSON_NAME } from './config';
+import { Exposes } from './exposes';
+import { createManifest, Json } from './json';
+import { Logger } from './logger';
+import { MFPlugin } from './plugin';
+import { createRequest } from './request';
 const developmentZipName = 'development';
-
-declare module 'axios' {
-    export interface AxiosRequestConfig {
-        _startTime?: number;
-        loggerText?: string;
-    }
-}
-
-class Logger {
-    public static requestFailed(url: string) {
-        return this.log(`${url} request failed`);
-    }
-    public static noConfig(url: string) {
-        return this.log(`${url} Baseurl is not configured`);
-    }
-    public static decompressionFailed(url: string) {
-        return this.log(`${url} decompression failed`);
-    }
-    public static reload(url: string) {
-        return this.log(`Hot update to ${url} code`);
-    }
-    public static readCache(url: string) {
-        return this.log(`${url} read local cache`);
-    }
-    public static ready(name: string) {
-        return this.log(`${name} is ready`);
-    }
-    public static log(text: string) {
-        return console.log(`genesis ${text}`);
-    }
-}
-
-const reZip = /\.zip$/;
-function createRequest() {
-    let first = true;
-    const request = axios.create({
-        httpAgent: new http.Agent({ keepAlive: true }),
-        httpsAgent: new https.Agent({ keepAlive: true })
-    });
-    request.interceptors.request.use((axiosConfig) => {
-        axiosConfig._startTime = Date.now();
-        return axiosConfig;
-    });
-
-    request.interceptors.response.use(
-        async (axiosConfig) => {
-            const time = Date.now() - (axiosConfig.config._startTime || 0);
-            const url = axiosConfig.config.url || '';
-            if (reZip.test(url) || first) {
-                Logger.log(`${url} ${time}ms`);
-                first = false;
-            }
-            return Promise.resolve(axiosConfig);
-        },
-        (err) => {
-            return Promise.reject(err);
-        }
-    );
-
-    return request;
-}
 
 type ManifestJson = Genesis.MFManifestJson;
 type ClientManifest = Genesis.ClientManifest;
@@ -86,11 +25,7 @@ type ClientManifest = Genesis.ClientManifest;
 /**
  * VM 运行时注入的全局变量
  */
-abstract class VMRuntimeInject {
-    public ssr: SSR;
-    public constructor(ssr: SSR) {
-        this.ssr = ssr;
-    }
+abstract class VMRuntimeInject extends Base {
     /**
      * global 当前对象注入的变量名称
      */
@@ -118,7 +53,7 @@ abstract class VMRuntimeInject {
 class VMRuntimeInjectRemote extends VMRuntimeInject {
     public remote: Remote;
     public constructor(remote: Remote) {
-        super(remote.ssr);
+        super(remote.ssr, remote.mf);
         this.remote = remote;
         this.inject();
         Object.defineProperty(
@@ -165,11 +100,11 @@ class VMRuntimeInjectRemote extends VMRuntimeInject {
 
 class VMRuntimeInjectSelf extends VMRuntimeInject {
     public manifestJson: Json<ManifestJson>;
-    public constructor(ssr: SSR) {
-        super(ssr);
+    public constructor(ssr: SSR, mf: MF) {
+        super(ssr, mf);
 
         this.manifestJson = new Json<ManifestJson>(
-            MF.get(ssr).outputManifest,
+            mf.outputManifest,
             createManifest
         );
         if (!ssr.isProd) {
@@ -177,11 +112,10 @@ class VMRuntimeInjectSelf extends VMRuntimeInject {
         }
     }
     public get varName(): string {
-        return MF.get(this.ssr).getWebpackPublicPathVarName(this.ssr.name);
+        return this.mf.getWebpackPublicPathVarName(this.ssr.name);
     }
     public get filename() {
-        const { ssr, manifestJson } = this;
-        const mf = MF.get(ssr);
+        const { ssr, manifestJson, mf } = this;
         const output = ssr.outputDirInServer;
         const version = manifestJson.data.s ? `.${manifestJson.data.s}` : '';
 
@@ -189,49 +123,10 @@ class VMRuntimeInjectSelf extends VMRuntimeInject {
     }
     public async fetch() {}
     public injectHTML(): string {
-        const { ssr, manifestJson } = this;
-        const mf = MF.get(ssr);
+        const { ssr, manifestJson, mf } = this;
         const version = manifestJson.data.c ? `.${manifestJson.data.c}` : '';
         const value = `${ssr.cdnPublicPath}${ssr.publicPath}js/${mf.entryName}${version}.js`;
         return `window["${this.varName}"] = ${serialize(value)};`;
-    }
-}
-
-function createManifest(): ManifestJson {
-    return {
-        c: '',
-        s: '',
-        t: 0,
-        d: 0
-    };
-}
-
-class Json<T> {
-    public filename: string;
-    public data: T;
-    private _data: () => T;
-    public constructor(filename: string, _data: () => T) {
-        this.filename = filename;
-        this._data = _data;
-        this.data = this.get();
-    }
-    public get haveCache() {
-        const { filename } = this;
-        return fs.existsSync(filename);
-    }
-    public get(): T {
-        if (this.haveCache) {
-            const text = fs.readFileSync(this.filename, { encoding: 'utf-8' });
-            this.data = JSON.parse(text);
-        } else {
-            this.data = this._data();
-        }
-        return this.data;
-    }
-    public set(data: T) {
-        this.data = data;
-        const text = JSON.stringify(data, null, 4);
-        write.sync(this.filename, text);
     }
 }
 
@@ -343,8 +238,7 @@ enum PollingStatus {
     stop
 }
 
-class Remote {
-    public ssr: Genesis.SSR;
+class Remote extends Base {
     public options: Genesis.MFRemote;
     public ready = new ReadyPromise<true>();
     private remoteModule: VMRuntimeInjectRemote;
@@ -355,8 +249,8 @@ class Remote {
     private manifestJson: Json<ManifestJson>;
     private clientManifestJson: Json<ClientManifest>;
     private pollingStatus: PollingStatus = PollingStatus.noStart;
-    public constructor(ssr: Genesis.SSR, options: Genesis.MFRemote) {
-        this.ssr = ssr;
+    public constructor(ssr: Genesis.SSR, mf: MF, options: Genesis.MFRemote) {
+        super(ssr, mf);
         this.options = options;
         this.remoteModule = new VMRuntimeInjectRemote(this);
         this.polling = this.polling.bind(this);
@@ -385,9 +279,6 @@ class Remote {
     }
     public get manifest() {
         return this.manifestJson.data;
-    }
-    public get mf() {
-        return MF.get(this.ssr);
     }
     public get clientPublicPath() {
         return `${this.options.clientOrigin}/${this.options.name}/`;
@@ -424,7 +315,7 @@ class Remote {
         const { manifest, serverPublicPath } = this;
         const t = postinstall ? 0 : manifest.t;
         const nowTime = Date.now();
-        const url = `${serverPublicPath}${entryDirName}/${manifestJsonName}?t=${t}&n=${nowTime}`;
+        const url = `${serverPublicPath}${ENTRY_DIR_NAME}/${MANIFEST_JSON_NAME}?t=${t}&n=${nowTime}`;
         if (!serverPublicPath) {
             Logger.noConfig(url);
             return false;
@@ -442,7 +333,7 @@ class Remote {
     }
     private getTargetUrl(target: string) {
         const { serverPublicPath } = this;
-        return `${serverPublicPath}${entryDirName}/${target}`;
+        return `${serverPublicPath}${ENTRY_DIR_NAME}/${target}`;
     }
     public async download(manifest: ManifestJson): Promise<boolean> {
         const arr: Promise<boolean>[] = [this.downloadZip(manifest)];
@@ -563,25 +454,21 @@ class Remote {
     }
 }
 
-class RemoteGroup {
+export class RemoteGroup extends Base {
     private items: Remote[];
-    private ssr: SSR;
     private injectSelf?: VMRuntimeInjectSelf;
-    public constructor(ssr: Genesis.SSR) {
-        this.ssr = ssr;
+    public constructor(ssr: Genesis.SSR, mf: MF) {
+        super(ssr, mf);
         this.items = this.mf.options.remotes.map(
-            (opts) => new Remote(ssr, opts)
+            (opts) => new Remote(ssr, mf, opts)
         );
-        if (MF.get(ssr).haveExposes) {
+        if (mf.haveExposes) {
             // 自己调用自己的模块联邦
             // eslint-disable-next-line no-new
-            const injectSelf = new VMRuntimeInjectSelf(ssr);
+            const injectSelf = new VMRuntimeInjectSelf(ssr, mf);
             injectSelf.inject();
             this.injectSelf = injectSelf;
         }
-    }
-    public get mf() {
-        return MF.get(this.ssr);
     }
     public inject() {
         const { items } = this;
@@ -629,125 +516,7 @@ class RemoteGroup {
     }
 }
 
-type ExposesWatchCallback = () => void;
-
-class Exposes {
-    public ssr: Genesis.SSR;
-    private subs: ExposesWatchCallback[] = [];
-    private manifestJson: Json<ManifestJson>;
-    public constructor(ssr: Genesis.SSR) {
-        this.ssr = ssr;
-        this.manifestJson = new Json(this.mf.outputManifest, createManifest);
-    }
-    public get mf() {
-        return MF.get(this.ssr);
-    }
-    public get manifest() {
-        return this.manifestJson.data;
-    }
-    public watch(cb: ExposesWatchCallback) {
-        const wrap = () => {
-            return cb();
-        };
-        this.subs.push(wrap);
-        return () => {
-            const index = this.subs.indexOf(wrap);
-            if (index > -1) {
-                this.subs.splice(index, 1);
-            }
-        };
-    }
-    public getManifest(t = 0, maxAwait = 1000 * 60): Promise<ManifestJson> {
-        if (!t || t !== this.manifest.t) {
-            return Promise.resolve({ ...this.manifest });
-        }
-        return new Promise<ManifestJson>((resolve) => {
-            const timer = setTimeout(() => {
-                resolve({ ...this.manifest });
-            }, maxAwait);
-            this.watch(() => {
-                clearTimeout(timer);
-                resolve({ ...this.manifest });
-            });
-        });
-    }
-    public emit() {
-        this.manifestJson.get();
-        this.subs.forEach((cb) => cb());
-    }
-}
-
-export class MFPlugin extends Plugin {
-    public constructor(ssr: Genesis.SSR) {
-        super(ssr);
-    }
-    public get mf() {
-        return MF.get(this.ssr);
-    }
-    public renderBefore(context: Genesis.RenderContext): void {
-        context.data.script += this.mf.remote.inject();
-    }
-}
-
-export class MF {
-    public static is(ssr: Genesis.SSR) {
-        return ssr[mf] instanceof MF;
-    }
-    public static get(ssr: Genesis.SSR): MF {
-        if (!this.is(ssr)) {
-            throw new TypeError(`SSR instance: MF instance not found`);
-        }
-        return ssr[mf];
-    }
-    public options: Required<Genesis.MFOptions> = {
-        remotes: [],
-        intervalTime: 1000,
-        exposes: {},
-        shared: {},
-        typesDir: ''
-    };
-    public exposes: Exposes;
-    public remote: RemoteGroup;
-    public entryName = 'exposes';
-    protected ssr: Genesis.SSR;
-    protected mfPlugin: MFPlugin;
-    public constructor(ssr: Genesis.SSR, options: Genesis.MFOptions = {}) {
-        this.ssr = ssr;
-        Object.assign(this.options, options);
-        ssr[mf] = this;
-        this.mfPlugin = new MFPlugin(ssr);
-        this.exposes = new Exposes(ssr);
-        this.remote = new RemoteGroup(ssr);
-        ssr.plugin.use(this.mfPlugin);
-        if (ssr.options?.build?.extractCSS !== false) {
-            throw new TypeError(
-                `To use MF plug-in, build.extractCSS needs to be set to false`
-            );
-        }
-    }
-    public get haveExposes() {
-        return Object.keys(this.options.exposes).length > 0;
-    }
-    public get varName() {
-        return SSR.fixVarName(this.ssr.name);
-    }
-    public get output() {
-        return path.resolve(this.ssr.outputDirInClient, entryDirName);
-    }
-    public get outputManifest() {
-        return path.resolve(this.output, manifestJsonName);
-    }
-    public get manifestRoutePath() {
-        return `${this.ssr.publicPath}${entryDirName}/${manifestJsonName}`;
-    }
-    public getWebpackPublicPathVarName(name: string) {
-        return `__webpack_public_path_${SSR.fixVarName(name)}_${
-            this.entryName
-        }`;
-    }
-}
-
-export class ReadyPromise<T> {
+class ReadyPromise<T> {
     /**
      * 执行完成
      */
