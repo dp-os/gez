@@ -12,11 +12,10 @@ import { md5 } from '../util';
 import { type MF } from '.';
 import { Base } from './base';
 import { ENTRY_DIR_NAME, MANIFEST_JSON_NAME } from './config';
-import { Exposes } from './exposes';
 import { createManifest, Json } from './json';
 import { Logger } from './logger';
-import { MFPlugin } from './plugin';
 import { createRequest } from './request';
+
 const developmentZipName = 'development';
 
 type ManifestJson = Genesis.MFManifestJson;
