@@ -62,7 +62,13 @@ export const mf = new MF(ssr, {
              */
             clientOrigin: 'http://localhost:3002',
             /**
-             * 服务端的远程模块下载源，程序会自动拼接：http://localhost:3002/[服务名称]/node-exposes/[文件名]
+             * 支持下列方式获取远程模块，例如：
+             *      http://localhost:3002
+             *      /Volumes/work/github/fmfe/genesis
+             * 程序会判断字符串中是否同时包含[name]和[filename]，如果没有包含，则会拼接：/[name]/node-exposes/[filename]
+             * 实际会变成：
+             *      http://localhost:3002/[name]/node-exposes/[filename]
+             *      /Volumes/work/github/fmfe/genesis/[name]/node-exposes/[filename]
              */
             serverOrigin: 'http://localhost:3002'
         }

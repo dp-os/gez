@@ -19,7 +19,7 @@
     "author": "Followme",
     "license": "MIT",
     "devDependencies": {
-        "vue": "^2.7.4"
+        "vue": "2.7.4"
     },
     "dependencies": {
         "@fmfe/tms.js": "^0.1.7"

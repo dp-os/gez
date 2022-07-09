@@ -14,12 +14,25 @@ import { Base } from './base';
 import { ENTRY_DIR_NAME, MANIFEST_JSON_NAME } from './config';
 import { createManifest, Json } from './json';
 import { Logger } from './logger';
-import { createRequest } from './request';
+import { FileFetch, HttpFetch, NullFetch } from './remote-fetch';
 
 const developmentZipName = 'development';
 
 type ManifestJson = Genesis.MFManifestJson;
 type ClientManifest = Genesis.ClientManifest;
+
+interface RemoteFetchOptions {
+    getJson: (context: {
+        filename: string;
+        t: number;
+        remote: Remote;
+    }) => Promise<ClientManifest | null>;
+    getZip: (context: {
+        filename: string;
+        t: number;
+        remote: Remote;
+    }) => Promise<ArrayBuffer | null>;
+}
 
 /**
  * VM 运行时注入的全局变量
@@ -188,13 +201,10 @@ class RemoteZip {
         }
         const { writeDir, remote } = this;
         if (!zipU8) {
-            zipU8 = await remote.request
-                .get(this.url, {
-                    ...this.remote.requestConfig,
-                    responseType: 'arraybuffer'
-                })
-                .then((res) => res.data)
-                .catch(() => null);
+            zipU8 = await remote.request.getZip({
+                filename: this.url,
+                remote
+            });
             if (zipU8 && isCache) {
                 write.sync(cacheFilename, zipU8);
             }
@@ -237,17 +247,19 @@ enum PollingStatus {
     stop
 }
 
-class Remote extends Base {
+export class Remote extends Base {
     public options: Genesis.MFRemote;
     public ready = new ReadyPromise<true>();
     private remoteModule: VMRuntimeInjectRemote;
     private renderer?: Renderer;
     private timer?: NodeJS.Timeout;
     private already = false;
-    public request = createRequest();
     private manifestJson: Json<ManifestJson>;
     private clientManifestJson: Json<ClientManifest>;
     private pollingStatus: PollingStatus = PollingStatus.noStart;
+    private httpFetch = new HttpFetch();
+    private fileFetch = new FileFetch();
+    private nullFetch = new NullFetch();
     public constructor(ssr: Genesis.SSR, mf: MF, options: Genesis.MFRemote) {
         super(ssr, mf);
         this.options = options;
@@ -273,6 +285,15 @@ class Remote extends Base {
             this.download(this.manifest);
         }
     }
+    public get request() {
+        const { serverOrigin } = this.options;
+        if (path.isAbsolute(serverOrigin)) {
+            return this.fileFetch;
+        } else if (serverOrigin.indexOf('http') === 0) {
+            return this.httpFetch;
+        }
+        return this.nullFetch;
+    }
     public get requestConfig() {
         return this.options.serverRequestConfig || {};
     }
@@ -281,9 +302,6 @@ class Remote extends Base {
     }
     public get clientPublicPath() {
         return `${this.options.clientOrigin}/${this.options.name}/`;
-    }
-    public get serverPublicPath() {
-        return `${this.options.serverOrigin}/${this.options.name}/`;
     }
     public get writeDir() {
         return path.resolve(
@@ -311,28 +329,39 @@ class Remote extends Base {
         return data;
     }
     public async fetch(postinstall = false): Promise<boolean> {
-        const { manifest, serverPublicPath } = this;
+        const { manifest } = this;
         const t = postinstall ? 0 : manifest.t;
-        const nowTime = Date.now();
-        const url = `${serverPublicPath}${ENTRY_DIR_NAME}/${MANIFEST_JSON_NAME}?t=${t}&n=${nowTime}`;
-        if (!serverPublicPath) {
-            Logger.noConfig(url);
+        const filename = this.getFullFile(MANIFEST_JSON_NAME);
+        if (!filename) {
+            Logger.noConfig(filename);
             return false;
         }
-        const res: ManifestJson = await this.request
-            .get(url, this.requestConfig)
-            .then((res) => res.data)
-            .catch(() => null);
+        const res: ManifestJson = await this.request.getJson({
+            filename,
+            t,
+            remote: this
+        });
         if (res && typeof res === 'object') {
             return this.download(res);
         } else {
-            Logger.requestFailed(url);
+            Logger.requestFailed(filename);
         }
         return false;
     }
-    private getTargetUrl(target: string) {
-        const { serverPublicPath } = this;
-        return `${serverPublicPath}${ENTRY_DIR_NAME}/${target}`;
+    public getFullFile(filename: string) {
+        let { serverOrigin, name } = this.options;
+        if (
+            serverOrigin.includes('[name]') &&
+            serverOrigin.includes('[filename]')
+        ) {
+            serverOrigin = serverOrigin
+                .replace(/\[name\]/g, name)
+                .replace(/\[filename\]/g, filename);
+        } else if (serverOrigin) {
+            serverOrigin = `${serverOrigin}/${name}/${ENTRY_DIR_NAME}/${filename}`;
+        }
+
+        return serverOrigin;
     }
     public async download(manifest: ManifestJson): Promise<boolean> {
         const arr: Promise<boolean>[] = [this.downloadZip(manifest)];
@@ -351,7 +380,7 @@ class Remote extends Base {
             'node_modules',
             this.options.name
         );
-        const url = this.getTargetUrl(
+        const url = this.getFullFile(
             `${manifest.s || developmentZipName}-dts.zip`
         );
         const version = String(manifest.t);
@@ -373,11 +402,11 @@ class Remote extends Base {
         let clean: boolean;
         // 是生产环境包
         if (manifest.s) {
-            url = this.getTargetUrl(`${manifest.s}.zip`);
+            url = this.getFullFile(`${manifest.s}.zip`);
             version = manifest.s;
             clean = false;
         } else {
-            url = this.getTargetUrl(`${developmentZipName}.zip`);
+            url = this.getFullFile(`${developmentZipName}.zip`);
             version = String(manifest.t);
             clean = true;
         }
