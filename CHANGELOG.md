@@ -1,5 +1,7 @@
 # CHANGELOG
 - 2.1.8
+  - 调整模块联邦参数处理逻辑
+- 2.1.8
   - 修复热更新报错的问题[#71](https://github.com/fmfe/genesis/issues/71)
   - 升级其它若干依赖
   - 模块联邦支持(文件系统读取)[https://github.com/fmfe/genesis/blob/master/docs/zh-CN/webpack-module-federation.md#host%E7%AB%AF]

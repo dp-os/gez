@@ -351,7 +351,7 @@ export class Remote extends Base {
     public getFullFile(filename: string) {
         let { serverOrigin, name } = this.options;
         if (
-            serverOrigin.includes('[name]') &&
+            serverOrigin.includes('[name]') ||
             serverOrigin.includes('[filename]')
         ) {
             serverOrigin = serverOrigin
