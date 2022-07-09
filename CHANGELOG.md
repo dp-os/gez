@@ -1,7 +1,7 @@
 # CHANGELOG
-- 2.1.9
+- 2.1.10
   - 修复无法在Vue中使用TS的问题
-- 2.1.8
+- 2.1.9
   - 调整模块联邦参数处理逻辑
 - 2.1.8
   - 修复热更新报错的问题[#71](https://github.com/fmfe/genesis/issues/71)
