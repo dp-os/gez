@@ -31,7 +31,15 @@ export class BabelPlugin extends Plugin {
                 }
             ]
         ];
-        const presetsTS = [['@babel/preset-typescript'], ...presets];
+        const presetsTS = [
+            [
+                'babel-preset-typescript-vue',
+                {
+                    allowNamespaces: true
+                }
+            ],
+            ...presets
+        ];
         const babelJS: BabelConfig = {
             target,
             plugins: [...plugins],
