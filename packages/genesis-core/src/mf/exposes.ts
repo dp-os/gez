@@ -32,13 +32,15 @@ export class Exposes {
             return Promise.resolve({ ...this.manifest });
         }
         return new Promise<ManifestJson>((resolve) => {
-            const timer = setTimeout(() => {
-                resolve({ ...this.manifest });
-            }, maxAwait);
-            this.watch(() => {
+            const timer = setTimeout(done, maxAwait);
+            const unWatch = this.watch(done);
+            // eslint-disable-next-line @typescript-eslint/no-this-alias
+            const self = this;
+            function done() {
                 clearTimeout(timer);
-                resolve({ ...this.manifest });
-            });
+                unWatch();
+                resolve({ ...self.manifest });
+            }
         });
     }
     public emit() {

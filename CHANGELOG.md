@@ -1,4 +1,6 @@
 # CHANGELOG
+- 2.1.11
+  - 修复 getManifest 方法内存泄漏
 - 2.1.9
   - 修复无法在Vue中使用TS的问题
 - 2.1.8
