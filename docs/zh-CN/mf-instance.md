@@ -35,15 +35,9 @@
 ### getWebpackPublicPathVarName
   - 说明：获取注入全局对象的变量名称
   - 类型：`getWebpackPublicPathVarName(name: string): string;`
-### exposes.watch
-  - 说明：监听导出的内容是否有变化，如果有变化，则会触发回调
-  - 类型：`watch(cb: ExposesWatchCallback): () => void;`
 ### exposes.getManifest
   - 说明：获取导出的清单文件，如果没有变化的话，就等待一段时间，超过时间限制，则响应，如果有变化则立即响应。
   - 类型：`getManifest(t?: number, maxAwait?: number): Promise<ManifestJson>;`
-### exposes.emit
-  - 说明：提交导出的模块信息有变更
-  - 类型：`emit(): void;`
 ### remote.inject
   - 说明：远程模块需要在HTML中注入的内容，你不需要自己手动注入，`MF`插件会自动注入
   - 类型：`inject(): string;`

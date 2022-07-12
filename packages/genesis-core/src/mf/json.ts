@@ -23,12 +23,12 @@ export class Json<T> {
         this._data = _data;
         this.data = this.get();
     }
-    public get haveCache() {
+    public get exists() {
         const { filename } = this;
         return fs.existsSync(filename);
     }
     public get(): T {
-        if (this.haveCache) {
+        if (this.exists) {
             const text = fs.readFileSync(this.filename, { encoding: 'utf-8' });
             this.data = JSON.parse(text);
         } else {
@@ -40,5 +40,15 @@ export class Json<T> {
         this.data = data;
         const text = JSON.stringify(data, null, 4);
         write.sync(this.filename, text);
+    }
+    public watch(cb: () => void) {
+        const watch = () => {
+            this.get();
+            cb();
+        };
+        fs.watchFile(this.filename, watch);
+        return () => {
+            fs.unwatchFile(this.filename, watch);
+        };
     }
 }

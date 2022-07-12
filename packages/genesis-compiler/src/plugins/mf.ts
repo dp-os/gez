@@ -164,7 +164,7 @@ export class MFPlugin extends Plugin {
         }
         this._write(mf.outputManifest, data);
         if (type === 'watch') {
-            mf.exposes.emit();
+            mf.exposes._update();
         }
     }
     private _write(filename: string, data: Record<string, any>) {

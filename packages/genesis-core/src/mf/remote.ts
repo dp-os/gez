@@ -180,7 +180,7 @@ class RemoteZip {
     }> {
         const { info } = this;
         // 如果和版本号一致，则不需要下载
-        if (info.haveCache && info.data.version === this.version) {
+        if (info.exists && info.data.version === this.version) {
             return {
                 ok: true,
                 code: 'no-update'
