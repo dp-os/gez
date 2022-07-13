@@ -14,10 +14,13 @@ export function createManifest(): ManifestJson {
     };
 }
 
+type Callback = () => void;
+
 export class Json<T> {
     public filename: string;
     public data: T;
     private _data: () => T;
+    private subs: Callback[] = [];
     public constructor(filename: string, _data: () => T) {
         this.filename = filename;
         this._data = _data;
@@ -42,13 +45,28 @@ export class Json<T> {
         write.sync(this.filename, text);
     }
     public watch(cb: () => void) {
-        const watch = () => {
-            this.get();
-            cb();
-        };
-        fs.watchFile(this.filename, watch);
+        this.subs.push(cb);
+        this._updateWatch();
         return () => {
-            fs.unwatchFile(this.filename, watch);
+            const index = this.subs.indexOf(cb);
+            if (index > -1) {
+                this.subs.splice(index, 1);
+            }
+            this._updateWatch();
         };
     }
+    private _updateWatch() {
+        switch (this.subs.length) {
+            case 0:
+                fs.unwatchFile(this.filename, this._watch);
+                break;
+            case 1:
+                fs.watchFile(this.filename, this._watch);
+                break;
+        }
+    }
+    private _watch = () => {
+        this.get();
+        this.subs.forEach((cb) => cb());
+    };
 }
