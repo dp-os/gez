@@ -24,7 +24,7 @@ export interface RegisterItem {
 }
 
 export const microRegister = {
-    beforeCreate(this: Vue) {
+    beforeCreate(this: any) {
         // 添加一次使用的记录
         const micro = this.$options.micro;
         if (micro) {

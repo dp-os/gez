@@ -17,7 +17,7 @@ const installMixin = (_Vue: typeof Vue) => {
  */
 const installMicro = (_Vue: typeof Vue) => {
     Object.defineProperty(_Vue.prototype, '$micro', {
-        get(this: Vue): Micro {
+        get(this: any): Micro {
             if (this.$root && this.$root.$options.micro) {
                 return this.$root.$options.micro;
             }
@@ -33,7 +33,7 @@ const installMicro = (_Vue: typeof Vue) => {
  */
 const installSquare = (_Vue: typeof Vue) => {
     Object.defineProperty(_Vue.prototype, '$square', {
-        get(this: Vue): Square {
+        get(this: any): Square {
             if ((this as any)._squareCache) {
                 return (this as any)._squareCache;
             }

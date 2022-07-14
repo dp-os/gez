@@ -29,6 +29,6 @@
     "gitHead": "f7052f0194c66eb24c56f2d5cabd5cb0d9ffe52d",
     "devDependencies": {
         "@fmfe/genesis-core": "2.1.13",
-        "vue": "2.7.4"
+        "vue": "2.7.5"
     }
 }
