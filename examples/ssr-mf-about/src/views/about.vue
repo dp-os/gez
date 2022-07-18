@@ -17,3 +17,8 @@ export default Vue.extend({
     }
 });
 </script>
+<style lang="less">
+h2 {
+    font-size: 36px;
+}
+</style>

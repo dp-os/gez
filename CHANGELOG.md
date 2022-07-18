@@ -1,4 +1,6 @@
 # CHANGELOG
+- 2.1.16
+  - 修复vscode lint错误
 - 2.1.15
   - 升级vue-tsc
 - 2.1.14
