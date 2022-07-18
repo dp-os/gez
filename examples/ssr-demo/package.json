@@ -18,7 +18,7 @@
     "dependencies": {
         "@fmfe/genesis-core": "2.1.14",
         "express": "^4.17.3",
-        "vue": "2.7.5"
+        "vue": "2.7.7"
     },
     "devDependencies": {
         "@fmfe/genesis-compiler": "2.1.14",
