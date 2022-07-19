@@ -1,4 +1,6 @@
 # CHANGELOG
+- 2.1.17
+  - 修复stylelint :deep 不识别
 - 2.1.16
   - 修复vscode lint错误
 - 2.1.15

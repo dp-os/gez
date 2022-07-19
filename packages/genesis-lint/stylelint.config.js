@@ -8,6 +8,12 @@ module.exports = {
     plugins: ['stylelint-order', 'stylelint-config-rational-order/plugin'],
     rules: {
         indentation: 4,
+        'selector-pseudo-class-no-unknown': [
+            true,
+            {
+                ignorePseudoClasses: ['deep']
+            }
+        ],
         'order/properties-order': [],
         'plugin/rational-order': [
             true,
