@@ -139,6 +139,8 @@ namespace Genesis {
      * Build options
      */
     export interface BuildOptions {
+        // https://github.com/privatenumber/esbuild-loader#readme
+        esbuild?: any;
         /**
          * Valid only in production environment
          */

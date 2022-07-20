@@ -178,3 +178,6 @@ const ssr = new SSR({
     }
 });
 ```
+## build.esbuild
+  - 说明：如果启用了[esbuild](https://github.com/privatenumber/esbuild-loader#readme)，babel将会不可用，可用设置`true`启用，也可以设置esbuild的选项，传递给esbuild-loader
+  - 类型：`any`

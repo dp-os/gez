@@ -3,6 +3,7 @@ import { MF, Plugin, SSR } from '@fmfe/genesis-core';
 import { BabelPlugin } from './babel';
 import { BarPlugin } from './bar';
 import { DefinePlugin } from './define';
+import { ESBuildPlugin } from './esbuild';
 import { FontPlugin } from './font';
 import { ImagePlugin } from './image';
 import { MediaPlugin } from './media';
@@ -20,7 +21,7 @@ export class InstallPlugin extends Plugin {
             .unshift(BarPlugin)
             .unshift(VuePlugin)
             .unshift(StylePlugin)
-            .unshift(BabelPlugin)
+            .unshift(ssr.options.build?.esbuild ? ESBuildPlugin : BabelPlugin)
             .unshift(ImagePlugin)
             .unshift(FontPlugin)
             .unshift(MediaPlugin)

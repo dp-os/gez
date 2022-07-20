@@ -1,4 +1,6 @@
 # CHANGELOG
+- 2.1.18
+  - 新增esbuild的支持
 - 2.1.17
   - 修复stylelint :deep 不识别
 - 2.1.16
