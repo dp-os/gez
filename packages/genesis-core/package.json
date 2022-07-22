@@ -29,8 +29,8 @@
         "ejs": "3.1.6",
         "fflate": "0.7.3",
         "serialize-javascript": "6.0.0",
-        "vue": "2.7.7",
-        "vue-server-renderer": "2.7.7",
+        "vue": "2.7.8",
+        "vue-server-renderer": "2.7.8",
         "write": "2.0.0"
     },
     "devDependencies": {
