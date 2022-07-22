@@ -139,8 +139,7 @@ insert_final_newline = true
     "stylelint.validate": [
         "css",
         "less",
-        "html",
-        "vue"
+        "html"
     ],
     "editor.codeActionsOnSave": {
         "source.fixAll": true
