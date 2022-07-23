@@ -21,7 +21,7 @@ export class MF {
     }
     public options: Required<Genesis.MFOptions> = {
         remotes: [],
-        intervalTime: 1000,
+        intervalTime: 5000,
         exposes: {},
         shared: {},
         typesDir: ''

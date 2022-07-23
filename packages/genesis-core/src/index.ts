@@ -55,7 +55,7 @@ namespace Genesis {
          */
         remotes?: MFRemote[];
         /**
-         * The polling interval of the server is 40ms by default
+         * The polling interval of the server is 5000ms by default
          */
         intervalTime?: number;
         /**
