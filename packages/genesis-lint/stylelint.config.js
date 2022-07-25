@@ -11,7 +11,7 @@ module.exports = {
         'selector-pseudo-class-no-unknown': [
             true,
             {
-                ignorePseudoClasses: ['deep']
+                ignorePseudoClasses: ['deep', 'global']
             }
         ],
         'order/properties-order': [],
