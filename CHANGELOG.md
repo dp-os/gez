@@ -1,4 +1,6 @@
 # CHANGELOG
+- 2.1.23
+  - 升级ejs，修复注入漏洞
 - 2.1.22
   - stylelint支持`:global`
 - 2.1.21

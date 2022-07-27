@@ -26,7 +26,7 @@
     "dependencies": {
         "axios": "0.25.0",
         "del": "6.0.0",
-        "ejs": "3.1.6",
+        "ejs": "3.1.7",
         "fflate": "0.7.3",
         "serialize-javascript": "6.0.0",
         "vue": "2.7.8",
