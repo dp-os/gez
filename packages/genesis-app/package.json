@@ -1,6 +1,6 @@
 {
     "name": "@fmfe/genesis-app",
-    "version": "2.1.24",
+    "version": "2.1.25-alpha.0",
     "description": "Vue SSR Microfront",
     "keywords": [
         "vue",
@@ -10,6 +10,14 @@
     "main": "dist/cjs/index.js",
     "module": "dist/esm/index.js",
     "types": "types/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./types/index.d.ts",
+            "import": "./dist/esm/index.js",
+            "require": "./dist/cjs/index.js"
+        },
+        "./package.json": "./package.json"
+    },
     "sideEffects": false,
     "scripts": {
         "build:cjs": "NODE_ENV=production genesis-tsc --build tsconfig.cjs.json",
@@ -28,7 +36,7 @@
     },
     "gitHead": "f7052f0194c66eb24c56f2d5cabd5cb0d9ffe52d",
     "devDependencies": {
-        "@fmfe/genesis-core": "2.1.24",
+        "@fmfe/genesis-core": "2.1.25-alpha.0",
         "vue": "2.7.8"
     }
 }
