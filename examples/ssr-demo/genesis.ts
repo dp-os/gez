@@ -1,5 +1,6 @@
 import { Renderer, SSR } from '@fmfe/genesis-core';
 import express from 'express';
+import path from 'path';
 
 /**
  * 创建一个应用程序
@@ -9,7 +10,13 @@ export const app = express();
 /**
  * 创建一个 SSR 实例
  */
-export const ssr = new SSR();
+export const ssr = new SSR({
+    build: {
+        styleResourcesLoader: {
+            patterns: [path.resolve('theme/var.less')]
+        }
+    }
+});
 
 /**
  * 拿到渲染器后，启动应用程序

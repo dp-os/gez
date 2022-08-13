@@ -1,4 +1,7 @@
 # CHANGELOG
+- 2.1.26
+  - ssr 选项新增`build.styleResourcesLoader`
+  - 调整lint规则
 - 2.1.23
   - 升级ejs，修复注入漏洞
 - 2.1.22

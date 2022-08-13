@@ -4,7 +4,7 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import postcssPresetEnv from 'postcss-preset-env';
 
 interface LoaderOptions {
-    name: string;
+    ruleName: string;
     loader: string;
     options: any;
 }
@@ -75,14 +75,14 @@ export class StylePlugin extends Plugin {
         await this.ssr.plugin.callHook('postcss', postcssConfig);
         const loaders: { [key: string]: LoaderOptions } = {
             'vue-style': {
-                name: 'vue-style',
+                ruleName: 'vue-style',
                 loader: 'vue-style-loader',
                 options: {
                     ssrId: true
                 }
             },
             css: {
-                name: 'css',
+                ruleName: 'css',
                 loader: 'css-loader',
                 options: {
                     sourceMap: false,
@@ -90,7 +90,7 @@ export class StylePlugin extends Plugin {
                 }
             },
             'module-css': {
-                name: 'css',
+                ruleName: 'css',
                 loader: 'css-loader',
                 options: {
                     sourceMap: false,
@@ -100,26 +100,31 @@ export class StylePlugin extends Plugin {
                 }
             },
             postcss: {
-                name: 'postcss',
+                ruleName: 'postcss',
                 loader: 'postcss-loader',
                 options: postcssConfig
             },
             less: {
-                name: 'less',
+                ruleName: 'less',
                 loader: 'less-loader',
                 options: {
                     sourceMap: false
                 }
             },
             sass: {
-                name: 'sass',
+                ruleName: 'sass',
                 loader: 'sass-loader',
                 options: {
                     sourceMap: false
                 }
             },
+            styleResources: {
+                ruleName: 'style-resources',
+                loader: 'style-resources-loader',
+                options: ssr.options.build?.styleResourcesLoader || {}
+            },
             extract: {
-                name: 'extract',
+                ruleName: 'extract',
                 loader: MiniCssExtractPlugin.loader as string,
                 options: {
                     esModule: false
@@ -141,10 +146,18 @@ export class StylePlugin extends Plugin {
             return lds;
         };
         const getLessLoader = ({ isModule = false } = {}) => {
-            return [...getCssLoader({ isModule }), loaders.less];
+            return [
+                ...getCssLoader({ isModule }),
+                loaders.less,
+                loaders.styleResources
+            ];
         };
         const getSassLoader = ({ isModule = false } = {}) => {
-            return [...getCssLoader({ isModule }), loaders.sass];
+            return [
+                ...getCssLoader({ isModule }),
+                loaders.sass,
+                loaders.styleResources
+            ];
         };
         const rules: RuleOptions[] = [
             {
@@ -254,7 +267,7 @@ export class StylePlugin extends Plugin {
                 }
                 const lds = currentModule.loaders;
                 for (const currentLoader of lds) {
-                    r.use(currentLoader.name)
+                    r.use(currentLoader.ruleName)
                         .loader(currentLoader.loader)
                         .options(currentLoader.options)
                         .end();

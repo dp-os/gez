@@ -141,6 +141,8 @@ namespace Genesis {
     export interface BuildOptions {
         // https://github.com/privatenumber/esbuild-loader#readme
         esbuild?: any;
+        // https://github.com/yenshih/style-resources-loader
+        styleResourcesLoader?: any;
         /**
          * Valid only in production environment
          */

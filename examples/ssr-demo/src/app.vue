@@ -31,6 +31,7 @@ export default Vue.extend({
 .app {
     padding: 100px;
     text-align: center;
+    background: @background;
 }
 
 .text {

@@ -74,16 +74,15 @@ const initConfigFile = () => {
         },
         {
             file: eslintignoreFile,
-            text: `dist/**
-node_modules/**
-dist/**
+            text: `dist
+node_modules
 `
         },
         {
             file: gitignoreFile,
             text: `node_modules/**
 **.log
-dist/**
+dist
 `
         },
         {
