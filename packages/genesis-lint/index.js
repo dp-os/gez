@@ -36,7 +36,7 @@ module.exports = {
         'vue/component-tags-order': [
             'error',
             {
-                order: ['script', 'style', 'template']
+                order: ['script', 'template', 'style']
             }
         ],
         'vue/html-self-closing': [
