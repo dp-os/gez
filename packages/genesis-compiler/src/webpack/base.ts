@@ -26,7 +26,10 @@ export class BaseConfig extends BaseGenesis {
         const fallback = ssr.options?.build?.fallback || {};
         config.resolve.set('fallback', fallback);
         Object.entries(alias).forEach(([key, value]) => {
-            config.resolve.alias.set(key, value as string);
+            const filePath = typeof value === 'string' ? value : value[target];
+            if (filePath) {
+                config.resolve.alias.set(key, filePath);
+            }
         });
     }
 

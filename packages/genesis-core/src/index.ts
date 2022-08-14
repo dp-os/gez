@@ -158,7 +158,10 @@ namespace Genesis {
         /**
          * alias settings
          */
-        alias?: Record<string, string>;
+        alias?: Record<
+            string,
+            string | Partial<Record<WebpackBuildTarget, string>>
+        >;
 
         fallback?: Record<string, string | boolean>;
         /**
