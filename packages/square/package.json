@@ -12,7 +12,7 @@
         "./package.json": "./package.json"
     },
     "sideEffects": false,
-    "version": "2.1.31",
+    "version": "2.1.32-alpha.0",
     "description": "Vue SSR Microfront",
     "keywords": [
         "vue",
@@ -27,6 +27,9 @@
     "author": "Followme",
     "license": "MIT",
     "devDependencies": {
+        "vue": "2.7.8"
+    },
+    "peerDependencies": {
         "vue": "2.7.8"
     },
     "dependencies": {
