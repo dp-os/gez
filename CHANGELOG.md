@@ -1,4 +1,6 @@
 # CHANGELOG
+- 2.1.30
+  - lint风格调整
 - 2.1.26
   - ssr 选项新增`build.styleResourcesLoader`
   - 调整lint规则
