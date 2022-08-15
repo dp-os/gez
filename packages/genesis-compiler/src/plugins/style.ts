@@ -121,7 +121,9 @@ export class StylePlugin extends Plugin {
             styleResources: {
                 ruleName: 'style-resources',
                 loader: 'style-resources-loader',
-                options: ssr.options.build?.styleResourcesLoader || {}
+                options: ssr.options.build?.styleResourcesLoader || {
+                    patterns: []
+                }
             },
             extract: {
                 ruleName: 'extract',

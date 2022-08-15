@@ -1,4 +1,7 @@
 # CHANGELOG
+- 2.1.31
+  - lint 依赖升级
+  - fix: `styleResources` 没有传参报错
 - 2.1.30
   - lint风格调整
 - 2.1.26
