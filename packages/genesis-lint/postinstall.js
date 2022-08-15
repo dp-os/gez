@@ -66,7 +66,8 @@ const initConfigFile = () => {
     const list = [
         {
             file: eslintrcFile,
-            text: `module.exports = {
+            text: `
+module.exports = {
     extends: [require.resolve('@fmfe/genesis-lint')]
 };
 
@@ -74,20 +75,36 @@ const initConfigFile = () => {
         },
         {
             file: eslintignoreFile,
-            text: `dist
+            text: `
 node_modules
+**.log
+docs/.vuepress/.temp
+docs/.vuepress/.cache
+types
+coverage
+dist
+coverage
+types
 `
         },
         {
             file: gitignoreFile,
-            text: `node_modules/**
+            text: `
+node_modules
 **.log
+docs/.vuepress/.temp
+docs/.vuepress/.cache
+types
+coverage
 dist
+coverage
+types
 `
         },
         {
             file: editorconfigFile,
-            text: `# http://editorconfig.org
+            text: `
+# http://editorconfig.org
 root = true
 
 [*]
@@ -107,7 +124,8 @@ insert_final_newline = true
         },
         {
             file: stylelintConfigFile,
-            text: `module.exports = {
+            text: `
+module.exports = {
     extends: [
         require.resolve('${package.name}/stylelint.config')
     ],
@@ -119,13 +137,24 @@ insert_final_newline = true
         },
         {
             file: stylelintignoreFile,
-            text: `*.json
+            text: `
+*.json
 *.js
 *.ts
 *.png
 *.eot
 *.ttf
-*.woff`
+*.woff
+node_modules
+**.log
+docs/.vuepress/.temp
+docs/.vuepress/.cache
+types
+coverage
+dist
+coverage
+types
+`
         },
         {
             file: vsCodeFile,
@@ -134,7 +163,8 @@ insert_final_newline = true
                 if (fs.existsSync(dir)) return;
                 fs.mkdirSync(dir);
             },
-            text: `{
+            text: `
+{
     "stylelint.validate": [
         "css",
         "less",
