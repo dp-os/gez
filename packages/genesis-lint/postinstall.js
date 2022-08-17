@@ -85,6 +85,7 @@ coverage
 dist
 coverage
 types
+.idea
 `
         },
         {
@@ -99,6 +100,7 @@ coverage
 dist
 coverage
 types
+.idea
 `
         },
         {
@@ -154,6 +156,7 @@ coverage
 dist
 coverage
 types
+.idea
 `
         },
         {
