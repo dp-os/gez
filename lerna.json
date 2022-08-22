@@ -3,7 +3,7 @@
     "packages/*",
     "examples/*"
   ],
-  "version": "2.1.33",
+  "version": "2.1.34",
   "npmClient": "yarn",
   "useWorkspaces": true,
   "publishConfig": {
