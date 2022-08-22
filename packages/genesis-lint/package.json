@@ -1,11 +1,11 @@
 {
     "name": "@fmfe/genesis-lint",
-    "version": "2.1.32",
+    "version": "2.1.33",
     "description": "",
     "main": "index.js",
     "bin": {
-        "genesis-eslint": "./node_modules/.bin/eslint",
-        "genesis-stylelint": "./node_modules/.bin/stylelint"
+        "genesis-eslint": "./bin/eslint.js",
+        "genesis-stylelint": "./bin/stylelint.js"
     },
     "scripts": {
         "build:cjs": "NODE_ENV=production genesis-tsc --build tsconfig.cjs.json",
