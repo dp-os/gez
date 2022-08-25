@@ -1,4 +1,6 @@
 # CHANGELOG
+- 2.1.32
+  - feat: 升级vue-tsc
 - 2.1.31
   - feat: 添加忽略目录
 - 2.1.31
