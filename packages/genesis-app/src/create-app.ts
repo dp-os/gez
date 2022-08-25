@@ -1,11 +1,11 @@
 import { ClientOptions, RenderContext } from '@fmfe/genesis-core';
-import Vue, { ComponentOptions } from 'vue';
+import Vue, { Component, ComponentOptions } from 'vue';
 
 export interface CreateClientAppOptions {
     /**
      * Root render component
      */
-    App: typeof Vue;
+    App: typeof Vue | Component;
     /**
      * Client side rendering context
      */
@@ -19,7 +19,7 @@ export interface CreateServerAppOptions {
     /**
      * Root render component
      */
-    App: typeof Vue;
+    App: typeof Vue | Component;
     /**
      * Server side rendering context
      */
