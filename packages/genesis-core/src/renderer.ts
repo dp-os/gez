@@ -449,7 +449,7 @@ export class Renderer {
         }
         renderOptions.clientManifest = this.clientManifest;
 
-        const ejsTemplate = fs.existsSync(this.ssr.templateFile)
+        const ejsTemplate = fs.existsSync(this.ssr.outputTemplateFile)
             ? fs.readFileSync(this.ssr.outputTemplateFile, 'utf-8')
             : defaultTemplate;
 
