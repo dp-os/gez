@@ -52,3 +52,7 @@ yarn dev
   - 3月份，基于`Webpack module federation`正式发布2.0版本
 - 2020年
   - 项目立项，提出远程组件概念在[FOLLOWME5.0](https://www.followme.com/)首次大规模应用
+  
+## 有哪些网站在使用
+- [FOLLOWME](https://www.followme.com)
+- [AlleyRead](https://alleyread.com)
