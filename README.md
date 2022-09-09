@@ -55,4 +55,4 @@ yarn dev
   
 ## 有哪些网站在使用
 - [FOLLOWME](https://www.followme.com)
-- [AlleyRead](https://alleyread.com)
+- [AlleyRead](http://alleyread.com)
