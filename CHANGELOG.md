@@ -1,4 +1,6 @@
 # CHANGELOG
+- 2.2.2
+  - feat: lint:css add --allow-empty-input
 - 2.2.1
   - fix: 修复模板判断逻辑错误
 - 2.1.32
