@@ -1,4 +1,6 @@
 # CHANGELOG
+- 2.2.3
+  - feat: eslint 设置 root 为 true
 - 2.2.2
   - feat: lint:css add --allow-empty-input
 - 2.2.1
