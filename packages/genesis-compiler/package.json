@@ -1,6 +1,6 @@
 {
     "name": "@fmfe/genesis-compiler",
-    "version": "2.2.2",
+    "version": "2.2.3",
     "description": "Vue SSR Microfront",
     "bin": {
         "genesis-ts-node": "./bin/ts-node.js",
@@ -21,6 +21,9 @@
             "import": "./dist/esm/index.js",
             "require": "./dist/cjs/index.js"
         },
+        "./bin/tsc.js": "./bin/tsc.js",
+        "./bin/vie-tsc.js": "./bin/vue-tsc.js",
+        "./bin/ts-node.js": "./bin/ts-node.js",
         "./package.json": "./package.json"
     },
     "sideEffects": false,
