@@ -1,4 +1,6 @@
 # CHANGELOG
+- 2.2.5
+  - feat: 如果服务A没有服务B是远程依赖，提示更加友好
 - 2.2.3
   - feat: eslint 设置 root 为 true
 - 2.2.2

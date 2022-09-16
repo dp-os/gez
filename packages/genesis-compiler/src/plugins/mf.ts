@@ -82,12 +82,18 @@ return require(remoteModule.filename);
             return;
         }
         remotes[item.name] = `promise new Promise(function (resolve, reject) {
+    var src = window["${exposesVarName}"];
     var script = document.createElement("script")
-    script.src = window["${exposesVarName}"] ||  window["${ssr.publicPathVarName}"];
+    if (!src) {
+        throw Error("${ssr.name} does not declare that ${item.name} is a remote dependency")
+    }
+    script.src = src;
     script.onload = function onload() {
         var proxy = {
-            get: (request) => window["${varName}"].get(request),
-            init: (arg) => {
+            get: function (request) {
+                return  window["${varName}"].get(request);
+            },
+            init: function (arg) {
                 try {
                     return window["${varName}"].init(arg)
                 } catch(e) {
