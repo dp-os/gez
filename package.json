@@ -19,7 +19,7 @@
         "build:packages": "zx script/index.js --packages build",
         "lint": "npm run lint:js && npm run lint:css",
         "lint:js": "genesis-eslint . --ext .js,.ts,.vue --fix",
-        "lint:css": "genesis-stylelint **/*.{css,less,vue} --fix",
+        "lint:css": "genesis-stylelint **/*.{css,less,vue} --fix --allow-empty-input",
         "postinstall": "./script/post-install.sh"
     },
     "husky": {
