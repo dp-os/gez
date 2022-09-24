@@ -21,19 +21,6 @@ const developmentZipName = 'development';
 type ManifestJson = Genesis.MFManifestJson;
 type ClientManifest = Genesis.ClientManifest;
 
-interface RemoteFetchOptions {
-    getJson: (context: {
-        filename: string;
-        t: number;
-        remote: Remote;
-    }) => Promise<ClientManifest | null>;
-    getZip: (context: {
-        filename: string;
-        t: number;
-        remote: Remote;
-    }) => Promise<ArrayBuffer | null>;
-}
-
 /**
  * VM 运行时注入的全局变量
  */

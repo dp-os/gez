@@ -1,10 +1,6 @@
-import fs from 'fs';
-
 import type * as Genesis from '..';
 import { type MF } from './index';
 import { createManifest, Json, ManifestJson } from './json';
-
-type ExposesWatchCallback = () => void;
 
 export class Exposes {
     public ssr: Genesis.SSR;
