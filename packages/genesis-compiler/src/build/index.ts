@@ -29,23 +29,26 @@ export class Build {
         const build = (type: string, config: webpack.Configuration) => {
             return new Promise<boolean>((resolve, reject) => {
                 const compiler = webpack(config);
-                compiler.run((err: Error, stats) => {
+                compiler.run((err, stats) => {
                     if (err) {
                         chalk.red(`${type} errors`);
                         console.log(error(err.stack || err.message));
                         return;
                     }
+                    if (!stats) return;
                     const jsonStats = stats.toJson();
                     if (stats.hasErrors()) {
                         chalk.red(`${type} errors`);
-                        jsonStats.errors.forEach((err) =>
+                        const errors = jsonStats.errors || [];
+                        errors.forEach((err) =>
                             console.log(error(err.message))
                         );
                         return resolve(false);
                     }
                     if (stats.hasWarnings()) {
                         chalk.yellow(`${type} warnings`);
-                        jsonStats.warnings.forEach((err) =>
+                        const warnings = jsonStats.warnings || [];
+                        warnings.forEach((err) =>
                             console.log(warning(err.message))
                         );
                     }
