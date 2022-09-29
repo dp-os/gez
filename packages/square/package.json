@@ -12,7 +12,7 @@
         "./package.json": "./package.json"
     },
     "sideEffects": false,
-    "version": "2.2.7",
+    "version": "2.2.8",
     "description": "Vue SSR Microfront",
     "keywords": [
         "vue",

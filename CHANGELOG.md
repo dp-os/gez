@@ -1,4 +1,6 @@
 # CHANGELOG
+- 2.2.7
+  - chore: 升级`typescript@4.8.4`
 - 2.2.6
   - chore: 升级 依赖
 - 2.2.5
