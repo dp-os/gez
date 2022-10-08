@@ -1,4 +1,6 @@
 # CHANGELOG
+- 2.2.9
+  - fix: 修复`@fmfe/genesis-compiler`导出错误
 - 2.2.7
   - chore: 升级`typescript@4.8.4`
 - 2.2.6
