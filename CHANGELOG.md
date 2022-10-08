@@ -1,4 +1,6 @@
 # CHANGELOG
+- 2.2.10
+  - fix: 修复`@fmfe/genesis-lint`空格
 - 2.2.9
   - fix: 修复`@fmfe/genesis-compiler`导出错误
 - 2.2.7
