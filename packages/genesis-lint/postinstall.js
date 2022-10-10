@@ -60,7 +60,6 @@ const initConfigFile = () => {
     const eslintrcFile = path.resolve(baseDir, '.eslintrc.js');
     const eslintignoreFile = path.resolve(baseDir, '.eslintignore');
     const gitignoreFile = path.resolve(baseDir, '.gitignore');
-    const editorconfigFile = path.resolve(baseDir, '.editorconfig');
     const stylelintConfigFile = path.resolve(baseDir, 'stylelint.config.js');
     const stylelintignoreFile = path.resolve(baseDir, '.stylelintignore');
     const vsCodeFile = path.resolve(baseDir, '.vscode/settings.json');
@@ -101,27 +100,6 @@ dist
 coverage
 types
 .idea
-`
-        },
-        {
-            file: editorconfigFile,
-            text: `
-# http://editorconfig.org
-root = true
-
-[*]
-#缩进风格：空格
-indent_style = space
-#缩进大小
-indent_size = 4
-#换行符lf
-end_of_line = lf
-#字符集utf-8
-charset = utf-8
-#是否删除行尾的空格
-trim_trailing_whitespace = true
-#是否在文件的最后插入一个空行
-insert_final_newline = true
 `
         },
         {

@@ -1,4 +1,6 @@
 # CHANGELOG
+- 2.2.11
+  - revert: 移除`@fmfe/genesis-lint` `.editorconfig`
 - 2.2.10
   - fix: 修复`@fmfe/genesis-lint`空格
 - 2.2.9
