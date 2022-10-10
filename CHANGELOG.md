@@ -1,4 +1,6 @@
 # CHANGELOG
+- 2.2.12
+  - chore: 升级 `vue-tsc@1.0.3`
 - 2.2.11
   - revert: 移除`@fmfe/genesis-lint` `.editorconfig`
 - 2.2.10
