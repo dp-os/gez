@@ -196,6 +196,7 @@ export class MFPlugin extends Plugin {
         const filename = this._getFilename(root);
         if (filename) {
             const arr = filename.split('.');
+            console.log('>>>>>>', filename, arr);
             version = arr[1];
         }
 
