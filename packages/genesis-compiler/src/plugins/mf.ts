@@ -196,8 +196,7 @@ export class MFPlugin extends Plugin {
         const filename = this._getFilename(root);
         if (filename) {
             const arr = filename.split('.');
-            console.log('>>>>>>', filename, arr);
-            version = arr[1];
+            version = arr[arr.length - 2];
         }
 
         return version;
@@ -208,7 +207,7 @@ export class MFPlugin extends Plugin {
         let filename = '';
         if (fs.existsSync(root)) {
             const files = find.fileSync(path.resolve(root, './js'));
-            const re = new RegExp(`${mf.entryName}\\..{8}.js`);
+            const re = new RegExp(`${mf.entryName}\\..{8}.js$`);
             filename =
                 files.find((filename) => {
                     return re.test(filename);
