@@ -1,4 +1,6 @@
 # CHANGELOG
+- 2.3.1
+  - fix: 修复 `@fmfe/genesis-lint` 导致部分目录无法提交的BUG
 - 2.3.0
   - change: 移除了 `genesis-vue-tsc` 命令，请使用 `npx vue-tsc` 替代
 - 2.2.13
