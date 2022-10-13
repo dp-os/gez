@@ -1,4 +1,6 @@
 # CHANGELOG
+- 2.3.0
+  - change: 移除了 `genesis-vue-tsc` 命名，请使用 `npx vue-tsc` 替代
 - 2.2.13
   - fix: 修复文件夹路径带`.`的时候，模块联邦版本取值错误
 - 2.2.12

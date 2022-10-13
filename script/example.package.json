@@ -4,8 +4,8 @@
         "build": "rm -rf dist types && npm run build:dts && npm run build:vue && npm run build:node",
         "build:node": "NODE_ENV=production genesis-tsc --build ./tsconfig.node.json",
         "build:vue": "NODE_ENV=production genesis-ts-node --project=./tsconfig.node.json genesis.build",
-        "build:dts": "genesis-vue-tsc --declaration --emitDeclarationOnly",
-        "type-check": "genesis-vue-tsc --noEmit",
+        "build:dts": "npx vue-tsc --declaration --emitDeclarationOnly",
+        "type-check": "npx vue-tsc --noEmit",
         "start": "NODE_ENV=production node dist/genesis.prod"
     }
 }

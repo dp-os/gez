@@ -219,8 +219,8 @@ startApp(renderer);
         "build": "rm -rf dist types && npm run build:dts && npm run build:vue && npm run build:node",
         "build:node": "NODE_ENV=production genesis-tsc --build tsconfig.node.json",
         "build:vue": "NODE_ENV=production genesis-ts-node --project=./tsconfig.node.json genesis.build",
-        "build:dts": "genesis-vue-tsc --declaration --emitDeclarationOnly",
-        "type-check": "genesis-vue-tsc --noEmit",
+        "build:dts": "npx vue-tsc --declaration --emitDeclarationOnly",
+        "type-check": "npx vue-tsc --noEmit",
         "start": "NODE_ENV=production node dist/genesis.prod"
   }
 }
@@ -242,7 +242,7 @@ npm run type-check
 # 生产环境运行
 npm run start
 ```
-`@fmfe/genesis-compiler`封装了`genesis-tsc`、`genesis-ts-node`、`genesis-vue-tsc`三个命令，你可以快速的创建TS项目。如果你使用了`Webpack module federation`，可以使用`genesis-vue-tsc`创建的类型文件，提供给其它的服务使用
+`@fmfe/genesis-compiler`封装了`genesis-tsc`、`genesis-ts-node`、`npx vue-tsc`三个命令，你可以快速的创建TS项目。如果你使用了`Webpack module federation`，可以使用`npx vue-tsc`创建的类型文件，提供给其它的服务使用
 
 将常用命令添加到 `npm script` 中，可以让我们各个快速的启动应用   
 执行 `npm run dev`命令，在浏览器中访问 `http://localhost:3000`
