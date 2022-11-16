@@ -1,6 +1,6 @@
 {
     "name": "@fmfe/genesis-app",
-    "version": "2.3.6-alpha.2",
+    "version": "2.3.6",
     "description": "Vue SSR Microfront",
     "keywords": [
         "vue",
@@ -34,9 +34,9 @@
     "bugs": {
         "url": "https://github.com/fmfe/genesis/issues"
     },
-    "gitHead": "deca0ace9f55baff7354540e4c8e53c2b132a6b1",
+    "gitHead": "48f6c74875b8f004cab239fc11a792aaccc3efb3",
     "devDependencies": {
-        "@fmfe/genesis-core": "2.3.6-alpha.2",
+        "@fmfe/genesis-core": "2.3.6",
         "vue": "2.7.14"
     },
     "peerDependencies": {
