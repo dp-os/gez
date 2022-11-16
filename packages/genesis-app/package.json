@@ -1,6 +1,6 @@
 {
     "name": "@fmfe/genesis-app",
-    "version": "2.3.3",
+    "version": "2.3.4",
     "description": "Vue SSR Microfront",
     "keywords": [
         "vue",
@@ -36,7 +36,7 @@
     },
     "gitHead": "dd2aee5784dd83b83577f0b8a812cf6f7a9cf799",
     "devDependencies": {
-        "@fmfe/genesis-core": "2.3.3",
+        "@fmfe/genesis-core": "2.3.4",
         "vue": "2.7.14"
     },
     "peerDependencies": {
