@@ -1,6 +1,6 @@
 {
     "name": "@fmfe/genesis-core",
-    "version": "2.3.5",
+    "version": "2.3.6-alpha.0",
     "description": "Vue SSR Microfront",
     "keywords": [
         "vue",
@@ -30,7 +30,7 @@
     },
     "author": "Followme",
     "license": "MIT",
-    "gitHead": "dd2aee5784dd83b83577f0b8a812cf6f7a9cf799",
+    "gitHead": "550af5cec62d6f74f449265d29cc3dcaa3c657f7",
     "dependencies": {
         "axios": "0.25.0",
         "del": "6.0.0",
