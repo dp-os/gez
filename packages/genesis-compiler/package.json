@@ -1,6 +1,6 @@
 {
     "name": "@fmfe/genesis-compiler",
-    "version": "2.3.6-alpha.1",
+    "version": "2.3.6-alpha.2",
     "description": "Vue SSR Microfront",
     "bin": {
         "genesis-ts-node": "./bin/ts-node.js",
@@ -32,7 +32,7 @@
     },
     "author": "Followme",
     "license": "MIT",
-    "gitHead": "5d96651a08f7593bf3bdef789c3bc5bfc57a00f1",
+    "gitHead": "deca0ace9f55baff7354540e4c8e53c2b132a6b1",
     "resolutions": {
         "*/vue-template-compiler": "2.7.14"
     },
