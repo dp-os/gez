@@ -1,6 +1,11 @@
 # CHANGELOG
-- 2.3.2
+- 2.3.6
   - chore: 升级`vue@2.7.14`、`vue-server-renderer@2.7.14`、`typescript@2.9.3`
+- 2.3.5
+- 2.3.4
+- 2.3.3
+- 2.3.2
+  - 上述版本发布失败
 - 2.3.1
   - fix: 修复 `@fmfe/genesis-lint` 导致部分目录无法提交的BUG
 - 2.3.0
