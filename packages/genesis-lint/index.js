@@ -8,7 +8,14 @@ if (fs.existsSync(filePath)) {
 }
 
 module.exports = {
-    extends: ['standard', 'alloy/typescript', 'alloy/vue', 'plugin:import/errors', 'plugin:import/typescript', 'plugin:prettier/recommended'],
+    extends: [
+        'standard',
+        'alloy/typescript',
+        'alloy/vue',
+        'plugin:import/errors',
+        'plugin:import/typescript',
+        'plugin:prettier/recommended'
+    ],
     plugins: ['vue', 'simple-import-sort'],
     parserOptions: {
         parser: '@typescript-eslint/parser',
@@ -64,7 +71,7 @@ module.exports = {
         'prettier/prettier': [
             'error',
             {
-                printWidth: 1080,
+                printWidth: 120,
                 tabWidth: 4,
                 useTabs: false,
                 semi: true,
