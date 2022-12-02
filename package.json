@@ -11,7 +11,7 @@
         "examples/*"
     ],
     "scripts": {
-        "publish:all": "./script/publish.sh",
+        "release": "./script/publish.sh",
         "build": "zx script/index.js --examples build",
         "start": "zx script/index.js --examples start",
         "dev": "zx script/index.js --examples dev",

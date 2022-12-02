@@ -1,4 +1,6 @@
 # CHANGELOG
+- 2.3.7
+  - chore: 更改lint规则
 - 2.3.6
   - chore: 升级`vue@2.7.14`、`vue-server-renderer@2.7.14`、`typescript@2.9.3`
 - 2.3.5
