@@ -1,4 +1,6 @@
 # CHANGELOG
+- 2.3.8
+  - chore: 更改lint规则
 - 2.3.7
   - chore: 更改lint规则
 - 2.3.6

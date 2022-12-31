@@ -60,6 +60,7 @@ module.exports = {
         '@typescript-eslint/member-ordering': 'off',
         'no-template-curly-in-string': 'off',
         'vue/valid-template-root': 'off',
+        '@typescript-eslint/no-parameter-properties': 'off',
         'vue/no-duplicate-attributes': [
             'error',
             {

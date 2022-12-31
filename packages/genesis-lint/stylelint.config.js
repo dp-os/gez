@@ -1,11 +1,6 @@
 module.exports = {
-    extends: [
-        'stylelint-config-html',
-        'stylelint-config-standard',
-        'stylelint-config-rational-order',
-        'stylelint-config-prettier'
-    ],
-    plugins: ['stylelint-order', 'stylelint-config-rational-order/plugin'],
+    extends: ['stylelint-config-html', 'stylelint-config-standard', 'stylelint-config-prettier'],
+    plugins: ['stylelint-order'],
     rules: {
         indentation: 4,
         'selector-pseudo-class-no-unknown': [

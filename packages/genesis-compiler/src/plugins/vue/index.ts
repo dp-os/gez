@@ -14,20 +14,16 @@ class VueSSRServerPlugin {
             if (compilation.compiler !== compiler) {
                 return;
             }
-            const stage =
-                webpack.Compilation['PROCESS_ASSETS_STAGE_OPTIMIZE_TRANSFER'];
-            compilation.hooks.processAssets.tapAsync(
-                { name, stage },
-                (assets, cb) => {
-                    Object.keys(compilation.assets).forEach(function (name) {
-                        if (isJS(name)) {
-                            return;
-                        }
-                        delete compilation.assets[name];
-                    });
-                    cb();
-                }
-            );
+            const stage = webpack.Compilation['PROCESS_ASSETS_STAGE_OPTIMIZE_TRANSFER'];
+            compilation.hooks.processAssets.tapAsync({ name, stage }, (assets, cb) => {
+                Object.keys(compilation.assets).forEach(function (name) {
+                    if (isJS(name)) {
+                        return;
+                    }
+                    delete compilation.assets[name];
+                });
+                cb();
+            });
         });
     }
 }
@@ -39,10 +35,7 @@ export class VuePlugin extends Plugin {
             case 'client':
                 config.plugin('vue-ssr-client').use(VueClientPlugin, [
                     {
-                        filename: path.relative(
-                            ssr.outputDirInClient,
-                            ssr.outputClientManifestFile
-                        )
+                        filename: path.relative(ssr.outputDirInClient, ssr.outputClientManifestFile)
                     }
                 ]);
                 break;
