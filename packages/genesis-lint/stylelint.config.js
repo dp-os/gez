@@ -10,13 +10,6 @@ module.exports = {
             }
         ],
         'order/properties-order': [],
-        'plugin/rational-order': [
-            true,
-            {
-                'border-in-box-model': false,
-                'empty-line-between-groups': false
-            }
-        ],
         'no-descending-specificity': null,
         'no-empty-source': null,
         'declaration-colon-newline-after': null,
