@@ -9,7 +9,7 @@
 [![npm](https://img.shields.io/npm/dm/@fmfe/genesis-core.svg)](https://www.npmjs.com/package/@fmfe/genesis-core)
 [![npm](https://img.shields.io/npm/dt/@fmfe/genesis-core.svg)](https://www.npmjs.com/package/@fmfe/genesis-core)
 
-🔥[模块即服务](./docs/zh-CN/why.md)，一个简单而强大的Vue2 SSR框架🔥
+[模块即服务](./docs/zh-CN/why.md)，一个简单而强大的Vue2 SSR框架
 
 ## 🚀 优势
 - ✨ 编写简单的JS，就可以创建一个`SSR`项目    
@@ -47,6 +47,8 @@ yarn dev
 - 代码风格检查 `yarn lint`
 
 ## 里程碑
+- 2023
+-   - 2月1日，基于Vite实版本，开始进行技术验证
 - 2022
   - 4月2日，耗时一个月，首个超过15个SSR微服务的大型项目发布上线
   - 3月份，基于`Webpack module federation`正式发布2.0版本
