@@ -1,11 +1,4 @@
-import {
-    CompilerType,
-    MF,
-    MFManifestJson,
-    Plugin,
-    SSR,
-    WebpackHookParams
-} from '@fmfe/genesis-core';
+import { CompilerType, MF, MFManifestJson, Plugin, SSR, WebpackHookParams } from '@fmfe/genesis-core';
 import crypto from 'crypto';
 import fflate from 'fflate';
 import find from 'find';
@@ -22,9 +15,7 @@ function getExposes(ssr: SSR, mf: MF) {
 
     Object.keys(mf.options.exposes).forEach((key) => {
         const filename = mf.options.exposes[key];
-        const sourceFilename = path.isAbsolute(filename)
-            ? filename
-            : path.resolve(ssr.baseDir, filename);
+        const sourceFilename = path.isAbsolute(filename) ? filename : path.resolve(ssr.baseDir, filename);
         if (!fs.existsSync(sourceFilename)) {
             return;
         }
@@ -38,12 +29,7 @@ function getExposes(ssr: SSR, mf: MF) {
             writeFilename,
             path.resolve(ssr.outputDirInTemplate, 'webpack-public-path')
         );
-        const sourcePath = upath.toUnix(
-            relativeFilename(writeFilename, sourceFilename).replace(
-                /\.(j|t)s$/,
-                ''
-            )
-        );
+        const sourcePath = upath.toUnix(relativeFilename(writeFilename, sourceFilename).replace(/\.(j|t)s$/, ''));
         const templateArr: string[] = [
             `import "${upath.toUnix(webpackPublicPath)}";`,
             `export * from "${sourcePath}";`
@@ -68,6 +54,7 @@ function getRemotes(ssr: SSR, mf: MF, isServer: boolean) {
     mf.options.remotes.forEach((item) => {
         const varName = SSR.fixVarName(item.name);
         const exposesVarName = mf.getWebpackPublicPathVarName(item.name);
+
         if (isServer) {
             const code = `promise (async function () {
 var remoteModule = global["${exposesVarName}"];
@@ -81,33 +68,63 @@ return require(remoteModule.filename);
             remotes[item.name] = code;
             return;
         }
+
         remotes[item.name] = `promise new Promise(function (resolve, reject) {
-    var src = window["${exposesVarName}"];
-    var script = document.createElement("script")
-    if (!src) {
-        throw Error("${ssr.name} does not declare that ${item.name} is a remote dependency")
-    }
-    script.src = src;
-    script.onload = function onload() {
-        var proxy = {
-            get: function (request) {
-                return  window["${varName}"].get(request);
-            },
-            init: function (arg) {
-                try {
-                    return window["${varName}"].init(arg)
-                } catch(e) {
-                    console.log('remote container already initialized')
+            function init(src, curName, remoteName, varName) {
+                console.log('r>>', src, curName, remoteName, varName);
+                // if (window[varName]) {
+                //   return window[varName];
+                // }
+                var queueKey = "${varName}" + '_queue';
+                var isFirst = !window[queueKey];
+                if (isFirst) {
+                  window[queueKey] = [];
                 }
-            }
-        };
-        resolve(proxy)
-    }
-    script.onerror = function onerror() {
-        document.head.removeChild(script);
-        reject(new Error("Load " + script.src + " failed"));
-    }
-    document.head.appendChild(script);
+                var queue = window[queueKey];
+                function excute(name, val) {
+                  queue.forEach(function (item) {
+                    item[name](val);
+                  });
+                  window[queueKey] = []
+                }
+                return new Promise(function (resolve, reject) {
+                  queue.push({
+                    resolve: resolve,
+                    reject: reject
+                  });
+                  if (isFirst) {
+                    if (!src) {
+                      var err = new Error(curName + " does not declare that " + remoteName + " is a remote dependency");
+                      excute("reject", err);
+                      return;
+                    }
+                    var script = document.createElement("script");
+                    script.src = src;
+                    script.onload = function onload() {
+                      var proxy = {
+                        get: function (request) {
+                          return window["${varName}"].get(request);
+                        },
+                        init: function (arg) {
+                          try {
+                            return window["${varName}"].init(arg);
+                          } catch (e) {
+                            console.log('remote container already initialized');
+                          }
+                        }
+                      };
+                      excute("resolve", proxy);
+                    };
+                    script.onerror = function onerror() {
+                      document.head.removeChild(script);
+                      var err = new Error("Load " + script.src + " failed");
+                      excute("reject", err);
+                    };
+                    document.head.appendChild(script);
+                  }
+                });
+              }
+            init(window["${exposesVarName}"], "${ssr.name}", "${item.name}", "${varName}")
 });
 `;
     });
@@ -131,10 +148,7 @@ export class MFPlugin extends Plugin {
                 name,
                 filename: `js/${entryName}${hash}.js`,
                 exposes,
-                library:
-                    target === 'client'
-                        ? undefined
-                        : { type: 'commonjs-module' },
+                library: target === 'client' ? undefined : { type: 'commonjs-module' },
                 remotes: getRemotes(ssr, mf, target === 'server'),
                 shared: mf.options.shared
             })
