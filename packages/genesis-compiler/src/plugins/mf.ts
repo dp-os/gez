@@ -71,17 +71,16 @@ return require(remoteModule.filename);
 
         remotes[item.name] = `promise new Promise(function (resolve, reject) {
             function init(src, curName, remoteName, varName) {
-                console.log('r>>', src, curName, remoteName, varName);
-                // if (window[varName]) {
-                //   return window[varName];
-                // }
-                var queueKey = "${varName}" + '_queue';
+                if (window[varName]) {
+                  return window[varName];
+                }
+                var queueKey = varName + "_queue";
                 var isFirst = !window[queueKey];
                 if (isFirst) {
                   window[queueKey] = [];
                 }
                 var queue = window[queueKey];
-                function excute(name, val) {
+                function complete(name, val) {
                   queue.forEach(function (item) {
                     item[name](val);
                   });
@@ -95,7 +94,7 @@ return require(remoteModule.filename);
                   if (isFirst) {
                     if (!src) {
                       var err = new Error(curName + " does not declare that " + remoteName + " is a remote dependency");
-                      excute("reject", err);
+                      complete("reject", err);
                       return;
                     }
                     var script = document.createElement("script");
@@ -113,18 +112,18 @@ return require(remoteModule.filename);
                           }
                         }
                       };
-                      excute("resolve", proxy);
+                      complete("resolve", proxy);
                     };
                     script.onerror = function onerror() {
                       document.head.removeChild(script);
                       var err = new Error("Load " + script.src + " failed");
-                      excute("reject", err);
+                      complete("reject", err);
                     };
                     document.head.appendChild(script);
                   }
                 });
               }
-            init(window["${exposesVarName}"], "${ssr.name}", "${item.name}", "${varName}")
+            return init(window["${exposesVarName}"], "${ssr.name}", "${item.name}", "${varName}").then(resolve).catch(reject);
 });
 `;
     });
