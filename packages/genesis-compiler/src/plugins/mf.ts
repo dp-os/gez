@@ -70,62 +70,8 @@ return require(remoteModule.filename);
         }
 
         remotes[item.name] = `promise new Promise(function (resolve, reject) {
-            function init(src, curName, remoteName, varName) {
-                if (window[varName]) {
-                  return new Promise(function (resolve) {
-                    resolve(window[varName]);
-                  });
-                }
-                var queueKey = varName + "_queue";
-                var isFirst = !window[queueKey];
-                if (isFirst) {
-                  window[queueKey] = [];
-                }
-                var queue = window[queueKey];
-                function complete(name, val) {
-                  queue.forEach(function (item) {
-                    item[name](val);
-                  });
-                  window[queueKey] = []
-                }
-                return new Promise(function (resolve, reject) {
-                  queue.unshift({
-                    resolve: resolve,
-                    reject: reject
-                  });
-                  if (isFirst) {
-                    if (!src) {
-                      var err = new Error(curName + " does not declare that " + remoteName + " is a remote dependency");
-                      complete("reject", err);
-                      return;
-                    }
-                    var script = document.createElement("script");
-                    script.src = src;
-                    script.onload = function onload() {
-                      var proxy = {
-                        get: function (request) {
-                          return window["${varName}"].get(request);
-                        },
-                        init: function (arg) {
-                          try {
-                            return window["${varName}"].init(arg);
-                          } catch (e) {
-                            console.log('remote container already initialized');
-                          }
-                        }
-                      };
-                      complete("resolve", proxy);
-                    };
-                    script.onerror = function onerror() {
-                      document.head.removeChild(script);
-                      var err = new Error("Load " + script.src + " failed");
-                      complete("reject", err);
-                    };
-                    document.head.appendChild(script);
-                  }
-                });
-              }
-            return init(window["${exposesVarName}"], "${ssr.name}", "${item.name}", "${varName}").then(resolve).catch(reject);
+  var src = window["${exposesVarName}"];
+  __genesisLoadExposes__(src, "${ssr.name}", "${item.name}", "${varName}", resolve, reject);
 });
 `;
     });

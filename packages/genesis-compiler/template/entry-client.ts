@@ -107,6 +107,63 @@ const start = (createApp?: (data: ClientOptions) => Promise<Vue>) => {
     });
 };
 
+// https://www.devdcfx-asia.com/ssr-broker-main/js/exposes.3befd1fb.js
+
+function genesisLoadExposes(src: string, curName: string, remoteName: string, varName: string, resolve: Function, reject: Function) {
+    if (window[varName]) {
+        return resolve(window[varName]);
+    }
+    var queueKey = varName + "_queue";
+    var isFirst = !window[queueKey];
+    if (isFirst) {
+        window[queueKey] = [];
+    }
+    var queue = window[queueKey];
+    function complete(name: string, val: any) {
+        queue.forEach(function (item) {
+            item[name](val);
+        });
+        window[queueKey] = []
+    }
+    queue.unshift({
+        resolve: resolve,
+        reject: reject
+    });
+    if (isFirst) {
+        if (!src) {
+            var err = new Error(curName + " does not declare that " + remoteName + " is a remote dependency");
+            complete("reject", err);
+            return;
+        }
+        var script = document.createElement("script");
+        script.src = src;
+        script.onload = function onload() {
+            var proxy = {
+                get: function (...args: any[]) {
+                    return window[varName].get(...args);
+                },
+                init: function (...args: any[]) {
+                    try {
+                        return window[varName].init(...args);
+                    } catch (e) {
+                        console.log('remote container already initialized');
+                    }
+                }
+            };
+            complete("resolve", proxy);
+        };
+        script.onerror = function onerror() {
+            document.head.removeChild(script);
+            var err = new Error("Load " + script.src + " failed");
+            complete("reject", err);
+        };
+        document.head.appendChild(script);
+    }
+}
+
+if (!window.__genesisLoadExposes__) {
+    window.__genesisLoadExposes__ = genesisLoadExposes;
+}
 // eslint-disable-next-line
 import('${{clientFilename}}').then((m) => start(m.default));
 
