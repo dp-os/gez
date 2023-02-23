@@ -89,7 +89,7 @@ return require(remoteModule.filename);
                   window[queueKey] = []
                 }
                 return new Promise(function (resolve, reject) {
-                  queue.push({
+                  queue.unshift({
                     resolve: resolve,
                     reject: reject
                   });
