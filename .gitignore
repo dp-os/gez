@@ -15,3 +15,4 @@ examples/**/dist/**
 examples/**/types/**
 examples/**/*.lock
 examples/**/*.log
+yarn-error.log
