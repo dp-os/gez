@@ -12,9 +12,7 @@ export class WorkerPlugin extends Plugin {
             .loader('worker-loader')
             .options({
                 esModule: false,
-                filename: ssr.isProd
-                    ? 'worker/[name].[contenthash:8].[ext]'
-                    : 'worker/[path][name].[ext]'
+                filename: ssr.isProd ? 'worker/[name].[contenthash:8].[ext]' : 'worker/[path][name].[ext]'
             });
     }
 }

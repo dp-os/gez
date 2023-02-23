@@ -12,9 +12,7 @@ export class BaseConfig extends BaseGenesis {
         const config = (this.config = new Config());
         config.mode(this.ssr.isProd ? 'production' : 'development');
         config.set('target', ssr.getBuildTarget(target));
-        config.output.publicPath(
-            target === 'client' ? 'auto' : this.ssr.publicPath
-        );
+        config.output.publicPath(target === 'client' ? 'auto' : this.ssr.publicPath);
         config.resolve.extensions.add('.js');
         this.ready = this.ssr.plugin.callHook('chainWebpack', {
             target,

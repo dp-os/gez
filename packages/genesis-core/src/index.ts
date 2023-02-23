@@ -4,10 +4,7 @@ import Vue from 'vue';
 import Config from 'webpack-chain';
 
 import { MF as MFConstructor } from './mf';
-import {
-    Plugin as PluginConstructor,
-    PluginManage as PluginManageConstructor
-} from './plugin';
+import { Plugin as PluginConstructor, PluginManage as PluginManageConstructor } from './plugin';
 import { Renderer as RendererConstructor } from './renderer';
 import { SSR as SSRConstructor } from './ssr';
 
@@ -158,10 +155,7 @@ namespace Genesis {
         /**
          * alias settings
          */
-        alias?: Record<
-            string,
-            string | Partial<Record<WebpackBuildTarget, string>>
-        >;
+        alias?: Record<string, string | Partial<Record<WebpackBuildTarget, string>>>;
 
         fallback?: Record<string, string | boolean>;
         /**
@@ -245,10 +239,9 @@ namespace Genesis {
     /**
      * Render result
      */
-    export type RenderResult<T extends RenderMode = RenderMode> =
-        T extends Genesis.RenderModeHtml
-            ? Genesis.RenderResultHtml
-            : Genesis.RenderResultJson;
+    export type RenderResult<T extends RenderMode = RenderMode> = T extends Genesis.RenderModeHtml
+        ? Genesis.RenderResultHtml
+        : Genesis.RenderResultJson;
     /**
      * Rendered HTML
      */
@@ -294,9 +287,7 @@ namespace Genesis {
         el: Element;
         mounted?: (app: Vue) => void;
     }
-    export interface RenderOptions<
-        T extends Genesis.RenderMode = Genesis.RenderMode
-    > {
+    export interface RenderOptions<T extends Genesis.RenderMode = Genesis.RenderMode> {
         req?: IncomingMessage;
         res?: ServerResponse;
         mode?: T;

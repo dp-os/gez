@@ -1,13 +1,3 @@
-import {
-    createClientApp,
-    CreateClientAppOptions,
-    createServerApp,
-    CreateServerAppOptions
-} from './create-app';
+import { createClientApp, CreateClientAppOptions, createServerApp, CreateServerAppOptions } from './create-app';
 
-export {
-    createClientApp,
-    createServerApp,
-    CreateClientAppOptions,
-    CreateServerAppOptions
-};
+export { createClientApp, createServerApp, CreateClientAppOptions, CreateServerAppOptions };

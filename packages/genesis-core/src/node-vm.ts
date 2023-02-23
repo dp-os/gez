@@ -26,9 +26,7 @@ export class NodeVM {
             return files[id];
         }
         const filename = require.resolve(id);
-        const code = nativeModule.wrap(
-            fs.readFileSync(filename, { encoding: 'utf-8' })
-        );
+        const code = nativeModule.wrap(fs.readFileSync(filename, { encoding: 'utf-8' }));
 
         const factory = vm.runInNewContext(code, this.sandbox, {
             filename,
@@ -46,14 +44,7 @@ export class NodeVM {
             }
             return require(id);
         };
-        factory.call(
-            module.exports,
-            module.exports,
-            _require,
-            module,
-            filename,
-            dirname
-        );
+        factory.call(module.exports, module.exports, _require, module, filename, dirname);
 
         files[id] = module.exports;
         return module.exports;

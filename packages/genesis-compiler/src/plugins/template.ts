@@ -39,20 +39,10 @@ export class TemplatePlugin extends Plugin {
         }
         const outputDir = ssr.outputDirInTemplate;
         const srcDir = ssr.srcDir;
-        const clientFilename = upath.toUnix(
-            path.relative(outputDir, path.resolve(srcDir, './entry-client'))
-        );
-        const serverFilename = upath.toUnix(
-            path.relative(outputDir, path.resolve(srcDir, './entry-server'))
-        );
-        const writeDistSrcTemplate = (
-            filename: string,
-            options: { [x: string]: string } = {}
-        ) => {
-            let text = fs.readFileSync(
-                path.resolve(__dirname, `../../../template/${filename}`),
-                'utf8'
-            );
+        const clientFilename = upath.toUnix(path.relative(outputDir, path.resolve(srcDir, './entry-client')));
+        const serverFilename = upath.toUnix(path.relative(outputDir, path.resolve(srcDir, './entry-server')));
+        const writeDistSrcTemplate = (filename: string, options: { [x: string]: string } = {}) => {
+            let text = fs.readFileSync(path.resolve(__dirname, `../../../template/${filename}`), 'utf8');
             Object.keys(options).forEach((k) => {
                 const value = options[k];
                 text = text.replace(new RegExp(`\\\${{${k}}}`), value);
@@ -67,10 +57,7 @@ export class TemplatePlugin extends Plugin {
             serverFilename
         });
         const writeSrcTemplate = (filename: string) => {
-            const text = fs.readFileSync(
-                path.resolve(__dirname, `../../../template/src/${filename}`),
-                'utf8'
-            );
+            const text = fs.readFileSync(path.resolve(__dirname, `../../../template/src/${filename}`), 'utf8');
             const output = path.resolve(ssr.srcDir, filename);
             if (fs.existsSync(output)) return false;
             write.sync(output, text);

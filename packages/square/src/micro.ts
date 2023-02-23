@@ -102,11 +102,7 @@ class MicroBase {
         (this as any)._vm = null;
     }
 }
-const deepRecursionTms = (
-    target: any,
-    rid: string[],
-    fn: (target: Tms, path: string) => void
-) => {
+const deepRecursionTms = (target: any, rid: string[], fn: (target: Tms, path: string) => void) => {
     if (typeof target !== 'object' || Array.isArray(target)) return;
     if (target instanceof Tms) {
         fn(target, rid.join('.'));
@@ -115,12 +111,7 @@ const deepRecursionTms = (
         });
     }
 };
-export function command({
-    micro,
-    position,
-    payloads,
-    isShowError
-}: Types.CommandOptions) {
+export function command({ micro, position, payloads, isShowError }: Types.CommandOptions) {
     const paths = position.split('.');
     const len = paths.length - 1;
     let current = micro as any;
@@ -164,9 +155,7 @@ export class Micro extends MicroBase {
     public register(name: string, installModule: any) {
         const rid = super.register(name, installModule);
         deepRecursionTms(installModule, [rid], (target, path) => {
-            (target.dep as any)[`_micro_observe_${rid}`] = (
-                event: Types.TmsEvent
-            ) => {
+            (target.dep as any)[`_micro_observe_${rid}`] = (event: Types.TmsEvent) => {
                 const commit: Types.Commit = {
                     position: `${path}.${event.type}`,
                     payloads: event.payloads
@@ -175,13 +164,9 @@ export class Micro extends MicroBase {
                 if (this.debug) {
                     // eslint-disable-next-line no-console
                     console.log(
-                        `position   ${commit.position}(payload: ${getType(
-                            event.payloads[0]
-                        )});`,
+                        `position   ${commit.position}(payload: ${getType(event.payloads[0])});`,
                         '\n\rpayloads   ',
-                        typeof event.payload === 'object'
-                            ? JSON.parse(JSON.stringify(event.payloads))
-                            : event.payloads
+                        typeof event.payload === 'object' ? JSON.parse(JSON.stringify(event.payloads)) : event.payloads
                     );
                 }
             };
@@ -243,9 +228,7 @@ export class Micro extends MicroBase {
     /**
      * 执行某个命令
      */
-    public command(
-        options: Omit<Types.CommandOptions, 'micro' | 'isShowError'>
-    ) {
+    public command(options: Omit<Types.CommandOptions, 'micro' | 'isShowError'>) {
         return command({
             ...options,
             micro: this,

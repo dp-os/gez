@@ -34,9 +34,7 @@ export const microRegister = {
         forEachSquare(this.$options.register, (squares, name) => {
             const install = squares[name];
             if (!install) return;
-            const v = install(
-                this.$parent ? this.$parent.$square : new Square()
-            );
+            const v = install(this.$parent ? this.$parent.$square : new Square());
             if (typeof v === 'undefined') return;
             const rid: Types.Rid = this.$micro.register(name, v);
             const arr: RegisterItem[] = (this as any)[R_NAME] || [];

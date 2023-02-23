@@ -13,12 +13,7 @@ import { md5 } from './util';
 
 const defaultTemplate = `<!DOCTYPE html><html><head><title>Vue SSR for Genesis</title><%-style%></head><body><%-html%><%-scriptState%><%-script%></body></html>`;
 
-const modes: Genesis.RenderMode[] = [
-    'ssr-html',
-    'csr-html',
-    'ssr-json',
-    'csr-json'
-];
+const modes: Genesis.RenderMode[] = ['ssr-html', 'csr-html', 'ssr-json', 'csr-json'];
 
 async function createDefaultApp(renderContext: Genesis.RenderContext) {
     return new Vue({
@@ -34,19 +29,14 @@ function createRootNodeAttr(context: Genesis.RenderContext) {
 }
 async function template(strHtml: string, ctx: Genesis.RenderContext) {
     const { ssr } = ctx;
-    const html = strHtml.replace(
-        /^(<[A-z]([A-z]|[0-9])+)/,
-        `$1 ${createRootNodeAttr(ctx)}`
-    );
+    const html = strHtml.replace(/^(<[A-z]([A-z]|[0-9])+)/, `$1 ${createRootNodeAttr(ctx)}`);
     const vueCtx: any = ctx;
-    const resource = vueCtx
-        .getPreloadFiles()
-        .map((item: any): Genesis.RenderContextResource => {
-            return {
-                file: `${ssr.publicPath}${item.file}`,
-                extension: item.extension
-            };
-        });
+    const resource = vueCtx.getPreloadFiles().map((item: any): Genesis.RenderContextResource => {
+        return {
+            file: `${ssr.publicPath}${item.file}`,
+            extension: item.extension
+        };
+    });
     const { data } = ctx;
     if (html === '<!---->') {
         data.html += `<div ${createRootNodeAttr(ctx)}></div>`;
@@ -58,9 +48,7 @@ async function template(strHtml: string, ctx: Genesis.RenderContext) {
         ignoreFunction: true
     });
     data.script =
-        `<script>window["${ssr.publicPathVarName}"] = ${baseUrl};</script>` +
-        data.script +
-        vueCtx.renderScripts();
+        `<script>window["${ssr.publicPathVarName}"] = ${baseUrl};</script>` + data.script + vueCtx.renderScripts();
     data.style += vueCtx.renderStyles();
     data.resource = [...data.resource, ...resource];
     (ctx as any)._subs.forEach((fn: Function) => fn(ctx));
@@ -90,12 +78,7 @@ export class Renderer {
             get: () => ssr.cdnPublicPath + ssr.publicPath
         });
         this._load();
-        const bindArr = [
-            'renderJson',
-            'renderHtml',
-            'render',
-            'renderMiddleware'
-        ];
+        const bindArr = ['renderJson', 'renderHtml', 'render', 'renderMiddleware'];
         bindArr.forEach((k) => {
             this[k] = this[k].bind(this);
             Object.defineProperty(this, k, {
@@ -119,10 +102,7 @@ export class Renderer {
         }
     ): Promise<Genesis.RenderResultJson> {
         options = { ...options };
-        if (
-            !options.mode ||
-            ['ssr-json', 'csr-json'].indexOf(options.mode) === -1
-        ) {
+        if (!options.mode || ['ssr-json', 'csr-json'].indexOf(options.mode) === -1) {
             options.mode = 'ssr-json';
         }
         return this.render(options) as Promise<Genesis.RenderResultJson>;
@@ -137,10 +117,7 @@ export class Renderer {
         }
     ): Promise<Genesis.RenderResultHtml> {
         options = { ...options };
-        if (
-            !options.mode ||
-            ['ssr-html', 'csr-html'].indexOf(options.mode) === -1
-        ) {
+        if (!options.mode || ['ssr-html', 'csr-html'].indexOf(options.mode) === -1) {
             options.mode = 'ssr-html';
         }
         return this.render(options) as Promise<Genesis.RenderResultHtml>;
@@ -168,11 +145,7 @@ export class Renderer {
     /**
      * Rendering Middleware
      */
-    public async renderMiddleware(
-        req: IncomingMessage,
-        res: ServerResponse,
-        next: (err: any) => void
-    ): Promise<void> {
+    public async renderMiddleware(req: IncomingMessage, res: ServerResponse, next: (err: any) => void): Promise<void> {
         try {
             const result = await this.render({ req, res });
             res.setHeader('cache-control', 'max-age=0');
@@ -182,10 +155,7 @@ export class Renderer {
                     res.write(result.data);
                     break;
                 case 'json':
-                    res.setHeader(
-                        'content-type',
-                        'application/json; charset=utf-8'
-                    );
+                    res.setHeader('content-type', 'application/json; charset=utf-8');
                     res.write(JSON.stringify(result.data));
                     break;
             }
@@ -231,13 +201,7 @@ export class Renderer {
             get() {
                 const data = context.data;
                 const script = { ...data, env: 'client' };
-                const arr = [
-                    'style',
-                    'html',
-                    'scriptState',
-                    'script',
-                    'resource'
-                ];
+                const arr = ['style', 'html', 'scriptState', 'script', 'resource'];
                 arr.forEach((k) => {
                     Object.defineProperty(script, k, {
                         enumerable: false
@@ -262,10 +226,7 @@ export class Renderer {
         if (options.mode && modes.indexOf(options.mode) > -1) {
             context.mode = options.mode;
         }
-        if (
-            options.state &&
-            Object.prototype.toString.call(options.state) === '[object Object]'
-        ) {
+        if (options.state && Object.prototype.toString.call(options.state) === '[object Object]') {
             context.data.state = options.state || {};
         }
         // set context data
@@ -348,9 +309,7 @@ export class Renderer {
     /**
      * The server renders a JSON
      */
-    private async _ssrToJson(
-        context: Genesis.RenderContext
-    ): Promise<Genesis.RenderData> {
+    private async _ssrToJson(context: Genesis.RenderContext): Promise<Genesis.RenderData> {
         const vm = await this._createApp(context);
         await new Promise((resolve, reject) => {
             this.renderer.renderToString(vm, context, (err, data: any) => {
@@ -370,9 +329,7 @@ export class Renderer {
     /**
      * The server renders a HTML
      */
-    private async _ssrToString(
-        context: Genesis.RenderContext
-    ): Promise<string> {
+    private async _ssrToString(context: Genesis.RenderContext): Promise<string> {
         // #12426 https://github.com/vuejs/vue/pull/12426
         (context as any)._registeredComponents = new Set();
         await this._ssrToJson(context);
@@ -382,14 +339,9 @@ export class Renderer {
     /**
      * The client renders a JSON
      */
-    private async _csrToJson(
-        context: Genesis.RenderContext
-    ): Promise<Genesis.RenderData> {
+    private async _csrToJson(context: Genesis.RenderContext): Promise<Genesis.RenderData> {
         const vm = await createDefaultApp(context);
-        const data: Genesis.RenderData = (await this.renderer.renderToString(
-            vm,
-            context
-        )) as any;
+        const data: Genesis.RenderData = (await this.renderer.renderToString(vm, context)) as any;
         data.html = `<div ${createRootNodeAttr(context)}></div>`;
         await this.ssr.plugin.callHook('renderCompleted', context);
         this._styleTagExtractCSS(context);
@@ -399,9 +351,7 @@ export class Renderer {
     /**
      * The client renders a HTML
      */
-    private async _csrToString(
-        context: Genesis.RenderContext
-    ): Promise<string> {
+    private async _csrToString(context: Genesis.RenderContext): Promise<string> {
         await this._csrToJson(context);
         return context.renderHtml();
     }
@@ -412,9 +362,7 @@ export class Renderer {
         const info = styleTagExtractCSS(context.data.style);
         const filename = `first-screen-style/${md5(info.cssRules)}.css`;
         const url = `${cdnPublicPath}${publicPath}${filename}`;
-        context.data.style =
-            info.value +
-            `<link rel="stylesheet" type="text/css" href="${url}">`;
+        context.data.style = info.value + `<link rel="stylesheet" type="text/css" href="${url}">`;
         const fullFilename = path.resolve(this.ssr.outputDirInClient, filename);
         if (fs.existsSync(fullFilename)) {
             return;
@@ -470,13 +418,10 @@ function removeHotUpdateFiles(manifest: Genesis.ClientManifest) {
 
 export function styleTagExtractCSS(value: string) {
     let cssRules = '';
-    const newValue = value.replace(
-        /<style[^>]*>([^<]*)<\/style>/g,
-        ($1, $2) => {
-            cssRules += $2;
-            return '';
-        }
-    );
+    const newValue = value.replace(/<style[^>]*>([^<]*)<\/style>/g, ($1, $2) => {
+        cssRules += $2;
+        return '';
+    });
 
     return {
         cssRules,

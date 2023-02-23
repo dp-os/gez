@@ -55,14 +55,10 @@ class VMRuntimeInjectRemote extends VMRuntimeInject {
         super(remote.ssr, remote.mf);
         this.remote = remote;
         this.inject();
-        Object.defineProperty(
-            remote.ssr.sandboxGlobal,
-            this.publicPathVarName,
-            {
-                enumerable: true,
-                get: () => this.clientPublicPath
-            }
-        );
+        Object.defineProperty(remote.ssr.sandboxGlobal, this.publicPathVarName, {
+            enumerable: true,
+            get: () => this.clientPublicPath
+        });
     }
     public get publicPathVarName(): string {
         return SSR.getPublicPathVarName(this.remote.options.name);
@@ -86,9 +82,7 @@ class VMRuntimeInjectRemote extends VMRuntimeInject {
         if (this.remote.ready.loading) {
             const success = await this.remote.fetch();
             if (!success) {
-                throw new Error(
-                    `${this.remote.options.name} remote module download failed`
-                );
+                throw new Error(`${this.remote.options.name} remote module download failed`);
             }
         }
     }
@@ -102,10 +96,7 @@ class VMRuntimeInjectSelf extends VMRuntimeInject {
     public constructor(ssr: SSR, mf: MF) {
         super(ssr, mf);
 
-        this.manifestJson = new Json<ManifestJson>(
-            mf.outputManifest,
-            createManifest
-        );
+        this.manifestJson = new Json<ManifestJson>(mf.outputManifest, createManifest);
         if (!ssr.isProd) {
             this.manifestJson.set(createManifest());
         }
@@ -176,11 +167,7 @@ class RemoteZip {
         const { isProd } = this.remote.ssr;
         let zipU8: Uint8Array | null = null;
         const isCache = !isProd && !this.clean;
-        const cacheFilename = path.resolve(
-            __dirname,
-            'remotes',
-            `${md5(this.url)}.zip`
-        );
+        const cacheFilename = path.resolve(__dirname, 'remotes', `${md5(this.url)}.zip`);
         let isRemote = true;
         if (isCache && fs.existsSync(cacheFilename)) {
             zipU8 = new Uint8Array(fs.readFileSync(cacheFilename));
@@ -252,10 +239,7 @@ export class Remote extends Base {
         this.options = options;
         this.remoteModule = new VMRuntimeInjectRemote(this);
         this.polling = this.polling.bind(this);
-        this.manifestJson = new Json<ManifestJson>(
-            path.resolve(this.writeDir, 'manifest.json'),
-            createManifest
-        );
+        this.manifestJson = new Json<ManifestJson>(path.resolve(this.writeDir, 'manifest.json'), createManifest);
         this.clientManifestJson = new Json<ClientManifest>(
             path.resolve(this.writeDir, 'vue-ssr-client-manifest.json'),
             () => {
@@ -291,10 +275,7 @@ export class Remote extends Base {
         return `${this.options.clientOrigin}/${this.options.name}/`;
     }
     public get writeDir() {
-        return path.resolve(
-            this.ssr.outputDirInServer,
-            `remotes/${this.options.name}`
-        );
+        return path.resolve(this.ssr.outputDirInServer, `remotes/${this.options.name}`);
     }
     public async init(renderer?: Renderer) {
         if (renderer) {
@@ -337,13 +318,8 @@ export class Remote extends Base {
     }
     public getFullFile(filename: string) {
         let { serverOrigin, name } = this.options;
-        if (
-            serverOrigin.includes('[name]') ||
-            serverOrigin.includes('[filename]')
-        ) {
-            serverOrigin = serverOrigin
-                .replace(/\[name\]/g, name)
-                .replace(/\[filename\]/g, filename);
+        if (serverOrigin.includes('[name]') || serverOrigin.includes('[filename]')) {
+            serverOrigin = serverOrigin.replace(/\[name\]/g, name).replace(/\[filename\]/g, filename);
         } else if (serverOrigin) {
             serverOrigin = `${serverOrigin}/${name}/${ENTRY_DIR_NAME}/${filename}`;
         }
@@ -363,13 +339,8 @@ export class Remote extends Base {
         if (!manifest.d) {
             return true;
         }
-        const writeDir: string = path.resolve(
-            'node_modules',
-            this.options.name
-        );
-        const url = this.getFullFile(
-            `${manifest.s || developmentZipName}-dts.zip`
-        );
+        const writeDir: string = path.resolve('node_modules', this.options.name);
+        const url = this.getFullFile(`${manifest.s || developmentZipName}-dts.zip`);
         const version = String(manifest.t);
         const clean = !manifest.s;
         const zip = new RemoteZip({
@@ -474,9 +445,7 @@ export class RemoteGroup extends Base {
     private injectSelf?: VMRuntimeInjectSelf;
     public constructor(ssr: Genesis.SSR, mf: MF) {
         super(ssr, mf);
-        this.items = this.mf.options.remotes.map(
-            (opts) => new Remote(ssr, mf, opts)
-        );
+        this.items = this.mf.options.remotes.map((opts) => new Remote(ssr, mf, opts));
         if (mf.haveExposes) {
             // 自己调用自己的模块联邦
             // eslint-disable-next-line no-new

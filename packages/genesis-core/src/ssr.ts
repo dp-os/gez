@@ -129,11 +129,7 @@ export class SSR {
      * Directory to be compiled by webpack
      */
     public get srcIncludes() {
-        return [
-            ...this.transpile,
-            this.srcDir,
-            path.resolve(this.outputDirInTemplate)
-        ];
+        return [...this.transpile, this.srcDir, path.resolve(this.outputDirInTemplate)];
     }
 
     public get transpile() {
@@ -157,10 +153,7 @@ export class SSR {
      * Manifest file path of client
      */
     public get outputClientManifestFile() {
-        return path.resolve(
-            this.outputDirInServer,
-            'vue-ssr-client-manifest.json'
-        );
+        return path.resolve(this.outputDirInServer, 'vue-ssr-client-manifest.json');
     }
 
     /**
@@ -174,10 +167,7 @@ export class SSR {
      * Template path
      */
     public get templateFile() {
-        return (
-            this.options?.build?.template ||
-            path.resolve(this.srcDir, 'index.html')
-        );
+        return this.options?.build?.template || path.resolve(this.srcDir, 'index.html');
     }
 
     public get moduleReplace() {
