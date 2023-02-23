@@ -7,22 +7,12 @@ const baseDir = path.resolve();
 const scriptDir = path.resolve('script');
 
 const examplesNames = ['ssr-demo', 'ssr-mf-about', 'ssr-mf-home'];
-const packagesNames = [
-    'genesis-core',
-    'genesis-compiler',
-    'genesis-app',
-    'square'
-];
+const packagesNames = ['genesis-core', 'genesis-compiler', 'genesis-app', 'square'];
 
 function getProjectList(target, names) {
     return names
         .map((dir) => {
-            const filename = path.resolve(
-                baseDir,
-                target,
-                dir,
-                './package.json'
-            );
+            const filename = path.resolve(baseDir, target, dir, './package.json');
             return {
                 name: dir,
                 packagePath: filename,
@@ -71,9 +61,7 @@ class Examples {
                 await $`cp -r ./script/example.tsconfig.json ./examples/${item.name}/tsconfig.json`;
                 await $`cp -r ./script/example.tsconfig.node.json ./examples/${item.name}/tsconfig.node.json`;
                 const targetJson = item.packageJson;
-                const configJson = readJson(
-                    path.resolve(scriptDir, 'example.package.json')
-                );
+                const configJson = readJson(path.resolve(scriptDir, 'example.package.json'));
                 targetJson.scripts = configJson.scripts;
                 Object.assign(targetJson.scripts, configJson.scripts);
                 writeJson(item.packagePath, targetJson);
@@ -114,9 +102,7 @@ class Packages {
                 await $`cp -r ./script/packages.tsconfig.cjs.json ./packages/${item.name}/tsconfig.cjs.json`;
                 await $`cp -r ./script/packages.tsconfig.esm.json ./packages/${item.name}/tsconfig.esm.json`;
                 const targetJson = item.packageJson;
-                const configJson = readJson(
-                    path.resolve(scriptDir, 'packages.package.json')
-                );
+                const configJson = readJson(path.resolve(scriptDir, 'packages.package.json'));
                 targetJson.scripts = configJson.scripts;
                 Object.assign(targetJson.scripts, configJson.scripts);
                 writeJson(item.packagePath, targetJson);
