@@ -72,7 +72,9 @@ return require(remoteModule.filename);
         remotes[item.name] = `promise new Promise(function (resolve, reject) {
             function init(src, curName, remoteName, varName) {
                 if (window[varName]) {
-                  return window[varName];
+                  return new Promise(function (resolve) {
+                    resolve(window[varName]);
+                  });
                 }
                 var queueKey = varName + "_queue";
                 var isFirst = !window[queueKey];
