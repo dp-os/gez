@@ -107,7 +107,6 @@ const start = (createApp?: (data: ClientOptions) => Promise<Vue>) => {
     });
 };
 
-// https://www.devdcfx-asia.com/ssr-broker-main/js/exposes.3befd1fb.js
 
 function genesisLoadExposes(src: string, curName: string, remoteName: string, varName: string, resolve: Function, reject: Function) {
     if (window[varName]) {
