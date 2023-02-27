@@ -286,6 +286,7 @@ namespace Genesis {
         };
         el: Element;
         mounted?: (app: Vue) => void;
+        error?: (err: Error) => void;
     }
     export interface RenderOptions<T extends Genesis.RenderMode = Genesis.RenderMode> {
         req?: IncomingMessage;

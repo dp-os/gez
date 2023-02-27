@@ -1,4 +1,8 @@
 # CHANGELOG
+- 2.4.9
+  - feat: `ClientOptions` 新增 `error`钩子
+- 2.4.8
+  - fix: 修复模块联邦不支持循环引用的BUG
 - 2.4.6
   - fix: 修复模块联邦不支持循环引用的BUG
 - 2.4.5

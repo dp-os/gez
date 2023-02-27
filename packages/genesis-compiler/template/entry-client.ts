@@ -69,7 +69,14 @@ class Genesis {
                     `${process.env.GENESIS_NAME} 'entry-client.ts' must return Vue object instance, Example 'export default async () => new Vue({...})'`
                 );
             }
-            app.$mount(item.options.el);
+            try {
+                app.$mount(item.options.el);
+            } catch (err) {
+                if (typeof item.options.error === 'function') {
+                    item.options.error(err);
+                }
+                throw err;
+            }
             if (typeof item.options.mounted === 'function') {
                 // @ts-ignore
                 item.options.mounted(app);
