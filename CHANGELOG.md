@@ -1,4 +1,6 @@
 # CHANGELOG
+- 2.5.0
+  - chore: 升级`typescript@5.0.3`
 - 2.4.9
   - feat: `ClientOptions` 新增 `error`钩子
 - 2.4.8
