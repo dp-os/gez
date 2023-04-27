@@ -1,4 +1,11 @@
-import { CompilerType, MF, MFManifestJson, Plugin, SSR, WebpackHookParams } from '@fmfe/genesis-core';
+import {
+    CompilerType,
+    MF,
+    MFManifestJson,
+    Plugin,
+    SSR,
+    WebpackHookParams
+} from '@fmfe/genesis-core';
 import crypto from 'crypto';
 import fflate from 'fflate';
 import find from 'find';
@@ -15,7 +22,9 @@ function getExposes(ssr: SSR, mf: MF) {
 
     Object.keys(mf.options.exposes).forEach((key) => {
         const filename = mf.options.exposes[key];
-        const sourceFilename = path.isAbsolute(filename) ? filename : path.resolve(ssr.baseDir, filename);
+        const sourceFilename = path.isAbsolute(filename)
+            ? filename
+            : path.resolve(ssr.baseDir, filename);
         if (!fs.existsSync(sourceFilename)) {
             return;
         }
@@ -29,7 +38,12 @@ function getExposes(ssr: SSR, mf: MF) {
             writeFilename,
             path.resolve(ssr.outputDirInTemplate, 'webpack-public-path')
         );
-        const sourcePath = upath.toUnix(relativeFilename(writeFilename, sourceFilename).replace(/\.(j|t)s$/, ''));
+        const sourcePath = upath.toUnix(
+            relativeFilename(writeFilename, sourceFilename).replace(
+                /\.(j|t)s$/,
+                ''
+            )
+        );
         const templateArr: string[] = [
             `import "${upath.toUnix(webpackPublicPath)}";`,
             `export * from "${sourcePath}";`
@@ -95,7 +109,10 @@ export class MFPlugin extends Plugin {
                 name,
                 filename: `js/${entryName}${hash}.js`,
                 exposes,
-                library: target === 'client' ? undefined : { type: 'commonjs-module' },
+                library:
+                    target === 'client'
+                        ? undefined
+                        : { type: 'commonjs-module' },
                 remotes: getRemotes(ssr, mf, target === 'server'),
                 shared: mf.options.shared
             })

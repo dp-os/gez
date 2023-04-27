@@ -47,11 +47,17 @@ export const createClientApp = async (options: CreateClientAppOptions) => {
     if (router) {
         if ((router as any).sourceMode === 'abstract') {
             await router.push(clientOptions.url).catch((err: Error) => {
-                throw err || new Error(`router.push('${clientOptions.url}') error`);
+                throw (
+                    err ||
+                    new Error(`router.push('${clientOptions.url}') error`)
+                );
             });
         } else {
             await router.replace(clientOptions.url).catch((err: Error) => {
-                throw err || new Error(`router.replace('${clientOptions.url}') error`);
+                throw (
+                    err ||
+                    new Error(`router.replace('${clientOptions.url}') error`)
+                );
             });
         }
         await new Promise((resolve, reject) => {
@@ -82,7 +88,10 @@ export const createServerApp = async (options: CreateServerAppOptions) => {
     const { router } = (vueOptions as any) || {};
     if (router) {
         await router.replace(renderContext.data.url).catch((err: Error) => {
-            throw err || new Error(`router.replace('${renderContext.data.url}') error`);
+            throw (
+                err ||
+                new Error(`router.replace('${renderContext.data.url}') error`)
+            );
         });
         await new Promise((resolve, reject) => {
             router.onReady(resolve, (err: Error) => {

@@ -40,7 +40,9 @@ export class MF {
         this.remote = new RemoteGroup(ssr, this);
         ssr.plugin.use(this.mfPlugin);
         if (ssr.options?.build?.extractCSS !== false) {
-            throw new TypeError(`To use MF plug-in, build.extractCSS needs to be set to false`);
+            throw new TypeError(
+                `To use MF plug-in, build.extractCSS needs to be set to false`
+            );
         }
     }
     public get haveExposes() {
@@ -59,6 +61,8 @@ export class MF {
         return `${this.ssr.publicPath}${ENTRY_DIR_NAME}/${MANIFEST_JSON_NAME}`;
     }
     public getWebpackPublicPathVarName(name: string) {
-        return `__webpack_public_path_${SSR.fixVarName(name)}_${this.entryName}`;
+        return `__webpack_public_path_${SSR.fixVarName(name)}_${
+            this.entryName
+        }`;
     }
 }

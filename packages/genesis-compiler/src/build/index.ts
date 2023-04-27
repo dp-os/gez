@@ -40,13 +40,17 @@ export class Build {
                     if (stats.hasErrors()) {
                         chalk.red(`${type} errors`);
                         const errors = jsonStats.errors || [];
-                        errors.forEach((err) => console.log(error(err.message)));
+                        errors.forEach((err) =>
+                            console.log(error(err.message))
+                        );
                         return resolve(false);
                     }
                     if (stats.hasWarnings()) {
                         chalk.yellow(`${type} warnings`);
                         const warnings = jsonStats.warnings || [];
-                        warnings.forEach((err) => console.log(warning(err.message)));
+                        warnings.forEach((err) =>
+                            console.log(warning(err.message))
+                        );
                     }
                     resolve(true);
                 });
@@ -55,12 +59,22 @@ export class Build {
         deleteFolder(ssr.outputDir);
         await ssr.plugin.callHook('beforeCompiler', 'build');
         const values = await Promise.all([
-            build(`${ssr.name} build client`, await new ClientConfig(ssr).toConfig()),
-            build(`${ssr.name} build server`, await new ServerConfig(ssr).toConfig())
+            build(
+                `${ssr.name} build client`,
+                await new ClientConfig(ssr).toConfig()
+            ),
+            build(
+                `${ssr.name} build server`,
+                await new ServerConfig(ssr).toConfig()
+            )
         ]);
         await ssr.plugin.callHook('afterCompiler', 'build');
         if (values[0] === false || values[1] === false) {
-            console.log(error(`[@fmfe/genesis-compiler] ${ssr.name} Compilation failed, please check the code error`));
+            console.log(
+                error(
+                    `[@fmfe/genesis-compiler] ${ssr.name} Compilation failed, please check the code error`
+                )
+            );
             process.exitCode = 1;
         }
         return values;

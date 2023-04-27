@@ -23,7 +23,9 @@ export function createApp(routes: RouteConfig[]) {
         });
         if (context.env === 'server') {
             context.beforeRender(() => {
-                const { title, link, style, script, meta } = app.$meta().inject();
+                const { title, link, style, script, meta } = app
+                    .$meta()
+                    .inject();
                 appendText(context.data, 'title', title?.text() ?? '');
                 appendText(context.data, 'meta', meta?.text() ?? '');
                 appendText(context.data, 'style', style?.text() ?? '');

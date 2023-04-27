@@ -7,13 +7,24 @@ import { createRequest } from './request';
 type ManifestJson = Genesis.MFManifestJson;
 
 export interface RemoteFetchOptions {
-    getJson: (context: { filename: string; t: number; remote: Remote }) => Promise<ManifestJson | null>;
-    getZip: (context: { filename: string; remote: Remote }) => Promise<Uint8Array | null>;
+    getJson: (context: {
+        filename: string;
+        t: number;
+        remote: Remote;
+    }) => Promise<ManifestJson | null>;
+    getZip: (context: {
+        filename: string;
+        remote: Remote;
+    }) => Promise<Uint8Array | null>;
 }
 
 export class HttpFetch implements RemoteFetchOptions {
     private request = createRequest();
-    public async getJson(context: { filename: string; t: number; remote: Remote }) {
+    public async getJson(context: {
+        filename: string;
+        t: number;
+        remote: Remote;
+    }) {
         const url = `${context.filename}?t=${context.t}&n=${Date.now()}`;
         return this.request
             .get(url, context.remote.requestConfig)
@@ -32,22 +43,30 @@ export class HttpFetch implements RemoteFetchOptions {
 }
 
 export class FileFetch implements RemoteFetchOptions {
-    public async getJson(context: { filename: string; t: number; remote: Remote }) {
+    public async getJson(context: {
+        filename: string;
+        t: number;
+        remote: Remote;
+    }) {
         if (fs.existsSync(context.filename)) {
             return new Promise<ManifestJson | null>((resolve) => {
-                fs.readFile(context.filename, { encoding: 'utf-8' }, (err, text) => {
-                    let data: ManifestJson | null = null;
-                    if (!err) {
-                        try {
-                            data = JSON.parse(text) as ManifestJson;
-                        } catch (err) {
+                fs.readFile(
+                    context.filename,
+                    { encoding: 'utf-8' },
+                    (err, text) => {
+                        let data: ManifestJson | null = null;
+                        if (!err) {
+                            try {
+                                data = JSON.parse(text) as ManifestJson;
+                            } catch (err) {
+                                console.error(err);
+                            }
+                        } else {
                             console.error(err);
                         }
-                    } else {
-                        console.error(err);
+                        resolve(data);
                     }
-                    resolve(data);
-                });
+                );
             });
         }
         return null;

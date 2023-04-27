@@ -15,8 +15,12 @@ export class WatchClientConfig extends ClientConfig {
         super(ssr);
         this.config
             .entry('app')
-            .add(`webpack-hot-middleware/client?path=${ssr.publicPath}hot-middleware&timeout=2000&overlay=false`);
-        this.config.plugin('webpack-hot-replacement').use(Webpack.HotModuleReplacementPlugin);
+            .add(
+                `webpack-hot-middleware/client?path=${ssr.publicPath}hot-middleware&timeout=2000&overlay=false`
+            );
+        this.config
+            .plugin('webpack-hot-replacement')
+            .use(Webpack.HotModuleReplacementPlugin);
     }
 }
 
@@ -101,7 +105,10 @@ export class Watch extends BaseGenesis {
 
     private async notify(isServer = false) {
         const { ssr } = this;
-        if (!fs.existsSync(ssr.outputClientManifestFile) || !fs.existsSync(ssr.outputServeAppFile)) {
+        if (
+            !fs.existsSync(ssr.outputClientManifestFile) ||
+            !fs.existsSync(ssr.outputServeAppFile)
+        ) {
             return;
         }
         if (this._renderer && isServer) {

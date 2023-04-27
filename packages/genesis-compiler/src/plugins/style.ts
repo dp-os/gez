@@ -148,10 +148,18 @@ export class StylePlugin extends Plugin {
             return lds;
         };
         const getLessLoader = ({ isModule = false } = {}) => {
-            return [...getCssLoader({ isModule }), loaders.less, loaders.styleResources];
+            return [
+                ...getCssLoader({ isModule }),
+                loaders.less,
+                loaders.styleResources
+            ];
         };
         const getSassLoader = ({ isModule = false } = {}) => {
-            return [...getCssLoader({ isModule }), loaders.sass, loaders.styleResources];
+            return [
+                ...getCssLoader({ isModule }),
+                loaders.sass,
+                loaders.styleResources
+            ];
         };
         const rules: RuleOptions[] = [
             {
@@ -248,7 +256,11 @@ export class StylePlugin extends Plugin {
             }
         ];
         for (const rule of rules) {
-            const currentRule = config.module.rule(rule.name).test(rule.match).include.add(rule.includes).end();
+            const currentRule = config.module
+                .rule(rule.name)
+                .test(rule.match)
+                .include.add(rule.includes)
+                .end();
             Object.keys(rule.modules).forEach((moduleName: string) => {
                 const r = currentRule.oneOf(moduleName);
                 const currentModule = rule.modules[moduleName];
@@ -257,7 +269,10 @@ export class StylePlugin extends Plugin {
                 }
                 const lds = currentModule.loaders;
                 for (const currentLoader of lds) {
-                    r.use(currentLoader.ruleName).loader(currentLoader.loader).options(currentLoader.options).end();
+                    r.use(currentLoader.ruleName)
+                        .loader(currentLoader.loader)
+                        .options(currentLoader.options)
+                        .end();
                 }
             });
         }

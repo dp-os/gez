@@ -21,7 +21,9 @@ const installMicro = (_Vue: typeof Vue) => {
             if (this.$root && this.$root.$options.micro) {
                 return this.$root.$options.micro;
             }
-            throw new Error("[micro] Please use 'new Vue({ micro: new Micro({ ... }) })' to install Micro");
+            throw new Error(
+                "[micro] Please use 'new Vue({ micro: new Micro({ ... }) })' to install Micro"
+            );
         }
     });
 };
@@ -54,7 +56,9 @@ const installSquare = (_Vue: typeof Vue) => {
                     },
                     set() {
                         // eslint-disable-next-line no-new
-                        new Error(`[micro] Modification of ${name} modules is not allowed`);
+                        new Error(
+                            `[micro] Modification of ${name} modules is not allowed`
+                        );
                     }
                 });
             };

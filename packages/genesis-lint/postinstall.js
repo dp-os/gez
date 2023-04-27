@@ -26,7 +26,8 @@ const mergePackage = () => {
             ...(data.scripts || {}),
             lint: 'npm run lint:js && npm run lint:css',
             'lint:js': 'genesis-eslint . --ext .js,.ts,.vue --fix',
-            'lint:css': 'genesis-stylelint **/*.{css,less,vue} --fix --allow-empty-input'
+            'lint:css':
+                'genesis-stylelint **/*.{css,less,vue} --fix --allow-empty-input'
         },
         husky: {
             hooks: {
