@@ -13,8 +13,8 @@ export class WorkerPlugin extends Plugin {
             .options({
                 esModule: false,
                 filename: ssr.isProd
-                    ? 'worker/[name].[contenthash:8].[ext]'
-                    : 'worker/[path][name].[ext]'
+                    ? 'worker/[name].[contenthash:8].js'
+                    : 'worker/[path][name].js'
             });
     }
 }
