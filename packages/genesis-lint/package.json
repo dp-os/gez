@@ -36,13 +36,13 @@
         "postcss": "8.4.16",
         "postcss-html": "1.5.0",
         "postcss-less": "6.0.0",
-        "prettier": "2.7.1",
+        "prettier": "3.0.2",
         "stylelint": "14.12.1",
         "stylelint-config-html": "1.1.0",
         "stylelint-config-prettier": "9.0.3",
         "stylelint-config-standard": "28.0.0",
         "stylelint-order": "5.0.0",
-        "typescript": "5.0.3",
+        "typescript": "5.1.6",
         "vue-eslint-parser": "9.1.0"
     },
     "husky": {
