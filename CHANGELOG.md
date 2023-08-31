@@ -1,4 +1,6 @@
 # CHANGELOG
+- 2.5.3
+  - fix: 处理lint报错
 - 2.5.2
   - chore: 升级`prettier@3.0.2`、`typescript@5.1.6`
 - 2.5.0
