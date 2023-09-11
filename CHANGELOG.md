@@ -1,4 +1,6 @@
 # CHANGELOG
+- 2.6.1
+  - fix: 降级 esbuild-loader 到 esbuild-loader@2.21.0
 - 2.6.2
   - fix: 降级 esbuild-loader 到 esbuild-loader@3.2.0
 - 2.6.1

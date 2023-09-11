@@ -57,7 +57,7 @@
         "core-js": "3.32.2",
         "css-loader": "6.8.1",
         "cssnano": "6.0.1",
-        "esbuild-loader": "3.2.0",
+        "esbuild-loader": "2.21.0",
         "fflate": "0.8.0",
         "file-loader": "6.2.0",
         "find": "0.3.0",
