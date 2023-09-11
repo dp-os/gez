@@ -1,4 +1,6 @@
 # CHANGELOG
+- 2.6.2
+  - fix: 降级 esbuild-loader 到 esbuild-loader@3.2.0
 - 2.6.1
   - fix: 降级 stylelint 到 stylelint@14.16.1
 - 2.6.0
