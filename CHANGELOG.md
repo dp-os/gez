@@ -1,4 +1,6 @@
 # CHANGELOG
+- 2.6.1
+  - fix: 降级 stylelint 到 stylelint@14.16.1
 - 2.6.0
   - feat: 应升尽升，webpack、babel、lint、构建工具相关的依赖
 - 2.5.3
