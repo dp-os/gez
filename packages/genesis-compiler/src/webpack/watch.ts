@@ -1,6 +1,6 @@
 import { Renderer, SSR } from '@fmfe/genesis-core';
 import fs from 'fs';
-import mkdirp from 'mkdirp';
+import { mkdirp } from 'mkdirp';
 import path from 'path';
 import Webpack from 'webpack';
 import WebpackDevMiddleware from 'webpack-dev-middleware';

@@ -172,7 +172,7 @@ namespace Genesis {
          * Template file path
          */
         template?: string;
-        moduleReplace?: Record<string, string | ((request: string) => string)>;
+        moduleReplace?: Record<string, string | ((request: any) => string)>;
     }
 
     export interface Target {

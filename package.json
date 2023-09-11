@@ -2,9 +2,9 @@
     "name": "genesis",
     "private": true,
     "devDependencies": {
-        "concurrently": "7.0.0",
-        "lerna": "^4.0.0",
-        "zx": "^5.1.0"
+        "concurrently": "8.2.1",
+        "lerna": "^7.2.0",
+        "zx": "^7.2.3"
     },
     "workspaces": [
         "packages/*",

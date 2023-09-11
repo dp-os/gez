@@ -3,6 +3,7 @@ import Vue from 'vue';
 import Meta from 'vue-meta';
 import Router, { RouteConfig } from 'vue-router';
 
+// @ts-ignore
 import App from './app.vue';
 
 Vue.use(Meta).use(Router);

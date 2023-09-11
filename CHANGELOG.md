@@ -1,4 +1,6 @@
 # CHANGELOG
+- 2.6.0
+  - feat: 应升尽升，webpack、babel、lint、构建工具相关的依赖
 - 2.5.3
   - fix: 处理lint报错
 - 2.5.2
