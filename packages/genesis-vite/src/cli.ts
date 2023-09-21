@@ -13,13 +13,15 @@ nodeRunner(async (module) => {
   const genesis = new Genesis(options)
   switch (type) {
     case 'dev':
-      created(genesis, await createDevApp(genesis))
+      genesis.app = await createDevApp(genesis)
+      created(genesis)
       break
     case 'build':
       await build(genesis)
       break
     case 'start':
-      created(genesis, await createProdApp(genesis))
+      genesis.app = await createProdApp(genesis)
+      created(genesis)
       break
   }
 })

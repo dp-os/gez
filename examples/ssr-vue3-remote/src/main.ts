@@ -1,7 +1,7 @@
-import { createApp } from 'vue'
+import { createSSRApp } from 'vue'
 import App from './app.vue'
 
 export function createApp () {
-  const app = createApp(App)
+  const app = createSSRApp(App)
   return { app }
 }

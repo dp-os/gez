@@ -1,10 +1,9 @@
 import http, { type IncomingMessage, type ServerResponse } from 'http'
 
 import { type Genesis, type GenesisOptions } from './genesis'
-import { type App } from './app'
 
 export interface NodeOptions extends GenesisOptions {
-  created: (genesis: Genesis, app: App) => void
+  created: (genesis: Genesis) => void
 }
 
 export function defineNode (options: NodeOptions) {
@@ -13,10 +12,10 @@ export function defineNode (options: NodeOptions) {
 /**
  * Create a simple HTTP server, I suggest you replace it with Express
  */
-export function createServer (genesis: Genesis, app: App) {
+export function createServer (genesis: Genesis) {
   const render = async (req: IncomingMessage, res: ServerResponse) => {
     try {
-      const context = await app.render({
+      const context = await genesis.render({
         url: req.url ?? '/'
       })
       res.writeHead(200, { 'Content-Type': 'text/html;charset=UTF-8' })
@@ -30,7 +29,7 @@ export function createServer (genesis: Genesis, app: App) {
     const url = req.url
     if (typeof url === 'string' && url.indexOf(genesis.base) === 0) {
       req.url = url.substring(genesis.base.length - 1)
-      app.middleware(req, res, (err?: Error) => {
+      genesis.middleware(req, res, (err?: Error) => {
         if (err instanceof Error) {
           console.error(err)
         }

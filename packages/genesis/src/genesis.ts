@@ -1,6 +1,7 @@
 import path from 'node:path'
 import { cwd } from 'node:process'
 import { getProjectPath, type ProjectPath } from './project-path'
+import { type App } from './app'
 
 export interface FederationSharedConfig {
   import?: boolean
@@ -27,8 +28,43 @@ export interface GenesisOptions {
 
 export class Genesis {
   private readonly _options: GenesisOptions
+  private _app: App | null = null
   public constructor (options: GenesisOptions = {}) {
     this._options = options
+  }
+
+  public get app () {
+    const { _app } = this
+    if (_app) {
+      return _app
+    }
+    throw new Error('App instance does not exist')
+  }
+
+  public set app (app: App) {
+    if (this._app) {
+      throw new Error('Cannot repeatedly mount App instances')
+    }
+    this._app = app
+  }
+
+  public get build () {
+    return this.app.build
+  }
+
+  public get middleware () {
+    return this.app.middleware
+  }
+
+  public get render () {
+    return this.app.render
+  }
+
+  public async destroy () {
+    const { _app } = this
+    if (_app) {
+      _app.destroy()
+    }
   }
 
   public get root (): string {

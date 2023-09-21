@@ -12,5 +12,6 @@ import(file).then(async module => {
   }
   process.env.NODE_ENV = process.env.NODE_ENV ?? 'production'
   const genesis = new Genesis(options)
-  options.created(genesis, await createApp(genesis))
+  genesis.app = await createApp(genesis)
+  options.created(genesis)
 })

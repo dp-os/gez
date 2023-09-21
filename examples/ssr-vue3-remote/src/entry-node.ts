@@ -5,8 +5,8 @@ export default defineNode({
   federation: {
     exposes: ['src/common-button.vue']
   },
-  created (genesis, app) {
-    const server = createServer(genesis, app)
+  created (genesis) {
+    const server = createServer(genesis)
     server.listen(3003, () => {
       console.log('http://localhost:3003')
     })

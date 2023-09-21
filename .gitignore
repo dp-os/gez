@@ -104,3 +104,7 @@ dist
 .tern-port
 yarn.lock
 .DS_Store
+examples/**/types
+examples/**/dist
+packages/**/types
+packages/**/dist
