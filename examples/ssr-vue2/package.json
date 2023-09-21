@@ -5,7 +5,7 @@
     "scripts": {
         "dev": "genesis-vite dev",
         "build": "genesis-vite build",
-        "start": "ssr"
+        "start": "genesis"
     },
     "dependencies": {
         "genesis3": "0.1.7"
