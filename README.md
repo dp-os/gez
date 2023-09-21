@@ -44,7 +44,7 @@ export default defineNode({
   }
 })
 ```
-**entry-server.ts**
+**entry-server.ts**    
 请求进来时，设置当前请求的html内容
 ```ts
 import { defineServer } from 'genesis3'
@@ -59,7 +59,7 @@ export default defineServer({
 })
 ```
 
-**entry-client.ts**
+**entry-client.ts**    
 在客户端执行你的水合逻辑
 ```ts
 const button: HTMLButtonElement | null = document.querySelector('button')
