@@ -69,8 +69,8 @@ if (time) {
 }
 ```
 
-**Express**    
-有时候，我们希望自定义服务器，这里以`Express`举例
+### 自定义服务器    
+有时候，我们希望自定义服务器，这里以`Express`举例，将`entry-node.ts`文件代码修改成如下    
 ```ts
 import { defineNode } from 'genesis3'
 
