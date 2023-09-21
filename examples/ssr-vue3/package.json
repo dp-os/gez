@@ -1,6 +1,6 @@
 {
     "name": "ssr-vue3",
-    "version": "0.1.6",
+    "version": "0.1.7",
     "private": true,
     "scripts": {
         "dev": "genesis-vite dev",
@@ -8,11 +8,11 @@
         "start": "ssr"
     },
     "dependencies": {
-        "genesis3": "0.1.6"
+        "genesis3": "0.1.7"
     },
     "devDependencies": {
         "@vitejs/plugin-vue": "^4.2.3",
-        "genesis-vite": "0.1.6",
+        "genesis-vite": "0.1.7",
         "vite": "^4.4.9",
         "vue": "^3.3.4"
     }
