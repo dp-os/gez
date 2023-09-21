@@ -1,11 +1,8 @@
 {
+  "version": "0.1.5",
   "packages": [
     "packages/*",
     "examples/*"
   ],
-  "version": "2.6.3",
-  "npmClient": "yarn",
-  "publishConfig": {
-    "access": "publish"
-  }
+  "npmClient": "pnpm"
 }

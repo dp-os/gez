@@ -1,1 +1,0 @@
-# @fmfe/genesis-lint

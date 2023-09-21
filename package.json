@@ -1,40 +1,33 @@
 {
-    "name": "genesis",
-    "private": true,
-    "devDependencies": {
-        "concurrently": "8.2.1",
-        "lerna": "^7.2.0",
-        "zx": "^7.2.3"
-    },
-    "workspaces": [
-        "packages/*",
-        "examples/*"
-    ],
-    "scripts": {
-        "release": "./script/publish.sh",
-        "build": "zx script/index.js --examples build",
-        "start": "zx script/index.js --examples start",
-        "dev": "zx script/index.js --examples dev",
-        "type-check": "zx script/index.js --examples type-check",
-        "build:packages": "zx script/index.js --packages build",
-        "lint": "npm run lint:js && npm run lint:css",
-        "lint:js": "genesis-eslint . --ext .js,.ts,.vue --fix",
-        "lint:css": "genesis-stylelint **/*.{css,less,vue} --fix --allow-empty-input",
-        "postinstall": "./script/post-install.sh"
-    },
-    "husky": {
-        "hooks": {
-            "pre-commit": "lint-staged"
-        }
-    },
-    "lint-staged": {
-        "*.{ts,js}": [
-            "eslint --ext .js,.ts --fix",
-            "git add"
-        ],
-        "*.{vue}": [
-            "eslint --ext .js,.ts --fix",
-            "git add"
-        ]
-    }
+  "type": "module",
+  "name": "ssr-ms-monorepo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "scripts": {
+    "dev": "pnpm -r --filter='./examples/*' run dev",
+    "build": "pnpm -r --filter='./examples/*' run build",
+    "build:packages": "pnpm -r --filter='./packages/*' run build",
+    "start": "pnpm -r --filter='./examples/*' run start",
+    "test": "pnpm run build:packages && vitest",
+    "coverage": "pnpm run build:packages && vitest run --coverage",
+    "release": "pnpm build:packages && lerna publish --registry=https://registry.npmjs.org --force-publish --exact"
+  },
+  "private": true,
+  "devDependencies": {
+    "@types/node": "^20.6.3",
+    "@typescript-eslint/eslint-plugin": "^6.7.2",
+    "@typescript-eslint/parser": "^6.7.2",
+    "@vitest/coverage-v8": "^0.34.4",
+    "eslint": "^8.49.0",
+    "eslint-config-standard-with-typescript": "^39.0.0",
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-n": "^16.1.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "typescript": "^5.2.2",
+    "vitest": "^0.34.4"
+  }
 }

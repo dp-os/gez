@@ -1,7 +1,4 @@
-dist/**
-node_modules/**
-dist/**
-packages/**/dist/**
-examples/**/dist/**
-packages/**/types/**
-examples/**/types/**
+packages/**/dist
+packages/**/types
+examples/**/dist
+examples/**/types
