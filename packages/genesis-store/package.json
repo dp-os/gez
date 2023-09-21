@@ -1,5 +1,5 @@
 {
-  "name": "genesis-state",
+  "name": "genesis-store",
   "version": "0.1.7",
   "type": "module",
   "types": "./dist/index.d.ts",
