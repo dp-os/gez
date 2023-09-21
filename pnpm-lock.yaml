@@ -48,7 +48,7 @@ importers:
         specifier: ^4.18.2
         version: 4.18.2
       genesis3:
-        specifier: 0.1.6-alpha.0
+        specifier: 0.1.6
         version: link:../../packages/genesis
     devDependencies:
       '@builder.io/qwik':
@@ -58,7 +58,7 @@ importers:
         specifier: ^4.17.17
         version: 4.17.17
       genesis-vite:
-        specifier: 0.1.6-alpha.0
+        specifier: 0.1.6
         version: link:../../packages/genesis-vite
       vite:
         specifier: ^4.4.9
@@ -70,7 +70,7 @@ importers:
         specifier: ^4.18.2
         version: 4.18.2
       genesis3:
-        specifier: 0.1.6-alpha.0
+        specifier: 0.1.6
         version: link:../../packages/genesis
     devDependencies:
       '@types/express':
@@ -80,7 +80,7 @@ importers:
         specifier: ^4.0.4
         version: 4.0.4(vite@4.4.9)
       genesis-vite:
-        specifier: 0.1.6-alpha.0
+        specifier: 0.1.6
         version: link:../../packages/genesis-vite
       react:
         specifier: ^18.2.0
@@ -98,14 +98,14 @@ importers:
         specifier: ^4.18.2
         version: 4.18.2
       genesis3:
-        specifier: 0.1.6-alpha.0
+        specifier: 0.1.6
         version: link:../../packages/genesis
     devDependencies:
       '@types/express':
         specifier: ^4.17.17
         version: 4.17.17
       genesis-vite:
-        specifier: 0.1.6-alpha.0
+        specifier: 0.1.6
         version: link:../../packages/genesis-vite
       vite:
         specifier: ^4.4.9
@@ -117,7 +117,7 @@ importers:
         specifier: ^4.18.2
         version: 4.18.2
       genesis3:
-        specifier: 0.1.6-alpha.0
+        specifier: 0.1.6
         version: link:../../packages/genesis
     devDependencies:
       '@types/express':
@@ -127,7 +127,7 @@ importers:
         specifier: ^2.2.0
         version: 2.2.0(vite@4.4.9)(vue@2.7.14)
       genesis-vite:
-        specifier: 0.1.6-alpha.0
+        specifier: 0.1.6
         version: link:../../packages/genesis-vite
       vite:
         specifier: ^4.4.9
@@ -145,7 +145,7 @@ importers:
         specifier: ^4.18.2
         version: 4.18.2
       genesis3:
-        specifier: 0.1.6-alpha.0
+        specifier: 0.1.6
         version: link:../../packages/genesis
     devDependencies:
       '@types/express':
@@ -155,7 +155,7 @@ importers:
         specifier: ^4.2.3
         version: 4.3.4(vite@4.4.9)(vue@3.3.4)
       genesis-vite:
-        specifier: 0.1.6-alpha.0
+        specifier: 0.1.6
         version: link:../../packages/genesis-vite
       vite:
         specifier: ^4.4.9
@@ -170,7 +170,7 @@ importers:
         specifier: ^4.18.2
         version: 4.18.2
       genesis3:
-        specifier: 0.1.6-alpha.0
+        specifier: 0.1.6
         version: link:../../packages/genesis
     devDependencies:
       '@types/express':
@@ -180,7 +180,7 @@ importers:
         specifier: ^4.2.3
         version: 4.3.4(vite@4.4.9)(vue@3.3.4)
       genesis-vite:
-        specifier: 0.1.6-alpha.0
+        specifier: 0.1.6
         version: link:../../packages/genesis-vite
       vite:
         specifier: ^4.4.9
@@ -228,7 +228,7 @@ importers:
         version: 0.34.4(@types/node@20.6.3)
     devDependencies:
       genesis3:
-        specifier: 0.1.6-alpha.0
+        specifier: 0.1.6
         version: link:../genesis
       unbuild:
         specifier: ^1.2.1
