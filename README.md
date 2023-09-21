@@ -1,7 +1,7 @@
 # genesis3
 一个轻量级的 SSR 微服务框架
 
-## 快速开始
+## 安装
 
 **npm**
 ```bash
@@ -27,7 +27,7 @@ pnpm install genesis-vite vite -D
         "start": "genesis"
     }
 ```
-### Hello World
+## Hello World
 在项目的`src`目录下，分别创建三个文件`entry-node.ts`、`entry-server.ts`、`entry-client.ts`
 
 **entry-node.ts**    
