@@ -3,17 +3,28 @@
 
 ## 快速开始
 
-### 安装依赖
+### 安装
+### 使用npm
 ```bash
 npm install genesis3
 npm install genesis-vite -D
+```
+### 使用yarn
+```bash
+yarn add genesis3
+yarn add genesis-vite -D
+```
+### 使用pnpm
+```bash
+pnpm install genesis3
+pnpm install genesis-vite -D
 ```
 ### 设置脚本
 在`package.json`文件中配置启动脚本
 ```json
     "scripts": {
-        "dev": "genesis dev",
-        "build": "genesis build",
+        "dev": "genesis-vite dev",
+        "build": "genesis-vite build",
         "start": "genesis"
     }
 ```

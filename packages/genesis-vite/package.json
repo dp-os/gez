@@ -19,7 +19,7 @@
     "build": "tsc --noEmit && unbuild"
   },
   "peerDependencies": {
-    "genesis3": "^0.0.1",
+    "genesis3": "^0.1.6",
     "vite": "^4.4.9"
   },
   "dependencies": {
@@ -27,7 +27,7 @@
     "vite-node": "^0.34.1"
   },
   "devDependencies": {
-    "genesis3": "0.1.6",
+    "genesis3": "^0.1.6",
     "unbuild": "^1.2.1"
   },
   "gitHead": "8471bddf6fb9850001d8661f7d1058ea590999d1"
