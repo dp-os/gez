@@ -53,8 +53,7 @@ export default defineServer({
   async render (context) {
     const time = new Date().toISOString()
     context.html = '<h1>Hello World</h1>' +
-    '<time>' + time + '</time><br>' +
-    '<button>Click to try</button>'
+    '<time>' + time + '</time><br>'
   }
 })
 ```
@@ -62,19 +61,37 @@ export default defineServer({
 **entry-client.ts**    
 在客户端执行你的水合逻辑
 ```ts
-const button: HTMLButtonElement | null = document.querySelector('button')
 const time: HTMLTimeElement | null = document.querySelector('time')
-
-if (button) {
-  button.addEventListener('click', () => {
-    button.innerText = 'Program execution succeeded'
-  })
-}
 if (time) {
   setInterval(() => {
     time.innerText = new Date().toISOString()
   }, 1000)
 }
-export {}
+```
 
+**Express**
+有时候，我们希望自定义服务器，这里以`Express`举例
+```ts
+import { defineNode } from 'genesis3'
+
+import express from 'express'
+
+export default defineNode({
+  created (genesis, app) {
+    const server = express()
+    server.use(genesis.base, app.middleware)
+
+    server.get('*', async (req, res, next) => {
+      try {
+        const context = await app.render({ url: req.url })
+        res.send(context.html)
+      } catch (e) {
+        next(e)
+      }
+    })
+    server.listen(3000, () => {
+      console.log('http://localhost:3000')
+    })
+  }
+})
 ```
