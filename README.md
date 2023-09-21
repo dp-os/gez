@@ -12,8 +12,8 @@ npm install genesis-vite -D
 在`package.json`文件中配置启动脚本
 ```json
     "scripts": {
-        "dev": "ssr dev",
-        "build": "ssr build",
-        "start": "ssr"
+        "dev": "genesis dev",
+        "build": "genesis build",
+        "start": "genesis"
     }
 ```
