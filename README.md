@@ -7,17 +7,17 @@
 ### 使用npm
 ```bash
 npm install genesis3
-npm install genesis-vite -D
+npm install genesis-vite vite -D
 ```
 ### 使用yarn
 ```bash
 yarn add genesis3
-yarn add genesis-vite -D
+yarn add genesis-vite vite -D
 ```
 ### 使用pnpm
 ```bash
 pnpm install genesis3
-pnpm install genesis-vite -D
+pnpm install genesis-vite vite -D
 ```
 ### 设置脚本
 在`package.json`文件中配置启动脚本

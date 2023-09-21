@@ -1,20 +1,8 @@
-import { defineNode } from 'genesis3'
-
-import express from 'express'
+import { defineNode, createServer } from 'genesis3'
 
 export default defineNode({
   created (genesis, app) {
-    const server = express()
-    server.use(genesis.base, app.middleware)
-
-    server.get('*', async (req, res, next) => {
-      try {
-        const context = await app.render({ url: req.url })
-        res.send(context.html)
-      } catch (e) {
-        next(e)
-      }
-    })
+    const server = createServer(genesis, app)
     server.listen(3003, () => {
       console.log('http://localhost:3003')
     })

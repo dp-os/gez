@@ -8,11 +8,9 @@
         "start": "ssr"
     },
     "dependencies": {
-        "express": "^4.18.2",
         "genesis3": "0.1.6"
     },
     "devDependencies": {
-        "@types/express": "^4.17.17",
         "@vitejs/plugin-vue2": "^2.2.0",
         "genesis-vite": "0.1.6",
         "vite": "^4.4.9",

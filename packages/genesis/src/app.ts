@@ -10,7 +10,7 @@ export interface AppParams {
   extra?: Record<string, any>
 }
 
-export type AppMiddlewareNext = Function | (() => void)
+export type AppMiddlewareNext = Function
 
 export interface App {
   middleware: (req: IncomingMessage, res: ServerResponse, next?: AppMiddlewareNext) => void
@@ -22,8 +22,13 @@ export interface App {
 export async function createApp (genesis: Genesis): Promise<App> {
   const result = await import(/* @vite-ignore */genesis.getProjectPath('dist/server/entry-server.mjs'))
   const serverRender: ServerRender = result.default
+  const root = genesis.getProjectPath('dist/client')
   return {
-    middleware: serveStatic(genesis.getProjectPath('dist/client')) as App['middleware'],
+    middleware: serveStatic(root, {
+      setHeaders (res) {
+        res.setHeader('cache-control', 'public, max-age=31536000')
+      }
+    }) as App['middleware'],
     async render (params: AppParams) {
       const context = new ServerContext(genesis, params)
       await serverRender(context)
