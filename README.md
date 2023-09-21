@@ -3,18 +3,17 @@
 
 ## 快速开始
 
-### 安装
-### 使用npm
+npm
 ```bash
 npm install genesis3
 npm install genesis-vite vite -D
 ```
-### 使用yarn
+yarn
 ```bash
 yarn add genesis3
 yarn add genesis-vite vite -D
 ```
-### 使用pnpm
+pnpm
 ```bash
 pnpm install genesis3
 pnpm install genesis-vite vite -D
