@@ -1,25 +1,19 @@
-import { component$, useStore } from '@builder.io/qwik'
+import { component$ } from '@builder.io/qwik'
+import { store } from './store'
+import { Home } from './views/home'
+import { About } from './views/about'
 
 const App = component$(() => {
-  const state = useStore({
-    count: 0
-  })
+  const state = store.provider()
+
   return (
     <>
       <head>
         <title>{String(state.count)}</title>
       </head>
       <body>
-        <div>
-          <h1>Hi 👋</h1>
-          {state.count}
-          <button onClick$={() => state.count++}>按钮</button>
-          <p>
-            Can't wait to see what you build with qwik!
-            <br />
-            Happy coding.
-          </p>
-        </div>
+        <Home />
+        <About />
       </body>
     </>
   )
