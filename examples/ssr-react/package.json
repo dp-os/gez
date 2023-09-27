@@ -1,6 +1,6 @@
 {
     "name": "ssr-react",
-    "version": "0.1.7",
+    "version": "0.1.8",
     "private": true,
     "scripts": {
         "dev": "genesis-vite dev",
@@ -9,15 +9,15 @@
         "start": "genesis"
     },
     "dependencies": {
-        "genesis3": "0.1.7"
+        "genesis3": "0.1.8"
     },
     "devDependencies": {
-        "typescript": "^5.2.2",
         "@types/node": "^20.6.3",
         "@vitejs/plugin-react": "^4.0.4",
-        "genesis-vite": "0.1.7",
+        "genesis-vite": "0.1.8",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
+        "typescript": "^5.2.2",
         "vite": "^4.4.9"
     }
 }
