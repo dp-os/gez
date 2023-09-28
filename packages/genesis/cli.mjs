@@ -1,3 +1,5 @@
 #!/usr/bin/env node
 
-import './dist/cli.mjs';
+import { cli } from './dist/cli.mjs';
+
+cli()
