@@ -1,6 +1,6 @@
 {
   "name": "genesis-store",
-  "version": "0.1.10-alpha.0",
+  "version": "0.1.10-alpha.1",
   "type": "module",
   "types": "./dist/index.d.ts",
   "license": "MIT",
