@@ -1,21 +1,14 @@
 import { type RootState, isStateValue, getState } from './state'
 
-export interface StoreOptions {
-  name: string
-  params?: Record<string, string>
-  rootState: RootState
-}
-
 export class Store {
-  public constructor (options: StoreOptions) {
+  public constructor (rootState: RootState, name: string) {
     const map = new Map<string, Function>()
-    const name = options.name
-    const rootState: any = options.rootState
+    const _rootState: any = rootState
     return new Proxy(this, {
       get (target: any, p) {
         let value = target[p]
         if (isStateValue(value)) {
-          const state = rootState[name]
+          const state = _rootState[name]
           if (state) {
             value = state[p]
           }
@@ -24,7 +17,7 @@ export class Store {
           value = map.get(p)
           if (!value) {
             value = function (...args: any[]) {
-              if (!rootState[name]) {
+              if (!_rootState[name]) {
                 const state: any = {}
                 Object.keys(target).forEach(k => {
                   const value = target[k]
@@ -32,7 +25,7 @@ export class Store {
                     state[k] = value
                   }
                 })
-                rootState[name] = state
+                _rootState[name] = state
               }
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-expect-error
@@ -44,7 +37,6 @@ export class Store {
         return value
       },
       set (target, p, newValue) {
-        console.log('>>>>>>>', p, newValue, isStateValue(newValue))
         if (isStateValue(newValue)) {
           getState(rootState, name)[p] = newValue
         }

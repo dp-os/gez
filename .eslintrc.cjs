@@ -13,6 +13,7 @@ module.exports = {
     sourceType: "module",
   },
   rules: {
+    '@typescript-eslint/no-extraneous-class': 'error',
     '@typescript-eslint/no-confusing-void-expression': 'error',
     '@typescript-eslint/await-thenable': 'off',
     '@typescript-eslint/no-misused-promises': 'off',
