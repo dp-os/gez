@@ -6,7 +6,7 @@ import { createApp } from './app'
 
 export function cli () {
   const file = getProjectPath(path.resolve(), 'dist/node/entry-node.mjs')
-  import(file).then(async module => {
+  import(/* @vite-ignore */file).then(async module => {
     const options: NodeOptions = module.default || {}
     if (typeof options.created !== 'function') {
       return
