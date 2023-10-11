@@ -13,7 +13,7 @@
     "build:dts": "pnpm -r --filter='./examples/*' run build:dts",
     "build:packages": "pnpm -r --filter='./packages/*' run build",
     "start": "pnpm -r --filter='./examples/*' run start",
-    "test": "pnpm run build:packages && vitest",
+    "test": "vitest",
     "coverage": "pnpm run build:packages && vitest run --coverage",
     "release": "pnpm build:packages && lerna publish --registry=https://registry.npmjs.org --force-publish --exact"
   },
