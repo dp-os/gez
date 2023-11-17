@@ -2,6 +2,7 @@
     "name": "ssr-vue3-remote",
     "version": "0.1.10-alpha.1",
     "private": true,
+    "type": "module",
     "scripts": {
         "dev": "genesis-vite dev",
         "build": "genesis-vite build",
@@ -13,10 +14,10 @@
     },
     "devDependencies": {
         "@types/node": "^20.6.3",
-        "@vitejs/plugin-vue": "^4.2.3",
+        "@vitejs/plugin-vue": "^4.5.0",
         "genesis-vite": "0.1.10-alpha.1",
         "typescript": "^5.2.2",
-        "vite": "^4.4.9",
+        "vite": "^5.0.0",
         "vue": "^3.3.4"
     }
 }

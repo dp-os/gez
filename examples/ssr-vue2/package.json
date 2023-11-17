@@ -2,6 +2,7 @@
     "name": "ssr-vue2",
     "version": "0.1.10-alpha.1",
     "private": true,
+    "type": "module",
     "scripts": {
         "dev": "genesis-vite dev",
         "build": "genesis-vite build",
@@ -13,10 +14,10 @@
     },
     "devDependencies": {
         "@types/node": "^20.6.3",
-        "@vitejs/plugin-vue2": "^2.2.0",
+        "@vitejs/plugin-vue2": "^2.3.1",
         "genesis-vite": "0.1.10-alpha.1",
         "typescript": "^5.2.2",
-        "vite": "^4.4.9",
+        "vite": "^5.0.0",
         "vue": "^2.7.14",
         "vue-server-renderer": "^2.7.14"
     }

@@ -20,11 +20,11 @@
   },
   "peerDependencies": {
     "genesis3": "^0.1.6",
-    "vite": "^4.4.9"
+    "vite": "^5.0.0"
   },
   "dependencies": {
-    "@originjs/vite-plugin-federation": "^1.2.3",
-    "vite-node": "^0.34.1"
+    "@originjs/vite-plugin-federation": "^1.3.2",
+    "vite-node": "^0.34.6"
   },
   "devDependencies": {
     "genesis3": "0.1.10-alpha.1",
