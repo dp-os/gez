@@ -1,6 +1,6 @@
 {
     "name": "ssr-simple",
-    "version": "0.1.10-alpha.1",
+    "version": "0.1.10-alpha.2",
     "private": true,
     "type": "module",
     "scripts": {
@@ -10,11 +10,11 @@
         "start": "genesis"
     },
     "dependencies": {
-        "genesis3": "0.1.10-alpha.1"
+        "genesis3": "0.1.10-alpha.2"
     },
     "devDependencies": {
         "@types/node": "^20.6.3",
-        "genesis-vite": "0.1.10-alpha.1",
+        "genesis-vite": "0.1.10-alpha.2",
         "typescript": "^5.2.2",
         "vite": "^5.0.0"
     }
