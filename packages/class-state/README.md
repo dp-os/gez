@@ -25,7 +25,8 @@ const user = connectStore(Count, Count.storeName)
 
 user.$increase()
 
-// user.count = 1
+// 输出为：1
+console.log(user.count)
 ```
 
 ## 兼容性
