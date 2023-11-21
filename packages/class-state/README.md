@@ -25,6 +25,7 @@ const user = connectStore(Count, Count.storeName)
 
 user.$increase()
 
+// user.count = 1
 ```
 
 ## 兼容性
