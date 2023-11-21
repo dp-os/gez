@@ -8,21 +8,20 @@ npm install class-state
 
 ## 快速使用
 ```ts
-import { createState, connectState } from './src';
+import { createState, connectState } from 'class-state'
 
-const state = createState();
-const connectStore = connectState(state);
+const state = createState()
+const connectStore = connectState(state)
 
 class Count {
-    public value = 0;
-    public $increase () {
-        this.value++;
-    }
+  public value = 0
+  public $increase () {
+    this.value++
+  }
 }
 
-const user = connectStore(Count, 'count');
+const user = connectStore(Count, 'count')
 
-user.$increase();
-
+user.$increase()
 
 ```
