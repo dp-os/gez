@@ -35,6 +35,7 @@ console.log(user.count)
 ```
 ## 框架支持
 ### vue
+这里提供了一个组合式 API 的例子，适用于 Vue2、Vue3
 - store.ts
   ```ts
   import { type State, connectState } from 'class-state'
