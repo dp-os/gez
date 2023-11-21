@@ -1,9 +1,6 @@
 # class-state
 使用类来管理应用状态，与框架无关
 
-## 兼容性
-基于`proxy`和`WeakMap`
-
 ## 安装
 ```bash
 npm install class-state
@@ -29,3 +26,7 @@ const user = connectStore(Count, Count.storeName)
 user.$increase()
 
 ```
+
+## 兼容性
+基于`proxy`和`WeakMap`
+
