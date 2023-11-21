@@ -1,6 +1,6 @@
 {
   "name": "class-state",
-  "version": "0.1.2",
+  "version": "0.1.10-alpha.2",
   "type": "module",
   "license": "MIT",
   "exports": {

@@ -11,7 +11,7 @@ export interface StateOptions {
   /**
      * When rendering on the server, it is necessary to pass in the state
      */
-  state?: any
+  state?: Record<string, any> | string
   proxy?: (target: any) => any
   set?: (state: State, name: string, value: any) => void
   del?: (state: State, name: string) => void

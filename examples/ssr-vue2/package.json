@@ -13,7 +13,7 @@
         "genesis3": "0.1.10-alpha.2"
     },
     "devDependencies": {
-        "class-state": "^0.1.2",
+        "class-state": "^0.1.10-alpha.2",
         "@types/node": "^20.6.3",
         "@vitejs/plugin-vue2": "^2.3.1",
         "genesis-vite": "0.1.10-alpha.2",

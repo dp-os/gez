@@ -13,16 +13,11 @@ export class Count {
   }
 
   public value: number = 0
-  public serverTime: string = ''
   public $inc () {
     this.value++
   }
 
   public $dec () {
     this.value--
-  }
-
-  public $setTime () {
-    this.serverTime = new Date().toISOString()
   }
 }

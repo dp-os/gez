@@ -157,6 +157,9 @@ importers:
       '@vitejs/plugin-vue':
         specifier: ^4.5.0
         version: 4.5.0(vite@5.0.0)(vue@3.3.8)
+      class-state:
+        specifier: ^0.1.2
+        version: link:../../packages/class-state
       genesis-vite:
         specifier: 0.1.10-alpha.2
         version: link:../../packages/genesis-vite
