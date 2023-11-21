@@ -1,5 +1,5 @@
 import queryString from 'query-string'
-export function createFullPath (name: string, params?: unknown) {
+export function createFullPath (name: string, params?: any) {
   if (params) {
     if (typeof params === 'object') {
       return name + '?' + queryString.stringify(params)
