@@ -1,28 +1,28 @@
 <template>
     <div class="app">
-        <button class="btn" @click="click">Click me</button>
-    <AsyncHeader />
-    Hello World!{{ count }}</div>
+        <Child />
+        <p>{{ count.value }}</p>
+    </div>
 </template>
 <script setup lang="ts">
-import { defineAsyncComponent }  from 'vue';
+// Vue3 没有 set, del，只需要传入 reactive 即可
+import { provide, reactive, set, del } from 'vue';
+import { createState } from 'class-state';
 
-import { ref } from 'vue'
-const AsyncHeader = defineAsyncComponent(async () => import('./common-header.vue'));
+import { PROVIDE_STORE_KEY, Count } from './store'
+import Child from './child.vue';
 
-const count = ref(0);
 
-function click () {
-    count.value++;
-}
+const state = createState({
+    // 如果你使用了服务端渲染，那么这里需要从服务端获取初始状态，例如：
+    // state: globalThis.__INITIAL_STATE__ ?? {},
+    proxy: reactive,
+    set,
+    del
+})
+provide(PROVIDE_STORE_KEY, state)
+
+
+const count = Count.use(state)
 
 </script>
-<style scoped>
-.btn {
-    padding: 5px 10px;
-    margin: 0;
-    border: 1px solid #ccc;
-    cursor: pointer;
-    background: transparent;
-}
-</style>

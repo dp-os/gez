@@ -1,4 +1,4 @@
-import Vue, { reactive, watch, nextTick } from 'vue2'
+import Vue, { reactive, watch, nextTick, set, del } from 'vue2'
 import { test, assert } from 'vitest'
 import { connectState } from './connect'
 import { createState } from './create'
@@ -6,8 +6,8 @@ import { createState } from './create'
 test('base', async () => {
   const state = createState({
     proxy: reactive,
-    set: Vue.set,
-    del: Vue.delete
+    set,
+    del
   })
   const connectStore = connectState(state)
   class User {
