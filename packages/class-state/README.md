@@ -27,9 +27,9 @@ const state = createState()
 const connectStore = connectState(state)
 
 // 连接 Store 
-const user = connectStore(Count, Count.storeName)
+const count = connectStore(Count, Count.storeName)
 // 调用 $ 函数，更新状态
-user.$increase()
+count.$increase()
 // 输出为：1
 console.log(user.count)
 ```
