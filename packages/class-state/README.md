@@ -95,7 +95,8 @@ console.log(user.count)
   
   
   const state = createState({
-      state: {},
+      // 如果你使用了服务端渲染，那么这里需要从服务端获取初始状态，例如：
+      // state: globalThis.__INITIAL_STATE__ ?? {},
       proxy: reactive,
       set,
       del
