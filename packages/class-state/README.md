@@ -25,9 +25,9 @@ class Count {
 const state = createState()
 // 创建 state 和 store 的连接函数
 const connectStore = connectState(state)
-
 // 连接 Count Store 
 const count = connectStore(Count, Count.storeName)
+
 // 调用 $ 函数，更新状态
 count.$increase()
 // 输出为：1
