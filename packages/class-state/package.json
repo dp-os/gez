@@ -1,0 +1,26 @@
+{
+  "name": "class-state",
+  "version": "0.1.2",
+  "type": "module",
+  "license": "MIT",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc --noEmit && unbuild"
+  },
+  "dependencies": {
+    "immer": "^10.0.3",
+    "query-string": "^8.1.0"
+  },
+  "devDependencies": {
+    "unbuild": "^2.0.0",
+    "vue2": "npm:vue@^2.7.15",
+    "vue3": "npm:vue@^3.3.8"
+  }
+}
