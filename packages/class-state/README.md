@@ -10,10 +10,6 @@ npm install class-state
 ```ts
 import { createState, connectState } from 'class-state'
 
-// 创建应用状态
-const state = createState()
-// 创建 state 和 store 的连接函数
-const connectStore = connectState(state)
 // 定义 Store 类
 class Count {
   // 定义 store 的名字
@@ -24,6 +20,11 @@ class Count {
     this.value++
   }
 }
+
+// 创建应用状态
+const state = createState()
+// 创建 state 和 store 的连接函数
+const connectStore = connectState(state)
 
 // 连接 Store 
 const user = connectStore(Count, Count.storeName)
