@@ -1,10 +1,10 @@
-import queryString from 'query-string';
+import queryString from 'query-string'
 export function createFullPath (name: string, params?: unknown) {
-    if (params) {
-        if (typeof params ==='object') {
-            return name + '?' + queryString.stringify(params);
-        }
-        return `${name}?${params}`
+  if (params) {
+    if (typeof params === 'object') {
+      return name + '?' + queryString.stringify(params)
     }
-    return name;
+    return `${name}?${params}`
+  }
+  return name
 }
