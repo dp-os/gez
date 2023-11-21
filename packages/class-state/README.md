@@ -29,7 +29,6 @@ class Count {
 const user = connectStore(Count, Count.storeName)
 // 调用 $ 函数，更新状态
 user.$increase()
-
 // 输出为：1
 console.log(user.count)
 ```
