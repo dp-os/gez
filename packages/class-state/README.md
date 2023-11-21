@@ -33,6 +33,27 @@ count.$increase()
 // 输出为：1
 console.log(user.count)
 ```
+## 框架支持
+### vue
+```ts
+// vue2
+import { reactive, set, del } from 'vue'
+
+const state = createState({
+  proxy: reactive,
+  set,
+  del
+})
+// vue3
+import { reactive } from 'vue'
+
+const state = createState({
+  proxy: reactive,
+  set,
+  del
+})
+```
+
 
 ## 兼容性
 基于`proxy`和`WeakMap`
