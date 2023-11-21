@@ -14,13 +14,14 @@ const state = createState()
 const connectStore = connectState(state)
 
 class Count {
+  public static storeName = 'count'
   public value = 0
   public $increase () {
     this.value++
   }
 }
 
-const user = connectStore(Count, 'count')
+const user = connectStore(Count, Count.storeName)
 
 user.$increase()
 
