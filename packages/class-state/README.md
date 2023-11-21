@@ -36,77 +36,77 @@ console.log(user.count)
 ## 框架支持
 ### vue
 - store.ts
-```ts
-import { type State, connectState } from 'class-state'
-import { inject } from 'vue'
-
-export const PROVIDE_STORE_KEY = Symbol('class-state')
-
-export function useState () {
-  return inject(PROVIDE_STORE_KEY) as State
-}
-
-export class Count {
-  public static use (state: State = useState()) {
-    return connectState(state)(this, 'count')
+  ```ts
+  import { type State, connectState } from 'class-state'
+  import { inject } from 'vue'
+  
+  export const PROVIDE_STORE_KEY = Symbol('class-state')
+  
+  export function useState () {
+    return inject(PROVIDE_STORE_KEY) as State
   }
-
-  public value: number = 0
-  public $inc () {
-    this.value++
+  
+  export class Count {
+    public static use (state: State = useState()) {
+      return connectState(state)(this, 'count')
+    }
+  
+    public value: number = 0
+    public $inc () {
+      this.value++
+    }
+  
+    public $dec () {
+      this.value--
+    }
   }
-
-  public $dec () {
-    this.value--
-  }
-}
-
-```
+  
+  ```
 - child.vue
-```ts
-<template>
-    <div>
-        <button @click="count.$inc()">+</button>
-        <button @click="count.$dec()">-</button>
-    </div>
-</template>
-<script lang="ts" setup>
-import { Count } from './store';
-
-const count = Count.use()
-
-</script>
-```
+  ```ts
+  <template>
+      <div>
+          <button @click="count.$inc()">+</button>
+          <button @click="count.$dec()">-</button>
+      </div>
+  </template>
+  <script lang="ts" setup>
+  import { Count } from './store';
+  
+  const count = Count.use()
+  
+  </script>
+  ```
 - app.vue
-```ts
-<template>
-    <div class="app">
-        <Child />
-        <p>{{ count.value }}</p>
-    </div>
-</template>
-<script setup lang="ts">
-// Vue3 没有 set, del，只需要传入 reactive 即可
-import { provide, reactive, set, del } from 'vue';
-import { createState } from 'class-state';
-
-import { PROVIDE_STORE_KEY, Count } from './store'
-import Child from './child.vue';
-
-
-const state = createState({
-    state: {},
-    proxy: reactive,
-    set,
-    del
-})
-provide(PROVIDE_STORE_KEY, state)
-
-
-const count = Count.use(state)
-
-</script>
-```
+  ```ts
+  <template>
+      <div class="app">
+          <Child />
+          <p>{{ count.value }}</p>
+      </div>
+  </template>
+  <script setup lang="ts">
+  // Vue3 没有 set, del，只需要传入 reactive 即可
+  import { provide, reactive, set, del } from 'vue';
+  import { createState } from 'class-state';
+  
+  import { PROVIDE_STORE_KEY, Count } from './store'
+  import Child from './child.vue';
+  
+  
+  const state = createState({
+      state: {},
+      proxy: reactive,
+      set,
+      del
+  })
+  provide(PROVIDE_STORE_KEY, state)
+  
+  
+  const count = Count.use(state)
+  
+  </script>
+  ```
 
 ## 兼容性
 基于`proxy`和`WeakMap`
