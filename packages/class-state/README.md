@@ -63,7 +63,7 @@ console.log(user.count)
   
   ```
 - child.vue
-  ```ts
+  ```vue
   <template>
       <div>
           <button @click="count.$inc()">+</button>
@@ -78,7 +78,7 @@ console.log(user.count)
   </script>
   ```
 - app.vue
-  ```ts
+  ```vue
   <template>
       <div class="app">
           <Child />
