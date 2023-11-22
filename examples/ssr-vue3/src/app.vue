@@ -1,24 +1,33 @@
 <template>
     <div class="app">
+        <p>Current Time: {{ count.serverTime }}</p>
         <Child />
-        <p>{{ count.value }}</p>
+        <p>Click Count: {{ count.value }}</p>
     </div>
 </template>
 <script setup lang="ts">
-// Vue3 没有 set, del，只需要传入 reactive 即可
-import { provide, reactive } from 'vue';
-import { createState } from 'class-state';
-
-import { PROVIDE_STORE_KEY, Count } from './store'
+import { onServerPrefetch, onMounted, onBeforeUnmount } from 'vue';
+import { Count } from './store'
 import Child from './child.vue';
 
+const count = Count.use()
 
-const state = createState({
-    proxy: reactive
+// 模拟服务端请求调用
+onServerPrefetch(() => {
+    return new Promise<void>((resolve) => {
+        setTimeout(() => {
+            count.$setTime()
+            resolve()
+        }, 200)
+    })
 })
-provide(PROVIDE_STORE_KEY, state)
 
-
-const count = Count.use(state)
-
+// 客户端接管服务端状态后，继续更新状态
+onMounted(() => {
+    const timer = setInterval(count.$setTime, 1000)
+    onBeforeUnmount(() => {
+        // 组件销毁时，清理定时器
+        clearInterval(timer)
+    })
+})
 </script>

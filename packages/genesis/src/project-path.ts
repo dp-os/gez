@@ -6,9 +6,9 @@ export type ProjectPath =
 'dist/client/manifest.json' |
 'dist/client/ssr-manifest.json' |
 'dist/server' |
-'dist/server/entry-server.mjs' |
+'dist/server/entry-server.js' |
 'dist/node' |
-'dist/node/entry-node.mjs' |
+'dist/node/entry-node.js' |
 
 'src' |
 'src/entry-node.ts' |

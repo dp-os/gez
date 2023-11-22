@@ -26,6 +26,7 @@ onServerPrefetch(() => {
 onMounted(() => {
     const timer = setInterval(count.$setTime, 1000)
     onBeforeUnmount(() => {
+        // 组件销毁时，清理定时器
         clearInterval(timer)
     })
 })

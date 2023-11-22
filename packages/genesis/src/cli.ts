@@ -5,7 +5,7 @@ import { Genesis } from './genesis'
 import { createApp } from './app'
 
 export function cli () {
-  const file = getProjectPath(path.resolve(), 'dist/node/entry-node.mjs')
+  const file = getProjectPath(path.resolve(), 'dist/node/entry-node.js')
   import(/* @vite-ignore */file).then(async module => {
     const options: NodeOptions = module.default || {}
     if (typeof options.created !== 'function') {

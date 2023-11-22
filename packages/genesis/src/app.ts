@@ -20,7 +20,7 @@ export interface App {
 }
 
 export async function createApp (genesis: Genesis): Promise<App> {
-  const result = await import(/* @vite-ignore */genesis.getProjectPath('dist/server/entry-server.mjs'))
+  const result = await import(/* @vite-ignore */genesis.getProjectPath('dist/server/entry-server.js'))
   const serverRender: ServerRender = result.default
   const root = genesis.getProjectPath('dist/client')
   return {
