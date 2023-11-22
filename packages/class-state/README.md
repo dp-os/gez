@@ -87,7 +87,7 @@ console.log(user.count)
       </div>
   </template>
   <script setup lang="ts">
-  // Vue3 没有 set, del，只需要传入 reactive 即可
+  // Vue3 没有 set, del，需要删除
   import { provide, reactive, set, del } from 'vue';
   import { createState } from 'class-state';
   
@@ -99,6 +99,7 @@ console.log(user.count)
       // 如果你使用了服务端渲染，那么这里需要从服务端获取初始状态，例如：
       // state: globalThis.__INITIAL_STATE__ ?? {},
       proxy: reactive,
+      // Vue3 没有 set, del，需要删除
       set,
       del
   })
