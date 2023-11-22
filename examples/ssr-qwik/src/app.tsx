@@ -47,7 +47,7 @@ const App = component$(() => {
   return (
     <>
       <head>
-        <title>Title</title>
+        <title>{count.serverTime}</title>
       </head>
       <body>
         <div class="app">
