@@ -8,7 +8,7 @@
   "author": "",
   "license": "ISC",
   "scripts": {
-    "dev": "pnpm -r --filter='./examples/*' run dev",
+    "dev": "pnpm -r --filter='./examples/ssr-qwik' run dev",
     "build": "pnpm -r --filter='./examples/*' run build",
     "build:dts": "pnpm -r --filter='./examples/*' run build:dts",
     "start": "pnpm -r --filter='./examples/*' run start",

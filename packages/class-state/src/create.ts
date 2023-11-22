@@ -1,24 +1,19 @@
 import type { StoreContext } from './connect'
+
+const MODIFY_COUNT = '__modify_count_'
 export interface State {
-  /**
-     * Just for the TS type to be checked correctly, this attribute does not exist in actual operation
-     */
-  'https://github.com/dp-os/class-state': Record<string, any>
-  [x: string]: Record<string, any>
+  [MODIFY_COUNT]: number
+  [x: string]: any
 }
 
 export interface StateOptions {
   /**
      * When rendering on the server, it is necessary to pass in the state
      */
-  state?: Record<string, any> | string
+  state?: Record<string, any>
   proxy?: (target: any) => any
   set?: (state: State, name: string, value: any) => void
   del?: (state: State, name: string) => void
-}
-
-interface ModifyCount {
-  value: number
 }
 
 const DEFAULT_OPTIONS = {
@@ -36,27 +31,21 @@ export class StateContext {
   public readonly state: State
   private readonly storeContext: Map<string, StoreContext<any>> = new Map<string, StoreContext<any>>()
   private readonly _options: Omit<Required<StateOptions>, 'state'>
-  private readonly _count: ModifyCount
   public constructor (options: StateOptions) {
     const state = options.state ? options.state : {}
-
+    state[MODIFY_COUNT] = 0
     const _options = this._options = {
       proxy: options.proxy ?? DEFAULT_OPTIONS.proxy,
       set: options.set ?? DEFAULT_OPTIONS.set,
       del: options.del ?? DEFAULT_OPTIONS.del
     }
 
-    this._count = _options.proxy({ value: 0 })
     this.state = _options.proxy(state)
     this._options = _options
   }
 
-  public depend (fullPath?: string): unknown {
-    if (fullPath) {
-      return this.state[fullPath]
-    } else {
-      return this._count.value
-    }
+  public depend (fullPath: string = MODIFY_COUNT): unknown {
+    return this.state[fullPath]
   }
 
   public hasState (name: string): boolean {
@@ -74,10 +63,10 @@ export class StateContext {
   public updateState (name: string, nextState: any) {
     const { state, _options } = this
     if (name in state) {
-      state[name] = _options.proxy(nextState)
+      state[name] = nextState
     } else {
       _options.set(state, name, nextState)
-      this._count.value++
+      state[MODIFY_COUNT]++
     }
   }
 
