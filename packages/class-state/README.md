@@ -16,7 +16,7 @@ class Count {
   public static storeName = 'count'
   public value = 0
   // 通过 $ 函数来修改状态，这是一个约定
-  public $increase () {
+  public $inc () {
     this.value++
   }
 }
@@ -29,7 +29,7 @@ const connectStore = connectState(state)
 const count = connectStore(Count, Count.storeName)
 
 // 调用 $ 函数，更新状态
-count.$increase()
+count.$inc()
 // 输出为：1
 console.log(user.count)
 ```
