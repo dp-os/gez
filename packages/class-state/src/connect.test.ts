@@ -371,3 +371,38 @@ test('State Restore', () => {
   const user = connectStore(User, 'user')
   assert.equal(user.name, 'jack')
 })
+
+test('update value', () => {
+  const state = createState()
+  const connectStore = connectState(state)
+  class Count {
+    public value: number = 0
+    public text: string = ''
+    public $inc () {
+      this.value++
+    }
+
+    public $setText (text: string) {
+      this.text = text
+    }
+  }
+  const count = connectStore(Count, 'count')
+  const setText = count.$setText
+
+  count.$inc()
+  assert.equal(count.value, 1)
+
+  count.$inc()
+  assert.equal(count.value, 2)
+
+  count.$inc()
+  assert.equal(count.value, 3)
+
+  setText('hello world')
+  assert.equal(count.value, 3)
+  assert.equal(count.text, 'hello world')
+
+  setText('hello world2')
+  assert.equal(count.value, 3)
+  assert.equal(count.text, 'hello world2')
+})
