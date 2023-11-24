@@ -426,3 +426,26 @@ test('default connecting', () => {
   assert.equal(count.value, 100)
   assert.equal(count.$.connecting, true)
 })
+
+test('update state', () => {
+  const state = createState({
+    value: {
+      count: {
+        value: 100
+      }
+    }
+  })
+  const connectStore = connectState(state)
+  class Count {
+    public value: number = 0
+    public $inc () {
+      this.value++
+    }
+  }
+  const count = connectStore(Count, 'count')
+
+  count.$inc()
+  const value = state.value
+  count.$inc()
+  assert.equal(value, state.value)
+})
