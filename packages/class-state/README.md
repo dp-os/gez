@@ -42,31 +42,31 @@ console.log(count.value)
 这里提供了一个组合式 API 的例子，适用于 Vue2、Vue3
 - store.ts
   ```ts
-import { type State, connectState } from 'class-state'
-import { inject } from 'vue'
-
-// 定义根组件供应的 key
-export const STORE_PROVIDE_KEY = Symbol('class-state')
-
-// 添加组合式 API 获取状态的方法
-export function useState () {
-  return inject(STORE_PROVIDE_KEY) as State
-}
-// 定义类
-export class Count {
-  // 定义使用方法
-  public static use (state: State = useState()) {
-    // 连接状态
-    return connectState(state)(this, 'count')
+  import { type State, connectState } from 'class-state'
+  import { inject } from 'vue'
+  
+  // 定义根组件供应的 key
+  export const STORE_PROVIDE_KEY = Symbol('class-state')
+  
+  // 添加组合式 API 获取状态的方法
+  export function useState () {
+    return inject(STORE_PROVIDE_KEY) as State
   }
-
-  // 定义值
-  public value: number = 0
-  // 更新状态
-  public $inc () {
-    this.value++
+  // 定义类
+  export class Count {
+    // 定义使用方法
+    public static use (state: State = useState()) {
+      // 连接状态
+      return connectState(state)(this, 'count')
+    }
+  
+    // 定义值
+    public value: number = 0
+    // 更新状态
+    public $inc () {
+      this.value++
+    }
   }
-}
   ```
 - app.vue
   ```vue
