@@ -12,9 +12,9 @@ npm install class-state
 ```ts
 import { createState, connectState, type State } from 'class-state'
 
-// 定义 Store 类
+// 定义类
 class Count {
-  // 添加 store 的使用方法
+  // 添加使用的方法
   public static use (state: State) {
     return connectState(state)(this, 'count')
   }
