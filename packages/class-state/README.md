@@ -1,11 +1,12 @@
 # class-state
+✨ 一次编码，到处渲染
+## 特性
 - 使用 class 来创建应用状态
 - 不依赖任何前端框架，支持各种前端框架接入
 - 状态变化，创建下一个不可变状态树
 - 支持服务端渲染
 - 提供[React](#react)、[Vue](#vue)、[Qwik](#qwik) 接入例子
-## 设计理念
-一次编码，到处渲染
+
 ## 安装
 ```bash
 npm install class-state
