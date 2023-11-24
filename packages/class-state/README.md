@@ -5,7 +5,7 @@
 - 支持服务端渲染
 - 提供[React](#react)、[Vue](#vue)、[Qwik](#qwik) 接入例子
 ## 设计理念
-将一切的业务逻辑都应该写在 class-state 中，UI 框架只充当一个渲染引擎的作用
+一次编码，各处渲染
 ## 安装
 ```bash
 npm install class-state
