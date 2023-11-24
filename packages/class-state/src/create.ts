@@ -20,7 +20,7 @@ export class StateContext {
   }
 
   public hasState (name: string): boolean {
-    return name in this.state
+    return name in this.state.value
   }
 
   public get (name: string): StoreContext<any> | null {
