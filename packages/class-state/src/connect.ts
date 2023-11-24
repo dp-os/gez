@@ -9,6 +9,11 @@ export type StoreInstance<T extends {}> = T & { $: StoreContext<T> }
 
 let currentStateContext: StateContext | null = null
 
+export type StoreSubscribe<T extends {}> = (store: T, oldStore: T) => void
+
+// 订阅的id
+let sid = 0
+
 export class StoreContext<T extends {}> {
   /**
    * 全局的状态上下文
@@ -42,6 +47,8 @@ export class StoreContext<T extends {}> {
    * 当前的 store 的 state 是否已经连接到全局的 state 中
    */
   public connecting: boolean
+  private readonly _subs: Array<{ sid: number, cb: StoreSubscribe<T> }> = []
+
   public constructor (stateContext: StateContext, raw: any, state: Record<string, any>, fullPath: string) {
     this._stateContext = stateContext
     stateContext.add(fullPath, this)
@@ -52,12 +59,17 @@ export class StoreContext<T extends {}> {
     this.state = state
     this.fullPath = fullPath
     this.connecting = stateContext.hasState(fullPath)
+
+    this.get = this.get.bind(this)
+    this.subscribe = this.subscribe.bind(this)
+    this.dispose = this.dispose.bind(this)
   }
 
   /**
-   * 原始实例的代理，每次状态变化时，代理都会更新
+   * 获取当前代理实例，每次状态变化时，代理实例都会变化
+   * 已绑定 this
    */
-  public get proxy () {
+  public get () {
     this._depend()
     return this._proxy
   }
@@ -66,23 +78,53 @@ export class StoreContext<T extends {}> {
     * 私有函数，外部调用不应该使用
     */
   public _setState (nextState: Record<string, any>) {
-    const { _stateContext, fullPath } = this
+    const { _stateContext, fullPath, _subs } = this
     this.state = nextState
     if (_stateContext) {
       _stateContext.updateState(fullPath, nextState)
     }
     this.connecting = !!_stateContext
-    this._proxy = this._createProxyClass()
+    const oldStore = this._proxy
+    const store = this._createProxyClass()
+    this._proxy = store
+
+    if (_subs.length) {
+      const subs = [..._subs]
+      subs.forEach(item => {
+        item.cb(this._proxy, oldStore)
+      })
+    }
   }
 
   /**
    * 销毁实例，释放内存
+   * 已绑定 this
    */
-  public dispose = () => {
+  public dispose () {
     const { _stateContext } = this
     if (_stateContext) {
       _stateContext.del(this.fullPath)
       this._stateContext = null
+    }
+  }
+
+  /**
+   * 订阅状态变化
+   * @param cb 回调函数
+   * 已绑定 this
+   * @returns
+   */
+  public subscribe (cb: StoreSubscribe<T>) {
+    const _sid = ++sid
+    this._subs.push({
+      sid,
+      cb
+    })
+    return () => {
+      const index = this._subs.findIndex(item => item.sid === _sid)
+      if (index > -1) {
+        this._subs.splice(index, 1)
+      }
     }
   }
 
@@ -180,7 +222,7 @@ export function connectState (state: State) {
       }
       storeContext = new StoreContext<InstanceType<T>>(stateContext, store, storeState, fullPath)
     }
-    return storeContext.proxy
+    return storeContext.get()
   }
 }
 

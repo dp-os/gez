@@ -13,6 +13,8 @@
         "genesis3": "0.1.10-alpha.2"
     },
     "devDependencies": {
+        "@types/react": "^18.2.38",
+        "class-state": "0.1.10-alpha.2",
         "@types/node": "^20.6.3",
         "@vitejs/plugin-react": "^4.2.0",
         "genesis-vite": "0.1.10-alpha.2",

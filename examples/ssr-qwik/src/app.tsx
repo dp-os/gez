@@ -1,4 +1,4 @@
-import { createState } from 'class-state'
+import { type State } from 'class-state'
 import {
   component$,
   useStore,
@@ -10,7 +10,7 @@ import { Count, PROVIDE_STORE_KEY } from './store'
 import { Child } from './child'
 
 export const App = component$(() => {
-  const state = createState(useStore({ value: {} }))
+  const state = useStore<State>({ value: {} })
 
   useContextProvider(PROVIDE_STORE_KEY, state)
 
