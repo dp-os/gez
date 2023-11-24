@@ -287,5 +287,5 @@ Web 和本机用户界面的库
 
   ```
 ## 兼容性
-运行时，需要支持 `Proxy`、`WeakMap`、`Map`
+运行时需要支持 `Proxy`、`WeakMap`、`Map`
 
