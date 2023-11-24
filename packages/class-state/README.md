@@ -115,7 +115,94 @@ console.log(count.value)
   
   </script>
   ```
+### Qwik
+- store.ts
+  ```ts
+  import {
+    createContextId,
+    useContext
+  } from '@builder.io/qwik'
+  import { type State, connectState } from 'class-state'
+  
+  // 定义根组件供应的 key
+  export const PROVIDE_STORE_KEY = createContextId<State>(
+    'class-state'
+  )
+  
+  // 使用状态
+  export function useState (): State {
+    return useContext(PROVIDE_STORE_KEY)
+  }
+  
+  // 定义类
+  export class Count {
+    // 定义使用方法
+    public static use (state: State = useState()) {
+      return connectState(state)(this, 'count')
+    }
+  
+    // 定义值
+    public value: number = 0
+    // 值加加
+    public $inc () {
+      this.value++
+    }
+  
+    // 值减减
+    public $dec () {
+      this.value--
+    }
+  }
+  ```
+- app.tsx
+  ```tsx
+  import { createState } from 'class-state'
+  import {
+    component$,
+    useStore,
+    useContextProvider
+  } from '@builder.io/qwik'
+  import { Count, PROVIDE_STORE_KEY } from './store'
+  import { Child } from './child'
+  
+  export const App = component$(() => {
+    const state = createState(useStore({ value: {} }))
+  
+    useContextProvider(PROVIDE_STORE_KEY, state)
+  
+    const count = Count.use()
+    return (
+      <>
+        <div class="app">
+          <Child />
+          <p>Click Count: {count.value}</p>
+        </div>
+      </>
+    )
+  })
 
+  ```
+- child.tsx
+  ```tsx
+  import { component$ } from '@builder.io/qwik'
+  import { useState, Count } from './store'
+  
+  export const Child = component$(() => {
+    // 使用状态
+    const state = useState()
+    return (
+          <div>
+              <button onClick$={() => {
+                Count.use(state).$inc()
+              }}>+</button>
+              <button onClick$={() => {
+                Count.use(state).$dec()
+              }}>-</button>
+          </div>
+    )
+  })
+
+  ```
 ## 兼容性
 基于`proxy`和`WeakMap`
 
