@@ -116,6 +116,8 @@ console.log(count.value)
   </script>
   ```
 ### Qwik
+Qwik 是一种新型 Web 框架，可以提供任何大小或复杂程度的即时加载 Web 应用程序。您的网站和应用程序可以使用大约 1kb 的 JS 启动（无论应用程序复杂程度如何），并大规模实现一致的性能。
+
 - store.ts
   ```ts
   import {
