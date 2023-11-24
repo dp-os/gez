@@ -87,10 +87,8 @@ console.log(count.value)
   import { STORE_PROVIDE_KEY, Count } from './store'
   import Child from './child.vue';
   
-  // 创建一个响应式对象
-  const refState = ref<State>({ value: {} })
-  // 创建应用状态
-  const state = createState(refState)
+  // 创建状态
+  const state = ref<State>({ value: {} })
   // 在组件中供应状态
   provide(STORE_PROVIDE_KEY, state)
   
@@ -168,7 +166,7 @@ Qwik 是一种新型 Web 框架，可以提供任何大小或复杂程度的即�
   import { Child } from './child'
   
   export const App = component$(() => {
-    const state = createState(useStore({ value: {} }))
+    const state = useStore({ value: {} })
   
     useContextProvider(PROVIDE_STORE_KEY, state)
   
