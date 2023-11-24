@@ -1,10 +1,18 @@
 {
-  "version": "0.1.14",
+  "version": "0.1.15",
   "name": "genesis-vite",
   "type": "module",
   "main": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "license": "MIT",
+  "homepage": "https://github.com/dp-os/genesis",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dp-os/genesis.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dp-os/genesis/issues"
+  },
   "exports": {
     ".": "./dist/index.mjs"
   },
@@ -27,7 +35,7 @@
     "vite-node": "^0.34.6"
   },
   "devDependencies": {
-    "genesis3": "0.1.14",
+    "genesis3": "0.1.15",
     "unbuild": "^1.2.1"
   },
   "gitHead": "8471bddf6fb9850001d8661f7d1058ea590999d1"

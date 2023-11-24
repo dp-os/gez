@@ -1,9 +1,17 @@
 {
   "name": "genesis3",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "type": "module",
   "types": "./dist/index.d.ts",
   "license": "MIT",
+  "homepage": "https://github.com/dp-os/genesis",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dp-os/genesis.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dp-os/genesis/issues"
+  },
   "exports": {
     ".": "./dist/index.mjs"
   },

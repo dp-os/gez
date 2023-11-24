@@ -1,6 +1,6 @@
 {
   "name": "class-state",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "type": "module",
   "license": "MIT",
   "keywords": [
@@ -9,6 +9,14 @@
     "pinia",
     "redux"
   ],
+  "homepage": "https://github.com/dp-os/genesis",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dp-os/genesis.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dp-os/genesis/issues"
+  },
   "exports": {
     ".": {
       "import": "./dist/index.mjs",
