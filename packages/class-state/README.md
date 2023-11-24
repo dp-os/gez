@@ -88,7 +88,7 @@ console.log(count.value)
   import { STORE_PROVIDE_KEY, Count } from './store'
   import Child from './child.vue';
   
-  // 创建状态
+  // 创建状态，如果使用了服务端渲染，需要将对应状态传入
   const state = ref<State>({ value: {} })
   // 在组件中供应状态
   provide(STORE_PROVIDE_KEY, state)
@@ -252,6 +252,7 @@ Web 和本机用户界面的库
   import { StateContext, Count } from './store'
   import { Child } from './child'
   export function App () {
+    // 创建状态，如果使用了服务端渲染，需要将对应状态传入
     const [state] = useState<State>({ value: {} })
   
     // React 的上下文注入是通过组件的形式，这里是获取不到上下文的，所以这里需要传入 state
@@ -286,6 +287,8 @@ Web 和本机用户界面的库
   }
 
   ```
+### 服务端渲染
+
 ## 兼容性
 运行时需要支持 `Proxy`、`WeakMap`、`Map`
 
