@@ -1,4 +1,7 @@
 # class-state
+[![npm](https://img.shields.io/npm/v/class-state.svg)](https://www.npmjs.com/package/class-state) 
+[![npm](https://img.shields.io/npm/dm/class-state.svg)](https://www.npmjs.com/package/class-state)
+[![npm](https://img.shields.io/npm/dt/class-state.svg)](https://www.npmjs.com/package/class-state)    
 ✨ 一次编码，到处渲染 ✨
 ## 特性
 😀 使用 class 来创建应用状态    
