@@ -61,22 +61,6 @@ console.log(user.count)
       this.value--
     }
   }
-  
-  ```
-- child.vue
-  ```vue
-  <template>
-      <div>
-          <button @click="count.$inc()">+</button>
-          <button @click="count.$dec()">-</button>
-      </div>
-  </template>
-  <script lang="ts" setup>
-  import { Count } from './store';
-  
-  const count = Count.use()
-  
-  </script>
   ```
 - app.vue
   ```vue
@@ -98,6 +82,21 @@ console.log(user.count)
   
   
   const count = Count.use(state)
+  
+  </script>
+  ```
+- child.vue
+  ```vue
+  <template>
+      <div>
+          <button @click="count.$inc()">+</button>
+          <button @click="count.$dec()">-</button>
+      </div>
+  </template>
+  <script lang="ts" setup>
+  import { Count } from './store';
+  
+  const count = Count.use()
   
   </script>
   ```
