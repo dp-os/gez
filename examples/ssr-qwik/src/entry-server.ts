@@ -4,12 +4,12 @@ import {
 } from '@builder.io/qwik/server'
 import { manifest } from '@qwik-client-manifest'
 
-import { AppNode } from './app'
+import { DocsRoot } from './docs'
 
 export default defineServer({
   async render (context) {
     const name = context.genesis.name
-    const result = await renderToString(AppNode, {
+    const result = await renderToString(DocsRoot, {
       base: `/${name}/${name}/build/`,
       manifest: manifest ?? {},
       symbolMapper: (symbolName: string, mapper: any) => symbolMapper(name, symbolName, mapper)

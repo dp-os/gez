@@ -9,7 +9,7 @@ export const PROVIDE_STORE_KEY = createContextId<State>(
 )
 
 export function useState (): State {
-  return useContext(PROVIDE_STORE_KEY) as any
+  return useContext(PROVIDE_STORE_KEY)
 }
 
 export class Count {
@@ -18,7 +18,7 @@ export class Count {
   }
 
   public value: number = 0
-  public serverTime: string = ''
+  public now: string = ''
   public $inc () {
     this.value++
   }
@@ -27,7 +27,7 @@ export class Count {
     this.value--
   }
 
-  public $setTime () {
-    this.serverTime = new Date().toISOString()
+  public $updateTime () {
+    this.now = new Date().toISOString()
   }
 }
