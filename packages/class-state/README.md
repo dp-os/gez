@@ -203,6 +203,86 @@ Qwik 是一种新型 Web 框架，可以提供任何大小或复杂程度的即�
   })
 
   ```
+### React
+- store.ts
+  ```ts
+  import { createContext, useContext, useSyncExternalStore } from 'react'
+  
+  import { type State, connectState } from 'class-state'
+  
+  // 创建状态的上下文
+  export const StateContext = createContext<State>({
+    value: {}
+  })
+  
+  // 获取状态
+  export function useState (): State {
+    return useContext(StateContext)
+  }
+  
+  // 定义类
+  export class Count {
+    // 定义使用方法
+    public static use (state: State = useState()) {
+      const count = connectState(state)(this, 'count')
+      return useSyncExternalStore(count.$.subscribe, count.$.get, count.$.get)
+    }
+  
+    // 定义值
+    public value: number = 0
+    // 值加加
+    public $inc () {
+      this.value++
+    }
+  
+    // 值减减
+    public $dec () {
+      this.value--
+    }
+  }
+  ```
+- app.tsx
+  ```tsx
+  import { useState } from 'react'
+  import { type State } from 'class-state'
+  import './style.css'
+  import { StateContext, Count } from './store'
+  import { Child } from './child'
+  export function App () {
+    const [state] = useState<State>({ value: {} })
+  
+    // React 的上下文注入是通过组件的形式，这里是获取不到上下文的，所以这里需要传入 state
+    const count = Count.use(state)
+    return (
+      <StateContext.Provider value={state}>
+        <div>
+          <Child />
+          <p>Click Count: {count.value}</p>
+        </div>
+      </StateContext.Provider>
+    )
+  }
+
+  ```
+- child.tsx
+  ```tsx
+  import { Count } from './store'
+  
+  export const Child = () => {
+    const count = Count.use()
+    return (
+            <div>
+                <button onClick={() => {
+                  count.$inc()
+                }}>+</button>
+                <button onClick={() => {
+                  count.$dec()
+                }}>-</button>
+            </div>
+    )
+  }
+
+  ```
 ## 兼容性
 基于`proxy`和`WeakMap`
 
