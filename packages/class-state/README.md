@@ -1,5 +1,7 @@
 # class-state
-使用类来管理应用状态，与框架无关
+- 使用 class 来创建应用状态
+- 不依赖任何前端框架，都可以接入使用
+- 基于 `proxy`，每次状态变化，创建下一个不可变状态树
 
 ## 安装
 ```bash
@@ -8,12 +10,16 @@ npm install class-state
 
 ## 快速使用
 ```ts
-import { createState, connectState } from 'class-state'
+import { createState, connectState, type State } from 'class-state'
 
-// 定义 Store 类
+// 定义类
 class Count {
-  // 定义 store 的名字
-  public static storeName = 'count'
+  // 添加使用的方法
+  public static use (state: State) {
+    return connectState(state)(this, 'count')
+  }
+
+  // 定义值
   public value = 0
   // 通过 $ 函数来修改状态，这是一个约定
   public $inc () {
@@ -23,15 +29,13 @@ class Count {
 
 // 创建应用状态
 const state = createState()
-// 创建 state 和 store 的连接函数
-const connectStore = connectState(state)
-// 连接 Count Store 
-const count = connectStore(Count, Count.storeName)
-
+// 使用 Count 类
+const count = Count.use(state)
 // 调用 $ 函数，更新状态
 count.$inc()
-// 输出为：1
-console.log(user.count)
+// 打印日志输出: 1
+console.log(count.value)
+
 ```
 ## 框架支持
 ### vue
@@ -41,22 +45,28 @@ console.log(user.count)
   import { type State, connectState } from 'class-state'
   import { inject } from 'vue'
   
-  export const PROVIDE_STORE_KEY = Symbol('class-state')
+  // 定义根组件供应的 key
+  export const STORE_PROVIDE_KEY = Symbol('class-state')
   
+  // 添加组合式 API 获取状态的方法
   export function useState () {
-    return inject(PROVIDE_STORE_KEY) as State
+    return inject(STORE_PROVIDE_KEY) as State
   }
-  
+  // 定义类
   export class Count {
+    // 定义使用方法
     public static use (state: State = useState()) {
+      // 连接状态
       return connectState(state)(this, 'count')
     }
   
+    // 定义值
     public value: number = 0
+    // 值加加
     public $inc () {
       this.value++
     }
-  
+    // 值减减
     public $dec () {
       this.value--
     }
@@ -72,15 +82,19 @@ console.log(user.count)
   </template>
   <script setup lang="ts">
   import { provide, ref } from 'vue';
-  import { createState } from 'class-state';
+  import { createState, State } from 'class-state';
   
-  import { PROVIDE_STORE_KEY, Count } from './store'
+  import { STORE_PROVIDE_KEY, Count } from './store'
   import Child from './child.vue';
   
-  const state = createState(ref({ value: {} }))
-  provide(PROVIDE_STORE_KEY, state)
+  // 创建一个响应式对象
+  const refState = ref<State>({ value: {} })
+  // 创建应用状态
+  const state = createState(refState)
+  // 在组件中供应状态
+  provide(STORE_PROVIDE_KEY, state)
   
-  
+  // 使用应用状态
   const count = Count.use(state)
   
   </script>
@@ -96,11 +110,99 @@ console.log(user.count)
   <script lang="ts" setup>
   import { Count } from './store';
   
+  // 在子组件中使用
   const count = Count.use()
   
   </script>
   ```
+### Qwik
+- store.ts
+  ```ts
+  import {
+    createContextId,
+    useContext
+  } from '@builder.io/qwik'
+  import { type State, connectState } from 'class-state'
+  
+  // 定义根组件供应的 key
+  export const PROVIDE_STORE_KEY = createContextId<State>(
+    'class-state'
+  )
+  
+  // 使用状态
+  export function useState (): State {
+    return useContext(PROVIDE_STORE_KEY)
+  }
+  
+  // 定义类
+  export class Count {
+    // 定义使用方法
+    public static use (state: State = useState()) {
+      return connectState(state)(this, 'count')
+    }
+  
+    // 定义值
+    public value: number = 0
+    // 值加加
+    public $inc () {
+      this.value++
+    }
+  
+    // 值减减
+    public $dec () {
+      this.value--
+    }
+  }
+  ```
+- app.tsx
+  ```tsx
+  import { createState } from 'class-state'
+  import {
+    component$,
+    useStore,
+    useContextProvider
+  } from '@builder.io/qwik'
+  import { Count, PROVIDE_STORE_KEY } from './store'
+  import { Child } from './child'
+  
+  export const App = component$(() => {
+    const state = createState(useStore({ value: {} }))
+  
+    useContextProvider(PROVIDE_STORE_KEY, state)
+  
+    const count = Count.use()
+    return (
+      <>
+        <div class="app">
+          <Child />
+          <p>Click Count: {count.value}</p>
+        </div>
+      </>
+    )
+  })
 
+  ```
+- child.tsx
+  ```tsx
+  import { component$ } from '@builder.io/qwik'
+  import { useState, Count } from './store'
+  
+  export const Child = component$(() => {
+    // 使用状态
+    const state = useState()
+    return (
+          <div>
+              <button onClick$={() => {
+                Count.use(state).$inc()
+              }}>+</button>
+              <button onClick$={() => {
+                Count.use(state).$dec()
+              }}>-</button>
+          </div>
+    )
+  })
+
+  ```
 ## 兼容性
 基于`proxy`和`WeakMap`
 
