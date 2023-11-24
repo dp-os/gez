@@ -5,7 +5,7 @@
 - 支持服务端渲染
 - 提供[React](#react)、[Vue](#vue)、[Qwik](#qwik) 接入例子
 ## 设计理念
-一次编码，各处渲染
+一次编码，到处渲染
 ## 安装
 ```bash
 npm install class-state
