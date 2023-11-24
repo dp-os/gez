@@ -62,9 +62,13 @@ console.log(count.value)
   
     // 定义值
     public value: number = 0
-    // 更新状态
+    // 值加加
     public $inc () {
       this.value++
+    }
+    // 值减减
+    public $dec () {
+      this.value--
     }
   }
   ```
@@ -106,6 +110,7 @@ console.log(count.value)
   <script lang="ts" setup>
   import { Count } from './store';
   
+  // 在子组件中使用
   const count = Count.use()
   
   </script>
