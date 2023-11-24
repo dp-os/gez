@@ -156,7 +156,7 @@ Qwik 是一种新型 Web 框架，可以提供任何大小或复杂程度的即�
   ```
 - app.tsx
   ```tsx
-  import { createState } from 'class-state'
+  import { type State } from 'class-state'
   import {
     component$,
     useStore,
@@ -166,7 +166,7 @@ Qwik 是一种新型 Web 框架，可以提供任何大小或复杂程度的即�
   import { Child } from './child'
   
   export const App = component$(() => {
-    const state = useStore({ value: {} })
+    const state = useStore<State>({ value: {} })
   
     useContextProvider(PROVIDE_STORE_KEY, state)
   
