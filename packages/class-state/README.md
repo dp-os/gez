@@ -225,6 +225,7 @@ Qwik 是一种新型 Web 框架，可以提供任何大小或复杂程度的即�
     // 定义使用方法
     public static use (state: State = useState()) {
       const count = connectState(state)(this, 'count')
+      // 如果使用了服务端渲染，第三个参数不可忽略
       return useSyncExternalStore(count.$.subscribe, count.$.get, count.$.get)
     }
   
