@@ -36,21 +36,21 @@ test('Base', () => {
   const user = connectStore(User, STORE_NAME)
 
   assert.equal(user.name, '')
-  assert.isUndefined(state.user)
+  assert.isUndefined(state.value.user)
 
   user.$setName('jack')
   assert.strictEqual(user.name, 'jack')
-  assert.strictEqual(state.user.name, user.name)
+  assert.strictEqual(state.value.user.name, user.name)
 
   user.$setAge(20)
   assert.strictEqual(user.age, 20)
-  assert.strictEqual(state.user.age, user.age)
+  assert.strictEqual(state.value.user.age, user.age)
 
   user.$buildText()
   assert.strictEqual(user.text, 'jack is 20 years old.')
-  assert.strictEqual(state.user.text, user.text)
+  assert.strictEqual(state.value.user.text, user.text)
 
-  assert.isUndefined(state.user.online)
+  assert.isUndefined(state.value.user.online)
   assert.strictEqual(user.online, false)
   user.$toggleOnline()
   assert.strictEqual(user.online, true)
@@ -156,20 +156,20 @@ test('Disconnect', () => {
   }
   const user = connectStore(User, STORE_NAME)
 
-  assert.isUndefined(state.user)
+  assert.isUndefined(state.value.user)
 
   user.$setName('jack')
-  assert.strictEqual(state.user, user.$.state)
+  assert.strictEqual(state.value.user, user.$.state)
 
   user.$.disconnect()
-  assert.isUndefined(state.user)
+  assert.isUndefined(state.value.user)
   // @ts-expect-error need test
   assert.isNull(user.$._stateContext)
 })
 test('Preset state', () => {
   const STORE_NAME = 'user'
   const state = createState({
-    state: {
+    value: {
       [STORE_NAME]: {
         name: 'jack'
       }
@@ -184,8 +184,8 @@ test('Preset state', () => {
 
   assert.strictEqual(user.name, 'jack')
   assert.strictEqual(user.age, 18)
-  assert.notStrictEqual(user.$.state, state.user)
-  assert.deepEqual(state.user, { name: 'jack' })
+  assert.notStrictEqual(user.$.state, state.value.user)
+  assert.deepEqual(state.value.user, { name: 'jack' })
 })
 
 test('State modification delay', () => {
@@ -281,11 +281,11 @@ test('Params', () => {
   assert.strictEqual(user100.uid, 100)
   assert.notStrictEqual(user100, user200)
 
-  assert.strictEqual(state['user?100'], user100.$.state)
-  assert.strictEqual(state['user?200'], user200.$.state)
+  assert.strictEqual(state.value['user?100'], user100.$.state)
+  assert.strictEqual(state.value['user?200'], user200.$.state)
 
-  assert.deepEqual(state['user?100'], { uid: 100, name: 'jack' })
-  assert.deepEqual(state['user?200'], { uid: 200, name: 'tom' })
+  assert.deepEqual(state.value['user?100'], { uid: 100, name: 'jack' })
+  assert.deepEqual(state.value['user?200'], { uid: 200, name: 'tom' })
 })
 
 test('Call commit multiple times', () => {
@@ -354,7 +354,7 @@ test('Equal submit function', () => {
 
 test('State Restore', () => {
   const state = createState({
-    state: {
+    value: {
       user: {
         name: 'jack'
       }

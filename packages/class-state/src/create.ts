@@ -1,51 +1,21 @@
 import type { StoreContext } from './connect'
 
-const MODIFY_COUNT = '__modify_count_'
 export interface State {
-  [MODIFY_COUNT]: number
-  [x: string]: any
+  value: Record<string, any>
 }
-
-export interface StateOptions {
-  /**
-     * When rendering on the server, it is necessary to pass in the state
-     */
-  state?: Record<string, any>
-  proxy?: (target: any) => any
-  set?: (state: State, name: string, value: any) => void
-  del?: (state: State, name: string) => void
-}
-
-const DEFAULT_OPTIONS = {
-  proxy: (target: any) => target,
-  set: (state: State, name: string, value: any) => {
-    state[name] = value
-  },
-  del: (state: State, name: string) => {
-    // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-    delete state[name]
-  }
-} satisfies StateOptions
-
+const rootMap = new WeakMap<State, any>()
 export class StateContext {
   public readonly state: State
   private readonly storeContext: Map<string, StoreContext<any>> = new Map<string, StoreContext<any>>()
-  private readonly _options: Omit<Required<StateOptions>, 'state'>
-  public constructor (options: StateOptions) {
-    const state = options.state ? options.state : {}
-    state[MODIFY_COUNT] = 0
-    const _options = this._options = {
-      proxy: options.proxy ?? DEFAULT_OPTIONS.proxy,
-      set: options.set ?? DEFAULT_OPTIONS.set,
-      del: options.del ?? DEFAULT_OPTIONS.del
-    }
-
-    this.state = _options.proxy(state)
-    this._options = _options
+  public constructor (state: State) {
+    this.state = state
   }
 
-  public depend (fullPath: string = MODIFY_COUNT): unknown {
-    return this.state[fullPath]
+  public depend (fullPath?: string): unknown {
+    if (fullPath) {
+      return this.state.value[fullPath]
+    }
+    return this.state.value
   }
 
   public hasState (name: string): boolean {
@@ -61,37 +31,46 @@ export class StateContext {
   }
 
   public updateState (name: string, nextState: any) {
-    const { state, _options } = this
+    const { state } = this
     if (name in state) {
-      state[name] = nextState
+      state.value[name] = nextState
     } else {
-      _options.set(state, name, nextState)
-      state[MODIFY_COUNT]++
+      state.value = {
+        ...state.value,
+        [name]: nextState
+      }
     }
   }
 
   public del (name: string) {
-    const { _options } = this
+    const { state } = this
     this.storeContext.delete(name)
-    _options.del(this.state, name)
+    const newValue: Record<string, any> = {}
+    Object.keys(state.value).forEach(key => {
+      if (key !== name) {
+        newValue[key] = state.value[key]
+      }
+    })
+    state.value = newValue
   }
 }
 
-const rootMap = new WeakMap<State, any>()
-
-function setStateContext (state: State, context: StateContext) {
-  rootMap.set(state, context)
+function setStateContext (state: State, stateContext: StateContext) {
+  rootMap.set(state, stateContext)
 }
 
 export function getStateContext (state: State): StateContext {
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  return rootMap.get(state)!
+  let stateContext = rootMap.get(state)
+  if (stateContext) {
+    return stateContext
+  } else {
+    stateContext = new StateContext(state)
+    setStateContext(state, stateContext)
+  }
+
+  return stateContext
 }
 
-export function createState (options: StateOptions = {}): State {
-  const stateContext = new StateContext(options)
-
-  setStateContext(stateContext.state, stateContext)
-
-  return stateContext.state
+export function createState (state?: State): State {
+  return getStateContext(state?.value && typeof state.value === 'object' ? state : { value: {} }).state
 }

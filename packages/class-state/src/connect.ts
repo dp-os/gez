@@ -159,8 +159,8 @@ export function connectState (state: State) {
     if (!storeContext) {
       const store = new Store(...params)
       let storeState
-      if (fullPath in state) {
-        storeState = { ...store, ...state[fullPath] }
+      if (fullPath in state.value) {
+        storeState = { ...store, ...state.value[fullPath] }
       } else {
         storeState = { ...store }
       }

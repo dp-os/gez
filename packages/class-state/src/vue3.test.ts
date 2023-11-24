@@ -4,9 +4,9 @@ import { connectState } from './connect'
 import { createState } from './create'
 
 test('base', async () => {
-  const state = createState({
-    proxy: reactive
-  })
+  const state = createState(reactive({
+    value: {}
+  }))
   const connectStore = connectState(state)
   class User {
     public name = ''
@@ -31,9 +31,7 @@ test('base', async () => {
 })
 
 test('base2', async () => {
-  const state = createState({
-    proxy: reactive
-  })
+  const state = createState(reactive({ value: {} }))
   const connectStore = connectState(state)
   class User {
     public name = ''

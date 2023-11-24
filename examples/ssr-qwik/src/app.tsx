@@ -10,17 +10,13 @@ import { Count, PROVIDE_STORE_KEY } from './store'
 import { Child } from './child'
 
 const App = component$(() => {
-  const state = createState({
-    proxy: useStore
-  })
+  const state = createState(useStore({ value: {} }))
 
   useContextProvider(PROVIDE_STORE_KEY, state)
 
   // 客户端需要激活状态
   useVisibleTask$(async () => {
-    createState({
-      state
-    })
+    createState(state)
   })
 
   const count = Count.use()
