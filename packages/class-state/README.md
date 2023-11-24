@@ -2,6 +2,7 @@
 - 使用 class 来创建应用状态
 - 不依赖任何前端框架，支持各种前端框架接入
 - 状态变化，创建下一个不可变状态树
+- 支持服务端渲染
 - 提供[React](#react)、[Vue](#vue)、[Qwik](#qwik) 接入例子
 ## 设计理念
 将一切的业务逻辑都应该写在 class-state 中，UI 框架只充当一个渲染引擎的作用
@@ -40,6 +41,89 @@ console.log(count.value)
 
 ```
 ## 框架支持
+### React
+Web 和本机用户界面的库
+- store.ts
+  ```ts
+  import { createContext, useContext, useSyncExternalStore } from 'react'
+  
+  import { type State, connectState } from 'class-state'
+  
+  // 创建状态的上下文
+  export const StateContext = createContext<State>({
+    value: {}
+  })
+  
+  // 获取状态
+  export function useState (): State {
+    return useContext(StateContext)
+  }
+  
+  // 定义类
+  export class Count {
+    // 定义使用方法
+    public static use (state: State = useState()) {
+      const count = connectState(state)(this, 'count')
+      // 如果使用了服务端渲染，第三个参数不可忽略
+      return useSyncExternalStore(count.$.subscribe, count.$.get, count.$.get)
+    }
+  
+    // 定义值
+    public value: number = 0
+    // 值加加
+    public $inc () {
+      this.value++
+    }
+  
+    // 值减减
+    public $dec () {
+      this.value--
+    }
+  }
+  ```
+- app.tsx
+  ```tsx
+  import { useState } from 'react'
+  import { type State } from 'class-state'
+  import './style.css'
+  import { StateContext, Count } from './store'
+  import { Child } from './child'
+  export function App () {
+    // 创建状态，如果使用了服务端渲染，需要将对应状态传入
+    const [state] = useState<State>({ value: {} })
+  
+    // React 的上下文注入是通过组件的形式，这里是获取不到上下文的，所以这里需要传入 state
+    const count = Count.use(state)
+    return (
+      <StateContext.Provider value={state}>
+        <div>
+          <Child />
+          <p>Click Count: {count.value}</p>
+        </div>
+      </StateContext.Provider>
+    )
+  }
+
+  ```
+- child.tsx
+  ```tsx
+  import { Count } from './store'
+  
+  export const Child = () => {
+    const count = Count.use()
+    return (
+            <div>
+                <button onClick={() => {
+                  count.$inc()
+                }}>+</button>
+                <button onClick={() => {
+                  count.$dec()
+                }}>-</button>
+            </div>
+    )
+  }
+
+  ```
 ### vue
 一个用于构建 Web 用户界面的平易近人、高性能且多功能的框架。
 - store.ts
@@ -203,89 +287,6 @@ Qwik 是一种新型 Web 框架，可以提供任何大小或复杂程度的即�
           </div>
     )
   })
-
-  ```
-### React
-Web 和本机用户界面的库
-- store.ts
-  ```ts
-  import { createContext, useContext, useSyncExternalStore } from 'react'
-  
-  import { type State, connectState } from 'class-state'
-  
-  // 创建状态的上下文
-  export const StateContext = createContext<State>({
-    value: {}
-  })
-  
-  // 获取状态
-  export function useState (): State {
-    return useContext(StateContext)
-  }
-  
-  // 定义类
-  export class Count {
-    // 定义使用方法
-    public static use (state: State = useState()) {
-      const count = connectState(state)(this, 'count')
-      // 如果使用了服务端渲染，第三个参数不可忽略
-      return useSyncExternalStore(count.$.subscribe, count.$.get, count.$.get)
-    }
-  
-    // 定义值
-    public value: number = 0
-    // 值加加
-    public $inc () {
-      this.value++
-    }
-  
-    // 值减减
-    public $dec () {
-      this.value--
-    }
-  }
-  ```
-- app.tsx
-  ```tsx
-  import { useState } from 'react'
-  import { type State } from 'class-state'
-  import './style.css'
-  import { StateContext, Count } from './store'
-  import { Child } from './child'
-  export function App () {
-    // 创建状态，如果使用了服务端渲染，需要将对应状态传入
-    const [state] = useState<State>({ value: {} })
-  
-    // React 的上下文注入是通过组件的形式，这里是获取不到上下文的，所以这里需要传入 state
-    const count = Count.use(state)
-    return (
-      <StateContext.Provider value={state}>
-        <div>
-          <Child />
-          <p>Click Count: {count.value}</p>
-        </div>
-      </StateContext.Provider>
-    )
-  }
-
-  ```
-- child.tsx
-  ```tsx
-  import { Count } from './store'
-  
-  export const Child = () => {
-    const count = Count.use()
-    return (
-            <div>
-                <button onClick={() => {
-                  count.$inc()
-                }}>+</button>
-                <button onClick={() => {
-                  count.$dec()
-                }}>-</button>
-            </div>
-    )
-  }
 
   ```
 ### 服务端渲染
