@@ -33,7 +33,7 @@ export class StateContext {
 
   public updateState (name: string, nextState: any) {
     const { state } = this
-    if (name in state) {
+    if (name in state.value) {
       state.value[name] = nextState
     } else {
       state.value = {
