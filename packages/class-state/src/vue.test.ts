@@ -50,7 +50,7 @@ test('base2', async () => {
   assert.equal(updateValue, 'test2')
 })
 
-test.only('watch root', async () => {
+test('watch root', async () => {
   const state = createState(ref({ value: {} }))
   const connectStore = connectState(state)
   class User {
