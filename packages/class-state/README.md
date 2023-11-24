@@ -16,6 +16,7 @@ import { createState, connectState } from 'class-state'
 class Count {
   // 定义 store 的名字
   public static storeName = 'count'
+  // 定义值
   public value = 0
   // 通过 $ 函数来修改状态，这是一个约定
   public $inc () {
