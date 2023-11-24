@@ -78,15 +78,19 @@ console.log(count.value)
   </template>
   <script setup lang="ts">
   import { provide, ref } from 'vue';
-  import { createState } from 'class-state';
+  import { createState, State } from 'class-state';
   
-  import { PROVIDE_STORE_KEY, Count } from './store'
+  import { STORE_PROVIDE_KEY, Count } from './store'
   import Child from './child.vue';
   
-  const state = createState(ref({ value: {} }))
-  provide(PROVIDE_STORE_KEY, state)
+  // 创建一个响应式对象
+  const refState = ref<State>({ value: {} })
+  // 创建应用状态
+  const state = createState(refState)
+  // 在组件中供应状态
+  provide(STORE_PROVIDE_KEY, state)
   
-  
+  // 使用应用状态
   const count = Count.use(state)
   
   </script>
