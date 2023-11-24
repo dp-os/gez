@@ -204,6 +204,7 @@ Qwik 是一种新型 Web 框架，可以提供任何大小或复杂程度的即�
 
   ```
 ### React
+Web 和本机用户界面的库
 - store.ts
   ```ts
   import { createContext, useContext, useSyncExternalStore } from 'react'
