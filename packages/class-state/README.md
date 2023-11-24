@@ -10,12 +10,15 @@ npm install class-state
 
 ## 快速使用
 ```ts
-import { createState, connectState } from 'class-state'
+import { createState, connectState, type State } from 'class-state'
 
 // 定义 Store 类
 class Count {
-  // 定义 store 的名字
-  public static storeName = 'count'
+  // 添加 store 的使用方法
+  public static use (state: State) {
+    return connectState(state)(this, 'count')
+  }
+
   // 定义值
   public value = 0
   // 通过 $ 函数来修改状态，这是一个约定
@@ -26,15 +29,13 @@ class Count {
 
 // 创建应用状态
 const state = createState()
-// 创建 state 和 store 的连接函数
-const connectStore = connectState(state)
-// 连接 Count Store 
-const count = connectStore(Count, Count.storeName)
-
+// 使用 Count 类
+const count = Count.use(state)
 // 调用 $ 函数，更新状态
 count.$inc()
-// 输出为：1
-console.log(user.count)
+// 打印日志输出: 1
+console.log(count.value)
+
 ```
 ## 框架支持
 ### vue
