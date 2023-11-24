@@ -39,7 +39,7 @@ console.log(count.value)
 ```
 ## 框架支持
 ### vue
-这里提供了一个组合式 API 的例子，适用于 Vue2、Vue3
+一个用于构建 Web 用户界面的平易近人、高性能且多功能的框架。
 - store.ts
   ```ts
   import { type State, connectState } from 'class-state'
