@@ -2,9 +2,8 @@
 import { produce } from 'immer'
 import { type State, getStateContext, type StateContext } from './create'
 import { createFullPath } from './path'
-
 export type StoreParams = Record<string, any>
-export type StoreConstructor = new(...args: any[]) => any
+export type StoreConstructor = new (...args: any[]) => any
 
 export type StoreInstance<T extends {}> = T & { $: StoreContext<T> }
 
@@ -12,33 +11,36 @@ let currentStateContext: StateContext | null = null
 
 export class StoreContext<T extends {}> {
   /**
-     * Library private properties, not available externally
-     */
+   * 全局的状态上下文
+   */
   private _stateContext: StateContext | null
   /**
-     * Library private properties, not available externally
-     */
+   * 原始实例
+   */
   private readonly _raw: T
   /**
-     * Library private properties, not available externally
-     */
-  public _proxy: StoreInstance<T>
+   * 原始实例的代理，每次状态变化时，代理都会更新
+   */
+  private _proxy: StoreInstance<T>
   /**
-     * Is the state a draft state
-     */
+   * 当前的 state 是否是草稿状态
+   */
   private _drafting = false
   /**
-     * Is the state a draft state
-     */
+   * $ 函数的缓存对象
+   */
   private readonly _cacheCommit = new Map<Function, Function>()
   /**
-     * Path in state
-     */
+   * 当前的 store 的存储路径
+   */
   public readonly fullPath: string
   /**
-     * State of Store
-     */
+   * 当前的 store 的 state
+   */
   public state: Record<string, any>
+  /**
+   * 当前的 store 的 state 是否已经连接到全局的 state 中
+   */
   public connecting: boolean
   public constructor (stateContext: StateContext, raw: any, state: Record<string, any>, fullPath: string) {
     this._stateContext = stateContext
@@ -53,8 +55,16 @@ export class StoreContext<T extends {}> {
   }
 
   /**
-     * Library private method, not available externally
-     */
+   * 原始实例的代理，每次状态变化时，代理都会更新
+   */
+  public get proxy () {
+    this._depend()
+    return this._proxy
+  }
+
+  /**
+    * 私有函数，外部调用不应该使用
+    */
   public _setState (nextState: Record<string, any>) {
     const { _stateContext, fullPath } = this
     this.state = nextState
@@ -66,13 +76,24 @@ export class StoreContext<T extends {}> {
   }
 
   /**
-     * Disconnect from state and release memory
-     */
-  public disconnect = () => {
+   * 销毁实例，释放内存
+   */
+  public dispose = () => {
     const { _stateContext } = this
     if (_stateContext) {
       _stateContext.del(this.fullPath)
       this._stateContext = null
+    }
+  }
+
+  private _depend () {
+    const stateContext = this._stateContext
+    if (stateContext) {
+      if (this.connecting) {
+        stateContext.depend(this.fullPath)
+      } else {
+        stateContext.depend()
+      }
     }
   }
 
@@ -85,14 +106,7 @@ export class StoreContext<T extends {}> {
         } else if (typeof p === 'string') {
           const state = storeContext.state
           if (p in state) {
-            const stateContext = storeContext._stateContext
-            if (stateContext) {
-              if (storeContext.connecting) {
-                stateContext.depend(storeContext.fullPath)
-              } else {
-                stateContext.depend()
-              }
-            }
+            storeContext._depend()
             return state[p]
           }
         }
@@ -155,7 +169,7 @@ export function connectState (state: State) {
   const stateContext = getStateContext(state)
   return <T extends StoreConstructor>(Store: T, name: string, ...params: ConstructorParameters<T>): StoreInstance<InstanceType<T>> => {
     const fullPath = createFullPath(name, params[0])
-    let storeContext: StoreContext<T> | null = stateContext.get(fullPath)
+    let storeContext: StoreContext<InstanceType<T>> | null = stateContext.get(fullPath)
     if (!storeContext) {
       const store = new Store(...params)
       let storeState
@@ -164,9 +178,9 @@ export function connectState (state: State) {
       } else {
         storeState = { ...store }
       }
-      storeContext = new StoreContext(stateContext, store, storeState, fullPath)
+      storeContext = new StoreContext<InstanceType<T>>(stateContext, store, storeState, fullPath)
     }
-    return storeContext._proxy as any
+    return storeContext.proxy
   }
 }
 

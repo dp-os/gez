@@ -4,6 +4,7 @@ export interface State {
   value: Record<string, any>
 }
 const rootMap = new WeakMap<State, any>()
+
 export class StateContext {
   public readonly state: State
   private readonly storeContext: Map<string, StoreContext<any>> = new Map<string, StoreContext<any>>()

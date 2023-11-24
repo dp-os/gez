@@ -161,7 +161,7 @@ test('Disconnect', () => {
   user.$setName('jack')
   assert.strictEqual(state.value.user, user.$.state)
 
-  user.$.disconnect()
+  user.$.dispose()
   assert.isUndefined(state.value.user)
   // @ts-expect-error need test
   assert.isNull(user.$._stateContext)

@@ -20,7 +20,6 @@
   },
   "devDependencies": {
     "unbuild": "^2.0.0",
-    "vue2": "npm:vue@^2.7.15",
-    "vue3": "npm:vue@^3.3.8"
+    "vue": "^2.7.15"
   }
 }

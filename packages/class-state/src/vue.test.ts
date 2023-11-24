@@ -1,12 +1,10 @@
-import { reactive, watch, nextTick } from 'vue3'
+import { ref, watch, nextTick } from 'vue'
 import { test, assert } from 'vitest'
 import { connectState } from './connect'
 import { createState } from './create'
 
 test('base', async () => {
-  const state = createState(reactive({
-    value: {}
-  }))
+  const state = createState(ref({ value: {} }))
   const connectStore = connectState(state)
   class User {
     public name = ''
@@ -31,7 +29,7 @@ test('base', async () => {
 })
 
 test('base2', async () => {
-  const state = createState(reactive({ value: {} }))
+  const state = createState(ref({ value: {} }))
   const connectStore = connectState(state)
   class User {
     public name = ''
@@ -50,4 +48,26 @@ test('base2', async () => {
   user.$setName('test2')
   await nextTick()
   assert.equal(updateValue, 'test2')
+})
+
+test.only('watch root', async () => {
+  const state = createState(ref({ value: {} }))
+  const connectStore = connectState(state)
+  class User {
+    public name = ''
+    public $setName (name: string) {
+      this.name = name
+    }
+  }
+  const user = connectStore(User, 'user')
+  let updateCount = 0
+  watch(() => {
+    return connectStore(User, 'user')
+  }, () => {
+    updateCount++
+  })
+  assert.equal(user.$.connecting, false)
+  user.$setName('test2')
+  await nextTick()
+  assert.equal(updateCount, 1)
 })

@@ -213,12 +213,9 @@ importers:
       unbuild:
         specifier: ^2.0.0
         version: 2.0.0(typescript@5.2.2)
-      vue2:
-        specifier: npm:vue@^2.7.15
-        version: /vue@2.7.15
-      vue3:
-        specifier: npm:vue@^3.3.8
-        version: /vue@3.3.8(typescript@5.2.2)
+      vue:
+        specifier: ^2.7.15
+        version: 2.7.15
 
   packages/genesis:
     dependencies:
