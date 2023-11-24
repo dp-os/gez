@@ -39,7 +39,7 @@ console.log(count.value)
 ```
 ## 框架支持
 ### vue
-这里提供了一个组合式 API 的例子，适用于 Vue2、Vue3
+一个用于构建 Web 用户界面的平易近人、高性能且多功能的框架。
 - store.ts
   ```ts
   import { type State, connectState } from 'class-state'
@@ -87,10 +87,8 @@ console.log(count.value)
   import { STORE_PROVIDE_KEY, Count } from './store'
   import Child from './child.vue';
   
-  // 创建一个响应式对象
-  const refState = ref<State>({ value: {} })
-  // 创建应用状态
-  const state = createState(refState)
+  // 创建状态
+  const state = ref<State>({ value: {} })
   // 在组件中供应状态
   provide(STORE_PROVIDE_KEY, state)
   
@@ -116,6 +114,8 @@ console.log(count.value)
   </script>
   ```
 ### Qwik
+Qwik 是一种新型 Web 框架，可以提供任何大小或复杂程度的即时加载 Web 应用程序。您的网站和应用程序可以使用大约 1kb 的 JS 启动（无论应用程序复杂程度如何），并大规模实现一致的性能。
+
 - store.ts
   ```ts
   import {
@@ -156,7 +156,7 @@ console.log(count.value)
   ```
 - app.tsx
   ```tsx
-  import { createState } from 'class-state'
+  import { type State } from 'class-state'
   import {
     component$,
     useStore,
@@ -166,7 +166,7 @@ console.log(count.value)
   import { Child } from './child'
   
   export const App = component$(() => {
-    const state = createState(useStore({ value: {} }))
+    const state = useStore<State>({ value: {} })
   
     useContextProvider(PROVIDE_STORE_KEY, state)
   
@@ -201,6 +201,86 @@ console.log(count.value)
           </div>
     )
   })
+
+  ```
+### React
+- store.ts
+  ```ts
+  import { createContext, useContext, useSyncExternalStore } from 'react'
+  
+  import { type State, connectState } from 'class-state'
+  
+  // 创建状态的上下文
+  export const StateContext = createContext<State>({
+    value: {}
+  })
+  
+  // 获取状态
+  export function useState (): State {
+    return useContext(StateContext)
+  }
+  
+  // 定义类
+  export class Count {
+    // 定义使用方法
+    public static use (state: State = useState()) {
+      const count = connectState(state)(this, 'count')
+      return useSyncExternalStore(count.$.subscribe, count.$.get, count.$.get)
+    }
+  
+    // 定义值
+    public value: number = 0
+    // 值加加
+    public $inc () {
+      this.value++
+    }
+  
+    // 值减减
+    public $dec () {
+      this.value--
+    }
+  }
+  ```
+- app.tsx
+  ```tsx
+  import { useState } from 'react'
+  import { type State } from 'class-state'
+  import './style.css'
+  import { StateContext, Count } from './store'
+  import { Child } from './child'
+  export function App () {
+    const [state] = useState<State>({ value: {} })
+  
+    // React 的上下文注入是通过组件的形式，这里是获取不到上下文的，所以这里需要传入 state
+    const count = Count.use(state)
+    return (
+      <StateContext.Provider value={state}>
+        <div>
+          <Child />
+          <p>Click Count: {count.value}</p>
+        </div>
+      </StateContext.Provider>
+    )
+  }
+
+  ```
+- child.tsx
+  ```tsx
+  import { Count } from './store'
+  
+  export const Child = () => {
+    const count = Count.use()
+    return (
+            <div>
+                <button onClick={() => {
+                  count.$inc()
+                }}>+</button>
+                <button onClick={() => {
+                  count.$dec()
+                }}>-</button>
+            </div>
+    )
+  }
 
   ```
 ## 兼容性
