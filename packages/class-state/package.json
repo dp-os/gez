@@ -1,9 +1,14 @@
 {
   "name": "class-state",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "type": "module",
   "license": "MIT",
-  "keywords": ["vuex", "mobx", "pinia", "redux"],
+  "keywords": [
+    "vuex",
+    "mobx",
+    "pinia",
+    "redux"
+  ],
   "exports": {
     ".": {
       "import": "./dist/index.mjs",
