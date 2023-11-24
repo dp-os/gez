@@ -285,5 +285,5 @@ Qwik 是一种新型 Web 框架，可以提供任何大小或复杂程度的即�
 
   ```
 ## 兼容性
-基于`proxy`和`WeakMap`
+运行时，需要支持 `Proxy`、`WeakMap`、`Map`
 
