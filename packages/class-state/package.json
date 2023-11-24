@@ -3,6 +3,7 @@
   "version": "0.1.13",
   "type": "module",
   "license": "MIT",
+  "keywords": ["vuex", "mobx", "pinia", "redux"],
   "exports": {
     ".": {
       "import": "./dist/index.mjs",
