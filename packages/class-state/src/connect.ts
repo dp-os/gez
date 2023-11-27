@@ -8,7 +8,7 @@ export type StoreInstance<T extends {}> = T & { $: StoreContext<T> }
 
 let currentStateContext: StateContext | null = null
 
-export type StoreSubscribe<T extends {}> = (store: T, oldStore: T) => void
+export type StoreSubscribe = () => void
 
 // 订阅的id
 let sid = 0
@@ -37,27 +37,27 @@ export class StoreContext<T extends {}> {
   /**
    * 当前的 store 的存储路径
    */
-  public readonly fullPath: string
+  public readonly keyPath: string
   /**
-   * 当前的 store 的 state
+   * 最新的状态
    */
   public state: Record<string, any>
   /**
    * 当前的 store 的 state 是否已经连接到全局的 state 中
    */
   public connecting: boolean
-  private readonly _subs: Array<{ sid: number, cb: StoreSubscribe<T> }> = []
+  private readonly _subs: Array<{ sid: number, cb: StoreSubscribe }> = []
 
-  public constructor (stateContext: StateContext, raw: any, state: Record<string, any>, fullPath: string) {
+  public constructor (stateContext: StateContext, raw: T, state: Record<string, any>, keyPath: string) {
     this._stateContext = stateContext
-    stateContext.add(fullPath, this)
+    stateContext.add(keyPath, this)
 
     this._raw = raw
     this._proxy = this._createProxyClass()
 
     this.state = state
-    this.fullPath = fullPath
-    this.connecting = stateContext.hasState(fullPath)
+    this.keyPath = keyPath
+    this.connecting = stateContext.hasState(keyPath)
 
     this.get = this.get.bind(this)
     this.subscribe = this.subscribe.bind(this)
@@ -77,20 +77,19 @@ export class StoreContext<T extends {}> {
     * 私有函数，外部调用不应该使用
     */
   public _setState (nextState: Record<string, any>) {
-    const { _stateContext, fullPath, _subs } = this
+    const { _stateContext, keyPath: fullPath, _subs } = this
     this.state = nextState
     if (_stateContext) {
       _stateContext.updateState(fullPath, nextState)
     }
     this.connecting = !!_stateContext
-    const oldStore = this._proxy
     const store = this._createProxyClass()
     this._proxy = store
 
     if (_subs.length) {
       const subs = [..._subs]
       subs.forEach(item => {
-        item.cb(this._proxy, oldStore)
+        item.cb()
       })
     }
   }
@@ -102,9 +101,10 @@ export class StoreContext<T extends {}> {
   public dispose () {
     const { _stateContext } = this
     if (_stateContext) {
-      _stateContext.del(this.fullPath)
+      _stateContext.del(this.keyPath)
       this._stateContext = null
     }
+    this._subs.splice(0)
   }
 
   /**
@@ -113,7 +113,7 @@ export class StoreContext<T extends {}> {
    * 已绑定 this
    * @returns
    */
-  public subscribe (cb: StoreSubscribe<T>) {
+  public subscribe (cb: StoreSubscribe) {
     const _sid = ++sid
     this._subs.push({
       sid,
@@ -131,7 +131,7 @@ export class StoreContext<T extends {}> {
     const stateContext = this._stateContext
     if (stateContext) {
       if (this.connecting) {
-        stateContext.depend(this.fullPath)
+        stateContext.depend(this.keyPath)
       } else {
         stateContext.depend()
       }
