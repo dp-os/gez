@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-this-alias */
 import { produce } from 'immer'
 import { type State, getStateContext, type StateContext } from './create'
-import { createFullPath } from './path'
 export type StoreParams = Record<string, any>
-export type StoreConstructor = new (...args: any[]) => any
+export type StoreConstructor = new (cacheKey?: string) => any
 
 export type StoreInstance<T extends {}> = T & { $: StoreContext<T> }
 
@@ -209,11 +208,11 @@ export class StoreContext<T extends {}> {
 
 export function connectState (state: State) {
   const stateContext = getStateContext(state)
-  return <T extends StoreConstructor>(Store: T, name: string, ...params: ConstructorParameters<T>): StoreInstance<InstanceType<T>> => {
-    const fullPath = createFullPath(name, params[0])
+  return <T extends StoreConstructor>(Store: T, name: string, cacheKey?: string): StoreInstance<InstanceType<T>> => {
+    const fullPath = typeof cacheKey === 'string' ? name + '/' + cacheKey : name
     let storeContext: StoreContext<InstanceType<T>> | null = stateContext.get(fullPath)
     if (!storeContext) {
-      const store = new Store(...params)
+      const store = new Store(cacheKey)
       let storeState
       if (fullPath in state.value) {
         storeState = { ...store, ...state.value[fullPath] }

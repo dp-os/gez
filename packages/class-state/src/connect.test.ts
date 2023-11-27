@@ -263,29 +263,29 @@ test('Params', () => {
 
   class User {
     public name = ''
-    public uid: number
-    public constructor (uid: number) {
-      this.uid = uid
+    public uid: string
+    public constructor (uid?: string) {
+      this.uid = uid ?? ''
     }
 
     public $setName (name: string) {
       this.name = name
     }
   }
-  const user100 = connectStore(User, 'user', 100)
+  const user100 = connectStore(User, 'user', '100')
   user100.$setName('jack')
-  assert.strictEqual(user100.uid, 100)
+  assert.strictEqual(user100.uid, '100')
 
-  const user200 = connectStore(User, 'user', 200)
+  const user200 = connectStore(User, 'user', '200')
   user200.$setName('tom')
-  assert.strictEqual(user100.uid, 100)
+  assert.strictEqual(user100.uid, '100')
   assert.notStrictEqual(user100, user200)
 
-  assert.strictEqual(state.value['user?100'], user100.$.state)
-  assert.strictEqual(state.value['user?200'], user200.$.state)
+  assert.strictEqual(state.value['user/100'], user100.$.state)
+  assert.strictEqual(state.value['user/200'], user200.$.state)
 
-  assert.deepEqual(state.value['user?100'], { uid: 100, name: 'jack' })
-  assert.deepEqual(state.value['user?200'], { uid: 200, name: 'tom' })
+  assert.deepEqual(state.value['user/100'], { uid: '100', name: 'jack' })
+  assert.deepEqual(state.value['user/200'], { uid: '200', name: 'tom' })
 })
 
 test('Call commit multiple times', () => {
