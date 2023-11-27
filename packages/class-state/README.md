@@ -49,6 +49,20 @@ console.log(count.value)
 当创建类实例后，会把可枚举的属性都会当成 state，如果有一些对象不想被当成 state，你可以将其设置为不可枚举属性
 ### $函数
 state 的变更，只能通过 $函数修改，否则程序会抛出错误，这是一个约定俗成的规范。
+```ts
+class Count {
+  // 定义值
+  public value = 0
+  // ✅ 正确的
+  public $inc () {
+    this.value++
+  }
+  // ❌ 错误的
+  public inc () {
+    this.value++
+  }
+}
+```
 ## 完整例子
 ### React
 Web 和本机用户界面的库
