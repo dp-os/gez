@@ -1,6 +1,6 @@
 {
     "name": "ssr-vue3",
-    "version": "0.1.15",
+    "version": "0.1.16",
     "private": true,
     "type": "module",
     "scripts": {
@@ -10,13 +10,13 @@
         "start": "genesis"
     },
     "dependencies": {
-        "genesis3": "0.1.15"
+        "genesis3": "0.1.16"
     },
     "devDependencies": {
         "@types/node": "^20.6.3",
         "@vitejs/plugin-vue": "^4.5.0",
-        "class-state": "0.1.15",
-        "genesis-vite": "0.1.15",
+        "class-state": "0.1.16",
+        "genesis-vite": "0.1.16",
         "typescript": "^5.2.2",
         "vite": "^5.0.0",
         "vue": "^3.3.4"
