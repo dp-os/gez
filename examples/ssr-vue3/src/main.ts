@@ -4,7 +4,7 @@ import App from './app.vue'
 import { type State } from 'class-state'
 import { PROVIDE_STORE_KEY } from './store'
 
-function getInitState (): State {
+function getInitState (): State['value'] {
   // 浏览器获取服务端初始化好的状态
   if (typeof window === 'object') {
     const template = document.getElementById('state')
@@ -12,13 +12,11 @@ function getInitState (): State {
       return JSON.parse(template.innerHTML)
     }
   }
-  return {
-    value: {}
-  }
+  return {}
 }
 
 export function createApp () {
-  const state = ref(getInitState())
+  const state: State = ref(getInitState())
   const app = createSSRApp(App)
   app.provide(PROVIDE_STORE_KEY, state)
 

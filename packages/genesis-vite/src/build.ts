@@ -1,5 +1,5 @@
-import path from 'path'
-// import fs from 'fs'
+import path from 'node:path'
+import fs from 'node:fs'
 import { type Genesis } from 'genesis3'
 import { build as viteBuild } from 'vite'
 import { mergeViteConfig } from './vite-config'
@@ -15,6 +15,13 @@ async function buildClient (genesis: Genesis, src: string) {
       outDir: genesis.getProjectPath('dist/client')
     }
   }))
+  const filename = path.resolve(genesis.root, 'dist/client/.vite/manifest.json')
+  if (fs.existsSync(filename)) {
+    fs.renameSync(
+      filename,
+      genesis.getProjectPath('dist/client/manifest.json')
+    )
+  }
 }
 async function buildServer (genesis: Genesis, src: string) {
   await viteBuild(mergeViteConfig(genesis, {
@@ -48,20 +55,7 @@ async function buildNode (genesis: Genesis, src: string) {
 
 export async function build (genesis: Genesis) {
   const source = genesis.getProjectPath('src')
-  const build = source
-  // fs.renameSync(source, build)
-  const restore = () => {
-    // fs.renameSync(build, source)
-  }
-  process.on('SIGINT', restore)
-  try {
-    await buildClient(genesis, build)
-    await buildServer(genesis, build)
-    await buildNode(genesis, build)
-    restore()
-  } catch (e) {
-    process.off('SIGINT', restore)
-    restore()
-    console.error(e)
-  }
+  await buildClient(genesis, source)
+  await buildServer(genesis, source)
+  await buildNode(genesis, source)
 }
