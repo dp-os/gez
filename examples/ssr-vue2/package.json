@@ -14,7 +14,7 @@
     },
     "devDependencies": {
         "@types/node": "^20.6.3",
-        "@vitejs/plugin-vue2": "^2.3.1",
+        "vite-plugin-vue2-ssr": "^0.0.5",
         "class-state": "0.1.16",
         "genesis-vite": "0.1.16",
         "typescript": "^5.2.2",
