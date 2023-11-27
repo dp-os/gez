@@ -42,7 +42,10 @@ const count = Count.use(state)
 count.$inc()
 // 打印日志输出: 1
 console.log(count.value)
-
+// 订阅状态变化
+user.$.subscribe(() => {
+  // TODO
+})
 ```
 ## 基本概念
 ### state
