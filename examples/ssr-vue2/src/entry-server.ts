@@ -9,7 +9,6 @@ export default defineServer({
     const { app, state } = createApp()
 
     const html: string = await renderer.renderToString(app, context)
-    console.log('>>>>>>', state)
     context.html = `
 <!DOCTYPE html>
 <html lang="en">
