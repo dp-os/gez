@@ -44,7 +44,7 @@ count.$inc()
 console.log(count.value)
 
 ```
-## 使用例子
+## 完整例子
 ### React
 Web 和本机用户界面的库
 - store.ts
