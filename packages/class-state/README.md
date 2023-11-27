@@ -43,7 +43,7 @@ count.$inc()
 // 打印日志输出: 1
 console.log(count.value)
 // 订阅状态变化
-user.$.subscribe(() => {
+count.$.subscribe(() => {
   // TODO
 })
 ```
@@ -65,6 +65,22 @@ class Count {
     this.value++
   }
 }
+```
+### StoreContext
+类实例创建完成后，会创建一个对应的`StoreContext`实例，作为与全局 state 连接的中介，你可以通过访问类实例的$属性获取到
+```ts
+// 在全局 state 存储的路径
+count.$.keyPath
+// 类实例的状态
+count.$.state
+// 是否已经连接到 全局 state 中
+count.$.connecting
+// 获取当前代理的实例
+count.$.get()
+// 订阅状态变化，并且会返回一个取消订阅的函数
+count.$.subscribe(() => {})
+// 断开与全局 state 的连接，取消事件监听，释放内存
+count.$.dispose()
 ```
 ## 完整例子
 ### React
