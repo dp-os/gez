@@ -42,7 +42,45 @@ const count = Count.use(state)
 count.$inc()
 // 打印日志输出: 1
 console.log(count.value)
-
+// 订阅状态变化
+count.$.subscribe(() => {
+  // TODO
+})
+```
+## 基本概念
+### state
+当创建类实例后，会把可枚举的属性都会当成 state，如果有一些对象不想被当成 state，你可以将其设置为不可枚举属性
+### $函数
+state 的变更，只能通过 $函数修改，否则程序会抛出错误，这是一个约定俗成的规范。
+```ts
+class Count {
+  // 定义值
+  public value = 0
+  // ✅ 正确的
+  public $inc () {
+    this.value++
+  }
+  // ❌ 错误的
+  public inc () {
+    this.value++
+  }
+}
+```
+### StoreContext
+类实例创建完成后，会创建一个对应的`StoreContext`实例，作为与全局 state 连接的中介，你可以通过访问类实例的$属性获取到
+```ts
+// 在全局 state 存储的路径
+count.$.keyPath
+// 类实例的状态
+count.$.state
+// 是否已经连接到 全局 state 中
+count.$.connecting
+// 获取当前代理的实例
+count.$.get()
+// 订阅状态变化，并且会返回一个取消订阅的函数
+count.$.subscribe(() => {})
+// 断开与全局 state 的连接，取消事件监听，释放内存
+count.$.dispose()
 ```
 ## 完整例子
 ### React
