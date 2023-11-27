@@ -1,5 +1,5 @@
 {
-  "version": "0.1.16",
+  "version": "0.1.17",
   "name": "genesis-vite",
   "type": "module",
   "main": "./dist/index.mjs",
@@ -35,7 +35,7 @@
     "vite-node": "^0.34.6"
   },
   "devDependencies": {
-    "genesis3": "0.1.16",
+    "genesis3": "0.1.17",
     "unbuild": "^1.2.1"
   },
   "gitHead": "8471bddf6fb9850001d8661f7d1058ea590999d1"

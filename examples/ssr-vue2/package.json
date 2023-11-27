@@ -1,6 +1,6 @@
 {
     "name": "ssr-vue2",
-    "version": "0.1.16",
+    "version": "0.1.17",
     "private": true,
     "type": "module",
     "scripts": {
@@ -10,15 +10,15 @@
         "start": "genesis"
     },
     "dependencies": {
-        "genesis3": "0.1.16"
+        "genesis3": "0.1.17"
     },
     "devDependencies": {
         "@types/node": "^20.6.3",
-        "vite-plugin-vue2-ssr": "^0.0.5",
-        "class-state": "0.1.16",
-        "genesis-vite": "0.1.16",
+        "class-state": "0.1.17",
+        "genesis-vite": "0.1.17",
         "typescript": "^5.2.2",
         "vite": "^5.0.0",
+        "vite-plugin-vue2-ssr": "^0.0.5",
         "vue": "^2.7.14",
         "vue-server-renderer": "^2.7.14"
     }
