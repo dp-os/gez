@@ -8,6 +8,6 @@ export default defineServer({
 
     const html: string = await renderToString(app, context)
 
-    context.html = `<div id="app">${html}</div><template id="state">${JSON.stringify(state)}</template>`
+    context.html = `${html}<template id="state">${JSON.stringify(state)}</template>`
   }
 })
