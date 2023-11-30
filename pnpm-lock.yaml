@@ -45,7 +45,7 @@ importers:
   examples/ssr-qwik:
     dependencies:
       genesis3:
-        specifier: 0.1.18
+        specifier: 0.1.19
         version: link:../../packages/genesis
     devDependencies:
       '@builder.io/qwik':
@@ -55,13 +55,13 @@ importers:
         specifier: ^20.6.3
         version: 20.9.1
       class-state:
-        specifier: 0.1.18
+        specifier: 0.1.19
         version: link:../../packages/class-state
       genesis-state:
         specifier: ^0.1.7
         version: 0.1.7
       genesis-vite:
-        specifier: 0.1.18
+        specifier: 0.1.19
         version: link:../../packages/genesis-vite
       typescript:
         specifier: ^5.2.2
@@ -73,7 +73,7 @@ importers:
   examples/ssr-react:
     dependencies:
       genesis3:
-        specifier: 0.1.18
+        specifier: 0.1.19
         version: link:../../packages/genesis
     devDependencies:
       '@types/node':
@@ -86,10 +86,10 @@ importers:
         specifier: ^4.2.0
         version: 4.2.0(vite@5.0.0)
       class-state:
-        specifier: 0.1.18
+        specifier: 0.1.19
         version: link:../../packages/class-state
       genesis-vite:
-        specifier: 0.1.18
+        specifier: 0.1.19
         version: link:../../packages/genesis-vite
       react:
         specifier: ^18.2.0
@@ -107,14 +107,14 @@ importers:
   examples/ssr-simple:
     dependencies:
       genesis3:
-        specifier: 0.1.18
+        specifier: 0.1.19
         version: link:../../packages/genesis
     devDependencies:
       '@types/node':
         specifier: ^20.6.3
         version: 20.9.1
       genesis-vite:
-        specifier: 0.1.18
+        specifier: 0.1.19
         version: link:../../packages/genesis-vite
       typescript:
         specifier: ^5.2.2
@@ -126,17 +126,17 @@ importers:
   examples/ssr-vue2:
     dependencies:
       genesis3:
-        specifier: 0.1.18
+        specifier: 0.1.19
         version: link:../../packages/genesis
     devDependencies:
       '@types/node':
         specifier: ^20.6.3
         version: 20.9.1
       class-state:
-        specifier: 0.1.18
+        specifier: 0.1.19
         version: link:../../packages/class-state
       genesis-vite:
-        specifier: 0.1.18
+        specifier: 0.1.19
         version: link:../../packages/genesis-vite
       typescript:
         specifier: ^5.2.2
@@ -157,7 +157,7 @@ importers:
   examples/ssr-vue3:
     dependencies:
       genesis3:
-        specifier: 0.1.18
+        specifier: 0.1.19
         version: link:../../packages/genesis
     devDependencies:
       '@types/node':
@@ -167,10 +167,10 @@ importers:
         specifier: ^4.5.0
         version: 4.5.0(vite@5.0.0)(vue@3.3.8)
       class-state:
-        specifier: 0.1.18
+        specifier: 0.1.19
         version: link:../../packages/class-state
       genesis-vite:
-        specifier: 0.1.18
+        specifier: 0.1.19
         version: link:../../packages/genesis-vite
       typescript:
         specifier: ^5.2.2
@@ -185,7 +185,7 @@ importers:
   examples/ssr-vue3-remote:
     dependencies:
       genesis3:
-        specifier: 0.1.18
+        specifier: 0.1.19
         version: link:../../packages/genesis
     devDependencies:
       '@types/node':
@@ -195,7 +195,7 @@ importers:
         specifier: ^4.5.0
         version: 4.5.0(vite@5.0.0)(vue@3.3.8)
       genesis-vite:
-        specifier: 0.1.18
+        specifier: 0.1.19
         version: link:../../packages/genesis-vite
       typescript:
         specifier: ^5.2.2
@@ -246,7 +246,7 @@ importers:
         version: 0.34.6(@types/node@20.9.1)
     devDependencies:
       genesis3:
-        specifier: 0.1.18
+        specifier: 0.1.19
         version: link:../genesis
       unbuild:
         specifier: ^1.2.1
