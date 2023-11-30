@@ -209,14 +209,14 @@ Web 和本机用户界面的库
       </div>
   </template>
   <script setup lang="ts">
-  import { provide, ref } from 'vue';
+  import { provide, reactive } from 'vue';
   import { createState, State } from 'class-state';
   
   import { STORE_PROVIDE_KEY, Count } from './store'
   import Child from './child.vue';
   
   // 创建状态，如果使用了服务端渲染，需要将对应状态传入
-  const state = ref<State>({ value: {} })
+  const state: State = reactive({ value: {} })
   // 在组件中供应状态
   provide(STORE_PROVIDE_KEY, state)
   

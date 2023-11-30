@@ -1,10 +1,10 @@
-import { ref, watch, nextTick } from 'vue'
+import { reactive, watch, nextTick } from 'vue'
 import { test, assert } from 'vitest'
 import { connectState } from './connect'
 import { createState } from './create'
 
 test('base', async () => {
-  const state = createState(ref({ value: {} }))
+  const state = createState(reactive({ value: {} }))
   const connectStore = connectState(state)
   class User {
     public name = ''
@@ -29,7 +29,7 @@ test('base', async () => {
 })
 
 test('base2', async () => {
-  const state = createState(ref({ value: {} }))
+  const state = createState(reactive({ value: {} }))
   const connectStore = connectState(state)
   class User {
     public name = ''
@@ -51,7 +51,7 @@ test('base2', async () => {
 })
 
 test('watch root', async () => {
-  const state = createState(ref({ value: {} }))
+  const state = createState(reactive({ value: {} }))
   const connectStore = connectState(state)
   class User {
     public name = ''

@@ -1,5 +1,5 @@
 import './style.css'
-import Vue, { ref } from 'vue'
+import Vue, { reactive } from 'vue'
 import App from './app.vue'
 import { type State } from 'class-state'
 import { PROVIDE_STORE_KEY } from './store'
@@ -16,7 +16,7 @@ function getInitState (): State['value'] {
 }
 
 export function createApp () {
-  const state: State = ref(getInitState())
+  const state: State = reactive({ value: getInitState() })
   const app = new Vue({
     provide: {
       [PROVIDE_STORE_KEY]: state
