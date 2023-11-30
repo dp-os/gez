@@ -110,13 +110,13 @@ export class StoreContext<T extends {}> {
    * 已绑定 this
    */
   public dispose () {
-    const { _stateContext, _raw } = this
+    const { _stateContext, _proxy } = this
+    call(_proxy, LIFE_CYCLE_CREATED)
     if (_stateContext) {
       _stateContext.del(this.keyPath)
       this._stateContext = null
     }
     this._subs.splice(0)
-    call(_raw, LIFE_CYCLE_CREATED)
     this.dispose = noon
   }
 
@@ -233,7 +233,7 @@ export function connectState (state: State) {
         storeState = { ...store }
       }
       storeContext = new StoreContext<InstanceType<T>>(stateContext, store, storeState, fullPath)
-      call(store, LIFE_CYCLE_CREATED)
+      call(storeContext.get(), LIFE_CYCLE_CREATED)
     }
     return storeContext.get()
   }
