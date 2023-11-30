@@ -8,10 +8,21 @@ export type StoreInstance<T extends {}> = T & { $: StoreContext<T> }
 
 let currentStateContext: StateContext | null = null
 
+/**
+ * class created
+ */
+export const LIFE_CYCLE_CREATED = Symbol('class created')
+/**
+ * class dispose
+ */
+export const LIFE_CYCLE_DISPOSE = Symbol('class dispose')
+
 export type StoreSubscribe = () => void
 
 // 订阅的id
 let sid = 0
+
+function noon () {}
 
 export class StoreContext<T extends {}> {
   /**
@@ -99,12 +110,14 @@ export class StoreContext<T extends {}> {
    * 已绑定 this
    */
   public dispose () {
-    const { _stateContext } = this
+    const { _stateContext, _raw } = this
     if (_stateContext) {
       _stateContext.del(this.keyPath)
       this._stateContext = null
     }
     this._subs.splice(0)
+    call(_raw, LIFE_CYCLE_CREATED)
+    this.dispose = noon
   }
 
   /**
@@ -220,6 +233,7 @@ export function connectState (state: State) {
         storeState = { ...store }
       }
       storeContext = new StoreContext<InstanceType<T>>(stateContext, store, storeState, fullPath)
+      call(store, LIFE_CYCLE_CREATED)
     }
     return storeContext.get()
   }
@@ -230,4 +244,10 @@ export function connectStore<T extends StoreConstructor> (Store: T, name: string
     throw new Error('No state context found')
   }
   return connectState(currentStateContext.state)(Store, name, ...params)
+}
+
+function call (obj: any, key: symbol) {
+  if (typeof obj[key] === 'function') {
+    return obj[key]()
+  }
 }
