@@ -1,6 +1,7 @@
 import { defineNode, createServer } from 'genesis3'
 
 export default defineNode({
+  name: 'ssr-vue2',
   created (genesis) {
     const server = createServer(genesis)
     server.listen(3002, () => {
