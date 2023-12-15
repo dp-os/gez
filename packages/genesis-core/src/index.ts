@@ -366,6 +366,9 @@ export namespace Genesis {
     }
     export type CompilerType = 'build' | 'watch';
 }
+
+export type ClientOptions = Genesis.ClientOptions;
+export type RenderContext = Genesis.RenderContext;
 export default Genesis;
 declare module 'vue/types/options' {
     interface ComponentOptions<V extends Vue> {

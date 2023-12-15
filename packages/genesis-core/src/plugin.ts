@@ -1,4 +1,4 @@
-import * as Genesis from './';
+import { type Genesis } from './';
 import { SSR } from './ssr';
 
 export class Plugin {

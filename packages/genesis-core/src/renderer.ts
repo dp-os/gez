@@ -7,7 +7,7 @@ import Vue from 'vue';
 import { createRenderer, Renderer as VueRenderer } from 'vue-server-renderer';
 import write from 'write';
 
-import type * as Genesis from './';
+import { Genesis } from './';
 import { NodeVM } from './node-vm';
 import { md5 } from './util';
 
