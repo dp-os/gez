@@ -7,7 +7,7 @@ import {
     WebpackHookParams
 } from '@fmfe/genesis-core';
 import crypto from 'crypto';
-import fflate from 'fflate';
+import * as fflate from 'fflate';
 import find from 'find';
 import fs from 'fs';
 import path from 'path';

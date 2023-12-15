@@ -1,7 +1,7 @@
 import { fileURLToPath } from 'node:url';
 
 import del from 'del';
-import fflate from 'fflate';
+import * as fflate from 'fflate';
 import fs from 'fs';
 import path from 'path';
 import serialize from 'serialize-javascript';
