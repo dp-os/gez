@@ -1,3 +1,5 @@
+import { fileURLToPath } from 'node:url';
+
 import del from 'del';
 import fflate from 'fflate';
 import fs from 'fs';
@@ -17,6 +19,8 @@ import { Logger } from './logger';
 import { FileFetch, HttpFetch, NullFetch } from './remote-fetch';
 
 const developmentZipName = 'development';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 type ManifestJson = Genesis.MFManifestJson;
 type ClientManifest = Genesis.ClientManifest;

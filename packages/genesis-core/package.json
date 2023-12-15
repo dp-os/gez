@@ -8,22 +8,18 @@
         "Microfront",
         "module-federation"
     ],
-    "main": "dist/cjs/index.js",
-    "module": "dist/esm/index.js",
-    "types": "types/index.d.ts",
+    "main": "./dist/index.cjs",
+    "module": "dist/index.mjs",
+    "types": "./dist/index.d.ts",
     "exports": {
         ".": {
-            "types": "./types/index.d.ts",
-            "import": "./dist/esm/index.js",
-            "require": "./dist/cjs/index.js"
-        },
-        "./package.json": "./package.json"
+            "import": "./dist/index.mjs",
+            "require": "./dist/index.cjs"
+        }
     },
     "sideEffects": false,
     "scripts": {
-        "build:cjs": "NODE_ENV=production genesis-tsc --build tsconfig.cjs.json",
-        "build:esm": "NODE_ENV=production genesis-tsc --build tsconfig.esm.json",
-        "build": "rm -rf dist types && npm run build:cjs && npm run build:esm"
+        "build": "unbuild"
     },
     "bin": {
         "genesis-try-ts-node": "./bin/try-ts-node.js"
@@ -37,14 +33,15 @@
         "ejs": "3.1.9",
         "fflate": "0.8.0",
         "serialize-javascript": "6.0.1",
-        "vue": "2.7.14",
-        "vue-server-renderer": "2.7.14",
+        "vue": "2.7.15",
+        "vue-server-renderer": "2.7.15",
         "write": "2.0.0"
     },
     "devDependencies": {
         "@types/ejs": "3.1.2",
         "@types/serialize-javascript": "5.0.2",
-        "@types/write": "^2.0.1"
+        "@types/write": "^2.0.1",
+        "unbuild": "2.0.0"
     },
     "homepage": "https://fmfe.github.io/genesis-docs/",
     "repository": {
@@ -53,5 +50,6 @@
     },
     "bugs": {
         "url": "https://github.com/fmfe/genesis/issues"
-    }
+    },
+    "type": "module"
 }

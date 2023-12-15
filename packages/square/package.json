@@ -1,15 +1,13 @@
 {
     "name": "@fmfe/square",
-    "main": "dist/cjs/index.js",
-    "module": "dist/esm/index.js",
-    "types": "types/index.d.ts",
+    "main": "./dist/index.cjs",
+    "module": "dist/index.mjs",
+    "types": "./dist/index.d.ts",
     "exports": {
         ".": {
-            "types": "./types/index.d.ts",
-            "import": "./dist/esm/index.js",
-            "require": "./dist/cjs/index.js"
-        },
-        "./package.json": "./package.json"
+            "import": "./dist/index.mjs",
+            "require": "./dist/index.cjs"
+        }
     },
     "sideEffects": false,
     "version": "2.6.3",
@@ -20,17 +18,16 @@
         "Microfront"
     ],
     "scripts": {
-        "build:cjs": "NODE_ENV=production genesis-tsc --build tsconfig.cjs.json",
-        "build:esm": "NODE_ENV=production genesis-tsc --build tsconfig.esm.json",
-        "build": "rm -rf dist types && npm run build:cjs && npm run build:esm"
+        "build": "unbuild"
     },
     "author": "Followme",
     "license": "MIT",
     "devDependencies": {
-        "vue": "2.7.14"
+        "vue": "2.7.15",
+        "unbuild": "2.0.0"
     },
     "peerDependencies": {
-        "vue": "2.7.14"
+        "vue": "2.7.15"
     },
     "dependencies": {
         "@fmfe/tms.js": "^0.1.7"
@@ -43,5 +40,6 @@
     "bugs": {
         "url": "https://github.com/fmfe/genesis/issues"
     },
-    "gitHead": "6a1678904351e5faadc693766042a010d600e8b7"
+    "gitHead": "6a1678904351e5faadc693766042a010d600e8b7",
+    "type": "module"
 }

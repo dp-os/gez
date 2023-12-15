@@ -111,14 +111,28 @@ class Packages {
     init() {
         return Promise.all(
             this.list.map(async (item) => {
-                await $`cp -r ./script/packages.tsconfig.cjs.json ./packages/${item.name}/tsconfig.cjs.json`;
-                await $`cp -r ./script/packages.tsconfig.esm.json ./packages/${item.name}/tsconfig.esm.json`;
+                await $`cp -r ./script/packages.tsconfig.json ./packages/${item.name}/tsconfig.cjs.json`;
+                await $`cp -r ./script/build.config.ts ./packages/${item.name}/build.config.ts`;
                 const targetJson = item.packageJson;
                 const configJson = readJson(
                     path.resolve(scriptDir, 'packages.package.json')
                 );
                 targetJson.scripts = configJson.scripts;
                 Object.assign(targetJson.scripts, configJson.scripts);
+                targetJson.devDependencies = targetJson.devDependencies || {};
+                targetJson.devDependencies.unbuild = '2.0.0';
+                Object.assign(targetJson, {
+                    type: 'module',
+                    exports: {
+                        '.': {
+                            import: './dist/index.mjs',
+                            require: './dist/index.cjs'
+                        }
+                    },
+                    main: './dist/index.cjs',
+                    module: 'dist/index.mjs',
+                    types: './dist/index.d.ts'
+                });
                 writeJson(item.packagePath, targetJson);
             })
         );

@@ -3,38 +3,32 @@
     "version": "2.6.3",
     "description": "Vue SSR Microfront",
     "bin": {
-        "genesis-ts-node": "./bin/ts-node.js",
-        "genesis-tsc": "./bin/tsc.js"
+        "genesis-ts-node": "./bin/ts-node.cjs",
+        "genesis-tsc": "./bin/tsc.cjs"
     },
     "keywords": [
         "vue",
         "ssr",
         "Microfront"
     ],
-    "main": "dist/cjs/index.js",
-    "module": "dist/esm/index.js",
-    "types": "types/index.d.ts",
+    "main": "./dist/index.cjs",
+    "module": "dist/index.mjs",
+    "types": "./dist/index.d.ts",
     "exports": {
         ".": {
-            "types": "./types/index.d.ts",
-            "import": "./dist/esm/index.js",
-            "require": "./dist/cjs/index.js"
-        },
-        "./bin/tsc.js": "./bin/tsc.js",
-        "./bin/ts-node.js": "./bin/ts-node.js",
-        "./package.json": "./package.json"
+            "import": "./dist/index.mjs",
+            "require": "./dist/index.cjs"
+        }
     },
     "sideEffects": false,
     "scripts": {
-        "build:cjs": "NODE_ENV=production genesis-tsc --build tsconfig.cjs.json",
-        "build:esm": "NODE_ENV=production genesis-tsc --build tsconfig.esm.json",
-        "build": "rm -rf dist types && npm run build:cjs && npm run build:esm"
+        "build": "unbuild"
     },
     "author": "Followme",
     "license": "MIT",
     "gitHead": "6a1678904351e5faadc693766042a010d600e8b7",
     "resolutions": {
-        "*/vue-template-compiler": "2.7.14"
+        "*/vue-template-compiler": "2.7.15"
     },
     "dependencies": {
         "@babel/core": "7.22.17",
@@ -78,7 +72,7 @@
         "typescript": "5.2.2",
         "upath": "2.0.1",
         "vue-loader": "^15.10.2",
-        "vue-server-renderer": "2.7.14",
+        "vue-server-renderer": "2.7.15",
         "vue-style-loader": "4.1.3",
         "webpack": "5.88.2",
         "webpack-bundle-analyzer": "4.9.1",
@@ -90,7 +84,8 @@
         "write": "2.0.0"
     },
     "devDependencies": {
-        "@types/find": "0.2.1"
+        "@types/find": "0.2.1",
+        "unbuild": "2.0.0"
     },
     "homepage": "https://fmfe.github.io/genesis-docs/",
     "repository": {
@@ -99,5 +94,6 @@
     },
     "bugs": {
         "url": "https://github.com/fmfe/genesis/issues"
-    }
+    },
+    "type": "module"
 }

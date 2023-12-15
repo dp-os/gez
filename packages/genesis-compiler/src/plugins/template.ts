@@ -1,3 +1,5 @@
+import { fileURLToPath } from 'node:url';
+
 import { CompilerType, Plugin } from '@fmfe/genesis-core';
 import fs from 'fs';
 import { minify } from 'html-minifier';
@@ -6,6 +8,7 @@ import upath from 'upath';
 import write from 'write';
 
 import { deleteFolder } from '../utils/index';
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export class TemplatePlugin extends Plugin {
     public async beforeCompiler() {
@@ -50,7 +53,7 @@ export class TemplatePlugin extends Plugin {
             options: { [x: string]: string } = {}
         ) => {
             let text = fs.readFileSync(
-                path.resolve(__dirname, `../../../template/${filename}`),
+                path.resolve(__dirname, `../../template/${filename}`),
                 'utf8'
             );
             Object.keys(options).forEach((k) => {
@@ -68,7 +71,7 @@ export class TemplatePlugin extends Plugin {
         });
         const writeSrcTemplate = (filename: string) => {
             const text = fs.readFileSync(
-                path.resolve(__dirname, `../../../template/src/${filename}`),
+                path.resolve(__dirname, `../../template/src/${filename}`),
                 'utf8'
             );
             const output = path.resolve(ssr.srcDir, filename);

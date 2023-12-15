@@ -7,6 +7,8 @@ packages/**/dist/**
 packages/**/types/**
 packages/**/tsconfig.cjs.json
 packages/**/tsconfig.esm.json
+packages/**/tsconfig.json
+packages/**/build.config.ts
 packages/**/*.lock
 packages/**/*.log
 
