@@ -10,7 +10,7 @@
         }
     },
     "sideEffects": false,
-    "version": "2.6.3",
+    "version": "2.7.0",
     "description": "Vue SSR Microfront",
     "keywords": [
         "vue",
@@ -23,8 +23,8 @@
     "author": "Followme",
     "license": "MIT",
     "devDependencies": {
-        "vue": "2.7.15",
-        "unbuild": "2.0.0"
+        "unbuild": "2.0.0",
+        "vue": "2.7.15"
     },
     "peerDependencies": {
         "vue": "2.7.15"
