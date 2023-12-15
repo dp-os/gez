@@ -124,6 +124,7 @@ class Packages {
                 Object.assign(targetJson, {
                     type: 'module',
                     exports: {
+                        ...(targetJson.exports ?? {}),
                         '.': {
                             import: './dist/index.mjs',
                             require: './dist/index.cjs'
