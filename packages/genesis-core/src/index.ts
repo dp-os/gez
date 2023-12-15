@@ -11,8 +11,14 @@ import {
 import { Renderer as RendererConstructor } from './renderer';
 import { SSR as SSRConstructor } from './ssr';
 
+export const SSR = SSRConstructor;
+export const MF = MFConstructor;
+export const Renderer = RendererConstructor;
+export const Plugin = PluginConstructor;
+export const PluginManage = PluginManageConstructor;
+
 // eslint-disable-next-line @typescript-eslint/no-namespace
-namespace Genesis {
+export namespace Genesis {
     /**
      * SSR Constructor
      */
@@ -360,9 +366,7 @@ namespace Genesis {
     }
     export type CompilerType = 'build' | 'watch';
 }
-// @ts-ignore
-export = Genesis;
-
+export default Genesis;
 declare module 'vue/types/options' {
     interface ComponentOptions<V extends Vue> {
         // @ts-ignore
