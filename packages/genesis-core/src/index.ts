@@ -11,11 +11,11 @@ import {
 import { Renderer as RendererConstructor } from './renderer';
 import { SSR as SSRConstructor } from './ssr';
 
-export const SSR = SSRConstructor;
-export const MF = MFConstructor;
-export const Renderer = RendererConstructor;
-export const Plugin = PluginConstructor;
-export const PluginManage = PluginManageConstructor;
+export { SSRConstructor as SSR };
+export { MFConstructor as MF };
+export { RendererConstructor as Renderer };
+export { PluginConstructor as Plugin };
+export { PluginManageConstructor as PluginManage };
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace Genesis {
