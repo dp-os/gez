@@ -56,13 +56,13 @@ async function buildNode (genesis: Genesis, src: string) {
 export async function build (genesis: Genesis) {
   const source = genesis.getProjectPath('src')
   const args = process.argv
-  if (!args.includes('--no-build-node')) {
+  if (!args.includes('--no-build-client')) {
     await buildClient(genesis, source)
   }
   if (!args.includes('--no-build-server')) {
     await buildServer(genesis, source)
   }
-  if (!args.includes('--no-build-client')) {
+  if (!args.includes('--no-build-node')) {
     await buildNode(genesis, source)
   }
 }
