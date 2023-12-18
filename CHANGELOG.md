@@ -1,5 +1,5 @@
 # CHANGELOG
-- 2.7.0
+- 2.7.6
   - feat: 支持 cjs 和 mjs
 - 2.6.1
   - fix: 降级 esbuild-loader 到 esbuild-loader@2.21.0
