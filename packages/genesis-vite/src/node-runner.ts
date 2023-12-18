@@ -3,7 +3,14 @@ import { ViteNodeServer } from 'vite-node/server'
 import { ViteNodeRunner } from 'vite-node/client'
 import { installSourcemapsSupport } from 'vite-node/source-map'
 
-const file = (process.argv.slice(2)[0] ?? '').trim()
+let file: string = 'src/entry-node.ts'
+const setFile = (value: unknown) => {
+  if (typeof value === 'string' && value.trim().endsWith('.ts')) {
+    file = value.trim()
+  }
+}
+setFile(process.argv[3])
+setFile(process.argv[2])
 
 export async function nodeRunner (cb: (module: Record<string, any>) => Promise<void>) {
   const server = await createServer({
@@ -29,7 +36,7 @@ export async function nodeRunner (cb: (module: Record<string, any>) => Promise<v
       return await node.resolveId(id, importer)
     }
   })
-  const module = await runner.executeFile(file.endsWith('.ts') ? file : 'src/entry-node.ts')
+  const module = await runner.executeFile(file)
   await cb(module)
   await server.close()
 }
