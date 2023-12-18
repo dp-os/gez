@@ -45,7 +45,7 @@ importers:
   examples/ssr-qwik:
     dependencies:
       genesis3:
-        specifier: 0.1.20
+        specifier: 0.1.21
         version: link:../../packages/genesis
     devDependencies:
       '@builder.io/qwik':
@@ -55,13 +55,13 @@ importers:
         specifier: ^20.6.3
         version: 20.9.1
       class-state:
-        specifier: 0.1.20
+        specifier: 0.1.21
         version: link:../../packages/class-state
       genesis-state:
         specifier: ^0.1.7
         version: 0.1.7
       genesis-vite:
-        specifier: 0.1.20
+        specifier: 0.1.21
         version: link:../../packages/genesis-vite
       typescript:
         specifier: ^5.2.2
@@ -73,7 +73,7 @@ importers:
   examples/ssr-react:
     dependencies:
       genesis3:
-        specifier: 0.1.20
+        specifier: 0.1.21
         version: link:../../packages/genesis
     devDependencies:
       '@types/node':
@@ -86,10 +86,10 @@ importers:
         specifier: ^4.2.0
         version: 4.2.0(vite@5.0.0)
       class-state:
-        specifier: 0.1.20
+        specifier: 0.1.21
         version: link:../../packages/class-state
       genesis-vite:
-        specifier: 0.1.20
+        specifier: 0.1.21
         version: link:../../packages/genesis-vite
       react:
         specifier: ^18.2.0
@@ -107,14 +107,14 @@ importers:
   examples/ssr-simple:
     dependencies:
       genesis3:
-        specifier: 0.1.20
+        specifier: 0.1.21
         version: link:../../packages/genesis
     devDependencies:
       '@types/node':
         specifier: ^20.6.3
         version: 20.9.1
       genesis-vite:
-        specifier: 0.1.20
+        specifier: 0.1.21
         version: link:../../packages/genesis-vite
       typescript:
         specifier: ^5.2.2
@@ -126,17 +126,17 @@ importers:
   examples/ssr-vue2:
     dependencies:
       genesis3:
-        specifier: 0.1.20
+        specifier: 0.1.21
         version: link:../../packages/genesis
     devDependencies:
       '@types/node':
         specifier: ^20.6.3
         version: 20.9.1
       class-state:
-        specifier: 0.1.20
+        specifier: 0.1.21
         version: link:../../packages/class-state
       genesis-vite:
-        specifier: 0.1.20
+        specifier: 0.1.21
         version: link:../../packages/genesis-vite
       typescript:
         specifier: ^5.2.2
@@ -157,7 +157,7 @@ importers:
   examples/ssr-vue3:
     dependencies:
       genesis3:
-        specifier: 0.1.20
+        specifier: 0.1.21
         version: link:../../packages/genesis
     devDependencies:
       '@types/node':
@@ -167,10 +167,10 @@ importers:
         specifier: ^4.5.0
         version: 4.5.0(vite@5.0.0)(vue@3.3.8)
       class-state:
-        specifier: 0.1.20
+        specifier: 0.1.21
         version: link:../../packages/class-state
       genesis-vite:
-        specifier: 0.1.20
+        specifier: 0.1.21
         version: link:../../packages/genesis-vite
       typescript:
         specifier: ^5.2.2
@@ -185,7 +185,7 @@ importers:
   examples/ssr-vue3-remote:
     dependencies:
       genesis3:
-        specifier: 0.1.20
+        specifier: 0.1.21
         version: link:../../packages/genesis
     devDependencies:
       '@types/node':
@@ -195,7 +195,7 @@ importers:
         specifier: ^4.5.0
         version: 4.5.0(vite@5.0.0)(vue@3.3.8)
       genesis-vite:
-        specifier: 0.1.20
+        specifier: 0.1.21
         version: link:../../packages/genesis-vite
       typescript:
         specifier: ^5.2.2
@@ -238,9 +238,6 @@ importers:
       '@originjs/vite-plugin-federation':
         specifier: ^1.3.2
         version: 1.3.2
-      commander:
-        specifier: ^11.1.0
-        version: 11.1.0
       vite:
         specifier: ^5.0.0
         version: 5.0.0(@types/node@20.9.1)
@@ -249,7 +246,7 @@ importers:
         version: 0.34.6(@types/node@20.9.1)
     devDependencies:
       genesis3:
-        specifier: 0.1.20
+        specifier: 0.1.21
         version: link:../genesis
       unbuild:
         specifier: ^1.2.1
@@ -2092,11 +2089,6 @@ packages:
   /color-name@1.1.4:
     resolution: {integrity: sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==}
     dev: true
-
-  /commander@11.1.0:
-    resolution: {integrity: sha512-yPVavfyCcRhmorC7rWlkHn15b4wDVgVmBA7kV4QVBsF7kv/9TKJAbAXVTxvTnwP8HHKjRCJDClKbciiYS7p0DQ==}
-    engines: {node: '>=16'}
-    dev: false
 
   /commondir@1.0.1:
     resolution: {integrity: sha512-W9pAhw0ja1Edb5GVdIF1mjZw/ASI0AlShXM83UUGe2DVr5TdAPEA1OA8m/g8zWp9x6On7gqufY+FatDbC3MDQg==}
