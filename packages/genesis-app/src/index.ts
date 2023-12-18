@@ -1,13 +1,13 @@
 import {
     createClientApp,
-    CreateClientAppOptions,
+    type CreateClientAppOptions,
     createServerApp,
-    CreateServerAppOptions
+    type CreateServerAppOptions
 } from './create-app';
 
 export {
     createClientApp,
     createServerApp,
-    CreateClientAppOptions,
-    CreateServerAppOptions
+    type CreateClientAppOptions,
+    type CreateServerAppOptions
 };
