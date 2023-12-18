@@ -1,7 +1,7 @@
 import { Plugin, WebpackHookParams } from '@fmfe/genesis-core';
 import path from 'path';
-import VueLoaderPlugin from 'vue-loader/lib/plugin';
-import VueClientPlugin from 'vue-server-renderer/client-plugin';
+import VueLoaderPlugin from 'vue-loader/lib/plugin.js';
+import VueClientPlugin from 'vue-server-renderer/client-plugin.js';
 import webpack from 'webpack';
 
 function isJS(file: string) {
