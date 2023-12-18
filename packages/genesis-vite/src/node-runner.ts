@@ -2,7 +2,8 @@ import { createServer } from 'vite'
 import { ViteNodeServer } from 'vite-node/server'
 import { ViteNodeRunner } from 'vite-node/client'
 import { installSourcemapsSupport } from 'vite-node/source-map'
-import { type ProjectPath } from 'genesis3'
+
+const file = (process.argv.slice(2)[0] ?? '').trim()
 
 export async function nodeRunner (cb: (module: Record<string, any>) => Promise<void>) {
   const server = await createServer({
@@ -28,8 +29,7 @@ export async function nodeRunner (cb: (module: Record<string, any>) => Promise<v
       return await node.resolveId(id, importer)
     }
   })
-  const file: ProjectPath = 'src/entry-node.ts'
-  const module = await runner.executeFile(file)
+  const module = await runner.executeFile(file.endsWith('.ts') ? file : 'src/entry-node.ts')
   await cb(module)
   await server.close()
 }
