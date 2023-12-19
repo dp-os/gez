@@ -261,7 +261,7 @@ export class Micro extends MicroBase {
  * 详情：https://github.com/webpack/webpack/issues/17874
  * @param mod 模块的对象
  */
-export function fixMod<T>(mod: T): T {
+function fixMod<T>(mod: T): T {
     const obj: any = mod;
     return obj?.__esModule ? obj.default : obj;
 }
