@@ -1,10 +1,12 @@
-import Tms from '@fmfe/tms.js';
+import _Tms from '@fmfe/tms.js';
 import _Vue from 'vue';
 
 import { install } from './install';
+import { fixMod } from './mod';
 import { Types } from './types';
 
 const Vue = fixMod(_Vue);
+const Tms = fixMod(_Tms);
 
 export const log = (log: string) => {
     if (process.env.NODE_ENV !== 'production') {
@@ -107,7 +109,7 @@ class MicroBase {
 const deepRecursionTms = (
     target: any,
     rid: string[],
-    fn: (target: Tms, path: string) => void
+    fn: (target: _Tms, path: string) => void
 ) => {
     if (typeof target !== 'object' || Array.isArray(target)) return;
     if (target instanceof Tms) {
@@ -254,14 +256,4 @@ export class Micro extends MicroBase {
             isShowError: false
         });
     }
-}
-
-/**
- * 修复模块联邦 获取 export default 导出取值错误的问题
- * 详情：https://github.com/webpack/webpack/issues/17874
- * @param mod 模块的对象
- */
-function fixMod<T>(mod: T): T {
-    const obj: any = mod;
-    return obj?.__esModule ? obj.default : obj;
 }

@@ -1,4 +1,4 @@
-import Tms from '@fmfe/tms.js';
+import type Tms from '@fmfe/tms.js';
 import type Vue from 'vue';
 
 import { Micro } from './micro';
