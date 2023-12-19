@@ -1,8 +1,10 @@
 import Tms from '@fmfe/tms.js';
-import type Vue from 'vue';
+import _Vue from 'vue';
 
 import { install } from './install';
 import { Types } from './types';
+
+const Vue = fixMod(_Vue);
 
 export const log = (log: string) => {
     if (process.env.NODE_ENV !== 'production') {
@@ -37,7 +39,6 @@ class MicroBase {
     private rid = 0;
     private useCount = 0;
     public constructor() {
-        const Vue = MicroBase.getVue();
         this.vm = new Vue({
             data: () => {
                 return {
@@ -253,4 +254,14 @@ export class Micro extends MicroBase {
             isShowError: false
         });
     }
+}
+
+/**
+ * 修复模块联邦 获取 export default 导出取值错误的问题
+ * 详情：https://github.com/webpack/webpack/issues/17874
+ * @param mod 模块的对象
+ */
+export function fixMod<T>(mod: T): T {
+    const obj: any = mod;
+    return obj?.__esModule ? obj.default : obj;
 }
