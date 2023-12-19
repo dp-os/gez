@@ -1,5 +1,5 @@
 import Tms from '@fmfe/tms.js';
-import Vue from 'vue';
+import type Vue from 'vue';
 
 import { install } from './install';
 import { Types } from './types';
@@ -37,6 +37,7 @@ class MicroBase {
     private rid = 0;
     private useCount = 0;
     public constructor() {
+        const Vue = MicroBase.getVue();
         this.vm = new Vue({
             data: () => {
                 return {

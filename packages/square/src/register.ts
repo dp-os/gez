@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import type Vue from 'vue';
 
 import { Square } from './square';
 import { Types } from './types';
