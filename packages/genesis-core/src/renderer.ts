@@ -8,7 +8,9 @@ import { createRenderer, Renderer as VueRenderer } from 'vue-server-renderer';
 import write from 'write';
 
 import { Genesis } from './';
-import { NodeVM } from './node-vm';
+// @ts-ignore
+// eslint-disable-next-line import/no-unresolved
+import { NodeVM } from './node-vm.cjs';
 import { md5 } from './util';
 
 const defaultTemplate = `<!DOCTYPE html><html><head><title>Vue SSR for Genesis</title><%-style%></head><body><%-html%><%-scriptState%><%-script%></body></html>`;
