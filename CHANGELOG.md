@@ -1,4 +1,6 @@
 # CHANGELOG
+- 2.7.17
+  - feat: 支持 cjs 和 mjs
 - 2.7.8
   - feat: 支持 cjs 和 mjs
 - 2.7.7

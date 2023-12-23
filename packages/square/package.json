@@ -10,7 +10,7 @@
         }
     },
     "sideEffects": false,
-    "version": "2.7.16",
+    "version": "2.7.17",
     "description": "Vue SSR Microfront",
     "keywords": [
         "vue",

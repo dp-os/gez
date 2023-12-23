@@ -1,6 +1,6 @@
 {
     "name": "@fmfe/genesis-compiler",
-    "version": "2.7.16",
+    "version": "2.7.17",
     "description": "Vue SSR Microfront",
     "bin": {
         "genesis-ts-node": "./bin/ts-node.cjs",
@@ -52,7 +52,7 @@
         "core-js": "3.32.2",
         "css-loader": "6.8.1",
         "cssnano": "6.0.1",
-        "esbuild-loader": "2.21.0",
+        "esbuild-loader": "4.0.2",
         "fflate": "0.8.0",
         "file-loader": "6.2.0",
         "find": "0.3.0",

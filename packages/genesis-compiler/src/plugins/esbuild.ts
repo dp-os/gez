@@ -14,8 +14,7 @@ export class ESBuildPlugin extends Plugin {
             .use('esbuild')
             .loader('esbuild-loader')
             .options({
-                ...options,
-                loader: 'jsx'
+                ...options
             })
             .end();
         config.module
@@ -26,8 +25,7 @@ export class ESBuildPlugin extends Plugin {
             .use('esbuild')
             .loader('esbuild-loader')
             .options({
-                ...options,
-                loader: 'tsx'
+                ...options
             })
             .end();
     }
