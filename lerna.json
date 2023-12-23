@@ -3,7 +3,7 @@
     "packages/*",
     "examples/*"
   ],
-  "version": "2.7.15",
+  "version": "2.7.16",
   "npmClient": "yarn",
   "publishConfig": {
     "access": "publish"
