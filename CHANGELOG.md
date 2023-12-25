@@ -1,4 +1,6 @@
 # CHANGELOG
+- 2.7.19
+  - feat: Vue@2.7.16
 - 2.7.18
   - feat: 支持 cjs 和 mjs
 - 2.7.17

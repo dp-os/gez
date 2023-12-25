@@ -1,6 +1,6 @@
 {
     "name": "ssr-demo",
-    "version": "2.7.18",
+    "version": "2.7.19",
     "description": "",
     "main": "index.js",
     "private": true,
@@ -16,12 +16,12 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "@fmfe/genesis-core": "2.7.18",
+        "@fmfe/genesis-core": "2.7.19",
         "express": "^4.17.3",
-        "vue": "2.7.15"
+        "vue": "2.7.16"
     },
     "devDependencies": {
-        "@fmfe/genesis-compiler": "2.7.18",
+        "@fmfe/genesis-compiler": "2.7.19",
         "@types/express": "^4.17.13"
     }
 }
