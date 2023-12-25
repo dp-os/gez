@@ -1,6 +1,6 @@
 {
     "name": "@fmfe/genesis-compiler",
-    "version": "2.7.19",
+    "version": "2.7.20",
     "description": "Vue SSR Microfront",
     "bin": {
         "genesis-ts-node": "./bin/ts-node.cjs",
@@ -73,7 +73,7 @@
         "typescript": "5.2.2",
         "upath": "2.0.1",
         "vue-loader": "^15.10.2",
-        "vue-server-renderer": "2.7.15",
+        "vue-server-renderer": "2.7.16",
         "vue-style-loader": "4.1.3",
         "webpack": "5.88.2",
         "webpack-bundle-analyzer": "4.9.1",
