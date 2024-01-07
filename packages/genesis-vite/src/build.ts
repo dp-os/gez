@@ -25,6 +25,7 @@ async function buildClient (genesis: Genesis, src: string) {
 }
 async function buildServer (genesis: Genesis, src: string) {
   await viteBuild(mergeViteConfig(genesis, {
+    publicDir: false,
     ssr: {
       external: [],
       noExternal: [/./]
@@ -40,6 +41,7 @@ async function buildServer (genesis: Genesis, src: string) {
 }
 async function buildNode (genesis: Genesis, src: string) {
   await viteBuild(mergeViteConfig(genesis, {
+    publicDir: false,
     ssr: {
       external: ['genesis3', 'genesis-vite']
     },
