@@ -20,8 +20,6 @@ export interface App {
 }
 
 export async function createApp (genesis: Genesis): Promise<App> {
-  const result = await import(/* @vite-ignore */genesis.getProjectPath('dist/server/entry-server.js'))
-  const serverRender: ServerRender = result.default
   const root = genesis.getProjectPath('dist/client')
   return {
     middleware: serveStatic(root, {
@@ -31,7 +29,11 @@ export async function createApp (genesis: Genesis): Promise<App> {
     }) as App['middleware'],
     async render (params: AppParams) {
       const context = new ServerContext(genesis, params)
-      await serverRender(context)
+      const result = await import(/* @vite-ignore */genesis.getProjectPath('dist/server/entry-server.js'))
+      const serverRender: ServerRender = result.default
+      if (typeof serverRender === 'function') {
+        await serverRender(context)
+      }
 
       return context
     },
