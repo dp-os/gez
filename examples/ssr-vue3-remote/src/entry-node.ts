@@ -3,7 +3,7 @@ import { defineNode, createServer } from 'genesis3'
 export default defineNode({
   name: 'ssr-vue3-remote',
   federation: {
-    exposes: ['src/common-button.vue']
+    exposes: ['src/common-button.vue', 'src/utils.ts']
   },
   created (genesis) {
     const server = createServer(genesis)
