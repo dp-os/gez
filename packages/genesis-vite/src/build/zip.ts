@@ -16,8 +16,8 @@ const readFileSync = async (
     const fullPath = `${path}/${fileName}`
     const fileStats = fs.statSync(fullPath)
     if (fileStats.isDirectory()) { // 如果是目录则继续读取
-      zip.folder(fileName)// 压缩对象中生成该目录
-      readFileSync(zip, fullPath)// 重新检索目录文件
+      const zipFolder = zip.folder(fileName)// 压缩对象中生成该目录
+      zipFolder && readFileSync(zipFolder, fullPath)// 重新检索目录文件
     } else { // 如果是文件则写入
       zip.file(fileName, fs.readFileSync(fullPath))
     }

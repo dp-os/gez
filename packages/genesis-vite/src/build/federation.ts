@@ -1,5 +1,5 @@
 import { zipFile } from './zip'
-import { mkdirSync, existsSync, readFileSync, writeFileSync } from 'node:fs'
+import { mkdirSync, existsSync, readFileSync, writeFileSync, copyFileSync } from 'node:fs'
 import CryptoJS from 'crypto-js'
 
 export interface Manifest {
@@ -42,12 +42,14 @@ export const buildFederation = async () => {
     buildTime: Date.now()
   }
 
+  copyFileSync('./dist/client/manifest.json', './dist/server/manifest.json')
+
   mkdirSync('./dist/client/node-exposes')
-  zipFile('./dist/server', './dist/client/node-exposes/server.zip')
+  zipFile('./dist/server', `./dist/client/node-exposes/${serverHash}.zip`)
 
   if (existsSync('./types')) {
     manifest.dts = true
-    zipFile('./types', './dist/client/node-exposes/server-dts.zip')
+    zipFile('./types', `./dist/client/node-exposes/${serverHash}-dts.zip`)
   }
 
   writeFileSync('./dist/client/node-exposes/manifest.json', JSON.stringify(manifest, null, 4))
