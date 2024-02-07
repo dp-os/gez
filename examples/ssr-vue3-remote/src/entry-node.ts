@@ -1,4 +1,5 @@
-import { defineNode, createServer } from 'genesis3'
+import { defineNode } from 'genesis3'
+import express from 'express'
 
 export default defineNode({
   name: 'ssr-vue3-remote',
@@ -6,7 +7,18 @@ export default defineNode({
     exposes: ['src/common-button.vue', 'src/utils.ts']
   },
   created (genesis) {
-    const server = createServer(genesis)
+    const server = express()
+    server.use(genesis.base, genesis.middleware)
+    server.get('*', async (req, res, next) => {
+      try {
+        const context = await genesis.render({ url: req.url })
+        console.log(req.url)
+        console.log(context)
+        res.send(context.html)
+      } catch (e) {
+        next(e)
+      }
+    })
     server.listen(3003, () => {
       console.log('http://localhost:3003')
     })
