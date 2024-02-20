@@ -12,8 +12,8 @@ export default defineNode({
     server.get('*', async (req, res, next) => {
       try {
         const context = await genesis.render({ url: req.url })
-        console.log(req.url)
-        console.log(context)
+        console.log('@url', req.url)
+        console.log('@context', context)
         res.send(context.html)
       } catch (e) {
         next(e)

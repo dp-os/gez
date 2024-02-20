@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { Genesis, createApp as createProdApp, type NodeOptions } from 'genesis3'
+import { getExposes } from './federation/getExposes'
 import { nodeRunner } from './node-runner'
 import { createApp as createDevApp } from './bridge'
 const type = process.argv.slice(2)[0]
@@ -23,6 +24,9 @@ export function cli () {
       case 'start':
         genesis.app = await createProdApp(genesis)
         created(genesis)
+        break
+      case 'getExposes':
+        await getExposes(genesis)
         break
     }
   })

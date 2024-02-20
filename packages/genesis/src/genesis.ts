@@ -12,8 +12,15 @@ export interface FederationSharedConfig {
 
 export type FederationShared = Array<Record<string, FederationSharedConfig> | string>
 
+export interface Remote {
+  name: string
+  clientOrigin: string
+  serverOrigin: string
+}
+
 export interface Federation {
   exposes?: string[]
+  remotes?: Remote[]
   shared?: FederationShared
   shareScope?: string
 }

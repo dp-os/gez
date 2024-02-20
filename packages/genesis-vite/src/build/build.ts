@@ -3,7 +3,7 @@ import { type Genesis } from 'genesis3'
 import { buildClient } from './build-client'
 import { buildServer } from './build-server'
 import { buildNode } from './build-node'
-import { buildFederation } from './federation'
+import { buildFederation } from './build-federation'
 
 export async function build (genesis: Genesis) {
   const source = genesis.getProjectPath('src')
