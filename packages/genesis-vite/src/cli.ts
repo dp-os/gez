@@ -25,7 +25,7 @@ export function cli () {
         genesis.app = await createProdApp(genesis)
         created(genesis)
         break
-      case 'getExposes':
+      case 'federation':
         await getExposes(genesis)
         break
     }

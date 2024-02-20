@@ -8,7 +8,7 @@
         "build": "genesis-vite build",
         "build:dts": "npx --yes vue-tsc --declaration --emitDeclarationOnly",
         "start": "genesis",
-        "postinstall": "genesis-vite getExposes"
+        "postinstall": "genesis-vite federation"
     },
     "dependencies": {
         "genesis3": "0.1.25",
