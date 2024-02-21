@@ -5,6 +5,7 @@ export type ProjectPath =
 'dist/client' |
 'dist/client/manifest.json' |
 'dist/server' |
+'dist/server/index.js' |
 'dist/server/entry-server.js' |
 'dist/node' |
 'dist/node/entry-node.js' |

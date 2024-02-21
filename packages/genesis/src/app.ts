@@ -29,7 +29,7 @@ export async function createApp (genesis: Genesis): Promise<App> {
     }) as App['middleware'],
     async render (params: AppParams) {
       const context = new ServerContext(genesis, params)
-      const result = await import(/* @vite-ignore */genesis.getProjectPath('dist/server/entry-server.js'))
+      const result = await import(/* @vite-ignore */genesis.getProjectPath('dist/server/index.js'))
       const serverRender: ServerRender = result.default
       if (typeof serverRender === 'function') {
         await serverRender(context)
