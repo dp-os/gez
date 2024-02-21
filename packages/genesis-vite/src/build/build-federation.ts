@@ -45,6 +45,7 @@ export const buildFederation = async () => {
   copyFileSync('./dist/client/manifest.json', './dist/server/manifest.json')
 
   mkdirSync('./dist/client/node-exposes')
+  zipFile('./dist/client', `./dist/client/node-exposes/${clientHash}.zip`)
   zipFile('./dist/server', `./dist/client/node-exposes/${serverHash}.zip`)
 
   if (existsSync('./types')) {

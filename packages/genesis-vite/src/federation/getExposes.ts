@@ -13,8 +13,6 @@ export async function getExposes (genesis: Genesis) {
   try {
     const remotes = genesis.federation?.remotes
     if (remotes) {
-      console.log('@load exposes', remotes)
-
       for (const remote of remotes) {
         const { name, clientOrigin } = remote
         const { data: manifest } = await axios.get<Manifest>(`${clientOrigin}/${name}/node-exposes/manifest.json`)
@@ -42,10 +40,25 @@ async function loadExpose ({
   manifest: Manifest
 }) {
   const { name, clientOrigin } = remote
-  const { server, dts } = manifest
+  const { client, server, dts } = manifest
 
-  const url = `${clientOrigin}/${name}/node-exposes/${server}.zip`
-  await loadFile(url, `./node_modules/${name}`)
+  fs.writeFileSync(`./node_modules/${name}/manifest.json`, JSON.stringify(manifest, null, 4))
+
+  fs.mkdirSync(`./node_modules/${name}`, {
+    recursive: true
+  })
+  fs.mkdirSync(`./node_modules/${name}/client`, {
+    recursive: true
+  })
+  fs.mkdirSync(`./node_modules/${name}/server`, {
+    recursive: true
+  })
+
+  const clientFileUrl = `${clientOrigin}/${name}/node-exposes/${client}.zip`
+  await loadFile(clientFileUrl, `./node_modules/${name}/client`)
+
+  const serverFileUrl = `${clientOrigin}/${name}/node-exposes/${server}.zip`
+  await loadFile(serverFileUrl, `./node_modules/${name}/server`)
 
   if (dts) {
     const url = `${clientOrigin}/${name}/node-exposes/${server}-dts.zip`
@@ -69,18 +82,13 @@ async function loadFile (url: string, savePath: string) {
  * 保存解压后的资源
 */
 async function saveZipFiles (files: Record<string, JSZipObject>, savePath: string) {
-  console.log('@saveZipFiles', savePath)
   for (const filename of Object.keys(files)) {
     const dest = path.join(savePath, filename)
-    // 如果该文件为目录需先创建文件夹
     if (files[filename].dir) {
-      console.log('@make dir =======', dest)
       fs.mkdirSync(dest, {
         recursive: true
       })
     } else {
-      // 把每个文件buffer写到硬盘中
-      console.log('@write file =======', dest)
       const content = await files[filename].async('nodebuffer')
       fs.writeFileSync(dest, content)
     }
