@@ -1,5 +1,5 @@
 {
-  "version": "0.1.25",
+  "version": "0.1.26-alpha.0",
   "name": "genesis-vite",
   "type": "module",
   "main": "./dist/index.mjs",
@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@types/crypto-js": "^4.2.2",
-    "genesis3": "0.1.25",
+    "genesis3": "0.1.26-alpha.0",
     "unbuild": "^1.2.1"
   },
   "gitHead": "8471bddf6fb9850001d8661f7d1058ea590999d1"
