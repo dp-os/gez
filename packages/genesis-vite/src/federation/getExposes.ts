@@ -42,7 +42,13 @@ async function loadExpose ({
   const { name, clientOrigin } = remote
   const { client, server, dts } = manifest
 
-  fs.writeFileSync(`./node_modules/${name}/manifest.json`, JSON.stringify(manifest, null, 4))
+  if (fs.existsSync(`./node_modules/${name}/manifest.json`)) {
+    const localManifest: Manifest = JSON.parse(fs.readFileSync(`./node_modules/${name}/manifest.json`).toString('utf-8'))
+    if (localManifest.client === client && localManifest.server === server) {
+      console.log(`${name} no update`)
+      return
+    }
+  }
 
   fs.mkdirSync(`./node_modules/${name}`, {
     recursive: true
@@ -53,6 +59,11 @@ async function loadExpose ({
   fs.mkdirSync(`./node_modules/${name}/server`, {
     recursive: true
   })
+
+  fs.writeFileSync(`./node_modules/${name}/package.json`, JSON.stringify({
+    name
+  }, null, 4))
+  fs.writeFileSync(`./node_modules/${name}/manifest.json`, JSON.stringify(manifest, null, 4))
 
   const clientFileUrl = `${clientOrigin}/${name}/node-exposes/${client}.zip`
   await loadFile(clientFileUrl, `./node_modules/${name}/client`)

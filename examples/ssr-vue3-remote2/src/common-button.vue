@@ -1,5 +1,7 @@
 <template>
-    <div>哈哈</div>
+    <div>
+        <button>我是一个 button</button>
+    </div>
 </template>
 <script setup>
 </script>
