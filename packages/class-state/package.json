@@ -29,7 +29,7 @@
     "build": "tsc --noEmit && unbuild"
   },
   "dependencies": {
-    "immer": "^10.0.4"
+    "immer": "^10.1.1"
   },
   "devDependencies": {
     "unbuild": "^2.0.0",

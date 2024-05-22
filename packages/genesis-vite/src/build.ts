@@ -52,7 +52,7 @@ async function buildNode (genesis: Genesis, src: string) {
       outDir: genesis.getProjectPath('dist/node'),
       ssr: true
     }
-  }, true))
+  }))
 }
 
 export async function build (genesis: Genesis) {
