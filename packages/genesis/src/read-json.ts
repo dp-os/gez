@@ -1,4 +1,4 @@
-import fs from 'fs'
+import fs from 'node:fs'
 
 export function readJson<T> (file: string, defaultValue: T): T {
   if (fs.existsSync(file)) {
