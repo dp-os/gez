@@ -45,17 +45,17 @@ importers:
   examples/ssr-vite-qwik:
     dependencies:
       '@gez/core':
-        specifier: 0.0.3
+        specifier: 0.0.4
         version: link:../../packages/core
     devDependencies:
       '@builder.io/qwik':
         specifier: ^1.2.18
         version: 1.5.5(@types/node@20.12.12)(undici@6.18.1)
       '@gez/class-state':
-        specifier: 0.0.3
+        specifier: 0.0.4
         version: link:../../packages/class-state
       '@gez/vite':
-        specifier: 0.0.3
+        specifier: 0.0.4
         version: link:../../packages/vite
       '@types/node':
         specifier: ^20.6.3
@@ -73,14 +73,14 @@ importers:
   examples/ssr-vite-react:
     dependencies:
       '@gez/core':
-        specifier: 0.0.3
+        specifier: 0.0.4
         version: link:../../packages/core
     devDependencies:
       '@gez/class-state':
-        specifier: 0.0.3
+        specifier: 0.0.4
         version: link:../../packages/class-state
       '@gez/vite':
-        specifier: 0.0.3
+        specifier: 0.0.4
         version: link:../../packages/vite
       '@types/node':
         specifier: ^20.6.3
@@ -107,11 +107,11 @@ importers:
   examples/ssr-vite-simple:
     dependencies:
       '@gez/core':
-        specifier: 0.0.3
+        specifier: 0.0.4
         version: link:../../packages/core
     devDependencies:
       '@gez/vite':
-        specifier: 0.0.3
+        specifier: 0.0.4
         version: link:../../packages/vite
       '@types/node':
         specifier: ^20.6.3
@@ -126,14 +126,14 @@ importers:
   examples/ssr-vite-vue2:
     dependencies:
       '@gez/core':
-        specifier: 0.0.3
+        specifier: 0.0.4
         version: link:../../packages/core
     devDependencies:
       '@gez/class-state':
-        specifier: 0.0.3
+        specifier: 0.0.4
         version: link:../../packages/class-state
       '@gez/vite':
-        specifier: 0.0.3
+        specifier: 0.0.4
         version: link:../../packages/vite
       '@types/node':
         specifier: ^20.6.3
@@ -157,14 +157,14 @@ importers:
   examples/ssr-vite-vue3:
     dependencies:
       '@gez/core':
-        specifier: 0.0.3
+        specifier: 0.0.4
         version: link:../../packages/core
     devDependencies:
       '@gez/class-state':
-        specifier: 0.0.3
+        specifier: 0.0.4
         version: link:../../packages/class-state
       '@gez/vite':
-        specifier: 0.0.3
+        specifier: 0.0.4
         version: link:../../packages/vite
       '@types/node':
         specifier: ^20.6.3
@@ -297,7 +297,7 @@ importers:
         version: 5.2.11(@types/node@20.12.12)
     devDependencies:
       '@gez/core':
-        specifier: 0.0.3
+        specifier: 0.0.4
         version: link:../core
       unbuild:
         specifier: ^1.2.1

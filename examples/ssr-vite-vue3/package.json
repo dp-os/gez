@@ -1,6 +1,6 @@
 {
     "name": "ssr-vue3",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "private": true,
     "type": "module",
     "scripts": {
@@ -10,11 +10,11 @@
         "start": "gez"
     },
     "dependencies": {
-        "@gez/core": "0.0.3"
+        "@gez/core": "0.0.4"
     },
     "devDependencies": {
-        "@gez/class-state": "0.0.3",
-        "@gez/vite": "0.0.3",
+        "@gez/class-state": "0.0.4",
+        "@gez/vite": "0.0.4",
         "@types/node": "^20.6.3",
         "@vitejs/plugin-vue": "^4.5.0",
         "typescript": "^5.2.2",

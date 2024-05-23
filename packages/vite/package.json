@@ -1,5 +1,5 @@
 {
-  "version": "0.0.3",
+  "version": "0.0.4",
   "name": "@gez/vite",
   "type": "module",
   "main": "./dist/index.mjs",
@@ -26,7 +26,7 @@
     "vite": "^5.0.0"
   },
   "devDependencies": {
-    "@gez/core": "0.0.3",
+    "@gez/core": "0.0.4",
     "unbuild": "^1.2.1"
   },
   "gitHead": "8471bddf6fb9850001d8661f7d1058ea590999d1"
