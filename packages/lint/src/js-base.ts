@@ -5,7 +5,7 @@ export default {
     node: true
   },
   extends: [
-    'eslint-config-love',
+    'standard-with-typescript',
     'plugin:import/errors',
     'plugin:import/typescript',
     'plugin:prettier/recommended'
@@ -57,7 +57,6 @@ export default {
       }
     ]
   },
-  files: ['*.js', '*.jsx', '*.ts', '*.tsx'],
   settings: {
     'import/resolver': {
       'eslint-import-resolver-custom-alias': {
