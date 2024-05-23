@@ -4,10 +4,10 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "dev": "genesis-vite dev",
-        "build": "genesis-vite build",
+        "dev": "genesis dev",
+        "build": "genesis build",
         "build:dts": "tsc --declaration --emitDeclarationOnly",
-        "start": "genesis"
+        "start": "genesis start"
     },
     "dependencies": {
         "genesis3": "0.1.25"

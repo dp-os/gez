@@ -22,8 +22,8 @@ export interface GenesisOptions {
   root?: string
   name?: string
   isProd?: boolean
-  appType?: 'vite' | string
   federation?: Federation
+  createDevApp?: (genesis: Genesis) => Promise<App>
 }
 
 export class Genesis {
@@ -87,20 +87,15 @@ export class Genesis {
     return this._options?.isProd ?? process.env.NODE_ENV === 'production'
   }
 
-  public get appType () {
-    return this._options.appType ?? 'vite'
-  }
-
   public get federation () {
     return this._options.federation ?? null
   }
 
-  public getProjectPath (projectPath: ProjectPath): string {
-    return getProjectPath(this.root, projectPath)
+  public get createDevApp (): GenesisOptions['createDevApp'] {
+    return this._options.createDevApp
   }
 
-  public async createApp () {
-    const res = await import(/* @vite-ignore */ `genesis-${this.appType}`)
-    return res
+  public getProjectPath (projectPath: ProjectPath): string {
+    return getProjectPath(this.root, projectPath)
   }
 }

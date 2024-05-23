@@ -16,12 +16,8 @@
   "exports": {
     ".": "./dist/index.mjs"
   },
-  "bin": {
-    "genesis-vite": "./cli.mjs"
-  },
   "files": [
-    "dist",
-    "cli"
+    "dist"
   ],
   "scripts": {
     "build": "tsc --noEmit && unbuild"
@@ -29,9 +25,6 @@
   "peerDependencies": {
     "genesis3": "^0.1.25",
     "vite": "^5.0.0"
-  },
-  "dependencies": {
-    "vite-node": "^1.6.0"
   },
   "devDependencies": {
     "genesis3": "0.1.25",
