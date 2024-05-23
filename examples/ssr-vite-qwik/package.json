@@ -1,6 +1,6 @@
 {
     "name": "ssr-qwik",
-    "version": "0.1.27",
+    "version": "0.1.28",
     "private": true,
     "type": "module",
     "scripts": {
@@ -10,14 +10,14 @@
         "start": "genesis"
     },
     "dependencies": {
-        "genesis3": "0.1.27"
+        "genesis3": "0.1.28"
     },
     "devDependencies": {
         "@builder.io/qwik": "^1.2.18",
         "@types/node": "^20.6.3",
-        "class-state": "0.1.27",
+        "class-state": "0.1.28",
         "genesis-state": "^0.1.7",
-        "genesis-vite": "0.1.27",
+        "genesis-vite": "0.1.28",
         "typescript": "^5.2.2",
         "vite": "^5.0.0"
     }
