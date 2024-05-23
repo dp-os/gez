@@ -8,6 +8,11 @@ export default defineBuildConfig({
       format: 'esm',
       ext: 'mjs',
       declaration: true
+    },
+    {
+      input: './src/',
+      ext: 'cjs',
+      format: 'cjs'
     }
   ]
 })
