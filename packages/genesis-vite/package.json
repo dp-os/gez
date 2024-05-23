@@ -1,5 +1,5 @@
 {
-  "version": "0.1.26",
+  "version": "0.1.27",
   "name": "genesis-vite",
   "type": "module",
   "main": "./dist/index.mjs",
@@ -23,11 +23,11 @@
     "build": "tsc --noEmit && unbuild"
   },
   "peerDependencies": {
-    "genesis3": "^0.1.25",
+    "genesis3": "0.1.26",
     "vite": "^5.0.0"
   },
   "devDependencies": {
-    "genesis3": "0.1.26",
+    "genesis3": "0.1.27",
     "unbuild": "^1.2.1"
   },
   "gitHead": "8471bddf6fb9850001d8661f7d1058ea590999d1"
