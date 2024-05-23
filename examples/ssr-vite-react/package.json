@@ -1,6 +1,6 @@
 {
     "name": "ssr-react",
-    "version": "0.1.28",
+    "version": "0.0.1",
     "private": true,
     "type": "module",
     "scripts": {
@@ -10,14 +10,14 @@
         "start": "gem"
     },
     "dependencies": {
-        "@gem/core": "0.1.28"
+        "@gem/core": "0.0.1"
     },
     "devDependencies": {
+        "@gem/class-state": "0.0.1",
+        "@gem/vite": "0.0.1",
         "@types/node": "^20.6.3",
         "@types/react": "^18.2.38",
         "@vitejs/plugin-react": "^4.2.0",
-        "@gem/class-state": "0.1.28",
-        "@gem/vite": "0.1.28",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "typescript": "^5.2.2",

@@ -40,7 +40,6 @@ async function runFile (file: string) {
   if (!/\.(js|ts)$/.test(file)) return
   const api = register({ namespace: NAMESPACE })
   await api.import(path.resolve(file), import.meta.url)
-  await api.unregister()
 }
 
 async function runDevApp (command: COMMAND) {

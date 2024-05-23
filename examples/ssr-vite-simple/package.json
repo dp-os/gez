@@ -1,6 +1,6 @@
 {
     "name": "ssr-simple",
-    "version": "0.1.28",
+    "version": "0.0.1",
     "private": true,
     "type": "module",
     "scripts": {
@@ -10,11 +10,11 @@
         "start": "gem start"
     },
     "dependencies": {
-        "@gem/core": "0.1.28"
+        "@gem/core": "0.0.1"
     },
     "devDependencies": {
+        "@gem/vite": "0.0.1",
         "@types/node": "^20.6.3",
-        "@gem/vite": "0.1.28",
         "typescript": "^5.2.2",
         "vite": "^5.0.0"
     }
