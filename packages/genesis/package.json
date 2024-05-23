@@ -1,6 +1,6 @@
 {
   "name": "genesis3",
-  "version": "0.1.25",
+  "version": "0.1.26",
   "type": "module",
   "types": "./dist/index.d.ts",
   "license": "MIT",
@@ -22,8 +22,8 @@
     "build": "tsc --noEmit && unbuild"
   },
   "dependencies": {
-    "tsx": "^4.10.5",
-    "serve-static": "^1.15.0"
+    "serve-static": "^1.15.0",
+    "tsx": "^4.10.5"
   },
   "devDependencies": {
     "@types/serve-static": "^1.15.2",
