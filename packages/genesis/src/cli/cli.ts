@@ -1,8 +1,7 @@
 import path from 'path'
-import { getProjectPath } from './project-path'
-import { type NodeOptions } from './node'
-import { Genesis } from './genesis'
-import { createApp } from './app'
+import { getProjectPath } from '../core/project-path'
+import { type NodeOptions } from '../node'
+import { Genesis, createApp } from '../core'
 
 export function cli () {
   const file = getProjectPath(path.resolve(), 'dist/node/entry-node.js')

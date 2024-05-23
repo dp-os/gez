@@ -1,4 +1,4 @@
-import { type Genesis, type App, type AppParams, type ProjectPath, ServerContext, type ServerRender } from 'genesis3'
+import { type Genesis, type App, type AppRenderParams, type ProjectPath, ServerContext, type ServerRender } from 'genesis3'
 import { createServer, type InlineConfig } from 'vite'
 import { mergeViteConfig } from './vite-config'
 import { build } from './build'
@@ -14,7 +14,7 @@ export async function createApp (genesis: Genesis): Promise<App> {
     async build () {
       await build(genesis)
     },
-    async render (params: AppParams): Promise<ServerContext> {
+    async render (params: AppRenderParams): Promise<ServerContext> {
       try {
         const module = await vite.ssrLoadModule(genesis.getProjectPath('src/entry-server.ts'))
         const render: ServerRender | undefined = module.default

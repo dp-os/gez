@@ -1,6 +1,6 @@
-import type { AppParams } from './app'
+import type { AppRenderParams } from '../core/app'
 import { readJson } from './read-json'
-import { type Genesis } from './genesis'
+import { type Genesis } from '../core'
 
 export type ManifestJson = Record<string, {
   base: string
@@ -21,12 +21,12 @@ export class ServerContext {
   public status: number | null = null
   public extra: Record<string, any> = {}
 
-  public readonly params: AppParams
+  public readonly params: AppRenderParams
 
   public modules = new Set<string>()
   public manifest: ManifestJson = {}
   public genesis: Genesis
-  public constructor (genesis: Genesis, params: AppParams) {
+  public constructor (genesis: Genesis, params: AppRenderParams) {
     this.genesis = genesis
     this.params = params
 

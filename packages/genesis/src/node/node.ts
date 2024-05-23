@@ -1,6 +1,6 @@
 import http, { type IncomingMessage, type ServerResponse } from 'http'
 
-import { type Genesis, type GenesisOptions } from './genesis'
+import { type Genesis, type GenesisOptions } from '../core'
 
 export interface NodeOptions extends GenesisOptions {
   created: (genesis: Genesis) => void
@@ -27,7 +27,7 @@ export function createServer (genesis: Genesis) {
   }
   return http.createServer((req, res) => {
     const url = req.url
-    if (typeof url === 'string' && url.indexOf(genesis.base) === 0) {
+    if (typeof url === 'string' && url.startsWith(genesis.base)) {
       req.url = url.substring(genesis.base.length - 1)
       genesis.middleware(req, res, (err?: Error) => {
         if (err instanceof Error) {

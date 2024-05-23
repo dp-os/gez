@@ -11,7 +11,6 @@ export default defineBuildConfig({
     },
     {
       input: './src/',
-      // @ts-expect-error
       ext: 'cjs',
       format: 'cjs'
     }

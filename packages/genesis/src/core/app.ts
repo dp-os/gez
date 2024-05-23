@@ -1,20 +1,18 @@
 import { type IncomingMessage, type ServerResponse, type IncomingHttpHeaders } from 'node:http'
 import serveStatic from 'serve-static'
 import { type Genesis } from './genesis'
-import { ServerContext, type ServerRender } from './server-context'
+import { ServerContext, type ServerRender } from '../server/server-context'
 
-export interface AppParams {
+export interface AppRenderParams {
   url: string
   timeout?: number
   headers?: IncomingHttpHeaders
   extra?: Record<string, any>
 }
 
-export type AppMiddlewareNext = Function
-
 export interface App {
-  middleware: (req: IncomingMessage, res: ServerResponse, next?: AppMiddlewareNext) => void
-  render: (params: AppParams) => Promise<ServerContext>
+  middleware: (req: IncomingMessage, res: ServerResponse, next?: Function) => void
+  render: (params: AppRenderParams) => Promise<ServerContext>
   build: () => Promise<void>
   destroy: () => Promise<void>
 }
@@ -27,7 +25,7 @@ export async function createApp (genesis: Genesis): Promise<App> {
         res.setHeader('cache-control', 'public, max-age=31536000')
       }
     }) as App['middleware'],
-    async render (params: AppParams) {
+    async render (params: AppRenderParams) {
       const context = new ServerContext(genesis, params)
       const result = await import(/* @vite-ignore */genesis.getProjectPath('dist/server/entry-server.js'))
       const serverRender: ServerRender = result.default
@@ -38,7 +36,6 @@ export async function createApp (genesis: Genesis): Promise<App> {
       return context
     },
     async build () {
-
     },
     async destroy () {}
   }
