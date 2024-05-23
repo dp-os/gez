@@ -1,30 +1,30 @@
 import path from 'node:path'
 import fs from 'node:fs'
-import { type Genesis } from '@gez/core'
+import { type Gez } from '@gez/core'
 import { build as viteBuild } from 'vite'
 import { mergeViteConfig } from './vite-config'
 
-async function buildClient (genesis: Genesis, src: string) {
-  await viteBuild(mergeViteConfig(genesis, {
+async function buildClient (gez: Gez, src: string) {
+  await viteBuild(mergeViteConfig(gez, {
     build: {
       modulePreload: false,
       manifest: true,
       rollupOptions: {
         input: path.resolve(src, 'entry-client.ts')
       },
-      outDir: genesis.getProjectPath('dist/client')
+      outDir: gez.getProjectPath('dist/client')
     }
   }))
-  const filename = path.resolve(genesis.root, 'dist/client/.vite/manifest.json')
+  const filename = path.resolve(gez.root, 'dist/client/.vite/manifest.json')
   if (fs.existsSync(filename)) {
     fs.renameSync(
       filename,
-      genesis.getProjectPath('dist/client/manifest.json')
+      gez.getProjectPath('dist/client/manifest.json')
     )
   }
 }
-async function buildServer (genesis: Genesis, src: string) {
-  await viteBuild(mergeViteConfig(genesis, {
+async function buildServer (gez: Gez, src: string) {
+  await viteBuild(mergeViteConfig(gez, {
     publicDir: false,
     ssr: {
       external: [],
@@ -34,13 +34,13 @@ async function buildServer (genesis: Genesis, src: string) {
       rollupOptions: {
         input: path.resolve(src, 'entry-server.ts')
       },
-      outDir: genesis.getProjectPath('dist/server'),
+      outDir: gez.getProjectPath('dist/server'),
       ssr: true
     }
   }))
 }
-async function buildNode (genesis: Genesis, src: string) {
-  await viteBuild(mergeViteConfig(genesis, {
+async function buildNode (gez: Gez, src: string) {
+  await viteBuild(mergeViteConfig(gez, {
     publicDir: false,
     ssr: {
       external: ['@gez/core', '@gez/vite']
@@ -49,22 +49,22 @@ async function buildNode (genesis: Genesis, src: string) {
       rollupOptions: {
         input: path.resolve(src, 'entry-node.ts')
       },
-      outDir: genesis.getProjectPath('dist/node'),
+      outDir: gez.getProjectPath('dist/node'),
       ssr: true
     }
   }))
 }
 
-export async function build (genesis: Genesis) {
-  const source = genesis.getProjectPath('src')
+export async function build (gez: Gez) {
+  const source = gez.getProjectPath('src')
   const args = process.argv
   if (!args.includes('--no-build-client')) {
-    await buildClient(genesis, source)
+    await buildClient(gez, source)
   }
   if (!args.includes('--no-build-server')) {
-    await buildServer(genesis, source)
+    await buildServer(gez, source)
   }
   if (!args.includes('--no-build-node')) {
-    await buildNode(genesis, source)
+    await buildNode(gez, source)
   }
 }

@@ -9,13 +9,13 @@
     "pinia",
     "redux"
   ],
-  "homepage": "https://github.com/dp-os/genesis",
+  "homepage": "https://github.com/dp-os/gez",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dp-os/genesis.git"
+    "url": "git+https://github.com/dp-os/gez.git"
   },
   "bugs": {
-    "url": "https://github.com/dp-os/genesis/issues"
+    "url": "https://github.com/dp-os/gez/issues"
   },
   "exports": {
     ".": {

@@ -1,6 +1,6 @@
 import { type IncomingMessage, type ServerResponse, type IncomingHttpHeaders } from 'node:http'
 import serveStatic from 'serve-static'
-import { type Genesis } from './genesis'
+import { type Gez } from './gez'
 import { ServerContext, type ServerRender } from '../server/server-context'
 
 export interface AppRenderParams {
@@ -17,8 +17,8 @@ export interface App {
   destroy: () => Promise<void>
 }
 
-export async function createApp (genesis: Genesis): Promise<App> {
-  const root = genesis.getProjectPath('dist/client')
+export async function createApp (gez: Gez): Promise<App> {
+  const root = gez.getProjectPath('dist/client')
   return {
     middleware: serveStatic(root, {
       setHeaders (res) {
@@ -26,8 +26,8 @@ export async function createApp (genesis: Genesis): Promise<App> {
       }
     }) as App['middleware'],
     async render (params: AppRenderParams) {
-      const context = new ServerContext(genesis, params)
-      const result = await import(/* @vite-ignore */genesis.getProjectPath('dist/server/entry-server.js'))
+      const context = new ServerContext(gez, params)
+      const result = await import(/* @vite-ignore */gez.getProjectPath('dist/server/entry-server.js'))
       const serverRender: ServerRender = result.default
       if (typeof serverRender === 'function') {
         await serverRender(context)

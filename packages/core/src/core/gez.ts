@@ -18,18 +18,18 @@ export interface Federation {
   shareScope?: string
 }
 
-export interface GenesisOptions {
+export interface GezOptions {
   root?: string
   name?: string
   isProd?: boolean
   federation?: Federation
-  createDevApp?: (genesis: Genesis) => Promise<App>
+  createDevApp?: (gez: Gez) => Promise<App>
 }
 
-export class Genesis {
-  private readonly _options: GenesisOptions
+export class Gez {
+  private readonly _options: GezOptions
   private _app: App | null = null
-  public constructor (options: GenesisOptions = {}) {
+  public constructor (options: GezOptions = {}) {
     this._options = options
   }
 
@@ -91,7 +91,7 @@ export class Genesis {
     return this._options.federation ?? null
   }
 
-  public get createDevApp (): GenesisOptions['createDevApp'] {
+  public get createDevApp (): GezOptions['createDevApp'] {
     return this._options.createDevApp
   }
 

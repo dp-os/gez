@@ -1,9 +1,9 @@
 import http, { type IncomingMessage, type ServerResponse } from 'http'
 
-import { type Genesis, type GenesisOptions } from '../core'
+import { type Gez, type GezOptions } from '../core'
 
-export interface NodeOptions extends GenesisOptions {
-  created: (genesis: Genesis) => void
+export interface NodeOptions extends GezOptions {
+  created: (gez: Gez) => void
 }
 
 export function defineNode (options: NodeOptions) {
@@ -12,10 +12,10 @@ export function defineNode (options: NodeOptions) {
 /**
  * Create a simple HTTP server, I suggest you replace it with Express
  */
-export function createServer (genesis: Genesis) {
+export function createServer (gez: Gez) {
   const render = async (req: IncomingMessage, res: ServerResponse) => {
     try {
-      const context = await genesis.render({
+      const context = await gez.render({
         url: req.url ?? '/'
       })
       res.writeHead(200, { 'Content-Type': 'text/html;charset=UTF-8' })
@@ -27,9 +27,9 @@ export function createServer (genesis: Genesis) {
   }
   return http.createServer((req, res) => {
     const url = req.url
-    if (typeof url === 'string' && url.startsWith(genesis.base)) {
-      req.url = url.substring(genesis.base.length - 1)
-      genesis.middleware(req, res, (err?: Error) => {
+    if (typeof url === 'string' && url.startsWith(gez.base)) {
+      req.url = url.substring(gez.base.length - 1)
+      gez.middleware(req, res, (err?: Error) => {
         if (err instanceof Error) {
           console.error(err)
         }

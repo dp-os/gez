@@ -1,3 +1,3 @@
-export * from './genesis'
+export * from './gez'
 export * from './app'
 export * from './project-path'

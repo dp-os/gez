@@ -1,11 +1,11 @@
 import { type InlineConfig, mergeConfig, type PluginOption } from 'vite'
-import { type Genesis } from '@gez/core'
+import { type Gez } from '@gez/core'
 
-export function mergeViteConfig (genesis: Genesis, config: InlineConfig): InlineConfig {
+export function mergeViteConfig (gez: Gez, config: InlineConfig): InlineConfig {
   const plugins: PluginOption[] = []
   return mergeConfig<InlineConfig, InlineConfig>(config, {
-    root: genesis.root,
-    base: genesis.base,
+    root: gez.root,
+    base: gez.base,
     plugins
   })
 }

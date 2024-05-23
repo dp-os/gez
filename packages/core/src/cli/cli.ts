@@ -2,8 +2,8 @@
 import { register } from 'tsx/esm/api'
 import path from 'path'
 import { type NodeOptions } from '../node'
-import { Genesis, type App, createApp, getProjectPath } from '../core'
-const NAMESPACE = 'genesis'
+import { Gez, type App, createApp, getProjectPath } from '../core'
+const NAMESPACE = 'gez'
 enum COMMAND {
   dev = 'dev',
   build = 'build',
@@ -49,13 +49,13 @@ async function runDevApp (command: COMMAND) {
   const created = options.created || defaultCreated
   const createDevApp = options.createDevApp ?? defaultCreateDevApp
 
-  const genesis = new Genesis(options)
-  const app = await createDevApp(genesis)
-  genesis.app = app
+  const gez = new Gez(options)
+  const app = await createDevApp(gez)
+  gez.app = app
 
   switch (command) {
     case COMMAND.dev:
-      created(genesis)
+      created(gez)
       break
     case COMMAND.build:
       await app.build()
@@ -78,9 +78,9 @@ async function runProdApp () {
     const created = options.created || defaultCreated
     process.env.NODE_ENV = 'production'
 
-    const genesis = new Genesis(options)
-    genesis.app = await createApp(genesis)
+    const gez = new Gez(options)
+    gez.app = await createApp(gez)
 
-    created(genesis)
+    created(gez)
   })
 }

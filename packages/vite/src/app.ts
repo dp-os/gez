@@ -1,10 +1,10 @@
-import { type Genesis, type App, type AppRenderParams, type ProjectPath, ServerContext, type ServerRender } from '@gez/core'
+import { type Gez, type App, type AppRenderParams, type ProjectPath, ServerContext, type ServerRender } from '@gez/core'
 import { createServer, type InlineConfig } from 'vite'
 import { mergeViteConfig } from './vite-config'
 import { build } from './build'
 
-export async function createApp (genesis: Genesis): Promise<App> {
-  const viteConfig: InlineConfig = mergeViteConfig(genesis, {
+export async function createApp (gez: Gez): Promise<App> {
+  const viteConfig: InlineConfig = mergeViteConfig(gez, {
     server: { middlewareMode: true },
     appType: 'custom'
   })
@@ -12,13 +12,13 @@ export async function createApp (genesis: Genesis): Promise<App> {
   return {
     middleware: vite.middlewares,
     async build () {
-      await build(genesis)
+      await build(gez)
     },
     async render (params: AppRenderParams): Promise<ServerContext> {
       try {
-        const module = await vite.ssrLoadModule(genesis.getProjectPath('src/entry-server.ts'))
+        const module = await vite.ssrLoadModule(gez.getProjectPath('src/entry-server.ts'))
         const render: ServerRender | undefined = module.default
-        const context = new ServerContext(genesis, params)
+        const context = new ServerContext(gez, params)
         if (typeof render === 'function') {
           await render(context)
           const src: ProjectPath = 'src/entry-client.ts'

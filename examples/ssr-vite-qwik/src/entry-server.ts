@@ -8,7 +8,7 @@ import { DocsRoot } from './docs'
 
 export default defineServer({
   async render (context) {
-    const name = context.genesis.name
+    const name = context.gez.name
     const result = await renderToString(DocsRoot, {
       base: `/${name}/${name}/build/`,
       manifest: manifest ?? {},

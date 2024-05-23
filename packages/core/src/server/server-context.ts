@@ -1,6 +1,6 @@
 import type { AppRenderParams } from '../core/app'
 import { readJson } from './read-json'
-import { type Genesis } from '../core'
+import { type Gez } from '../core'
 
 export type ManifestJson = Record<string, {
   base: string
@@ -25,9 +25,9 @@ export class ServerContext {
 
   public modules = new Set<string>()
   public manifest: ManifestJson = {}
-  public genesis: Genesis
-  public constructor (genesis: Genesis, params: AppRenderParams) {
-    this.genesis = genesis
+  public gez: Gez
+  public constructor (gez: Gez, params: AppRenderParams) {
+    this.gez = gez
     this.params = params
 
     this._loadManifestJson()
@@ -72,9 +72,9 @@ export class ServerContext {
   }
 
   private _loadManifestJson () {
-    const { genesis } = this
-    const manifest = readJson<ManifestJson>(genesis.getProjectPath('dist/client/manifest.json'), {})
-    const { base } = genesis
+    const { gez } = this
+    const manifest = readJson<ManifestJson>(gez.getProjectPath('dist/client/manifest.json'), {})
+    const { base } = gez
     Object.values(manifest).forEach(item => {
       item.file = base + item.file
       item.css = (item.css || []).map(file => base + file)
