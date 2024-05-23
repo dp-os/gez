@@ -6,25 +6,25 @@
 **npm**
 ```bash
 npm install genesis3
-npm install gem vite -D
+npm install gez vite -D
 ```
 **yarn**
 ```bash
 yarn add genesis3
-yarn add gem vite -D
+yarn add gez vite -D
 ```
 **pnpm**
 ```bash
 pnpm install genesis3
-pnpm install gem vite -D
+pnpm install gez vite -D
 ```
 ### 配置脚本  
 在`package.json`文件中配置脚本
 ```json
     "scripts": {
-        "dev": "gem dev",
-        "build": "gem build",
-        "start": "gem"
+        "dev": "gez dev",
+        "build": "gez build",
+        "start": "gez"
     }
 ```
 ## Hello World

@@ -1,4 +1,4 @@
-import { type Genesis, type App, type AppRenderParams, type ProjectPath, ServerContext, type ServerRender } from '@gem/core'
+import { type Genesis, type App, type AppRenderParams, type ProjectPath, ServerContext, type ServerRender } from '@gez/core'
 import { createServer, type InlineConfig } from 'vite'
 import { mergeViteConfig } from './vite-config'
 import { build } from './build'

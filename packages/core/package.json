@@ -1,6 +1,6 @@
 {
-  "name": "@gem/core",
-  "version": "0.0.1",
+  "name": "@gez/core",
+  "version": "0.0.2",
   "type": "module",
   "types": "./dist/index.d.ts",
   "license": "MIT",
@@ -16,7 +16,7 @@
     ".": "./dist/index.mjs"
   },
   "bin": {
-    "gem": "./cli.mjs"
+    "gez": "./cli.mjs"
   },
   "scripts": {
     "build": "tsc --noEmit && unbuild"

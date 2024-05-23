@@ -1,6 +1,6 @@
 {
-  "version": "0.0.1",
-  "name": "@gem/vite",
+  "version": "0.0.2",
+  "name": "@gez/vite",
   "type": "module",
   "main": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -26,7 +26,7 @@
     "vite": "^5.0.0"
   },
   "devDependencies": {
-    "@gem/core": "0.0.1",
+    "@gez/core": "0.0.2",
     "unbuild": "^1.2.1"
   },
   "gitHead": "8471bddf6fb9850001d8661f7d1058ea590999d1"

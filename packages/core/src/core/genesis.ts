@@ -80,7 +80,7 @@ export class Genesis {
   }
 
   public get name () {
-    return this._options.name ?? 'gem'
+    return this._options.name ?? 'gez'
   }
 
   public get isProd (): boolean {

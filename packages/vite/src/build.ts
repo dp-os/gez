@@ -1,6 +1,6 @@
 import path from 'node:path'
 import fs from 'node:fs'
-import { type Genesis } from '@gem/core'
+import { type Genesis } from '@gez/core'
 import { build as viteBuild } from 'vite'
 import { mergeViteConfig } from './vite-config'
 
@@ -43,7 +43,7 @@ async function buildNode (genesis: Genesis, src: string) {
   await viteBuild(mergeViteConfig(genesis, {
     publicDir: false,
     ssr: {
-      external: ['@gem/core', '@gem/vite']
+      external: ['@gez/core', '@gez/vite']
     },
     build: {
       rollupOptions: {

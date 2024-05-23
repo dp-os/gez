@@ -1,19 +1,19 @@
 {
     "name": "ssr-simple",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "private": true,
     "type": "module",
     "scripts": {
-        "dev": "gem dev",
-        "build": "gem build",
+        "dev": "gez dev",
+        "build": "gez build",
         "build:dts": "tsc --declaration --emitDeclarationOnly",
-        "start": "gem start"
+        "start": "gez start"
     },
     "dependencies": {
-        "@gem/core": "0.0.1"
+        "@gez/core": "0.0.2"
     },
     "devDependencies": {
-        "@gem/vite": "0.0.1",
+        "@gez/vite": "0.0.2",
         "@types/node": "^20.6.3",
         "typescript": "^5.2.2",
         "vite": "^5.0.0"

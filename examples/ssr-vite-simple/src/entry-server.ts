@@ -1,4 +1,4 @@
-import { defineServer } from '@gem/core'
+import { defineServer } from '@gez/core'
 
 export default defineServer({
   async render (context) {

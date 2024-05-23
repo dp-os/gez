@@ -1,6 +1,6 @@
 {
-  "name": "@gem/class-state",
-  "version": "0.0.1",
+  "name": "@gez/class-state",
+  "version": "0.0.2",
   "type": "module",
   "license": "MIT",
   "keywords": [

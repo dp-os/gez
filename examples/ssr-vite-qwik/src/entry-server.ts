@@ -1,4 +1,4 @@
-import { defineServer } from '@gem/core'
+import { defineServer } from '@gez/core'
 import {
   renderToString
 } from '@builder.io/qwik/server'
