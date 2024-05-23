@@ -4,18 +4,18 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "dev": "genesis-vite dev",
-        "build": "genesis-vite build",
+        "dev": "gem dev",
+        "build": "gem build",
         "build:dts": "npx --yes vue-tsc --declaration --emitDeclarationOnly",
-        "start": "genesis"
+        "start": "gem"
     },
     "dependencies": {
-        "genesis3": "0.1.28"
+        "@gem/core": "0.1.28"
     },
     "devDependencies": {
         "@types/node": "^20.6.3",
-        "class-state": "0.1.28",
-        "genesis-vite": "0.1.28",
+        "@gem/class-state": "0.1.28",
+        "@gem/vite": "0.1.28",
         "typescript": "^5.2.2",
         "vite": "^5.0.0",
         "vite-plugin-vue2-ssr": "^0.0.5",

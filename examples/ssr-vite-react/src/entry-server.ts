@@ -1,4 +1,4 @@
-import { defineServer } from 'genesis3'
+import { defineServer } from '@gem/core'
 import ReactDOMServer from 'react-dom/server'
 
 import { app } from './app'

@@ -1,5 +1,5 @@
 import { type InlineConfig, mergeConfig, type PluginOption } from 'vite'
-import { type Genesis } from 'genesis3'
+import { type Genesis } from '@gem/core'
 
 export function mergeViteConfig (genesis: Genesis, config: InlineConfig): InlineConfig {
   const plugins: PluginOption[] = []
