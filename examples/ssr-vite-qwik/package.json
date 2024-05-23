@@ -1,6 +1,6 @@
 {
     "name": "ssr-qwik",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "private": true,
     "type": "module",
     "scripts": {
@@ -10,12 +10,12 @@
         "start": "gez"
     },
     "dependencies": {
-        "@gez/core": "0.0.6"
+        "@gez/core": "0.0.7"
     },
     "devDependencies": {
         "@builder.io/qwik": "^1.2.18",
-        "@gez/class-state": "0.0.6",
-        "@gez/vite": "0.0.6",
+        "@gez/class-state": "0.0.7",
+        "@gez/vite": "0.0.7",
         "@types/node": "^20.6.3",
         "class-state": "0.1.28",
         "typescript": "^5.2.2",

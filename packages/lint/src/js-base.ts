@@ -40,6 +40,8 @@ export default {
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/naming-convention': 'off',
     '@typescript-eslint/prefer-nullish-coalescing': 'off',
+    '@typescript-eslint/unbound-method': 'off',
+    '@typescript-eslint/no-unsafe-argument': 'off',
     'no-return-await': 'error',
     '@typescript-eslint/promise-function-async': 'off',
     '@typescript-eslint/return-await': 'off',
