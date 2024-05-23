@@ -1,6 +1,6 @@
 {
     "name": "ssr-react",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "private": true,
     "type": "module",
     "scripts": {
@@ -10,11 +10,11 @@
         "start": "gez"
     },
     "dependencies": {
-        "@gez/core": "0.0.2"
+        "@gez/core": "0.0.3"
     },
     "devDependencies": {
-        "@gez/class-state": "0.0.2",
-        "@gez/vite": "0.0.2",
+        "@gez/class-state": "0.0.3",
+        "@gez/vite": "0.0.3",
         "@types/node": "^20.6.3",
         "@types/react": "^18.2.38",
         "@vitejs/plugin-react": "^4.2.0",
