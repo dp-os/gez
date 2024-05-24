@@ -1,0 +1,8 @@
+{
+    "packages": [
+        "packages/lint",
+        "packages/class-state",
+        "packages/core",
+        "packages/vite"
+    ]
+}

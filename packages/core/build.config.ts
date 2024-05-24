@@ -1,13 +1,20 @@
-import { defineBuildConfig } from 'unbuild'
+// Template generation, do not manually modify
+import { defineBuildConfig } from 'unbuild';
 
 export default defineBuildConfig({
-  clean: true,
-  entries: [
-    {
-      input: './src/',
-      format: 'esm',
-      ext: 'mjs',
-      declaration: true
-    }
-  ]
-})
+    clean: true,
+    entries: [
+        {
+            input: './src/',
+            format: 'esm',
+            ext: 'mjs',
+            cleanDist: true,
+            declaration: true
+        },
+        {
+            input: './src/',
+            ext: 'cjs',
+            format: 'cjs'
+        }
+    ]
+});

@@ -1,38 +1,44 @@
 {
-  "name": "@gez/class-state",
-  "version": "0.0.7",
-  "type": "module",
-  "license": "MIT",
-  "keywords": [
-    "vuex",
-    "mobx",
-    "pinia",
-    "redux"
-  ],
-  "homepage": "https://github.com/dp-os/gez",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/dp-os/gez.git"
-  },
-  "bugs": {
-    "url": "https://github.com/dp-os/gez/issues"
-  },
-  "exports": {
-    ".": {
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs"
-    }
-  },
-  "main": "./dist/index.cjs",
-  "types": "./dist/index.d.ts",
-  "scripts": {
-    "build": "tsc --noEmit && unbuild"
-  },
-  "dependencies": {
-    "immer": "^10.1.1"
-  },
-  "devDependencies": {
-    "unbuild": "^2.0.0",
-    "vue": "^2.7.15"
-  }
+    "name": "@gen/class-state",
+    "template": "library",
+    "scripts": {
+        "lint:js": "eslint . --ext .js,.mjs,.cjs,.ts,.vue --fix",
+        "lint:css": "stylelint '**/*.{css,vue}' --fix --aei",
+        "lint:type": "tsc --noEmit",
+        "test": "vitest --pass-with-no-tests",
+        "coverage": "vitest run --coverage --pass-with-no-tests",
+        "build": "unbuild"
+    },
+    "dependencies": {
+        "immer": "^10.1.1"
+    },
+    "devDependencies": {
+        "@gez/lint": "0.0.8",
+        "@types/node": "20.12.12",
+        "@vitest/coverage-v8": "1.6.0",
+        "eslint": "8.57.0",
+        "stylelint": "16.5.0",
+        "typescript": "5.4.5",
+        "unbuild": "2.0.0",
+        "vitest": "1.6.0",
+        "vue": "^3.4.27"
+    },
+    "version": "0.0.8",
+    "type": "module",
+    "private": false,
+    "exports": {
+        ".": {
+            "import": "./dist/index.mjs",
+            "require": "./dist/index.cjs"
+        }
+    },
+    "main": "./dist/index.cjs",
+    "module": "dist/index.mjs",
+    "types": "./dist/index.d.ts",
+    "files": [
+        "src",
+        "dist",
+        "*.mjs",
+        "template"
+    ]
 }

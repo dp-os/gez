@@ -1,34 +1,31 @@
 {
-  "type": "module",
-  "name": "ssr-ms-monorepo",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "scripts": {
-    "dev": "pnpm -r --filter='./examples/ssr-*' run dev",
-    "build": "pnpm -r --filter='./examples/*' run build",
-    "build:dts": "pnpm -r --filter='./examples/*' run build:dts",
-    "start": "pnpm -r --filter='./examples/*' run start",
-    "build:packages": "pnpm -r --filter='./packages/*' run build",
-    "test": "vitest",
-    "coverage": "pnpm run build:packages && vitest run --coverage",
-    "release": "pnpm build:packages && lerna publish --registry=https://registry.npmjs.org --force-publish --exact"
-  },
-  "private": true,
-  "devDependencies": {
-    "@types/node": "^20.6.3",
-    "@typescript-eslint/eslint-plugin": "^6.7.2",
-    "@typescript-eslint/parser": "^6.7.2",
-    "@vitest/coverage-v8": "^0.34.4",
-    "eslint": "^8.49.0",
-    "eslint-config-standard-with-typescript": "^39.0.0",
-    "eslint-plugin-import": "^2.28.1",
-    "eslint-plugin-n": "^16.1.0",
-    "eslint-plugin-promise": "^6.1.1",
-    "typescript": "^5.2.2",
-    "vitest": "^0.34.4"
-  }
+    "name": "genesis",
+    "template": "monorepo",
+    "version": "1.0.0",
+    "type": "module",
+    "scripts": {
+        "prepare": "./prepare.sh",
+        "lint:js": "lerna run lint:js",
+        "lint:type": "lerna run lint:type",
+        "build:packages": "lerna run build --no-private",
+        "release": "npm run build:packages && lerna publish --force-publish --exact",
+        "test": "lerna run test"
+    },
+    "engines": {
+        "lerna": "~8.1.3",
+        "node": "~20.13.1",
+        "pnpm": "~8.15.8"
+    },
+    "devDependencies": {
+        "lint-staged": "15.2.4",
+        "husky": "8.0.3"
+    },
+    "private": false,
+    "workspaces": [
+        "packages/*",
+        "examples/*"
+    ],
+    "publishConfig": {
+        "registry": "https://registry.npmjs.org"
+    }
 }

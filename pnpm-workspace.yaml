@@ -1,3 +1,4 @@
+# Template generation, do not manually modify
 packages:
-  - 'packages/*'
-  - 'examples/*'
+    - 'packages/*'
+    - 'examples/*'

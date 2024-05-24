@@ -1,9 +1,9 @@
-import fs from 'node:fs'
+import fs from 'node:fs';
 
-export function readJson<T> (file: string, defaultValue: T): T {
-  if (fs.existsSync(file)) {
-    const text = fs.readFileSync(file, 'utf-8')
-    return JSON.parse(text)
-  }
-  return defaultValue
+export function readJson<T>(file: string, defaultValue: T): T {
+    if (fs.existsSync(file)) {
+        const text = fs.readFileSync(file, 'utf-8');
+        return JSON.parse(text);
+    }
+    return defaultValue;
 }

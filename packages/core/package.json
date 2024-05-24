@@ -1,33 +1,47 @@
 {
-  "name": "@gez/core",
-  "version": "0.0.7",
-  "type": "module",
-  "types": "./dist/index.d.ts",
-  "license": "MIT",
-  "homepage": "https://github.com/dp-os/gez",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/dp-os/gez.git"
-  },
-  "bugs": {
-    "url": "https://github.com/dp-os/gez/issues"
-  },
-  "exports": {
-    ".": "./dist/index.mjs"
-  },
-  "bin": {
-    "gez": "./cli.mjs"
-  },
-  "scripts": {
-    "build": "tsc --noEmit && unbuild"
-  },
-  "dependencies": {
-    "serve-static": "^1.15.0",
-    "tsx": "^4.10.5"
-  },
-  "devDependencies": {
-    "@types/serve-static": "^1.15.2",
-    "unbuild": "^1.2.1"
-  },
-  "gitHead": "8471bddf6fb9850001d8661f7d1058ea590999d1"
+    "name": "@gez/core",
+    "template": "library-node",
+    "bin": {
+        "gez": "./dist/cli/index.mjs"
+    },
+    "scripts": {
+        "lint:js": "eslint . --ext .js,.mjs,.cjs,.ts,.vue --fix",
+        "lint:css": "stylelint '**/*.{css,vue}' --fix --aei",
+        "lint:type": "tsc --noEmit",
+        "test": "vitest --pass-with-no-tests",
+        "coverage": "vitest run --coverage --pass-with-no-tests",
+        "build": "unbuild"
+    },
+    "dependencies": {
+        "serve-static": "^1.15.0",
+        "tsx": "^4.10.5"
+    },
+    "devDependencies": {
+        "@gez/lint": "0.0.8",
+        "@types/node": "20.12.12",
+        "@vitest/coverage-v8": "1.6.0",
+        "eslint": "8.57.0",
+        "stylelint": "16.5.0",
+        "typescript": "5.4.5",
+        "unbuild": "2.0.0",
+        "vitest": "1.6.0"
+    },
+    "version": "0.0.8",
+    "type": "module",
+    "private": false,
+    "exports": {
+        ".": {
+            "import": "./dist/index.mjs",
+            "require": "./dist/index.cjs"
+        }
+    },
+    "main": "./dist/index.cjs",
+    "module": "dist/index.mjs",
+    "types": "./dist/index.d.ts",
+    "files": [
+        "src",
+        "dist",
+        "*.mjs",
+        "template"
+    ]
 }
