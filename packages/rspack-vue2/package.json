@@ -9,6 +9,14 @@
         "coverage": "vitest run --coverage --pass-with-no-tests",
         "build": "unbuild"
     },
+    "dependencies": {
+        "webpack-dev-middleware": "^7.2.1",
+        "webpack-hot-middleware": "^2.26.1",
+        "@module-federation/enhanced": "^0.1.15",
+        "@gez/core": "0.0.9",
+        "@rspack/core": "^0.6.5",
+        "vue-loader": "^15.10.2"
+    },
     "devDependencies": {
         "@gez/lint": "0.0.9",
         "@types/node": "20.12.12",
@@ -19,7 +27,7 @@
         "vitest": "1.6.0",
         "unbuild": "2.0.0"
     },
-    "version": "0.0.0",
+    "version": "0.0.9",
     "type": "module",
     "private": false,
     "exports": {

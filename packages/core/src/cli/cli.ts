@@ -1,5 +1,5 @@
-// @ts-expect-error type error
 import path from 'path';
+// @ts-expect-error type error
 import { register } from 'tsx/esm/api';
 
 import { type App, createApp, getProjectPath, Gez } from '../core';
@@ -37,10 +37,21 @@ function defaultCreateDevApp(): App {
     throw new Error("'createDevApp' function not set");
 }
 
-async function runFile(file: string) {
-    if (!/\.(js|ts)$/.test(file)) return;
+export async function runFile(file: string) {
+    if (!/\.(js|ts)$/.test(file))
+        return {
+            module: undefined,
+            unModule: () => {}
+        };
     const api = register({ namespace: NAMESPACE });
-    await api.import(path.resolve(file), import.meta.url);
+    const module = await api.import(path.resolve(file), import.meta.url);
+
+    return {
+        module,
+        unModule: () => {
+            api.unregister();
+        }
+    };
 }
 
 async function runDevApp(command: COMMAND) {

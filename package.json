@@ -7,9 +7,9 @@
         "prepare": "./prepare.sh",
         "lint:js": "lerna run lint:js",
         "lint:type": "lerna run lint:type",
+        "test": "lerna run test",
         "build:packages": "lerna run build --no-private",
-        "release": "npm run build:packages && lerna publish --force-publish --exact",
-        "test": "lerna run test"
+        "release": "npm run build:packages && lerna publish --force-publish --exact"
     },
     "engines": {
         "lerna": "~8.1.3",

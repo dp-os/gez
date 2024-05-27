@@ -2,7 +2,7 @@
     "name": "@gez/core",
     "template": "library-node",
     "bin": {
-        "gez": "./dist/cli/index.mjs"
+        "gez": "./cli.mjs"
     },
     "scripts": {
         "lint:js": "eslint . --ext .js,.mjs,.cjs,.ts,.vue --fix",

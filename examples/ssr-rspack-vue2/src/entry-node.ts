@@ -1,9 +1,9 @@
 import { defineNode, createServer } from '@gez/core'
 
 export default defineNode({
-  name: 'ssr-vite-vue3',
+  name: 'ssr-rspack-vue2',
   async createDevApp (gez) {
-    return await import('@gez/vite').then(async m => await m.createApp(gez))
+    return import('@gez/rspack-vue2').then(async m => await m.createApp(gez))
   },
   created (gez) {
     const server = createServer(gez)
