@@ -10,24 +10,24 @@
         "build": "unbuild"
     },
     "dependencies": {
-        "webpack-dev-middleware": "^7.2.1",
-        "webpack-hot-middleware": "^2.26.1",
+        "@gez/core": "0.0.12",
         "@module-federation/enhanced": "^0.1.15",
-        "@gez/core": "0.0.9",
         "@rspack/core": "^0.6.5",
-        "vue-loader": "^15.10.2"
+        "vue-loader": "^15.10.2",
+        "webpack-dev-middleware": "^7.2.1",
+        "webpack-hot-middleware": "^2.26.1"
     },
     "devDependencies": {
-        "@gez/lint": "0.0.9",
+        "@gez/lint": "0.0.12",
         "@types/node": "20.12.12",
         "@vitest/coverage-v8": "1.6.0",
         "eslint": "8.57.0",
         "stylelint": "16.5.0",
         "typescript": "5.4.5",
-        "vitest": "1.6.0",
-        "unbuild": "2.0.0"
+        "unbuild": "2.0.0",
+        "vitest": "1.6.0"
     },
-    "version": "0.0.9",
+    "version": "0.0.12",
     "type": "module",
     "private": false,
     "exports": {

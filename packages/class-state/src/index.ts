@@ -1,7 +1,7 @@
 export { createState, type State } from './create';
 export {
     connectState,
-    connectStore,
+    foreignStore,
     type StoreConstructor,
     type StoreContext,
     type StoreInstance,

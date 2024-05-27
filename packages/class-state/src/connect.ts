@@ -170,9 +170,10 @@ export class StoreContext<T extends {}> {
                         return state[p];
                     }
                 }
-                currentStateContext = storeContext._stateContext;
-                const result = Reflect.get(target, p, receiver);
-                currentStateContext = null;
+                const result = applyStateContext(
+                    storeContext._stateContext,
+                    () => Reflect.get(target, p, receiver)
+                );
                 if (
                     typeof result === 'function' &&
                     typeof p === 'string' &&
@@ -231,6 +232,10 @@ export class StoreContext<T extends {}> {
     }
 }
 
+function getFullPath(name: string, cacheKey?: string) {
+    return typeof cacheKey === 'string' ? name + '/' + cacheKey : name;
+}
+
 export function connectState(state: State) {
     const stateContext = getStateContext(state);
     return <T extends StoreConstructor>(
@@ -238,12 +243,14 @@ export function connectState(state: State) {
         name: string,
         cacheKey?: string
     ): StoreInstance<InstanceType<T>> => {
-        const fullPath =
-            typeof cacheKey === 'string' ? name + '/' + cacheKey : name;
+        const fullPath = getFullPath(name, cacheKey);
         let storeContext: StoreContext<InstanceType<T>> | null =
             stateContext.get(fullPath);
         if (!storeContext) {
-            const store = new Store(cacheKey);
+            const store = applyStateContext(
+                stateContext,
+                () => new Store(cacheKey)
+            );
             let storeState;
             if (fullPath in state.value) {
                 storeState = { ...store, ...state.value[fullPath] };
@@ -261,20 +268,39 @@ export function connectState(state: State) {
         return storeContext.get();
     };
 }
-
-export function connectStore<T extends StoreConstructor>(
+/**
+ * 连接外部的 store，如果没有，则实例化 Store 类作为默认值返回
+ */
+export function foreignStore<T extends StoreConstructor>(
     Store: T,
     name: string,
-    ...params: ConstructorParameters<T>
-) {
+    cacheKey?: string
+): InstanceType<T> {
     if (!currentStateContext) {
         throw new Error('No state context found');
     }
-    return connectState(currentStateContext.state)(Store, name, ...params);
+    const fullPath = getFullPath(name, cacheKey);
+    const storeContext: StoreContext<InstanceType<T>> | null =
+        currentStateContext.get(fullPath);
+    if (storeContext) {
+        return storeContext.get();
+    }
+    return new Store(cacheKey);
 }
 
 function call(obj: any, key: symbol) {
     if (typeof obj[key] === 'function') {
         return obj[key]();
     }
+}
+
+function applyStateContext<T = void>(
+    stateContext: StateContext | null,
+    cb: () => T
+) {
+    const prev = currentStateContext;
+    currentStateContext = stateContext;
+    const value = cb();
+    currentStateContext = prev;
+    return value;
 }

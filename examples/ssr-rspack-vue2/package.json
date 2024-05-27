@@ -1,6 +1,6 @@
 {
     "name": "ssr-rspack-vue2",
-    "version": "0.0.9",
+    "version": "0.0.12",
     "private": true,
     "type": "module",
     "scripts": {
@@ -10,14 +10,14 @@
         "start": "gez"
     },
     "dependencies": {
-        "@gez/core": "0.0.9"
+        "@gez/core": "0.0.12"
     },
     "devDependencies": {
-        "vue-server-renderer": "^2.7.16",
-        "@gez/rspack-vue2": "0.0.9",
-        "@gez/class-state": "0.0.9",
+        "@gez/class-state": "0.0.12",
+        "@gez/rspack-vue2": "0.0.12",
         "@types/node": "^20.6.3",
         "typescript": "^5.2.2",
-        "vue": "2.7.16"
+        "vue": "2.7.16",
+        "vue-server-renderer": "^2.7.16"
     }
 }

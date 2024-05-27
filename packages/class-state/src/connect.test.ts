@@ -1,6 +1,6 @@
 import { assert, test } from 'vitest';
 
-import { connectState, connectStore } from './connect';
+import { connectState, foreignStore } from './connect';
 import { createState } from './create';
 
 test('Base', () => {
@@ -41,19 +41,15 @@ test('Base', () => {
 
     user.$setName('jack');
     assert.strictEqual(user.name, 'jack');
-    // @ts-expect-error test
     assert.strictEqual(state.value.user.name, user.name);
 
     user.$setAge(20);
     assert.strictEqual(user.age, 20);
-    // @ts-expect-error test
     assert.strictEqual(state.value.user.age, user.age);
 
     user.$buildText();
     assert.strictEqual(user.text, 'jack is 20 years old.');
-    // @ts-expect-error test
     assert.strictEqual(state.value.user.text, user.text);
-    // @ts-expect-error test
     assert.isUndefined(state.value.user.online);
 
     assert.strictEqual(user.online, false);
@@ -234,7 +230,7 @@ test('Multiple instances', () => {
     class User {
         public name = '';
         public get blog() {
-            return connectStore(Blog, 'blog');
+            return foreignStore(Blog, 'blog');
         }
 
         public get log() {
