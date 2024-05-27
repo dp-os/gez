@@ -286,6 +286,33 @@ importers:
         specifier: 1.6.0
         version: 1.6.0(@types/node@20.12.12)
 
+  packages/rspack-vue2:
+    devDependencies:
+      '@gez/lint':
+        specifier: 0.0.9
+        version: link:../lint
+      '@types/node':
+        specifier: 20.12.12
+        version: 20.12.12
+      '@vitest/coverage-v8':
+        specifier: 1.6.0
+        version: 1.6.0(vitest@1.6.0)
+      eslint:
+        specifier: 8.57.0
+        version: 8.57.0
+      stylelint:
+        specifier: 16.5.0
+        version: 16.5.0(typescript@5.4.5)
+      typescript:
+        specifier: 5.4.5
+        version: 5.4.5
+      unbuild:
+        specifier: 2.0.0
+        version: 2.0.0(typescript@5.4.5)
+      vitest:
+        specifier: 1.6.0
+        version: 1.6.0(@types/node@20.12.12)
+
   packages/vite:
     devDependencies:
       '@gez/core':
@@ -1733,7 +1760,7 @@ packages:
     dependencies:
       '@vue/compiler-ssr': 3.4.27
       '@vue/shared': 3.4.27
-      vue: 3.4.27(typescript@5.4.2)
+      vue: 3.4.27(typescript@5.4.5)
     dev: true
 
   /@vue/shared@3.4.27:
