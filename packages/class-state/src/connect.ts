@@ -275,7 +275,7 @@ export function foreignStore<T extends StoreConstructor>(
     Store: T,
     name: string,
     cacheKey?: string
-): InstanceType<T> {
+): InstanceType<T> | null {
     if (!currentStateContext) {
         throw new Error('No state context found');
     }
@@ -285,7 +285,7 @@ export function foreignStore<T extends StoreConstructor>(
     if (storeContext) {
         return storeContext.get();
     }
-    return new Store(cacheKey);
+    return null;
 }
 
 function call(obj: any, key: symbol) {
