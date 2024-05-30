@@ -8,12 +8,11 @@ import { createBaseConfig } from './base';
 
 export function createServerConfig(gez: Gez) {
     const base = createBaseConfig(gez);
-    const ENTRY_SERVER_CJS = 'entry-server.cjs';
-    const ENTRY_SERVER_HOT_CJS = 'entry-server.hot.cjs';
+    const ENTRY_CJS = 'entry-server.cjs';
+    const ENTRY_HOT_CJS = 'entry-server.hot.cjs';
 
     const files: Record<string, string> = {
-        [path.resolve(gez.getProjectPath('dist/server'), ENTRY_SERVER_HOT_CJS)]:
-            `
+        [path.resolve(gez.getProjectPath('dist/server'), ENTRY_HOT_CJS)]: `
 module.exports = {
     dispose (base) {
         Object.keys(require.cache).forEach(file => {
@@ -22,11 +21,11 @@ module.exports = {
             }
         })
     },
-    module: require('./${ENTRY_SERVER_CJS}')
+    module: require('./${ENTRY_CJS}')
 }
 `,
         [gez.getProjectPath('dist/server/entry-server.js')]: `
-import hot from './${ENTRY_SERVER_HOT_CJS}';
+import hot from './${ENTRY_HOT_CJS}';
 export const module = hot.module;
 export const dispose = hot.dispose;
 `
@@ -64,7 +63,7 @@ export const dispose = hot.dispose;
             path: gez.getProjectPath('dist/server'),
             filename: path.resolve(
                 gez.getProjectPath('dist/server'),
-                ENTRY_SERVER_CJS
+                ENTRY_CJS
             ),
             library: {
                 type: 'commonjs2'
