@@ -30,7 +30,6 @@ export async function createApp(gez: Gez): Promise<App> {
                 gez.getProjectPath('dist/server/entry-server.js')
             );
             const render: ServerRender | undefined = module.default;
-            console.log('>>>>>>>>', module);
             const context = new ServerContext(gez, params);
             if (typeof render === 'function') {
                 await render(context);

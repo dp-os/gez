@@ -1,6 +1,6 @@
 import path from 'path';
 // @ts-expect-error type error
-import { register } from 'tsx/esm/api';
+import { tsImport } from 'tsx/esm/api';
 
 import { type App, createApp, getProjectPath, Gez } from '../core';
 import { type NodeOptions } from '../node';
@@ -37,26 +37,15 @@ function defaultCreateDevApp(): App {
     throw new Error("'createDevApp' function not set");
 }
 
-export async function runFile(file: string) {
-    if (!/\.(js|ts)$/.test(file))
-        return {
-            module: undefined,
-            unModule: () => {}
-        };
-    const api = register({ namespace: NAMESPACE });
-    const module = await api.import(path.resolve(file), import.meta.url);
+export async function runFile(file: string): Promise<Record<string, any>> {
+    if (!/\.(js|ts|mjs|cjs)$/.test(file)) return {};
+    const module = await tsImport(path.resolve(file), import.meta.url);
 
-    return {
-        module,
-        unModule: () => {
-            api.unregister();
-        }
-    };
+    return module;
 }
 
 async function runDevApp(command: COMMAND) {
-    const api = register({ namespace: NAMESPACE });
-    const module = await api.import(
+    const module = await tsImport(
         path.resolve('src/entry-node.ts'),
         import.meta.url
     );
@@ -75,12 +64,10 @@ async function runDevApp(command: COMMAND) {
         case COMMAND.build:
             await app.build();
             await app.destroy();
-            await api.unregister();
             break;
         case COMMAND.preview:
             await app.build();
             await app.destroy();
-            await api.unregister();
             runProdApp();
             break;
     }

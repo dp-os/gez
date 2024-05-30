@@ -10,6 +10,7 @@
         "build": "unbuild"
     },
     "dependencies": {
+        "write": "^2.0.0",
         "@gez/core": "0.0.13",
         "@module-federation/enhanced": "^0.1.15",
         "@rspack/core": "^0.6.5",
@@ -19,6 +20,7 @@
     },
     "devDependencies": {
         "@gez/lint": "0.0.13",
+        "@types/write": "^2.0.4",
         "@types/node": "20.12.12",
         "@vitest/coverage-v8": "1.6.0",
         "eslint": "8.57.0",

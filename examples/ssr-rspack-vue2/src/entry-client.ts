@@ -1,8 +1,7 @@
-import { createApp } from './main'
 
-function start () {
-  const { app } = createApp()
-  app.mount('.app')
+export async  function test ()  {
+  const App = await import('./app.vue')
+  return App
 }
 
-start()
+console.log(await test())
