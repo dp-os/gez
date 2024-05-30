@@ -1,8 +1,8 @@
 import {
     type App,
     type AppRenderParams,
+    createMod,
     type Gez,
-    runFile,
     ServerContext,
     type ServerRender
 } from '@gez/core';
@@ -26,14 +26,17 @@ export async function createApp(gez: Gez): Promise<App> {
         },
         async build() {},
         async render(params: AppRenderParams): Promise<ServerContext> {
-            const { module } = await runFile(
+            const mod = createMod(
                 gez.getProjectPath('dist/server/entry-server.js')
             );
+            const { module, dispose } = await mod.import();
             const render: ServerRender | undefined = module.default;
             const context = new ServerContext(gez, params);
             if (typeof render === 'function') {
                 await render(context);
             }
+            await mod.dispose();
+            dispose(gez.getProjectPath('dist/server'));
             return context;
         },
         async destroy() {

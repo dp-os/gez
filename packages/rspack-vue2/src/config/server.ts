@@ -1,20 +1,39 @@
 import { type Gez } from '@gez/core';
 // import { ModuleFederationPlugin } from '@module-federation/enhanced/rspack';
 import { type RspackOptions } from '@rspack/core';
+import path from 'path';
 import write from 'write';
 
 import { createBaseConfig } from './base';
 
 export function createServerConfig(gez: Gez) {
     const base = createBaseConfig(gez);
-    write.sync(
-        gez.getProjectPath('dist/server/entry-server.js'),
-        `
-import module from './entry-server.cjs';
+    const ENTRY_SERVER_CJS = 'entry-server.cjs';
+    const ENTRY_SERVER_HOT_CJS = 'entry-server.hot.cjs';
 
-export { module  }
+    const files: Record<string, string> = {
+        [path.resolve(gez.getProjectPath('dist/server'), ENTRY_SERVER_HOT_CJS)]:
+            `
+module.exports = {
+    dispose (base) {
+        Object.keys(require.cache).forEach(file => {
+            if (file.startsWith(base)) {
+                delete require.cache[file]
+            }
+        })
+    },
+    module: require('./${ENTRY_SERVER_CJS}')
+}
+`,
+        [gez.getProjectPath('dist/server/entry-server.js')]: `
+import hot from './${ENTRY_SERVER_HOT_CJS}';
+export const module = hot.module;
+export const dispose = hot.dispose;
 `
-    );
+    };
+    Object.keys(files).forEach((file) => {
+        write.sync(file, files[file].trimStart());
+    });
     return {
         ...base,
         plugins: [
@@ -43,9 +62,10 @@ export { module  }
         output: {
             ...base.output,
             path: gez.getProjectPath('dist/server'),
-            filename: gez
-                .getProjectPath('dist/server/entry-server.js')
-                .replace(/\.js$/, '.cjs'),
+            filename: path.resolve(
+                gez.getProjectPath('dist/server'),
+                ENTRY_SERVER_CJS
+            ),
             library: {
                 type: 'commonjs2'
             }
