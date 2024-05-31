@@ -207,6 +207,9 @@ importers:
       '@types/node':
         specifier: 20.12.12
         version: 20.12.12
+      '@types/serve-static':
+        specifier: ^1.15.7
+        version: 1.15.7
       '@vitest/coverage-v8':
         specifier: 1.6.0
         version: 1.6.0(vitest@1.6.0)
@@ -2297,7 +2300,7 @@ packages:
     dependencies:
       '@vue/compiler-ssr': 3.4.27
       '@vue/shared': 3.4.27
-      vue: 3.4.27(typescript@5.4.2)
+      vue: 3.4.27(typescript@5.4.5)
     dev: true
 
   /@vue/shared@3.4.27:

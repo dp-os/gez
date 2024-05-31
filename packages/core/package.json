@@ -17,6 +17,7 @@
         "tsx": "^4.10.5"
     },
     "devDependencies": {
+        "@types/serve-static": "^1.15.7",
         "@gez/lint": "0.0.13",
         "@types/node": "20.12.12",
         "@vitest/coverage-v8": "1.6.0",

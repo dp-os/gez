@@ -104,7 +104,7 @@ async function runDevApp(command: COMMAND) {
 
 async function runProdApp() {
     const file = getProjectPath(path.resolve(), 'dist/node/entry-node.js');
-    import(/* @vite-ignore */ file).then(async (module) => {
+    import(file).then(async (module) => {
         const options: NodeOptions = module.default || {};
         const created = options.created || defaultCreated;
         process.env.NODE_ENV = 'production';

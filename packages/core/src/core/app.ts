@@ -38,9 +38,7 @@ export async function createApp(gez: Gez): Promise<App> {
         async render(params: AppRenderParams) {
             const context = new ServerContext(gez, params);
             const result = await import(
-                /* @vite-ignore */ gez.getProjectPath(
-                    'dist/server/entry-server.js'
-                )
+                gez.getProjectPath('dist/server/entry-server.js')
             );
             const serverRender: ServerRender = result.default;
             if (typeof serverRender === 'function') {
