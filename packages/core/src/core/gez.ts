@@ -29,9 +29,17 @@ export interface GezOptions {
     createDevApp?: (gez: Gez) => Promise<App>;
 }
 
+export enum COMMAND {
+    dev = 'dev',
+    build = 'build',
+    preview = 'preview',
+    start = 'start'
+}
+
 export class Gez {
     private readonly _options: GezOptions;
     private _app: App | null = null;
+    private _command: COMMAND | null = null;
     public constructor(options: GezOptions = {}) {
         this._options = options;
     }
@@ -41,14 +49,29 @@ export class Gez {
         if (_app) {
             return _app;
         }
-        throw new Error('App instance does not exist');
+        throw new Error(`'app' does not exist`);
     }
 
     public set app(app: App) {
         if (this._app) {
-            throw new Error('Cannot repeatedly mount App instances');
+            throw new Error(`'app' cannot be set`);
         }
         this._app = app;
+    }
+
+    public get command() {
+        const { _command } = this;
+        if (_command) {
+            return _command;
+        }
+        throw new Error(`'command' does not exist`);
+    }
+
+    public set command(command: COMMAND) {
+        if (this._command) {
+            throw new Error(`'command' cannot be set`);
+        }
+        this._command = command;
     }
 
     public get build() {

@@ -7,8 +7,7 @@
         "dev": "gez dev",
         "build": "gez build",
         "build:dts": "npx --yes vue-tsc --declaration --emitDeclarationOnly",
-        "start": "gez",
-        "test2": "gez dist/server/entry-server.mjs"
+        "start": "gez start"
     },
     "dependencies": {
         "@gez/core": "0.0.13"

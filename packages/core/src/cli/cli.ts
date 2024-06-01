@@ -1,16 +1,10 @@
-import path from 'path';
+import path from 'node:path';
+
 // @ts-expect-error type error
 import { register } from 'tsx/esm/api';
 
-import { type App, createApp, getProjectPath, Gez } from '../core';
+import { type App, COMMAND, createApp, getProjectPath, Gez } from '../core';
 import { type NodeOptions } from '../node';
-
-enum COMMAND {
-    dev = 'dev',
-    build = 'build',
-    preview = 'preview',
-    start = 'start'
-}
 
 export function cli() {
     const command = process.argv.slice(2)[0] || '';
@@ -56,10 +50,11 @@ export function createMod(file: string): Mod {
         }) as Mod;
         return _api;
     };
+    const fullFile = path.resolve(file);
 
     return {
         async import() {
-            return getApi().import(path.resolve(file), import.meta.url);
+            return getApi().import(fullFile, import.meta.url);
         },
         async reload() {
             await getApi().unregister();
@@ -81,6 +76,7 @@ async function runDevApp(command: COMMAND) {
     const createDevApp = options.createDevApp ?? defaultCreateDevApp;
 
     const gez = new Gez(options);
+    gez.command = command;
     const app = await createDevApp(gez);
     gez.app = app;
 
@@ -97,19 +93,20 @@ async function runDevApp(command: COMMAND) {
             await app.build();
             await app.destroy();
             await mod.dispose();
-            runProdApp();
+            await runProdApp();
             break;
     }
 }
 
 async function runProdApp() {
     const file = getProjectPath(path.resolve(), 'dist/node/entry-node.js');
-    import(file).then(async (module) => {
+    await import(file).then(async (module) => {
         const options: NodeOptions = module.default || {};
         const created = options.created || defaultCreated;
         process.env.NODE_ENV = 'production';
 
         const gez = new Gez(options);
+        gez.command = COMMAND.start;
         gez.app = await createApp(gez);
 
         created(gez);
