@@ -3,18 +3,22 @@ import path from 'node:path';
 // @ts-expect-error type error
 import { register } from 'tsx/esm/api';
 
-import { type App, COMMAND, createApp, getProjectPath, Gez } from '../core';
+import { COMMAND, getProjectPath, Gez } from '../core';
 import { type NodeOptions } from '../node';
 
 export function cli() {
     const command = process.argv.slice(2)[0] || '';
     switch (command) {
         case COMMAND.dev:
+            runDevApp(command);
+            break;
         case COMMAND.build:
         case COMMAND.preview:
+            process.env.NODE_ENV = 'production';
             runDevApp(command);
             break;
         case COMMAND.start:
+            process.env.NODE_ENV = 'production';
             runProdApp();
             break;
         default:
@@ -27,9 +31,6 @@ function defaultCreated() {
     throw new Error("'created' function not set");
 }
 
-function defaultCreateDevApp(): App {
-    throw new Error("'createDevApp' function not set");
-}
 interface Mod {
     import: () => Promise<Record<string, any>>;
     reload: () => Promise<void>;
@@ -73,25 +74,22 @@ async function runDevApp(command: COMMAND) {
     const module = await mod.import();
     const options: NodeOptions = module.default || {};
     const created = options.created || defaultCreated;
-    const createDevApp = options.createDevApp ?? defaultCreateDevApp;
 
     const gez = new Gez(options);
-    gez.command = command;
-    const app = await createDevApp(gez);
-    gez.app = app;
+    await gez.init(command);
 
     switch (command) {
         case COMMAND.dev:
             created(gez);
             break;
         case COMMAND.build:
-            await app.build();
-            await app.destroy();
+            await gez.build();
+            await gez.destroy();
             await mod.dispose();
             break;
         case COMMAND.preview:
-            await app.build();
-            await app.destroy();
+            await gez.build();
+            await gez.destroy();
             await mod.dispose();
             await runProdApp();
             break;
@@ -103,11 +101,9 @@ async function runProdApp() {
     await import(/* @vite-ignore */ file).then(async (module) => {
         const options: NodeOptions = module.default || {};
         const created = options.created || defaultCreated;
-        process.env.NODE_ENV = 'production';
 
         const gez = new Gez(options);
-        gez.command = COMMAND.start;
-        gez.app = await createApp(gez);
+        await gez.init(COMMAND.start);
 
         created(gez);
     });

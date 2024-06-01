@@ -1,3 +1,4 @@
+import fs from 'node:fs';
 import { type IncomingMessage, type ServerResponse } from 'node:http';
 
 import {
@@ -9,11 +10,7 @@ import {
     ServerContext,
     type ServerRender
 } from '@gez/core';
-import {
-    type MultiCompiler,
-    type MultiRspackOptions,
-    rspack
-} from '@rspack/core';
+import { type MultiCompiler, rspack } from '@rspack/core';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 
@@ -24,17 +21,29 @@ import {
 } from './config';
 
 function middleware(gez: Gez) {
-    let compiler: MultiCompiler | null = null;
+    let clientCompiler: MultiCompiler | null = null;
     let dev = (req: IncomingMessage, res: ServerResponse, next?: Function) => {
         return next?.();
     };
     let hot = dev;
     if (gez.command === COMMAND.dev) {
-        compiler = rspack([createClientConfig(gez), createServerConfig(gez)]);
-        dev = webpackDevMiddleware(compiler, {
+        clientCompiler = rspack([createClientConfig(gez)]);
+        const serverCompiler = rspack([createServerConfig(gez)]);
+        // @ts-expect-error
+        webpackDevMiddleware(serverCompiler, {
+            publicPath: gez.base,
             writeToDisk: true
-        }) as any;
-        hot = webpackHotMiddleware(compiler);
+        });
+        // @ts-expect-error
+        dev = webpackDevMiddleware(clientCompiler, {
+            writeToDisk: true,
+            publicPath: gez.base
+        });
+        // @ts-expect-error
+        hot = webpackHotMiddleware(clientCompiler, {
+            heartbeat: 5000,
+            path: `${gez.base}hot-middleware`
+        });
     }
     return (req: IncomingMessage, res: ServerResponse, next?: Function) => {
         dev(req, res, () => {

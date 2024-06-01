@@ -1,7 +1,6 @@
+import Vue from 'vue'
+import App from './app.vue';
 
-export async  function test ()  {
-  const App = await import('./app.vue')
-  return App
-}
+const app = new Vue(App);
 
-console.log(await test())
+app.$mount('#app')

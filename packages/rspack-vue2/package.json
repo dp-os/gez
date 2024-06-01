@@ -21,6 +21,7 @@
     },
     "devDependencies": {
         "@types/webpack-node-externals": "^3.0.4",
+        "@types/webpack-hot-middleware": "^2.25.9",
         "@gez/lint": "0.0.13",
         "@types/write": "^2.0.4",
         "@types/node": "20.12.12",

@@ -1,7 +1,7 @@
 import path from 'node:path';
 import { cwd } from 'node:process';
 
-import { type App } from './app';
+import { type App, createApp } from './app';
 import { getProjectPath, type ProjectPath } from './project-path';
 
 export interface FederationSharedConfig {
@@ -44,7 +44,7 @@ export class Gez {
         this._options = options;
     }
 
-    public get app() {
+    private get app() {
         const { _app } = this;
         if (_app) {
             return _app;
@@ -52,13 +52,9 @@ export class Gez {
         throw new Error(`'app' does not exist`);
     }
 
-    public set app(app: App) {
-        if (this._app) {
-            throw new Error(`'app' cannot be set`);
-        }
-        this._app = app;
-    }
-
+    /**
+     * 当前程序执行的命令
+     */
     public get command() {
         const { _command } = this;
         if (_command) {
@@ -67,25 +63,30 @@ export class Gez {
         throw new Error(`'command' does not exist`);
     }
 
-    public set command(command: COMMAND) {
-        if (this._command) {
-            throw new Error(`'command' cannot be set`);
-        }
-        this._command = command;
-    }
-
+    /**
+     * 构建应用代码
+     */
     public get build() {
         return this.app.build;
     }
 
+    /**
+     * 静态资源中间件
+     */
     public get middleware() {
         return this.app.middleware;
     }
 
+    /**
+     * 渲染函数
+     */
     public get render() {
         return this.app.render;
     }
 
+    /**
+     * 销毁实例，释放内存
+     */
     public async destroy() {
         const { _app } = this;
         if (_app) {
@@ -93,6 +94,9 @@ export class Gez {
         }
     }
 
+    /**
+     * 本地开发根目录
+     */
     public get root(): string {
         const { root = cwd() } = this._options;
         if (path.isAbsolute(root)) {
@@ -101,27 +105,58 @@ export class Gez {
         return path.resolve(cwd(), root);
     }
 
+    /**
+     * 静态资源请求目录
+     * 例如：/gez/
+     */
     public get base() {
         return `/${this.name}/`;
     }
 
+    /**
+     * 服务的名称
+     */
     public get name() {
         return this._options.name ?? 'gez';
+    }
+
+    /**
+     * 当前服务，生成一个全局唯一的变量名称
+     */
+    public get varName() {
+        return '__' + this.name.replace(/[^a-zA-Z]/g, '_') + '__';
     }
 
     public get isProd(): boolean {
         return this._options?.isProd ?? process.env.NODE_ENV === 'production';
     }
 
+    /**
+     * 模块联邦配置
+     */
     public get federation() {
         return this._options.federation ?? null;
     }
 
-    public get createDevApp(): GezOptions['createDevApp'] {
-        return this._options.createDevApp;
+    public async init(command: COMMAND) {
+        if (this._command) {
+            throw new Error('Cannot be initialized repeatedly');
+        }
+        const createDevApp = this._options.createDevApp || defaultCreateDevApp;
+
+        this._command = command;
+        const app: App =
+            command === COMMAND.start
+                ? await createApp(this)
+                : await createDevApp(this);
+        this._app = app;
     }
 
     public getProjectPath(projectPath: ProjectPath): string {
         return getProjectPath(this.root, projectPath);
     }
+}
+
+async function defaultCreateDevApp(): Promise<App> {
+    throw new Error("'createDevApp' function not set");
 }

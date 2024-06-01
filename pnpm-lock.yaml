@@ -356,6 +356,9 @@ importers:
       '@types/node':
         specifier: 20.12.12
         version: 20.12.12
+      '@types/webpack-hot-middleware':
+        specifier: ^2.25.9
+        version: 2.25.9
       '@types/webpack-node-externals':
         specifier: ^3.0.4
         version: 3.0.4
@@ -1903,6 +1906,19 @@ packages:
       '@types/send': 0.17.4
     dev: true
 
+  /@types/webpack-hot-middleware@2.25.9:
+    resolution: {integrity: sha512-fad4T9VfocBjS2fZxlqkGoXoVUAjVp0EEnKBRqPwnhEEDN/FqJoFkSP5t9O1gPH75qsyG2kkT/GSUqSNTn1ZPg==}
+    dependencies:
+      '@types/connect': 3.4.38
+      tapable: 2.2.1
+      webpack: 5.91.0
+    transitivePeerDependencies:
+      - '@swc/core'
+      - esbuild
+      - uglify-js
+      - webpack-cli
+    dev: true
+
   /@types/webpack-node-externals@3.0.4:
     resolution: {integrity: sha512-8Z3/edqxE3RRlOJwKSgOFxLZRt/i1qFlv/Bi308ZUKo9jh8oGngd9r8GR0ZNKW5AEJq8QNQE3b17CwghTjQ0Uw==}
     dependencies:
@@ -2315,7 +2331,7 @@ packages:
     dependencies:
       '@vue/compiler-ssr': 3.4.27
       '@vue/shared': 3.4.27
-      vue: 3.4.27(typescript@5.4.2)
+      vue: 3.4.27(typescript@5.4.5)
     dev: true
 
   /@vue/shared@3.4.27:

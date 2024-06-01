@@ -49,16 +49,16 @@ export function createBaseConfig(gez: Gez) {
             extensions: ['.vue', '.ts', '...']
         },
         output: {
-            publicPath: `/${gez.name}/`,
-            uniqueName: gez.name.replace(/[^a-zA-Z]/g, '_')
+            publicPath: gez.base,
+            uniqueName: gez.varName
         },
         experiments: {
-            css: false,
-            outputModule: true
+            css: false
         },
         optimization: {
             minimize: false
         },
-        entry: {}
+        entry: {},
+        cache: false
     } satisfies RspackOptions;
 }

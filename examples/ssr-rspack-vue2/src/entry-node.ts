@@ -8,9 +8,10 @@ export default defineNode({
   },
   async created(gez) {
     const server = express()
-    server.use(gez.app.middleware)
+    server.use(gez.middleware)
     server.get('*', async (req, res) => {
-      const result = await gez.app.render({ url: '/' })
+      res.setHeader('Content-Type', 'text/html;charset=UTF-8');
+      const result = await gez.render({ url: '/' })
       res.send(result.html)
     })
     server.listen(3002, () => {
