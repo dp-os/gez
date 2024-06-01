@@ -29,15 +29,38 @@ export interface App {
 
 export async function createApp(gez: Gez): Promise<App> {
     const root = gez.getProjectPath('dist/client');
+    const middleware = serveStatic(root, {
+        setHeaders(res) {
+            res.setHeader('cache-control', 'public, max-age=31536000');
+        }
+    }) as App['middleware'];
     return {
-        middleware: serveStatic(root, {
-            setHeaders(res) {
-                res.setHeader('cache-control', 'public, max-age=31536000');
+        middleware(req, res, next) {
+            const url = req.url;
+            const _next = () => {
+                if (typeof next === 'function') {
+                    next();
+                } else {
+                    res.writeHead(404, {
+                        'Content-Type': 'text/html;charset=UTF-8'
+                    });
+                    res.end('Not Found');
+                }
+            };
+            if (typeof url === 'string' && url.startsWith(gez.base)) {
+                req.url = url.substring(gez.base.length - 1);
+                middleware(req, res, () => {
+                    req.url = url;
+                    _next();
+                });
+            } else {
+                _next();
             }
-        }) as App['middleware'],
+        },
         async render(params: AppRenderParams) {
             const context = new ServerContext(gez, params);
             const result = await import(
+                /* @vite-ignore */
                 gez.getProjectPath('dist/server/entry-server.js')
             );
             const serverRender: ServerRender = result.default;

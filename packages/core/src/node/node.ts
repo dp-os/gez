@@ -26,18 +26,8 @@ export function createServer(gez: Gez) {
         }
     };
     return http.createServer((req, res) => {
-        const url = req.url;
-        if (typeof url === 'string' && url.startsWith(gez.base)) {
-            req.url = url.substring(gez.base.length - 1);
-            gez.middleware(req, res, (err?: Error) => {
-                if (err instanceof Error) {
-                    console.error(err);
-                }
-                req.url = url;
-                render(req, res);
-            });
-        } else {
+        gez.middleware(req, res, () => {
             render(req, res);
-        }
+        });
     });
 }
