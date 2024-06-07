@@ -14,12 +14,12 @@
     },
     "dependencies": {
         "serve-static": "^1.15.0",
-        "tsx": "^4.10.5"
+        "tsx": "4.10.5"
     },
     "devDependencies": {
-        "@types/serve-static": "^1.15.7",
-        "@gez/lint": "0.0.13",
+        "@gez/lint": "0.0.14",
         "@types/node": "20.12.12",
+        "@types/serve-static": "^1.15.7",
         "@vitest/coverage-v8": "1.6.0",
         "eslint": "8.57.0",
         "stylelint": "16.5.0",
@@ -27,7 +27,7 @@
         "unbuild": "2.0.0",
         "vitest": "1.6.0"
     },
-    "version": "0.0.13",
+    "version": "0.0.14",
     "type": "module",
     "private": false,
     "exports": {

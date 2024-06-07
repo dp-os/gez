@@ -18,14 +18,14 @@ importers:
   examples/ssr-rspack-vue2:
     dependencies:
       '@gez/core':
-        specifier: 0.0.13
+        specifier: 0.0.14
         version: link:../../packages/core
     devDependencies:
       '@gez/class-state':
-        specifier: 0.0.13
+        specifier: 0.0.14
         version: link:../../packages/class-state
       '@gez/rspack-vue2':
-        specifier: 0.0.13
+        specifier: 0.0.14
         version: link:../../packages/rspack-vue2
       '@types/express':
         specifier: ^4.17.21
@@ -49,7 +49,7 @@ importers:
   examples/ssr-vite-qwik:
     dependencies:
       '@gez/core':
-        specifier: 0.0.13
+        specifier: 0.0.14
         version: link:../../packages/core
     devDependencies:
       '@builder.io/qwik':
@@ -59,7 +59,7 @@ importers:
         specifier: 0.0.7
         version: 0.0.7
       '@gez/vite':
-        specifier: 0.0.13
+        specifier: 0.0.14
         version: link:../../packages/vite
       '@types/node':
         specifier: ^20.6.3
@@ -77,14 +77,14 @@ importers:
   examples/ssr-vite-react:
     dependencies:
       '@gez/core':
-        specifier: 0.0.13
+        specifier: 0.0.14
         version: link:../../packages/core
     devDependencies:
       '@gez/class-state':
         specifier: 0.0.7
         version: 0.0.7
       '@gez/vite':
-        specifier: 0.0.13
+        specifier: 0.0.14
         version: link:../../packages/vite
       '@types/node':
         specifier: ^20.6.3
@@ -111,11 +111,11 @@ importers:
   examples/ssr-vite-simple:
     dependencies:
       '@gez/core':
-        specifier: 0.0.13
+        specifier: 0.0.14
         version: link:../../packages/core
     devDependencies:
       '@gez/vite':
-        specifier: 0.0.13
+        specifier: 0.0.14
         version: link:../../packages/vite
       '@types/node':
         specifier: ^20.6.3
@@ -130,14 +130,14 @@ importers:
   examples/ssr-vite-vue3:
     dependencies:
       '@gez/core':
-        specifier: 0.0.13
+        specifier: 0.0.14
         version: link:../../packages/core
     devDependencies:
       '@gez/class-state':
         specifier: 0.0.7
         version: 0.0.7
       '@gez/vite':
-        specifier: 0.0.13
+        specifier: 0.0.14
         version: link:../../packages/vite
       '@types/node':
         specifier: ^20.6.3
@@ -162,7 +162,7 @@ importers:
         version: 10.1.1
     devDependencies:
       '@gez/lint':
-        specifier: 0.0.13
+        specifier: 0.0.14
         version: link:../lint
       '@types/node':
         specifier: 20.12.12
@@ -198,11 +198,11 @@ importers:
         specifier: ^1.15.0
         version: 1.15.0
       tsx:
-        specifier: ^4.10.5
-        version: 4.11.0
+        specifier: 4.10.5
+        version: 4.10.5
     devDependencies:
       '@gez/lint':
-        specifier: 0.0.13
+        specifier: 0.0.14
         version: link:../lint
       '@types/node':
         specifier: 20.12.12
@@ -326,7 +326,7 @@ importers:
   packages/rspack-vue2:
     dependencies:
       '@gez/core':
-        specifier: 0.0.13
+        specifier: 0.0.14
         version: link:../core
       '@module-federation/enhanced':
         specifier: ^0.1.15
@@ -351,7 +351,7 @@ importers:
         version: 2.0.0
     devDependencies:
       '@gez/lint':
-        specifier: 0.0.13
+        specifier: 0.0.14
         version: link:../lint
       '@types/node':
         specifier: 20.12.12
@@ -387,10 +387,10 @@ importers:
   packages/vite:
     devDependencies:
       '@gez/core':
-        specifier: 0.0.13
+        specifier: 0.0.14
         version: link:../core
       '@gez/lint':
-        specifier: 0.0.13
+        specifier: 0.0.14
         version: link:../lint
       '@types/node':
         specifier: 20.12.12
@@ -2331,7 +2331,7 @@ packages:
     dependencies:
       '@vue/compiler-ssr': 3.4.27
       '@vue/shared': 3.4.27
-      vue: 3.4.27(typescript@5.4.5)
+      vue: 3.4.27(typescript@5.4.2)
     dev: true
 
   /@vue/shared@3.4.27:
@@ -6947,8 +6947,8 @@ packages:
     engines: {node: '>=0.6.x'}
     dev: false
 
-  /tsx@4.11.0:
-    resolution: {integrity: sha512-vzGGELOgAupsNVssAmZjbUDfdm/pWP4R+Kg8TVdsonxbXk0bEpE1qh0yV6/QxUVXaVlNemgcPajGdJJ82n3stg==}
+  /tsx@4.10.5:
+    resolution: {integrity: sha512-twDSbf7Gtea4I2copqovUiNTEDrT8XNFXsuHpfGbdpW/z9ZW4fTghzzhAG0WfrCuJmJiOEY1nLIjq4u3oujRWQ==}
     engines: {node: '>=18.0.0'}
     hasBin: true
     dependencies:
