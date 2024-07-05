@@ -230,7 +230,7 @@ test('Multiple instances', () => {
     class User {
         public name = '';
         public get blog() {
-            return foreignStore(Blog, 'blog');
+            return foreignStore(Blog, 'blog')!;
         }
 
         public get log() {
