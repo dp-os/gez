@@ -17,7 +17,6 @@
         "@gez/class-state": "0.0.7",
         "@gez/vite": "0.0.14",
         "@types/node": "^20.6.3",
-        "class-state": "0.1.28",
         "typescript": "^5.2.2",
         "vite": "^5.0.0"
     }

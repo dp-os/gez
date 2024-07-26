@@ -1,7 +1,7 @@
 import './style.css'
 import { reactive, createSSRApp } from 'vue'
 import App from './app.vue'
-import { type State } from 'class-state'
+import { type State } from '@gez/class-state'
 import { PROVIDE_STORE_KEY } from './store'
 
 function getInitState (): State['value'] {

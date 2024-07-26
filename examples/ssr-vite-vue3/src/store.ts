@@ -1,4 +1,4 @@
-import { type State, connectState } from 'class-state'
+import { type State, connectState } from '@gez/class-state'
 import { inject } from 'vue'
 
 export const PROVIDE_STORE_KEY = Symbol('class-state')
