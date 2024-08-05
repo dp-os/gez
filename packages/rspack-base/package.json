@@ -9,6 +9,11 @@
         "coverage": "vitest run --coverage --pass-with-no-tests",
         "build": "unbuild"
     },
+    "dependencies": {
+        "@rspack/cli": "1.0.0-beta.1",
+        "@rspack/core": "1.0.0-beta.1",
+        "write": "^2.0.0"
+    },
     "devDependencies": {
         "@gez/lint": "0.0.9",
         "@types/node": "20.12.12",

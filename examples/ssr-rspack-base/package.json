@@ -1,0 +1,16 @@
+{
+  "name": "rspack-demo",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development rspack serve",
+    "build": "cross-env NODE_ENV=production rspack build"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "@rspack/cli": "1.0.0-beta.1",
+    "@rspack/core": "1.0.0-beta.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}

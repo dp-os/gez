@@ -6,6 +6,7 @@
     "scripts": {
         "prepare": "./prepare.sh",
         "lint:js": "lerna run lint:js",
+        "lint:css": "lerna run lint:css",
         "lint:type": "lerna run lint:type",
         "test": "lerna run test",
         "build:packages": "lerna run build --no-private",
