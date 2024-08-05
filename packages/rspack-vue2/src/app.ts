@@ -38,6 +38,7 @@ function middleware(gez: Gez) {
             writeToDisk: true,
             publicPath: gez.base
         });
+        // @ts-expect-error
         hot = webpackHotMiddleware(clientCompiler, {
             heartbeat: 5000,
             path: `${gez.base}hot-middleware`

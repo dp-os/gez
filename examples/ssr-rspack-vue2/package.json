@@ -13,13 +13,14 @@
         "@gez/core": "0.0.14"
     },
     "devDependencies": {
+        "@gez/rspack-vue2": "^0.0.14",
         "@gez/class-state": "0.0.14",
-        "@gez/rspack-vue2": "0.0.14",
         "@types/express": "^4.17.21",
         "@types/node": "^20.6.3",
         "express": "^4.19.2",
         "typescript": "^5.2.2",
         "vue": "2.7.16",
-        "vue-server-renderer": "^2.7.16"
+        "vue-template-compiler": "2.7.16",
+        "vue-server-renderer": "2.7.16"
     }
 }

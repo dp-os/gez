@@ -1,5 +1,6 @@
 import { type Gez } from '@gez/core';
 import { type RspackOptions } from '@rspack/core';
+import nodeExternals from 'webpack-node-externals';
 
 import { createBaseConfig } from './base';
 
@@ -16,7 +17,7 @@ export function createNodeConfig(gez: Gez) {
         entry: {
             ...base.entry,
             app: {
-                import: gez.getProjectPath(`src/entry-server.ts`),
+                import: gez.getProjectPath(`src/entry-node.ts`),
                 library: {
                     type: 'module'
                 }
@@ -24,12 +25,13 @@ export function createNodeConfig(gez: Gez) {
         },
         output: {
             ...base.output,
-            filename: gez.getProjectPath('dist/server/entry-server.js'),
+            filename: gez.getProjectPath('dist/node/entry-node.js'),
             module: true
         },
         externalsPresets: {
             node: true
         },
+        ignoreWarnings: [...base.ignoreWarnings],
         externals: ['@gez/core']
     } satisfies RspackOptions;
 }
