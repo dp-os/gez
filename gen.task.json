@@ -3,6 +3,9 @@
         "packages/lint",
         "packages/class-state",
         "packages/core",
-        "packages/vite"
+        "packages/vite",
+        "packages/rspack-base",
+        "packages/rspack-vue2",
+        "packages/rspack-vue3"
     ]
 }

@@ -1,16 +1,23 @@
 {
-  "name": "rspack-demo",
-  "private": true,
-  "version": "1.0.0",
-  "scripts": {
-    "dev": "cross-env NODE_ENV=development rspack serve",
-    "build": "cross-env NODE_ENV=production rspack build"
-  },
-  "devDependencies": {
-    "cross-env": "^7.0.3",
-    "@rspack/cli": "1.0.0-beta.1",
-    "@rspack/core": "1.0.0-beta.1",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.3.3"
-  }
+    "name": "ssr-rspack-base",
+    "version": "0.0.14",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "gez dev",
+        "build": "gez build",
+        "build:dts": "npx --yes vue-tsc --declaration --emitDeclarationOnly",
+        "start": "gez start"
+    },
+    "dependencies": {
+        "@gez/core": "0.0.14"
+    },
+    "devDependencies": {
+        "@gez/rspack-base": "^0.0.14",
+        "@types/express": "^4.17.21",
+        "@types/node": "^20.6.3",
+        "express": "^4.19.2",
+        "ts-node": "^10.9.2",
+        "typescript": "^5.3.3"
+    }
 }
