@@ -10,7 +10,7 @@
         "build": "unbuild"
     },
     "dependencies": {
-        "@gez/core": "0.0.15-alpha.0",
+        "@gez/core": "0.0.15-alpha.1",
         "@rspack/core": "1.0.0-beta.2",
         "css-loader": "^6.7.4",
         "less": "^4.2.0",
@@ -19,7 +19,7 @@
         "webpack-hot-middleware": "^2.26.1"
     },
     "devDependencies": {
-        "@gez/lint": "0.0.15-alpha.0",
+        "@gez/lint": "0.0.15-alpha.1",
         "@types/node": "20.12.12",
         "@types/webpack-hot-middleware": "^2.25.9",
         "@vitest/coverage-v8": "1.6.0",
@@ -28,7 +28,7 @@
         "typescript": "5.4.5",
         "unbuild": "2.0.0"
     },
-    "version": "0.0.15-alpha.0",
+    "version": "0.0.15-alpha.1",
     "type": "module",
     "private": false,
     "exports": {
