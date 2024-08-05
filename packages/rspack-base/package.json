@@ -10,11 +10,10 @@
         "build": "unbuild"
     },
     "dependencies": {
-        "@rspack/cli": "1.0.0-beta.2",
         "@rspack/core": "1.0.0-beta.2",
-        "less-loader": "^12.2.0",
         "css-loader": "^6.7.4",
         "less": "^4.2.0",
+        "less-loader": "^12.2.0",
         "webpack-dev-middleware": "^7.2.1",
         "webpack-hot-middleware": "^2.26.1"
     },
@@ -28,7 +27,7 @@
         "typescript": "5.4.5",
         "unbuild": "2.0.0"
     },
-    "version": "0.0.0",
+    "version": "0.0.14",
     "type": "module",
     "private": false,
     "exports": {
