@@ -53,12 +53,15 @@ export function createBaseConfig(gez: Gez) {
             uniqueName: gez.varName
         },
         experiments: {
+            outputModule: true,
             css: false
         },
         optimization: {
             minimize: false
         },
         entry: {},
-        cache: false
+        ignoreWarnings: [],
+        cache: false,
+        mode: gez.isProd ? 'production' : 'development'
     } satisfies RspackOptions;
 }

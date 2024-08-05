@@ -1,6 +1,3 @@
-import Vue from 'vue'
-import App from './app.vue';
+import { createApp } from './create-app'
 
-const app = new Vue(App);
-
-app.$mount('#app')
+createApp().app.$mount('[data-server-rendered="true"]')

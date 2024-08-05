@@ -1,4 +1,3 @@
-import fs from 'node:fs';
 import { type IncomingMessage, type ServerResponse } from 'node:http';
 
 import {
@@ -10,7 +9,7 @@ import {
     ServerContext,
     type ServerRender
 } from '@gez/core';
-import { type MultiCompiler, rspack } from '@rspack/core';
+import { type Compiler, rspack } from '@rspack/core';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 
@@ -21,14 +20,14 @@ import {
 } from './config';
 
 function middleware(gez: Gez) {
-    let clientCompiler: MultiCompiler | null = null;
+    let clientCompiler: Compiler | null = null;
     let dev = (req: IncomingMessage, res: ServerResponse, next?: Function) => {
         return next?.();
     };
     let hot = dev;
     if (gez.command === COMMAND.dev) {
-        clientCompiler = rspack([createClientConfig(gez)]);
-        const serverCompiler = rspack([createServerConfig(gez)]);
+        clientCompiler = rspack(createClientConfig(gez));
+        const serverCompiler = rspack(createServerConfig(gez));
         // @ts-expect-error
         webpackDevMiddleware(serverCompiler, {
             publicPath: gez.base,
@@ -39,7 +38,6 @@ function middleware(gez: Gez) {
             writeToDisk: true,
             publicPath: gez.base
         });
-        // @ts-expect-error
         hot = webpackHotMiddleware(clientCompiler, {
             heartbeat: 5000,
             path: `${gez.base}hot-middleware`
@@ -59,14 +57,13 @@ export async function createApp(gez: Gez): Promise<App> {
             const mod = createMod(
                 gez.getProjectPath('dist/server/entry-server.js')
             );
-            const { module, dispose } = await mod.import();
+            const module = await mod.import();
             const render: ServerRender | undefined = module.default;
             const context = new ServerContext(gez, params);
             if (typeof render === 'function') {
                 await render(context);
             }
             await mod.dispose();
-            dispose(gez.getProjectPath('dist/server'));
             return context;
         },
         build() {
@@ -76,11 +73,11 @@ export async function createApp(gez: Gez): Promise<App> {
                 createNodeConfig(gez)
             ]);
             let done = () => {};
-            compiler.run((err: Error) => {
+            compiler.run((err) => {
                 if (err) {
                     throw err;
                 }
-                compiler.close((closeErr: Error) => {
+                compiler.close((closeErr) => {
                     if (err) {
                         throw closeErr;
                     }
