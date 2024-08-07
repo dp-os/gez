@@ -17,7 +17,7 @@
         "tsx": "4.10.5"
     },
     "devDependencies": {
-        "@gez/lint": "0.0.14",
+        "@gez/lint": "0.0.15",
         "@types/node": "20.12.12",
         "@types/serve-static": "^1.15.7",
         "@vitest/coverage-v8": "1.6.0",
@@ -27,7 +27,7 @@
         "unbuild": "2.0.0",
         "vitest": "1.6.0"
     },
-    "version": "0.0.14",
+    "version": "0.0.15",
     "type": "module",
     "private": false,
     "exports": {

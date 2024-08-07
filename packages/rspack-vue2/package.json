@@ -10,7 +10,7 @@
         "build": "unbuild"
     },
     "dependencies": {
-        "@gez/core": "0.0.14",
+        "@gez/core": "0.0.15",
         "@module-federation/enhanced": "^0.1.15",
         "@rspack/core": "^0.6.5",
         "vue-loader": "^15.10.2",
@@ -20,7 +20,7 @@
         "write": "^2.0.0"
     },
     "devDependencies": {
-        "@gez/lint": "0.0.14",
+        "@gez/lint": "0.0.15",
         "@types/node": "20.12.12",
         "@types/webpack-hot-middleware": "^2.25.9",
         "@types/webpack-node-externals": "^3.0.4",
@@ -32,7 +32,7 @@
         "unbuild": "2.0.0",
         "vitest": "1.6.0"
     },
-    "version": "0.0.14",
+    "version": "0.0.15",
     "type": "module",
     "private": false,
     "exports": {

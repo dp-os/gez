@@ -18,14 +18,14 @@ importers:
   examples/ssr-rspack-vue2:
     dependencies:
       '@gez/core':
-        specifier: 0.0.14
+        specifier: 0.0.15
         version: link:../../packages/core
     devDependencies:
       '@gez/class-state':
-        specifier: 0.0.14
+        specifier: 0.0.15
         version: link:../../packages/class-state
       '@gez/rspack-vue2':
-        specifier: 0.0.14
+        specifier: 0.0.15
         version: link:../../packages/rspack-vue2
       '@types/express':
         specifier: ^4.17.21
@@ -49,7 +49,7 @@ importers:
   examples/ssr-vite-qwik:
     dependencies:
       '@gez/core':
-        specifier: 0.0.14
+        specifier: 0.0.15
         version: link:../../packages/core
     devDependencies:
       '@builder.io/qwik':
@@ -59,7 +59,7 @@ importers:
         specifier: 0.0.7
         version: 0.0.7
       '@gez/vite':
-        specifier: 0.0.14
+        specifier: 0.0.15
         version: link:../../packages/vite
       '@types/node':
         specifier: ^20.6.3
@@ -74,14 +74,14 @@ importers:
   examples/ssr-vite-react:
     dependencies:
       '@gez/core':
-        specifier: 0.0.14
+        specifier: 0.0.15
         version: link:../../packages/core
     devDependencies:
       '@gez/class-state':
         specifier: 0.0.7
         version: 0.0.7
       '@gez/vite':
-        specifier: 0.0.14
+        specifier: 0.0.15
         version: link:../../packages/vite
       '@types/node':
         specifier: ^20.6.3
@@ -108,11 +108,11 @@ importers:
   examples/ssr-vite-simple:
     dependencies:
       '@gez/core':
-        specifier: 0.0.14
+        specifier: 0.0.15
         version: link:../../packages/core
     devDependencies:
       '@gez/vite':
-        specifier: 0.0.14
+        specifier: 0.0.15
         version: link:../../packages/vite
       '@types/node':
         specifier: ^20.6.3
@@ -127,14 +127,14 @@ importers:
   examples/ssr-vite-vue3:
     dependencies:
       '@gez/core':
-        specifier: 0.0.14
+        specifier: 0.0.15
         version: link:../../packages/core
     devDependencies:
       '@gez/class-state':
         specifier: 0.0.7
         version: 0.0.7
       '@gez/vite':
-        specifier: 0.0.14
+        specifier: 0.0.15
         version: link:../../packages/vite
       '@types/node':
         specifier: ^20.6.3
@@ -159,7 +159,7 @@ importers:
         version: 10.1.1
     devDependencies:
       '@gez/lint':
-        specifier: 0.0.14
+        specifier: 0.0.15
         version: link:../lint
       '@types/node':
         specifier: 20.12.12
@@ -199,7 +199,7 @@ importers:
         version: 4.10.5
     devDependencies:
       '@gez/lint':
-        specifier: 0.0.14
+        specifier: 0.0.15
         version: link:../lint
       '@types/node':
         specifier: 20.12.12
@@ -323,7 +323,7 @@ importers:
   packages/rspack-vue2:
     dependencies:
       '@gez/core':
-        specifier: 0.0.14
+        specifier: 0.0.15
         version: link:../core
       '@module-federation/enhanced':
         specifier: ^0.1.15
@@ -348,7 +348,7 @@ importers:
         version: 2.0.0
     devDependencies:
       '@gez/lint':
-        specifier: 0.0.14
+        specifier: 0.0.15
         version: link:../lint
       '@types/node':
         specifier: 20.12.12
@@ -384,10 +384,10 @@ importers:
   packages/vite:
     devDependencies:
       '@gez/core':
-        specifier: 0.0.14
+        specifier: 0.0.15
         version: link:../core
       '@gez/lint':
-        specifier: 0.0.14
+        specifier: 0.0.15
         version: link:../lint
       '@types/node':
         specifier: 20.12.12

@@ -1,6 +1,6 @@
 import { assert, test } from 'vitest';
 
-import { connectState, foreignStore } from './connect';
+import { connectState, ffiStore } from './connect';
 import { createState } from './create';
 
 test('Base', () => {
@@ -230,7 +230,7 @@ test('Multiple instances', () => {
     class User {
         public name = '';
         public get blog() {
-            return foreignStore(Blog, 'blog')!;
+            return ffiStore<Blog>('blog')!;
         }
 
         public get log() {

@@ -269,18 +269,27 @@ export function connectState(state: State) {
     };
 }
 /**
- * 连接外部的 store，如果没有，则实例化 Store 类作为默认值返回
+ * @deprecated 请使用 ffiStore
  */
 export function foreignStore<T extends StoreConstructor>(
     Store: T,
     name: string,
     cacheKey?: string
 ): InstanceType<T> | null {
+    return ffiStore<InstanceType<T>>(name, cacheKey);
+}
+/**
+ * 查找一个外部的 Store
+ */
+export function ffiStore<T extends {}>(
+    name: string,
+    cacheKey?: string
+): T | null {
     if (!currentStateContext) {
         throw new Error('No state context found');
     }
     const fullPath = getFullPath(name, cacheKey);
-    const storeContext: StoreContext<InstanceType<T>> | null =
+    const storeContext: StoreContext<T> | null =
         currentStateContext.get(fullPath);
     if (storeContext) {
         return storeContext.get();
