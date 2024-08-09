@@ -1,5 +1,5 @@
 {
-    "name": "@gez/rspack-base",
+    "name": "@gez/rspack",
     "template": "library-node",
     "scripts": {
         "lint:js": "eslint . --ext .js,.mjs,.cjs,.ts,.vue --fix",
@@ -10,23 +10,24 @@
         "build": "unbuild"
     },
     "dependencies": {
-        "@gez/core": "0.0.15-alpha.2",
-        "@rspack/core": "1.0.0-beta.2",
-        "css-loader": "^6.7.4",
-        "less": "^4.2.0",
-        "less-loader": "^12.2.0",
+        "@gez/core": "workspace:^",
+        "@rspack/core": "1.0.0-beta.3",
         "webpack-dev-middleware": "^7.2.1",
-        "webpack-hot-middleware": "^2.26.1"
+        "webpack-hot-middleware": "^2.26.1",
+        "webpack-node-externals": "~3.0.0"
     },
     "devDependencies": {
+        "@types/webpack-node-externals": "^3.0.4",
         "@gez/lint": "0.0.15-alpha.2",
         "@types/node": "20.12.12",
         "@types/webpack-hot-middleware": "^2.25.9",
+        "@types/write": "^2.0.4",
         "@vitest/coverage-v8": "1.6.0",
         "eslint": "8.57.0",
         "stylelint": "16.5.0",
         "typescript": "5.4.5",
-        "unbuild": "2.0.0"
+        "unbuild": "2.0.0",
+        "vitest": "1.6.0"
     },
     "version": "0.0.15-alpha.2",
     "type": "module",
@@ -45,5 +46,6 @@
         "dist",
         "*.mjs",
         "template"
-    ]
+    ],
+    "gitHead": "e31911973bfc831db8b8bbe419f79fb34faf8b3a"
 }

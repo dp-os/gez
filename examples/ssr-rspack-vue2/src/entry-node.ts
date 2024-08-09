@@ -4,7 +4,9 @@ import { defineNode } from '@gez/core'
 export default defineNode({
   name: 'ssr-rspack-vue2',
   async createDevApp(gez) {
-    return import('@gez/rspack-vue2').then(async m => await m.createApp(gez))
+    const { createApp } = await import('@gez/rspack')
+    const { vue2Config } = await import('@gez/rspack-vue2');
+    return createApp(gez, vue2Config)
   },
   async created(gez) {
     const server = express()

@@ -9,22 +9,17 @@
         "coverage": "vitest run --coverage --pass-with-no-tests",
         "build": "unbuild"
     },
-    "dependencies": {
-        "@gez/core": "0.0.15-alpha.2",
-        "@rspack/core": "1.0.0-beta.2",
-        "css-loader": "^6.7.4",
-        "less": "^4.2.0",
-        "less-loader": "^12.2.0",
-        "vue-loader": "npm:@gez/vue-loader@1.0.0",
-        "vue-style-loader": "^4.1.3",
-        "webpack-dev-middleware": "^7.2.1",
-        "webpack-hot-middleware": "^2.26.1",
-        "webpack-node-externals": "~3.0.0"
+    "peerDependencies": {
+        "vue": "2.7.16",
+        "@gez/vue-loader": "^1.0.0",
+        "@gez/core": "workspace:^",
+        "@gez/rspack": "workspace:^"
     },
     "devDependencies": {
+        "@gez/core": "workspace:^",
+        "@gez/rspack": "workspace:^",
         "@gez/lint": "0.0.15-alpha.2",
         "@types/node": "20.12.12",
-        "@types/webpack-hot-middleware": "^2.25.9",
         "@types/write": "^2.0.4",
         "@vitest/coverage-v8": "1.6.0",
         "eslint": "8.57.0",
@@ -51,5 +46,5 @@
         "*.mjs",
         "template"
     ],
-    "gitHead": "ee7626290d17f5085c2d0d032a895ba55ee292a6"
+    "gitHead": "e31911973bfc831db8b8bbe419f79fb34faf8b3a"
 }

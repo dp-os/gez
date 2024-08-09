@@ -13,21 +13,19 @@ import { type Compiler, rspack } from '@rspack/core';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 
-import {
-    createClientConfig,
-    createNodeConfig,
-    createServerConfig
-} from './config';
+import type { ConfigCallback } from './config';
 
-function middleware(gez: Gez) {
+function middleware(gez: Gez, config: ConfigCallback) {
     let clientCompiler: Compiler | null = null;
     let dev = (req: IncomingMessage, res: ServerResponse, next?: Function) => {
         return next?.();
     };
     let hot = dev;
     if (gez.command === COMMAND.dev) {
-        clientCompiler = rspack(createClientConfig(gez));
-        const serverCompiler = rspack(createServerConfig(gez));
+        const clientConfig = config(gez, 'client');
+        const serverConfig = config(gez, 'server');
+        clientCompiler = rspack(clientConfig);
+        const serverCompiler = rspack(serverConfig);
         // @ts-expect-error
         webpackDevMiddleware(serverCompiler, {
             publicPath: gez.base,
@@ -51,9 +49,12 @@ function middleware(gez: Gez) {
     };
 }
 
-export async function createApp(gez: Gez): Promise<App> {
+export async function createApp(
+    gez: Gez,
+    config: ConfigCallback
+): Promise<App> {
     return {
-        middleware: middleware(gez),
+        middleware: middleware(gez, config),
         async render(params: AppRenderParams): Promise<ServerContext> {
             const mod = createMod(
                 gez.getProjectPath('dist/server/entry-server.js')
@@ -68,13 +69,12 @@ export async function createApp(gez: Gez): Promise<App> {
             return context;
         },
         build() {
-            const compiler = rspack([
-                createClientConfig(gez),
-                createServerConfig(gez),
-                createNodeConfig(gez)
-            ]);
+            const clientConfig = config(gez, 'client');
+            const serverConfig = config(gez, 'server');
+            const nodeConfig = config(gez, 'node');
+            const compiler = rspack([clientConfig, serverConfig, nodeConfig]);
             let done = () => {};
-            compiler.run((err) => {
+            compiler.run((err: Error) => {
                 if (err) {
                     throw err;
                 }
