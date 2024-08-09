@@ -15,17 +15,23 @@ export type FederationShared = Array<
     Record<string, FederationSharedConfig> | string
 >;
 
-export interface Federation {
-    exposes?: string[];
-    shared?: FederationShared;
-    shareScope?: string;
-}
-
 export interface GezOptions {
     root?: string;
     name?: string;
     isProd?: boolean;
-    federation?: Federation;
+    /**
+     * 模块配置
+     */
+    modules?: {
+        /**
+         * 对外导出的文件
+         */
+        exports?: Record<string, string>;
+        /**
+         * 导入的文件
+         */
+        imports?: Record<string, string>;
+    };
     createDevApp?: (gez: Gez) => Promise<App>;
 }
 
@@ -129,13 +135,6 @@ export class Gez {
 
     public get isProd(): boolean {
         return this._options?.isProd ?? process.env.NODE_ENV === 'production';
-    }
-
-    /**
-     * 模块联邦配置
-     */
-    public get federation() {
-        return this._options.federation ?? null;
     }
 
     public async init(command: COMMAND) {

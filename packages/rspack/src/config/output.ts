@@ -1,15 +1,14 @@
+import type { RspackOptions } from '@rspack/core';
+
 import { BuildConfig } from './base';
 
-interface OutputConfig {
-    module: true;
-    filename: string;
-    path?: string;
-}
+type Config = NonNullable<RspackOptions['output']>;
 
-export class Output extends BuildConfig<OutputConfig> {
-    protected getClient(): OutputConfig {
+export class Output extends BuildConfig<Config> {
+    protected getClient(): Config {
         const { gez } = this;
         return {
+            clean: true,
             module: true,
             // TODO: 生产模式应该启用
             // chunkFormat: 'module',
@@ -21,19 +20,27 @@ export class Output extends BuildConfig<OutputConfig> {
         };
     }
 
-    protected getServer(): OutputConfig {
+    protected getServer(): Config {
         const { gez } = this;
         return {
+            clean: true,
             module: true,
-            filename: gez.getProjectPath('dist/server/entry-server.js')
+            chunkFilename: '[id].js',
+            chunkFormat: 'module',
+            filename: 'entry-server.js',
+            path: gez.getProjectPath('dist/server')
         };
     }
 
-    protected getNode(): OutputConfig {
+    protected getNode(): Config {
         const { gez } = this;
         return {
+            clean: true,
             module: true,
-            filename: gez.getProjectPath('dist/node/entry-node.js')
+            chunkFilename: '[id].js',
+            chunkFormat: 'module',
+            filename: 'entry-server.js',
+            path: gez.getProjectPath('dist/node')
         };
     }
 }

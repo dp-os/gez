@@ -1,6 +1,6 @@
 {
     "name": "ssr-rspack-vue2",
-    "version": "0.0.15-alpha.18",
+    "version": "0.0.15-alpha.19",
     "private": true,
     "type": "module",
     "scripts": {
