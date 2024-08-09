@@ -1,5 +1,5 @@
 import { defineConfig } from '@gez/rspack';
-import { VueLoaderPlugin } from '@gez/vue2-loader';
+import { VueLoaderPlugin } from 'vue-loader';
 
 export const vue2Config = defineConfig(({ config, buildTarget }) => {
     config.resolve!.extensions = [
@@ -14,7 +14,7 @@ export const vue2Config = defineConfig(({ config, buildTarget }) => {
         ...config.module!.rules!,
         {
             test: /\.vue$/,
-            use: '@gez/vue2-loader'
+            use: 'vue-loader'
         },
         {
             test: /\.less$/,

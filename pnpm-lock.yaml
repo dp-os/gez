@@ -18,7 +18,7 @@ importers:
   examples/ssr-rspack-base:
     dependencies:
       '@gez/core':
-        specifier: 0.0.15-alpha.6
+        specifier: 0.0.15-alpha.7
         version: link:../../packages/core
     devDependencies:
       '@types/express':
@@ -52,9 +52,6 @@ importers:
       '@gez/rspack-vue2':
         specifier: workspace:^
         version: link:../../packages/rspack-vue2
-      '@gez/vue2-loader':
-        specifier: ^1.0.0
-        version: 1.0.0(css-loader@6.11.0)(vue-template-compiler@2.7.16)(webpack@5.91.0)
       '@types/express':
         specifier: ^4.17.21
         version: 4.17.21
@@ -79,6 +76,9 @@ importers:
       vue:
         specifier: 2.7.16
         version: 2.7.16
+      vue-loader:
+        specifier: npm:@gez/vue2-loader@^1.0.0
+        version: /@gez/vue2-loader@1.0.0(css-loader@6.11.0)(vue-template-compiler@2.7.16)(webpack@5.91.0)
       vue-server-renderer:
         specifier: 2.7.16
         version: 2.7.16
@@ -92,7 +92,7 @@ importers:
   examples/ssr-vite-qwik:
     dependencies:
       '@gez/core':
-        specifier: 0.0.15-alpha.6
+        specifier: 0.0.15-alpha.7
         version: link:../../packages/core
     devDependencies:
       '@builder.io/qwik':
@@ -102,7 +102,7 @@ importers:
         specifier: 0.0.7
         version: 0.0.7
       '@gez/vite':
-        specifier: 0.0.15-alpha.6
+        specifier: 0.0.15-alpha.7
         version: link:../../packages/vite
       '@types/node':
         specifier: ^20.6.3
@@ -117,14 +117,14 @@ importers:
   examples/ssr-vite-react:
     dependencies:
       '@gez/core':
-        specifier: 0.0.15-alpha.6
+        specifier: 0.0.15-alpha.7
         version: link:../../packages/core
     devDependencies:
       '@gez/class-state':
         specifier: 0.0.7
         version: 0.0.7
       '@gez/vite':
-        specifier: 0.0.15-alpha.6
+        specifier: 0.0.15-alpha.7
         version: link:../../packages/vite
       '@types/node':
         specifier: ^20.6.3
@@ -151,11 +151,11 @@ importers:
   examples/ssr-vite-simple:
     dependencies:
       '@gez/core':
-        specifier: 0.0.15-alpha.6
+        specifier: 0.0.15-alpha.7
         version: link:../../packages/core
     devDependencies:
       '@gez/vite':
-        specifier: 0.0.15-alpha.6
+        specifier: 0.0.15-alpha.7
         version: link:../../packages/vite
       '@types/node':
         specifier: ^20.6.3
@@ -170,14 +170,14 @@ importers:
   examples/ssr-vite-vue3:
     dependencies:
       '@gez/core':
-        specifier: 0.0.15-alpha.6
+        specifier: 0.0.15-alpha.7
         version: link:../../packages/core
     devDependencies:
       '@gez/class-state':
         specifier: 0.0.7
         version: 0.0.7
       '@gez/vite':
-        specifier: 0.0.15-alpha.6
+        specifier: 0.0.15-alpha.7
         version: link:../../packages/vite
       '@types/node':
         specifier: ^20.6.3
@@ -202,7 +202,7 @@ importers:
         version: 10.1.1
     devDependencies:
       '@gez/lint':
-        specifier: 0.0.15-alpha.6
+        specifier: 0.0.15-alpha.7
         version: link:../lint
       '@types/node':
         specifier: 20.12.12
@@ -242,7 +242,7 @@ importers:
         version: 4.10.5
     devDependencies:
       '@gez/lint':
-        specifier: 0.0.15-alpha.6
+        specifier: 0.0.15-alpha.7
         version: link:../lint
       '@types/node':
         specifier: 20.12.12
@@ -382,7 +382,7 @@ importers:
         version: 3.0.0
     devDependencies:
       '@gez/lint':
-        specifier: 0.0.15-alpha.6
+        specifier: 0.0.15-alpha.7
         version: link:../lint
       '@types/node':
         specifier: 20.12.12
@@ -417,9 +417,6 @@ importers:
 
   packages/rspack-vue2:
     dependencies:
-      '@gez/vue2-loader':
-        specifier: '*'
-        version: 1.0.0(css-loader@6.11.0)(vue-template-compiler@2.7.16)(webpack@5.91.0)
       css-loader:
         specifier: ^6.7.4
         version: 6.11.0(webpack@5.91.0)
@@ -446,7 +443,7 @@ importers:
         specifier: workspace:^
         version: link:../core
       '@gez/lint':
-        specifier: 0.0.15-alpha.6
+        specifier: 0.0.15-alpha.7
         version: link:../lint
       '@gez/rspack':
         specifier: workspace:^
@@ -475,14 +472,17 @@ importers:
       vitest:
         specifier: 1.6.0
         version: 1.6.0(@types/node@20.12.12)(less@4.2.0)
+      vue-loader:
+        specifier: npm:@gez/vue2-loader@^1.0.0
+        version: /@gez/vue2-loader@1.0.0(css-loader@6.11.0)(vue-template-compiler@2.7.16)(webpack@5.91.0)
 
   packages/vite:
     devDependencies:
       '@gez/core':
-        specifier: 0.0.15-alpha.6
+        specifier: 0.0.15-alpha.7
         version: link:../core
       '@gez/lint':
-        specifier: 0.0.15-alpha.6
+        specifier: 0.0.15-alpha.7
         version: link:../lint
       '@types/node':
         specifier: 20.12.12
@@ -1346,6 +1346,7 @@ packages:
       - velocityjs
       - walrus
       - whiskers
+    dev: true
 
   /@humanwhocodes/config-array@0.11.14:
     resolution: {integrity: sha512-3T8LkOmg45BV5FICb15QQMsyUSWrQ8AygVfC7ZG32zOalnqrilm018ZVCw0eapXux8FtA33q8PSRSstjee3jSg==}
@@ -2351,6 +2352,7 @@ packages:
       - velocityjs
       - walrus
       - whiskers
+    dev: true
 
   /@vue/reactivity@3.4.27:
     resolution: {integrity: sha512-kK0g4NknW6JX2yySLpsm2jlunZJl2/RJGZ0H9ddHdfBVHcNzxmQ0sS0b09ipmBoQpY8JM2KmUw+a6sO8Zo+zIA==}
@@ -2716,6 +2718,7 @@ packages:
 
   /bluebird@3.7.2:
     resolution: {integrity: sha512-XpNj6GDQzdfW+r2Wnn7xiSAd7TM3jzkxGXBGTtWKuSXv1xUV+azxAm8jdWZN06QTQk+2N2XB9jRDkvbmQmcRtg==}
+    dev: true
 
   /body-parser@1.20.2:
     resolution: {integrity: sha512-ml9pReCu3M61kGlqoTm2umSXTlRTuGTx0bfYj+uIUKKYycG5NtSbeetV3faSU6R7ajOPw0g/J1PvK4qNy7s5bA==}
@@ -3098,6 +3101,7 @@ packages:
         optional: true
     dependencies:
       bluebird: 3.7.2
+    dev: true
 
   /content-disposition@0.5.4:
     resolution: {integrity: sha512-FveZTNuGw04cxlAiWbzi6zTAL/lhehaWbTtgluJh4/E95DqMwTmha3KZN1aAWA8cFIhHzMZUvLevkw5Rqk+tSQ==}
@@ -4975,6 +4979,7 @@ packages:
     dependencies:
       pseudomap: 1.0.2
       yallist: 2.1.2
+    dev: true
 
   /lru-cache@5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
@@ -5053,6 +5058,7 @@ packages:
     resolution: {integrity: sha512-Qkcp7P2ygktpMPh2mCQZaf3jhN6D3Z/qVZHSdWvQ+2Ef5HgRAPBO57A77+ENm0CPx2+1Ce/MYKi3ymqdfuqibw==}
     dependencies:
       source-map: 0.6.1
+    dev: true
 
   /merge-stream@2.0.0:
     resolution: {integrity: sha512-abv/qOcuPfk3URPfDzmZU1LKmuw8kT+0nIHvKrKgFrwifol/doWcdA4ZqsWQ8ENrFKkd67Mfpo/LovbIUsbt3w==}
@@ -5395,6 +5401,7 @@ packages:
 
   /picocolors@0.2.1:
     resolution: {integrity: sha512-cMlDqaLEqfSaW8Z7N5Jw+lyIW869EzT73/F5lhtY9cLGoVxSXznfgfXMO0Z5K0o0Q2TkTXq+0KFsdnSe3jDViA==}
+    dev: true
 
   /picocolors@1.0.1:
     resolution: {integrity: sha512-anP1Z8qwhkbmu7MFP5iTt+wQKXgwzf7zTyGlcdzabySa9vd0Xt392U0rVmz9poOaBj0uHJKyyo9/upk0HrEQew==}
@@ -5820,6 +5827,7 @@ packages:
     dependencies:
       picocolors: 0.2.1
       source-map: 0.6.1
+    dev: true
 
   /postcss@8.4.38:
     resolution: {integrity: sha512-Wglpdk03BSfXkHoQa3b/oulrotAkwrlLDRSOb9D0bN86FdRyE9lppSp33aHNPgBa0JKCoB+drFLZkQoRRYae5A==}
@@ -5880,6 +5888,7 @@ packages:
 
   /pseudomap@1.0.2:
     resolution: {integrity: sha512-b/YwNhb8lk1Zz2+bXXpS/LK9OisiZZ1SNsSLxN1x2OXVEhW2Ckr/7mWE5vrC1ZTiJlD9g19jWszTmJsB+oEpFQ==}
+    dev: true
 
   /punycode@2.3.1:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
@@ -7053,6 +7062,7 @@ packages:
 
   /vue-hot-reload-api@2.3.4:
     resolution: {integrity: sha512-BXq3jwIagosjgNVae6tkHzzIk6a8MHFtzAdwhnV5VlvPTFxDCvIttgSiHWjdGoTJvXtmRu5HacExfdarRcFhog==}
+    dev: true
 
   /vue-server-renderer@2.7.16:
     resolution: {integrity: sha512-U7GgR4rYmHmbs3Z2gqsasfk7JNuTsy/xrR5EMMGRLkjN8+ryDlqQq6Uu3DcmbCATAei814YOxyl0eq2HNqgXyQ==}
@@ -7080,6 +7090,7 @@ packages:
 
   /vue-template-es2015-compiler@1.9.1:
     resolution: {integrity: sha512-4gDntzrifFnCEvyoO8PqyJDmguXgVPxKiIxrBKjIowvL9l+N66196+72XVYR8BBf1Uv1Fgt3bGevJ+sEmxfZzw==}
+    dev: true
 
   /vue@2.7.16:
     resolution: {integrity: sha512-4gCtFXaAA3zYZdTp5s4Hl2sozuySsgz4jy1EnpBHNfpMa9dK1ZCG7viqBPCwXtmgc8nHqUsAu3G4gtmXkkY3Sw==}
@@ -7271,6 +7282,7 @@ packages:
 
   /yallist@2.1.2:
     resolution: {integrity: sha512-ncTzHV7NvsQZkYe1DW7cbDLm0YpzHmZF5r/iyP3ZnQtMiJ+pjzisCiMNI+Sj+xQF5pXhSHxSB3uDbsBTzY/c2A==}
+    dev: true
 
   /yallist@3.1.1:
     resolution: {integrity: sha512-a4UGQaWPH59mOXUYnAG2ewncQS4i4F43Tv3JoAM+s2VDAmS9NsK8GpDMLrCHPksFT7h3K6TOoUNn2pb7RoXx4g==}
