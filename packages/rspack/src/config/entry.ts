@@ -14,7 +14,7 @@ export class Entry extends BuildConfig<Config> {
                   gez.getProjectPath('src/entry-client.ts')
               ];
         return {
-            app: {
+            index: {
                 import: importPaths,
                 library: {
                     type: 'module'
@@ -29,7 +29,7 @@ export class Entry extends BuildConfig<Config> {
             gez.getProjectPath(`src/entry-server.ts`)
         ];
         return {
-            app: {
+            index: {
                 import: importPaths,
                 library: {
                     type: 'module'
@@ -42,7 +42,7 @@ export class Entry extends BuildConfig<Config> {
         const { gez } = this;
         const importPaths: string[] = [gez.getProjectPath(`src/entry-node.ts`)];
         return {
-            app: {
+            index: {
                 import: importPaths,
                 library: {
                     type: 'module'
