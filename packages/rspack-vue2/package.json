@@ -10,15 +10,15 @@
         "build": "unbuild"
     },
     "peerDependencies": {
-        "vue": "2.7.16",
-        "@gez/vue-loader": "^1.0.0",
         "@gez/core": "workspace:^",
-        "@gez/rspack": "workspace:^"
+        "@gez/rspack": "workspace:^",
+        "@gez/vue-loader": "^1.0.0",
+        "vue": "2.7.16"
     },
     "devDependencies": {
         "@gez/core": "workspace:^",
+        "@gez/lint": "0.0.15-alpha.3",
         "@gez/rspack": "workspace:^",
-        "@gez/lint": "0.0.15-alpha.2",
         "@types/node": "20.12.12",
         "@types/write": "^2.0.4",
         "@vitest/coverage-v8": "1.6.0",
@@ -28,7 +28,7 @@
         "unbuild": "2.0.0",
         "vitest": "1.6.0"
     },
-    "version": "0.0.15-alpha.2",
+    "version": "0.0.15-alpha.3",
     "type": "module",
     "private": false,
     "exports": {
