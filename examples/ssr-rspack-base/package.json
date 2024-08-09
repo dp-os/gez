@@ -1,6 +1,6 @@
 {
     "name": "ssr-rspack-base",
-    "version": "0.0.15-alpha.13",
+    "version": "0.0.15-alpha.14",
     "private": true,
     "type": "module",
     "scripts": {
@@ -10,7 +10,7 @@
         "start": "gez start"
     },
     "dependencies": {
-        "@gez/core": "0.0.15-alpha.13"
+        "@gez/core": "0.0.15-alpha.14"
     },
     "devDependencies": {
         "@types/express": "^4.17.21",

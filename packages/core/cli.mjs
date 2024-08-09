@@ -1,4 +1,4 @@
-#!/usr/bin/env node --import=imports-map.js
+#!/usr/bin/env node
 import { cli } from './dist/cli/index.mjs';
 
 cli();
