@@ -6,10 +6,11 @@ type Config = NonNullable<RspackOptions['entry']>;
 export class Entry extends BuildConfig<Config> {
     protected getClient(): Config {
         const { gez } = this;
+        const hotPath = import.meta.resolve('webpack-hot-middleware/client');
         const importPaths: string[] = gez.isProd
             ? [gez.getProjectPath('src/entry-client.ts')]
             : [
-                  `webpack-hot-middleware/client?path=${gez.base}hot-middleware&timeout=5000&overlay=false`,
+                  `${hotPath}?path=${gez.base}hot-middleware&timeout=5000&overlay=false`,
                   gez.getProjectPath('src/entry-client.ts')
               ];
         return {

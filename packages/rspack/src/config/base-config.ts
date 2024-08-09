@@ -44,6 +44,7 @@ export function createBaseConfig(
         defaultRules: []
     };
     return {
+        context: gez.root,
         name: gez.name,
         plugins: plugins.get(),
         module,
@@ -70,7 +71,8 @@ export function createBaseConfig(
         },
         target: target.get(),
         ignoreWarnings: [],
-        cache: false,
+        cache: !gez.isProd,
+        devtool: false,
         mode: gez.isProd ? 'production' : 'development'
     };
 }
