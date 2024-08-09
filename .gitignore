@@ -16,3 +16,4 @@ docker-run.sh
 packages/**/dist
 .babelfish
 /.i18n_preview
+.root

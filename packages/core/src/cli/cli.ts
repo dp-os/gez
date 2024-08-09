@@ -1,6 +1,5 @@
 import path from 'node:path';
 
-// @ts-expect-error type error
 import { register } from 'tsx/esm/api';
 
 import { COMMAND, getProjectPath, Gez } from '../core';
@@ -47,8 +46,8 @@ export function createMod(file: string): Mod {
             return _api;
         }
         _api = register({
-            namespace: Date.now().toString()
-        }) as Mod;
+            namespace: String(Date.now())
+        });
         return _api;
     };
     const fullFile = path.resolve(file);

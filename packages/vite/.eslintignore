@@ -10,3 +10,4 @@ coverage
 .git
 template
 public
+.root
