@@ -17,7 +17,7 @@
         "webpack-node-externals": "~3.0.0"
     },
     "devDependencies": {
-        "@gez/lint": "0.0.15-alpha.17",
+        "@gez/lint": "0.0.9",
         "@types/node": "20.12.12",
         "@types/webpack-hot-middleware": "^2.25.9",
         "@types/webpack-node-externals": "^3.0.4",
@@ -29,7 +29,7 @@
         "unbuild": "2.0.0",
         "vitest": "1.6.0"
     },
-    "version": "0.0.15-alpha.17",
+    "version": "0.0.15-alpha.18",
     "type": "module",
     "private": false,
     "exports": {

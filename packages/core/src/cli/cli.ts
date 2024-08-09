@@ -1,5 +1,6 @@
 import path from 'node:path';
 
+// @ts-expect-error
 import { register } from 'tsx/esm/api';
 
 import { COMMAND, getProjectPath, Gez } from '../core';
