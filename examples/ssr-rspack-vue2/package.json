@@ -1,6 +1,6 @@
 {
     "name": "ssr-rspack-vue2",
-    "version": "0.0.15-alpha.3",
+    "version": "0.0.15-alpha.4",
     "private": true,
     "type": "module",
     "scripts": {
@@ -16,7 +16,7 @@
         "@gez/class-state": "workspace:^",
         "@gez/rspack": "workspace:^",
         "@gez/rspack-vue2": "workspace:^",
-        "@gez/vue-loader": "^1.0.0",
+        "@gez/vue2-loader": "^1.0.0",
         "@types/express": "^4.17.21",
         "@types/node": "^20.6.3",
         "css-loader": "^6.7.4",

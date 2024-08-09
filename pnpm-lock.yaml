@@ -18,7 +18,7 @@ importers:
   examples/ssr-rspack-base:
     dependencies:
       '@gez/core':
-        specifier: 0.0.15-alpha.3
+        specifier: 0.0.15-alpha.4
         version: link:../../packages/core
     devDependencies:
       '@types/express':
@@ -52,7 +52,7 @@ importers:
       '@gez/rspack-vue2':
         specifier: workspace:^
         version: link:../../packages/rspack-vue2
-      '@gez/vue-loader':
+      '@gez/vue2-loader':
         specifier: ^1.0.0
         version: 1.0.0(css-loader@6.11.0)(vue-template-compiler@2.7.16)(webpack@5.91.0)
       '@types/express':
@@ -92,7 +92,7 @@ importers:
   examples/ssr-vite-qwik:
     dependencies:
       '@gez/core':
-        specifier: 0.0.15-alpha.3
+        specifier: 0.0.15-alpha.4
         version: link:../../packages/core
     devDependencies:
       '@builder.io/qwik':
@@ -102,7 +102,7 @@ importers:
         specifier: 0.0.7
         version: 0.0.7
       '@gez/vite':
-        specifier: 0.0.15-alpha.3
+        specifier: 0.0.15-alpha.4
         version: link:../../packages/vite
       '@types/node':
         specifier: ^20.6.3
@@ -117,14 +117,14 @@ importers:
   examples/ssr-vite-react:
     dependencies:
       '@gez/core':
-        specifier: 0.0.15-alpha.3
+        specifier: 0.0.15-alpha.4
         version: link:../../packages/core
     devDependencies:
       '@gez/class-state':
         specifier: 0.0.7
         version: 0.0.7
       '@gez/vite':
-        specifier: 0.0.15-alpha.3
+        specifier: 0.0.15-alpha.4
         version: link:../../packages/vite
       '@types/node':
         specifier: ^20.6.3
@@ -151,11 +151,11 @@ importers:
   examples/ssr-vite-simple:
     dependencies:
       '@gez/core':
-        specifier: 0.0.15-alpha.3
+        specifier: 0.0.15-alpha.4
         version: link:../../packages/core
     devDependencies:
       '@gez/vite':
-        specifier: 0.0.15-alpha.3
+        specifier: 0.0.15-alpha.4
         version: link:../../packages/vite
       '@types/node':
         specifier: ^20.6.3
@@ -170,14 +170,14 @@ importers:
   examples/ssr-vite-vue3:
     dependencies:
       '@gez/core':
-        specifier: 0.0.15-alpha.3
+        specifier: 0.0.15-alpha.4
         version: link:../../packages/core
     devDependencies:
       '@gez/class-state':
         specifier: 0.0.7
         version: 0.0.7
       '@gez/vite':
-        specifier: 0.0.15-alpha.3
+        specifier: 0.0.15-alpha.4
         version: link:../../packages/vite
       '@types/node':
         specifier: ^20.6.3
@@ -202,7 +202,7 @@ importers:
         version: 10.1.1
     devDependencies:
       '@gez/lint':
-        specifier: 0.0.15-alpha.3
+        specifier: 0.0.15-alpha.4
         version: link:../lint
       '@types/node':
         specifier: 20.12.12
@@ -242,7 +242,7 @@ importers:
         version: 4.10.5
     devDependencies:
       '@gez/lint':
-        specifier: 0.0.15-alpha.3
+        specifier: 0.0.15-alpha.4
         version: link:../lint
       '@types/node':
         specifier: 20.12.12
@@ -382,7 +382,7 @@ importers:
         version: 3.0.0
     devDependencies:
       '@gez/lint':
-        specifier: 0.0.15-alpha.3
+        specifier: 0.0.15-alpha.4
         version: link:../lint
       '@types/node':
         specifier: 20.12.12
@@ -417,18 +417,18 @@ importers:
 
   packages/rspack-vue2:
     dependencies:
-      '@gez/vue-loader':
+      '@gez/vue2-loader':
         specifier: ^1.0.0
         version: 1.0.0(css-loader@6.11.0)(vue-template-compiler@2.7.16)(webpack@5.91.0)
       vue:
-        specifier: 2.7.16
+        specifier: ^2.7.16
         version: 2.7.16
     devDependencies:
       '@gez/core':
         specifier: workspace:^
         version: link:../core
       '@gez/lint':
-        specifier: 0.0.15-alpha.3
+        specifier: 0.0.15-alpha.4
         version: link:../lint
       '@gez/rspack':
         specifier: workspace:^
@@ -461,10 +461,10 @@ importers:
   packages/vite:
     devDependencies:
       '@gez/core':
-        specifier: 0.0.15-alpha.3
+        specifier: 0.0.15-alpha.4
         version: link:../core
       '@gez/lint':
-        specifier: 0.0.15-alpha.3
+        specifier: 0.0.15-alpha.4
         version: link:../lint
       '@types/node':
         specifier: 20.12.12
@@ -1250,8 +1250,8 @@ packages:
       - typescript
     dev: true
 
-  /@gez/vue-loader@1.0.0(css-loader@6.11.0)(vue-template-compiler@2.7.16)(webpack@5.91.0):
-    resolution: {integrity: sha512-3DYNt8vzgD9B1clbTYBNrQf/XNmQOF7WTEdx2/L3fmnPMez0HajC5+quDlPj65jF8wjtSfv7DLzu1a9zQCF0JQ==}
+  /@gez/vue2-loader@1.0.0(css-loader@6.11.0)(vue-template-compiler@2.7.16)(webpack@5.91.0):
+    resolution: {integrity: sha512-hEkBdFcP7HaitobPkt/dMIzdPtsgTqx84Rb4bwGmYaWZ+G6CZBAXriL6otOnu9z2W7sbWkEYsC8RUDr+OjgHdg==}
     peerDependencies:
       cache-loader: '*'
       css-loader: '*'
