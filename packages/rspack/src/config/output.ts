@@ -39,7 +39,7 @@ export class Output extends BuildConfig<Config> {
             module: true,
             chunkFilename: '[id].js',
             chunkFormat: 'module',
-            filename: 'entry-server.js',
+            filename: 'entry-node.js',
             path: gez.getProjectPath('dist/node')
         };
     }
