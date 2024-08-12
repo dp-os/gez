@@ -1,5 +1,5 @@
 import type { Gez } from '@gez/core';
-import type { RspackOptions } from '@rspack/core';
+import type { RspackOptions, SwcLoaderOptions } from '@rspack/core';
 
 import type { BuildTarget } from './base';
 import { Entry } from './entry';
@@ -31,7 +31,6 @@ export function createBaseConfig(
                 test: /\.ts$/,
                 loader: 'builtin:swc-loader',
                 options: {
-                    sourceMap: true,
                     env: {
                         targets: gez.browserslist
                     },
@@ -40,7 +39,7 @@ export function createBaseConfig(
                             syntax: 'typescript'
                         }
                     }
-                },
+                } satisfies SwcLoaderOptions,
                 type: 'javascript/auto'
             }
         ],
