@@ -28,6 +28,10 @@ export function createBaseConfig(
                 type: 'asset/resource'
             },
             {
+                test: /\.json$/i,
+                type: 'json'
+            },
+            {
                 test: /\.ts$/,
                 loader: 'builtin:swc-loader',
                 options: {

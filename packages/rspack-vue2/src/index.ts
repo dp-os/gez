@@ -34,7 +34,11 @@ export const vue2Config = defineConfig(({ config, buildTarget }) => {
     if (buildTarget === 'server') {
         config.ignoreWarnings = [
             ...config.ignoreWarnings!,
-            /vue-server-renderer/
+            (warning) => {
+                return warning.moduleDescriptor.name.includes(
+                    'vue-server-renderer'
+                );
+            }
         ];
     }
     return config;

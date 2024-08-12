@@ -1,5 +1,3 @@
-import { builtinModules } from 'node:module';
-
 import type { RspackOptions } from '@rspack/core';
 import nodeExternals from 'webpack-node-externals';
 
@@ -13,13 +11,7 @@ export class Externals extends BuildConfig<Config> {
     }
 
     protected getServer(): Config {
-        return [
-            '@gez/core',
-            nodeExternals({
-                importType: 'module'
-            }) as any
-            // nodeFullModule()
-        ];
+        return ['@gez/core'];
     }
 
     protected getNode(): Config {
@@ -27,18 +19,6 @@ export class Externals extends BuildConfig<Config> {
             nodeExternals({
                 importType: 'module'
             }) as any
-            // nodeFullModule()
         ];
     }
 }
-
-// function nodeFullModule(): Record<string, string> {
-//     const externals: Record<string, string> = {};
-//     builtinModules
-//         .filter((x) => !/^_|^sys$/.test(x))
-//         .forEach((name) => {
-//             externals[name] = name;
-//             externals[`node:${name}`] = `node:${name}`;
-//         });
-//     return externals;
-// }
