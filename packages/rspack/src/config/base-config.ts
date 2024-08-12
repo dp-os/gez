@@ -32,6 +32,9 @@ export function createBaseConfig(
                 loader: 'builtin:swc-loader',
                 options: {
                     sourceMap: true,
+                    env: {
+                        targets: gez.browserslist
+                    },
                     jsc: {
                         parser: {
                             syntax: 'typescript'

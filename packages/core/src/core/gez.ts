@@ -32,6 +32,10 @@ export interface GezOptions {
          */
         imports?: Record<string, string>;
     };
+    /**
+     * 构建版本支持，一般不需要配置
+     */
+    browserslist?: string[];
     createDevApp?: (gez: Gez) => Promise<App>;
 }
 
@@ -135,6 +139,16 @@ export class Gez {
 
     public get isProd(): boolean {
         return this._options?.isProd ?? process.env.NODE_ENV === 'production';
+    }
+
+    public get browserslist() {
+        return [
+            'chrome >=87',
+            'firefox >=78',
+            'safari >=14',
+            'edge >=88',
+            'node >= 20'
+        ];
     }
 
     public async init(command: COMMAND) {
