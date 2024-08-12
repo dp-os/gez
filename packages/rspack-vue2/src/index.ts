@@ -1,9 +1,9 @@
 import type { Gez } from '@gez/core';
 import { createApp as _createApp, defineConfig } from '@gez/rspack';
-import { VueLoaderPlugin } from 'vue-loader';
+import { VueLoaderPlugin } from '@gez/vue2-loader';
 
 const vue2Config = defineConfig(({ config, buildTarget }) => {
-    const vueLoader = new URL(import.meta.resolve('vue-loader')).pathname;
+    const vueLoader = new URL(import.meta.resolve('@gez/vue2-loader')).pathname;
     const vueStyleLoader = new URL(import.meta.resolve('vue-style-loader'))
         .pathname;
     const cssLoader = new URL(import.meta.resolve('css-loader')).pathname;

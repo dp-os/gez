@@ -1,6 +1,6 @@
 {
     "name": "ssr-vite-react",
-    "version": "0.0.15-alpha.26",
+    "version": "0.0.15-alpha.27",
     "private": true,
     "type": "module",
     "scripts": {
@@ -10,11 +10,11 @@
         "start": "gez"
     },
     "dependencies": {
-        "@gez/core": "0.0.15-alpha.26"
+        "@gez/core": "0.0.15-alpha.27"
     },
     "devDependencies": {
         "@gez/class-state": "0.0.7",
-        "@gez/vite": "0.0.15-alpha.26",
+        "@gez/vite": "0.0.15-alpha.27",
         "@types/node": "^20.6.3",
         "@types/react": "^18.2.38",
         "@vitejs/plugin-react": "^4.2.0",
