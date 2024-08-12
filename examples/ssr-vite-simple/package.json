@@ -1,6 +1,6 @@
 {
     "name": "ssr-vite-simple",
-    "version": "0.0.15-alpha.22",
+    "version": "0.0.15-alpha.23",
     "private": true,
     "type": "module",
     "scripts": {
@@ -10,10 +10,10 @@
         "start": "gez start"
     },
     "dependencies": {
-        "@gez/core": "0.0.15-alpha.22"
+        "@gez/core": "0.0.15-alpha.23"
     },
     "devDependencies": {
-        "@gez/vite": "0.0.15-alpha.22",
+        "@gez/vite": "0.0.15-alpha.23",
         "@types/node": "^20.6.3",
         "typescript": "^5.2.2",
         "vite": "^5.0.0"

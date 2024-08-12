@@ -47,7 +47,7 @@
         "stylelint-order": "^6.0.4",
         "vue-eslint-parser": "^9.4.2"
     },
-    "version": "0.0.15-alpha.22",
+    "version": "0.0.15-alpha.23",
     "type": "module",
     "private": false,
     "exports": {
@@ -81,5 +81,5 @@
         "*.mjs",
         "template"
     ],
-    "gitHead": "e31911973bfc831db8b8bbe419f79fb34faf8b3a"
+    "gitHead": "1a5bde313f7bc6003a07bb4f0c36c2b48804b536"
 }
