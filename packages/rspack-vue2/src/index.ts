@@ -2,6 +2,10 @@ import { defineConfig } from '@gez/rspack';
 import { VueLoaderPlugin } from 'vue-loader';
 
 export const vue2Config = defineConfig(({ config, buildTarget }) => {
+    const vueStyleLoader = new URL(import.meta.resolve('vue-style-loader'))
+        .pathname;
+    const cssLoader = new URL(import.meta.resolve('css-loader')).pathname;
+    const lessLoader = new URL(import.meta.resolve('less-loader')).pathname;
     config.resolve!.extensions = [
         ...config.resolve!.extensions!,
         '.vue',
@@ -18,12 +22,12 @@ export const vue2Config = defineConfig(({ config, buildTarget }) => {
         },
         {
             test: /\.less$/,
-            use: ['vue-style-loader', 'css-loader', 'less-loader'],
+            use: [vueStyleLoader, cssLoader, lessLoader],
             type: 'javascript/auto'
         },
         {
             test: /\.css$/,
-            use: ['vue-style-loader', 'css-loader'],
+            use: [vueStyleLoader, cssLoader],
             type: 'javascript/auto'
         }
     ];

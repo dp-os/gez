@@ -1,6 +1,6 @@
 {
     "name": "ssr-vite-qwik",
-    "version": "0.0.15-alpha.24",
+    "version": "0.0.15-alpha.25",
     "private": true,
     "type": "module",
     "scripts": {
@@ -10,12 +10,12 @@
         "start": "gez"
     },
     "dependencies": {
-        "@gez/core": "0.0.15-alpha.24"
+        "@gez/core": "0.0.15-alpha.25"
     },
     "devDependencies": {
         "@builder.io/qwik": "^1.2.18",
         "@gez/class-state": "0.0.7",
-        "@gez/vite": "0.0.15-alpha.24",
+        "@gez/vite": "0.0.15-alpha.25",
         "@types/node": "^20.6.3",
         "typescript": "^5.2.2",
         "vite": "^5.0.0"
