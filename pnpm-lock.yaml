@@ -18,7 +18,7 @@ importers:
   examples/ssr-rspack-base:
     dependencies:
       '@gez/core':
-        specifier: 0.0.15-alpha.21
+        specifier: 0.0.15-alpha.22
         version: link:../../packages/core
     devDependencies:
       '@types/express':
@@ -92,7 +92,7 @@ importers:
   examples/ssr-vite-qwik:
     dependencies:
       '@gez/core':
-        specifier: 0.0.15-alpha.21
+        specifier: 0.0.15-alpha.22
         version: link:../../packages/core
     devDependencies:
       '@builder.io/qwik':
@@ -102,7 +102,7 @@ importers:
         specifier: 0.0.7
         version: 0.0.7
       '@gez/vite':
-        specifier: 0.0.15-alpha.21
+        specifier: 0.0.15-alpha.22
         version: link:../../packages/vite
       '@types/node':
         specifier: ^20.6.3
@@ -117,14 +117,14 @@ importers:
   examples/ssr-vite-react:
     dependencies:
       '@gez/core':
-        specifier: 0.0.15-alpha.21
+        specifier: 0.0.15-alpha.22
         version: link:../../packages/core
     devDependencies:
       '@gez/class-state':
         specifier: 0.0.7
         version: 0.0.7
       '@gez/vite':
-        specifier: 0.0.15-alpha.21
+        specifier: 0.0.15-alpha.22
         version: link:../../packages/vite
       '@types/node':
         specifier: ^20.6.3
@@ -151,11 +151,11 @@ importers:
   examples/ssr-vite-simple:
     dependencies:
       '@gez/core':
-        specifier: 0.0.15-alpha.21
+        specifier: 0.0.15-alpha.22
         version: link:../../packages/core
     devDependencies:
       '@gez/vite':
-        specifier: 0.0.15-alpha.21
+        specifier: 0.0.15-alpha.22
         version: link:../../packages/vite
       '@types/node':
         specifier: ^20.6.3
@@ -170,14 +170,14 @@ importers:
   examples/ssr-vite-vue3:
     dependencies:
       '@gez/core':
-        specifier: 0.0.15-alpha.21
+        specifier: 0.0.15-alpha.22
         version: link:../../packages/core
     devDependencies:
       '@gez/class-state':
         specifier: 0.0.7
         version: 0.0.7
       '@gez/vite':
-        specifier: 0.0.15-alpha.21
+        specifier: 0.0.15-alpha.22
         version: link:../../packages/vite
       '@types/node':
         specifier: ^20.6.3
@@ -479,7 +479,7 @@ importers:
   packages/vite:
     devDependencies:
       '@gez/core':
-        specifier: 0.0.15-alpha.21
+        specifier: 0.0.15-alpha.22
         version: link:../core
       '@gez/lint':
         specifier: 0.0.9
