@@ -22,9 +22,9 @@
         "vue-template-compiler": "^2.7.16"
     },
     "devDependencies": {
-        "@gez/core": "0.0.15-alpha.23",
+        "@gez/core": "0.0.15-alpha.24",
         "@gez/lint": "0.0.9",
-        "@gez/rspack": "0.0.15-alpha.23",
+        "@gez/rspack": "0.0.15-alpha.24",
         "@types/node": "20.12.12",
         "@types/write": "^2.0.4",
         "@vitest/coverage-v8": "1.6.0",
@@ -35,7 +35,7 @@
         "vitest": "1.6.0",
         "vue-loader": "npm:@gez/vue2-loader@^1.0.0"
     },
-    "version": "0.0.15-alpha.23",
+    "version": "0.0.15-alpha.24",
     "type": "module",
     "private": false,
     "exports": {

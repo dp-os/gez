@@ -10,9 +10,8 @@ export class Output extends BuildConfig<Config> {
         return {
             clean: true,
             module: true,
-            // TODO: 生产模式应该启用
-            // chunkFormat: 'module',
-            // chunkLoading: 'import',
+            chunkFormat: gez.isProd ? 'module' : undefined,
+            chunkLoading: gez.isProd ? 'import' : undefined,
             filename: gez.isProd
                 ? 'js/[name].[contenthash:8].js'
                 : 'js/[name].js',
