@@ -11,31 +11,33 @@
     },
     "peerDependencies": {
         "@gez/core": "*",
-        "@gez/rspack": "*",
         "less": "*",
-        "vue": "^2.7.16",
-        "vue-loader": "npm:@gez/vue2-loader",
-        "vue-server-renderer": "^2.7.16",
-        "vue-template-compiler": "^2.7.16"
+        "vue": "2.7.16"
+    },
+    "peerDependenciesMeta": {
+        "less": {
+            "optional": true
+        }
+    },
+    "dependencies": {
+        "@gez/rspack": "workspace:^",
+        "@gez/vue2-loader": "^1.0.1",
+        "css-loader": "^7.1.2",
+        "less-loader": "^12.2.0",
+        "vue-style-loader": "4.1.3"
     },
     "devDependencies": {
         "@gez/core": "workspace:^",
         "@gez/lint": "0.0.9",
-        "@gez/rspack": "workspace:^",
         "@types/node": "20.12.12",
-        "@types/write": "^2.0.4",
         "@vitest/coverage-v8": "1.6.0",
-        "css-loader": "^7.1.2",
         "eslint": "8.57.0",
-        "less-loader": "^12.2.0",
         "stylelint": "16.5.0",
         "typescript": "5.4.5",
         "unbuild": "2.0.0",
-        "vitest": "1.6.0",
-        "vue-loader": "npm:@gez/vue2-loader@^1.0.0",
-        "vue-style-loader": "4.1.3"
+        "vitest": "1.6.0"
     },
-    "version": "0.0.15-alpha.25",
+    "version": "0.0.15-alpha.26",
     "type": "module",
     "private": false,
     "exports": {

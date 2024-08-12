@@ -1,7 +1,9 @@
-import { defineConfig } from '@gez/rspack';
+import type { Gez } from '@gez/core';
+import { createApp as _createApp, defineConfig } from '@gez/rspack';
 import { VueLoaderPlugin } from 'vue-loader';
 
-export const vue2Config = defineConfig(({ config, buildTarget }) => {
+const vue2Config = defineConfig(({ config, buildTarget }) => {
+    const vueLoader = new URL(import.meta.resolve('vue-loader')).pathname;
     const vueStyleLoader = new URL(import.meta.resolve('vue-style-loader'))
         .pathname;
     const cssLoader = new URL(import.meta.resolve('css-loader')).pathname;
@@ -18,7 +20,7 @@ export const vue2Config = defineConfig(({ config, buildTarget }) => {
         ...config.module!.rules!,
         {
             test: /\.vue$/,
-            use: 'vue-loader'
+            use: vueLoader
         },
         {
             test: /\.less$/,
@@ -47,3 +49,6 @@ export const vue2Config = defineConfig(({ config, buildTarget }) => {
     }
     return config;
 });
+export function createApp(gez: Gez) {
+    return _createApp(gez, vue2Config);
+}
