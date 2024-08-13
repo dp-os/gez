@@ -1,6 +1,6 @@
 <template>
     <div class="box">
-        Count value2:
+        Count value:
         {{count}}
         <button @click="count++">Add</button>
     </div>

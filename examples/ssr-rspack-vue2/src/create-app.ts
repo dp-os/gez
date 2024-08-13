@@ -1,6 +1,5 @@
 import Vue, { defineAsyncComponent } from 'vue'
 
-// import App from './app.vue';
 const App = defineAsyncComponent(() => import('./app.vue'))
 
 

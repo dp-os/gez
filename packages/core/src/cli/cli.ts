@@ -1,7 +1,7 @@
 import path from 'node:path';
 
 // @ts-expect-error
-import { register } from 'tsx/esm/api';
+import { tsImport } from 'tsx/esm/api';
 
 import { COMMAND, getProjectPath, Gez } from '../core';
 import { type NodeOptions } from '../node';
@@ -33,39 +33,15 @@ function defaultCreated() {
 
 interface Mod {
     import: () => Promise<Record<string, any>>;
-    reload: () => Promise<void>;
     dispose: () => Promise<void>;
 }
 export function createMod(file: string): Mod {
-    let _api: any = null;
-    let disposed = false;
-    const getApi = (): any => {
-        if (disposed) {
-            throw new Error(`The '${file}' module has been disposed`);
-        }
-        if (_api) {
-            return _api;
-        }
-        _api = register({
-            namespace: String(Date.now())
-        });
-        return _api;
-    };
     const fullFile = path.resolve(file);
-
     return {
         async import() {
-            return getApi().import(fullFile, import.meta.url);
+            return tsImport(fullFile, import.meta.url);
         },
-        async reload() {
-            await getApi().unregister();
-            _api = null;
-        },
-        async dispose() {
-            await getApi().unregister();
-            _api = null;
-            disposed = true;
-        }
+        async dispose() {}
     };
 }
 

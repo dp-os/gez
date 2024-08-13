@@ -1,6 +1,6 @@
 {
     "name": "ssr-rspack-vue2",
-    "version": "0.0.15-alpha.27",
+    "version": "0.0.15-alpha.28",
     "private": true,
     "type": "module",
     "scripts": {
@@ -10,8 +10,8 @@
         "start": "gez start"
     },
     "dependencies": {
-        "express": "^4.19.2",
-        "@gez/core": "workspace:^"
+        "@gez/core": "workspace:^",
+        "express": "^4.19.2"
     },
     "devDependencies": {
         "@gez/rspack": "workspace:^",
