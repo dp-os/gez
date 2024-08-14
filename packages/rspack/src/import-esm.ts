@@ -37,7 +37,12 @@ const link: ModuleLinker = async (specifier: string, referrer: Module) => {
         await module.evaluate();
         return module;
     } else {
-        const text = fs.readFileSync(specifier, 'utf-8');
+        const dir =
+            referrer.identifier === ROOT_MODULE
+                ? import.meta.dirname
+                : path.dirname(referrer.identifier);
+        const filename = path.resolve(dir, specifier);
+        const text = fs.readFileSync(filename, 'utf-8');
         const module = new SourceTextModule(text, {
             initializeImportMeta,
             identifier: specifier,
@@ -56,12 +61,14 @@ export async function importEsm(identifier: string): Promise<any> {
     const context = createContext({
         console,
         process,
+        global,
         [ROOT_MODULE]: {}
     });
     const module = new SourceTextModule(
         `import * as root from '${identifier}';
         ${ROOT_MODULE} = root;`,
         {
+            identifier: ROOT_MODULE,
             context
         }
     );
