@@ -4,7 +4,6 @@ import {
     type App,
     type AppRenderParams,
     COMMAND,
-    createMod,
     type Gez,
     ServerContext,
     type ServerRender
@@ -14,6 +13,7 @@ import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 
 import type { ConfigCallback } from './config';
+import { importEsm } from './import-esm';
 
 function middleware(gez: Gez, config: ConfigCallback) {
     let clientCompiler: Compiler | null = null;
@@ -56,16 +56,14 @@ export async function createApp(
     return {
         middleware: middleware(gez, config),
         async render(params: AppRenderParams): Promise<ServerContext> {
-            const mod = createMod(
+            const module = await importEsm(
                 gez.getProjectPath('dist/server/entry-server.js')
             );
-            const module = await mod.import();
             const render: ServerRender | undefined = module.default;
             const context = new ServerContext(gez, params);
             if (typeof render === 'function') {
                 await render(context);
             }
-            await mod.dispose();
             return context;
         },
         build() {
