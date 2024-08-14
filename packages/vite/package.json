@@ -10,7 +10,7 @@
         "build": "unbuild"
     },
     "devDependencies": {
-        "@gez/core": "0.0.15-alpha.30",
+        "@gez/core": "0.0.15-alpha.31",
         "@gez/lint": "0.0.9",
         "@types/node": "20.12.12",
         "@vitest/coverage-v8": "1.6.0",
@@ -24,7 +24,7 @@
     "peerDependencies": {
         "vite": "^5.0.0"
     },
-    "version": "0.0.15-alpha.30",
+    "version": "0.0.15-alpha.31",
     "type": "module",
     "private": false,
     "exports": {

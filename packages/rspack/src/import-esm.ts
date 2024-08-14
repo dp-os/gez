@@ -12,10 +12,7 @@ import {
 
 const ROOT_MODULE = '__root_module__';
 
-const link: ModuleLinker = async (
-    specifier: string,
-    referencingModule: Module
-) => {
+const link: ModuleLinker = async (specifier: string, referrer: Module) => {
     // Node.js native module
     const isNative = isBuiltin(specifier);
     // node_modules
@@ -33,7 +30,7 @@ const link: ModuleLinker = async (
             },
             {
                 identifier: specifier,
-                context: referencingModule.context
+                context: referrer.context
             }
         );
         await module.link(link);
@@ -44,8 +41,9 @@ const link: ModuleLinker = async (
         const module = new SourceTextModule(text, {
             initializeImportMeta,
             identifier: specifier,
-            context: referencingModule.context
-            // importModuleDynamically
+            context: referrer.context,
+            // @ts-expect-error
+            importModuleDynamically: link
         });
         await module.link(link);
         await module.evaluate();
