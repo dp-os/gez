@@ -11,8 +11,8 @@
     },
     "dependencies": {
         "@gez/core": "0.0.15-alpha.32",
-        "@rspack/core": "1.0.0-beta.5",
-        "webpack-dev-middleware": "^7.2.1",
+        "@rspack/core": "1.0.0",
+        "webpack-dev-middleware": "^7.4.2",
         "webpack-hot-middleware": "^2.26.1",
         "webpack-node-externals": "~3.0.0"
     },
