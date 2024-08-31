@@ -23,7 +23,7 @@ export default defineServer({
     }));
     </script>
     <script type="module">
-    import("ssr-rspack-vue2/entry-client")
+    import "ssr-rspack-vue2/entry-client";
     </script>
     </body>
     </html>

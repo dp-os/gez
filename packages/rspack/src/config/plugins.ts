@@ -7,7 +7,7 @@ type Config = NonNullable<RspackOptions['plugins']>;
 export class Plugins extends BuildConfig<Config> {
     protected getClient(): Config {
         const { gez } = this;
-        const plugins: Config = [new VueSSRServerPlugin()];
+        const plugins: Config = [new ImportmapPlugin()];
         if (!gez.isProd) {
             plugins.push(new rspack.HotModuleReplacementPlugin());
         }
@@ -15,7 +15,7 @@ export class Plugins extends BuildConfig<Config> {
     }
 
     protected getServer(): Config {
-        return [new VueSSRServerPlugin()];
+        return [new ImportmapPlugin()];
     }
 
     protected getNode(): Config {
@@ -23,29 +23,31 @@ export class Plugins extends BuildConfig<Config> {
     }
 }
 
-class VueSSRServerPlugin {
+class ImportmapPlugin {
     public apply(compiler: Compiler) {
-        compiler.hooks.thisCompilation.tap('MyPlugin', (compilation) => {
-            compilation.hooks.processAssets.tap(
-                {
-                    name: 'MyPlugin',
-                    stage: compilation.PROCESS_ASSETS_STAGE_ADDITIONAL
-                },
-                (assets) => {
-                    const files = Object.keys(assets)
-                        .filter((file) => {
-                            return (
-                                file.endsWith('.js') &&
-                                !file.startsWith('chunk/')
-                            );
-                        })
-                        .map((file) => {
-                            const [name, ...hash] = file.split('.');
-                            return { name, file: hash.join('.') };
-                        });
-                    const { RawSource } = compiler.webpack.sources;
-                    const source = new RawSource(
-                        `
+        compiler.hooks.thisCompilation.tap(
+            'importmap-plugin',
+            (compilation) => {
+                compilation.hooks.processAssets.tap(
+                    {
+                        name: 'importmap-plugin',
+                        stage: compilation.PROCESS_ASSETS_STAGE_ADDITIONAL
+                    },
+                    (assets) => {
+                        const files = Object.keys(assets)
+                            .filter((file) => {
+                                return (
+                                    file.endsWith('.js') &&
+                                    !file.startsWith('chunk/')
+                                );
+                            })
+                            .map((file) => {
+                                const [name, ...hash] = file.split('.');
+                                return { name, file: hash.join('.') };
+                            });
+                        const { RawSource } = compiler.webpack.sources;
+                        const source = new RawSource(
+                            `
 ((win) => {
     const name = "ssr-rspack-vue2";
     const files = ${JSON.stringify(files)};
@@ -57,10 +59,11 @@ class VueSSRServerPlugin {
     });
 })(window);
 `.trim()
-                    );
-                    compilation.emitAsset('importmap.js', source);
-                }
-            );
-        });
+                        );
+                        compilation.emitAsset('importmap.js', source);
+                    }
+                );
+            }
+        );
     }
 }
