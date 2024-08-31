@@ -16,7 +16,7 @@ export class Entry extends BuildConfig<Config> {
                   gez.getProjectPath('src/entry-client.ts')
               ];
         return {
-            index: {
+            'entry-client': {
                 import: importPaths,
                 library: {
                     type: 'module'
