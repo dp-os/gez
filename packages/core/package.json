@@ -14,7 +14,7 @@
     },
     "dependencies": {
         "serve-static": "^1.15.0",
-        "tsx": "4.17.0"
+        "tsx": "4.19.0"
     },
     "devDependencies": {
         "@gez/lint": "0.0.9",
