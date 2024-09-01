@@ -23,6 +23,25 @@ export class Plugins extends BuildConfig<Config> {
     }
 }
 
+interface StatsJson {
+    name: string;
+    hash: string;
+    entrypoints: Record<string, Entrypoints>;
+}
+
+export interface Entrypoints {
+    name: string;
+    chunks: string[];
+    assets: Asset[];
+    filteredAssets: number;
+    assetsSize: number;
+}
+
+export interface Asset {
+    name: string;
+    size: number;
+}
+
 class ImportmapPlugin {
     public apply(compiler: Compiler) {
         compiler.hooks.thisCompilation.tap(
@@ -34,30 +53,39 @@ class ImportmapPlugin {
                         stage: compilation.PROCESS_ASSETS_STAGE_ADDITIONAL
                     },
                     (assets) => {
-                        const files = Object.keys(assets)
-                            .filter((file) => {
-                                return (
-                                    file.endsWith('.js') &&
-                                    !file.startsWith('chunk/')
-                                );
+                        const stats: StatsJson = compilation.getStats().toJson({
+                            all: false,
+                            hash: true,
+                            entrypoints: true
+                        });
+                        const files = Object.keys(stats.entrypoints)
+                            .map((name) => {
+                                const item = stats.entrypoints[name];
+                                const file = item.assets.find((item) => {
+                                    return item.name.endsWith('.js');
+                                });
+                                if (file) {
+                                    return {
+                                        name,
+                                        file: file.name
+                                    };
+                                }
+                                return null;
                             })
-                            .map((file) => {
-                                const [name, ...hash] = file.split('.');
-                                return { name, file: hash.join('.') };
-                            });
+                            .filter((item) => item);
                         const { RawSource } = compiler.webpack.sources;
                         const source = new RawSource(
                             `
-((win) => {
-    const name = "ssr-rspack-vue2";
+((global) => {
+    const name = "${stats.name}";
     const files = ${JSON.stringify(files)};
     const importmapKey = '__importmap__';
-    const importmap = win[importmapKey] = win[importmapKey] || {};
+    const importmap = global[importmapKey] = global[importmapKey] || {};
     const imports = importmap.imports = importmap.imports || {};
     files.forEach(item => {
-        imports[name + "/" + item.name] = "/" + name + "/" + item.name + '.' + item.file;
+        imports[name + "/" + item.name] = "/" + name + "/" + item.file;
     });
-})(window);
+})(globalThis);
 `.trim()
                         );
                         compilation.emitAsset('importmap.js', source);
