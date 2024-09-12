@@ -1,5 +1,6 @@
 <template>
     <div class="box">
+        <h2>rspack + vue2</h2>
         Count value:
         {{count}}
         <button @click="count++">Add</button>
