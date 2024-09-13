@@ -11,7 +11,8 @@
     },
     "dependencies": {
         "@gez/core": "workspace:^",
-        "express": "^4.19.2"
+        "express": "^4.19.2",
+        "vue-class-setup": "^1.4.4"
     },
     "devDependencies": {
         "@gez/rspack": "workspace:^",

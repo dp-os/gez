@@ -45,6 +45,9 @@ importers:
       express:
         specifier: ^4.19.2
         version: 4.19.2
+      vue-class-setup:
+        specifier: ^1.4.4
+        version: 1.4.4(vue@2.7.16)
     devDependencies:
       '@gez/rspack':
         specifier: workspace:^
@@ -6901,6 +6904,14 @@ packages:
       - supports-color
       - terser
     dev: true
+
+  /vue-class-setup@1.4.4(vue@2.7.16):
+    resolution: {integrity: sha512-qv9U6BnXZurL/HmZqONr6MC6HW/fOxfDndgMnidZUxQSZJAW2eM7yaxAAjshz8fXIjCTHQJCcgq8LxlCCfGBnw==}
+    peerDependencies:
+      vue: '>=2.7.8 || >=3.0.0'
+    dependencies:
+      vue: 2.7.16
+    dev: false
 
   /vue-eslint-parser@9.4.3(eslint@8.57.0):
     resolution: {integrity: sha512-2rYRLWlIpaiN8xbPiDyXZXRgLGOtWxERV7ND5fFAv5qo1D2N9Fu9MNajBNc6o13lZ+24DAWCkQCvj4klgmcITg==}

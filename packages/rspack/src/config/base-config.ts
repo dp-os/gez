@@ -40,7 +40,8 @@ export function createBaseConfig(
                     },
                     jsc: {
                         parser: {
-                            syntax: 'typescript'
+                            syntax: 'typescript',
+                            decorators: true
                         }
                     }
                 } satisfies SwcLoaderOptions,
