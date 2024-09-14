@@ -18,7 +18,7 @@ importers:
   examples/ssr-rspack-base:
     dependencies:
       '@gez/core':
-        specifier: 0.0.15-alpha.36
+        specifier: 0.0.15-alpha.37
         version: link:../../packages/core
     devDependencies:
       '@types/express':
@@ -248,7 +248,7 @@ importers:
   packages/rspack:
     dependencies:
       '@gez/core':
-        specifier: 0.0.15-alpha.36
+        specifier: 0.0.15-alpha.37
         version: link:../core
       '@rspack/core':
         specifier: 1.0.5
