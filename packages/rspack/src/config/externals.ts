@@ -17,7 +17,7 @@ export class Externals extends BuildConfig<Config> {
     protected getNode(): Config {
         return [
             nodeExternals({
-                importType: 'module'
+                importType: 'module-import' as any
             }) as any
         ];
     }
