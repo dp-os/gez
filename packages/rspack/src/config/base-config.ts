@@ -1,6 +1,7 @@
 import type { Gez } from '@gez/core';
 import type { RspackOptions, SwcLoaderOptions } from '@rspack/core';
 
+import { Alias } from './alias';
 import type { BuildTarget } from './base';
 import { Entry } from './entry';
 import { Externals } from './externals';
@@ -16,6 +17,7 @@ export function createBaseConfig(
 ): RspackOptions {
     const entry = new Entry(gez, buildTarget);
     const output = new Output(gez, buildTarget);
+    const alias = new Alias(gez, buildTarget);
     const target = new Target(gez, buildTarget);
     const optimization = new Optimization(gez, buildTarget);
     const externalsPresets = new ExternalsPresets(gez, buildTarget);
@@ -56,7 +58,7 @@ export function createBaseConfig(
         plugins: plugins.get(),
         module,
         resolve: {
-            alias: {},
+            alias: alias.get(),
             extensions: []
         },
         optimization: {
