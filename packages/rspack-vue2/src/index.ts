@@ -2,8 +2,6 @@ import type { Gez } from '@gez/core';
 import { createApp as _createApp, defineConfig } from '@gez/rspack';
 import { VueLoaderPlugin } from '@gez/vue2-loader';
 
-import { lessVar } from './less-var';
-
 const vue2Config = defineConfig(({ config, buildTarget }) => {
     const vueLoader = new URL(import.meta.resolve('@gez/vue2-loader')).pathname;
     const vueStyleLoader = new URL(import.meta.resolve('vue-style-loader'))
@@ -13,6 +11,7 @@ const vue2Config = defineConfig(({ config, buildTarget }) => {
     const styleResourcesLoader = new URL(
         import.meta.resolve('style-resources-loader')
     ).pathname;
+    const varLess = new URL(import.meta.resolve('./var.less')).pathname;
     config.resolve!.extensions = [
         ...config.resolve!.extensions!,
         '.vue',
@@ -36,7 +35,7 @@ const vue2Config = defineConfig(({ config, buildTarget }) => {
                 {
                     loader: styleResourcesLoader,
                     options: {
-                        patterns: [lessVar]
+                        patterns: [varLess]
                     }
                 }
             ],

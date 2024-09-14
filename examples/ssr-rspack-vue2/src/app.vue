@@ -34,5 +34,6 @@ h2 {
 
 .box {
     background: yellow;
+    min-width: @--lg;
 }
 </style>
