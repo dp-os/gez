@@ -10,7 +10,7 @@
         "build": "unbuild"
     },
     "dependencies": {
-        "@gez/core": "0.0.15-alpha.35",
+        "@gez/core": "0.0.15-alpha.36",
         "@rspack/core": "1.0.5",
         "webpack-dev-middleware": "^7.4.2",
         "webpack-hot-middleware": "^2.26.1",
@@ -29,7 +29,7 @@
         "unbuild": "2.0.0",
         "vitest": "1.6.0"
     },
-    "version": "0.0.15-alpha.35",
+    "version": "0.0.15-alpha.36",
     "type": "module",
     "private": false,
     "exports": {
