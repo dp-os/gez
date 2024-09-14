@@ -34,6 +34,20 @@ export function createBaseConfig(
                 type: 'json'
             },
             {
+                test: /\.(woff|woff2|eot|ttf|otf)$/,
+                type: 'asset/resource'
+                // use: [
+                //     {
+                //         loader: 'file-loader', // 或者使用 url-loader
+                //         options: {
+                //             name: '[name].[contenthash].[ext]', // 输出文件命名规则
+                //             outputPath: 'fonts/', // 输出路径
+                //             publicPath: '../fonts/' // 公共路径
+                //         }
+                //     }
+                // ]
+            },
+            {
                 test: /\.ts$/,
                 loader: 'builtin:swc-loader',
                 options: {
