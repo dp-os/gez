@@ -2,12 +2,17 @@ import type { Gez } from '@gez/core';
 import { createApp as _createApp, defineConfig } from '@gez/rspack';
 import { VueLoaderPlugin } from '@gez/vue2-loader';
 
+import { lessVar } from './less-var';
+
 const vue2Config = defineConfig(({ config, buildTarget }) => {
     const vueLoader = new URL(import.meta.resolve('@gez/vue2-loader')).pathname;
     const vueStyleLoader = new URL(import.meta.resolve('vue-style-loader'))
         .pathname;
     const cssLoader = new URL(import.meta.resolve('css-loader')).pathname;
     const lessLoader = new URL(import.meta.resolve('less-loader')).pathname;
+    const styleResourcesLoader = new URL(
+        import.meta.resolve('style-resources-loader')
+    ).pathname;
     config.resolve!.extensions = [
         ...config.resolve!.extensions!,
         '.vue',
@@ -24,7 +29,17 @@ const vue2Config = defineConfig(({ config, buildTarget }) => {
         },
         {
             test: /\.less$/,
-            use: [vueStyleLoader, cssLoader, lessLoader],
+            use: [
+                vueStyleLoader,
+                cssLoader,
+                lessLoader,
+                {
+                    loader: styleResourcesLoader,
+                    options: {
+                        patterns: [lessVar]
+                    }
+                }
+            ],
             type: 'javascript/auto'
         },
         {
