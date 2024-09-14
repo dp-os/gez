@@ -12,6 +12,7 @@
     "dependencies": {
         "@gez/core": "0.0.15-alpha.37",
         "@rspack/core": "1.0.5",
+        "file-loader": "^6.2.0",
         "webpack-dev-middleware": "^7.4.2",
         "webpack-hot-middleware": "^2.26.1",
         "webpack-node-externals": "~3.0.0"
