@@ -37,8 +37,7 @@ const vue2Config = defineConfig(({ config, buildTarget }) => {
                     loader: styleResourcesLoader,
                     options: {
                         patterns: [lessVar]
-                    },
-                    before: lessLoader
+                    }
                 }
             ],
             type: 'javascript/auto'
