@@ -62,6 +62,7 @@ export async function importEsm(identifier: string): Promise<any> {
         console,
         process,
         global,
+        URL,
         [ROOT_MODULE]: {}
     });
     const module = new SourceTextModule(
@@ -81,5 +82,6 @@ function initializeImportMeta(meta: ImportMeta, module: SourceTextModule) {
     meta.filename = import.meta.resolve(module.identifier, import.meta.url);
     meta.dirname = path.dirname(meta.filename);
     meta.resolve = import.meta.resolve;
-    meta.url = fileURLToPath(meta.filename);
+    // meta.url = fileURLToPath(meta.filename);
+    meta.url = meta.filename;
 }

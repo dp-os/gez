@@ -15,7 +15,6 @@ export function createBaseConfig(
     gez: Gez,
     buildTarget: BuildTarget
 ): RspackOptions {
-    const fileLoader = new URL(import.meta.resolve('file-loader')).pathname;
     const entry = new Entry(gez, buildTarget);
     const output = new Output(gez, buildTarget);
     const alias = new Alias(gez, buildTarget);
@@ -28,8 +27,7 @@ export function createBaseConfig(
         rules: [
             {
                 test: /\.(png|jpe?g|gif|svg)$/i,
-                type: 'asset/resource',
-                use: fileLoader
+                type: 'asset/resource'
             },
             {
                 test: /\.json$/i,
@@ -37,17 +35,7 @@ export function createBaseConfig(
             },
             {
                 test: /\.(woff|woff2|eot|ttf|otf)$/,
-                type: 'asset/resource',
-                use: [
-                    {
-                        loader: fileLoader, // 或者使用 url-loader
-                        options: {
-                            name: '[name].[contenthash].[ext]', // 输出文件命名规则
-                            outputPath: 'fonts/', // 输出路径
-                            publicPath: '../fonts/' // 公共路径
-                        }
-                    }
-                ]
+                type: 'asset/resource'
             },
             {
                 test: /\.ts$/,
@@ -65,8 +53,7 @@ export function createBaseConfig(
                 } satisfies SwcLoaderOptions,
                 type: 'javascript/auto'
             }
-        ],
-        defaultRules: []
+        ]
     };
     return {
         context: gez.root,
