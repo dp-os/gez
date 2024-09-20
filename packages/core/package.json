@@ -17,7 +17,7 @@
         "tsx": "4.19.0"
     },
     "devDependencies": {
-        "@gez/lint": "0.0.9",
+        "@gez/lint": "workspace:^",
         "@types/node": "20.12.12",
         "@types/serve-static": "^1.15.7",
         "@vitest/coverage-v8": "1.6.0",

@@ -29,7 +29,7 @@
     },
     "devDependencies": {
         "@gez/core": "workspace:^",
-        "@gez/lint": "0.0.9",
+        "@gez/lint": "workspace:^",
         "@types/node": "20.12.12",
         "@vitest/coverage-v8": "1.6.0",
         "eslint": "8.57.0",
