@@ -25,6 +25,9 @@ const vue3Config = defineConfig(({ config, buildTarget }) => {
         {
             test: /\.vue$/,
             use: vueLoader
+            // options: {
+            //     experimentalInlineMatchResource: true
+            // }
         },
         {
             test: /\.less$/,
@@ -49,16 +52,16 @@ const vue3Config = defineConfig(({ config, buildTarget }) => {
     ];
     config.resolve!.alias = {
         ...config.resolve!.alias!
-        // vue$: 'vue/dist/vue.esm.js'
+        // vue$: 'vue/dist/vue.esm-bundler.js'
     };
     if (buildTarget === 'server') {
         config.ignoreWarnings = [
-            ...config.ignoreWarnings!
-            // (warning) => {
-            //     return warning.moduleDescriptor.name.includes(
-            //         'vue-server-renderer'
-            //     );
-            // }
+            ...config.ignoreWarnings!,
+            (warning) => {
+                return warning.moduleDescriptor.name.includes(
+                    'vue-server-renderer'
+                );
+            }
         ];
     }
     return config;

@@ -7,12 +7,22 @@
     </div>
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, onMounted } from 'vue';
 import { Define, PassOnTo, Setup } from 'vue-class-setup';
+
+import { log } from 'ssr-rspack-vue3/src/utils';
 
 @Setup
 class App extends Define {
     public count = 1;
+
+    @PassOnTo()
+    setup() {
+        log('setup');
+        onMounted(() => {
+            log('onMounted');
+        })
+    }
 }
 
 export default defineComponent({
