@@ -391,9 +391,6 @@ importers:
       '@gez/rspack':
         specifier: workspace:^
         version: link:../rspack
-      '@rspack/plugin-vue/server':
-        specifier: link:@rspack/plugin-vue/server
-        version: link:@rspack/plugin-vue/server
       css-loader:
         specifier: ^7.1.2
         version: 7.1.2(webpack@5.93.0)
