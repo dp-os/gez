@@ -15,6 +15,24 @@ export type FederationShared = Array<
     Record<string, FederationSharedConfig> | string
 >;
 
+interface ImportmapJson {
+    dts: boolean;
+    client: {
+        /**
+         * 客户端读取：/[serviceName]/importmap.[version].js
+         * 服务端渲染页面，插入 /[serviceName]/importmap.[version].js
+         */
+        version: string;
+    };
+    server: {
+        /**
+         * 客户端读取：/[serviceName]/exports/[version].zip
+         * 解压到 node_modules 目录
+         */
+        version: string;
+    };
+}
+
 export interface GezOptions {
     root?: string;
     name?: string;
@@ -24,13 +42,23 @@ export interface GezOptions {
      */
     modules?: {
         /**
-         * 对外导出的文件
+         * 类型生成的目录
          */
-        exports?: Record<string, string>;
+        typeDir: string;
+        /**
+         * 对外导出的文件
+         * 例子：
+         *  vue
+         *  src/config.ts
+         *  src/app.vue
+         */
+        exports?: string[];
         /**
          * 导入的文件
+         * ssr-name/vue
+         * ssr-name/src/config
          */
-        imports?: Record<string, string>;
+        imports?: string[];
     };
     /**
      * 构建版本支持，一般不需要配置
