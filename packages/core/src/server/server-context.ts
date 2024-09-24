@@ -32,6 +32,9 @@ export class ServerContext {
     public constructor(gez: Gez, params: AppRenderParams) {
         this.gez = gez;
         this.params = params;
+        if (params.extra) {
+            this.extra = params.extra;
+        }
 
         this._loadManifestJson();
         this._initModules();
