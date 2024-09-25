@@ -19,7 +19,7 @@ const vue3Config = defineConfig(({ config, buildTarget }) => {
         '...'
     ];
     config.experiments!.css = false;
-    config.plugins = [...config.plugins!, new VueLoaderPlugin() as any];
+    config.plugins = [...config.plugins!, new VueLoaderPlugin()];
     config.module!.rules = [
         ...config.module!.rules!,
         {

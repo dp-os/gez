@@ -89,6 +89,29 @@ class ImportmapPlugin {
 `.trim()
                         );
                         compilation.emitAsset('importmap.js', source);
+
+                        const importmap = JSON.stringify(
+                            {
+                                imports: files.reduce<Record<string, string>>(
+                                    (obj, item) => {
+                                        if (item) {
+                                            const { name, file } = item;
+                                            const key = `${stats.name}/${name}`;
+                                            const value = `/${stats.name}/${file}`;
+                                            obj[key] = value;
+                                        }
+                                        return obj;
+                                    },
+                                    {}
+                                )
+                            },
+                            null,
+                            4
+                        );
+                        compilation.emitAsset(
+                            'importmap.json',
+                            new RawSource(importmap)
+                        );
                     }
                 );
             }

@@ -29,11 +29,11 @@ export default defineServer({
     </script>
 
     <script type="module">
-    import "ssr-rspack-vue2/entry-client";
+    import "ssr-rspack-vue2_remote/entry-client";
     </script>
     </body>
     </html>
 `
-    // context.insertHtml(`<script type="module" src="ssr-rspack-vue2/entry-client"></script>`, 'bodyBefore')
+    // context.insertHtml(`<script type="module" src="ssr-rspack-vue2_remote/entry-client"></script>`, 'bodyBefore')
   }
 })
