@@ -14,8 +14,8 @@ export default defineNode({
       const result = await gez.render({ url: '/' })
       res.send(result.html)
     })
-    server.listen(3002, () => {
-      console.log('http://localhost:3002')
+    server.listen(3100, () => {
+      console.log('http://localhost:3100')
     })
   }
 })
