@@ -1,4 +1,10 @@
-import { type Compiler, rspack, type RspackOptions } from '@rspack/core';
+import {
+    type Compilation,
+    type Compiler,
+    rspack,
+    type RspackOptions,
+    type RspackPluginInstance
+} from '@rspack/core';
 
 import { BuildConfig } from './base';
 
@@ -42,26 +48,28 @@ export interface Asset {
     size: number;
 }
 
-class ImportmapPlugin {
+class ImportmapPlugin implements RspackPluginInstance {
     public apply(compiler: Compiler) {
         compiler.hooks.thisCompilation.tap(
             'importmap-plugin',
-            (compilation) => {
+            (compilation: Compilation) => {
                 compilation.hooks.processAssets.tap(
                     {
                         name: 'importmap-plugin',
-                        stage: compilation.PROCESS_ASSETS_STAGE_ADDITIONAL
+                        stage: rspack.Compilation
+                            .PROCESS_ASSETS_STAGE_ADDITIONAL
                     },
                     (assets) => {
-                        const stats: StatsJson = compilation.getStats().toJson({
+                        const stats = compilation.getStats().toJson({
                             all: false,
                             hash: true,
                             entrypoints: true
                         });
-                        const files = Object.keys(stats.entrypoints)
+                        const entrypoints = stats.entrypoints || {};
+                        const files = Object.keys(entrypoints)
                             .map((name) => {
-                                const item = stats.entrypoints[name];
-                                const file = item.assets.find((item) => {
+                                const item = entrypoints[name];
+                                const file = item.assets?.find((item) => {
                                     return item.name.endsWith('.js');
                                 });
                                 if (file) {
