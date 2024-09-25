@@ -1,6 +1,6 @@
 {
     "name": "@fmfe/genesis-compiler",
-    "version": "2.7.20",
+    "version": "2.7.21",
     "description": "Vue SSR Microfront",
     "bin": {
         "genesis-ts-node": "./bin/ts-node.cjs",
@@ -49,6 +49,7 @@
         "babel-plugin-syntax-jsx": "6.18.0",
         "babel-plugin-transform-vue-jsx": "3.7.0",
         "babel-preset-typescript-vue": "1.1.1",
+        "chalk": "^4.1.2",
         "core-js": "3.32.2",
         "css-loader": "6.8.1",
         "cssnano": "6.0.1",
