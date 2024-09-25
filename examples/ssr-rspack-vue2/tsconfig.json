@@ -15,6 +15,9 @@
         "noImplicitAny": false,
         "resolveJsonModule": true,
         "baseUrl": "./",
+        "paths": {
+            "ssr-rspack-vue2/*": ["./*"],
+        },
         "declaration": true,
         "isolatedModules": true,
         "declarationDir": "./types",

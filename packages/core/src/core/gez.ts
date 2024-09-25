@@ -59,6 +59,7 @@ export interface GezOptions {
          * ssr-name/src/config
          */
         imports?: string[];
+        importBase: Record<string, string>;
     };
     /**
      * 构建版本支持，一般不需要配置
