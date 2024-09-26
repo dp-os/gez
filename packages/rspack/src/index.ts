@@ -4,3 +4,5 @@ export {
     type DefineConfigOptions,
     type BuildTarget
 } from './config';
+
+export * from './importmap';
