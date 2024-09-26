@@ -87,6 +87,63 @@ export async function createApp(
                 done = resolve;
             });
         },
-        async destroy() {}
+        async destroy() {},
+        async install() {
+            if (!gez.modules) return;
+            const { importBase, imports = [] } = gez.modules;
+            const regex = /^(.*?)\/(.*)$/; // 使用正则表达式匹配第一个/符号
+            const importTargets = imports.reduce<{
+                targets: Map<string, Record<string, string>>;
+                imports: Record<string, string>;
+            }>(
+                (acc, item) => {
+                    const match = item.match(regex);
+
+                    if (match) {
+                        const [, part1, part2] = match;
+                        const origin =
+                            importBase[part1] || importBase['*'] || '';
+                        const fullPath = `${origin}/${part2}`;
+
+                        const target = acc.targets.get(part1);
+                        if (target) {
+                            target[item] = fullPath;
+                        } else {
+                            acc.targets.set(part1, {
+                                [item]: fullPath
+                            });
+                        }
+                        acc.imports[item] = fullPath;
+                    }
+                    return acc;
+                },
+                {
+                    targets: new Map(),
+                    imports: {}
+                }
+            );
+            const importList = Array.from(importTargets.targets.keys());
+
+            // importTargets.targets.forEach((value, key) => {
+            //     console.log(`@import ${key}`, value);
+            // });
+            console.log('@importList', importList);
+            console.log('@imports', importTargets.imports);
+
+            await Promise.all(
+                importList.map((name) => {
+                    return async () => {
+                        const baseUrl =
+                            importBase[name] || importBase['*'] || '';
+                        console.log('@baseUrl', baseUrl);
+                        if (baseUrl) {
+                            const res = await fetch(baseUrl);
+                            return res;
+                        }
+                    };
+                })
+            );
+            console.log('@install end');
+        }
     };
 }

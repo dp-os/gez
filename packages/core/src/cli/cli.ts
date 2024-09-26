@@ -9,6 +9,9 @@ import { type NodeOptions } from '../node';
 export function cli() {
     const command = process.argv.slice(2)[0] || '';
     switch (command) {
+        case COMMAND.install:
+            runDevApp(command);
+            break;
         case COMMAND.dev:
             runDevApp(command);
             break;
@@ -55,6 +58,9 @@ async function runDevApp(command: COMMAND) {
     await gez.init(command);
 
     switch (command) {
+        case COMMAND.install:
+            gez.install();
+            break;
         case COMMAND.dev:
             created(gez);
             break;

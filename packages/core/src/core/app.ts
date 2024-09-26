@@ -25,6 +25,7 @@ export interface App {
     render: (params: AppRenderParams) => Promise<ServerContext>;
     build: () => Promise<void>;
     destroy: () => Promise<void>;
+    install: () => Promise<void>;
 }
 
 export async function createApp(gez: Gez): Promise<App> {
@@ -71,6 +72,7 @@ export async function createApp(gez: Gez): Promise<App> {
             return context;
         },
         async build() {},
-        async destroy() {}
+        async destroy() {},
+        async install() {}
     };
 }

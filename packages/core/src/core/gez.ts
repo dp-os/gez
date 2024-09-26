@@ -52,13 +52,21 @@ export interface GezOptions {
          *  src/config.ts
          *  src/app.vue
          */
-        exports?: string[];
+        exposes?: string[];
         /**
          * 导入的文件
          * ssr-name/vue
          * ssr-name/src/config
          */
         imports?: string[];
+        /**
+         * 导入的文件的前置路径
+         * *符号为兜底逻辑
+         * 例子：
+         * ssr-remote: 192.168.0.0.1:3001
+         * ssr-common: 192.168.0.0.1:3002
+         * *: 192.168.0.0.1
+         */
         importBase: Record<string, string>;
     };
     /**
@@ -72,6 +80,7 @@ export enum COMMAND {
     dev = 'dev',
     build = 'build',
     preview = 'preview',
+    install = 'install',
     start = 'start'
 }
 
@@ -100,6 +109,14 @@ export class Gez {
             return _command;
         }
         throw new Error(`'command' does not exist`);
+    }
+
+    /**
+     * 安装代码方法，对 npm install 的补充
+     * 目前用于远程模块的安装(包括类型文件)
+     */
+    public get install() {
+        return this.app.install;
     }
 
     /**
@@ -168,6 +185,10 @@ export class Gez {
 
     public get isProd(): boolean {
         return this._options?.isProd ?? process.env.NODE_ENV === 'production';
+    }
+
+    public get modules(): GezOptions['modules'] {
+        return this._options.modules;
     }
 
     public get browserslist() {

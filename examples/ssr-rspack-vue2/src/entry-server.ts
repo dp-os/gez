@@ -6,14 +6,14 @@ import path from 'node:path'
 import fs from 'node:fs'
 
 export default defineServer({
-  async render(context) {
-    const { app } = createApp()
+    async render(context) {
+        const { app } = createApp()
 
-    const html = await createRenderer({}).renderToString(app)
+        const html = await createRenderer({}).renderToString(app)
 
-    const importmapJson = fs.readFileSync(path.resolve('./dist/client/importmap.json'), 'utf8')
-    
-    context.html = `
+        const importmapJson = fs.readFileSync(path.resolve('./dist/client/importmap.json'), 'utf8')
+
+        context.html = `
     <!DOCTYPE html>
     <html>
     <head>
@@ -34,6 +34,6 @@ export default defineServer({
     </body>
     </html>
 `
-    // context.insertHtml(`<script type="module" src="ssr-rspack-vue2/entry-client"></script>`, 'bodyBefore')
-  }
+        // context.insertHtml(`<script type="module" src="ssr-rspack-vue2/entry-client"></script>`, 'bodyBefore')
+    }
 })
