@@ -2,10 +2,14 @@ import { type GezModuleConfig } from '@gez/core';
 import {
     type Compilation,
     type Compiler,
+    type EntryNormalized,
+    type EntryStaticNormalized,
     rspack,
     type RspackPluginInstance
 } from '@rspack/core';
+
 // import crypto from 'crypto';
+import { getEntryConfig, getImportConfig } from './utils';
 
 /**
  * importmap 插件，用于生成 importmap 相关文件
@@ -14,13 +18,22 @@ export class ImportmapPlugin implements RspackPluginInstance {
     /**
      * importmap 插件配置
      */
-    options?: GezModuleConfig;
+    options: {
+        root?: string;
+        modules?: GezModuleConfig;
+    } = {};
 
-    public constructor(options?: GezModuleConfig) {
+    public constructor(options: { root?: string; modules?: GezModuleConfig }) {
         this.options = options;
     }
 
-    public apply(compiler: Compiler) {
+    public async apply(compiler: Compiler) {
+        const entry: EntryStaticNormalized =
+            typeof compiler.options.entry === 'function'
+                ? await compiler.options.entry()
+                : compiler.options.entry;
+        compiler.options.entry = getEntryConfig(this.options, entry);
+
         compiler.hooks.thisCompilation.tap(
             'importmap-plugin',
             (compilation: Compilation) => {
@@ -40,81 +53,45 @@ export class ImportmapPlugin implements RspackPluginInstance {
                             entrypoints: true
                         });
                         const entrypoints = stats.entrypoints || {};
-                        const files = Object.keys(entrypoints)
-                            .map((name) => {
-                                const item = entrypoints[name];
-                                const file = item.assets?.find((item) => {
-                                    return item.name.endsWith('.js');
-                                });
-                                if (file) {
-                                    return {
-                                        name,
-                                        file: file.name
-                                    };
-                                }
-                                return null;
-                            })
-                            .filter((item) => item);
-                        importmapJson.imports = files.reduce<
-                            Record<string, string>
-                        >((obj, item) => {
+                        importmapJson.imports = Object.entries(
+                            entrypoints
+                        ).reduce((acc, [key, value]) => {
+                            // console.log('@item.assets', key, value.assets);
+                            const item = value.assets?.find((item) => {
+                                return (
+                                    item.name.startsWith(key) &&
+                                    item.name.endsWith('.js')
+                                );
+                            });
                             if (item) {
-                                const { name, file } = item;
-                                const key = `${stats.name}/${name}`;
-                                const value = `/${stats.name}/${file}`;
-                                obj[key] = value;
+                                const { name } = item;
+                                // console.log('@item', stats.name, key, name);
+                                acc[`${stats.name}/${key}`] =
+                                    `/${stats.name}/${name}`;
                             }
-                            return obj;
+                            return acc;
                         }, {});
+                        // console.log(
+                        //     '@importmapJson.imports',
+                        //     importmapJson.imports
+                        // );
 
-                        if (this.options) {
-                            const { importBase, imports = [] } = this.options;
-                            const regex = /^(.*?)\/(.*)$/; // 使用正则表达式匹配第一个/符号
-                            const importTargets = imports.reduce<{
-                                targets: Record<string, Record<string, string>>;
-                                imports: Record<string, string>;
-                            }>(
-                                (acc, item) => {
-                                    const match = item.match(regex);
-
-                                    if (match) {
-                                        const [, part1, part2] = match;
-                                        const origin =
-                                            importBase[part1] ||
-                                            importBase['*'] ||
-                                            '';
-                                        const fullPath = `${origin}/${item}`;
-
-                                        const target = acc.targets[part1];
-                                        if (target) {
-                                            target[item] = fullPath;
-                                        } else {
-                                            acc.targets[part1] = {
-                                                [item]: fullPath
-                                            };
-                                        }
-                                        acc.imports[item] = fullPath;
-                                    }
-                                    return acc;
-                                },
-                                {
-                                    targets: {},
-                                    imports: {}
-                                }
-                            );
+                        const { modules } = this.options || {};
+                        if (modules) {
+                            const importConfig = getImportConfig(modules);
                             Object.assign(
                                 importmapJson.imports,
-                                importTargets.imports
+                                importConfig.imports
                             );
-                            const importList = Object.keys(
-                                importTargets.targets
+                            const importTargets = Object.keys(
+                                importConfig.targets
                             );
                             // const hash = crypto
                             //     .createHash('sha256')
                             //     .update(result)
                             //     .digest('hex');
                             // console.log('@hash', hash, result);
-                            console.log('@importTargets', importTargets);
+                            // console.log('@importTargets', importTargets);
                         }
 
                         const { RawSource } = compiler.webpack.sources;

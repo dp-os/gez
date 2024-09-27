@@ -26,7 +26,8 @@ export class Output extends BuildConfig<Config> {
             chunkFormat: 'module',
             chunkLoading: 'import',
             chunkFilename: 'js/[id].js',
-            filename: 'entry-server.js',
+            // filename: 'entry-server.js',
+            filename: '[name].js',
             path: gez.getProjectPath('dist/server')
         };
     }
@@ -39,7 +40,8 @@ export class Output extends BuildConfig<Config> {
             chunkFormat: 'module',
             chunkLoading: 'import',
             chunkFilename: 'js/[id].js',
-            filename: 'entry-node.js',
+            // filename: 'entry-node.js',
+            filename: '[name].js',
             path: gez.getProjectPath('dist/node')
         };
     }
