@@ -24,5 +24,10 @@
         "vue": "2.7.16",
         "vue-server-renderer": "2.7.16",
         "vue-template-compiler": "2.7.16"
+    },
+    "exports": {
+        ".": {
+            "import": "./dist/client/entry-client.js"
+        }
     }
 }

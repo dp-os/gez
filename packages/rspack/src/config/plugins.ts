@@ -8,7 +8,7 @@ type Config = NonNullable<RspackOptions['plugins']>;
 export class Plugins extends BuildConfig<Config> {
     protected getClient(): Config {
         const { gez } = this;
-        const plugins: Config = [new ImportmapPlugin()];
+        const plugins: Config = [new ImportmapPlugin(gez.modules)];
         if (!gez.isProd) {
             plugins.push(new rspack.HotModuleReplacementPlugin());
         }
@@ -16,7 +16,8 @@ export class Plugins extends BuildConfig<Config> {
     }
 
     protected getServer(): Config {
-        return [new ImportmapPlugin()];
+        const { gez } = this;
+        return [new ImportmapPlugin(gez.modules)];
     }
 
     protected getNode(): Config {

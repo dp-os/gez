@@ -327,6 +327,9 @@ importers:
       '@rspack/core':
         specifier: 1.0.5
         version: 1.0.5
+      crypto:
+        specifier: ^1.0.1
+        version: 1.0.1
       webpack-dev-middleware:
         specifier: ^7.4.2
         version: 7.4.2(webpack@5.93.0)
@@ -3163,6 +3166,11 @@ packages:
       path-key: 3.1.1
       shebang-command: 2.0.0
       which: 2.0.2
+
+  /crypto@1.0.1:
+    resolution: {integrity: sha512-VxBKmeNcqQdiUQUW2Tzq0t377b54N2bMtXO/qiLa+6eRRmmC4qT3D4OnTGoT/U6O9aklQ/jTwbOtRMTTY8G0Ig==}
+    deprecated: This package is no longer supported. It's now a built-in Node module. If you've depended on crypto, you should switch to the one that's built-in.
+    dev: false
 
   /css-declaration-sorter@7.2.0(postcss@8.4.41):
     resolution: {integrity: sha512-h70rUM+3PNFuaBDTLe8wF/cdWu+dOZmb7pJt8Z2sedYbAcQVQV/tEchueg3GWxwqS0cxtbxmaHEdkNACqcvsow==}

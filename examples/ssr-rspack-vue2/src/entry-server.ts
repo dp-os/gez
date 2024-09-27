@@ -2,8 +2,8 @@ import { defineServer } from '@gez/core'
 import { createRenderer } from 'vue-server-renderer';
 import { createApp } from './create-app';
 
-import path from 'node:path'
-import fs from 'node:fs'
+// import path from 'node:path'
+// import fs from 'node:fs'
 
 export default defineServer({
     async render(context) {
@@ -11,7 +11,12 @@ export default defineServer({
 
         const html = await createRenderer({}).renderToString(app)
 
-        const importmapJson = fs.readFileSync(path.resolve('./dist/client/importmap.json'), 'utf8')
+        // const importmapJson = fs.readFileSync(path.resolve('./dist/client/importmap.json'), 'utf8')
+        /*
+            <script type="importmap">
+            ${importmapJson}
+            </script>
+        */
 
         context.html = `
     <!DOCTYPE html>
@@ -22,11 +27,14 @@ export default defineServer({
       <!-- https://generator.jspm.io/#U2NhYGBkDM0rySzJSU1hKEpNTC5xMLTQM9Az0C1K1jMAAKFS5w0gAA -->
     </head>
     <body>
-    ${html}
-
-    <script type="importmap">
-    ${importmapJson}
+    <script src="/ssr-rspack-vue2/importmap.js"></script>
+    <script defer>
+    document.body.appendChild(Object.assign(document.createElement('script'), {
+      type: 'importmap',
+      innerHTML: JSON.stringify(__importmap__),
+    }));
     </script>
+    ${html}
 
     <script type="module">
     import "ssr-rspack-vue2/entry-client";

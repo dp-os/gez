@@ -4,7 +4,7 @@ node_modules
 /logs
 .DS_Store
 dist
-/types
+types
 .proxy
 .env
 .sync
