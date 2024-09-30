@@ -1,16 +1,27 @@
 import path from 'node:path';
 
 import { type GezModuleConfig } from '@gez/core';
-import type { EntryStaticNormalized } from '@rspack/core';
+import type { EntryStaticNormalized, ResolveAlias } from '@rspack/core';
 
-export function getImportMapConfig(modules: GezModuleConfig) {
+interface ImportMapConfig {
+    importBase: Record<string, string>;
+    targets: Record<string, Record<string, string>>;
+    imports: Record<string, string>;
+    exposes: string[];
+}
+
+export function getImportMapConfig(modules?: GezModuleConfig): ImportMapConfig {
+    if (!modules) {
+        return {
+            importBase: {},
+            targets: {},
+            imports: {},
+            exposes: []
+        };
+    }
     const { importBase, imports = [], exposes = [] } = modules;
     const regex = /^(.*?)\/(.*)$/; // 使用正则表达式匹配第一个/符号
-    const importConfig = imports.reduce<{
-        targets: Record<string, Record<string, string>>;
-        imports: Record<string, string>;
-        exposes: string[];
-    }>(
+    const importConfig = imports.reduce<ImportMapConfig>(
         (acc, item) => {
             const match = item.match(regex);
 
@@ -32,6 +43,7 @@ export function getImportMapConfig(modules: GezModuleConfig) {
             return acc;
         },
         {
+            importBase,
             targets: {},
             imports: {},
             exposes
@@ -57,13 +69,26 @@ export function getEntryConfig(
     return exposes.reduce<EntryStaticNormalized>((acc, expose) => {
         const exposeName = expose.replace(/^\.\//, '');
         const exposePath = path.resolve(root, exposeName);
-        console.log('@expose', exposeName, exposePath);
         acc[exposeName] = {
             import: [exposePath],
             library: {
                 type: 'module'
             }
         };
+        return acc;
+    }, baseConfig);
+}
+
+export function getAlias(
+    options: {
+        root?: string;
+        modules?: GezModuleConfig;
+    },
+    baseConfig: ResolveAlias = {}
+): ResolveAlias {
+    const { root = '', modules: { importBase = {} } = {} } = options;
+    return Object.keys(importBase).reduce<ResolveAlias>((acc, key) => {
+        acc[key] = path.resolve(root, 'node_modules', key);
         return acc;
     }, baseConfig);
 }

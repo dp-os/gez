@@ -11,13 +11,6 @@ export default defineServer({
 
         const html = await createRenderer({}).renderToString(app)
 
-        // const importmapJson = fs.readFileSync(path.resolve('./dist/client/importmap.json'), 'utf8')
-        /*
-            <script type="importmap">
-            ${importmapJson}
-            </script>
-        */
-
         context.html = `
     <!DOCTYPE html>
     <html>
