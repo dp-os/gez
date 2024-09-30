@@ -1,14 +1,15 @@
 import path from 'node:path';
 
 import { type GezModuleConfig } from '@gez/core';
-import type { EntryStaticNormalized, RspackOptions } from '@rspack/core';
+import type { EntryStaticNormalized } from '@rspack/core';
 
-export function getImportConfig(modules: GezModuleConfig) {
+export function getImportMapConfig(modules: GezModuleConfig) {
     const { importBase, imports = [], exposes = [] } = modules;
     const regex = /^(.*?)\/(.*)$/; // 使用正则表达式匹配第一个/符号
     const importConfig = imports.reduce<{
         targets: Record<string, Record<string, string>>;
         imports: Record<string, string>;
+        exposes: string[];
     }>(
         (acc, item) => {
             const match = item.match(regex);
@@ -32,7 +33,8 @@ export function getImportConfig(modules: GezModuleConfig) {
         },
         {
             targets: {},
-            imports: {}
+            imports: {},
+            exposes
         }
     );
     // const hash = crypto
@@ -44,7 +46,6 @@ export function getImportConfig(modules: GezModuleConfig) {
     return importConfig;
 }
 
-// type Config = RspackOptions['entry'];
 export function getEntryConfig(
     options: {
         root?: string;
@@ -54,9 +55,11 @@ export function getEntryConfig(
 ): EntryStaticNormalized {
     const { root = '', modules: { exposes = [] } = {} } = options;
     return exposes.reduce<EntryStaticNormalized>((acc, expose) => {
-        console.log('@expose', [path.resolve(root, expose)]);
-        acc[expose] = {
-            import: [path.resolve(root, expose)],
+        const exposeName = expose.replace(/^\.\//, '');
+        const exposePath = path.resolve(root, exposeName);
+        console.log('@expose', exposeName, exposePath);
+        acc[exposeName] = {
+            import: [exposePath],
             library: {
                 type: 'module'
             }

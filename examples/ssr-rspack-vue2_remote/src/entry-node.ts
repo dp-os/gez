@@ -1,6 +1,7 @@
 import express from 'express'
 import { defineNode } from '@gez/core'
-// import { execSync } from 'node:child_process';
+
+import { importmapConfig } from './entry-importmap';
 
 export default defineNode({
     name: 'ssr-rspack-vue2_remote',
@@ -9,6 +10,16 @@ export default defineNode({
     },
     async created(gez) {
         const server = express()
+        /**
+         * 允许跨域
+         * 只有允许跨域才可以在其他服务获取到 remote(远程服务) 的数据
+         */
+        server.use((req, res, next) => {
+            res.header('Access-Control-Allow-Origin', '*');
+            res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+            res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+            next();
+        });
         server.use(gez.middleware)
         server.get('*', async (req, res) => {
             res.setHeader('Content-Type', 'text/html;charset=UTF-8');
@@ -19,5 +30,29 @@ export default defineNode({
         server.listen(3003, () => {
             console.log('http://localhost:3003')
         })
+    },
+    modules: {
+        /**
+         * 类型生成的目录
+         */
+        typeDir: './types',
+        exposes: importmapConfig.exposes,
+        /**
+         * 导入的文件
+         * ssr-name/vue
+         * ssr-name/src/config
+         */
+        imports: importmapConfig.imports,
+        /**
+         * 导入的文件的前置路径
+         * *符号为兜底逻辑
+         * 例子：
+         * ssr-remote: 192.168.0.0.1:3001
+         * ssr-common: 192.168.0.0.1:3002
+         * *: 192.168.0.0.1
+         */
+        importBase: {
+            'ssr-rspack-vue2_remote': 'http://localhost:3003'
+        }
     }
 })

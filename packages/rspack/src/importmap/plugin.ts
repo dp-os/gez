@@ -1,15 +1,15 @@
 import { type GezModuleConfig } from '@gez/core';
 import {
+    type Assets,
     type Compilation,
     type Compiler,
-    type EntryNormalized,
     type EntryStaticNormalized,
     rspack,
     type RspackPluginInstance
 } from '@rspack/core';
+import crypto from 'crypto-js';
 
-// import crypto from 'crypto';
-import { getEntryConfig, getImportConfig } from './utils';
+import { getEntryConfig, getImportMapConfig } from './utils';
 
 /**
  * importmap 插件，用于生成 importmap 相关文件
@@ -28,6 +28,10 @@ export class ImportmapPlugin implements RspackPluginInstance {
     }
 
     public async apply(compiler: Compiler) {
+        /**
+         * 修改 entry
+         * 将导出的模块加入到 entry 里
+         */
         const entry: EntryStaticNormalized =
             typeof compiler.options.entry === 'function'
                 ? await compiler.options.entry()
@@ -43,8 +47,8 @@ export class ImportmapPlugin implements RspackPluginInstance {
                         stage: rspack.Compilation
                             .PROCESS_ASSETS_STAGE_ADDITIONAL
                     },
-                    (assets) => {
-                        const importmapJson = {
+                    (assets: Assets) => {
+                        const importmapData = {
                             imports: {}
                         };
                         const stats = compilation.getStats().toJson({
@@ -53,7 +57,7 @@ export class ImportmapPlugin implements RspackPluginInstance {
                             entrypoints: true
                         });
                         const entrypoints = stats.entrypoints || {};
-                        importmapJson.imports = Object.entries(
+                        importmapData.imports = Object.entries(
                             entrypoints
                         ).reduce((acc, [key, value]) => {
                             // console.log('@item.assets', key, value.assets);
@@ -72,33 +76,35 @@ export class ImportmapPlugin implements RspackPluginInstance {
                             return acc;
                         }, {});
                         // console.log(
-                        //     '@importmapJson.imports',
-                        //     importmapJson.imports
+                        //     '@importmapData.imports',
+                        //     importmapData.imports
                         // );
 
                         const { modules } = this.options || {};
                         if (modules) {
-                            const importConfig = getImportConfig(modules);
+                            const importConfig = getImportMapConfig(modules);
                             Object.assign(
-                                importmapJson.imports,
+                                importmapData.imports,
                                 importConfig.imports
                             );
                             const importTargets = Object.keys(
                                 importConfig.targets
                             );
-                            // const hash = crypto
-                            //     .createHash('sha256')
-                            //     .update(result)
-                            //     .digest('hex');
-                            // console.log('@hash', hash, result);
                             // console.log('@importTargets', importTargets);
                         }
+                        // importmap 数据的 json 字符串
+                        const importmapDataJson = JSON.stringify(importmapData);
+                        // importmap 数据的 json 字符串的 内容哈希
+                        const contenthash = crypto
+                            .MD5(importmapDataJson)
+                            .toString()
+                            .slice(0, 8);
 
                         const { RawSource } = compiler.webpack.sources;
 
                         const importmapJs = `
 ((global) => {
-    const importsMap = ${JSON.stringify(importmapJson.imports)};
+    const importsMap = ${JSON.stringify(importmapData.imports)};
     const importmapKey = '__importmap__';
     const importmap = global[importmapKey] = global[importmapKey] || {};
     const imports = importmap.imports = importmap.imports || {};
@@ -109,11 +115,15 @@ export class ImportmapPlugin implements RspackPluginInstance {
                             'importmap.js',
                             new RawSource(importmapJs)
                         );
+                        compilation.emitAsset(
+                            `importmap.${contenthash}.js`,
+                            new RawSource(importmapJs)
+                        );
 
                         compilation.emitAsset(
                             'importmap.json',
                             new RawSource(
-                                JSON.stringify(importmapJson, null, 4)
+                                JSON.stringify(importmapData, null, 4)
                             )
                         );
 

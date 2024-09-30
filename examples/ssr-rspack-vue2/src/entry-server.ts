@@ -34,6 +34,11 @@ export default defineServer({
       innerHTML: JSON.stringify(__importmap__),
     }));
     </script>
+
+    <script type="module">
+    // import {log} from 'ssr-rspack-vue2_remote/src/utils/index.ts';
+    // log('test')
+    </script>
     ${html}
 
     <script type="module">
