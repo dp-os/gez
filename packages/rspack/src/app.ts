@@ -1,4 +1,6 @@
+import fs from 'node:fs';
 import { type IncomingMessage, type ServerResponse } from 'node:http';
+import path from 'node:path';
 
 import {
     type App,
@@ -86,6 +88,23 @@ export async function createApp(
             return new Promise<void>((resolve) => {
                 done = resolve;
             });
+        },
+        async buildImportmap() {
+            console.log('@build importmap', gez.name, gez.root);
+            if (!gez.modules) return;
+            const { typeDir } = gez.modules;
+            const manifestJson = {
+                dts: false,
+                client: {
+                    importmapFilePath: '',
+                    version: '',
+                    files: []
+                },
+                server: {
+                    version: '',
+                    files: []
+                }
+            };
         },
         async destroy() {},
         async install() {
