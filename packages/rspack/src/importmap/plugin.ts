@@ -57,7 +57,10 @@ export class ImportmapPlugin implements RspackPluginInstance {
                     },
                     (assets: Assets) => {
                         const importmapData = {
-                            imports: {}
+                            version: '',
+                            importmapFilePath: 'importmap.js',
+                            imports: {},
+                            exposes: {}
                         };
                         const stats = compilation.getStats().toJson({
                             all: false,
@@ -91,6 +94,7 @@ export class ImportmapPlugin implements RspackPluginInstance {
                         const { modules } = this.options || {};
                         if (modules) {
                             const importConfig = getImportMapConfig(modules);
+                            importmapData.exposes = importConfig.exposes;
                             Object.assign(
                                 importmapData.imports,
                                 importConfig.imports
@@ -107,6 +111,9 @@ export class ImportmapPlugin implements RspackPluginInstance {
                             .MD5(importmapDataJson)
                             .toString()
                             .slice(0, 8);
+                        const importmapFileName = `importmap.${contenthash}.js`;
+                        importmapData.version = contenthash;
+                        importmapData.importmapFilePath = importmapFileName;
 
                         const { RawSource } = compiler.webpack.sources;
 
@@ -124,14 +131,20 @@ export class ImportmapPlugin implements RspackPluginInstance {
                             new RawSource(importmapJs)
                         );
                         compilation.emitAsset(
-                            `importmap.${contenthash}.js`,
+                            importmapFileName,
                             new RawSource(importmapJs)
                         );
 
                         compilation.emitAsset(
-                            'importmap.json',
+                            'manifest.json',
                             new RawSource(
-                                JSON.stringify(importmapData, null, 4)
+                                JSON.stringify(
+                                    {
+                                        importmap: importmapData
+                                    },
+                                    null,
+                                    4
+                                )
                             )
                         );
 

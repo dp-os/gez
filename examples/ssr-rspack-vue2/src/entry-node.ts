@@ -27,6 +27,9 @@ export default defineNode({
          * 类型生成的目录
          */
         typeDir: './types',
+        /**
+         * 导出的文件
+         */
         exposes: importmapConfig.exposes,
         /**
          * 导入的文件
