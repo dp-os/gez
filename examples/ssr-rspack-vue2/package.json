@@ -5,7 +5,7 @@
     "type": "module",
     "scripts": {
         "dev": "gez dev",
-        "build": "gez build && npm run build:dts && gez build:importmap",
+        "build": "gez build",
         "build:dts": "npx --yes vue-tsc --declaration --emitDeclarationOnly",
         "start": "gez start"
     },
