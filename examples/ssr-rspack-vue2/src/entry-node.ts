@@ -2,8 +2,6 @@ import express from 'express'
 import { defineNode } from '@gez/core'
 import { execSync } from 'node:child_process';
 
-import { importmapConfig } from './entry-importmap';
-
 export default defineNode({
     name: 'ssr-rspack-vue2',
     async createDevApp(gez) {
@@ -30,13 +28,17 @@ export default defineNode({
         /**
          * 导出的文件
          */
-        exposes: importmapConfig.exposes,
+        exposes: [
+            './src/utils/index.ts',
+        ],
         /**
          * 导入的文件
          * ssr-name/vue
          * ssr-name/src/config
          */
-        imports: importmapConfig.imports,
+        imports: [
+            'ssr-rspack-vue2_remote/src/utils/index.ts'
+        ],
         /**
          * 导入的文件的前置路径
          * *符号为兜底逻辑

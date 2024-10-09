@@ -1,7 +1,6 @@
 import express from 'express'
 import { defineNode } from '@gez/core'
-
-import { importmapConfig } from './entry-importmap';
+import { execSync } from 'node:child_process';
 
 export default defineNode({
     name: 'ssr-rspack-vue2_remote',
@@ -26,7 +25,7 @@ export default defineNode({
             const result = await gez.render({ url: '/' })
             res.send(result.html)
         })
-        // execSync('npx --yes vue-tsc --declaration --emitDeclarationOnly');
+        execSync('npx --yes vue-tsc --declaration --emitDeclarationOnly');
         server.listen(3003, () => {
             console.log('http://localhost:3003')
         })
@@ -36,13 +35,20 @@ export default defineNode({
          * 类型生成的目录
          */
         typeDir: './types',
-        exposes: importmapConfig.exposes,
+        /**
+         * 导出的文件
+         */
+        exposes: [
+            './src/utils/index.ts',
+        ],
         /**
          * 导入的文件
          * ssr-name/vue
          * ssr-name/src/config
          */
-        imports: importmapConfig.imports,
+        imports: [
+            // 'ssr-rspack-vue2/src/utils/index.ts'
+        ],
         /**
          * 导入的文件的前置路径
          * *符号为兜底逻辑
@@ -52,7 +58,7 @@ export default defineNode({
          * *: 192.168.0.0.1
          */
         importBase: {
-            'ssr-rspack-vue2_remote': 'http://localhost:3003'
+            'ssr-rspack-vue2': 'http://localhost:3002'
         }
     }
 })
