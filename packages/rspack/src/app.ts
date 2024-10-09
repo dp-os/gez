@@ -21,6 +21,19 @@ import write from 'write';
 import type { ConfigCallback } from './config';
 import { importEsm } from './import-esm';
 
+interface ManifestJson {
+    client: {
+        importmapFilePath: string;
+        version: string;
+        files: string[];
+    };
+    server: {
+        dts: boolean;
+        version: string;
+        files: string[];
+    };
+}
+
 function middleware(gez: Gez, config: ConfigCallback) {
     let clientCompiler: Compiler | null = null;
     let dev = (req: IncomingMessage, res: ServerResponse, next?: Function) => {
@@ -125,15 +138,16 @@ export async function createApp(
                 );
             }
 
-            const importmapFilePath = clientFileList.find((item) => {
-                return (
-                    item.startsWith('importmap.') &&
-                    item.endsWith('.js') &&
-                    item !== 'importmap.js'
-                );
-            });
+            const importmapFilePath =
+                clientFileList.find((item) => {
+                    return (
+                        item.startsWith('importmap.') &&
+                        item.endsWith('.js') &&
+                        item !== 'importmap.js'
+                    );
+                }) || '';
 
-            const manifestJson = {
+            const manifestJson: ManifestJson = {
                 client: {
                     importmapFilePath,
                     version: clientHash,
@@ -190,43 +204,48 @@ export async function createApp(
             // importTargets.targets.forEach((value, key) => {
             //     console.log(`@import ${key}`, value);
             // });
-            console.log('@importList', importList);
-            console.log('@imports', importTargets.imports);
 
-            const results = await Promise.all(
+            const results = await Promise.allSettled(
                 importList.map(async (name) => {
                     const baseUrl = importBase[name] || importBase['*'] || '';
                     if (baseUrl) {
-                        const fullPath = `${baseUrl}/${name}/importmap.json`;
-                        console.log('@fullPath', fullPath);
+                        const fullPath = `${baseUrl}/server/manifest.json`;
 
                         const res = await fetch(fullPath);
-                        if (!res.body) return;
-                        const reader = res.body.getReader();
-                        const stream = new ReadableStream({
-                            start(controller) {
-                                function push() {
-                                    reader.read().then(({ done, value }) => {
-                                        if (done) {
-                                            controller.close();
-                                            return;
-                                        }
-                                        controller.enqueue(value);
-                                        push();
-                                    });
-                                }
-                                push();
+                        if (!res.ok || !res.body) return;
+                        const buffer = Buffer.from(await res.arrayBuffer());
+                        write.sync(
+                            path.resolve(
+                                gez.root,
+                                `node_modules/${name}/manifest.json`
+                            ),
+                            buffer
+                        );
+                        try {
+                            const manifest: ManifestJson = JSON.parse(
+                                buffer.toString()
+                            );
+                            const { dts, version } = manifest.server;
+                            if (dts) {
+                                const dtsZipFilePath = `${baseUrl}/server/${version}.dts.zip`;
+                                const res = await fetch(dtsZipFilePath);
+                                if (!res.ok || !res.body) return;
+                                const buffer = new Uint8Array(
+                                    await res.arrayBuffer()
+                                );
+
+                                unzip(
+                                    buffer,
+                                    path.resolve(
+                                        gez.root,
+                                        `node_modules/${name}`
+                                    )
+                                );
                             }
-                        });
-                        const result = await new Response(stream, {
-                            headers: { 'Content-Type': 'text/html' }
-                        }).text();
-                        // console.log('@result', result);
-                        return result;
+                        } catch (error) {}
                     }
                 })
             );
-            console.log('@install end');
         }
     };
 }
@@ -267,18 +286,19 @@ function zipFiles(files: Record<string, any>) {
     };
 }
 
-function unzipDIr() {
-    // let files: Record<string, any> = {};
-    // try {
-    //     files = fflate.unzipSync(zipU8);
-    // } catch (e) {
-    //     Logger.decompressionFailed(this.url);
-    //     return {
-    //         ok: false,
-    //         code: 'error'
-    //     };
-    // }
-    // Object.keys(files).forEach((name) => {
-    //     write.sync(path.resolve(writeDir, name), files[name]);
-    // });
+/**
+ * 解压缩 Uint8Array 数据到指定目录
+ * @param data - 要解压缩的 Uint8Array 数据
+ * @param dir - 目标解压缩目录的路径
+ * @param options - 解压缩选项
+ * @throws {Error} 如果解压缩过程中发生错误
+ */
+function unzip(data: Uint8Array, dir: string, options?: fflate.UnzipOptions) {
+    let files: Record<string, any> = {};
+    try {
+        files = fflate.unzipSync(data, options);
+    } catch (e) {}
+    Object.keys(files).forEach((name) => {
+        write.sync(path.resolve(dir, name), files[name]);
+    });
 }

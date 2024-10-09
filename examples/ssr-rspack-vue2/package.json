@@ -8,7 +8,8 @@
         "build": "gez build",
         "build:dts": "npx --yes vue-tsc --declaration --emitDeclarationOnly",
         "build:importmap": "gez build:importmap",
-        "start": "gez start"
+        "start": "gez start",
+        "postinstall": "gez install"
     },
     "dependencies": {
         "@gez/core": "workspace:^",
