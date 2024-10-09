@@ -11,8 +11,12 @@ import {
     type ServerRender
 } from '@gez/core';
 import { type Compiler, rspack } from '@rspack/core';
+import crypto from 'crypto-js';
+import * as fflate from 'fflate';
+import find from 'find';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
+import write from 'write';
 
 import type { ConfigCallback } from './config';
 import { importEsm } from './import-esm';
@@ -90,21 +94,61 @@ export async function createApp(
             });
         },
         async buildImportmap() {
-            console.log('@build importmap', gez.name, gez.root);
             if (!gez.modules) return;
             const { typeDir } = gez.modules;
+            const dtsExist = fs.existsSync(path.resolve(gez.root, typeDir));
+
+            const { files: clientFiles, fileList: clientFileList } =
+                readFileDirectory(path.resolve(gez.root, 'dist/client'));
+            const { contenthash: clientHash } = zipFiles(clientFiles);
+
+            const { files: serverFiles, fileList: serverFileList } =
+                readFileDirectory(path.resolve(gez.root, 'dist/server'));
+            const { zipped: serverZipped, contenthash: serverHash } =
+                zipFiles(serverFiles);
+            write.sync(
+                path.resolve(gez.root, `dist/client/server/${serverHash}.zip`),
+                serverZipped
+            );
+
+            if (dtsExist) {
+                const { files: typeFiles } = readFileDirectory(
+                    path.resolve(gez.root, typeDir)
+                );
+                const { zipped: typeZipped } = zipFiles(typeFiles);
+                write.sync(
+                    path.resolve(
+                        gez.root,
+                        `dist/client/server/${serverHash}.dts.zip`
+                    ),
+                    typeZipped
+                );
+            }
+
+            const importmapFilePath = clientFileList.find((item) => {
+                return (
+                    item.startsWith('importmap.') &&
+                    item.endsWith('.js') &&
+                    item !== 'importmap.js'
+                );
+            });
+
             const manifestJson = {
-                dts: false,
                 client: {
-                    importmapFilePath: '',
-                    version: '',
-                    files: []
+                    importmapFilePath,
+                    version: clientHash,
+                    files: clientFileList
                 },
                 server: {
-                    version: '',
-                    files: []
+                    dts: dtsExist,
+                    version: serverHash,
+                    files: serverFileList
                 }
             };
+            write.sync(
+                path.resolve(gez.root, 'dist/client/server/manifest.json'),
+                JSON.stringify(manifestJson, null, 4)
+            );
         },
         async destroy() {},
         async install() {
@@ -185,4 +229,56 @@ export async function createApp(
             console.log('@install end');
         }
     };
+}
+
+/**
+ * 读取指定目录下的所有文件，并返回一个包含文件内容和文件名列表的对象。
+ *
+ * @param dir - 要读取的目录路径。
+ * @returns 一个包含文件内容和文件名列表的对象。
+ */
+function readFileDirectory(dir: string): {
+    files: Record<string, any>;
+    fileList: string[];
+} {
+    const files: Record<string, any> = {};
+    find.fileSync(dir).forEach((filename: string) => {
+        const text = fs.readFileSync(filename);
+        files[path.relative(dir, filename)] = text;
+    });
+    return {
+        files,
+        fileList: Object.keys(files)
+    };
+}
+
+/**
+ * 将文件对象压缩成zip文件，并计算其内容的哈希值。
+ *
+ * @param files - 要压缩的文件对象。
+ * @returns 一个包含压缩文件和内容哈希值的对象。
+ */
+function zipFiles(files: Record<string, any>) {
+    const zipped = fflate.zipSync(files);
+    const contenthash = crypto.MD5(zipped.toString()).toString();
+    return {
+        zipped,
+        contenthash
+    };
+}
+
+function unzipDIr() {
+    // let files: Record<string, any> = {};
+    // try {
+    //     files = fflate.unzipSync(zipU8);
+    // } catch (e) {
+    //     Logger.decompressionFailed(this.url);
+    //     return {
+    //         ok: false,
+    //         code: 'error'
+    //     };
+    // }
+    // Object.keys(files).forEach((name) => {
+    //     write.sync(path.resolve(writeDir, name), files[name]);
+    // });
 }
