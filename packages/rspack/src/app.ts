@@ -104,7 +104,7 @@ export async function createApp(
 
             const { files: serverFiles, fileList: serverFileList } =
                 readFileDirectory(path.resolve(gez.root, 'dist/server'));
-            const { zipped: serverZipped, contenthash: serverHash } =
+            const { zipU8: serverZipped, contenthash: serverHash } =
                 zipFiles(serverFiles);
             write.sync(
                 path.resolve(gez.root, `dist/client/server/${serverHash}.zip`),
@@ -115,7 +115,7 @@ export async function createApp(
                 const { files: typeFiles } = readFileDirectory(
                     path.resolve(gez.root, typeDir)
                 );
-                const { zipped: typeZipped } = zipFiles(typeFiles);
+                const { zipU8: typeZipped } = zipFiles(typeFiles);
                 write.sync(
                     path.resolve(
                         gez.root,
@@ -259,10 +259,10 @@ function readFileDirectory(dir: string): {
  * @returns 一个包含压缩文件和内容哈希值的对象。
  */
 function zipFiles(files: Record<string, any>) {
-    const zipped = fflate.zipSync(files);
-    const contenthash = crypto.MD5(zipped.toString()).toString().slice(0, 8);
+    const zipU8 = fflate.zipSync(files);
+    const contenthash = crypto.MD5(zipU8.toString()).toString().slice(0, 8);
     return {
-        zipped,
+        zipU8,
         contenthash
     };
 }
