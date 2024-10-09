@@ -7,6 +7,7 @@
         "dev": "gez dev",
         "build": "gez build",
         "build:dts": "npx --yes vue-tsc --declaration --emitDeclarationOnly",
+        "build:importmap": "gez build:importmap",
         "start": "gez start"
     },
     "dependencies": {
@@ -24,10 +25,5 @@
         "vue": "2.7.16",
         "vue-server-renderer": "2.7.16",
         "vue-template-compiler": "2.7.16"
-    },
-    "exports": {
-        ".": {
-            "import": "./dist/client/entry-client.js"
-        }
     }
 }

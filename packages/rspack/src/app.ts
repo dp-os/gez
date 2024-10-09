@@ -260,7 +260,7 @@ function readFileDirectory(dir: string): {
  */
 function zipFiles(files: Record<string, any>) {
     const zipped = fflate.zipSync(files);
-    const contenthash = crypto.MD5(zipped.toString()).toString();
+    const contenthash = crypto.MD5(zipped.toString()).toString().slice(0, 8);
     return {
         zipped,
         contenthash

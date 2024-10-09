@@ -1,3 +1,3 @@
 export function log(text = '') {
-    console.log('hello world', text);
+    console.log('hello remote', text);
 }
