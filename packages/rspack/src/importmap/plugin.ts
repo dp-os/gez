@@ -18,6 +18,13 @@ import {
     getImportMapConfig
 } from './utils';
 
+export interface ImportmapData {
+    version: string;
+    importmapFilePath: string;
+    imports: Record<string, string>;
+    exposes: Record<string, string>;
+}
+
 /**
  * importmap 插件，用于生成 importmap 相关文件
  */
@@ -26,11 +33,16 @@ export class ImportmapPlugin implements RspackPluginInstance {
      * importmap 插件配置
      */
     options: {
+        name?: string;
         root?: string;
         modules?: GezModuleConfig;
     } = {};
 
-    public constructor(options: { root?: string; modules?: GezModuleConfig }) {
+    public constructor(options: {
+        name?: string;
+        root?: string;
+        modules?: GezModuleConfig;
+    }) {
         this.options = options;
     }
 
@@ -54,7 +66,7 @@ export class ImportmapPlugin implements RspackPluginInstance {
         //     compiler.options.resolve.alias || {}
         // );
         // compiler.options.resolve.alias = alias;
-        console.log('@alias', compiler.options.resolve.alias);
+        // console.log('@alias', compiler.options.resolve.alias);
 
         /**
          * 修改 externals
@@ -65,7 +77,7 @@ export class ImportmapPlugin implements RspackPluginInstance {
             compiler.options.externals || {}
         );
         compiler.options.externals = externals;
-        console.log('@externals', compiler.options.externals);
+        // console.log('@externals', compiler.options.externals);
 
         compiler.hooks.thisCompilation.tap(
             'importmap-plugin',
@@ -77,22 +89,26 @@ export class ImportmapPlugin implements RspackPluginInstance {
                             .PROCESS_ASSETS_STAGE_ADDITIONAL
                     },
                     (assets: Assets) => {
-                        const importmapData = {
+                        const importmapData: ImportmapData = {
                             version: '',
                             importmapFilePath: 'importmap.js',
                             imports: {},
                             exposes: {}
                         };
+                        const { modules } = this.options || {};
+                        const importConfig = getImportMapConfig(modules);
+
                         const stats = compilation.getStats().toJson({
                             all: false,
                             hash: true,
                             entrypoints: true
                         });
                         const entrypoints = stats.entrypoints || {};
+                        const entryMap: Record<string, string> = {};
                         importmapData.imports = Object.entries(
                             entrypoints
                         ).reduce((acc, [key, value]) => {
-                            // console.log('@item.assets', key, value.assets);
+                            console.log('@item.assets', key, value.assets);
                             const item = value.assets?.find((item) => {
                                 return (
                                     item.name.startsWith(key) &&
@@ -101,9 +117,9 @@ export class ImportmapPlugin implements RspackPluginInstance {
                             });
                             if (item) {
                                 const { name } = item;
-                                // console.log('@item', stats.name, key, name);
                                 acc[`${stats.name}/${key}`] =
                                     `/${stats.name}/${name}`;
+                                entryMap[key] = name;
                             }
                             return acc;
                         }, {});
@@ -112,19 +128,28 @@ export class ImportmapPlugin implements RspackPluginInstance {
                         //     importmapData.imports
                         // );
 
-                        const { modules } = this.options || {};
-                        if (modules) {
-                            const importConfig = getImportMapConfig(modules);
-                            importmapData.exposes = importConfig.exposes;
-                            Object.assign(
-                                importmapData.imports,
-                                importConfig.imports
-                            );
-                            const importTargets = Object.keys(
-                                importConfig.targets
-                            );
-                            // console.log('@importTargets', importTargets);
-                        }
+                        Object.assign(
+                            importmapData.imports,
+                            importConfig.imports
+                        );
+
+                        importmapData.exposes = importConfig.exposes.reduce<
+                            Record<string, string>
+                        >((acc, item) => {
+                            const key = item.replace(/^\.\//, '');
+                            if (entryMap[key]) {
+                                acc[`./${key}`] = `./${entryMap[key]}`;
+                            }
+                            return acc;
+                        }, {});
+                        // console.log(
+                        //     '@importmapData.exposes',
+                        //     importmapData.exposes
+                        // );
+
+                        // const importTargets = Object.keys(importConfig.targets);
+                        // console.log('@importTargets', importTargets);
+
                         // importmap 数据的 json 字符串
                         const importmapDataJson = JSON.stringify(importmapData);
                         // importmap 数据的 json 字符串的 内容哈希
@@ -162,6 +187,24 @@ export class ImportmapPlugin implements RspackPluginInstance {
                                 JSON.stringify(
                                     {
                                         importmap: importmapData
+                                    },
+                                    null,
+                                    4
+                                )
+                            )
+                        );
+
+                        compilation.emitAsset(
+                            'package.json',
+                            new RawSource(
+                                JSON.stringify(
+                                    {
+                                        name:
+                                            this.options.name ||
+                                            '@gez/importmap',
+                                        version: '1.0.0',
+                                        type: 'module',
+                                        exports: importmapData.exposes
                                     },
                                     null,
                                     4

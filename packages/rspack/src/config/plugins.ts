@@ -8,10 +8,11 @@ type Config = NonNullable<RspackOptions['plugins']>;
 export class Plugins extends BuildConfig<Config> {
     protected getClient(): Config {
         const {
-            gez: { root, modules, isProd }
+            gez: { name, root, modules, isProd }
         } = this;
         const plugins: Config = [
             new ImportmapPlugin({
+                name,
                 root,
                 modules
             })
@@ -24,10 +25,11 @@ export class Plugins extends BuildConfig<Config> {
 
     protected getServer(): Config {
         const {
-            gez: { root, modules }
+            gez: { name, root, modules }
         } = this;
         return [
             new ImportmapPlugin({
+                name,
                 root,
                 modules
             })

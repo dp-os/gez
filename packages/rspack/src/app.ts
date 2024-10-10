@@ -157,13 +157,6 @@ export async function createApp(
                         const res = await fetch(fullPath);
                         if (!res.ok || !res.body) return;
                         const buffer = Buffer.from(await res.arrayBuffer());
-                        write.sync(
-                            path.resolve(
-                                gez.root,
-                                `node_modules/${name}/manifest.json`
-                            ),
-                            buffer
-                        );
                         try {
                             const manifest: ManifestJson = JSON.parse(
                                 buffer.toString()
@@ -182,25 +175,6 @@ export async function createApp(
                                     )
                                 );
                             }
-
-                            write.sync(
-                                path.resolve(
-                                    gez.root,
-                                    `node_modules/${name}/package.json`
-                                ),
-                                JSON.stringify(
-                                    {
-                                        name,
-                                        version,
-                                        type: 'module',
-                                        exports: {
-                                            '.': './index.js'
-                                        }
-                                    },
-                                    null,
-                                    4
-                                )
-                            );
                         } catch (error) {}
                     }
                 })
