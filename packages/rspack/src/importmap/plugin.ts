@@ -4,13 +4,19 @@ import {
     type Compilation,
     type Compiler,
     type EntryStaticNormalized,
-    type ResolveAlias,
+    type Externals,
+    // type ResolveAlias,
     rspack,
     type RspackPluginInstance
 } from '@rspack/core';
 import crypto from 'crypto-js';
 
-import { getAlias, getEntryConfig, getImportMapConfig } from './utils';
+import {
+    // getAlias,
+    getEntryConfig,
+    getExternals,
+    getImportMapConfig
+} from './utils';
 
 /**
  * importmap 插件，用于生成 importmap 相关文件
@@ -43,8 +49,23 @@ export class ImportmapPlugin implements RspackPluginInstance {
          * 修改 alias
          * 将引入的模块加入到 alias 别名里
          */
-        const alias: ResolveAlias = compiler.options.resolve.alias || {};
-        compiler.options.resolve.alias = getAlias(this.options, alias);
+        // const alias: ResolveAlias = getAlias(
+        //     this.options,
+        //     compiler.options.resolve.alias || {}
+        // );
+        // compiler.options.resolve.alias = alias;
+        console.log('@alias', compiler.options.resolve.alias);
+
+        /**
+         * 修改 externals
+         * 将引入的模块加入到外部依赖
+         */
+        const externals: Externals = getExternals(
+            this.options,
+            compiler.options.externals || {}
+        );
+        compiler.options.externals = externals;
+        console.log('@externals', compiler.options.externals);
 
         compiler.hooks.thisCompilation.tap(
             'importmap-plugin',

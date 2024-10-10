@@ -191,7 +191,11 @@ export async function createApp(
                                 JSON.stringify(
                                     {
                                         name,
-                                        version
+                                        version,
+                                        type: 'module',
+                                        exports: {
+                                            '.': './index.js'
+                                        }
                                     },
                                     null,
                                     4

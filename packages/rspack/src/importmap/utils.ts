@@ -1,7 +1,11 @@
 import path from 'node:path';
 
 import { type GezModuleConfig } from '@gez/core';
-import type { EntryStaticNormalized, ResolveAlias } from '@rspack/core';
+import type {
+    EntryStaticNormalized,
+    Externals,
+    ResolveAlias
+} from '@rspack/core';
 
 interface ImportMapConfig {
     importBase: Record<string, string>;
@@ -86,9 +90,30 @@ export function getAlias(
     },
     baseConfig: ResolveAlias = {}
 ): ResolveAlias {
-    const { root = '', modules: { importBase = {} } = {} } = options;
-    return Object.keys(importBase).reduce<ResolveAlias>((acc, key) => {
-        acc[key] = path.resolve(root, 'node_modules', key);
+    // const { root = '', modules: { importBase = {} } = {} } = options;
+    // return Object.keys(importBase).reduce<ResolveAlias>((acc, key) => {
+    //     console.log('@key', key, '@value', importBase[key]);
+    //     // acc[key] = path.resolve(root, 'node_modules', key);
+    //     // acc[key] = importBase[key];
+    //     return acc;
+    // }, baseConfig);
+    return baseConfig;
+}
+
+export function getExternals(
+    options: {
+        root?: string;
+        modules?: GezModuleConfig;
+    },
+    baseConfig: Externals = []
+): Externals {
+    const { modules: { imports = [] } = {} } = options;
+    return imports.reduce<Externals>((acc, key) => {
+        if (Array.isArray(acc)) {
+            acc.push(key);
+        } else {
+            acc[key] = key;
+        }
         return acc;
     }, baseConfig);
 }
