@@ -7,7 +7,6 @@
         "dev": "gez dev",
         "build": "gez build",
         "build:dts": "npx --yes vue-tsc --declaration --emitDeclarationOnly",
-        "build:importmap": "gez build:importmap",
         "start": "gez start",
         "postinstall": "gez install"
     },

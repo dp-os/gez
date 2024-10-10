@@ -48,7 +48,7 @@ export default defineNode({
          * *: 192.168.0.0.1
          */
         importBase: {
-            // 'ssr-rspack-vue2_remote': 'http://localhost:3003'
+            // 'ssr-rspack-vue2_remote': 'http://localhost:3003/ssr-rspack-vue2_remote'
             'ssr-rspack-vue2_remote': 'http://127.0.0.1:8080'
         }
     }

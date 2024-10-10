@@ -20,7 +20,6 @@ export function getImportMapConfig(modules?: GezModuleConfig): ImportMapConfig {
         };
     }
     const { importBase, imports = [], exposes = [] } = modules;
-    console.log('@getImportMapConfig', modules);
     const regex = /^(.*?)\/(.*)$/; // 使用正则表达式匹配第一个/符号
     const importConfig = imports.reduce<ImportMapConfig>(
         (acc, item) => {

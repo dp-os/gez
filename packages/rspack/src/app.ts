@@ -95,6 +95,7 @@ export async function createApp(
                 if (err) {
                     throw err;
                 }
+                buildImportmap(gez);
                 compiler.close((closeErr) => {
                     if (err) {
                         throw closeErr;
@@ -105,64 +106,6 @@ export async function createApp(
             return new Promise<void>((resolve) => {
                 done = resolve;
             });
-        },
-        async buildImportmap() {
-            if (!gez.modules) return;
-            const { typeDir } = gez.modules;
-            const dtsExist = fs.existsSync(path.resolve(gez.root, typeDir));
-
-            const { files: clientFiles, fileList: clientFileList } =
-                readFileDirectory(path.resolve(gez.root, 'dist/client'));
-            const { contenthash: clientHash } = zipFiles(clientFiles);
-
-            const { files: serverFiles, fileList: serverFileList } =
-                readFileDirectory(path.resolve(gez.root, 'dist/server'));
-            const { zipU8: serverZipped, contenthash: serverHash } =
-                zipFiles(serverFiles);
-            write.sync(
-                path.resolve(gez.root, `dist/client/server/${serverHash}.zip`),
-                serverZipped
-            );
-
-            if (dtsExist) {
-                const { files: typeFiles } = readFileDirectory(
-                    path.resolve(gez.root, typeDir)
-                );
-                const { zipU8: typeZipped } = zipFiles(typeFiles);
-                write.sync(
-                    path.resolve(
-                        gez.root,
-                        `dist/client/server/${serverHash}.dts.zip`
-                    ),
-                    typeZipped
-                );
-            }
-
-            const importmapFilePath =
-                clientFileList.find((item) => {
-                    return (
-                        item.startsWith('importmap.') &&
-                        item.endsWith('.js') &&
-                        item !== 'importmap.js'
-                    );
-                }) || '';
-
-            const manifestJson: ManifestJson = {
-                client: {
-                    importmapFilePath,
-                    version: clientHash,
-                    files: clientFileList
-                },
-                server: {
-                    dts: dtsExist,
-                    version: serverHash,
-                    files: serverFileList
-                }
-            };
-            write.sync(
-                path.resolve(gez.root, 'dist/client/server/manifest.json'),
-                JSON.stringify(manifestJson, null, 4)
-            );
         },
         async destroy() {},
         async install() {
@@ -226,28 +169,98 @@ export async function createApp(
                                 buffer.toString()
                             );
                             const { dts, version } = manifest.server;
+                            unzipRemoteFile(
+                                `${baseUrl}/server/${version}.zip`,
+                                path.resolve(gez.root, `node_modules/${name}`)
+                            );
                             if (dts) {
-                                const dtsZipFilePath = `${baseUrl}/server/${version}.dts.zip`;
-                                const res = await fetch(dtsZipFilePath);
-                                if (!res.ok || !res.body) return;
-                                const buffer = new Uint8Array(
-                                    await res.arrayBuffer()
-                                );
-
-                                unzip(
-                                    buffer,
+                                unzipRemoteFile(
+                                    `${baseUrl}/server/${version}.dts.zip`,
                                     path.resolve(
                                         gez.root,
                                         `node_modules/${name}`
                                     )
                                 );
                             }
+
+                            write.sync(
+                                path.resolve(
+                                    gez.root,
+                                    `node_modules/${name}/package.json`
+                                ),
+                                JSON.stringify(
+                                    {
+                                        name,
+                                        version
+                                    },
+                                    null,
+                                    4
+                                )
+                            );
                         } catch (error) {}
                     }
                 })
             );
         }
     };
+}
+
+function buildImportmap(gez: Gez) {
+    if (!gez.modules) return;
+    const { typeDir } = gez.modules;
+    const dtsExist = fs.existsSync(path.resolve(gez.root, typeDir));
+
+    const { files: clientFiles, fileList: clientFileList } = readFileDirectory(
+        path.resolve(gez.root, 'dist/client')
+    );
+    const { contenthash: clientHash } = zipFiles(clientFiles);
+
+    const { files: serverFiles, fileList: serverFileList } = readFileDirectory(
+        path.resolve(gez.root, 'dist/server')
+    );
+    const { zipU8: serverZipped, contenthash: serverHash } =
+        zipFiles(serverFiles);
+    write.sync(
+        path.resolve(gez.root, `dist/client/server/${serverHash}.zip`),
+        serverZipped
+    );
+
+    if (dtsExist) {
+        const { files: typeFiles } = readFileDirectory(
+            path.resolve(gez.root, typeDir)
+        );
+        const { zipU8: typeZipped } = zipFiles(typeFiles);
+        write.sync(
+            path.resolve(gez.root, `dist/client/server/${serverHash}.dts.zip`),
+            typeZipped
+        );
+    }
+
+    const importmapFilePath =
+        clientFileList.find((item) => {
+            return (
+                item.startsWith('importmap.') &&
+                item.endsWith('.js') &&
+                item !== 'importmap.js'
+            );
+        }) || '';
+
+    const manifestJson: ManifestJson = {
+        client: {
+            importmapFilePath,
+            version: clientHash,
+            files: clientFileList
+        },
+        server: {
+            dts: dtsExist,
+            version: serverHash,
+            files: serverFileList
+        }
+    };
+    write.sync(
+        path.resolve(gez.root, 'dist/client/server/manifest.json'),
+        JSON.stringify(manifestJson, null, 4)
+    );
 }
 
 /**
@@ -301,4 +314,18 @@ function unzip(data: Uint8Array, dir: string, options?: fflate.UnzipOptions) {
     Object.keys(files).forEach((name) => {
         write.sync(path.resolve(dir, name), files[name]);
     });
+}
+
+/**
+ * 异步获取并解压 ZIP 文件到指定目录
+ * @param url - 要获取的 ZIP 文件的 URL
+ * @param dir - 要解压到的目标目录
+ * @returns
+ */
+async function unzipRemoteFile(url: string, dir: string) {
+    const res = await fetch(url);
+    if (!res.ok || !res.body) return;
+    const buffer = new Uint8Array(await res.arrayBuffer());
+
+    unzip(buffer, dir);
 }

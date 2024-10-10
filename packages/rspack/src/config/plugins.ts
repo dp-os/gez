@@ -23,7 +23,15 @@ export class Plugins extends BuildConfig<Config> {
     }
 
     protected getServer(): Config {
-        return [];
+        const {
+            gez: { root, modules }
+        } = this;
+        return [
+            new ImportmapPlugin({
+                root,
+                modules
+            })
+        ];
     }
 
     protected getNode(): Config {

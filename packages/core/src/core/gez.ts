@@ -84,7 +84,6 @@ export interface GezOptions {
 export enum COMMAND {
     dev = 'dev',
     build = 'build',
-    buildImportmap = 'build:importmap',
     preview = 'preview',
     install = 'install',
     start = 'start'
@@ -130,10 +129,6 @@ export class Gez {
      */
     public get build() {
         return this.app.build;
-    }
-
-    public get buildImportmap() {
-        return this.app.buildImportmap;
     }
 
     /**

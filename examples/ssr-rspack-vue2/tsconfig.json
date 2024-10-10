@@ -1,34 +1,60 @@
 {
     "compilerOptions": {
-        "jsx": "preserve",
-        "target": "esnext",
-        "module": "esnext",
-        "moduleResolution": "node",
-        "esModuleInterop": true,
-        "experimentalDecorators": true,
-        "allowJs": true,
-        "sourceMap": true,
-        "strict": true,
-        "noEmit": false,
-        "noUnusedLocals": true,
-        "skipLibCheck": true,
-        "noImplicitAny": false,
-        "resolveJsonModule": true,
-        "baseUrl": "./",
-        "paths": {
-            "ssr-rspack-vue2/*": ["./*"],
-        },
-        "declaration": true,
         "isolatedModules": true,
-        "declarationDir": "./types",
+        "allowJs": false,
+        "experimentalDecorators": true,
+        "resolveJsonModule": true,
         "types": [
             "@types/node"
         ],
-        "allowSyntheticDefaultImports": true
+        "target": "ESNext",
+        "module": "ESNext",
+        "importHelpers": false,
+        "declaration": true,
+        "sourceMap": true,
+        "strict": true,
+        "noImplicitAny": false,
+        "noImplicitReturns": false,
+        "noFallthroughCasesInSwitch": true,
+        "noUnusedLocals": false,
+        "noUnusedParameters": false,
+        "moduleResolution": "node",
+        "allowImportingTsExtensions": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "allowSyntheticDefaultImports": true,
+        "forceConsistentCasingInFileNames": true,
+        "noEmit": true,
+        "paths": {
+            "ssr-rspack-vue2/src/*": [
+                "./src/*"
+            ],
+            "ssr-rspack-vue2/*": [
+                "./*"
+            ]
+        }
     },
-    "include": ["src", "*.ts"],
+    "include": [
+        "micro",
+        "service",
+        "server",
+        "test",
+        "src",
+        "bin",
+        "**.cjs",
+        "**.js",
+        "**.mjs",
+        "**.ts",
+        "private",
+        "public"
+    ],
     "exclude": [
-        "dist",
-        "types"
-    ]
+        "dist"
+    ],
+    "vueCompilerOptions": {
+        "extensions": [
+            ".vue"
+        ],
+        "target": 2.7
+    }
 }
