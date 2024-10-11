@@ -96,7 +96,7 @@ export async function createApp(
                 if (err) {
                     throw err;
                 }
-                buildImportmap(gez);
+                // buildImportmap(gez);
                 compiler.close((closeErr) => {
                     if (err) {
                         throw closeErr;

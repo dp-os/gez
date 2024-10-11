@@ -2,6 +2,11 @@ import path from 'node:path';
 import { cwd } from 'node:process';
 
 import { type App, createApp } from './app';
+import {
+    type ModuleConfig,
+    type ParsedModuleConfig,
+    parseModuleConfig
+} from './module-config';
 import { type ProjectPath, getProjectPath } from './project-path';
 
 export interface FederationSharedConfig {
@@ -33,39 +38,6 @@ interface ImportmapJson {
     };
 }
 
-/**
- * 模块配置
- */
-export interface GezModuleConfig {
-    /**
-     * 类型生成的目录
-     */
-    typeDir: string;
-    /**
-     * 对外导出的文件
-     * 例子：
-     *  vue
-     *  src/config.ts
-     *  src/app.vue
-     */
-    exposes?: string[];
-    /**
-     * 导入的文件
-     * ssr-name/vue
-     * ssr-name/src/config
-     */
-    imports?: string[];
-    /**
-     * 导入的文件的前置路径
-     * *符号为兜底逻辑
-     * 例子：
-     * ssr-remote: 192.168.0.0.1:3001
-     * ssr-common: 192.168.0.0.1:3002
-     * *: 192.168.0.0.1
-     */
-    importBase: Record<string, string>;
-}
-
 export interface GezOptions {
     root?: string;
     name?: string;
@@ -73,7 +45,7 @@ export interface GezOptions {
     /**
      * 模块配置
      */
-    modules?: GezModuleConfig;
+    modules?: ModuleConfig;
     /**
      * 构建版本支持，一般不需要配置
      */
@@ -93,8 +65,14 @@ export class Gez {
     private readonly _options: GezOptions;
     private _app: App | null = null;
     private _command: COMMAND | null = null;
+    private readonly _moduleConfig: ParsedModuleConfig;
     public constructor(options: GezOptions = {}) {
         this._options = options;
+        this._moduleConfig = parseModuleConfig(this.name, options.modules);
+    }
+
+    public get moduleConfig() {
+        return this._moduleConfig;
     }
 
     private get app() {

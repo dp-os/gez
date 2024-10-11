@@ -212,7 +212,7 @@ export class StoreContext<T extends {}> {
             }
 
             const prevState = connectContext.state;
-            let result: any;
+            let result: unknown;
             const nextState = produce(prevState, (draft) => {
                 connectContext._drafting = true;
                 connectContext.state = draft;
@@ -251,7 +251,7 @@ export function connectState(state: State) {
                 stateContext,
                 () => new Store(cacheKey)
             );
-            let storeState: Record<string, string>;
+            let storeState: Record<string, any>;
             if (fullPath in state.value) {
                 storeState = { ...store, ...state.value[fullPath] };
             } else {

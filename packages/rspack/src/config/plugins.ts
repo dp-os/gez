@@ -1,6 +1,7 @@
 import { type RspackOptions, rspack } from '@rspack/core';
 
-import { ImportmapPlugin } from '../importmap';
+// import { ImportmapPlugin } from '../importmap';
+import { ImportmapPlugin } from '../v2';
 import { BuildConfig } from './base';
 
 type Config = NonNullable<RspackOptions['plugins']>;
@@ -8,15 +9,9 @@ type Config = NonNullable<RspackOptions['plugins']>;
 export class Plugins extends BuildConfig<Config> {
     protected getClient(): Config {
         const {
-            gez: { name, root, modules, isProd }
+            gez: { isProd, moduleConfig }
         } = this;
-        const plugins: Config = [
-            new ImportmapPlugin({
-                name,
-                root,
-                modules
-            })
-        ];
+        const plugins: Config = [new ImportmapPlugin(moduleConfig)];
         if (!isProd) {
             plugins.push(new rspack.HotModuleReplacementPlugin());
         }
@@ -25,15 +20,9 @@ export class Plugins extends BuildConfig<Config> {
 
     protected getServer(): Config {
         const {
-            gez: { name, root, modules }
+            gez: { moduleConfig }
         } = this;
-        return [
-            new ImportmapPlugin({
-                name,
-                root,
-                modules
-            })
-        ];
+        return [new ImportmapPlugin(moduleConfig)];
     }
 
     protected getNode(): Config {

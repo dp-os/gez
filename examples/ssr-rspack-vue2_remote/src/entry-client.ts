@@ -1,3 +1,6 @@
-import { createApp } from './create-app';
+import vue from 'vue';
 
-createApp().app.$mount('[data-server-rendered="true"]');
+console.log('?>>>>>>> vue', vue);
+// import { createApp } from './create-app';
+
+// createApp().app.$mount('[data-server-rendered="true"]');

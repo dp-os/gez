@@ -40,31 +40,8 @@ export default defineNode({
     },
     modules: {
         /**
-         * 类型生成的目录
-         */
-        typeDir: './types',
-        /**
          * 导出的文件
          */
-        exposes: ['./src/utils/index.ts'],
-        /**
-         * 导入的文件
-         * ssr-name/vue
-         * ssr-name/src/config
-         */
-        imports: [
-            // 'ssr-rspack-vue2/src/utils/index.ts'
-        ],
-        /**
-         * 导入的文件的前置路径
-         * *符号为兜底逻辑
-         * 例子：
-         * ssr-remote: 192.168.0.0.1:3001
-         * ssr-common: 192.168.0.0.1:3002
-         * *: 192.168.0.0.1
-         */
-        importBase: {
-            'ssr-rspack-vue2': 'http://localhost:3002'
-        }
+        exports: ['./src/utils/index.ts', 'vue']
     }
 });
