@@ -9,12 +9,18 @@ export default defineBuildConfig({
             format: 'esm',
             ext: 'mjs',
             cleanDist: true,
-            declaration: true
+            declaration: true,
+            esbuild: {
+                target: 'node20'
+            }
         },
         {
             input: './src/',
             ext: 'cjs',
-            format: 'cjs'
+            format: 'cjs',
+            esbuild: {
+                target: 'node20'
+            }
         }
     ]
 });

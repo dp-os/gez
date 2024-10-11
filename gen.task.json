@@ -3,7 +3,6 @@
         "packages/lint",
         "packages/class-state",
         "packages/core",
-        "packages/vite",
         "packages/rspack",
         "packages/rspack-vue2"
     ]

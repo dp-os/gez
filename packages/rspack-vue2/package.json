@@ -2,7 +2,7 @@
     "name": "@gez/rspack-vue2",
     "template": "library-node",
     "scripts": {
-        "lint:js": "eslint . --ext .js,.mjs,.cjs,.ts,.vue --fix",
+        "lint:js": "biome check --write --no-errors-on-unmatched",
         "lint:css": "stylelint '**/*.{css,vue}' --fix --aei",
         "lint:type": "tsc --noEmit",
         "test": "vitest --pass-with-no-tests",
@@ -29,14 +29,14 @@
     },
     "devDependencies": {
         "@gez/core": "workspace:^",
-        "@gez/lint": "workspace:^",
+        "@gez/lint": "0.0.9",
         "@types/node": "20.12.12",
         "@vitest/coverage-v8": "1.6.0",
-        "eslint": "8.57.0",
         "stylelint": "16.5.0",
         "typescript": "5.4.5",
         "unbuild": "2.0.0",
-        "vitest": "1.6.0"
+        "vitest": "1.6.0",
+        "@biomejs/biome": "1.9.2"
     },
     "version": "0.0.15-alpha.41",
     "type": "module",
@@ -44,7 +44,8 @@
     "exports": {
         ".": {
             "import": "./dist/index.mjs",
-            "require": "./dist/index.cjs"
+            "require": "./dist/index.cjs",
+            "types": "./dist/index.d.ts"
         }
     },
     "main": "./dist/index.cjs",

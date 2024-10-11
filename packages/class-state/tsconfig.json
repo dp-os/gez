@@ -1,9 +1,7 @@
 {
     "compilerOptions": {
         "isolatedModules": true,
-        "moduleDetection": "force",
         "allowJs": false,
-        "preserveSymlinks": true,
         "experimentalDecorators": true,
         "resolveJsonModule": true,
         "types": [
