@@ -21,7 +21,7 @@ class App extends Define {
         log('setup');
         onMounted(() => {
             log('onMounted');
-        })
+        });
     }
 }
 

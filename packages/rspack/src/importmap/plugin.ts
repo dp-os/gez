@@ -1,13 +1,13 @@
-import { type GezModuleConfig } from '@gez/core';
+import type { GezModuleConfig } from '@gez/core';
 import {
     type Assets,
     type Compilation,
     type Compiler,
     type EntryStaticNormalized,
     type Externals,
+    type RspackPluginInstance,
     // type ResolveAlias,
-    rspack,
-    type RspackPluginInstance
+    rspack
 } from '@rspack/core';
 import crypto from 'crypto-js';
 

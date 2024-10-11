@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-this-alias */
 import { produce } from 'immer';
 
-import { getStateContext, type State, type StateContext } from './create';
+import { type State, type StateContext, getStateContext } from './create';
 export type StoreParams = Record<string, any>;
 export type StoreConstructor = new (cacheKey?: string) => any;
 
@@ -212,7 +212,7 @@ export class StoreContext<T extends {}> {
             }
 
             const prevState = connectContext.state;
-            let result;
+            let result: any;
             const nextState = produce(prevState, (draft) => {
                 connectContext._drafting = true;
                 connectContext.state = draft;
@@ -251,7 +251,7 @@ export function connectState(state: State) {
                 stateContext,
                 () => new Store(cacheKey)
             );
-            let storeState;
+            let storeState: Record<string, string>;
             if (fullPath in state.value) {
                 storeState = { ...store, ...state.value[fullPath] };
             } else {

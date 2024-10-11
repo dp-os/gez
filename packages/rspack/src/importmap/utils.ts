@@ -1,6 +1,6 @@
 import path from 'node:path';
 
-import { type GezModuleConfig } from '@gez/core';
+import type { GezModuleConfig } from '@gez/core';
 import type {
     EntryStaticNormalized,
     Externals,
@@ -69,7 +69,10 @@ export function getEntryConfig(
     },
     baseConfig: EntryStaticNormalized = {}
 ): EntryStaticNormalized {
-    const { root = '', modules: { exposes = [] } = {} } = options;
+    const {
+        root = '',
+        modules: { exposes = [] } = {}
+    } = options;
     return exposes.reduce<EntryStaticNormalized>((acc, expose) => {
         const exposeName = expose.replace(/^\.\//, '');
         const exposePath = path.resolve(root, exposeName);
@@ -107,7 +110,9 @@ export function getExternals(
     },
     baseConfig: Externals = []
 ): Externals {
-    const { modules: { imports = [] } = {} } = options;
+    const {
+        modules: { imports = [] } = {}
+    } = options;
     return imports.reduce<Externals>((acc, key) => {
         if (Array.isArray(acc)) {
             acc.push(key);

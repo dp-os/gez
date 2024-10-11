@@ -1,13 +1,13 @@
-import { defineServer } from '@gez/core'
+import { defineServer } from '@gez/core';
 import { renderToString } from 'vue/server-renderer';
 import { createApp } from './create-app';
 
 export default defineServer({
-  async render(context) {
-    const { app } = createApp()
+    async render(context) {
+        const { app } = createApp();
 
-    const html = await renderToString(app);
-    context.html = `
+        const html = await renderToString(app);
+        context.html = `
     <!DOCTYPE html>
     <html>
     <head>
@@ -27,6 +27,6 @@ export default defineServer({
     </script>
     </body>
     </html>
-`
-  }
-})
+`;
+    }
+});

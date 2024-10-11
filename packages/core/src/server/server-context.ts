@@ -1,4 +1,4 @@
-import { type Gez } from '../core';
+import type { Gez } from '../core';
 import type { AppRenderParams } from '../core/app';
 import { readJson } from './read-json';
 

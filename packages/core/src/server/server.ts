@@ -1,4 +1,4 @@
-import { type ServerContext, type ServerRender } from './server-context';
+import type { ServerContext, ServerRender } from './server-context';
 
 export interface ServerOptions {
     render: (context: ServerContext) => Promise<void>;

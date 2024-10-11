@@ -5,7 +5,7 @@
     "type": "module",
     "scripts": {
         "prepare": "./prepare.sh",
-        "lint:js": "lerna run lint:js",
+        "lint:js": "biome check --write --no-errors-on-unmatched",
         "lint:css": "lerna run lint:css",
         "lint:type": "lerna run lint:type",
         "test": "lerna run test",
@@ -19,7 +19,8 @@
     },
     "devDependencies": {
         "lint-staged": "15.2.4",
-        "husky": "8.0.3"
+        "husky": "8.0.3",
+        "@biomejs/biome": "1.9.2"
     },
     "private": false,
     "workspaces": [

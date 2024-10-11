@@ -1,16 +1,14 @@
-import Vue, { defineAsyncComponent } from 'vue'
+import Vue, { defineAsyncComponent } from 'vue';
 
-const App = defineAsyncComponent(() => import('./app.vue'))
+const App = defineAsyncComponent(() => import('./app.vue'));
 
-
-
-export function createApp () {
+export function createApp() {
     const app = new Vue({
         render(h) {
-            return h(App)
+            return h(App);
         }
     });
     return {
         app
-    }
+    };
 }

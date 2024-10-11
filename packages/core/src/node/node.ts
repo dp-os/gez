@@ -1,6 +1,6 @@
-import http, { type IncomingMessage, type ServerResponse } from 'http';
+import http, { type IncomingMessage, type ServerResponse } from 'node:http';
 
-import { type Gez, type GezOptions } from '../core';
+import type { Gez, GezOptions } from '../core';
 
 export interface NodeOptions extends GezOptions {
     created: (gez: Gez) => void;

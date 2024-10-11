@@ -3,11 +3,11 @@ import { isBuiltin } from 'node:module';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
-    createContext,
     type Module,
     type ModuleLinker,
     SourceTextModule,
-    SyntheticModule
+    SyntheticModule,
+    createContext
 } from 'node:vm';
 
 const ROOT_MODULE = '__root_module__';

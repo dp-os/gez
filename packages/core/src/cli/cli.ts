@@ -3,8 +3,8 @@ import path from 'node:path';
 // @ts-expect-error
 import { tsImport } from 'tsx/esm/api';
 
-import { COMMAND, getProjectPath, Gez } from '../core';
-import { type NodeOptions } from '../node';
+import { COMMAND, Gez, getProjectPath } from '../core';
+import type { NodeOptions } from '../node';
 
 export function cli() {
     const command = process.argv.slice(2)[0] || '';

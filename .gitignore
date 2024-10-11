@@ -17,3 +17,4 @@ packages/**/dist
 .babelfish
 /.i18n_preview
 .root
+/types

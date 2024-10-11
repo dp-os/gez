@@ -377,8 +377,8 @@ test('update value', () => {
     const state = createState();
     const connectStore = connectState(state);
     class Count {
-        public value: number = 0;
-        public text: string = '';
+        public value = 0;
+        public text = '';
         public $inc() {
             this.value++;
         }
@@ -418,7 +418,7 @@ test('default connecting', () => {
     });
     const connectStore = connectState(state);
     class Count {
-        public value: number = 0;
+        public value = 0;
         public $inc() {
             this.value++;
         }
@@ -438,7 +438,7 @@ test('update state', () => {
     });
     const connectStore = connectState(state);
     class Count {
-        public value: number = 0;
+        public value = 0;
         public $inc() {
             this.value++;
         }

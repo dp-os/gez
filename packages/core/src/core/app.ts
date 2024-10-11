@@ -1,13 +1,13 @@
-import {
-    type IncomingHttpHeaders,
-    type IncomingMessage,
-    type ServerResponse
+import type {
+    IncomingHttpHeaders,
+    IncomingMessage,
+    ServerResponse
 } from 'node:http';
 
 import serveStatic from 'serve-static';
 
 import { ServerContext, type ServerRender } from '../server/server-context';
-import { type Gez } from './gez';
+import type { Gez } from './gez';
 
 export interface AppRenderParams {
     url: string;

@@ -2,7 +2,7 @@ import path from 'node:path';
 import { cwd } from 'node:process';
 
 import { type App, createApp } from './app';
-import { getProjectPath, type ProjectPath } from './project-path';
+import { type ProjectPath, getProjectPath } from './project-path';
 
 export interface FederationSharedConfig {
     import?: boolean;

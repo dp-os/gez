@@ -1,3 +1,3 @@
-import { createApp } from './create-app'
+import { createApp } from './create-app';
 
-createApp().app.$mount('[data-server-rendered="true"]')
+createApp().app.$mount('[data-server-rendered="true"]');

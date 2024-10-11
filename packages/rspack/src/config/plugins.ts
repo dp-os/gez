@@ -1,4 +1,4 @@
-import { rspack, type RspackOptions } from '@rspack/core';
+import { type RspackOptions, rspack } from '@rspack/core';
 
 import { ImportmapPlugin } from '../importmap';
 import { BuildConfig } from './base';

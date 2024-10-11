@@ -14,7 +14,7 @@ test('base', async () => {
         }
     }
     const user = connectStore(User, 'user');
-    let updateValue;
+    let updateValue: string | undefined;
     watch(
         () => {
             return user.name;
@@ -43,7 +43,7 @@ test('base2', async () => {
     }
     const user = connectStore(User, 'user');
     user.$setName('test');
-    let updateValue;
+    let updateValue: string | undefined;
     watch(
         () => {
             return user.name;
