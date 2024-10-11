@@ -1,3 +1,4 @@
+import { execSync } from 'node:child_process';
 import fs from 'node:fs';
 import { type IncomingMessage, type ServerResponse } from 'node:http';
 import path from 'node:path';
@@ -162,17 +163,19 @@ export async function createApp(
                                 buffer.toString()
                             );
                             const { dts, version } = manifest.server;
+                            const dir = path.resolve(
+                                gez.root,
+                                `node_modules/${name}`
+                            );
+                            execSync(`rm -rf ${dir}`);
                             unzipRemoteFile(
                                 `${baseUrl}/server/${version}.zip`,
-                                path.resolve(gez.root, `node_modules/${name}`)
+                                dir
                             );
                             if (dts) {
                                 unzipRemoteFile(
                                     `${baseUrl}/server/${version}.dts.zip`,
-                                    path.resolve(
-                                        gez.root,
-                                        `node_modules/${name}`
-                                    )
+                                    dir
                                 );
                             }
                         } catch (error) {}
