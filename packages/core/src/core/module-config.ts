@@ -33,11 +33,55 @@ export interface ParsedModuleConfig {
     /**
      * 对外导出的文件
      */
-    exports: Record<string, string>;
+    exports: {
+        /**
+         * npm:*
+         * src:*
+         * src:routes/index.ts
+         */
+        name: string;
+        type: 'npm' | 'src';
+        /**
+         * ssr-demo/npm/vue
+         * ssr-demo/src/routes
+         * ssr-demo/src/routes/index
+         */
+        importName: string;
+        /**
+         * ./npm/vue
+         * ./src/routes
+         */
+        exportName: string;
+        /**
+         * vue
+         * ./src/routes.ts
+         */
+        exportPath: string;
+        /**
+         * vue
+         * ssr-demo/src/routes/index
+         */
+        externalName: string;
+    }[];
     /**
      * 导入的外部服务
      */
-    imports: Record<string, { localPath: string; remoteUrl?: string }>;
+    imports: {
+        /**
+         * 外部服务名称
+         */
+        name: string;
+        /**
+         * 本地路径
+         * 用于读取依赖 和 存放远程下载的依赖
+         */
+        localPath: string;
+        /**
+         * 远程路径
+         * 用于下载远程依赖
+         */
+        remoteUrl?: string;
+    }[];
     /**
      * 外部依赖
      */
@@ -48,32 +92,52 @@ export function parseModuleConfig(
     name: string,
     config: ModuleConfig = {}
 ): ParsedModuleConfig {
-    const exports: ParsedModuleConfig['exports'] = {};
+    const exports: ParsedModuleConfig['exports'] = [];
     if (config.exports) {
         config.exports.forEach((key) => {
             if (key.startsWith('npm:')) {
                 const exportName = key.replace(/^npm:/, '');
-                exports[exportName] = exportName;
+
+                exports.push({
+                    name: key,
+                    type: 'npm',
+                    importName: `${name}/npm/${exportName}`,
+                    exportName: `./npm/${exportName}`,
+                    exportPath: exportName,
+                    externalName: exportName
+                });
             } else if (key.startsWith('src:')) {
-                const exportName = key.replace(/^src:/, 'src/');
-                exports[exportName.replace(/\.ts$/, '')] = `./${exportName}`;
+                const exportName = key.replace(/^src:/, '');
+
+                const exportNameNoSuffix = exportName.replace(/\.(ts|js)$/, '');
+
+                exports.push({
+                    name: key,
+                    type: 'src',
+                    importName: `${name}/src/${exportNameNoSuffix}`,
+                    exportName: `./src/${exportNameNoSuffix}`,
+                    exportPath: `./src/${exportName}`,
+                    externalName: `${name}/src/${exportNameNoSuffix}`
+                });
             }
         });
     }
-    const imports: ParsedModuleConfig['imports'] = {};
+    const imports: ParsedModuleConfig['imports'] = [];
     if (config.imports) {
         const _imports = config.imports;
         Object.keys(config.imports).forEach((key) => {
             const value = _imports[key];
             if (typeof value === 'string') {
-                imports[key] = {
+                imports.push({
+                    name: key,
                     localPath: value
-                };
+                });
             } else if (Array.isArray(value)) {
-                imports[key] = {
+                imports.push({
+                    name: key,
                     localPath: value[0],
                     remoteUrl: value[1]
-                };
+                });
             }
         });
     }
@@ -86,22 +150,16 @@ export function parseModuleConfig(
             };
         });
     }
-    Object.entries(exports).forEach(([key]) => {
-        if (key.startsWith('./')) {
-            const extName = `${name}/${key.substring(2)}`;
-            externals[extName] = {
-                match: new RegExp(`^${extName}$`)
-            };
-        } else {
-            externals[key] = {
-                match: new RegExp(`^${key}$`),
-                import: `${name}/${key}`
-            };
-        }
+    exports.forEach(({ importName, externalName }) => {
+        externals[externalName] = {
+            match: new RegExp(`^${externalName}$`),
+            import: importName
+        };
     });
-    Object.keys(imports).forEach((key) => {
-        externals[key] = {
-            match: new RegExp(`^${[key]}/`)
+
+    imports.forEach(({ name }) => {
+        externals[name] = {
+            match: new RegExp(`^${[name]}/`)
         };
     });
     return { name, exports, imports, externals };

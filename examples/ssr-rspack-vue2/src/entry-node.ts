@@ -1,4 +1,3 @@
-import { execSync } from 'node:child_process';
 import { defineNode } from '@gez/core';
 import express from 'express';
 
@@ -15,9 +14,6 @@ export default defineNode({
             const result = await gez.render({ url: '/' });
             res.send(result.html);
         });
-        execSync(
-            'npx vue-tsc --declaration --emitDeclarationOnly --noEmit false --outDir types/src'
-        );
         server.listen(3002, () => {
             console.log('http://localhost:3002');
         });
