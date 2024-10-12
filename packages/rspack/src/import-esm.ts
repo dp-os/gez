@@ -13,10 +13,12 @@ import {
  * @param {string|URL} parent 将 import.meta.url 传入
  * @returns
  */
-export async function importEsmInactive(specifier: string, parent: string) {
-    const context = createContext({
-        console
-    });
+export async function importEsmInactive(
+    specifier: string,
+    parent: string,
+    sandbox?: Context
+) {
+    const context = createContext(sandbox);
     const module = await moduleLinker(specifier, parent, context);
 
     return module.namespace;

@@ -4,8 +4,6 @@ import type {
     ServerResponse
 } from 'node:http';
 
-import serveStatic from 'serve-static';
-
 import { ServerContext, type ServerRender } from '../server/server-context';
 import type { Gez } from './gez';
 
@@ -30,7 +28,8 @@ export interface App {
 
 export async function createApp(gez: Gez): Promise<App> {
     const root = gez.getProjectPath('dist/client');
-    const middleware = serveStatic(root, {
+    const serveStatic = await import('serve-static');
+    const middleware = serveStatic.default(root, {
         setHeaders(res) {
             res.setHeader('cache-control', 'public, max-age=31536000');
         }

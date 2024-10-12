@@ -78,7 +78,13 @@ export async function createApp(
         async render(params: AppRenderParams): Promise<ServerContext> {
             const module = await importEsmInactive(
                 gez.getProjectPath('dist/server/entry-server.js'),
-                import.meta.url
+                import.meta.url,
+                {
+                    console,
+                    process,
+                    URL,
+                    global
+                }
             );
             const render: ServerRender | undefined = module.default;
             const context = new ServerContext(gez, params);
