@@ -68,7 +68,11 @@ export class Gez {
     private readonly _moduleConfig: ParsedModuleConfig;
     public constructor(options: GezOptions = {}) {
         this._options = options;
-        this._moduleConfig = parseModuleConfig(this.name, options.modules);
+        this._moduleConfig = parseModuleConfig(
+            this.name,
+            this.root,
+            options.modules
+        );
     }
 
     public get moduleConfig() {

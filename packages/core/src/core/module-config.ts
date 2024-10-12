@@ -1,6 +1,9 @@
 import path from 'node:path';
 
-import type { Gez } from './gez';
+export enum PathType {
+    npm = 'npm:',
+    root = 'root:'
+}
 
 export interface ModuleConfig {
     /**
@@ -13,7 +16,7 @@ export interface ModuleConfig {
      *   root:src/routes
      *   root:src/[filename]
      */
-    exports?: `${'npm' | 'root'}:${string}`[];
+    exports?: `${PathType}${string}`[];
     /**
      * 设置项目的外部依赖
      * 例如：
@@ -40,7 +43,7 @@ export interface ParsedModuleConfig {
          * root:src/routes/index.ts
          */
         name: string;
-        type: 'npm' | 'root';
+        type: PathType;
         /**
          * ssr-demo/npm/vue
          * ssr-demo/src/routes
@@ -90,30 +93,31 @@ export interface ParsedModuleConfig {
 
 export function parseModuleConfig(
     name: string,
+    root: string,
     config: ModuleConfig = {}
 ): ParsedModuleConfig {
     const exports: ParsedModuleConfig['exports'] = [];
     if (config.exports) {
         config.exports.forEach((key) => {
-            if (key.startsWith('npm:')) {
-                const exportName = key.replace(/^npm:/, '');
+            if (key.startsWith(PathType.npm)) {
+                const exportName = key.substring(PathType.npm.length);
 
                 exports.push({
                     name: key,
-                    type: 'npm',
+                    type: PathType.npm,
                     importName: `${name}/npm/${exportName}`,
                     exportName: `./npm/${exportName}`,
                     exportPath: exportName,
                     externalName: exportName
                 });
-            } else if (key.startsWith('root:')) {
-                const exportName = key.replace(/^root:/, '');
+            } else if (key.startsWith(PathType.root)) {
+                const exportName = key.substring(PathType.root.length);
 
                 const exportNameNoSuffix = exportName.replace(/\.(ts|js)$/, '');
 
                 exports.push({
                     name: key,
-                    type: 'root',
+                    type: PathType.root,
                     importName: `${name}/${exportNameNoSuffix}`,
                     exportName: `./${exportNameNoSuffix}`,
                     exportPath: `./${exportName}`,
@@ -124,18 +128,26 @@ export function parseModuleConfig(
     }
     const imports: ParsedModuleConfig['imports'] = [];
     if (config.imports) {
+        const getLocalPath = (dir: string) => {
+            if (dir.startsWith(PathType.root)) {
+                return path.resolve(root, dir.substring(PathType.root.length));
+            } else if (path.isAbsolute(dir)) {
+                return dir;
+            }
+            return path.resolve(process.cwd(), dir);
+        };
         const _imports = config.imports;
         Object.keys(config.imports).forEach((key) => {
             const value = _imports[key];
             if (typeof value === 'string') {
                 imports.push({
                     name: key,
-                    localPath: value
+                    localPath: getLocalPath(value)
                 });
             } else if (Array.isArray(value)) {
                 imports.push({
                     name: key,
-                    localPath: value[0],
+                    localPath: getLocalPath(value[0]),
                     remoteUrl: value[1]
                 });
             }
