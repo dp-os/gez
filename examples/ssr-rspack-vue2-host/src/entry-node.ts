@@ -18,5 +18,13 @@ export default defineNode({
             console.log('http://localhost:3002');
         });
     },
-    modules: {}
+    modules: {
+        exports: ['root:src/utils/index.ts', 'npm:vue'],
+        imports: {
+            'ssr-rspack-vue2-remote': 'root:../ssr-rspack-vue2-remote/dist'
+        },
+        externals: {
+            vue: 'ssr-rspack-vue2-remote/npm/vue'
+        }
+    }
 });

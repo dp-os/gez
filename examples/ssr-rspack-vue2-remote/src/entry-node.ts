@@ -22,11 +22,6 @@ export default defineNode({
         /**
          * 导出的文件
          */
-        exports: ['src:utils/index.ts', 'npm:vue'],
-        imports: {
-            // 'vue': './dist/server/npm/vue'
-            // 'ssr-remote': '.../ssr-remote/dist/',
-            // 'ssr-common': ['../ssr-common/dist/', 'http://localhost:3002/ssr-common']
-        }
+        exports: ['src:utils/index.ts', 'npm:vue']
     }
 });

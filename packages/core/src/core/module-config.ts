@@ -5,15 +5,15 @@ import type { Gez } from './gez';
 export interface ModuleConfig {
     /**
      * 对外导出的文件
-     * 必须以 npm: 或 src: 开头
+     * 必须以 npm: 或 root: 开头
      * npm:开头代表 node_modules 的依赖
-     * src:开头代表项目内src目录下的文件
+     * root:开头代表项目内root目录下的文件
      * 例如:
      *   npm:vue
-     *   src:routes
-     *   src:[filename]
+     *   root:src/routes
+     *   root:src/[filename]
      */
-    exports?: string[];
+    exports?: `${'npm' | 'root'}:${string}`[];
     /**
      * 设置项目的外部依赖
      * 例如：
@@ -36,11 +36,11 @@ export interface ParsedModuleConfig {
     exports: {
         /**
          * npm:*
-         * src:*
-         * src:routes/index.ts
+         * root:src/*
+         * root:src/routes/index.ts
          */
         name: string;
-        type: 'npm' | 'src';
+        type: 'npm' | 'root';
         /**
          * ssr-demo/npm/vue
          * ssr-demo/src/routes
@@ -106,18 +106,18 @@ export function parseModuleConfig(
                     exportPath: exportName,
                     externalName: exportName
                 });
-            } else if (key.startsWith('src:')) {
-                const exportName = key.replace(/^src:/, '');
+            } else if (key.startsWith('root:')) {
+                const exportName = key.replace(/^root:/, '');
 
                 const exportNameNoSuffix = exportName.replace(/\.(ts|js)$/, '');
 
                 exports.push({
                     name: key,
-                    type: 'src',
-                    importName: `${name}/src/${exportNameNoSuffix}`,
-                    exportName: `./src/${exportNameNoSuffix}`,
-                    exportPath: `./src/${exportName}`,
-                    externalName: `${name}/src/${exportNameNoSuffix}`
+                    type: 'root',
+                    importName: `${name}/${exportNameNoSuffix}`,
+                    exportName: `./${exportNameNoSuffix}`,
+                    exportPath: `./${exportName}`,
+                    externalName: `${name}/${exportNameNoSuffix}`
                 });
             }
         });
