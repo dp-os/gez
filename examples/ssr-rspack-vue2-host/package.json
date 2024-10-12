@@ -1,5 +1,5 @@
 {
-    "name": "ssr-rspack-vue2",
+    "name": "ssr-rspack-vue2-host",
     "version": "0.0.15-alpha.41",
     "private": true,
     "type": "module",
