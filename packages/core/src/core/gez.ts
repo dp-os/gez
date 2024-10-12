@@ -175,10 +175,6 @@ export class Gez {
         return this._options?.isProd ?? process.env.NODE_ENV === 'production';
     }
 
-    public get modules(): GezOptions['modules'] {
-        return this._options.modules;
-    }
-
     public get browserslist() {
         return [
             'chrome >=87',
