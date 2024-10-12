@@ -50,6 +50,9 @@ export interface ParsedModuleConfig {
          * root:src/routes/index.ts
          */
         name: string;
+        /**
+         * 路径的类型
+         */
         type: PathType;
         /**
          * ssr-demo/npm/vue
@@ -97,12 +100,19 @@ export interface ParsedModuleConfig {
      */
     externals: Record<string, { match: RegExp; import?: string }>;
 }
-
+/**
+ * 解析模块配置
+ * @param name 当前运行服务的名字
+ * @param root 当前运行服务的根路径
+ * @param config 模块的配置
+ * @returns
+ */
 export function parseModuleConfig(
     name: string,
     root: string,
     config: ModuleConfig = {}
 ): ParsedModuleConfig {
+    // 处理对外导出
     const exports: ParsedModuleConfig['exports'] = [];
     if (config.exports) {
         config.exports.forEach((key) => {
@@ -133,6 +143,7 @@ export function parseModuleConfig(
             }
         });
     }
+    // 处理导入
     const imports: ParsedModuleConfig['imports'] = [];
     if (config.imports) {
         const getLocalPath = (dir: string) => {
@@ -160,6 +171,7 @@ export function parseModuleConfig(
             }
         });
     }
+    // 处理外部依赖
     const externals: ParsedModuleConfig['externals'] = {};
     if (config.externals) {
         const _externals = config.externals;
@@ -181,5 +193,11 @@ export function parseModuleConfig(
             match: new RegExp(`^${[name]}/`)
         };
     });
+    // 添加当前服务的解析配置
+    imports.push({
+        name,
+        localPath: path.resolve(root, 'dist')
+    });
+    console.log('config: ', { name, root, exports, imports, externals });
     return { name, root, exports, imports, externals };
 }

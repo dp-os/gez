@@ -7,6 +7,7 @@ import {
     type ParsedModuleConfig,
     parseModuleConfig
 } from './module-config';
+import { moduleLink } from './module-link';
 import { type ProjectPath, getProjectPath } from './project-path';
 
 export interface FederationSharedConfig {
@@ -65,18 +66,18 @@ export class Gez {
     private readonly _options: GezOptions;
     private _app: App | null = null;
     private _command: COMMAND | null = null;
-    private readonly _moduleConfig: ParsedModuleConfig;
+    private readonly moduleConfig: ParsedModuleConfig;
     public constructor(options: GezOptions = {}) {
         this._options = options;
-        this._moduleConfig = parseModuleConfig(
+        this.moduleConfig = parseModuleConfig(
             this.name,
             this.root,
             options.modules
         );
-    }
-
-    public get moduleConfig() {
-        return this._moduleConfig;
+        moduleLink(
+            path.resolve(this.root, 'dist/node_modules'),
+            this.moduleConfig
+        );
     }
 
     private get app() {
