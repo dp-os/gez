@@ -103,9 +103,9 @@ export async function createApp(
                 if (err) {
                     throw err;
                 }
-                // buildImportmap(gez);
+                buildImportmap(gez);
                 compiler.close((closeErr) => {
-                    if (err) {
+                    if (closeErr) {
                         throw closeErr;
                     }
                     done();
@@ -194,9 +194,10 @@ export async function createApp(
 }
 
 function buildImportmap(gez: Gez) {
-    if (!gez.modules) return;
-    const { typeDir } = gez.modules;
-    const dtsExist = fs.existsSync(path.resolve(gez.root, typeDir));
+    if (!gez.moduleConfig) return;
+    const { typeDir } = gez.moduleConfig;
+    const dtsDir = path.resolve(gez.root, typeDir || '');
+    const dtsExist = typeDir ? fs.existsSync(dtsDir) : false;
 
     const { files: clientFiles, fileList: clientFileList } = readFileDirectory(
         path.resolve(gez.root, 'dist/client')
@@ -214,9 +215,7 @@ function buildImportmap(gez: Gez) {
     );
 
     if (dtsExist) {
-        const { files: typeFiles } = readFileDirectory(
-            path.resolve(gez.root, typeDir)
-        );
+        const { files: typeFiles } = readFileDirectory(dtsDir);
         const { zipU8: typeZipped } = zipFiles(typeFiles);
         write.sync(
             path.resolve(gez.root, `dist/client/server/${serverHash}.dts.zip`),
