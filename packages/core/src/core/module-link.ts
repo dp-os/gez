@@ -1,4 +1,3 @@
-import fs from 'node:fs';
 import path from 'node:path';
 import symlinkDir from 'symlink-dir';
 import type { ParsedModuleConfig } from './module-config';

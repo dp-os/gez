@@ -66,7 +66,7 @@ export class Gez {
     private readonly _options: GezOptions;
     private _app: App | null = null;
     private _command: COMMAND | null = null;
-    private readonly moduleConfig: ParsedModuleConfig;
+    readonly moduleConfig: ParsedModuleConfig;
     public constructor(options: GezOptions = {}) {
         this._options = options;
         this.moduleConfig = parseModuleConfig(

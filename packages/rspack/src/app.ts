@@ -1,4 +1,3 @@
-import { execSync } from 'node:child_process';
 import fs from 'node:fs';
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import path from 'node:path';
@@ -117,50 +116,11 @@ export async function createApp(
         },
         async destroy() {},
         async install() {
-            if (!gez.modules) return;
-            const { importBase, imports = [] } = gez.modules;
-            const regex = /^(.*?)\/(.*)$/; // 使用正则表达式匹配第一个/符号
-            const importTargets = imports.reduce<{
-                targets: Record<string, Record<string, string>>;
-                imports: Record<string, string>;
-            }>(
-                (acc, item) => {
-                    const match = item.match(regex);
-
-                    if (match) {
-                        const [, part1, part2] = match;
-                        const origin =
-                            importBase[part1] || importBase['*'] || '';
-                        const fullPath = `${origin}/${part2}`;
-
-                        const target = acc.targets[part1];
-                        if (target) {
-                            target[item] = fullPath;
-                        } else {
-                            acc.targets[part1] = {
-                                [item]: fullPath
-                            };
-                        }
-                        acc.imports[item] = fullPath;
-                    }
-                    return acc;
-                },
-                {
-                    targets: {},
-                    imports: {}
-                }
-            );
-            const importList = Object.keys(importTargets.targets);
-
-            // importTargets.targets.forEach((value, key) => {
-            //     console.log(`@import ${key}`, value);
-            // });
-
-            const results = await Promise.allSettled(
-                importList.map(async (name) => {
-                    const baseUrl = importBase[name] || importBase['*'] || '';
-                    if (baseUrl) {
-                        const fullPath = `${baseUrl}/server/manifest.json`;
+            Promise.allSettled(
+                gez.moduleConfig.imports.map(async (item) => {
+                    const { localPath, remoteUrl } = item;
+                    if (remoteUrl) {
+                        const fullPath = `${remoteUrl}/server/manifest.json`;
 
                         const res = await fetch(fullPath);
                         if (!res.ok || !res.body) return;
@@ -170,19 +130,14 @@ export async function createApp(
                                 buffer.toString()
                             );
                             const { dts, version } = manifest.server;
-                            const dir = path.resolve(
-                                gez.root,
-                                `node_modules/${name}`
-                            );
-                            execSync(`rm -rf ${dir}`);
                             unzipRemoteFile(
-                                `${baseUrl}/server/${version}.zip`,
-                                dir
+                                `${remoteUrl}/server/${version}.zip`,
+                                localPath
                             );
                             if (dts) {
                                 unzipRemoteFile(
-                                    `${baseUrl}/server/${version}.dts.zip`,
-                                    dir
+                                    `${remoteUrl}/server/${version}.dts.zip`,
+                                    localPath
                                 );
                             }
                         } catch (error) {}
@@ -193,6 +148,12 @@ export async function createApp(
     };
 }
 
+/**
+ * 构建导入映射（importmap）的函数
+ * 该函数用于生成客户端和服务器的导入映射文件，以及相关的压缩文件和清单文件
+ * @param gez - 包含项目根目录和模块配置的对象
+ * @returns
+ */
 function buildImportmap(gez: Gez) {
     if (!gez.moduleConfig) return;
     const { typeDir } = gez.moduleConfig;

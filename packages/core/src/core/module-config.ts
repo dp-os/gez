@@ -218,6 +218,5 @@ export function parseModuleConfig(
         name,
         localPath: path.resolve(root, 'dist')
     });
-    console.log('config: ', { name, root, exports, imports, externals });
     return { name, root, typeDir, exports, imports, externals };
 }

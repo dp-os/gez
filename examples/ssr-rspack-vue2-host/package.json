@@ -8,7 +8,7 @@
         "build": "gez build",
         "build:dts": "rm -rf types && npx vue-tsc --declaration --emitDeclarationOnly --noEmit false --outDir types/src",
         "start": "gez start",
-        "-postinstall": "gez install"
+        "postinstall": "gez install"
     },
     "dependencies": {
         "@gez/core": "workspace:^",
