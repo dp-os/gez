@@ -19,7 +19,6 @@ export default defineNode({
         });
     },
     modules: {
-        exports: ['root:src/utils/index.ts', 'npm:vue'],
         imports: {
             'ssr-rspack-vue2-remote': 'root:../ssr-rspack-vue2-remote/dist'
         },
