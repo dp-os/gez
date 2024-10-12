@@ -2,7 +2,7 @@ import { defineNode } from '@gez/core';
 import express from 'express';
 
 export default defineNode({
-    name: 'ssr-rspack-vue2',
+    name: 'ssr-rspack-vue2-host',
     async createDevApp(gez) {
         return import('@gez/rspack-vue2').then((m) => m.createApp(gez));
     },

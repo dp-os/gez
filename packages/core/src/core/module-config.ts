@@ -32,7 +32,14 @@ export interface ModuleConfig {
 }
 
 export interface ParsedModuleConfig {
+    /**
+     * 当前的服务名字
+     */
     name: string;
+    /**
+     * 当前服务运行的根目录
+     */
+    root: string;
     /**
      * 对外导出的文件
      */
@@ -174,5 +181,5 @@ export function parseModuleConfig(
             match: new RegExp(`^${[name]}/`)
         };
     });
-    return { name, exports, imports, externals };
+    return { name, root, exports, imports, externals };
 }

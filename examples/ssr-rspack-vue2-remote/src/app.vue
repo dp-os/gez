@@ -10,7 +10,7 @@
 import { defineComponent, onMounted } from 'vue';
 import { Define, PassOnTo, Setup } from 'vue-class-setup';
 
-import { log } from 'ssr-rspack-vue2_remote/src/utils';
+import { log } from './utils';
 
 @Setup
 class App extends Define {
