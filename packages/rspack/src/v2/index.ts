@@ -37,12 +37,12 @@ export class ImportmapPlugin implements RspackPluginInstance {
     }
 
     public applyEntry(compiler: Compiler) {
-        const options = this.options.exports;
+        const { exports } = this.options;
         if (typeof compiler.options.entry === 'function') {
             throw new TypeError(`'entry' option does not support functions`);
         }
         const entry = compiler.options.entry;
-        Object.entries(options).forEach(([key, value]) => {
+        Object.entries(exports).forEach(([key, value]) => {
             entry[key] = {
                 import: [value],
                 library: {

@@ -5,10 +5,13 @@ import type { Gez } from './gez';
 export interface ModuleConfig {
     /**
      * 对外导出的文件
+     * 必须以 npm: 或 src: 开头
+     * npm:开头代表 node_modules 的依赖
+     * src:开头代表项目内src目录下的文件
      * 例如:
-     *   vue
-     *   ./src/routes
-     *   ./src/[filename]
+     *   npm:vue
+     *   src:routes
+     *   src:[filename]
      */
     exports?: string[];
     /**
@@ -48,10 +51,12 @@ export function parseModuleConfig(
     const exports: ParsedModuleConfig['exports'] = {};
     if (config.exports) {
         config.exports.forEach((key) => {
-            if (key.startsWith('./')) {
-                exports[key.replace(/\.ts$/, '')] = key;
-            } else {
-                exports[key] = key;
+            if (key.startsWith('npm:')) {
+                const exportName = key.replace(/^npm:/, '');
+                exports[exportName] = exportName;
+            } else if (key.startsWith('src:')) {
+                const exportName = key.replace(/^src:/, 'src/');
+                exports[exportName.replace(/\.ts$/, '')] = `./${exportName}`;
             }
         });
     }

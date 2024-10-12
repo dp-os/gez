@@ -23,6 +23,6 @@ export default defineNode({
         /**
          * 导出的文件
          */
-        exports: ['./src/utils/index.ts', 'vue']
+        exports: ['src:utils/index.ts', 'npm:vue']
     }
 });
