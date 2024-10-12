@@ -74,10 +74,7 @@ export class Gez {
             this.root,
             options.modules
         );
-        moduleLink(
-            path.resolve(this.root, 'dist/node_modules'),
-            this.moduleConfig
-        );
+        moduleLink(path.resolve(this.root, 'node_modules'), this.moduleConfig);
     }
 
     private get app() {
