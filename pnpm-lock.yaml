@@ -80,7 +80,7 @@ importers:
         specifier: 2.7.16
         version: 2.7.16
 
-  examples/ssr-rspack-vue2_remote:
+  examples/ssr-rspack-vue2-remote:
     dependencies:
       '@gez/core':
         specifier: workspace:^

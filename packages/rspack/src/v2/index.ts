@@ -27,7 +27,6 @@ export class ImportmapPlugin implements RspackPluginInstance {
     public options: ParsedModuleConfig;
 
     public constructor(options: ParsedModuleConfig) {
-        console.log('>>>>>>> ImportmapPlugin options', options);
         this.options = options;
     }
     public apply(compiler: Compiler) {
