@@ -19,7 +19,7 @@ export default defineNode({
         });
     },
     modules: {
-        typeDir: 'root:/types',
+        typeDir: 'root:types',
         /**
          * 导出的文件
          */
