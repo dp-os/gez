@@ -40,7 +40,7 @@ importers:
         specifier: ^5.3.3
         version: 5.4.5
 
-  examples/ssr-rspack-vue2:
+  examples/ssr-rspack-vue2-host:
     dependencies:
       '@gez/core':
         specifier: workspace:^
