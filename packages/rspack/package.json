@@ -11,7 +11,7 @@
     },
     "dependencies": {
         "@gez/core": "workspace:^",
-        "@rspack/core": "1.0.5",
+        "@rspack/core": "1.0.10",
         "@types/crypto-js": "^4.2.2",
         "@types/find": "^0.2.4",
         "crypto": "^1.0.1",

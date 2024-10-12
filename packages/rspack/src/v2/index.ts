@@ -27,7 +27,7 @@ export class ImportmapPlugin implements RspackPluginInstance {
     public options: ParsedModuleConfig;
 
     public constructor(options: ParsedModuleConfig) {
-        console.log('>>>>>>>', options);
+        console.log('>>>>>>> ImportmapPlugin options', options);
         this.options = options;
     }
     public apply(compiler: Compiler) {
@@ -37,29 +37,25 @@ export class ImportmapPlugin implements RspackPluginInstance {
     }
 
     public applyEntry(compiler: Compiler) {
-        const _entry = compiler.options.entry;
-        const wrapEntry =
-            typeof _entry === 'function' ? _entry : async () => _entry;
         const options = this.options.exports;
-        compiler.options.entry = async () => {
-            const result = await wrapEntry();
-            Object.entries(options).forEach(([key, value]) => {
-                result[key] = {
-                    import: [value],
-                    asyncChunks: false,
-                    library: {
-                        type: 'module'
-                    }
-                };
-            });
-            return result;
-        };
+        if (typeof compiler.options.entry === 'function') {
+            throw new TypeError(`'entry' option does not support functions`);
+        }
+        const entry = compiler.options.entry;
+        Object.entries(options).forEach(([key, value]) => {
+            entry[key] = {
+                import: [value],
+                library: {
+                    type: 'module'
+                }
+            };
+        });
     }
     public applyExternals(compiler: Compiler) {
         const externals = compiler.options.externals || [];
         const options = this.options.externals;
         if (!Array.isArray(externals)) {
-            throw new Error(`'externals' configuration must be an array`);
+            throw new TypeError(`'externals' configuration must be an array`);
         }
         Object.entries(options).forEach(([key, value]) => {
             externals.push(
@@ -67,8 +63,9 @@ export class ImportmapPlugin implements RspackPluginInstance {
                     { request, contextInfo }: any,
                     callback: (...args: any[]) => any
                 ) => {
-                    if (contextInfo.issuer && value.test(request)) {
-                        return callback(null, 'module-import ' + request);
+                    if (contextInfo.issuer && value.match.test(request)) {
+                        const moduleImport = value.import ?? request;
+                        return callback(null, `module-import ${moduleImport}`);
                     }
                     callback();
                 }
@@ -98,7 +95,6 @@ export class ImportmapPlugin implements RspackPluginInstance {
                         const imports: Record<string, string> = Object.entries(
                             entrypoints
                         ).reduce((acc, [key, value]) => {
-                            console.log('@item.assets', key, value.assets);
                             const item = value.assets?.[0];
                             if (item) {
                                 key = key.replace(/^\.\//, '');
@@ -106,7 +102,7 @@ export class ImportmapPlugin implements RspackPluginInstance {
                                 acc[`${stats.name}/${key}`] =
                                     `/${stats.name}/${name}`;
 
-                                entryMap[key] = `./${name}`;
+                                entryMap[`./${key}`] = `./${name}`;
                             }
                             return acc;
                         }, {});

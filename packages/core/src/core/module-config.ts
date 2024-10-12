@@ -38,7 +38,7 @@ export interface ParsedModuleConfig {
     /**
      * 外部依赖
      */
-    externals: Record<string, RegExp>;
+    externals: Record<string, { match: RegExp; import?: string }>;
 }
 
 export function parseModuleConfig(
@@ -76,19 +76,28 @@ export function parseModuleConfig(
     if (config.externals) {
         const _externals = config.externals;
         Object.keys(_externals).forEach((key) => {
-            externals[key] = new RegExp(`/^${_externals[key]}$/`);
+            externals[key] = {
+                match: new RegExp(`/^${_externals[key]}$/`)
+            };
         });
     }
     Object.entries(exports).forEach(([key]) => {
         if (key.startsWith('./')) {
             const extName = `${name}/${key.substring(2)}`;
-            externals[extName] = new RegExp(`^${extName}$`);
+            externals[extName] = {
+                match: new RegExp(`^${extName}$`)
+            };
         } else {
-            externals[key] = new RegExp(`^${key}$`);
+            externals[key] = {
+                match: new RegExp(`^${key}$`),
+                import: `${name}/${key}`
+            };
         }
     });
     Object.keys(imports).forEach((key) => {
-        externals[key] = new RegExp(`^${[key]}/`);
+        externals[key] = {
+            match: new RegExp(`^${[key]}/`)
+        };
     });
     return { name, exports, imports, externals };
 }

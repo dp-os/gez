@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import { isBuiltin } from 'node:module';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import {
     type Module,
     type ModuleLinker,
@@ -15,10 +15,7 @@ const ROOT_MODULE = '__root_module__';
 const link: ModuleLinker = async (specifier: string, referrer: Module) => {
     // Node.js native module
     const isNative = isBuiltin(specifier);
-    // node_modules
-    const isNodeModules =
-        !isNative && !specifier.startsWith('./') && !specifier.startsWith('/');
-    if (isNative || isNodeModules) {
+    if (isNative) {
         const nodeModule = await import(specifier);
         const keys = Object.keys(nodeModule);
         const module = new SyntheticModule(
@@ -35,6 +32,25 @@ const link: ModuleLinker = async (specifier: string, referrer: Module) => {
         );
         await module.link(link);
         await module.evaluate();
+        return module;
+    } else if (!specifier.startsWith('./') && !specifier.startsWith('/')) {
+        const filename = new URL(
+            import.meta.resolve(
+                specifier,
+                'file:///Volumes/work/github/gez/examples/ssr-rspack-vue2_remote/test.js'
+            )
+        ).pathname;
+        const text = fs.readFileSync(filename, 'utf-8');
+        const module = new SourceTextModule(text, {
+            initializeImportMeta,
+            identifier: specifier,
+            context: referrer.context,
+            // @ts-expect-error
+            importModuleDynamically: link
+        });
+        await module.link(link);
+        await module.evaluate();
+
         return module;
     } else {
         const dir =
@@ -82,6 +98,5 @@ function initializeImportMeta(meta: ImportMeta, module: SourceTextModule) {
     meta.filename = import.meta.resolve(module.identifier, import.meta.url);
     meta.dirname = path.dirname(meta.filename);
     meta.resolve = import.meta.resolve;
-    // meta.url = fileURLToPath(meta.filename);
     meta.url = meta.filename;
 }
