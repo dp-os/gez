@@ -12,23 +12,16 @@
     "dependencies": {
         "@gez/core": "workspace:^",
         "@rspack/core": "1.0.10",
-        "@types/crypto-js": "^4.2.2",
         "@types/find": "^0.2.4",
-        "crypto": "^1.0.1",
-        "crypto-js": "^4.2.0",
-        "fflate": "^0.8.2",
-        "find": "^0.3.0",
         "webpack-dev-middleware": "^7.4.2",
         "webpack-hot-middleware": "^2.26.1",
-        "webpack-node-externals": "~3.0.0",
-        "write": "^2.0.0"
+        "webpack-node-externals": "~3.0.0"
     },
     "devDependencies": {
         "@gez/lint": "0.0.9",
         "@types/node": "20.12.12",
         "@types/webpack-hot-middleware": "^2.25.9",
         "@types/webpack-node-externals": "^3.0.4",
-        "@types/write": "^2.0.4",
         "@vitest/coverage-v8": "1.6.0",
         "stylelint": "16.5.0",
         "typescript": "5.4.5",

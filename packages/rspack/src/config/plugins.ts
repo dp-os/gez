@@ -1,5 +1,5 @@
 import { type RspackOptions, rspack } from '@rspack/core';
-import { ImportmapPlugin } from '../v2';
+import { ImportmapPlugin } from '../importmap';
 import { BuildConfig } from './base';
 
 type Config = NonNullable<RspackOptions['plugins']>;

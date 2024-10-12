@@ -193,6 +193,15 @@ importers:
 
   packages/core:
     dependencies:
+      crypto-js:
+        specifier: ^4.2.0
+        version: 4.2.0
+      fflate:
+        specifier: ^0.8.2
+        version: 0.8.2
+      find:
+        specifier: ^0.3.0
+        version: 0.3.0
       serve-static:
         specifier: ^1.15.0
         version: 1.15.0
@@ -202,6 +211,9 @@ importers:
       tsx:
         specifier: 4.19.0
         version: 4.19.0
+      write:
+        specifier: ^2.0.0
+        version: 2.0.0
     devDependencies:
       '@biomejs/biome':
         specifier: 1.9.2
@@ -209,12 +221,18 @@ importers:
       '@gez/lint':
         specifier: 0.0.9
         version: 0.0.9(eslint@8.57.0)(postcss@8.4.47)(stylelint@16.5.0)(typescript@5.4.5)
+      '@types/crypto-js':
+        specifier: ^4.2.2
+        version: 4.2.2
       '@types/node':
         specifier: 20.12.12
         version: 20.12.12
       '@types/serve-static':
         specifier: ^1.15.7
         version: 1.15.7
+      '@types/write':
+        specifier: ^2.0.4
+        version: 2.0.4
       '@vitest/coverage-v8':
         specifier: 1.6.0
         version: 1.6.0(vitest@1.6.0)
@@ -336,24 +354,9 @@ importers:
       '@rspack/core':
         specifier: 1.0.10
         version: 1.0.10
-      '@types/crypto-js':
-        specifier: ^4.2.2
-        version: 4.2.2
       '@types/find':
         specifier: ^0.2.4
         version: 0.2.4
-      crypto:
-        specifier: ^1.0.1
-        version: 1.0.1
-      crypto-js:
-        specifier: ^4.2.0
-        version: 4.2.0
-      fflate:
-        specifier: ^0.8.2
-        version: 0.8.2
-      find:
-        specifier: ^0.3.0
-        version: 0.3.0
       webpack-dev-middleware:
         specifier: ^7.4.2
         version: 7.4.2(webpack@5.93.0)
@@ -363,9 +366,6 @@ importers:
       webpack-node-externals:
         specifier: ~3.0.0
         version: 3.0.0
-      write:
-        specifier: ^2.0.0
-        version: 2.0.0
     devDependencies:
       '@biomejs/biome':
         specifier: 1.9.2
@@ -382,9 +382,6 @@ importers:
       '@types/webpack-node-externals':
         specifier: ^3.0.4
         version: 3.0.4
-      '@types/write':
-        specifier: ^2.0.4
-        version: 2.0.4
       '@vitest/coverage-v8':
         specifier: 1.6.0
         version: 1.6.0(vitest@1.6.0)
@@ -2088,7 +2085,7 @@ packages:
 
   /@types/crypto-js@4.2.2:
     resolution: {integrity: sha512-sDOLlVbHhXpAUAL0YHDUUwDZf3iN4Bwi4W6a0W0b+QcAezUbRtH4FVb+9J4h+XFPW7l/gQ9F8qC7P+Ec4k8QVQ==}
-    dev: false
+    dev: true
 
   /@types/eslint-scope@3.7.7:
     resolution: {integrity: sha512-MzMFlSLBqNF2gcHWO0G1vP/YQyfvrxZ0bF+u7mzUdZ1/xK4A4sru+nraZz5i3iEIk1l1uyicaDVTB4QbbEkAYg==}
@@ -3332,11 +3329,6 @@ packages:
 
   /crypto-js@4.2.0:
     resolution: {integrity: sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==}
-    dev: false
-
-  /crypto@1.0.1:
-    resolution: {integrity: sha512-VxBKmeNcqQdiUQUW2Tzq0t377b54N2bMtXO/qiLa+6eRRmmC4qT3D4OnTGoT/U6O9aklQ/jTwbOtRMTTY8G0Ig==}
-    deprecated: This package is no longer supported. It's now a built-in Node module. If you've depended on crypto, you should switch to the one that's built-in.
     dev: false
 
   /css-declaration-sorter@7.2.0(postcss@8.4.41):
