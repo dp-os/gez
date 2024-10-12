@@ -261,6 +261,12 @@ function readFileDirectory(dir: string): {
     fileList: string[];
 } {
     const files: Record<string, any> = {};
+    if (!fs.existsSync(dir) || !fs.statSync(dir).isDirectory) {
+        return {
+            files: {},
+            fileList: []
+        };
+    }
     find.fileSync(dir).forEach((filename: string) => {
         const text = fs.readFileSync(filename);
         files[path.relative(dir, filename)] = text;
