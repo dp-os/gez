@@ -20,7 +20,7 @@ import webpackHotMiddleware from 'webpack-hot-middleware';
 import write from 'write';
 
 import type { ConfigCallback } from './config';
-import { importEsm } from './import-esm';
+import { importEsmInactive } from './import-esm';
 
 interface ManifestJson {
     client: {
@@ -76,8 +76,9 @@ export async function createApp(
     return {
         middleware: middleware(gez, config),
         async render(params: AppRenderParams): Promise<ServerContext> {
-            const module = await importEsm(
-                gez.getProjectPath('dist/server/entry-server.js')
+            const module = await importEsmInactive(
+                gez.getProjectPath('dist/server/entry-server.js'),
+                import.meta.url
             );
             const render: ServerRender | undefined = module.default;
             const context = new ServerContext(gez, params);
