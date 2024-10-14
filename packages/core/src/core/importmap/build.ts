@@ -18,41 +18,44 @@ export function buildImportmap(gez: Gez) {
     const dtsDir = path.resolve(gez.root, typeDir || '');
     const dtsExist = typeDir ? fs.existsSync(dtsDir) : false;
 
-    const { files, fileList } = readFileDirectory(
-        path.resolve(gez.root, 'dist')
+    const { files: clientFiles } = readFileDirectory(
+        path.resolve(gez.root, 'dist/client')
     );
-    const { zipU8, contenthash } = zipFiles(files);
+    const { zipU8: clientZipped, contenthash: clientHash } =
+        zipFiles(clientFiles);
     write.sync(
-        path.resolve(gez.root, `dist/client/zip/${contenthash}.zip`),
-        zipU8
+        path.resolve(gez.root, `dist/client/server/${clientHash}.zip`),
+        clientZipped
     );
 
+    const { files: serverFiles } = readFileDirectory(
+        path.resolve(gez.root, 'dist/server')
+    );
+    const { zipU8: serverZipped, contenthash: serverHash } =
+        zipFiles(serverFiles);
+    write.sync(
+        path.resolve(gez.root, `dist/client/server/${serverHash}.zip`),
+        serverZipped
+    );
+
+    let dtsHash = '';
     if (dtsExist) {
         const { files: typeFiles } = readFileDirectory(dtsDir);
-        const { zipU8: typeZipped } = zipFiles(typeFiles);
+        const { zipU8: typeZipped, contenthash } = zipFiles(typeFiles);
+        dtsHash = contenthash;
         write.sync(
-            path.resolve(gez.root, `dist/client/zip/${contenthash}.dts.zip`),
+            path.resolve(gez.root, `dist/client/server/${dtsHash}.dts.zip`),
             typeZipped
         );
     }
 
-    const importmapFilePath =
-        fileList.find((item) => {
-            return (
-                item.includes('importmap.') &&
-                item.endsWith('.js') &&
-                item !== 'importmap.js'
-            );
-        }) || '';
-
     const manifestJson: ManifestJson = {
-        version: contenthash,
-        importmapFilePath,
-        dts: dtsExist,
-        files: fileList
+        client: clientHash,
+        server: serverHash,
+        dts: dtsHash
     };
     write.sync(
-        path.resolve(gez.root, 'dist/client/zip/manifest.json'),
+        path.resolve(gez.root, 'dist/client/server/manifest.json'),
         JSON.stringify(manifestJson, null, 4)
     );
 }

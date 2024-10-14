@@ -1,9 +1,8 @@
 /**
  * 资源清单
  */
-export interface ManifestJson {
-    version: string;
-    importmapFilePath: string;
-    dts: boolean;
-    files: string[];
-}
+export type ManifestJson = Record<string, string> & {
+    client: string;
+    server: string;
+    dts: string;
+};
