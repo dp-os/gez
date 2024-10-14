@@ -44,13 +44,13 @@ export default async (ctx: ServerContext, params: any) => {
     </script>
 
     <script type="module">
-    // import {log} from 'ssr-rspack-vue2/src/utils/index.ts';
-    // log('test')
+    import { log } from 'ssr-rspack-vue2-remote/src/utils/index';
+    log('test')
     </script>
     ${html}
 
     <script type="module">
-    import "ssr-rspack-vue2_remote/entry-client";
+    import "ssr-rspack-vue2-host/entry-client";
     </script>
     </body>
     </html>
