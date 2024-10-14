@@ -20,11 +20,11 @@ export default {
     },
     modules: {
         imports: {
-            'ssr-rspack-vue2-remote': 'root:../ssr-rspack-vue2-remote/dist'
-            // 'ssr-rspack-vue2-remote': [
-            //     'root:../../.root/ssr-rspack-vue2-remote',
-            //     'http://localhost:3003'
-            // ]
+            // 'ssr-rspack-vue2-remote': 'root:../ssr-rspack-vue2-remote/dist',
+            'ssr-rspack-vue2-remote': [
+                'root:../../.root/ssr-rspack-vue2-remote',
+                'http://localhost:3003/ssr-rspack-vue2-remote/versions/latest.json'
+            ]
         },
         externals: {
             vue: 'ssr-rspack-vue2-remote/npm/vue'

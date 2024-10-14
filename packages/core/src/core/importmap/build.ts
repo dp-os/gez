@@ -2,8 +2,8 @@ import path from 'node:path';
 import write from 'write';
 
 import type { Gez } from '../gez';
-import type { ZipManifestJson } from './types';
-import { zipDir } from './utils';
+import type { ZipVersionJson } from './types';
+import { contentHash, zipDir } from './utils';
 
 /**
  * 构建导入映射（importmap）的函数
@@ -12,23 +12,22 @@ import { zipDir } from './utils';
  * @returns
  */
 export function buildImportmap(gez: Gez) {
-    if (!gez.moduleConfig) return;
+    const versionJson: ZipVersionJson = {};
+    const list: string[] = ['client', 'server'];
 
-    const { contenthash: clientHash } = zipDir(
-        path.resolve(gez.root, 'dist/client'),
-        path.resolve(gez.root, `dist/client/server/[hash].zip`)
-    );
-    const { contenthash: serverHash } = zipDir(
-        path.resolve(gez.root, 'dist/server'),
-        path.resolve(gez.root, `dist/client/server/[hash].zip`)
-    );
-
-    const manifestJson: ZipManifestJson = {
-        client: clientHash,
-        server: serverHash
+    list.forEach((name) => {
+        const { contenthash } = zipDir(
+            path.resolve(gez.root, `dist/${name}`),
+            path.resolve(gez.root, `dist/client/versions/[hash].zip`)
+        );
+        versionJson[name] = contenthash;
+    });
+    const versionJsonText = JSON.stringify(versionJson, null, 4);
+    const writeJson = (version: string) => {
+        const filename = `dist/client/versions/${version}.json`;
+        write.sync(path.resolve(gez.root, filename), versionJsonText);
+        console.log(`build zip: created ${filename}`);
     };
-    write.sync(
-        path.resolve(gez.root, 'dist/client/server/manifest.json'),
-        JSON.stringify(manifestJson, null, 4)
-    );
+    writeJson('latest');
+    writeJson(contentHash(JSON.stringify(versionJsonText)));
 }

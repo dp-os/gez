@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-import crypto from 'crypto-js';
+import crypto from 'node:crypto';
 import * as fflate from 'fflate';
 import find from 'find';
 import write from 'write';
@@ -32,7 +32,7 @@ export function zipDir(
         files[path.relative(dir, filename)] = text;
     });
     const zipU8 = fflate.zipSync(files);
-    const contenthash = crypto.MD5(zipU8.toString()).toString().slice(0, 8);
+    const contenthash = contentHash(zipU8.toString());
     write.sync(target.replace('[hash]', contenthash), zipU8);
 
     return {
@@ -49,16 +49,25 @@ export function zipDir(
  */
 export async function unzipRemoteFile(url: string, dir: string) {
     const res = await fetch(url);
-    if (!res.ok || !res.body) return;
+    console.log('>>>', url);
+    if (!res.ok || !res.body) {
+        console.log('error', url);
+        return;
+    }
     const buffer = new Uint8Array(await res.arrayBuffer());
 
-    try {
-        let files: fflate.Unzipped = {};
-        try {
-            files = fflate.unzipSync(buffer);
-        } catch (e) {}
-        Object.keys(files).forEach((name) => {
-            write.sync(path.resolve(dir, name), files[name]);
-        });
-    } catch (e) {}
+    const files: fflate.Unzipped = fflate.unzipSync(buffer);
+    Object.keys(files).forEach((name) => {
+        write.sync(path.resolve(dir, name), files[name]);
+    });
+}
+
+/**
+ * 生成内容的hash值
+ * @param text 内容
+ */
+export function contentHash(text: string) {
+    const hash = crypto.createHash('md5');
+    hash.update(text);
+    return hash.digest('hex');
 }

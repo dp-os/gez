@@ -1,4 +1,1 @@
-export type ZipManifestJson = Record<string, string> & {
-    client: string;
-    server: string;
-};
+export type ZipVersionJson = Record<string, string>;
