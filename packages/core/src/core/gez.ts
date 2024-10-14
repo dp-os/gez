@@ -173,13 +173,7 @@ export class Gez {
     }
 
     public get browserslist() {
-        return [
-            'chrome >=87',
-            'firefox >=78',
-            'safari >=14',
-            'edge >=88',
-            'node >= 20'
-        ];
+        return ['chrome87', 'firefox78', 'safari14', 'edge88'];
     }
 
     public async init(command: COMMAND) {

@@ -42,7 +42,10 @@ export function createBaseConfig(
                 loader: 'builtin:swc-loader',
                 options: {
                     env: {
-                        targets: gez.browserslist
+                        targets:
+                            buildTarget === 'client'
+                                ? gez.browserslist
+                                : [...gez.browserslist, 'node20']
                     },
                     jsc: {
                         parser: {
