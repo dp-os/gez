@@ -16,6 +16,7 @@ export function cli() {
             runDevApp(command);
             break;
         case COMMAND.build:
+        case COMMAND.zip:
         case COMMAND.preview:
             process.env.NODE_ENV = 'production';
             runDevApp(command);
@@ -59,13 +60,20 @@ async function runDevApp(command: COMMAND) {
 
     switch (command) {
         case COMMAND.install:
-            gez.install();
+            await gez.install();
+            await gez.destroy();
+            await mod.dispose();
             break;
         case COMMAND.dev:
             created(gez);
             break;
         case COMMAND.build:
             await gez.build();
+            await gez.destroy();
+            await mod.dispose();
+            break;
+        case COMMAND.zip:
+            await gez.zip();
             await gez.destroy();
             await mod.dispose();
             break;

@@ -6,7 +6,7 @@ import {
     COMMAND,
     type Gez,
     ServerContext,
-    type ServerRender,
+    type ServerRenderHandle,
     buildImportmap,
     installImportmap
 } from '@gez/core';
@@ -68,10 +68,10 @@ export async function createApp(
                     global
                 }
             );
-            const render: ServerRender | undefined = module.default;
-            const context = new ServerContext(gez, params);
-            if (typeof render === 'function') {
-                await render(context);
+            const serverRender: ServerRenderHandle = module.default;
+            const context = new ServerContext(gez);
+            if (typeof serverRender === 'function') {
+                await serverRender(context, params);
             }
             return context;
         },
@@ -85,7 +85,6 @@ export async function createApp(
                 if (err) {
                     throw err;
                 }
-                buildImportmap(gez);
                 compiler.close((closeErr) => {
                     if (closeErr) {
                         throw closeErr;
@@ -96,6 +95,10 @@ export async function createApp(
             return new Promise<void>((resolve) => {
                 done = resolve;
             });
+        },
+        async zip() {
+            await buildImportmap(gez);
+            return;
         },
         async destroy() {},
         async install() {

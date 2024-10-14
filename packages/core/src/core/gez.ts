@@ -57,6 +57,7 @@ export interface GezOptions {
 export enum COMMAND {
     dev = 'dev',
     build = 'build',
+    zip = 'zip',
     preview = 'preview',
     install = 'install',
     start = 'start'
@@ -109,6 +110,13 @@ export class Gez {
      */
     public get build() {
         return this.app.build;
+    }
+
+    /**
+     * 生成应用代码压缩包
+     */
+    public get zip() {
+        return this.app.zip;
     }
 
     /**
