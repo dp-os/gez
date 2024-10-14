@@ -1,6 +1,7 @@
 import type { Gez } from '../gez';
 import { unzipRemoteFile } from './utils';
 
+import path from 'node:path';
 import type { ManifestJson } from './types';
 
 export function installImportmap(gez: Gez) {
@@ -18,10 +19,14 @@ export function installImportmap(gez: Gez) {
                     const manifest: ManifestJson = JSON.parse(
                         buffer.toString()
                     );
-                    const { server } = manifest;
+                    const { client, server } = manifest;
                     await unzipRemoteFile(
                         `${remoteUrl}/server/${server}.zip`,
-                        localPath
+                        path.resolve(localPath, 'server')
+                    );
+                    await unzipRemoteFile(
+                        `${remoteUrl}/server/${client}.zip`,
+                        path.resolve(localPath, 'client')
                     );
                 } catch (error) {}
             }

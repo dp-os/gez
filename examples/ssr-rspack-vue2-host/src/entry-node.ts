@@ -22,7 +22,7 @@ export default defineNode({
         imports: {
             // 'ssr-rspack-vue2-remote': 'root:../ssr-rspack-vue2-remote/dist'
             'ssr-rspack-vue2-remote': [
-                'root:remotes/ssr-rspack-vue2-remote',
+                'root:../../.root/ssr-rspack-vue2-remote',
                 'http://127.0.0.1:8080'
             ]
         },
