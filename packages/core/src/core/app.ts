@@ -121,7 +121,7 @@ export async function createApp(gez: Gez): Promise<App> {
                     Object.entries(manifest.importmap).forEach(
                         ([key, value]) => {
                             const source = `${name}/${key}`;
-                            const target = `${name}/${value}`;
+                            const target = `./${name}/${value}`;
                             importMapConfig.list.push({
                                 scope: name,
                                 source,
