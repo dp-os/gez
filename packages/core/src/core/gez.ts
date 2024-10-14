@@ -21,24 +21,6 @@ export type FederationShared = Array<
     Record<string, FederationSharedConfig> | string
 >;
 
-interface ImportmapJson {
-    dts: boolean;
-    client: {
-        /**
-         * 客户端读取：/[serviceName]/importmap.[version].js
-         * 服务端渲染页面，插入 /[serviceName]/importmap.[version].js
-         */
-        version: string;
-    };
-    server: {
-        /**
-         * 客户端读取：/[serviceName]/exports/[version].zip
-         * 解压到 node_modules 目录
-         */
-        version: string;
-    };
-}
-
 export interface GezOptions {
     root?: string;
     name?: string;
