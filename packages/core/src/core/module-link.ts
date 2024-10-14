@@ -6,6 +6,7 @@ import type { ParsedModuleConfig } from './module-config';
  * 模块的联合
  * @param root 模块的目录
  * @param moduleConfig 模块的配置
+ * todo 下载时检查 version，无更新不下载
  */
 export function moduleLink(root: string, moduleConfig: ParsedModuleConfig) {
     moduleConfig.imports.forEach(({ localPath, name }) => {

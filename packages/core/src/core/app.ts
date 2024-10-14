@@ -1,3 +1,4 @@
+import fs from 'node:fs';
 import type { IncomingMessage, ServerResponse } from 'node:http';
 
 import * as serveStatic from 'serve-static';
@@ -16,6 +17,15 @@ export type Middleware = (
     next?: Function
 ) => void;
 
+export interface ImportMapConfig {
+    list: Array<{
+        scope: string;
+        source: string;
+        target: string;
+    }>;
+    map: Record<string, string>;
+}
+
 export interface App {
     middlewares: Middleware[];
     render: (params: any) => Promise<ServerContext>;
@@ -23,6 +33,7 @@ export interface App {
     zip: () => Promise<void>;
     destroy: () => Promise<void>;
     install: () => Promise<void>;
+    getImportmapConfig: () => Promise<ImportMapConfig>;
 }
 
 export async function createApp(gez: Gez): Promise<App> {
@@ -86,6 +97,43 @@ export async function createApp(gez: Gez): Promise<App> {
         async build() {},
         async zip() {},
         async destroy() {},
-        async install() {}
+        async install() {},
+        async getImportmapConfig() {
+            const importMapConfig: ImportMapConfig = {
+                list: [],
+                map: {}
+            };
+            gez.moduleConfig.imports.map(async (item) => {
+                const { name, localPath, remoteUrl } = item;
+                console.log(
+                    localPath,
+                    remoteUrl,
+                    path.resolve(localPath, 'client/manifest.json')
+                );
+                const manifest: {
+                    version: string;
+                    files: string[];
+                    importmapFilePath: string;
+                    importmap: Record<string, string>;
+                } = JSON.parse(
+                    fs
+                        .readFileSync(
+                            path.resolve(localPath, 'client/manifest.json')
+                        )
+                        .toString()
+                );
+                Object.entries(manifest.importmap).forEach(([key, value]) => {
+                    const source = `${name}/${key}`;
+                    const target = `${name}/${value}`;
+                    importMapConfig.list.push({
+                        scope: name,
+                        source,
+                        target
+                    });
+                    importMapConfig.map[source] = target;
+                });
+            });
+            return importMapConfig;
+        }
     };
 }

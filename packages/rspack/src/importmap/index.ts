@@ -7,17 +7,11 @@ import {
     rspack
 } from '@rspack/core';
 
-export interface ImportmapData {
-    /**
-     * 当前编译的版本号
-     */
+export interface ManifestJson {
     version: string;
-    /**
-     * 映射文件的路径
-     */
+    files: string[];
     importmapFilePath: string;
-    imports: Record<string, string>;
-    exposes: Record<string, string>;
+    importmap: Record<string, string>;
 }
 
 /**
@@ -86,6 +80,7 @@ export class ImportmapPlugin implements RspackPluginInstance {
                     (assets: Assets) => {
                         const stats = compilation.getStats().toJson({
                             all: false,
+                            assets: true,
                             hash: true,
                             entrypoints: true
                         });
@@ -133,10 +128,20 @@ export class ImportmapPlugin implements RspackPluginInstance {
                             )
                         );
 
-                        const manifest = {
-                            version: stats.hash,
+                        const manifest: ManifestJson = {
+                            version: stats.hash || '',
+                            files: Object.keys(assets).map(transFileName),
                             importmapFilePath: `importmap.${stats.hash}.js`,
-                            files: Object.keys(assets)
+                            importmap: Object.entries(
+                                stats.assetsByChunkName || {}
+                            ).reduce((acc, [key, value]) => {
+                                if (value[0]) {
+                                    const name = transFileName(key);
+                                    const target = transFileName(value[0]);
+                                    acc[name] = target;
+                                }
+                                return acc;
+                            }, {})
                         };
 
                         // 将 manifest 写入文件
@@ -161,4 +166,15 @@ function toImportmapJsCode(imports: Record<string, string>) {
         Object.assign(imports, importsMap);
     })(globalThis);
     `;
+}
+
+/**
+ * 使用正则表达式替换文件名中的前导点和斜杠为空字符串
+ * @param {string} fileName - 要转换的文件名
+ * @returns 转换后的文件名，不包含前导点和斜杠
+ *
+ * @example transFileName("./example.txt") => "example.txt"
+ */
+function transFileName(fileName: string): string {
+    return fileName.replace(/^.\//, '');
 }

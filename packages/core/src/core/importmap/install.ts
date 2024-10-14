@@ -2,7 +2,7 @@ import type { Gez } from '../gez';
 import { unzipRemoteFile } from './utils';
 
 import path from 'node:path';
-import type { ManifestJson } from './types';
+import type { ZipManifestJson } from './types';
 
 export function installImportmap(gez: Gez) {
     Promise.allSettled(
@@ -16,7 +16,7 @@ export function installImportmap(gez: Gez) {
                 const buffer = Buffer.from(await res.arrayBuffer());
                 console.log(fullPath);
                 try {
-                    const manifest: ManifestJson = JSON.parse(
+                    const manifest: ZipManifestJson = JSON.parse(
                         buffer.toString()
                     );
                     const { client, server } = manifest;

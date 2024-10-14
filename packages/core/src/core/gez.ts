@@ -120,6 +120,13 @@ export class Gez {
     }
 
     /**
+     * 获取应用程序的清单列表
+     */
+    public get getImportmapConfig() {
+        return this.app.getImportmapConfig;
+    }
+
+    /**
      * 静态资源中间件
      */
     public get middlewares() {

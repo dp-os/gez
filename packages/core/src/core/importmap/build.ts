@@ -2,7 +2,7 @@ import path from 'node:path';
 import write from 'write';
 
 import type { Gez } from '../gez';
-import type { ManifestJson } from './types';
+import type { ZipManifestJson } from './types';
 import { zipDir } from './utils';
 
 /**
@@ -23,7 +23,7 @@ export function buildImportmap(gez: Gez) {
         path.resolve(gez.root, `dist/client/server/[hash].zip`)
     );
 
-    const manifestJson: ManifestJson = {
+    const manifestJson: ZipManifestJson = {
         client: clientHash,
         server: serverHash
     };

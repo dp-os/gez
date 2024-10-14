@@ -9,11 +9,8 @@ export class ServerContext {
         this.gez = gez;
     }
 
-    public getImportmapList() {
-        this.gez.moduleConfig.imports.map((item) => {
-            return item.localPath;
-        });
-        return [];
+    public getImportmapConfig() {
+        return this.gez.getImportmapConfig();
     }
 }
 

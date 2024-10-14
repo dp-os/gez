@@ -1,7 +1,4 @@
-/**
- * 资源清单
- */
-export type ManifestJson = Record<string, string> & {
+export type ZipManifestJson = Record<string, string> & {
     client: string;
     server: string;
 };
