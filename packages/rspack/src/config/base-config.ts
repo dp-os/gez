@@ -45,7 +45,7 @@ export function createBaseConfig(
                         targets:
                             buildTarget === 'client'
                                 ? gez.browserslist
-                                : [...gez.browserslist, 'node20']
+                                : [...gez.browserslist, 'node >= 20']
                     },
                     jsc: {
                         parser: {
