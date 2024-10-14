@@ -6,7 +6,7 @@
     "scripts": {
         "dev": "gez dev",
         "build": "gez build",
-        "build:dts": "rm -rf types && npx vue-tsc --declaration --emitDeclarationOnly --noEmit false --outDir types/src",
+        "build:dts": "npx vue-tsc --declaration --emitDeclarationOnly --noEmit false --outDir dist/server/src",
         "start": "gez start"
     },
     "dependencies": {

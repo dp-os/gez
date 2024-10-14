@@ -7,19 +7,23 @@ import find from 'find';
 import write from 'write';
 
 /**
- * 读取指定目录下的所有文件，并返回一个包含文件内容和文件名列表的对象。
+ * 压缩指定目录下的所有文件到一个zip文件中，并返回压缩文件的内容哈希和文件列表。
  *
- * @param dir - 要读取的目录路径。
- * @returns 一个包含文件内容和文件名列表的对象。
+ * @param dir - 要压缩的目录路径。
+ * @param target - 压缩文件的目标路径。 支持[hash]占位符,例: src/index.[hash].js
+ * @returns 一个对象，包含压缩文件的内容哈希和文件列表。
  */
-export function readFileDirectory(dir: string): {
-    files: Record<string, any>;
+export function zipDir(
+    dir: string,
+    target: string
+): {
+    contenthash: string;
     fileList: string[];
 } {
     const files: Record<string, any> = {};
     if (!fs.existsSync(dir) || !fs.statSync(dir).isDirectory) {
         return {
-            files: {},
+            contenthash: '',
             fileList: []
         };
     }
@@ -27,24 +31,13 @@ export function readFileDirectory(dir: string): {
         const text = fs.readFileSync(filename);
         files[path.relative(dir, filename)] = text;
     });
-    return {
-        files,
-        fileList: Object.keys(files)
-    };
-}
-
-/**
- * 将文件对象压缩成zip文件，并计算其内容的哈希值。
- *
- * @param files - 要压缩的文件对象。
- * @returns 一个包含压缩文件和内容哈希值的对象。
- */
-export function zipFiles(files: Record<string, any>) {
     const zipU8 = fflate.zipSync(files);
     const contenthash = crypto.MD5(zipU8.toString()).toString().slice(0, 8);
+    write.sync(target.replace('[hash]', contenthash), zipU8);
+
     return {
-        zipU8,
-        contenthash
+        contenthash,
+        fileList: Object.keys(files)
     };
 }
 

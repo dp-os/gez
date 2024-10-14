@@ -132,6 +132,18 @@ export class ImportmapPlugin implements RspackPluginInstance {
                                 )
                             )
                         );
+
+                        const manifest = {
+                            version: stats.hash,
+                            importmapFilePath: `importmap.${stats.hash}.js`,
+                            files: Object.keys(assets)
+                        };
+
+                        // 将 manifest 写入文件
+                        compilation.emitAsset(
+                            'manifest.json',
+                            new RawSource(JSON.stringify(manifest, null, 4))
+                        );
                     }
                 );
             }
