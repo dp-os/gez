@@ -20,7 +20,7 @@ export class ServerContext {
 /**
  * 服务渲染的处理函数
  */
-export type ServerRenderHandler<T extends {}> = (
+export type ServerRenderHandle = (
     ctx: ServerContext,
-    params: T
+    params: any
 ) => Promise<void>;

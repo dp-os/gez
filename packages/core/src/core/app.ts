@@ -6,7 +6,7 @@ import type {
 
 import {
     ServerContext,
-    type ServerRenderHandler
+    type ServerRenderHandle
 } from '../server/server-context';
 import type { Gez } from './gez';
 
@@ -23,7 +23,7 @@ export interface App {
         res: ServerResponse,
         next?: Function
     ) => void;
-    render: (params: AppRenderParams) => Promise<ServerContext>;
+    render: (params: any) => Promise<ServerContext>;
     build: () => Promise<void>;
     destroy: () => Promise<void>;
     install: () => Promise<void>;
@@ -66,8 +66,7 @@ export async function createApp(gez: Gez): Promise<App> {
                 /* @vite-ignore */
                 gez.getProjectPath('dist/server/entry-server.js')
             );
-            const serverRender: ServerRenderHandler<AppRenderParams> =
-                result.default;
+            const serverRender: ServerRenderHandle = result.default;
             if (typeof serverRender === 'function') {
                 await serverRender(context, params);
             }
