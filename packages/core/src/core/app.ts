@@ -4,7 +4,10 @@ import type {
     ServerResponse
 } from 'node:http';
 
-import { ServerContext, type ServerRender } from '../server/server-context';
+import {
+    ServerContext,
+    type ServerRenderHandler
+} from '../server/server-context';
 import type { Gez } from './gez';
 
 export interface AppRenderParams {
@@ -58,14 +61,15 @@ export async function createApp(gez: Gez): Promise<App> {
             }
         },
         async render(params: AppRenderParams) {
-            const context = new ServerContext(gez, params);
+            const context = new ServerContext(gez);
             const result = await import(
                 /* @vite-ignore */
                 gez.getProjectPath('dist/server/entry-server.js')
             );
-            const serverRender: ServerRender = result.default;
+            const serverRender: ServerRenderHandler<AppRenderParams> =
+                result.default;
             if (typeof serverRender === 'function') {
-                await serverRender(context);
+                await serverRender(context, params);
             }
 
             return context;
