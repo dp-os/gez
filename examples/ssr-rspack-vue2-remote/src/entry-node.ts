@@ -1,12 +1,12 @@
-import { defineNode } from '@gez/core';
+import type { GezOptions } from '@gez/core';
 import express from 'express';
 
-export default defineNode({
+export default {
     name: 'ssr-rspack-vue2-remote',
     async createDevApp(gez) {
         return import('@gez/rspack-vue2').then((m) => m.createApp(gez));
     },
-    async created(gez) {
+    async createServer(gez) {
         const server = express();
         server.use(...gez.middlewares);
         server.get('*', async (req, res) => {
@@ -25,4 +25,4 @@ export default defineNode({
          */
         exports: ['root:src/utils/index.ts', 'npm:vue']
     }
-});
+} satisfies GezOptions;

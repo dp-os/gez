@@ -6,7 +6,7 @@
     "scripts": {
         "dev": "gez dev",
         "build": "gez build",
-        "zip": "gez zip",
+        "build:zip": "gez zip",
         "build:dts": "npx vue-tsc --declaration --emitDeclarationOnly --noEmit false --outDir types",
         "build:all": "gez build && npx vue-tsc --declaration --emitDeclarationOnly --noEmit false --outDir dist/server/src && gez zip",
         "start": "gez start"

@@ -3,8 +3,7 @@ import path from 'node:path';
 // @ts-expect-error
 import { tsImport } from 'tsx/esm/api';
 
-import { COMMAND, Gez, getProjectPath } from '../core';
-import type { NodeOptions } from '../node';
+import { COMMAND, Gez, type GezOptions, getProjectPath } from '../core';
 
 export function cli() {
     const command = process.argv.slice(2)[0] || '';
@@ -31,10 +30,6 @@ export function cli() {
     }
 }
 
-function defaultCreated() {
-    throw new Error("'created' function not set");
-}
-
 interface Mod {
     import: () => Promise<Record<string, any>>;
     dispose: () => Promise<void>;
@@ -52,8 +47,7 @@ export function createMod(file: string): Mod {
 async function runDevApp(command: COMMAND) {
     const mod = createMod(path.resolve('src/entry-node.ts'));
     const module = await mod.import();
-    const options: NodeOptions = module.default || {};
-    const created = options.created || defaultCreated;
+    const options: GezOptions = module.default || {};
 
     const gez = new Gez(options);
     await gez.init(command);
@@ -65,7 +59,7 @@ async function runDevApp(command: COMMAND) {
             await mod.dispose();
             break;
         case COMMAND.dev:
-            created(gez);
+            options?.createServer?.(gez);
             break;
         case COMMAND.build:
             await gez.build();
@@ -88,13 +82,12 @@ async function runDevApp(command: COMMAND) {
 
 async function runProdApp() {
     const file = getProjectPath(path.resolve(), 'dist/node/entry-node.js');
-    await import(/* @vite-ignore */ file).then(async (module) => {
-        const options: NodeOptions = module.default || {};
-        const created = options.created || defaultCreated;
+    await import(file).then(async (module) => {
+        const options: GezOptions = module.default || {};
 
         const gez = new Gez(options);
         await gez.init(COMMAND.start);
 
-        created(gez);
+        options?.createServer?.(gez);
     });
 }

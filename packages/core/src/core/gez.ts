@@ -10,20 +10,18 @@ import {
 import { moduleLink } from './module-link';
 import { type ProjectPath, getProjectPath } from './project-path';
 
-export interface FederationSharedConfig {
-    import?: boolean;
-    shareScope?: string;
-    version?: string;
-    requiredVersion?: string;
-}
-
-export type FederationShared = Array<
-    Record<string, FederationSharedConfig> | string
->;
-
 export interface GezOptions {
+    /**
+     * 项目的根目录
+     */
     root?: string;
+    /**
+     * 服务名称，全局唯一
+     */
     name?: string;
+    /**
+     * 是否是生产模式
+     */
     isProd?: boolean;
     /**
      * 模块配置
@@ -33,7 +31,18 @@ export interface GezOptions {
      * 构建版本支持，一般不需要配置
      */
     browserslist?: string[];
+    /**
+     * 当 isProd = false 时调用
+     * @param gez
+     * @returns
+     */
     createDevApp?: (gez: Gez) => Promise<App>;
+    /**
+     * 创建自己的服务器
+     * @param gez
+     * @returns
+     */
+    createServer?: (gez: Gez) => Promise<void>;
 }
 
 export enum COMMAND {
@@ -43,6 +52,25 @@ export enum COMMAND {
     preview = 'preview',
     install = 'install',
     start = 'start'
+}
+
+export interface ManifestJson {
+    /**
+     * 服务的名字
+     */
+    name: string;
+    /**
+     * 构建版本号
+     */
+    version: string;
+    /**
+     * 所有的文件清单
+     */
+    files: string[];
+    /**
+     * 映射文件地址
+     */
+    importmapFilePath: string;
 }
 
 export class Gez {
@@ -57,7 +85,6 @@ export class Gez {
             this.root,
             options.modules
         );
-        moduleLink(path.resolve(this.root, 'node_modules'), this.moduleConfig);
     }
 
     private get app() {
@@ -99,13 +126,6 @@ export class Gez {
      */
     public get zip() {
         return this.app.zip;
-    }
-
-    /**
-     * 获取应用程序的清单列表
-     */
-    public get getImportmapConfig() {
-        return this.app.getImportmapConfig;
     }
 
     /**
@@ -177,6 +197,7 @@ export class Gez {
         if (this._command) {
             throw new Error('Cannot be initialized repeatedly');
         }
+        moduleLink(path.resolve(this.root, 'node_modules'), this.moduleConfig);
         const createDevApp = this._options.createDevApp || defaultCreateDevApp;
 
         this._command = command;
@@ -186,6 +207,7 @@ export class Gez {
                 : await createDevApp(this);
         this._app = app;
     }
+    public getManifestList() {}
 
     public getProjectPath(projectPath: ProjectPath): string {
         return getProjectPath(this.root, projectPath);

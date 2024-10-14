@@ -1,4 +1,4 @@
-import type { ParsedModuleConfig } from '@gez/core';
+import type { ManifestJson, ParsedModuleConfig } from '@gez/core';
 import {
     type Assets,
     type Compilation,
@@ -6,14 +6,6 @@ import {
     type RspackPluginInstance,
     rspack
 } from '@rspack/core';
-
-export interface ManifestJson {
-    version: string;
-    files: string[];
-    importmapFilePath: string;
-    importmap: Record<string, string>;
-}
-
 /**
  * importmap 插件，用于生成 importmap 相关文件
  */
@@ -129,19 +121,10 @@ export class ImportmapPlugin implements RspackPluginInstance {
                         );
 
                         const manifest: ManifestJson = {
+                            name: this.options.name,
                             version: stats.hash || '',
                             files: Object.keys(assets).map(transFileName),
-                            importmapFilePath: `importmap.${stats.hash}.js`,
-                            importmap: Object.entries(
-                                stats.assetsByChunkName || {}
-                            ).reduce((acc, [key, value]) => {
-                                if (value[0]) {
-                                    const name = transFileName(key);
-                                    const target = transFileName(value[0]);
-                                    acc[name] = target;
-                                }
-                                return acc;
-                            }, {})
+                            importmapFilePath: `importmap.${stats.hash}.js`
                         };
 
                         // 将 manifest 写入文件

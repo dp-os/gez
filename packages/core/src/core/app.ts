@@ -1,15 +1,11 @@
-import fs from 'node:fs';
 import type { IncomingMessage, ServerResponse } from 'node:http';
 
 import * as serveStatic from 'serve-static';
 
 import path from 'node:path';
 
-import {
-    ServerContext,
-    type ServerRenderHandle
-} from '../server/server-context';
 import type { Gez } from './gez';
+import { ServerContext, type ServerRenderHandle } from './server-context';
 
 export type Middleware = (
     req: IncomingMessage,
@@ -17,27 +13,36 @@ export type Middleware = (
     next?: Function
 ) => void;
 
-export interface ImportMapConfig {
-    list: Array<{
-        scope: string;
-        source: string;
-        target: string;
-    }>;
-    map: Record<string, string>;
-}
-
 export interface App {
+    /**
+     * 中间件列表
+     */
     middlewares: Middleware[];
-    render: (params: any) => Promise<ServerContext>;
+    /**
+     * 渲染函数
+     * @param params 渲染的参数
+     * @returns
+     */
+    render: (params?: any) => Promise<ServerContext>;
+    /**
+     * 执行构建
+     */
     build: () => Promise<void>;
+    /**
+     * 生成远程的压缩包
+     */
     zip: () => Promise<void>;
+    /**
+     * 销毁实例，释放内存
+     */
     destroy: () => Promise<void>;
+    /**
+     * 安装依赖执行命令
+     */
     install: () => Promise<void>;
-    getImportmapConfig: () => ImportMapConfig;
 }
 
 export async function createApp(gez: Gez): Promise<App> {
-    // const serveStatic = await import('serve-static');
     return {
         middlewares: gez.moduleConfig.imports.map((item) => {
             const base = `/${item.name}/`;
@@ -71,10 +76,8 @@ export async function createApp(gez: Gez): Promise<App> {
                 if (typeof url === 'string' && url.startsWith(base)) {
                     req.url = url.substring(base.length - 1);
                     staticMiddleware(req, res, (err) => {
-                        if (err) {
-                            req.url = url;
-                            _next();
-                        }
+                        req.url = url;
+                        _next();
                     });
                 } else {
                     _next();
@@ -97,42 +100,6 @@ export async function createApp(gez: Gez): Promise<App> {
         async build() {},
         async zip() {},
         async destroy() {},
-        async install() {},
-        getImportmapConfig() {
-            const importMapConfig: ImportMapConfig = {
-                list: [],
-                map: {}
-            };
-            gez.moduleConfig.imports.map(async (item) => {
-                const { name, localPath } = item;
-                try {
-                    const manifest: {
-                        version: string;
-                        files: string[];
-                        importmapFilePath: string;
-                        importmap: Record<string, string>;
-                    } = JSON.parse(
-                        fs
-                            .readFileSync(
-                                path.resolve(localPath, 'client/manifest.json')
-                            )
-                            .toString()
-                    );
-                    Object.entries(manifest.importmap).forEach(
-                        ([key, value]) => {
-                            const source = `${name}/${key}`;
-                            const target = `./${name}/${value}`;
-                            importMapConfig.list.push({
-                                scope: name,
-                                source,
-                                target
-                            });
-                            importMapConfig.map[source] = target;
-                        }
-                    );
-                } catch (error) {}
-            });
-            return importMapConfig;
-        }
+        async install() {}
     };
 }
