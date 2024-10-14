@@ -49,27 +49,6 @@ export function zipFiles(files: Record<string, any>) {
 }
 
 /**
- * 解压缩 Uint8Array 数据到指定目录
- * @param data - 要解压缩的 Uint8Array 数据
- * @param dir - 目标解压缩目录的路径
- * @param options - 解压缩选项
- * @throws {Error} 如果解压缩过程中发生错误
- */
-export function unzip(
-    data: Uint8Array,
-    dir: string,
-    options?: fflate.UnzipOptions
-) {
-    let files: Record<string, any> = {};
-    try {
-        files = fflate.unzipSync(data, options);
-    } catch (e) {}
-    Object.keys(files).forEach((name) => {
-        write.sync(path.resolve(dir, name), files[name]);
-    });
-}
-
-/**
  * 异步获取并解压 ZIP 文件到指定目录
  * @param url - 要获取的 ZIP 文件的 URL
  * @param dir - 要解压到的目标目录
@@ -80,5 +59,13 @@ export async function unzipRemoteFile(url: string, dir: string) {
     if (!res.ok || !res.body) return;
     const buffer = new Uint8Array(await res.arrayBuffer());
 
-    unzip(buffer, dir);
+    try {
+        let files: fflate.Unzipped = {};
+        try {
+            files = fflate.unzipSync(buffer);
+        } catch (e) {}
+        Object.keys(files).forEach((name) => {
+            write.sync(path.resolve(dir, name), files[name]);
+        });
+    } catch (e) {}
 }

@@ -1,12 +1,9 @@
+/**
+ * 资源清单
+ */
 export interface ManifestJson {
-    client: {
-        importmapFilePath: string;
-        version: string;
-        files: string[];
-    };
-    server: {
-        dts: boolean;
-        version: string;
-        files: string[];
-    };
+    version: string;
+    importmapFilePath: string;
+    dts: boolean;
+    files: string[];
 }

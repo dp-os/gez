@@ -18,3 +18,4 @@ packages/**/dist
 /.i18n_preview
 .root
 /types
+remotes

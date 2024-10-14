@@ -224,6 +224,9 @@ importers:
       '@types/crypto-js':
         specifier: ^4.2.2
         version: 4.2.2
+      '@types/find':
+        specifier: ^0.2.4
+        version: 0.2.4
       '@types/node':
         specifier: 20.12.12
         version: 20.12.12
@@ -2122,7 +2125,6 @@ packages:
 
   /@types/find@0.2.4:
     resolution: {integrity: sha512-8cw1q8jruVOJoojgx8CimvFC4SP+sevnKOifRJTKXsngeWi/md1womzXRBv/LWNCoDEh4U51zc3r8HUAH2QyEg==}
-    dev: false
 
   /@types/http-errors@2.0.4:
     resolution: {integrity: sha512-D0CFMMtydbJAegzOyHjtiKPLlvnm3iTZyZRSZoLq2mRhDdmLfIWOCYPfQJ4cu2erKghU++QvjcUjp/5h7hESpA==}

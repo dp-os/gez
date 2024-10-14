@@ -8,7 +8,7 @@ export function installImportmap(gez: Gez) {
         gez.moduleConfig.imports.map(async (item) => {
             const { localPath, remoteUrl } = item;
             if (remoteUrl) {
-                const fullPath = `${remoteUrl}/server/manifest.json`;
+                const fullPath = `${remoteUrl}/zip/manifest.json`;
 
                 const res = await fetch(fullPath);
                 if (!res.ok || !res.body) return;
@@ -17,14 +17,14 @@ export function installImportmap(gez: Gez) {
                     const manifest: ManifestJson = JSON.parse(
                         buffer.toString()
                     );
-                    const { dts, version } = manifest.server;
-                    unzipRemoteFile(
-                        `${remoteUrl}/server/${version}.zip`,
+                    const { dts, version } = manifest;
+                    await unzipRemoteFile(
+                        `${remoteUrl}/zip/${version}.zip`,
                         localPath
                     );
                     if (dts) {
-                        unzipRemoteFile(
-                            `${remoteUrl}/server/${version}.dts.zip`,
+                        await unzipRemoteFile(
+                            `${remoteUrl}/zip/${version}.dts.zip`,
                             localPath
                         );
                     }
