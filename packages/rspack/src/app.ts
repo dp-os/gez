@@ -2,11 +2,11 @@ import type { IncomingMessage, ServerResponse } from 'node:http';
 
 import {
     type App,
-    type AppRenderParams,
     COMMAND,
     type Gez,
     ServerContext,
     type ServerRenderHandle,
+    createApp as _createApp,
     buildImportmap,
     installImportmap
 } from '@gez/core';
@@ -55,54 +55,52 @@ export async function createApp(
     gez: Gez,
     config: ConfigCallback
 ): Promise<App> {
-    return {
-        middleware: middleware(gez, config),
-        async render(params: AppRenderParams): Promise<ServerContext> {
-            const module = await importEsmInactive(
-                gez.getProjectPath('dist/server/entry-server.js'),
-                import.meta.url,
-                {
-                    console,
-                    process,
-                    URL,
-                    global
-                }
-            );
-            const serverRender: ServerRenderHandle = module.default;
-            const context = new ServerContext(gez);
-            if (typeof serverRender === 'function') {
-                await serverRender(context, params);
+    const app = await _createApp(gez);
+    app.middlewares.unshift(middleware(gez, config));
+    app.render = async (params: any): Promise<ServerContext> => {
+        const module = await importEsmInactive(
+            gez.getProjectPath('dist/server/entry-server.js'),
+            import.meta.url,
+            {
+                console,
+                process,
+                URL,
+                global
             }
-            return context;
-        },
-        build() {
-            const clientConfig = config(gez, 'client');
-            const serverConfig = config(gez, 'server');
-            const nodeConfig = config(gez, 'node');
-            const compiler = rspack([clientConfig, serverConfig, nodeConfig]);
-            let done = () => {};
-            compiler.run((err: Error) => {
-                if (err) {
-                    throw err;
-                }
-                compiler.close((closeErr) => {
-                    if (closeErr) {
-                        throw closeErr;
-                    }
-                    done();
-                });
-            });
-            return new Promise<void>((resolve) => {
-                done = resolve;
-            });
-        },
-        async zip() {
-            await buildImportmap(gez);
-            return;
-        },
-        async destroy() {},
-        async install() {
-            installImportmap(gez);
+        );
+        const serverRender: ServerRenderHandle = module.default;
+        const context = new ServerContext(gez);
+        if (typeof serverRender === 'function') {
+            await serverRender(context, params);
         }
+        return context;
     };
+    app.build = async () => {
+        const clientConfig = config(gez, 'client');
+        const serverConfig = config(gez, 'server');
+        const nodeConfig = config(gez, 'node');
+        const compiler = rspack([clientConfig, serverConfig, nodeConfig]);
+        let done = () => {};
+        compiler.run((err) => {
+            if (err) {
+                throw err;
+            }
+            compiler.close((closeErr) => {
+                if (closeErr) {
+                    throw closeErr;
+                }
+                done();
+            });
+        });
+        return new Promise<void>((resolve) => {
+            done = resolve;
+        });
+    };
+    app.zip = async () => {
+        buildImportmap(gez);
+    };
+    app.install = async () => {
+        installImportmap(gez);
+    };
+    return app;
 }

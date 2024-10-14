@@ -1,8 +1,8 @@
-import type {
-    IncomingHttpHeaders,
-    IncomingMessage,
-    ServerResponse
-} from 'node:http';
+import type { IncomingMessage, ServerResponse } from 'node:http';
+
+import * as serveStatic from 'serve-static';
+
+import path from 'node:path';
 
 import {
     ServerContext,
@@ -10,19 +10,14 @@ import {
 } from '../server/server-context';
 import type { Gez } from './gez';
 
-export interface AppRenderParams {
-    url: string;
-    timeout?: number;
-    headers?: IncomingHttpHeaders;
-    extra?: Record<string, any>;
-}
+export type Middleware = (
+    req: IncomingMessage,
+    res: ServerResponse,
+    next?: Function
+) => void;
 
 export interface App {
-    middleware: (
-        req: IncomingMessage,
-        res: ServerResponse,
-        next?: Function
-    ) => void;
+    middlewares: Middleware[];
     render: (params: any) => Promise<ServerContext>;
     build: () => Promise<void>;
     zip: () => Promise<void>;
@@ -31,37 +26,51 @@ export interface App {
 }
 
 export async function createApp(gez: Gez): Promise<App> {
-    const root = gez.getProjectPath('dist/client');
-    const serveStatic = await import('serve-static');
-    const middleware = serveStatic.default(root, {
-        setHeaders(res) {
-            res.setHeader('cache-control', 'public, max-age=31536000');
-        }
-    }) as App['middleware'];
+    // const serveStatic = await import('serve-static');
     return {
-        middleware(req, res, next) {
-            const url = req.url;
-            const _next = () => {
-                if (typeof next === 'function') {
-                    next();
-                } else {
-                    res.writeHead(404, {
-                        'Content-Type': 'text/html;charset=UTF-8'
+        middlewares: gez.moduleConfig.imports.map((item) => {
+            const base = `/${item.name}/`;
+            const staticMiddleware = serveStatic.default(
+                path.resolve(item.localPath, 'client'),
+                {
+                    setHeaders(res) {
+                        res.setHeader(
+                            'cache-control',
+                            'public, max-age=31536000'
+                        );
+                    }
+                }
+            );
+            return (
+                req: IncomingMessage,
+                res: ServerResponse,
+                next?: Function
+            ) => {
+                const url = req.url;
+                const _next = () => {
+                    if (typeof next === 'function') {
+                        next();
+                    } else {
+                        res.writeHead(404, {
+                            'Content-Type': 'text/html;charset=UTF-8'
+                        });
+                        res.end('Not Found');
+                    }
+                };
+                if (typeof url === 'string' && url.startsWith(base)) {
+                    req.url = url.substring(base.length - 1);
+                    staticMiddleware(req, res, (err) => {
+                        if (err) {
+                            req.url = url;
+                            _next();
+                        }
                     });
-                    res.end('Not Found');
+                } else {
+                    _next();
                 }
             };
-            if (typeof url === 'string' && url.startsWith(gez.base)) {
-                req.url = url.substring(gez.base.length - 1);
-                middleware(req, res, () => {
-                    req.url = url;
-                    _next();
-                });
-            } else {
-                _next();
-            }
-        },
-        async render(params: AppRenderParams) {
+        }),
+        async render(params: any) {
             const context = new ServerContext(gez);
             const result = await import(
                 /* @vite-ignore */
