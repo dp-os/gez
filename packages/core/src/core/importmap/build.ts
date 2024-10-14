@@ -39,7 +39,7 @@ export function buildImportmap(gez: Gez) {
     const importmapFilePath =
         fileList.find((item) => {
             return (
-                item.startsWith('importmap.') &&
+                item.includes('importmap.') &&
                 item.endsWith('.js') &&
                 item !== 'importmap.js'
             );
