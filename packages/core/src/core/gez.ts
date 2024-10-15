@@ -54,23 +54,31 @@ export enum COMMAND {
     start = 'start'
 }
 
-export interface ManifestJson {
+export interface PackageJson {
     /**
-     * 服务的名字
+     * 服务名字，来自于：GezOptions.name
      */
     name: string;
     /**
-     * 构建版本号
+     * 版本号
      */
     version: string;
     /**
-     * 所有的文件清单
+     * 构建的版本号
+     */
+    hash: string;
+    /**
+     * 模块系统
+     */
+    type: 'module';
+    /**
+     * 对外导出的文件
+     */
+    exports: Record<string, string>;
+    /**
+     * 构建的全部文件清单
      */
     files: string[];
-    /**
-     * 映射文件地址
-     */
-    importmapFilePath: string;
 }
 
 export class Gez {
@@ -207,7 +215,6 @@ export class Gez {
                 : await createDevApp(this);
         this._app = app;
     }
-    public getManifestList() {}
 
     public getProjectPath(projectPath: ProjectPath): string {
         return getProjectPath(this.root, projectPath);

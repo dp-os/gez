@@ -6,7 +6,7 @@
     "scripts": {
         "dev": "gez dev",
         "build": "gez build",
-        "build:dts": "rm -rf types && npx vue-tsc --declaration --emitDeclarationOnly --noEmit false --outDir types/src",
+        "build:dts": "vue-tsc --declaration --emitDeclarationOnly --noEmit false --outDir types",
         "start": "gez start",
         "postinstall": "gez install"
     },
@@ -16,6 +16,7 @@
         "vue-class-setup": "^1.4.4"
     },
     "devDependencies": {
+        "vue-tsc": "^2.1.6",
         "@gez/rspack": "workspace:^",
         "@gez/rspack-vue2": "workspace:^",
         "@types/express": "^4.17.21",

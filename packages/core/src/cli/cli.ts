@@ -45,7 +45,7 @@ export function createMod(file: string): Mod {
 }
 
 async function runDevApp(command: COMMAND) {
-    const mod = createMod(path.resolve('src/entry-node.ts'));
+    const mod = createMod(path.resolve('src/entry.node.ts'));
     const module = await mod.import();
     const options: GezOptions = module.default || {};
 
@@ -81,7 +81,7 @@ async function runDevApp(command: COMMAND) {
 }
 
 async function runProdApp() {
-    const file = getProjectPath(path.resolve(), 'dist/node/entry-node.js');
+    const file = getProjectPath(path.resolve(), 'dist/node/entry.js');
     await import(file).then(async (module) => {
         const options: GezOptions = module.default || {};
 

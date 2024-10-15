@@ -1,4 +1,4 @@
-import type { ManifestJson, ParsedModuleConfig } from '@gez/core';
+import type { PackageJson, ParsedModuleConfig } from '@gez/core';
 import {
     type Assets,
     type Compilation,
@@ -60,6 +60,7 @@ export class ImportmapPlugin implements RspackPluginInstance {
         compiler.options.externals = externals;
     }
     public applyAssets(compiler: Compiler) {
+        const { options } = this;
         compiler.hooks.thisCompilation.tap(
             'importmap-plugin',
             (compilation: Compilation) => {
@@ -77,60 +78,43 @@ export class ImportmapPlugin implements RspackPluginInstance {
                             entrypoints: true
                         });
                         const entrypoints = stats.entrypoints || {};
-                        const entryMap: Record<string, string> = {};
-                        const imports: Record<string, string> = Object.entries(
-                            entrypoints
-                        ).reduce((acc, [key, value]) => {
-                            const item = value.assets?.[0];
-                            if (item) {
-                                key = key.replace(/^\.\//, '');
-                                const name = item.name.replace(/^\.\//, '');
-                                acc[`${stats.name}/${key}`] =
-                                    `/${stats.name}/${name}`;
+                        const exports: Record<string, string> = {};
+                        const hash = stats.hash ?? String(Date.now());
+                        const importmapHash = `importmap.${hash}.js`;
+                        const files = [
+                            importmapHash,
+                            ...Object.keys(assets).map(transFileName)
+                        ];
+                        Object.entries(entrypoints).forEach(([key, value]) => {
+                            const asset = value.assets?.[0];
+                            if (!asset) return;
+                            if (!key.startsWith('./')) return;
 
-                                entryMap[`./${key}`] = `./${name}`;
-                            }
-                            return acc;
-                        }, {});
+                            exports[key] = asset.name;
+                        });
+                        const packageJson: PackageJson = {
+                            name: options.name,
+                            version: '1.0.0',
+                            hash,
+                            type: 'module',
+                            exports: exports,
+                            files
+                        };
 
                         const { RawSource } = compiler.webpack.sources;
-                        const code = toImportmapJsCode(imports);
+                        const code = toImportmapJsCode(options.name, exports);
                         compilation.emitAsset(
                             'importmap.js',
                             new RawSource(code)
                         );
                         compilation.emitAsset(
-                            `importmap.${stats.hash}.js`,
+                            importmapHash,
                             new RawSource(code)
                         );
 
                         compilation.emitAsset(
                             'package.json',
-                            new RawSource(
-                                JSON.stringify(
-                                    {
-                                        name: this.options.name,
-                                        version: '1.0.0',
-                                        type: 'module',
-                                        exports: entryMap
-                                    },
-                                    null,
-                                    4
-                                )
-                            )
-                        );
-
-                        const manifest: ManifestJson = {
-                            name: this.options.name,
-                            version: stats.hash || '',
-                            files: Object.keys(assets).map(transFileName),
-                            importmapFilePath: `importmap.${stats.hash}.js`
-                        };
-
-                        // 将 manifest 写入文件
-                        compilation.emitAsset(
-                            'manifest.json',
-                            new RawSource(JSON.stringify(manifest, null, 4))
+                            new RawSource(JSON.stringify(packageJson, null, 4))
                         );
                     }
                 );
@@ -139,14 +123,20 @@ export class ImportmapPlugin implements RspackPluginInstance {
     }
 }
 
-function toImportmapJsCode(imports: Record<string, string>) {
+function toImportmapJsCode(name: string, imports: Record<string, string>) {
     return `
     ((global) => {
+        const name = '${name}';
         const importsMap = ${JSON.stringify(imports)};
         const importmapKey = '__importmap__';
         const importmap = global[importmapKey] = global[importmapKey] || {};
         const imports = importmap.imports = importmap.imports || {};
-        Object.assign(imports, importsMap);
+        const joinName = (value) => {
+            return name + value.substring(1);
+        }
+        Object.entries(importsMap).forEach(([key, value]) => {
+            imports[joinName(key)] = '/' + joinName(value);
+        });
     })(globalThis);
     `;
 }

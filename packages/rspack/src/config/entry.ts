@@ -10,13 +10,13 @@ export class Entry extends BuildConfig<Config> {
             import.meta.resolve('webpack-hot-middleware/client')
         ).pathname;
         const importPaths: string[] = gez.isProd
-            ? [gez.getProjectPath('src/entry-client.ts')]
+            ? [gez.getProjectPath('src/entry.client.ts')]
             : [
                   `${hotPath}?path=${gez.base}hot-middleware&timeout=5000&overlay=false`,
-                  gez.getProjectPath('src/entry-client.ts')
+                  gez.getProjectPath('src/entry.client.ts')
               ];
         return {
-            'entry-client': {
+            './entry': {
                 import: importPaths,
                 library: {
                     type: 'module'
@@ -28,10 +28,10 @@ export class Entry extends BuildConfig<Config> {
     protected getServer(): Config {
         const { gez } = this;
         const importPaths: string[] = [
-            gez.getProjectPath(`src/entry-server.ts`)
+            gez.getProjectPath(`src/entry.server.ts`)
         ];
         return {
-            'entry-server': {
+            './entry': {
                 import: importPaths,
                 library: {
                     type: 'module'
@@ -42,9 +42,9 @@ export class Entry extends BuildConfig<Config> {
 
     protected getNode(): Config {
         const { gez } = this;
-        const importPaths: string[] = [gez.getProjectPath(`src/entry-node.ts`)];
+        const importPaths: string[] = [gez.getProjectPath(`src/entry.node.ts`)];
         return {
-            'entry-node': {
+            './entry': {
                 import: importPaths,
                 library: {
                     type: 'module'

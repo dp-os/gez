@@ -5,13 +5,13 @@ export type ProjectPath =
     | 'dist/client'
     | 'dist/client/manifest.json'
     | 'dist/server'
-    | 'dist/server/entry-server.js'
+    | 'dist/server/entry.js'
     | 'dist/node'
-    | 'dist/node/entry-node.js'
+    | 'dist/node/entry.js'
     | 'src'
-    | 'src/entry-node.ts'
-    | 'src/entry-client.ts'
-    | 'src/entry-server.ts';
+    | 'src/entry.node.ts'
+    | 'src/entry.client.ts'
+    | 'src/entry.server.ts';
 
 export function getProjectPath(root: string, projectPath: ProjectPath): string {
     return path.resolve(root, projectPath);

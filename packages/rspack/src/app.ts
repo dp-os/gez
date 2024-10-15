@@ -59,7 +59,7 @@ export async function createApp(
     app.middlewares.unshift(middleware(gez, config));
     app.render = async (params: any): Promise<ServerContext> => {
         const module = await importEsmInactive(
-            gez.getProjectPath('dist/server/entry-server.js'),
+            gez.getProjectPath('dist/server/entry.js'),
             import.meta.url,
             {
                 console,
@@ -100,6 +100,7 @@ export async function createApp(
         buildImportmap(gez);
     };
     app.install = async () => {
+        console.log('install');
         installImportmap(gez);
     };
     return app;

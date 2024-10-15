@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import type { Gez, ManifestJson } from './gez';
+import type { Gez, PackageJson } from './gez';
 
 export class ServerContext {
     public html = '';
@@ -10,15 +10,15 @@ export class ServerContext {
     public constructor(gez: Gez) {
         this.gez = gez;
     }
-    public getManifests(): Promise<ManifestJson[]> {
+    public getManifests(): Promise<PackageJson[]> {
         return Promise.all(
             this.gez.moduleConfig.imports.map(async (item) => {
                 const file = path.resolve(
                     item.localPath,
-                    'client/manifest.json'
+                    'client/package.json'
                 );
                 const result = await fs.readFile(file, 'utf-8');
-                const json = JSON.parse(result) as ManifestJson;
+                const json = JSON.parse(result) as PackageJson;
                 json.name = item.name;
                 return json;
             })
@@ -27,7 +27,7 @@ export class ServerContext {
     public async getImportmapFiles() {
         const list = await this.getManifests();
         return list.map((item) => {
-            return `/${item.name}/${item.importmapFilePath}`;
+            return `/${item.name}/importmap.${item.hash}.js`;
         });
     }
 }

@@ -57,6 +57,9 @@ importers:
       vue-template-compiler:
         specifier: 2.7.16
         version: 2.7.16
+      vue-tsc:
+        specifier: ^2.1.6
+        version: 2.1.6(typescript@5.4.5)
 
   examples/ssr-rspack-vue2-remote:
     dependencies:
@@ -134,6 +137,9 @@ importers:
       vue:
         specifier: 3.5.6
         version: 3.5.6(typescript@5.4.5)
+      vue-tsc:
+        specifier: ^2.1.6
+        version: 2.1.6(typescript@5.4.5)
 
   packages/class-state:
     dependencies:
