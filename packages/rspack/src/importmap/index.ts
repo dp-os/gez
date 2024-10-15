@@ -88,7 +88,11 @@ export class ImportmapPlugin implements RspackPluginInstance {
                         Object.entries(entrypoints).forEach(([key, value]) => {
                             const asset = value.assets?.[0];
                             if (!asset) return;
-                            if (!key.startsWith('./')) return;
+                            if (
+                                !key.startsWith('./') &&
+                                !asset.name.endsWith('.js')
+                            )
+                                return;
 
                             exports[key] = asset.name;
                         });
