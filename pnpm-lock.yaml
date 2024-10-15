@@ -336,8 +336,8 @@ importers:
         specifier: workspace:^
         version: link:../core
       '@rspack/core':
-        specifier: 1.0.10
-        version: 1.0.10
+        specifier: 1.0.11
+        version: 1.0.11
       '@types/find':
         specifier: ^0.2.4
         version: 0.2.4
@@ -1909,94 +1909,94 @@ packages:
     dev: true
     optional: true
 
-  /@rspack/binding-darwin-arm64@1.0.10:
-    resolution: {integrity: sha512-byQuC3VSEHJxjcjdgOvEPPkteA7d/kKYGUTZjsAMsIriioCVkB+4OYfnQmnav8M0An9vBM34H2+IKqO1ge1+Aw==}
+  /@rspack/binding-darwin-arm64@1.0.11:
+    resolution: {integrity: sha512-Kjx36rcUWz11uQjGRzktagiYcdFBo4j9xTiUH+KAm+vkXfyki+B8HgNOifmM/nxDbwBfjXbkKOqDSJu9fcZodQ==}
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
     dev: false
     optional: true
 
-  /@rspack/binding-darwin-x64@1.0.10:
-    resolution: {integrity: sha512-L5dGmELiDDXAW3+yN11fwDbl8S9i7dwOvzygN/Iw+Md2WAODrFnTI/g++hOfdZzjUPtefyQUqoAcFOgpdxWSCQ==}
+  /@rspack/binding-darwin-x64@1.0.11:
+    resolution: {integrity: sha512-I7Rs7H972U3wGvR2nutb9YAtxlfJVgQ0xvxZbrgiOUFuzGZdKJeIhzjoLxbCPko2syMdHAKrlz0A4r2skSLiVQ==}
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
     dev: false
     optional: true
 
-  /@rspack/binding-linux-arm64-gnu@1.0.10:
-    resolution: {integrity: sha512-s+0AIGQQ2Npz3RcDQAFOLc4KYAZZ1g4oWxm2Ug7RSecwy7edK1uUDYE+boofEMgZ9+O3G5O+sXQr+SAyidS5EA==}
+  /@rspack/binding-linux-arm64-gnu@1.0.11:
+    resolution: {integrity: sha512-Rpwklue7JYB3CuoSDiN+kWnoPIkm8su/LgbRpIS/W6KTtRNHjSoqrWsBhWTdeUQintDw3N2yzax6sI5/bOiO8A==}
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
     dev: false
     optional: true
 
-  /@rspack/binding-linux-arm64-musl@1.0.10:
-    resolution: {integrity: sha512-KSPLOHcUC+8zA134RTCqo5bDqmX4ZwFz4LL+n/5i9yugHoiQVplEzh2TkFCVoAH85Xc40qPhxqGLJlhHh5qGEA==}
+  /@rspack/binding-linux-arm64-musl@1.0.11:
+    resolution: {integrity: sha512-FXm/Pf3lDmVKI+0llc/L08bPyJ5GIth3lJbTD0ZzGBjoUJoRFJW1ZSAAomBsl5HmjWxiky3WRV7Xc+gHMCvLwA==}
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
     dev: false
     optional: true
 
-  /@rspack/binding-linux-x64-gnu@1.0.10:
-    resolution: {integrity: sha512-hiMIowGEUODn0LxV/Kc/oxHDXXSgu9BgPVZNprRTEZs3E7hHP4FX+YlzKafZ9G6qSY51GkiEDyEOb5X4Pq/eTw==}
+  /@rspack/binding-linux-x64-gnu@1.0.11:
+    resolution: {integrity: sha512-GDENmBO5bCQ+9NTZBiXcwd+NcdukShkH4z7Ye3gK3P1FCnDGAjwF8v0OzAI1ooRIhZqdvPvdOIkFFwfjQG2NyQ==}
     cpu: [x64]
     os: [linux]
     requiresBuild: true
     dev: false
     optional: true
 
-  /@rspack/binding-linux-x64-musl@1.0.10:
-    resolution: {integrity: sha512-OKb1PLOIulkg83zFyeFPowIzF7WdYVO6yRK7l+Kkick/cvALOj5XzRHyxrsb8VfJMpzHrPwsLV0RcGRT18BPMw==}
+  /@rspack/binding-linux-x64-musl@1.0.11:
+    resolution: {integrity: sha512-iI6/WhvdyHK6awfDtDQswtH/mrGWvUyqAZ12aA9hKDOdcXD4LQt/ZQU4teHY3/+0D1qS9Vj1BjeVMqQ3FIu8gw==}
     cpu: [x64]
     os: [linux]
     requiresBuild: true
     dev: false
     optional: true
 
-  /@rspack/binding-win32-arm64-msvc@1.0.10:
-    resolution: {integrity: sha512-J2fCPYgiPyLo4pGZMHT72lGHK05puBYJzpCR8CmVCk+ktkhVcao9cA2BUT3Gr3UG2PPxfBFsDDmjA/FsUEdxrg==}
+  /@rspack/binding-win32-arm64-msvc@1.0.11:
+    resolution: {integrity: sha512-g6q0NU3FBJGyUZ+6RFTwmGsdhhtDMweLK2q+DqR0Xp6dwHbuwmMVxrhXLDsVBK6g5h7oEuOaiMfzurQPQsu+uA==}
     cpu: [arm64]
     os: [win32]
     requiresBuild: true
     dev: false
     optional: true
 
-  /@rspack/binding-win32-ia32-msvc@1.0.10:
-    resolution: {integrity: sha512-DQeGQgFS3jv+krfvp9dAKubGbY98nmsmf3ZeobyAnvq+AFDoVyOKImGp/GvZoCTr6jToFoz9+pPYbQyf15lw+g==}
+  /@rspack/binding-win32-ia32-msvc@1.0.11:
+    resolution: {integrity: sha512-OzWQY1/IyxhpFprcIdU7obwWszMteSWnljPq2i/sHsmeoJfFy0arWtH0Di/riU5pDoyBHR70ffnDGDkfv5ckjA==}
     cpu: [ia32]
     os: [win32]
     requiresBuild: true
     dev: false
     optional: true
 
-  /@rspack/binding-win32-x64-msvc@1.0.10:
-    resolution: {integrity: sha512-1ad9SONsqp6XXxrCHsClnThW7BOrK5PWWslY+J3G0sHsXztSz/s9/CDRXUyJ8vuolpIy10E1Kyk1aV9y+IMs+g==}
+  /@rspack/binding-win32-x64-msvc@1.0.11:
+    resolution: {integrity: sha512-r4giYIe53S8f246TV5Y6y71HjjsbpXALSm4Pbmr4yhwycqUApW46EsgBqOYAPaIht1T+PkJQLjyMjHp4uHSuEA==}
     cpu: [x64]
     os: [win32]
     requiresBuild: true
     dev: false
     optional: true
 
-  /@rspack/binding@1.0.10:
-    resolution: {integrity: sha512-ILWPqLl0fS3a76OwQH6SlVIJBST39sc55yp0zwt484sb77khm0JGvJRElCdPuwgaR7JRDdqK23EvW0XIQAvY7A==}
+  /@rspack/binding@1.0.11:
+    resolution: {integrity: sha512-b7tD9qTjHLqCkrW2AG85ofjL8M+Tk48qtWE7UpOQsZBDxF+ONWIiZ07gp4VE8nS96VNpBgL+GSqI/K8cmaZabA==}
     optionalDependencies:
-      '@rspack/binding-darwin-arm64': 1.0.10
-      '@rspack/binding-darwin-x64': 1.0.10
-      '@rspack/binding-linux-arm64-gnu': 1.0.10
-      '@rspack/binding-linux-arm64-musl': 1.0.10
-      '@rspack/binding-linux-x64-gnu': 1.0.10
-      '@rspack/binding-linux-x64-musl': 1.0.10
-      '@rspack/binding-win32-arm64-msvc': 1.0.10
-      '@rspack/binding-win32-ia32-msvc': 1.0.10
-      '@rspack/binding-win32-x64-msvc': 1.0.10
+      '@rspack/binding-darwin-arm64': 1.0.11
+      '@rspack/binding-darwin-x64': 1.0.11
+      '@rspack/binding-linux-arm64-gnu': 1.0.11
+      '@rspack/binding-linux-arm64-musl': 1.0.11
+      '@rspack/binding-linux-x64-gnu': 1.0.11
+      '@rspack/binding-linux-x64-musl': 1.0.11
+      '@rspack/binding-win32-arm64-msvc': 1.0.11
+      '@rspack/binding-win32-ia32-msvc': 1.0.11
+      '@rspack/binding-win32-x64-msvc': 1.0.11
     dev: false
 
-  /@rspack/core@1.0.10:
-    resolution: {integrity: sha512-Jvj6mzf/aFN3c2E+Lu+3dSz6df2pd79/XOLN9ElA7PIjVua4lVt+dUtrTXqVgoAjaKhZJrIt2WXALYdmv4kkVA==}
+  /@rspack/core@1.0.11:
+    resolution: {integrity: sha512-DpBPc7kDNogjXU2m+wVbdarEY366kTrZlDHxynuBY0snpB9j03vj+R/j3VfzTL84j5fqOMTb3tcu91DlVVp3UQ==}
     engines: {node: '>=16.0.0'}
     peerDependencies:
       '@swc/helpers': '>=0.5.1'
@@ -2005,7 +2005,7 @@ packages:
         optional: true
     dependencies:
       '@module-federation/runtime-tools': 0.5.1
-      '@rspack/binding': 1.0.10
+      '@rspack/binding': 1.0.11
       '@rspack/lite-tapable': 1.0.1
       caniuse-lite: 1.0.30001651
     dev: false
