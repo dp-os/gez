@@ -15,7 +15,7 @@ export default defineServer({
     </head>
     <body>
     ${html}
-    <script src="/ssr-rspack-vue3/importmap.js"></script>
+    <script src="/ssr-vue3/importmap.js"></script>
     <script defer>
     document.body.appendChild(Object.assign(document.createElement('script'), {
       type: 'importmap',
@@ -23,7 +23,7 @@ export default defineServer({
     }));
     </script>
     <script type="module">
-    import "ssr-rspack-vue3/entry-client";
+    import "ssr-vue3/entry-client";
     </script>
     </body>
     </html>

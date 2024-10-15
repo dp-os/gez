@@ -103,7 +103,7 @@ export async function createApp(gez: Gez): Promise<App> {
         },
         async destroy() {},
         async install() {
-            return decompression(gez);
+            return decompression(gez, 0);
         }
     };
 }

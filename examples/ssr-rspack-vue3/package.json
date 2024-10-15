@@ -1,5 +1,5 @@
 {
-    "name": "ssr-rspack-vue3",
+    "name": "ssr-vue3",
     "version": "0.0.15-alpha.41",
     "private": true,
     "type": "module",

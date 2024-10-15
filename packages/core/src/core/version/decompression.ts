@@ -4,7 +4,7 @@ import { getFile, getJsonFile } from './fetch';
 import { getPkgHash } from './pkg';
 import { decompressionDir } from './zip';
 
-export async function decompression(gez: Gez) {
+export async function decompression(gez: Gez, maxRetryCount = 3) {
     let currentImports = gez.moduleConfig.imports.filter((item) => {
         const remoteUrl = item.remoteUrl;
         if (!remoteUrl) {
@@ -12,8 +12,7 @@ export async function decompression(gez: Gez) {
         }
         return true;
     });
-    const TRY_MAX_COUNT = 3;
-    let tryCount = 0;
+    let currentRetryCount = 0;
     let tryImports: typeof currentImports = [];
     const next = async () => {
         const item = currentImports.shift();
@@ -58,14 +57,14 @@ export async function decompression(gez: Gez) {
         // 处理下一次的请求
         currentImports = tryImports;
         tryImports = [];
-        tryCount++;
+        currentRetryCount++;
+        if (currentRetryCount > maxRetryCount) {
+            throw new Error(`Download failed`);
+        }
         console.log(`Try again in 10 seconds`);
         await new Promise<void>((resolve) => {
             setTimeout(resolve, 1000 * 10);
         });
-        if (tryCount > TRY_MAX_COUNT) {
-            throw new Error(`Download failed`);
-        }
         return start();
     };
     await start();

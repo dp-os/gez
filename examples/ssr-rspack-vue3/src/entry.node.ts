@@ -2,7 +2,7 @@ import type { GezOptions } from '@gez/core';
 import express from 'express';
 
 export default {
-    name: 'ssr-rspack-vue3',
+    name: 'ssr-vue3',
     async createDevApp(gez) {
         return import('@gez/rspack-vue3').then((m) => m.createApp(gez));
     },

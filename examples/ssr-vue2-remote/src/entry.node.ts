@@ -2,7 +2,7 @@ import type { GezOptions } from '@gez/core';
 import express from 'express';
 
 export default {
-    name: 'ssr-rspack-vue2-remote',
+    name: 'ssr-vue2-remote',
     async createDevApp(gez) {
         return import('@gez/rspack-vue2').then((m) => m.createApp(gez));
     },

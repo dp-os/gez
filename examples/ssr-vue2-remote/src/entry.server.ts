@@ -32,7 +32,7 @@ doc.body.appendChild(importmap);
  })(document);
     </script>
     <script type="module">
-    import "ssr-rspack-vue2-remote/entry";
+    import "ssr-vue2-remote/entry";
     </script>
 </body>
 </html>

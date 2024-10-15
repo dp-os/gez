@@ -30,7 +30,7 @@ ${files
     }));
     </script>
     <script type="module">
-    import "ssr-rspack-vue2-host/entry";
+    import "ssr-vue2-host/entry";
     </script>
 </body>
 </html>

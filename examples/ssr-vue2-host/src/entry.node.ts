@@ -2,7 +2,7 @@ import type { GezOptions } from '@gez/core';
 import express from 'express';
 
 export default {
-    name: 'ssr-rspack-vue2-host',
+    name: 'ssr-vue2-host',
     async createDevApp(gez) {
         return import('@gez/rspack-vue2').then((m) => m.createApp(gez));
     },
@@ -20,14 +20,14 @@ export default {
     },
     modules: {
         imports: {
-            // 'ssr-rspack-vue2-remote': 'root:../ssr-rspack-vue2-remote/dist',
-            'ssr-rspack-vue2-remote': [
-                'root:../../.root/ssr-rspack-vue2-remote',
-                'http://localhost:3003/ssr-rspack-vue2-remote/versions/latest.json'
+            // 'ssr-vue2-remote': 'root:../ssr-vue2-remote/dist',
+            'ssr-vue2-remote': [
+                'root:../../.root/ssr-vue2-remote',
+                'http://localhost:3003/ssr-vue2-remote/versions/latest.json'
             ]
         },
         externals: {
-            vue: 'ssr-rspack-vue2-remote/npm/vue'
+            vue: 'ssr-vue2-remote/npm/vue'
         }
     }
 } satisfies GezOptions;

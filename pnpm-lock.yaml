@@ -18,92 +18,6 @@ importers:
         specifier: 15.2.4
         version: 15.2.4
 
-  examples/ssr-rspack-vue2-host:
-    dependencies:
-      '@gez/core':
-        specifier: workspace:^
-        version: link:../../packages/core
-      express:
-        specifier: ^4.19.2
-        version: 4.19.2
-      vue-class-setup:
-        specifier: ^1.4.4
-        version: 1.4.4(vue@2.7.16)
-    devDependencies:
-      '@gez/rspack':
-        specifier: workspace:^
-        version: link:../../packages/rspack
-      '@gez/rspack-vue2':
-        specifier: workspace:^
-        version: link:../../packages/rspack-vue2
-      '@types/express':
-        specifier: ^4.17.21
-        version: 4.17.21
-      '@types/node':
-        specifier: ^20.6.3
-        version: 20.12.12
-      less:
-        specifier: ^4.2.0
-        version: 4.2.0
-      typescript:
-        specifier: ^5.2.2
-        version: 5.4.5
-      vue:
-        specifier: 2.7.16
-        version: 2.7.16
-      vue-server-renderer:
-        specifier: 2.7.16
-        version: 2.7.16
-      vue-template-compiler:
-        specifier: 2.7.16
-        version: 2.7.16
-      vue-tsc:
-        specifier: ^2.1.6
-        version: 2.1.6(typescript@5.4.5)
-
-  examples/ssr-rspack-vue2-remote:
-    dependencies:
-      '@gez/core':
-        specifier: workspace:^
-        version: link:../../packages/core
-      express:
-        specifier: ^4.19.2
-        version: 4.19.2
-    devDependencies:
-      '@gez/rspack':
-        specifier: workspace:^
-        version: link:../../packages/rspack
-      '@gez/rspack-vue2':
-        specifier: workspace:^
-        version: link:../../packages/rspack-vue2
-      '@types/express':
-        specifier: ^4.17.21
-        version: 4.17.21
-      '@types/node':
-        specifier: ^20.6.3
-        version: 20.12.12
-      less:
-        specifier: ^4.2.0
-        version: 4.2.0
-      typescript:
-        specifier: ^5.2.2
-        version: 5.4.5
-      vue:
-        specifier: 2.7.16
-        version: 2.7.16
-      vue-class-setup:
-        specifier: ^1.4.4
-        version: 1.4.4(vue@2.7.16)
-      vue-server-renderer:
-        specifier: 2.7.16
-        version: 2.7.16
-      vue-template-compiler:
-        specifier: 2.7.16
-        version: 2.7.16
-      vue-tsc:
-        specifier: ^2.1.6
-        version: 2.1.6(typescript@5.4.5)
-
   examples/ssr-rspack-vue3:
     dependencies:
       '@gez/core':
@@ -137,6 +51,92 @@ importers:
       vue:
         specifier: 3.5.6
         version: 3.5.6(typescript@5.4.5)
+      vue-tsc:
+        specifier: ^2.1.6
+        version: 2.1.6(typescript@5.4.5)
+
+  examples/ssr-vue2-host:
+    dependencies:
+      '@gez/core':
+        specifier: workspace:^
+        version: link:../../packages/core
+      express:
+        specifier: ^4.19.2
+        version: 4.19.2
+      vue-class-setup:
+        specifier: ^1.4.4
+        version: 1.4.4(vue@2.7.16)
+    devDependencies:
+      '@gez/rspack':
+        specifier: workspace:^
+        version: link:../../packages/rspack
+      '@gez/rspack-vue2':
+        specifier: workspace:^
+        version: link:../../packages/rspack-vue2
+      '@types/express':
+        specifier: ^4.17.21
+        version: 4.17.21
+      '@types/node':
+        specifier: ^20.6.3
+        version: 20.12.12
+      less:
+        specifier: ^4.2.0
+        version: 4.2.0
+      typescript:
+        specifier: ^5.2.2
+        version: 5.4.5
+      vue:
+        specifier: 2.7.16
+        version: 2.7.16
+      vue-server-renderer:
+        specifier: 2.7.16
+        version: 2.7.16
+      vue-template-compiler:
+        specifier: 2.7.16
+        version: 2.7.16
+      vue-tsc:
+        specifier: ^2.1.6
+        version: 2.1.6(typescript@5.4.5)
+
+  examples/ssr-vue2-remote:
+    dependencies:
+      '@gez/core':
+        specifier: workspace:^
+        version: link:../../packages/core
+      express:
+        specifier: ^4.19.2
+        version: 4.19.2
+    devDependencies:
+      '@gez/rspack':
+        specifier: workspace:^
+        version: link:../../packages/rspack
+      '@gez/rspack-vue2':
+        specifier: workspace:^
+        version: link:../../packages/rspack-vue2
+      '@types/express':
+        specifier: ^4.17.21
+        version: 4.17.21
+      '@types/node':
+        specifier: ^20.6.3
+        version: 20.12.12
+      less:
+        specifier: ^4.2.0
+        version: 4.2.0
+      typescript:
+        specifier: ^5.2.2
+        version: 5.4.5
+      vue:
+        specifier: 2.7.16
+        version: 2.7.16
+      vue-class-setup:
+        specifier: ^1.4.4
+        version: 1.4.4(vue@2.7.16)
+      vue-server-renderer:
+        specifier: 2.7.16
+        version: 2.7.16
+      vue-template-compiler:
+        specifier: 2.7.16
+        version: 2.7.16
       vue-tsc:
         specifier: ^2.1.6
         version: 2.1.6(typescript@5.4.5)

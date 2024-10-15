@@ -1,5 +1,5 @@
 {
-    "name": "ssr-rspack-vue2-remote",
+    "name": "ssr-vue2-remote",
     "version": "0.0.15-alpha.41",
     "private": true,
     "type": "module",
