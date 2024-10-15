@@ -54,7 +54,7 @@ async function moduleLinker(
     const dirname = path.dirname(filename);
     const url = new URL(import.meta.resolve(specifier, parent));
     const text = fs.readFileSync(url.pathname, 'utf-8');
-    const module = new SourceTextModule(text, {
+    const module: SourceTextModule = new SourceTextModule(text, {
         initializeImportMeta: (meta) => {
             meta.filename = filename;
             meta.dirname = dirname;
@@ -65,12 +65,13 @@ async function moduleLinker(
         },
         identifier: specifier,
         context: context,
+        // @ts-ignore
         importModuleDynamically: (specifier, referrer) => {
             // @ts-ignore
             return moduleLinker(specifier, filename, referrer.context);
         }
     });
-    await module.link((specifier, referrer) => {
+    await module.link((specifier: string, referrer) => {
         return moduleLinker(specifier, filename, referrer.context);
     });
     await module.evaluate();
