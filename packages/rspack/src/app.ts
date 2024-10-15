@@ -6,9 +6,7 @@ import {
     type Gez,
     ServerContext,
     type ServerRenderHandle,
-    createApp as _createApp,
-    buildImportmap,
-    installImportmap
+    createApp as _createApp
 } from '@gez/core';
 import { type Compiler, rspack } from '@rspack/core';
 import webpackDevMiddleware from 'webpack-dev-middleware';
@@ -95,13 +93,6 @@ export async function createApp(
         return new Promise<void>((resolve) => {
             done = resolve;
         });
-    };
-    app.zip = async () => {
-        buildImportmap(gez);
-    };
-    app.install = async () => {
-        console.log('install');
-        installImportmap(gez);
     };
     return app;
 }

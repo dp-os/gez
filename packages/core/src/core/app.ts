@@ -5,6 +5,7 @@ import * as serveStatic from 'serve-static';
 import path from 'node:path';
 
 import type { Gez } from './gez';
+import { buildImportmap, installImportmap } from './importmap';
 import { ServerContext, type ServerRenderHandle } from './server-context';
 
 export type Middleware = (
@@ -97,8 +98,12 @@ export async function createApp(gez: Gez): Promise<App> {
             return context;
         },
         async build() {},
-        async zip() {},
+        async zip() {
+            return buildImportmap(gez);
+        },
         async destroy() {},
-        async install() {}
+        async install() {
+            return installImportmap(gez);
+        }
     };
 }
