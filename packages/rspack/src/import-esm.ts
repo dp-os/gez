@@ -21,7 +21,7 @@ export async function importEsmInactive(
     const context = createContext(sandbox);
     const module = await moduleLinker(specifier, parent, context);
 
-    return module.namespace;
+    return module.namespace as Record<string, any>;
 }
 
 async function moduleLinker(
