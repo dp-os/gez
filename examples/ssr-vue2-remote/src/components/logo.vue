@@ -17,7 +17,7 @@ export default defineComponent({
 <script lang="ts" setup>
 defineProps<{}>()
 </script>
-<style lang="less">
+<style lang="less" scoped>
 .logo {
     border: 1px solid red;
     padding: 5px;
