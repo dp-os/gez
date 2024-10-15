@@ -24,10 +24,12 @@ ${files
     })
     .join('\n')}
     <script defer>
-    document.body.appendChild(Object.assign(document.createElement('script'), {
-      type: 'importmap',
-      innerText: JSON.stringify(__importmap__),
-    }));
+((doc) => {
+const importmap = doc.createElement('script');
+importmap.type = 'importmap';
+importmap.innerText = JSON.stringify(__importmap__)
+doc.body.appendChild(importmap);
+ })(document);
     </script>
     <script type="module">
     import "ssr-rspack-vue2-remote/entry";
