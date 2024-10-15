@@ -183,11 +183,16 @@ export function parseModuleConfig(
                     localPath: getLocalPath(value)
                 });
             } else if (Array.isArray(value)) {
-                imports.push({
-                    name: key,
-                    localPath: getLocalPath(value[0]),
-                    remoteUrl: value[1]
-                });
+                try {
+                    const url = new URL(value[1]);
+                    imports.push({
+                        name: key,
+                        localPath: getLocalPath(value[0]),
+                        remoteUrl: url.href
+                    });
+                } catch {
+                    throw new TypeError(`'${key}' 'remoteUrl' parsing failed`);
+                }
             }
         });
     }

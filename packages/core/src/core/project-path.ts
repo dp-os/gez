@@ -3,8 +3,11 @@ import path from 'node:path';
 export type ProjectPath =
     | 'dist'
     | 'dist/client'
-    | 'dist/client/manifest.json'
+    | 'dist/client/package.json'
+    | 'dist/client/versions'
+    | 'dist/client/versions/latest.json'
     | 'dist/server'
+    | 'dist/server/package.json'
     | 'dist/server/entry.js'
     | 'dist/node'
     | 'dist/node/entry.js'
