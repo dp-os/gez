@@ -60,7 +60,6 @@ export class ImportmapPlugin implements RspackPluginInstance {
         compiler.options.externals = externals;
     }
     public applyAssets(compiler: Compiler) {
-        const { options } = this;
         compiler.hooks.thisCompilation.tap(
             'importmap-plugin',
             (compilation: Compilation) => {
@@ -71,58 +70,56 @@ export class ImportmapPlugin implements RspackPluginInstance {
                             .PROCESS_ASSETS_STAGE_ADDITIONAL
                     },
                     (assets: Assets) => {
-                        const stats = compilation.getStats().toJson({
-                            all: false,
-                            assets: true,
-                            hash: true,
-                            entrypoints: true
-                        });
-                        const entrypoints = stats.entrypoints || {};
-                        const exports: Record<string, string> = {};
-                        const hash = stats.hash ?? String(Date.now());
-                        const importmapHash = `importmap.${hash}.js`;
-                        const files = [
-                            importmapHash,
-                            ...Object.keys(assets).map(transFileName)
-                        ];
-                        Object.entries(entrypoints).forEach(([key, value]) => {
-                            const asset = value.assets?.[0];
-                            if (!asset) return;
-                            if (
-                                !key.startsWith('./') &&
-                                !asset.name.endsWith('.js')
-                            )
-                                return;
-
-                            exports[key] = asset.name;
-                        });
-                        const packageJson: PackageJson = {
-                            name: options.name,
-                            version: '1.0.0',
-                            hash,
-                            type: 'module',
-                            exports: exports,
-                            files
-                        };
-
-                        const { RawSource } = compiler.webpack.sources;
-                        const code = toImportmapJsCode(options.name, exports);
-                        compilation.emitAsset(
-                            'importmap.js',
-                            new RawSource(code)
-                        );
-                        compilation.emitAsset(
-                            importmapHash,
-                            new RawSource(code)
-                        );
-
-                        compilation.emitAsset(
-                            'package.json',
-                            new RawSource(JSON.stringify(packageJson, null, 4))
-                        );
+                        this.applyAsset(compiler, compilation, assets);
                     }
                 );
             }
+        );
+    }
+    public applyAsset(
+        compiler: Compiler,
+        compilation: Compilation,
+        assets: Assets
+    ) {
+        const { options } = this;
+        const stats = compilation.getStats().toJson({
+            all: false,
+            assets: true,
+            hash: true,
+            entrypoints: true
+        });
+        const entrypoints = stats.entrypoints || {};
+        const exports: Record<string, string> = {};
+        const hash = stats.hash ?? String(Date.now());
+        const importmapHash = `importmap.${hash}.js`;
+        const files = [
+            importmapHash,
+            ...Object.keys(assets).map(transFileName)
+        ];
+        Object.entries(entrypoints).forEach(([key, value]) => {
+            const asset = value.assets?.[0];
+            if (!asset) return;
+            if (!key.startsWith('./') && !asset.name.endsWith('.js')) return;
+
+            exports[key] = asset.name;
+        });
+        const packageJson: PackageJson = {
+            name: options.name,
+            version: '1.0.0',
+            hash,
+            type: 'module',
+            exports: exports,
+            files
+        };
+
+        const { RawSource } = compiler.webpack.sources;
+        const code = toImportmapJsCode(options.name, exports);
+        compilation.emitAsset('importmap.js', new RawSource(code));
+        compilation.emitAsset(importmapHash, new RawSource(code));
+
+        compilation.emitAsset(
+            'package.json',
+            new RawSource(JSON.stringify(packageJson, null, 4))
         );
     }
 }
