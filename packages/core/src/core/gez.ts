@@ -28,10 +28,6 @@ export interface GezOptions {
      */
     modules?: ModuleConfig;
     /**
-     * 构建版本支持，一般不需要配置
-     */
-    browserslist?: string[];
-    /**
      * 当 isProd = false 时调用
      * @param gez
      * @returns
