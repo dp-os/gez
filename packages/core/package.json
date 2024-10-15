@@ -4,6 +4,9 @@
     "bin": {
         "gez": "./cli.mjs"
     },
+    "engines": {
+        "node": ">=20.13"
+    },
     "scripts": {
         "lint:js": "biome check --write --no-errors-on-unmatched",
         "lint:css": "stylelint '**/*.{css,vue}' --fix --aei",
