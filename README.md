@@ -7,3 +7,10 @@ Gez 一个基于 **[Rspack](https://rspack.dev/)** 构建的 **[Pure ESM](https:
 - 🎯 **依赖管理**: 一次发布，多服务生效
 - 👏 **长久维护**: 从 [Genesis](https://www.npmjs.com/package/@fmfe/genesis-core) 2019 年迭代至今，现更名为: [Gez](https://www.npmjs.com/package/@gez/core)
 
+## 快速开始
+```sh
+# 安装生产依赖
+pnpm install @gez/core express
+# 安装开发依赖
+pnpm install @gez/rspack -D
+```
