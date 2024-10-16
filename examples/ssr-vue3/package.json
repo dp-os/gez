@@ -1,6 +1,6 @@
 {
     "name": "ssr-vue3",
-    "version": "0.0.15-alpha.42",
+    "version": "0.0.15-alpha.43",
     "private": true,
     "type": "module",
     "scripts": {
@@ -17,7 +17,6 @@
     "devDependencies": {
         "@gez/rspack": "workspace:^",
         "@gez/rspack-vue": "workspace:^",
-        "@gez/rspack-vue3": "workspace:^",
         "@types/express": "^4.17.21",
         "@types/node": "^20.6.3",
         "less": "^4.2.0",

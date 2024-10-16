@@ -10,12 +10,16 @@
 import { defineComponent } from 'vue';
 import { Define, PassOnTo, Setup } from 'vue-class-setup';
 
+import { log } from 'ssr-vue2-remote/src/utils';
+
 @Setup
 class App extends Define {
     public count = 1;
 
     @PassOnTo()
-    setup() {}
+    setup() {
+        log('from host');
+    }
 }
 
 export default defineComponent({

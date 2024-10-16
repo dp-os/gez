@@ -7,10 +7,6 @@ export enum PathType {
 
 export interface ModuleConfig {
     /**
-     * dts类型文件生成的目录
-     */
-    typeDir?: `${PathType.root}${string}`;
-    /**
      * 对外导出的文件
      * 必须以 npm: 或 root: 开头
      * npm:开头代表 node_modules 的依赖
@@ -44,10 +40,6 @@ export interface ParsedModuleConfig {
      * 当前服务运行的根目录
      */
     root: string;
-    /**
-     * dts类型文件生成的目录
-     */
-    typeDir: string;
     /**
      * 对外导出的文件
      */
@@ -120,19 +112,6 @@ export function parseModuleConfig(
     root: string,
     config: ModuleConfig = {}
 ): ParsedModuleConfig {
-    let typeDir: ParsedModuleConfig['typeDir'] = '';
-    if (config.typeDir) {
-        if (config.typeDir.startsWith(PathType.root)) {
-            typeDir = path.resolve(
-                root,
-                config.typeDir.substring(PathType.root.length)
-            );
-            if (typeDir === root) {
-                throw new Error('[@gez]: typeDir can not be root');
-            }
-        }
-    }
-
     const exports: ParsedModuleConfig['exports'] = [];
     if (config.exports) {
         config.exports.forEach((key) => {
@@ -223,5 +202,5 @@ export function parseModuleConfig(
         name,
         localPath: path.resolve(root, 'dist')
     });
-    return { name, root, typeDir, exports, imports, externals };
+    return { name, root, exports, imports, externals };
 }

@@ -99,9 +99,14 @@ export class ImportmapPlugin implements RspackPluginInstance {
         Object.entries(entrypoints).forEach(([key, value]) => {
             const asset = value.assets?.at(-1);
             if (!asset) return;
-            if (!key.startsWith('./') && !asset.name.endsWith('.js')) return;
+            const target = asset.name;
+            if (!key.startsWith('./') && !target.endsWith('.js')) return;
 
-            exports[key] = asset.name;
+            exports[key] = target;
+            // 支持 index 导出; 当导出文件为 src/utils/index.js 时, exports 和 importmap 需要支持 src/utils 和 src/utils/index 的路径使用
+            if (key.endsWith('/index')) {
+                exports[key.replace(/\/index$/, '')] = target;
+            }
         });
         const packageJson: PackageJson = {
             name: options.name,
