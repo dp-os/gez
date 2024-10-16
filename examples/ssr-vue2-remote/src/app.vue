@@ -6,8 +6,8 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { Define, Setup } from 'vue-class-setup';
-import Logo from './components/logo.vue';
 import layout from './components/layout.vue';
+import Logo from './components/logo.vue';
 
 @Setup
 class App extends Define {}

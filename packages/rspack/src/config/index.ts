@@ -1,9 +1,9 @@
 import type { Gez } from '@gez/core';
 import type { RspackOptions } from '@rspack/core';
 
-import type { BuildTarget } from './base';
+import type { BuildTarget, CreateConfig } from './base';
 import { createBaseConfig } from './base-config';
-export { type BuildTarget, type ConfigCallback } from './base';
+export { type BuildTarget, type CreateConfig } from './base';
 
 export interface DefineConfigOptions {
     gez: Gez;
@@ -13,7 +13,7 @@ export interface DefineConfigOptions {
 
 export function defineConfig(
     cb: (options: DefineConfigOptions) => RspackOptions
-) {
+): CreateConfig {
     return (gez: Gez, buildTarget: BuildTarget) => {
         return cb({
             gez,

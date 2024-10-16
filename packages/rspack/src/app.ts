@@ -12,10 +12,10 @@ import { type Compiler, rspack } from '@rspack/core';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 
-import type { ConfigCallback } from './config';
+import type { CreateConfig } from './config';
 import { importEsmInactive } from './import-esm';
 
-function middleware(gez: Gez, config: ConfigCallback) {
+function middleware(gez: Gez, config: CreateConfig) {
     let clientCompiler: Compiler | null = null;
     let dev = (req: IncomingMessage, res: ServerResponse, next?: Function) => {
         return next?.();
@@ -49,10 +49,7 @@ function middleware(gez: Gez, config: ConfigCallback) {
     };
 }
 
-export async function createApp(
-    gez: Gez,
-    config: ConfigCallback
-): Promise<App> {
+export async function createApp(gez: Gez, config: CreateConfig): Promise<App> {
     const app = await _createApp(gez);
     app.middlewares.unshift(middleware(gez, config));
     app.render = async (params: any): Promise<ServerContext> => {

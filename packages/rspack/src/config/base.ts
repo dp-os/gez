@@ -26,7 +26,7 @@ export abstract class BuildConfig<T> {
     protected abstract getServer(): T;
 }
 
-export type ConfigCallback = (
+export type CreateConfig = (
     gez: Gez,
     buildTarget: BuildTarget
 ) => RspackOptions;
