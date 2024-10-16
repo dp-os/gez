@@ -2,12 +2,17 @@ import type { ServerContext } from '@gez/core';
 import { createRenderer } from 'vue-server-renderer';
 import { createApp } from './create-app';
 
+const renderer = createRenderer();
+
 export default async (ctx: ServerContext, params: any) => {
     const files = await ctx.getImportmapFiles();
 
     const { app } = createApp();
+    const vueCtx = {
+        renderStyles: () => ''
+    };
+    const html = await renderer.renderToString(app, vueCtx);
 
-    const html = await createRenderer({}).renderToString(app);
     ctx.html = `
 <!DOCTYPE html>
 <html>
@@ -15,6 +20,7 @@ export default async (ctx: ServerContext, params: any) => {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gen Rspack</title>
+    ${vueCtx.renderStyles()}
 </head>
 <body>
     ${html}
