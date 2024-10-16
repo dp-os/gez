@@ -19,7 +19,6 @@ export default {
         });
     },
     modules: {
-        typeDir: 'root:types',
         /**
          * 导出的文件
          */
