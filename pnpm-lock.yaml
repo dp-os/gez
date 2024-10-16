@@ -440,7 +440,7 @@ importers:
   packages/rspack-vue3:
     dependencies:
       '@gez/rspack':
-        specifier: ^0.0.15-alpha.42
+        specifier: 0.0.15-alpha.43
         version: link:../rspack
       css-loader:
         specifier: ^7.1.2
@@ -465,10 +465,10 @@ importers:
         version: 4.1.3
     devDependencies:
       '@gez/core':
-        specifier: ^0.0.15-alpha.42
+        specifier: 0.0.15-alpha.43
         version: link:../core
       '@gez/lint':
-        specifier: ^0.0.15-alpha.42
+        specifier: 0.0.15-alpha.43
         version: link:../lint
       '@types/node':
         specifier: 20.12.12
