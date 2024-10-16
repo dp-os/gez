@@ -1,6 +1,6 @@
 {
     "name": "ssr-vue2-remote",
-    "version": "0.0.15-alpha.41",
+    "version": "0.0.15-alpha.42",
     "private": true,
     "type": "module",
     "scripts": {
@@ -16,8 +16,6 @@
         "express": "^4.19.2"
     },
     "devDependencies": {
-        "vue-tsc": "^2.1.6",
-        "vue-class-setup": "^1.4.4",
         "@gez/rspack": "workspace:^",
         "@gez/rspack-vue2": "workspace:^",
         "@types/express": "^4.17.21",
@@ -25,7 +23,9 @@
         "less": "^4.2.0",
         "typescript": "^5.2.2",
         "vue": "2.7.16",
+        "vue-class-setup": "^1.4.4",
         "vue-server-renderer": "2.7.16",
-        "vue-template-compiler": "2.7.16"
+        "vue-template-compiler": "2.7.16",
+        "vue-tsc": "^2.1.6"
     }
 }

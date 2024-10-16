@@ -13,6 +13,7 @@
         "immer": "^10.1.1"
     },
     "devDependencies": {
+        "@biomejs/biome": "1.9.2",
         "@gez/lint": "0.0.9",
         "@types/node": "20.12.12",
         "@vitest/coverage-v8": "1.6.0",
@@ -21,10 +22,9 @@
         "typescript": "5.4.5",
         "unbuild": "2.0.0",
         "vitest": "1.6.0",
-        "vue": "^3.5.6",
-        "@biomejs/biome": "1.9.2"
+        "vue": "^3.5.6"
     },
-    "version": "0.0.15-alpha.41",
+    "version": "0.0.15-alpha.42",
     "type": "module",
     "private": false,
     "exports": {
