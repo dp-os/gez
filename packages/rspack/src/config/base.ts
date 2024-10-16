@@ -1,5 +1,4 @@
 import type { Gez } from '@gez/core';
-import type { RspackOptions } from '@rspack/core';
 
 export type BuildTarget = 'node' | 'client' | 'server';
 
@@ -25,8 +24,3 @@ export abstract class BuildConfig<T> {
     protected abstract getClient(): T;
     protected abstract getServer(): T;
 }
-
-export type CreateConfig = (
-    gez: Gez,
-    buildTarget: BuildTarget
-) => RspackOptions;

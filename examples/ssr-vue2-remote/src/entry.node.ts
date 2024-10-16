@@ -4,7 +4,13 @@ import express from 'express';
 export default {
     name: 'ssr-vue2-remote',
     async createDevApp(gez) {
-        return import('@gez/rspack-vue2').then((m) => m.createApp(gez));
+        return import('@gez/rspack-vue').then((m) =>
+            m.createApp(gez, () => {
+                return {
+                    vue: 2
+                };
+            })
+        );
     },
     async createServer(gez) {
         const server = express();

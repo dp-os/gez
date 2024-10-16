@@ -3,8 +3,17 @@ import express from 'express';
 
 export default {
     name: 'ssr-vue3',
+    modules: {
+        exports: ['npm:vue']
+    },
     async createDevApp(gez) {
-        return import('@gez/rspack-vue3').then((m) => m.createApp(gez));
+        return import('@gez/rspack-vue').then((m) =>
+            m.createApp(gez, () => {
+                return {
+                    vue: 3
+                };
+            })
+        );
     },
     async createServer(gez) {
         const server = express();

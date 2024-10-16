@@ -1,6 +1,6 @@
 <template>
     <div class="box">
-        <h2>rspack + vue2</h2>
+        <h2>rspack + vue3</h2>
         Count value:
         {{ count }}
         <button @click="count++">Add</button>
@@ -8,14 +8,11 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { Define, PassOnTo, Setup } from 'vue-class-setup';
+import { Define, Setup } from 'vue-class-setup';
 
 @Setup
 class App extends Define {
     public count = 1;
-
-    @PassOnTo()
-    setup() {}
 }
 
 export default defineComponent({
@@ -24,7 +21,7 @@ export default defineComponent({
 });
 </script>
 <script lang="ts" setup>
-defineProps();
+defineProps<{}>();
 </script>
 <style lang="less">
 div,

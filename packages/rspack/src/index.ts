@@ -1,8 +1,7 @@
-export * from './app';
+export { createApp } from './app';
 export {
-    defineConfig,
-    type DefineConfigOptions,
-    type BuildTarget
-} from './config';
-
-export * from './importmap';
+    createBuildContext,
+    type BuildContext,
+    type BuildTarget,
+    type UpdateBuildContext
+} from './build-config';

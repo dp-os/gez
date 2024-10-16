@@ -16,12 +16,13 @@
     },
     "devDependencies": {
         "@gez/rspack": "workspace:^",
+        "@gez/rspack-vue": "workspace:^",
         "@gez/rspack-vue3": "workspace:^",
         "@types/express": "^4.17.21",
         "@types/node": "^20.6.3",
         "less": "^4.2.0",
         "typescript": "^5.2.2",
-        "vue": "3.5.6",
+        "vue": "3.5.12",
         "vue-tsc": "^2.1.6"
     }
 }

@@ -12,18 +12,36 @@ import { type Compiler, rspack } from '@rspack/core';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 
-import type { CreateConfig } from './config';
+import { type UpdateBuildContext, createBuildContext } from './build-config';
 import { importEsmInactive } from './import-esm';
 
-function middleware(gez: Gez, config: CreateConfig) {
+function createConfig(gez: Gez, updateBuildContext?: UpdateBuildContext) {
+    const client = createBuildContext(gez, 'client');
+    const server = createBuildContext(gez, 'server');
+    const node = createBuildContext(gez, 'node');
+
+    updateBuildContext?.(client);
+    updateBuildContext?.(server);
+    updateBuildContext?.(node);
+    return {
+        clientConfig: client.config,
+        serverConfig: server.config,
+        nodeConfig: node.config
+    };
+}
+
+function middleware(gez: Gez, updateBuildContext?: UpdateBuildContext) {
     let clientCompiler: Compiler | null = null;
     let dev = (req: IncomingMessage, res: ServerResponse, next?: Function) => {
         return next?.();
     };
     let hot = dev;
     if (gez.command === COMMAND.dev) {
-        const clientConfig = config(gez, 'client');
-        const serverConfig = config(gez, 'server');
+        const { clientConfig, serverConfig } = createConfig(
+            gez,
+            updateBuildContext
+        );
+
         clientCompiler = rspack(clientConfig);
         const serverCompiler = rspack(serverConfig);
         // @ts-expect-error
@@ -49,9 +67,12 @@ function middleware(gez: Gez, config: CreateConfig) {
     };
 }
 
-export async function createApp(gez: Gez, config: CreateConfig): Promise<App> {
+export async function createApp(
+    gez: Gez,
+    updateBuildContext?: UpdateBuildContext
+): Promise<App> {
     const app = await _createApp(gez);
-    app.middlewares.unshift(middleware(gez, config));
+    app.middlewares.unshift(middleware(gez, updateBuildContext));
     app.render = async (params: any): Promise<ServerContext> => {
         const module = await importEsmInactive(
             gez.getProjectPath('dist/server/entry.js'),
@@ -71,9 +92,10 @@ export async function createApp(gez: Gez, config: CreateConfig): Promise<App> {
         return context;
     };
     app.build = async () => {
-        const clientConfig = config(gez, 'client');
-        const serverConfig = config(gez, 'server');
-        const nodeConfig = config(gez, 'node');
+        const { clientConfig, serverConfig, nodeConfig } = createConfig(
+            gez,
+            updateBuildContext
+        );
         const compiler = rspack([clientConfig, serverConfig, nodeConfig]);
         let done = () => {};
         compiler.run((err) => {

@@ -17,7 +17,7 @@
     },
     "devDependencies": {
         "@gez/rspack": "workspace:^",
-        "@gez/rspack-vue2": "workspace:^",
+        "@gez/rspack-vue": "workspace:^",
         "@types/express": "^4.17.21",
         "@types/node": "^20.6.3",
         "less": "^4.2.0",
