@@ -11,7 +11,7 @@
     },
     "devDependencies": {
         "@biomejs/biome": "1.9.2",
-        "@gez/lint": "0.0.9",
+        "@gez/lint": "workspace:^",
         "@types/node": "20.12.12",
         "@vitest/coverage-v8": "1.6.0",
         "stylelint": "16.5.0",
@@ -47,7 +47,7 @@
         "stylelint-order": "^6.0.4",
         "vue-eslint-parser": "^9.4.2"
     },
-    "version": "0.0.15-alpha.44",
+    "version": "0.0.15-alpha.45",
     "type": "module",
     "private": false,
     "exports": {
