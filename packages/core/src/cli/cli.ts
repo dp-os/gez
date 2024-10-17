@@ -1,8 +1,5 @@
 import path from 'node:path';
 
-// @ts-expect-error
-import { tsImport } from 'tsx/esm/api';
-
 import { COMMAND, Gez, type GezOptions, getProjectPath } from '../core';
 
 export function cli() {
@@ -25,56 +22,47 @@ export function cli() {
             runProdApp();
             break;
         default:
-            createMod(command).import();
+            tsImport(command);
             break;
     }
 }
 
-interface Mod {
-    import: () => Promise<Record<string, any>>;
-    dispose: () => Promise<void>;
-}
-export function createMod(file: string): Mod {
-    const fullFile = path.resolve(file);
-    return {
-        async import() {
-            return tsImport(fullFile, import.meta.url);
-        },
-        async dispose() {}
-    };
+async function tsImport(file: string): Promise<Record<string, any>> {
+    // @ts-ignore
+    const result = await import('tsx/esm/api');
+    return result.tsImport(path.resolve(file), import.meta.url);
 }
 
 async function runDevApp(command: COMMAND) {
-    const mod = createMod(path.resolve('src/entry.node.ts'));
-    const module = await mod.import();
+    const module = await tsImport(path.resolve('src/entry.node.ts'));
     const options: GezOptions = module.default || {};
 
     const gez = new Gez(options);
     await gez.init(command);
-
+    const exit = (ok: boolean) => {
+        if (!ok) {
+            process.exit(7);
+        }
+    };
     switch (command) {
         case COMMAND.install:
             await gez.install();
             await gez.destroy();
-            await mod.dispose();
             break;
         case COMMAND.dev:
             options?.createServer?.(gez);
             break;
         case COMMAND.build:
-            await gez.build();
+            exit(await gez.build());
             await gez.destroy();
-            await mod.dispose();
             break;
         case COMMAND.zip:
             await gez.zip();
             await gez.destroy();
-            await mod.dispose();
             break;
         case COMMAND.preview:
-            await gez.build();
+            exit(await gez.build());
             await gez.destroy();
-            await mod.dispose();
             await runProdApp();
             break;
     }

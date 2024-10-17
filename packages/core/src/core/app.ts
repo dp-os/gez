@@ -28,7 +28,7 @@ export interface App {
     /**
      * 执行构建
      */
-    build: () => Promise<void>;
+    build: () => Promise<boolean>;
     /**
      * 生成远程的压缩包
      */
@@ -97,7 +97,9 @@ export async function createApp(gez: Gez): Promise<App> {
 
             return context;
         },
-        async build() {},
+        async build() {
+            return true;
+        },
         async zip() {
             return compression(gez);
         },

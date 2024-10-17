@@ -8,11 +8,15 @@ import {
     createApp as _createApp
 } from '@gez/core';
 import { import$ } from '@gez/import';
-import { type Compiler, rspack } from '@rspack/core';
-import webpackDevMiddleware from 'webpack-dev-middleware';
-import webpackHotMiddleware from 'webpack-hot-middleware';
+import { type Compiler, type RspackOptions, rspack } from '@rspack/core';
+import devMiddleware from 'webpack-dev-middleware';
+import hotMiddleware from 'webpack-hot-middleware';
 
-import { type UpdateBuildContext, createBuildContext } from './build-config';
+import {
+    type BuildTarget,
+    type UpdateBuildContext,
+    createBuildContext
+} from './build-config';
 
 function createConfig(gez: Gez, updateBuildContext?: UpdateBuildContext) {
     const client = createBuildContext(gez, 'client');
@@ -44,17 +48,17 @@ function middleware(gez: Gez, updateBuildContext?: UpdateBuildContext) {
         clientCompiler = rspack(clientConfig);
         const serverCompiler = rspack(serverConfig);
         // @ts-expect-error
-        webpackDevMiddleware(serverCompiler, {
+        devMiddleware(serverCompiler, {
             publicPath: gez.base,
             writeToDisk: true
         });
         // @ts-expect-error
-        dev = webpackDevMiddleware(clientCompiler, {
+        dev = devMiddleware(clientCompiler, {
             writeToDisk: true,
             publicPath: gez.base
         });
         // @ts-expect-error
-        hot = webpackHotMiddleware(clientCompiler, {
+        hot = hotMiddleware(clientCompiler, {
             heartbeat: 5000,
             path: `${gez.base}hot-middleware`
         });
@@ -95,22 +99,62 @@ export async function createApp(
             gez,
             updateBuildContext
         );
-        const compiler = rspack([clientConfig, serverConfig, nodeConfig]);
-        let done = () => {};
-        compiler.run((err) => {
-            if (err) {
-                throw err;
+        const list: BuildItem[] = [
+            {
+                target: 'client',
+                build: () => rspackBuild(clientConfig)
+            },
+            {
+                target: 'server',
+                build: () => rspackBuild(serverConfig)
+            },
+            {
+                target: 'node',
+                build: () => rspackBuild(nodeConfig)
             }
-            compiler.close((closeErr) => {
-                if (closeErr) {
-                    throw closeErr;
-                }
-                done();
-            });
-        });
-        return new Promise<void>((resolve) => {
-            done = resolve;
-        });
+        ];
+        for (const item of list) {
+            const successful = await item.build();
+            if (!successful) {
+                return false;
+            }
+        }
+        return true;
     };
     return app;
+}
+
+interface BuildItem {
+    target: BuildTarget;
+    build: () => Promise<boolean>;
+}
+
+async function rspackBuild(options: RspackOptions) {
+    const ok = await new Promise<boolean>((resolve) => {
+        const compiler = rspack(options);
+        compiler.run((err, stats) => {
+            if (err) {
+                console.error(err);
+                resolve(false);
+                return;
+            } else if (stats?.hasErrors()) {
+                stats.toJson({ errors: true }).errors?.forEach((err) => {
+                    console.error(err);
+                });
+
+                return resolve(false);
+            }
+            compiler.close((err) => {
+                if (err) {
+                    console.error(err);
+                    resolve(false);
+                    return;
+                }
+                resolve(true);
+            });
+        });
+    });
+    // 避免前面的进度条被 rspack.ProgressPlugin 清理了
+    ok && console.log('');
+    return ok;
 }
