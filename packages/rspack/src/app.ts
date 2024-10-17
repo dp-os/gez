@@ -1,5 +1,4 @@
 import type { IncomingMessage, ServerResponse } from 'node:http';
-
 import {
     type App,
     COMMAND,
@@ -8,6 +7,7 @@ import {
     type ServerRenderHandle,
     createApp as _createApp
 } from '@gez/core';
+import { import$ } from '@gez/import';
 import { type Compiler, rspack } from '@rspack/core';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
@@ -74,7 +74,7 @@ export async function createApp(
     const app = await _createApp(gez);
     app.middlewares.unshift(middleware(gez, updateBuildContext));
     app.render = async (params: any): Promise<ServerContext> => {
-        const module = await importEsmInactive(
+        const module = await import$(
             gez.getProjectPath('dist/server/entry.js'),
             import.meta.url,
             {

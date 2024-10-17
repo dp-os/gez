@@ -1,5 +1,5 @@
 {
-    "name": "@gez/rspack",
+    "name": "@gez/import",
     "template": "library-node",
     "scripts": {
         "lint:js": "biome check --write --no-errors-on-unmatched",
@@ -9,20 +9,11 @@
         "coverage": "vitest run --coverage --pass-with-no-tests",
         "build": "unbuild"
     },
-    "dependencies": {
-        "@gez/core": "workspace:^",
-        "@gez/import": "workspace:^",
-        "@rspack/core": "^1.0.13",
-        "webpack-dev-middleware": "^7.4.2",
-        "webpack-hot-middleware": "^2.26.1",
-        "webpack-node-externals": "~3.0.0"
-    },
     "devDependencies": {
         "@biomejs/biome": "1.9.2",
+        "@gez/core": "workspace:^",
         "@gez/lint": "workspace:^",
         "@types/node": "20.12.12",
-        "@types/webpack-hot-middleware": "^2.25.9",
-        "@types/webpack-node-externals": "^3.0.4",
         "@vitest/coverage-v8": "1.6.0",
         "stylelint": "16.5.0",
         "typescript": "5.4.5",
