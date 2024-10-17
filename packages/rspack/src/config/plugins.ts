@@ -8,10 +8,8 @@ export class Plugins extends BuildConfig<Config> {
     protected getClient(): Config {
         const { gez } = this;
         const plugins: Config = [
-            new ImportmapPlugin(gez.moduleConfig),
-            new rspack.ProgressPlugin({
-                prefix: `client:${gez.name}`
-            })
+            this.getProgressPlugin(),
+            new ImportmapPlugin(gez.moduleConfig)
         ];
         if (!gez.isProd) {
             plugins.push(new rspack.HotModuleReplacementPlugin());
@@ -22,19 +20,17 @@ export class Plugins extends BuildConfig<Config> {
     protected getServer(): Config {
         const { gez } = this;
         return [
-            new rspack.ProgressPlugin({
-                prefix: `server:${gez.name}`
-            }),
+            this.getProgressPlugin(),
             new ImportmapPlugin(gez.moduleConfig)
         ];
     }
 
     protected getNode(): Config {
-        const { gez } = this;
-        return [
-            new rspack.ProgressPlugin({
-                prefix: `node:${gez.name}`
-            })
-        ];
+        return [this.getProgressPlugin()];
+    }
+    private getProgressPlugin() {
+        return new rspack.ProgressPlugin({
+            prefix: `${this.target}: ${this.get.name}`
+        });
     }
 }

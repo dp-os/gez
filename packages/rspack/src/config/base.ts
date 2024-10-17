@@ -4,14 +4,14 @@ export type BuildTarget = 'node' | 'client' | 'server';
 
 export abstract class BuildConfig<T> {
     protected gez: Gez;
-    protected buildTarget: BuildTarget;
+    protected target: BuildTarget;
     constructor(gez: Gez, buildTarget: BuildTarget) {
         this.gez = gez;
-        this.buildTarget = buildTarget;
+        this.target = buildTarget;
     }
 
     public get(): T {
-        switch (this.buildTarget) {
+        switch (this.target) {
             case 'node':
                 return this.getNode();
             case 'client':

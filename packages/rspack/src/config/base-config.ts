@@ -59,6 +59,7 @@ export function createBaseConfig(
         ]
     };
     return {
+        stats: 'errors-warnings',
         context: gez.root,
         name: gez.name,
         plugins: plugins.get(),
