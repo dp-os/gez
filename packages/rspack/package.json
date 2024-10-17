@@ -11,8 +11,7 @@
     },
     "dependencies": {
         "@gez/core": "workspace:^",
-        "@rspack/core": "1.0.11",
-        "@types/find": "^0.2.4",
+        "@rspack/core": "^1.0.13",
         "webpack-dev-middleware": "^7.4.2",
         "webpack-hot-middleware": "^2.26.1",
         "webpack-node-externals": "~3.0.0"
