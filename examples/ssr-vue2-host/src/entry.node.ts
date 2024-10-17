@@ -26,11 +26,7 @@ export default {
     },
     modules: {
         imports: {
-            // 'ssr-vue2-remote': 'root:../ssr-vue2-remote/dist',
-            'ssr-vue2-remote': [
-                'root:../../.root/ssr-vue2-remote',
-                'http://localhost:3003/ssr-vue2-remote/versions/latest.json'
-            ]
+            'ssr-vue2-remote': 'root:../ssr-vue2-remote/dist'
         },
         externals: {
             vue: 'ssr-vue2-remote/npm/vue'
