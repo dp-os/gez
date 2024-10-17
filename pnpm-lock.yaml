@@ -54,9 +54,6 @@ importers:
       vue-server-renderer:
         specifier: 2.7.16
         version: 2.7.16
-      vue-template-compiler:
-        specifier: 2.7.16
-        version: 2.7.16
       vue-tsc:
         specifier: ^2.1.6
         version: 2.1.6(typescript@5.4.5)
@@ -95,9 +92,6 @@ importers:
         specifier: ^1.4.4
         version: 1.4.4(vue@2.7.16)
       vue-server-renderer:
-        specifier: 2.7.16
-        version: 2.7.16
-      vue-template-compiler:
         specifier: 2.7.16
         version: 2.7.16
       vue-tsc:
@@ -7499,13 +7493,6 @@ packages:
       hash-sum: 1.0.2
       loader-utils: 1.4.2
     dev: false
-
-  /vue-template-compiler@2.7.16:
-    resolution: {integrity: sha512-AYbUWAJHLGGQM7+cNTELw+KsOG9nl2CnSv467WobS5Cv9uk3wFcnr1Etsz2sEIHEZvw1U+o9mRlEO6QbZvUPGQ==}
-    dependencies:
-      de-indent: 1.0.2
-      he: 1.2.0
-    dev: true
 
   /vue-template-es2015-compiler@1.9.1:
     resolution: {integrity: sha512-4gDntzrifFnCEvyoO8PqyJDmguXgVPxKiIxrBKjIowvL9l+N66196+72XVYR8BBf1Uv1Fgt3bGevJ+sEmxfZzw==}

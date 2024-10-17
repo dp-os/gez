@@ -24,7 +24,6 @@
         "typescript": "^5.2.2",
         "vue": "2.7.16",
         "vue-server-renderer": "2.7.16",
-        "vue-template-compiler": "2.7.16",
         "vue-tsc": "^2.1.6"
     }
 }

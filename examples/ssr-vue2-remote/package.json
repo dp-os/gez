@@ -25,7 +25,6 @@
         "vue": "2.7.16",
         "vue-class-setup": "^1.4.4",
         "vue-server-renderer": "2.7.16",
-        "vue-template-compiler": "2.7.16",
         "vue-tsc": "^2.1.6"
     }
 }
