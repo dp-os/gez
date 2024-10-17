@@ -13,7 +13,6 @@ import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 
 import { type UpdateBuildContext, createBuildContext } from './build-config';
-import { importEsmInactive } from './import-esm';
 
 function createConfig(gez: Gez, updateBuildContext?: UpdateBuildContext) {
     const client = createBuildContext(gez, 'client');

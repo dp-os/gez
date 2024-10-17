@@ -6,24 +6,35 @@ type Config = NonNullable<RspackOptions['plugins']>;
 
 export class Plugins extends BuildConfig<Config> {
     protected getClient(): Config {
-        const {
-            gez: { isProd, moduleConfig }
-        } = this;
-        const plugins: Config = [new ImportmapPlugin(moduleConfig)];
-        if (!isProd) {
+        const { gez } = this;
+        const plugins: Config = [
+            new ImportmapPlugin(gez.moduleConfig),
+            new rspack.ProgressPlugin({
+                prefix: `client:${gez.name}`
+            })
+        ];
+        if (!gez.isProd) {
             plugins.push(new rspack.HotModuleReplacementPlugin());
         }
         return plugins;
     }
 
     protected getServer(): Config {
-        const {
-            gez: { moduleConfig }
-        } = this;
-        return [new ImportmapPlugin(moduleConfig)];
+        const { gez } = this;
+        return [
+            new rspack.ProgressPlugin({
+                prefix: `server:${gez.name}`
+            }),
+            new ImportmapPlugin(gez.moduleConfig)
+        ];
     }
 
     protected getNode(): Config {
-        return [];
+        const { gez } = this;
+        return [
+            new rspack.ProgressPlugin({
+                prefix: `node:${gez.name}`
+            })
+        ];
     }
 }
