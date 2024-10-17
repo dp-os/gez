@@ -131,20 +131,20 @@ export class ImportmapPlugin implements RspackPluginInstance {
 
 function toImportmapJsCode(name: string, imports: Record<string, string>) {
     return `
-    ((global) => {
-        const name = '${name}';
-        const importsMap = ${JSON.stringify(imports)};
-        const importmapKey = '__importmap__';
-        const importmap = global[importmapKey] = global[importmapKey] || {};
-        const imports = importmap.imports = importmap.imports || {};
-        const joinName = (value) => {
-            return name + value.substring(1);
-        }
-        Object.entries(importsMap).forEach(([key, value]) => {
-            imports[joinName(key)] = '/' + joinName(value);
-        });
-    })(globalThis);
-    `;
+;((global) => {
+    const name = '${name}';
+    const importsMap = ${JSON.stringify(imports)};
+    const importmapKey = '__importmap__';
+    const importmap = global[importmapKey] = global[importmapKey] || {};
+    const imports = importmap.imports = importmap.imports || {};
+    const joinName = (value) => {
+        return name + value.substring(1);
+    }
+    Object.entries(importsMap).forEach(([key, value]) => {
+        imports[joinName(key)] = '/' + joinName(value);
+    });
+})(globalThis);
+`.trim();
 }
 
 /**
