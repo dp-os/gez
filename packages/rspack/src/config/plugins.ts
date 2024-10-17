@@ -30,7 +30,7 @@ export class Plugins extends BuildConfig<Config> {
     }
     private getProgressPlugin() {
         return new rspack.ProgressPlugin({
-            prefix: `${this.target}: ${this.get.name}`
+            prefix: this.target
         });
     }
 }
