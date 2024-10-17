@@ -18,7 +18,7 @@
     },
     "devDependencies": {
         "@biomejs/biome": "1.9.2",
-        "@gez/lint": "0.0.9",
+        "@gez/lint": "workspace:^",
         "@types/node": "20.12.12",
         "@types/webpack-hot-middleware": "^2.25.9",
         "@types/webpack-node-externals": "^3.0.4",
