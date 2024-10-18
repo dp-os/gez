@@ -4,7 +4,10 @@ import { getFile, getJsonFile } from './fetch';
 import { getPkgHash } from './pkg';
 import { decompressionDir } from './zip';
 
-export async function decompression(gez: Gez, maxRetryCount = 3) {
+export async function decompression(
+    gez: Gez,
+    maxRetryCount = 3
+): Promise<boolean> {
     let currentImports = gez.moduleConfig.imports.filter((item) => {
         const remoteUrl = item.remoteUrl;
         if (!remoteUrl) {
@@ -48,27 +51,25 @@ export async function decompression(gez: Gez, maxRetryCount = 3) {
         }
         return next();
     };
-    const start = async () => {
+    const start = async (): Promise<boolean> => {
         await next();
         // 没有错误需要处理
         if (!tryImports.length) {
-            return;
+            return true;
         }
         // 处理下一次的请求
         currentImports = tryImports;
         tryImports = [];
         currentRetryCount++;
         if (currentRetryCount > maxRetryCount) {
-            throw new Error(`Download failed`);
+            return false;
         }
-        console.log(`Try again in 10 seconds`);
         await new Promise<void>((resolve) => {
             setTimeout(resolve, 1000 * 10);
         });
         return start();
     };
-    await start();
-    console.log(`Done!`);
+    return start();
 }
 
 function getZipUrl(url: URL, hash: string) {

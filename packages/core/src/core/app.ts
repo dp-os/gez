@@ -32,15 +32,15 @@ export interface App {
     /**
      * 生成远程的压缩包
      */
-    release: () => Promise<void>;
+    release: () => Promise<boolean>;
     /**
      * 销毁实例，释放内存
      */
-    destroy: () => Promise<void>;
+    destroy: () => Promise<boolean>;
     /**
      * 安装依赖执行命令
      */
-    install: () => Promise<void>;
+    install: () => Promise<boolean>;
 }
 
 export async function createApp(gez: Gez): Promise<App> {
@@ -103,7 +103,9 @@ export async function createApp(gez: Gez): Promise<App> {
         async release() {
             return compression(gez);
         },
-        async destroy() {},
+        async destroy() {
+            return true;
+        },
         async install() {
             return decompression(gez, 0);
         }

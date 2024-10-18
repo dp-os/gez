@@ -46,23 +46,23 @@ async function runDevApp(command: COMMAND) {
     };
     switch (command) {
         case COMMAND.install:
-            await gez.install();
-            await gez.destroy();
+            exit(await gez.install());
+            exit(await gez.destroy());
             break;
         case COMMAND.dev:
             options?.createServer?.(gez);
             break;
         case COMMAND.build:
             exit(await gez.build());
-            await gez.destroy();
+            exit(await gez.destroy());
             break;
         case COMMAND.release:
-            await gez.release();
-            await gez.destroy();
+            exit(await gez.release());
+            exit(await gez.destroy());
             break;
         case COMMAND.preview:
             exit(await gez.build());
-            await gez.destroy();
+            exit(await gez.destroy());
             await runProdApp();
             break;
     }

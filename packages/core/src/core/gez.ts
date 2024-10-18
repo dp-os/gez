@@ -152,8 +152,9 @@ export class Gez {
     public async destroy() {
         const { _app } = this;
         if (_app) {
-            _app.destroy();
+            return _app.destroy();
         }
+        return true;
     }
 
     /**

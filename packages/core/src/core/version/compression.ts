@@ -10,7 +10,7 @@ import { compressionDir } from './zip';
  * @param sourceDir 压缩目录
  * @param outputFilename 压缩的文件名
  */
-export function compression(gez: Gez) {
+export function compression(gez: Gez): boolean {
     const outputDir = path.resolve(
         gez.getProjectPath('dist/client'),
         'versions'
@@ -22,9 +22,8 @@ export function compression(gez: Gez) {
         const packageFile = path.resolve(root, 'package.json');
         const hash = getPkgHash(packageFile);
         if (!hash) {
-            throw new Error(
-                `'${root}' hash does not exist, compression failed`
-            );
+            console.error(`'${root}' hash does not exist, compression failed`);
+            return false;
         }
         const filename = `${hash}.zip`;
         compressionDir(root, path.resolve(outputDir, filename));
@@ -41,6 +40,7 @@ export function compression(gez: Gez) {
     console.log(
         `Compression completed, See detail in '${path.relative(process.cwd(), outputDir)}'`
     );
+    return true;
 }
 
 function contentHash(text: string) {
