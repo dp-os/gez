@@ -6,9 +6,9 @@
     "scripts": {
         "dev": "gez dev",
         "build": "gez build",
-        "build:zip": "gez zip",
+        "build:release": "gez release",
         "build:dts": "vue-tsc --declaration --emitDeclarationOnly --noEmit false --outDir dist/server/src",
-        "build:all": "gez build && npm run build:dts && gez zip",
+        "build:all": "gez build && npm run build:dts && gez release",
         "start": "gez start"
     },
     "dependencies": {

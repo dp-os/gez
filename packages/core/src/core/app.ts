@@ -32,7 +32,7 @@ export interface App {
     /**
      * 生成远程的压缩包
      */
-    zip: () => Promise<void>;
+    release: () => Promise<void>;
     /**
      * 销毁实例，释放内存
      */
@@ -100,7 +100,7 @@ export async function createApp(gez: Gez): Promise<App> {
         async build() {
             return true;
         },
-        async zip() {
+        async release() {
             return compression(gez);
         },
         async destroy() {},
