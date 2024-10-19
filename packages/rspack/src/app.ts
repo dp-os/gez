@@ -90,6 +90,8 @@ export async function createApp(
             urlObject.href,
             {
                 console,
+                setTimeout,
+                clearTimeout,
                 process,
                 URL,
                 global
