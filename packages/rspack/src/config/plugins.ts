@@ -1,4 +1,5 @@
 import { type RspackOptions, rspack } from '@rspack/core';
+import NodePolyfillPlugin from 'node-polyfill-webpack-plugin';
 import { ImportmapPlugin } from '../importmap';
 import { BuildConfig } from './base';
 
@@ -21,12 +22,13 @@ export class Plugins extends BuildConfig<Config> {
         const { gez } = this;
         return [
             this.getProgressPlugin(),
+            new NodePolyfillPlugin(),
             new ImportmapPlugin(gez.moduleConfig)
         ];
     }
 
     protected getNode(): Config {
-        return [this.getProgressPlugin()];
+        return [new NodePolyfillPlugin(), this.getProgressPlugin()];
     }
     private getProgressPlugin() {
         return new rspack.ProgressPlugin({

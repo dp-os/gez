@@ -1,4 +1,5 @@
 import type { IncomingMessage, ServerResponse } from 'node:http';
+import { URL, URLSearchParams } from 'node:url';
 import {
     type App,
     COMMAND,
@@ -11,6 +12,7 @@ import { import$ } from '@gez/import';
 import { type Compiler, type RspackOptions, rspack } from '@rspack/core';
 import devMiddleware from 'webpack-dev-middleware';
 import hotMiddleware from 'webpack-hot-middleware';
+import { toUrlObject } from './utils';
 
 import {
     type BuildTarget,
@@ -76,10 +78,16 @@ export async function createApp(
 ): Promise<App> {
     const app = await _createApp(gez);
     app.middlewares.unshift(middleware(gez, updateBuildContext));
+
+    // 移除 import.meta.url 的 tsx-namespace 参数
+    // 这是因为实际运行时如果携带tsx-namespace参数会进入当前项目的代码中，导致无法正常运行
+    const urlObject = toUrlObject(import.meta.url);
+    urlObject.deleteQuery('tsx-namespace');
+
     app.render = async (params: any): Promise<ServerContext> => {
         const module = await import$(
             gez.getProjectPath('dist/server/entry.js'),
-            import.meta.url,
+            urlObject.href,
             {
                 console,
                 process,
