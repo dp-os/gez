@@ -10,6 +10,7 @@ export class Plugins extends BuildConfig<Config> {
         const { gez } = this;
         const plugins: Config = [
             this.getProgressPlugin(),
+            new NodePolyfillPlugin(),
             new ImportmapPlugin(gez.moduleConfig)
         ];
         if (!gez.isProd) {
@@ -28,7 +29,7 @@ export class Plugins extends BuildConfig<Config> {
     }
 
     protected getNode(): Config {
-        return [new NodePolyfillPlugin(), this.getProgressPlugin()];
+        return [this.getProgressPlugin(), new NodePolyfillPlugin()];
     }
     private getProgressPlugin() {
         return new rspack.ProgressPlugin({
