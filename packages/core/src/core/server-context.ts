@@ -15,7 +15,7 @@ export class ServerContext {
     /**
      * 透传 https://github.com/yahoo/serialize-javascript
      */
-    public serialize(input: any, options: serialize.SerializeJSOptions) {
+    public serialize(input: any, options?: serialize.SerializeJSOptions) {
         return serialize(input, options);
     }
     /**
