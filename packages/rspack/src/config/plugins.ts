@@ -9,6 +9,7 @@ export class Plugins extends BuildConfig<Config> {
     protected getClient(): Config {
         const { gez } = this;
         const plugins: Config = [
+            this.getDefinePlugin(),
             this.getProgressPlugin(),
             new NodePolyfillPlugin(),
             new ImportmapPlugin(gez.moduleConfig)
@@ -22,6 +23,7 @@ export class Plugins extends BuildConfig<Config> {
     protected getServer(): Config {
         const { gez } = this;
         return [
+            this.getDefinePlugin(),
             this.getProgressPlugin(),
             new NodePolyfillPlugin(),
             new ImportmapPlugin(gez.moduleConfig)
@@ -29,11 +31,22 @@ export class Plugins extends BuildConfig<Config> {
     }
 
     protected getNode(): Config {
-        return [this.getProgressPlugin(), new NodePolyfillPlugin()];
+        return [
+            this.getDefinePlugin(),
+            this.getProgressPlugin(),
+            new NodePolyfillPlugin()
+        ];
     }
     private getProgressPlugin() {
         return new rspack.ProgressPlugin({
             prefix: this.target
+        });
+    }
+    private getDefinePlugin() {
+        const { gez, target } = this;
+        return new rspack.DefinePlugin({
+            'process.env.VUE_ENV': JSON.stringify(target),
+            'process.env.GENESIS_NAME': JSON.stringify(gez.name)
         });
     }
 }
