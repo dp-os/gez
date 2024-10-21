@@ -16,8 +16,10 @@
         "build": "unbuild"
     },
     "dependencies": {
+        "@types/serialize-javascript": "^5.0.4",
         "fflate": "^0.8.2",
         "find": "^0.3.0",
+        "serialize-javascript": "^6.0.2",
         "serve-static": "^1.15.0",
         "symlink-dir": "^6.0.2",
         "tsx": "4.19.1",
@@ -36,7 +38,7 @@
         "unbuild": "2.0.0",
         "vitest": "1.6.0"
     },
-    "version": "0.0.15-alpha.58",
+    "version": "0.0.15-alpha.59",
     "type": "module",
     "private": false,
     "exports": {
