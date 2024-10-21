@@ -16,7 +16,8 @@
         "node-polyfill-webpack-plugin": "^4.0.0",
         "webpack-dev-middleware": "^7.4.2",
         "webpack-hot-middleware": "^2.26.1",
-        "webpack-node-externals": "~3.0.0"
+        "webpack-node-externals": "~3.0.0",
+        "worker-loader": "^3.0.8"
     },
     "devDependencies": {
         "@biomejs/biome": "1.9.2",

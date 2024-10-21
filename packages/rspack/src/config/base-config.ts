@@ -11,6 +11,10 @@ import { Output } from './output';
 import { Plugins } from './plugins';
 import { Target } from './target';
 
+function resolve(name: string) {
+    return new URL(import.meta.resolve(name)).pathname;
+}
+
 export function createBaseConfig(
     gez: Gez,
     buildTarget: BuildTarget
@@ -36,6 +40,17 @@ export function createBaseConfig(
             {
                 test: /\.json$/i,
                 type: 'json'
+            },
+            {
+                test: /\.worker\.(c|m)?(t|j)s$/i,
+                loader: resolve('worker-loader'),
+                options: {
+                    esModule: false,
+                    filename:
+                        buildTarget === 'client'
+                            ? 'worker/[name].[contenthash:8].js'
+                            : 'worker/[path][name].js'
+                }
             },
             {
                 test: /\.(woff|woff2|eot|ttf|otf)$/,
