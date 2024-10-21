@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import serialize from 'serialize-javascript';
 import type { Gez, PackageJson } from './gez';
 
 export class ServerContext {
@@ -10,6 +11,12 @@ export class ServerContext {
     private _packages: PackageJson[] | null = null;
     public constructor(gez: Gez) {
         this.gez = gez;
+    }
+    /**
+     * 透传 https://github.com/yahoo/serialize-javascript
+     */
+    public serialize(input: any, options: serialize.SerializeJSOptions) {
+        return serialize(input, options);
     }
     /**
      * 获取全部的远程包信息
