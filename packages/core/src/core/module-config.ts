@@ -18,6 +18,10 @@ export interface ModuleConfig {
      */
     exports?: `${PathType}${string}`[];
     /**
+     * 导入的模块基本配置
+     */
+    imports?: Record<string, string | [string, string]>;
+    /**
      * 设置项目的外部依赖
      * 例如：
      * {
@@ -25,10 +29,6 @@ export interface ModuleConfig {
      * }
      */
     externals?: Record<string, string>;
-    /**
-     * 导入的模块基本配置
-     */
-    imports?: Record<string, string | [string, string]>;
 }
 
 export interface ParsedModuleConfig {
