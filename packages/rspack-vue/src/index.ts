@@ -1,5 +1,9 @@
 import type { Gez } from '@gez/core';
-import { type UpdateBuildContext, createApp as _createApp } from '@gez/rspack';
+import {
+    type UpdateBuildContext,
+    createApp as _createApp,
+    rspack
+} from '@gez/rspack';
 import { VueLoaderPlugin as Vue2LoaderPlugin } from '@gez/vue2-loader';
 import { VueLoaderPlugin as Vue3LoaderPlugin } from 'vue-loader';
 
@@ -58,6 +62,13 @@ export function createApp(
                 '3': new Vue3LoaderPlugin()
             })
         ];
+        if (target === 'client') {
+            config.plugins.push(
+                new rspack.DefinePlugin({
+                    'process.env.VUE_ENV': JSON.stringify(target)
+                })
+            );
+        }
         const cssRule = [
             {
                 loader: resolve('vue-style-loader'),

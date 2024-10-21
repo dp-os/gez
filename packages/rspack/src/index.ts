@@ -5,3 +5,5 @@ export {
     type BuildTarget,
     type UpdateBuildContext
 } from './build-config';
+
+export * from '@rspack/core';
