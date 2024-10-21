@@ -1,5 +1,5 @@
 import type { IncomingMessage, ServerResponse } from 'node:http';
-import { URL, URLSearchParams } from 'node:url';
+import { pathToFileURL } from 'node:url';
 import {
     type App,
     COMMAND,
@@ -79,12 +79,13 @@ export async function createApp(
     app.middlewares.unshift(middleware(gez, updateBuildContext));
 
     const { resolve, url } = import.meta;
-    const pathname = new URL(resolve(url)).pathname;
+    const urlObj = new URL(resolve(url));
+    urlObj.search = '';
 
     app.render = async (params: any): Promise<ServerContext> => {
         const module = await import$(
             gez.getProjectPath('dist/server/entry.js'),
-            pathname,
+            urlObj.href,
             {
                 console,
                 setTimeout,
