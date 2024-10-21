@@ -30,6 +30,10 @@ export function createBaseConfig(
                 type: 'asset/resource'
             },
             {
+                test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/i,
+                type: 'asset/resource'
+            },
+            {
                 test: /\.json$/i,
                 type: 'json'
             },
