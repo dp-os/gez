@@ -43,7 +43,7 @@ export function createBaseConfig(
             },
             {
                 test: /\.worker\.(c|m)?(t|j)s$/i,
-                loader: resolve('worker-loader'),
+                loader: resolve('worker-rspack-loader'),
                 options: {
                     esModule: false,
                     filename:

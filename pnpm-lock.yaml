@@ -377,9 +377,9 @@ importers:
       webpack-node-externals:
         specifier: ~3.0.0
         version: 3.0.0
-      worker-loader:
-        specifier: ^3.0.8
-        version: 3.0.8(webpack@5.93.0)
+      worker-rspack-loader:
+        specifier: ^3.1.0
+        version: 3.1.0(@rspack/core@1.0.13)(webpack@5.93.0)
     devDependencies:
       '@biomejs/biome':
         specifier: 1.9.2
@@ -8264,12 +8264,19 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: false
 
-  /worker-loader@3.0.8(webpack@5.93.0):
-    resolution: {integrity: sha512-XQyQkIFeRVC7f7uRhFdNMe/iJOdO6zxAaR3EWbDp45v3mDhrTi+++oswKNxShUNjPC/1xUp5DB29YKLhFo129g==}
+  /worker-rspack-loader@3.1.0(@rspack/core@1.0.13)(webpack@5.93.0):
+    resolution: {integrity: sha512-OULjoX5Iyk2/5ZEwQXUoxIr8Iy/YCCeT5+nDiYP6xCwFWesDNuy35BT82a9k/ZEFTDla2XwX9xsW/NlfvBNMtA==}
     engines: {node: '>= 10.13.0'}
     peerDependencies:
+      '@rspack/core': 0.x || 1.x
       webpack: ^4.0.0 || ^5.0.0
+    peerDependenciesMeta:
+      '@rspack/core':
+        optional: true
+      webpack:
+        optional: true
     dependencies:
+      '@rspack/core': 1.0.13
       loader-utils: 2.0.4
       schema-utils: 3.3.0
       webpack: 5.93.0
