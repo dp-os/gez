@@ -34,9 +34,14 @@ defineProps<{}>()
 .menu-list-item {
     padding: 10px;
     margin: 5px;
+    background: #efefef;
+    border-radius: 5px;
     &:hover {
-        border-radius: 5px;
-        background: #efefef;
+        background: blue;
+        a {
+
+            color: #fff;
+        }
     }
 }
 .menu-list-item-link {
