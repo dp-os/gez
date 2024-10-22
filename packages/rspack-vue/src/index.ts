@@ -1,5 +1,6 @@
 import type { Gez } from '@gez/core';
 import {
+    type RuleSetRule,
     type UpdateBuildContext,
     createApp as _createApp,
     rspack
@@ -93,13 +94,22 @@ export function createApp(
         }
         config.module!.rules = [
             ...config.module!.rules!,
-            {
-                test: /\.vue$/,
-                use: useVue({
-                    '2': resolve('@gez/vue2-loader'),
-                    '3': resolve('vue-loader')
-                })
-            },
+            useVue<RuleSetRule>({
+                '2': {
+                    test: /\.vue$/,
+                    loader: resolve('@gez/vue2-loader'),
+                    options:
+                        target === 'server'
+                            ? {
+                                  optimizeSSR: true
+                              }
+                            : {}
+                },
+                '3': {
+                    test: /\.vue$/,
+                    loader: resolve('vue-loader')
+                }
+            }),
             {
                 test: /\.less$/,
                 use: [...cssRule, ...lessRule],
