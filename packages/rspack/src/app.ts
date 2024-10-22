@@ -11,6 +11,7 @@ import {
 } from '@gez/core';
 import { import$ } from '@gez/import';
 import { type RspackOptions, rspack } from '@rspack/core';
+import devMiddleware from 'webpack-dev-middleware';
 import hotMiddleware from 'webpack-hot-middleware';
 
 import {
@@ -44,13 +45,16 @@ async function createMiddleware(
             gez,
             updateBuildContext
         );
-
         const clientCompiler = rspack(clientConfig);
         const serverCompiler = rspack(serverConfig);
         // @ts-expect-error
-        clientCompiler.outputFileSystem = fs;
+        devMiddleware(clientCompiler, {
+            writeToDisk: true
+        });
         // @ts-expect-error
-        serverCompiler.outputFileSystem = fs;
+        devMiddleware(serverCompiler, {
+            writeToDisk: true
+        });
         middlewares.push(
             // @ts-expect-error
             hotMiddleware(clientCompiler, {

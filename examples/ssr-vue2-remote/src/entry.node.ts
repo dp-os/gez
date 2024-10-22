@@ -28,6 +28,6 @@ export default {
         /**
          * 导出的文件
          */
-        exports: ['root:src/utils/index.ts', 'npm:vue']
+        exports: ['root:src/components/layout.vue', 'npm:vue']
     }
 } satisfies GezOptions;

@@ -1,26 +1,17 @@
 <template>
     <div class="box">
-        <h2>rspack + vue2</h2>
-        Count value:
-        {{ count }}
-        <button @click="count++">Add</button>
+        <layout>
+            哈哈
+        </layout>
     </div>
 </template>
 <script lang="ts">
+import layout from 'ssr-vue2-remote/src/components/layout.vue';
 import { defineComponent } from 'vue';
-import { Define, PassOnTo, Setup } from 'vue-class-setup';
-
-import { log } from 'ssr-vue2-remote/src/utils';
+import { Define, Setup } from 'vue-class-setup';
 
 @Setup
-class App extends Define {
-    public count = 1;
-
-    @PassOnTo()
-    setup() {
-        log('from host');
-    }
-}
+class App extends Define {}
 
 export default defineComponent({
     name: 'app',

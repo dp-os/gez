@@ -8,7 +8,7 @@ export class Output extends BuildConfig<Config> {
     protected getClient(): Config {
         const { gez } = this;
         return {
-            clean: true,
+            clean: gez.isProd,
             module: true,
             chunkFormat: gez.isProd ? 'module' : undefined,
             chunkLoading: gez.isProd ? 'import' : undefined,
@@ -21,12 +21,11 @@ export class Output extends BuildConfig<Config> {
     protected getServer(): Config {
         const { gez } = this;
         return {
-            clean: true,
+            clean: gez.isProd,
             module: true,
             chunkFormat: 'module',
             chunkLoading: 'import',
             chunkFilename: 'js/[id].js',
-            // filename: 'entry-server.js',
             filename: '[name].js',
             path: gez.getProjectPath('dist/server')
         };
@@ -35,12 +34,12 @@ export class Output extends BuildConfig<Config> {
     protected getNode(): Config {
         const { gez } = this;
         return {
-            clean: true,
+            clean: gez.isProd,
             module: true,
             chunkFormat: 'module',
             chunkLoading: 'import',
             chunkFilename: 'js/[id].js',
-            // filename: 'entry-node.js',
+
             filename: '[name].js',
             path: gez.getProjectPath('dist/node')
         };
