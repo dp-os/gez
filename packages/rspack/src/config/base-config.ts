@@ -31,11 +31,17 @@ export function createBaseConfig(
         rules: [
             {
                 test: /\.(png|jpe?g|gif|svg)$/i,
-                type: 'asset/resource'
+                type: 'asset/resource',
+                generator: {
+                    filename: filename(gez, 'images')
+                }
             },
             {
                 test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/i,
-                type: 'asset/resource'
+                type: 'asset/resource',
+                generator: {
+                    filename: filename(gez, 'media')
+                }
             },
             {
                 test: /\.json$/i,
@@ -46,15 +52,15 @@ export function createBaseConfig(
                 loader: resolve('worker-rspack-loader'),
                 options: {
                     esModule: false,
-                    filename:
-                        buildTarget === 'client'
-                            ? 'worker/[name].[contenthash:8].js'
-                            : 'worker/[path][name].js'
+                    filename: filename(gez, 'worker')
                 }
             },
             {
                 test: /\.(woff|woff2|eot|ttf|otf)$/,
-                type: 'asset/resource'
+                type: 'asset/resource',
+                generator: {
+                    filename: filename(gez, 'fonts')
+                }
             },
             {
                 test: /\.ts$/,
@@ -110,4 +116,10 @@ export function createBaseConfig(
         devtool: false,
         mode: gez.isProd ? 'production' : 'development'
     };
+}
+
+function filename(gez: Gez, name: string) {
+    return gez.isProd
+        ? `${name}/[name].[contenthash:8].[ext]`
+        : `${name}/[path][name].[ext]`;
 }
