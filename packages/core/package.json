@@ -16,21 +16,21 @@
         "build": "unbuild"
     },
     "dependencies": {
+        "send": "^1.1.0",
         "@types/serialize-javascript": "^5.0.4",
         "fflate": "^0.8.2",
         "find": "^0.3.0",
         "serialize-javascript": "^6.0.2",
-        "serve-static": "^1.15.0",
         "symlink-dir": "^6.0.2",
         "tsx": "4.19.1",
         "write": "^2.0.0"
     },
     "devDependencies": {
+        "@types/send": "^0.17.4",
         "@biomejs/biome": "1.9.2",
         "@gez/lint": "workspace:^",
         "@types/find": "^0.2.4",
         "@types/node": "20.12.12",
-        "@types/serve-static": "^1.15.7",
         "@types/write": "^2.0.4",
         "@vitest/coverage-v8": "1.6.0",
         "stylelint": "16.5.0",

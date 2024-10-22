@@ -135,8 +135,8 @@ export class Gez {
     /**
      * 静态资源中间件
      */
-    public get middlewares() {
-        return this.app.middlewares;
+    public get middleware() {
+        return this.app.middleware;
     }
 
     /**

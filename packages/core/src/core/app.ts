@@ -5,20 +5,15 @@ import * as serveStatic from 'serve-static';
 import path from 'node:path';
 
 import type { Gez } from './gez';
+import { type Middleware, createMiddleware } from './middleware';
 import { ServerContext, type ServerRenderHandle } from './server-context';
 import { compression, decompression } from './version';
-
-export type Middleware = (
-    req: IncomingMessage,
-    res: ServerResponse,
-    next?: Function
-) => void;
 
 export interface App {
     /**
      * 中间件列表
      */
-    middlewares: Middleware[];
+    middleware: Middleware;
     /**
      * 渲染函数
      * @param params 渲染的参数
@@ -45,46 +40,7 @@ export interface App {
 
 export async function createApp(gez: Gez): Promise<App> {
     return {
-        middlewares: gez.moduleConfig.imports.map((item) => {
-            const base = `/${item.name}/`;
-            const staticMiddleware = serveStatic.default(
-                path.resolve(item.localPath, 'client'),
-                {
-                    setHeaders(res) {
-                        res.setHeader(
-                            'cache-control',
-                            'public, max-age=31536000'
-                        );
-                    }
-                }
-            );
-            return (
-                req: IncomingMessage,
-                res: ServerResponse,
-                next?: Function
-            ) => {
-                const url = req.url;
-                const _next = () => {
-                    if (typeof next === 'function') {
-                        next();
-                    } else {
-                        res.writeHead(404, {
-                            'Content-Type': 'text/html;charset=UTF-8'
-                        });
-                        res.end('Not Found');
-                    }
-                };
-                if (typeof url === 'string' && url.startsWith(base)) {
-                    req.url = url.substring(base.length - 1);
-                    staticMiddleware(req, res, (err) => {
-                        req.url = url;
-                        _next();
-                    });
-                } else {
-                    _next();
-                }
-            };
-        }),
+        middleware: createMiddleware(gez),
         async render(params: any) {
             const context = new ServerContext(gez);
             const result = await import(

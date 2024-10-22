@@ -1,16 +1,16 @@
-import type { IncomingMessage, ServerResponse } from 'node:http';
-import { pathToFileURL } from 'node:url';
+import fs from 'node:fs';
 import {
     type App,
     COMMAND,
     type Gez,
+    type Middleware,
     ServerContext,
     type ServerRenderHandle,
-    createApp as _createApp
+    createApp as _createApp,
+    mergeMiddlewares
 } from '@gez/core';
 import { import$ } from '@gez/import';
-import { type Compiler, type RspackOptions, rspack } from '@rspack/core';
-import devMiddleware from 'webpack-dev-middleware';
+import { type RspackOptions, rspack } from '@rspack/core';
 import hotMiddleware from 'webpack-hot-middleware';
 
 import {
@@ -34,41 +34,42 @@ function createConfig(gez: Gez, updateBuildContext?: UpdateBuildContext) {
     };
 }
 
-function middleware(gez: Gez, updateBuildContext?: UpdateBuildContext) {
-    let clientCompiler: Compiler | null = null;
-    let dev = (req: IncomingMessage, res: ServerResponse, next?: Function) => {
-        return next?.();
-    };
-    let hot = dev;
+async function createMiddleware(
+    gez: Gez,
+    updateBuildContext?: UpdateBuildContext
+): Promise<Middleware[]> {
+    const middlewares: Middleware[] = [];
     if (gez.command === COMMAND.dev) {
         const { clientConfig, serverConfig } = createConfig(
             gez,
             updateBuildContext
         );
 
-        clientCompiler = rspack(clientConfig);
+        const clientCompiler = rspack(clientConfig);
         const serverCompiler = rspack(serverConfig);
         // @ts-expect-error
-        devMiddleware(serverCompiler, {
-            publicPath: gez.base,
-            writeToDisk: true
-        });
+        clientCompiler.outputFileSystem = fs;
         // @ts-expect-error
-        dev = devMiddleware(clientCompiler, {
-            writeToDisk: true,
-            publicPath: gez.base
+        serverCompiler.outputFileSystem = fs;
+        middlewares.push(
+            // @ts-expect-error
+            hotMiddleware(clientCompiler, {
+                heartbeat: 5000,
+                path: `${gez.base}hot-middleware`
+            })
+        );
+        await new Promise<void>((resolve) => {
+            clientCompiler.run(() => {
+                resolve();
+            });
         });
-        // @ts-expect-error
-        hot = hotMiddleware(clientCompiler, {
-            heartbeat: 5000,
-            path: `${gez.base}hot-middleware`
+        await new Promise<void>((resolve) => {
+            serverCompiler.run(() => {
+                resolve();
+            });
         });
     }
-    return (req: IncomingMessage, res: ServerResponse, next?: Function) => {
-        dev(req, res, () => {
-            hot(req, res, next);
-        });
-    };
+    return middlewares;
 }
 
 export async function createApp(
@@ -76,7 +77,10 @@ export async function createApp(
     updateBuildContext?: UpdateBuildContext
 ): Promise<App> {
     const app = await _createApp(gez);
-    app.middlewares.unshift(middleware(gez, updateBuildContext));
+    app.middleware = mergeMiddlewares([
+        ...(await createMiddleware(gez, updateBuildContext)),
+        app.middleware
+    ]);
 
     const { resolve, url } = import.meta;
     const urlObj = new URL(resolve(url));
