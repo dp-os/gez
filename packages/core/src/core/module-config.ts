@@ -179,9 +179,10 @@ export function parseModuleConfig(
     const externals: ParsedModuleConfig['externals'] = {};
     if (config.externals) {
         const _externals = config.externals;
-        Object.keys(_externals).forEach((key) => {
+        Object.entries(_externals).forEach(([key, value]) => {
             externals[key] = {
-                match: new RegExp(`/^${_externals[key]}$/`)
+                import: value,
+                match: new RegExp(`^${key}$`)
             };
         });
     }
