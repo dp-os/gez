@@ -1,7 +1,7 @@
 <template>
     <div class="box">
         <layout>
-            哈哈
+            Hello world!
         </layout>
     </div>
 </template>
