@@ -49,12 +49,7 @@ export function createApp(
         const options: BuildOptions = updateBuildContext?.(buildContext) ?? {};
         const useVue = createVersion(options.vue);
         const { config, target } = buildContext;
-        config.resolve!.extensions = [
-            ...config.resolve!.extensions!,
-            '.vue',
-            '.ts',
-            '...'
-        ];
+        config.resolve!.extensions = ['.js', '.ts', '.vue', '.json', '...'];
         config.experiments!.css = false;
         config.plugins = [
             ...config.plugins!,
