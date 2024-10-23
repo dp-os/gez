@@ -142,6 +142,7 @@ export function parseModuleConfig(
             }
         });
     }
+
     // 处理导入
     const imports: ParsedModuleConfig['imports'] = [];
     if (config.imports) {
@@ -175,17 +176,9 @@ export function parseModuleConfig(
             }
         });
     }
+
     // 处理外部依赖
     const externals: ParsedModuleConfig['externals'] = {};
-    if (config.externals) {
-        const _externals = config.externals;
-        Object.entries(_externals).forEach(([key, value]) => {
-            externals[key] = {
-                import: value,
-                match: new RegExp(`^${key}$`)
-            };
-        });
-    }
     exports.forEach(({ importName, externalName }) => {
         externals[externalName] = {
             match: new RegExp(`^${externalName}$`),
@@ -198,6 +191,16 @@ export function parseModuleConfig(
             match: new RegExp(`^${[name]}/`)
         };
     });
+    if (config.externals) {
+        const _externals = config.externals;
+        Object.entries(_externals).forEach(([key, value]) => {
+            externals[key] = {
+                import: value,
+                match: new RegExp(`^${key}$`)
+            };
+        });
+    }
+
     // 添加当前服务的解析配置
     imports.push({
         name,
