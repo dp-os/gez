@@ -24,7 +24,7 @@
         "vitest": "1.6.0",
         "vue": "^3.5.6"
     },
-    "version": "0.0.15-alpha.71",
+    "version": "0.0.15-alpha.72",
     "type": "module",
     "private": false,
     "exports": {
