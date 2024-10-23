@@ -90,8 +90,7 @@ export function createBaseConfig(
         plugins: plugins.get(),
         module,
         resolve: {
-            alias: alias.get(),
-            extensions: []
+            alias: alias.get()
         },
         optimization: {
             ...optimization.get()
@@ -108,6 +107,7 @@ export function createBaseConfig(
             ...output.get()
         },
         experiments: {
+            css: true,
             outputModule: true
         },
         target: target.get(),
