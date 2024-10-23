@@ -8,7 +8,7 @@ import {
 import { VueLoaderPlugin as Vue2LoaderPlugin } from '@gez/vue2-loader';
 import { VueLoaderPlugin as Vue3LoaderPlugin } from 'vue-loader';
 
-export { createApp };
+export * from '@gez/rspack';
 
 function resolve(name: string) {
     return new URL(import.meta.resolve(name)).pathname;
