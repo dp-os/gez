@@ -122,7 +122,17 @@ export class Gez {
      * 构建应用代码
      */
     public get build() {
-        return this.app.build;
+        return async () => {
+            const startTime = Date.now();
+            console.log('[gez]: build start');
+
+            const successful = await this.app.build();
+
+            const endTime = Date.now();
+            console.log(`[gez]: build end, cost: ${endTime - startTime}ms`);
+
+            return successful;
+        };
     }
 
     /**
