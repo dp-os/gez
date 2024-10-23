@@ -49,7 +49,7 @@ export function createApp(
         const options: BuildOptions = updateBuildContext?.(buildContext) ?? {};
         const useVue = createVersion(options.vue);
         const { config, target } = buildContext;
-        config.resolve!.extensions = ['.js', '.ts', '.vue', '.json', '...'];
+        config.resolve!.extensions = ['.ts', '.vue', '...'];
         config.experiments!.css = false;
         config.plugins = [
             ...config.plugins!,
@@ -73,6 +73,12 @@ export function createApp(
             {
                 loader: resolve('css-loader'),
                 options: options.cssLoader
+            },
+            {
+                loader: 'builtin:lightningcss-loader',
+                options: {
+                    targets: gez.browserslist
+                }
             }
         ];
         const lessRule = [
