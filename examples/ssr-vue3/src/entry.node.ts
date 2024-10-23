@@ -7,13 +7,7 @@ export default {
         exports: ['npm:vue']
     },
     async createDevApp(gez) {
-        return import('@gez/rspack-vue').then((m) =>
-            m.createApp(gez, () => {
-                return {
-                    vue: 3
-                };
-            })
-        );
+        return import('@gez/rspack-vue').then((m) => m.createVue3App(gez));
     },
     async createServer(gez) {
         const server = express();

@@ -2,21 +2,19 @@ import type { Gez } from '@gez/core';
 import {
     type RuleSetRule,
     type UpdateBuildContext,
-    createApp as _createApp,
+    createApp,
     rspack
 } from '@gez/rspack';
 import { VueLoaderPlugin as Vue2LoaderPlugin } from '@gez/vue2-loader';
 import { VueLoaderPlugin as Vue3LoaderPlugin } from 'vue-loader';
+
+export { createApp };
 
 function resolve(name: string) {
     return new URL(import.meta.resolve(name)).pathname;
 }
 export type VueVersion = 2 | 3;
 export interface BuildOptions {
-    /**
-     * Vue 的 版本
-     */
-    vue?: VueVersion;
     /**
      * 透传 https://github.com/vuejs/vue-style-loader
      */
@@ -41,13 +39,28 @@ function createVersion(version: VueVersion = 3) {
     };
 }
 
-export function createApp(
+export function createVue2App(
     gez: Gez,
     updateBuildContext?: UpdateBuildContext<BuildOptions>
 ) {
-    return _createApp(gez, (buildContext) => {
+    return createVueApp(gez, 2, updateBuildContext);
+}
+
+export function createVue3App(
+    gez: Gez,
+    updateBuildContext?: UpdateBuildContext<BuildOptions>
+) {
+    return createVueApp(gez, 3, updateBuildContext);
+}
+
+function createVueApp(
+    gez: Gez,
+    vueVersion: VueVersion,
+    updateBuildContext?: UpdateBuildContext<BuildOptions>
+) {
+    return createApp(gez, (buildContext) => {
         const options: BuildOptions = updateBuildContext?.(buildContext) ?? {};
-        const useVue = createVersion(options.vue);
+        const useVue = createVersion(vueVersion);
         const { config, target } = buildContext;
         config.resolve!.extensions = ['.ts', '.vue', '...'];
         config.experiments!.css = false;
