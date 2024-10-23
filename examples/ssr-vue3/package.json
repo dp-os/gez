@@ -1,6 +1,6 @@
 {
     "name": "ssr-vue3",
-    "version": "0.0.15-alpha.67",
+    "version": "0.0.15-alpha.68",
     "private": true,
     "type": "module",
     "scripts": {
