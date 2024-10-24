@@ -31,6 +31,10 @@ export interface BuildOptions {
      * 透传 https://github.com/yenshih/style-resources-loader
      */
     styleResourcesLoader?: Record<string, any>;
+    /**
+     * 透传 DefinePlugin 的值
+     */
+    definePlugin?: Record<string, string>;
 }
 
 function createVersion(version: VueVersion = 3) {
@@ -78,6 +82,10 @@ function createVueApp(
                 })
             );
         }
+        if (options.definePlugin) {
+            config.plugins.push(new rspack.DefinePlugin(options.definePlugin));
+        }
+
         const cssRule = [
             {
                 loader: resolve('vue-style-loader'),
