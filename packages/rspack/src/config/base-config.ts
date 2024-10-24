@@ -90,7 +90,8 @@ export function createBaseConfig(
         plugins: plugins.get(),
         module,
         resolve: {
-            alias: alias.get()
+            alias: alias.get(),
+            extensions: ['.ts', '...']
         },
         optimization: {
             ...optimization.get()
