@@ -39,4 +39,4 @@ export function createBuildContext(
 /**
  * 更新构建上下文
  */
-export type UpdateBuildContext<T = void> = (buildContext: BuildContext) => T;
+export type ModifyBuildContext<T = void> = (buildContext: BuildContext) => T;

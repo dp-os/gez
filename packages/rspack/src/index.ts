@@ -3,7 +3,7 @@ export {
     createBuildContext,
     type BuildContext,
     type BuildTarget,
-    type UpdateBuildContext
+    type ModifyBuildContext
 } from './build-config';
 
 export * from '@rspack/core';

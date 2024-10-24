@@ -1,7 +1,8 @@
 import type { Gez } from '@gez/core';
 import {
+    type ModifyBuildContext,
+    type RspackOptions,
     type RuleSetRule,
-    type UpdateBuildContext,
     createApp,
     rspack
 } from '@gez/rspack';
@@ -32,9 +33,13 @@ export interface BuildOptions {
      */
     styleResourcesLoader?: Record<string, any>;
     /**
-     * 透传 DefinePlugin 的值
+     * 透传 DefinePlugin 的值 https://rspack.dev/plugins/webpack/define-plugin
      */
     definePlugin?: Record<string, string>;
+    /**
+     * 可以用于自定义控制 rspack 选项的函数 https://rspack.dev/config/index
+     */
+    modifyRspackConfig?: (rspackOptions: RspackOptions) => void;
 }
 
 function createVersion(version: VueVersion = 3) {
@@ -45,25 +50,25 @@ function createVersion(version: VueVersion = 3) {
 
 export function createVue2App(
     gez: Gez,
-    updateBuildContext?: UpdateBuildContext<BuildOptions>
+    modifyBuildContext?: ModifyBuildContext<BuildOptions>
 ) {
-    return createVueApp(gez, 2, updateBuildContext);
+    return createVueApp(gez, 2, modifyBuildContext);
 }
 
 export function createVue3App(
     gez: Gez,
-    updateBuildContext?: UpdateBuildContext<BuildOptions>
+    modifyBuildContext?: ModifyBuildContext<BuildOptions>
 ) {
-    return createVueApp(gez, 3, updateBuildContext);
+    return createVueApp(gez, 3, modifyBuildContext);
 }
 
 function createVueApp(
     gez: Gez,
     vueVersion: VueVersion,
-    updateBuildContext?: UpdateBuildContext<BuildOptions>
+    modifyBuildContext?: ModifyBuildContext<BuildOptions>
 ) {
     return createApp(gez, (buildContext) => {
-        const options: BuildOptions = updateBuildContext?.(buildContext) ?? {};
+        const options: BuildOptions = modifyBuildContext?.(buildContext) ?? {};
         const useVue = createVersion(vueVersion);
         const { config, target } = buildContext;
         config.resolve!.extensions = ['.ts', '.vue', '...'];
@@ -165,5 +170,7 @@ function createVueApp(
                     : config.ignoreWarnings,
             '3': config.ignoreWarnings!
         });
+
+        options.modifyRspackConfig?.(config);
     });
 }

@@ -16,18 +16,18 @@ import hotMiddleware from 'webpack-hot-middleware';
 
 import {
     type BuildTarget,
-    type UpdateBuildContext,
+    type ModifyBuildContext,
     createBuildContext
 } from './build-config';
 
-function createConfig(gez: Gez, updateBuildContext?: UpdateBuildContext) {
+function createConfig(gez: Gez, modifyBuildContext?: ModifyBuildContext) {
     const client = createBuildContext(gez, 'client');
     const server = createBuildContext(gez, 'server');
     const node = createBuildContext(gez, 'node');
 
-    updateBuildContext?.(client);
-    updateBuildContext?.(server);
-    updateBuildContext?.(node);
+    modifyBuildContext?.(client);
+    modifyBuildContext?.(server);
+    modifyBuildContext?.(node);
     return {
         clientConfig: client.config,
         serverConfig: server.config,
@@ -37,13 +37,13 @@ function createConfig(gez: Gez, updateBuildContext?: UpdateBuildContext) {
 
 async function createMiddleware(
     gez: Gez,
-    updateBuildContext?: UpdateBuildContext
+    modifyBuildContext?: ModifyBuildContext
 ): Promise<Middleware[]> {
     const middlewares: Middleware[] = [];
     if (gez.command === COMMAND.dev) {
         const { clientConfig, serverConfig } = createConfig(
             gez,
-            updateBuildContext
+            modifyBuildContext
         );
         const clientCompiler = rspack(clientConfig);
         const serverCompiler = rspack(serverConfig);
@@ -78,11 +78,11 @@ async function createMiddleware(
 
 export async function createApp(
     gez: Gez,
-    updateBuildContext?: UpdateBuildContext
+    modifyBuildContext?: ModifyBuildContext
 ): Promise<App> {
     const app = await _createApp(gez);
     app.middleware = mergeMiddlewares([
-        ...(await createMiddleware(gez, updateBuildContext)),
+        ...(await createMiddleware(gez, modifyBuildContext)),
         app.middleware
     ]);
 
@@ -113,7 +113,7 @@ export async function createApp(
     app.build = async () => {
         const { clientConfig, serverConfig, nodeConfig } = createConfig(
             gez,
-            updateBuildContext
+            modifyBuildContext
         );
         const list: BuildItem[] = [
             {
