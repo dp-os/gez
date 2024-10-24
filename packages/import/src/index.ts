@@ -77,10 +77,10 @@ async function moduleLinker(
             context: context,
             // @ts-ignore
             importModuleDynamically: (specifier, referrer) => {
-                // @ts-ignore
                 return moduleLinker(
                     specifier,
                     filename,
+                    // @ts-ignore
                     referrer.context,
                     cache
                 );
