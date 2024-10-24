@@ -27,7 +27,8 @@ export async function import$(
 async function moduleLinker(
     specifier: string,
     parent: string,
-    context: vm.Context
+    context: vm.Context,
+    cache = new Map<string, Promise<vm.SourceTextModule>>()
 ) {
     if (isBuiltin(specifier)) {
         const nodeModule = await import(specifier);
@@ -53,27 +54,45 @@ async function moduleLinker(
     const filename = import.meta.resolve(specifier, parent);
     const dirname = path.dirname(filename);
     const url = new URL(import.meta.resolve(specifier, parent));
-    const text = fs.readFileSync(url.pathname, 'utf-8');
-    const module: vm.SourceTextModule = new vm.SourceTextModule(text, {
-        initializeImportMeta: (meta) => {
-            meta.filename = filename;
-            meta.dirname = dirname;
-            meta.resolve = (specifier: string, parent: string | URL = url) => {
-                return import.meta.resolve(specifier, parent);
-            };
-            meta.url = url.toString();
-        },
-        identifier: specifier,
-        context: context,
-        // @ts-ignore
-        importModuleDynamically: (specifier, referrer) => {
+    const readFilename = url.pathname;
+    let module = cache.get(readFilename);
+    if (module) {
+        return module;
+    }
+    const build = async (): Promise<vm.SourceTextModule> => {
+        const text = fs.readFileSync(readFilename, 'utf-8');
+        const module = new vm.SourceTextModule(text, {
+            initializeImportMeta: (meta) => {
+                meta.filename = filename;
+                meta.dirname = dirname;
+                meta.resolve = (
+                    specifier: string,
+                    parent: string | URL = url
+                ) => {
+                    return import.meta.resolve(specifier, parent);
+                };
+                meta.url = url.toString();
+            },
+            identifier: specifier,
+            context: context,
             // @ts-ignore
-            return moduleLinker(specifier, filename, referrer.context);
-        }
-    });
-    await module.link((specifier: string, referrer) => {
-        return moduleLinker(specifier, filename, referrer.context);
-    });
-    await module.evaluate();
+            importModuleDynamically: (specifier, referrer) => {
+                // @ts-ignore
+                return moduleLinker(
+                    specifier,
+                    filename,
+                    referrer.context,
+                    cache
+                );
+            }
+        });
+        await module.link((specifier: string, referrer) => {
+            return moduleLinker(specifier, filename, referrer.context, cache);
+        });
+        await module.evaluate();
+        return module;
+    };
+    module = build();
+    cache.set(readFilename, module);
     return module;
 }
