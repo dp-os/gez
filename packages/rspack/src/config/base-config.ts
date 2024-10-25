@@ -27,7 +27,16 @@ export function createBaseConfig(
     const externalsPresets = new ExternalsPresets(gez, buildTarget);
     const externals = new Externals(gez, buildTarget);
     const plugins = new Plugins(gez, buildTarget);
+    const emit = buildTarget === 'client';
     const module: RspackOptions['module'] = {
+        generator: {
+            asset: {
+                emit
+            },
+            'asset/resource': {
+                emit
+            }
+        },
         rules: [
             {
                 test: /\.(png|jpe?g|gif|svg)$/i,
@@ -122,6 +131,6 @@ export function createBaseConfig(
 
 function filename(gez: Gez, name: string) {
     return gez.isProd
-        ? `${name}/[name].[contenthash:8].[ext]`
-        : `${name}/[path][name].[ext]`;
+        ? `${name}/[name].[contenthash:8][ext]`
+        : `${name}/[path][name][ext]`;
 }
