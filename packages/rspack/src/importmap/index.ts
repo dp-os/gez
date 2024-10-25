@@ -39,7 +39,6 @@ export class ImportmapPlugin implements RspackPluginInstance {
         });
     }
     public applyExternals(compiler: Compiler) {
-        const { name: gezName, root } = this.options;
         const externals = compiler.options.externals || [];
         const options = this.options.externals;
         if (!Array.isArray(externals)) {
@@ -51,76 +50,7 @@ export class ImportmapPlugin implements RspackPluginInstance {
                     { request, contextInfo }: any,
                     callback: (...args: any[]) => any
                 ) => {
-                    /**
-                     * 可能出现的场景：
-                     * 例如：root:src/square/index.ts
-                     * 入参：request 可能得值
-                     * 1. ssr-broker-business/src/square
-                     * 2. ssr-broker-business/src/square/index
-                     * 3. 在 test.ts 使用 ./square
-                     * 4. 在 test.ts 使用 ./square/index
-                     * issuer
-                     */
-
-                    /**
-                     * 匹配的相对路径和别名
-                     * @example
-                     * src/utils/index => ['src/utils/index', 'src/utils']
-                     * @lib/utils/index => ['@lib/utils/index', '@lib/utils']
-                     */
-                    const matches: string[] = [key];
-                    if (key.endsWith('/index')) {
-                        matches.push(key.replace(/\/index$/, ''));
-                    }
-
-                    /**
-                     * 匹配的文件路径
-                     * @example
-                     * src/utils/index => ['/Users/xxx/code/src/utils/index', '/Users/xxx/code/src/utils']
-                     */
-                    const filePaths = matches.reduce<string[]>((acc, item) => {
-                        if (item.startsWith('./')) {
-                            const target = path.resolve(
-                                root,
-                                item.replace(new RegExp(`^${gezName}\/`), '')
-                            );
-                            acc.push(target);
-                        }
-                        return acc;
-                    }, []);
-                    function getImport(
-                        issuer: string,
-                        request: string
-                    ): string | false {
-                        if (request.startsWith(`${gezName}\/`)) {
-                            if (matches.includes(request)) {
-                                return value.import ?? request;
-                            }
-                        }
-
-                        if (request.startsWith(`./`)) {
-                            const index = request.indexOf('?');
-                            const requestFile =
-                                index > 0
-                                    ? request.substring(2, index)
-                                    : request;
-                            if (issuer.endsWith(requestFile)) {
-                                // 对自身的引用不做处理
-                                return false;
-                            }
-
-                            const realPath = path.resolve(
-                                issuer,
-                                '../',
-                                request
-                            );
-                            if (filePaths.includes(realPath)) {
-                                return value.import ?? request;
-                            }
-                        }
-
-                        return false;
-                    }
+                    const getImport = getImportResult(this.options, key, value);
                     const result = getImport(contextInfo.issuer, request);
                     if (result) {
                         return callback(null, `module-import ${result}`);
@@ -231,4 +161,82 @@ function toImportmapJsCode(name: string, imports: Record<string, string>) {
  */
 function transFileName(fileName: string): string {
     return fileName.replace(/^.\//, '');
+}
+
+/**
+ * 根据给定的选项和外部模块配置，返回一个函数，该函数用于处理模块的导入请求
+ * @returns 一个函数，该函数接受两个参数：issuer 和 request，并返回一个字符串或 false
+ */
+function getImportResult(
+    options: ParsedModuleConfig,
+    externalName: keyof ParsedModuleConfig['externals'],
+    externalValue: ParsedModuleConfig['externals'][string]
+): (issuer: string, request: string) => string | false {
+    const { name: gezName, root } = options;
+
+    /**
+     * 匹配的相对路径和别名
+     * @example
+     * ./serviceName/src/utils/index => ['./serviceName/src/utils/index', './serviceName/src/utils']
+     * @lib/utils/index => ['@lib/utils/index', '@lib/utils']
+     */
+    const matches: string[] = [externalName];
+    if (externalName.endsWith('/index')) {
+        matches.push(externalName.replace(/\/index$/, ''));
+    }
+
+    /**
+     * 匹配的文件路径
+     * @example
+     * ['./serviceName/src/utils/index', './serviceName/src/utils'] => ['/Users/xxx/serviceName/src/utils/index', '/Users/xxx/serviceName/src/utils']
+     */
+    const filePaths = matches.reduce<string[]>((acc, item) => {
+        if (item.startsWith('./')) {
+            const target = path.resolve(
+                root,
+                item.replace(new RegExp(`^${gezName}\/`), '')
+            );
+            acc.push(target);
+        }
+        return acc;
+    }, []);
+
+    /**
+     * 可能出现的场景：
+     * 例如：root:src/square/index.ts
+     * 入参：request 可能得值
+     * 1. ssr-broker-business/src/square
+     * 2. ssr-broker-business/src/square/index
+     * 3. 在 test.ts 使用 ./square
+     * 4. 在 test.ts 使用 ./square/index
+     * issuer
+     */
+    return (issuer: string | undefined, request: string) => {
+        const result = externalValue.import ?? request;
+        if (!issuer) return false;
+        if (issuer && externalValue.match.test(request)) {
+            return result;
+        }
+        // 以 servername/ 开头的路径 直接进行匹配，命中时直接返回
+        if (request.startsWith(`${gezName}\/`)) {
+            if (matches.includes(request)) {
+                return result;
+            }
+        }
+
+        if (request.startsWith(`./`)) {
+            const index = request.indexOf('?');
+            const requestFile =
+                index > 0 ? request.substring(2, index) : request;
+            const realPath = path.resolve(issuer, '../', request);
+            if (requestFile === realPath) {
+                return false;
+            }
+            if (filePaths.includes(realPath)) {
+                return result;
+            }
+        }
+
+        return false;
+    };
 }
