@@ -1,6 +1,6 @@
 {
     "name": "ssr-vue2-host",
-    "version": "0.0.15-alpha.75",
+    "version": "0.0.15-alpha.76",
     "private": true,
     "type": "module",
     "scripts": {
