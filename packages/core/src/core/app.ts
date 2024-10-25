@@ -1,9 +1,3 @@
-import type { IncomingMessage, ServerResponse } from 'node:http';
-
-import * as serveStatic from 'serve-static';
-
-import path from 'node:path';
-
 import type { Gez } from './gez';
 import { type Middleware, createMiddleware } from './middleware';
 import { ServerContext, type ServerRenderHandle } from './server-context';

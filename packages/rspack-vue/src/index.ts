@@ -103,7 +103,8 @@ function createVueApp(
             {
                 loader: 'builtin:lightningcss-loader',
                 options: {
-                    targets: gez.browserslist
+                    targets: gez.browserslist,
+                    minify: true
                 }
             }
         ];
