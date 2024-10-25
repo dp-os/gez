@@ -105,6 +105,7 @@ export function createBaseConfig(
         output: {
             publicPath: gez.base,
             uniqueName: gez.varName,
+            hotUpdateChunkFilename: 'hot-update/[id].[fullhash].hot-update.js',
             ...output.get()
         },
         experiments: {
