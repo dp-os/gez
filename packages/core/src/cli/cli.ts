@@ -6,6 +6,7 @@ export function cli() {
     const command = process.argv.slice(2)[0] || '';
     switch (command) {
         case COMMAND.install:
+            process.env.NODE_ENV = 'production';
             runDevApp(command);
             break;
         case COMMAND.dev:

@@ -21,8 +21,14 @@ export interface GezOptions {
     name?: string;
     /**
      * 是否是生产模式
+     * @default process.env.NODE_ENV === 'production'
      */
     isProd?: boolean;
+    /**
+     * 是否安装远程模块
+     * @default process.env.npm_config_production !== 'true'
+     */
+    isInstall?: boolean;
     /**
      * 模块配置
      */
@@ -204,6 +210,13 @@ export class Gez {
         return this._options?.isProd ?? process.env.NODE_ENV === 'production';
     }
 
+    get isInstall() {
+        return (
+            this._options?.isInstall ??
+            process.env.npm_config_production !== 'true'
+        );
+    }
+
     public get browserslist() {
         return ['chrome >=87', 'firefox >=78', 'safari >=14', 'edge >=88'];
     }
@@ -216,10 +229,9 @@ export class Gez {
         const createDevApp = this._options.createDevApp || defaultCreateDevApp;
 
         this._command = command;
-        const app: App =
-            command === COMMAND.start
-                ? await createApp(this)
-                : await createDevApp(this);
+        const app: App = this.isProd
+            ? await createApp(this)
+            : await createDevApp(this);
         this._app = app;
     }
 
