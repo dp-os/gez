@@ -212,7 +212,7 @@ export class Gez {
         if (this._command) {
             throw new Error('Cannot be initialized repeatedly');
         }
-        moduleLink(path.resolve(this.root, 'node_modules'), this.moduleConfig);
+        moduleLink(this.root, this.moduleConfig);
         const createDevApp = this._options.createDevApp || defaultCreateDevApp;
 
         this._command = command;
