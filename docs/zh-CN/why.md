@@ -29,7 +29,7 @@ export default {
 } satisfies GezOptions;
 ```
 ### ssr-module-auth
-对外提供本服务的路由配置文件，并且将 `vue` 模块指向到 `ssr-core` 导出的 `vue` 模块
+对外提供本服务的路由配置文件，并且将 `vue` 和 `vue-router` 模块指向到 `ssr-core` 导出的模块
 ```ts
 export default {
     name: 'ssr-module-auth',
