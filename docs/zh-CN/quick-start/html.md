@@ -43,6 +43,7 @@ npm install @gez/rspack -D
   - entry.node.ts    # 创建一个服务器程序，来处理请求
 ```
 ### src/entry.client.ts
+模拟水合，更新当前时间
 ```ts
 const time = document.querySelector('time');
 setInterval(() => {
@@ -50,6 +51,7 @@ setInterval(() => {
 }, 1000);
 ```
 ### src/entry.server.ts
+模拟框架的 SSR API，渲染出 HTML 内容返回
 ```ts
 import type { ServerContext } from '@gez/core';
 
@@ -76,6 +78,7 @@ export default async (ctx: ServerContext, params: { url: string }) => {
 };
 ```
 ### src/entry.node.ts
+创建一个 web 服务器，来处理客户请求
 ```ts
 import http from 'node:http';
 import type { GezOptions } from '@gez/core';
