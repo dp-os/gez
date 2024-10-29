@@ -4,7 +4,7 @@
 Gez 完全是基于 ESM 模块系统进行设计，每个服务都可以对外导出模块，也可以使用外部模块，整个过程简单透明，能够精准的控制依赖管理。
 
 ## 场景
-我们有三个服务，分别是`ssr-core`、`ssr-module-auth`、`ssr-app`
+我们有三个服务，分别是`ssr-core`、`ssr-module-auth`、`ssr-app`，目录结构如下
 ```
 - services/
   - ssr-core/         # 核心服务，提供公共的依赖、函数、组件
