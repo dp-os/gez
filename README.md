@@ -9,23 +9,7 @@ Gez 是一个基于 **[Rspack](https://rspack.dev/)** 构建的 **[Pure ESM](htt
 - 😎 **基准支持**：Node20 和支持 [ESM dynamic import](https://caniuse.com/es6-module-dynamic-import) 和 [import.meta](https://caniuse.com/mdn-javascript_operators_import_meta) 的浏览器。
 - 👏 **长久维护**：从 [Genesis](https://www.npmjs.com/package/@fmfe/genesis-core) 2020 年迭代至今，现更名为: [Gez](https://www.npmjs.com/package/@gez/core)。
 
-## 👉 快速开始
-```sh
-# 安装生产依赖
-npm install @gez/core
-# 安装开发依赖
-npm install @gez/rspack -D
-```
-### 修改 package.json
-```json
-{
-  "type": "module",
-  "scripts": {
-    "dev": "gez dev",
-    "build": "gez build",
-    "start": "gez start",
-    "preview": "gez preview",
-    "postinstall": "gez install"
-  }
-}
-```
+## 👉 引导
+- 快速开始
+  - [HTML](./docs/zh-CN/quick-start/html.md)
+  - [vue2-single](./docs/zh-CN/quick-start/vue2-single.md)
