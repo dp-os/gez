@@ -1,0 +1,22 @@
+{
+  "name": "ssr-simple",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "gez dev",
+    "build": "gez build",
+    "start": "gez start",
+    "preview": "gez preview",
+    "postinstall": "gez install"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@gez/core": "workspace:0.0.15-alpha.83"
+  },
+  "devDependencies": {
+    "@gez/rspack": "workspace:0.0.15-alpha.83"
+  }
+}

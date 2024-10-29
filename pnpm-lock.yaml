@@ -43,6 +43,16 @@ importers:
         specifier: ^5.3.3
         version: 5.4.5
 
+  examples/ssr-simple:
+    dependencies:
+      '@gez/core':
+        specifier: workspace:0.0.15-alpha.83
+        version: link:../../packages/core
+    devDependencies:
+      '@gez/rspack':
+        specifier: workspace:0.0.15-alpha.83
+        version: link:../../packages/rspack
+
   examples/ssr-vue2-host:
     dependencies:
       '@gez/core':

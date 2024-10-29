@@ -12,7 +12,19 @@ Gez 是一个基于 **[Rspack](https://rspack.dev/)** 构建的 **[Pure ESM](htt
 ## 👉 快速开始
 ```sh
 # 安装生产依赖
-pnpm install @gez/core express
+npm install @gez/core
 # 安装开发依赖
-pnpm install @gez/rspack -D
+npm install @gez/rspack -D
+```
+package.json
+```json
+{
+  "scripts": {
+    "dev": "gez dev",
+    "build": "gez build",
+    "start": "gez start",
+    "preview": "gez preview",
+    "postinstall": "gez install"
+  }
+}
 ```
