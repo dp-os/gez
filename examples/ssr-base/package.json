@@ -1,6 +1,6 @@
 {
     "name": "ssr-base",
-    "version": "0.0.15-alpha.81",
+    "version": "0.0.15-alpha.82",
     "private": true,
     "type": "module",
     "scripts": {
