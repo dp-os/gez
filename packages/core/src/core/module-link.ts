@@ -37,12 +37,18 @@ function getMaxSamePath(pathList: string[]): string {
     const charList = pathList[0].split('/');
     for (let i = 0; i < charList.length; i++) {
         const char = charList[i];
-        const targetPath = maxSamePath + char + '/';
+        const targetPath = maxSamePath + char;
         const isSame = pathList.every((fullPath) => {
-            return fullPath.startsWith(targetPath);
+            if (
+                fullPath === targetPath ||
+                fullPath.startsWith(`${targetPath}/`)
+            ) {
+                return true;
+            }
+            return false;
         });
         if (isSame) {
-            maxSamePath = targetPath;
+            maxSamePath = `${maxSamePath}${char}/`;
         } else {
             break;
         }
