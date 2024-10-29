@@ -13,7 +13,7 @@ Gez 完全是基于 ESM 模块系统进行设计，每个服务都可以对外�
 ```
 
 ### ssr-core
-核心服务对外提供了基本的布局组件，Vue 版本
+核心服务对外提供了基本的布局组件、vue 库
 ```ts
 export default {
     name: 'ssr-core',
@@ -22,7 +22,8 @@ export default {
             // 其它服务使用：import Layout from 'ssr-core/src/components/layout.vue' 
             'root:src/components/layout.vue',
             // 其它服务可以将 vue 的外部依赖设置为 ssr-core/npm/vue 来达到依赖共享
-            'npm:vue'
+            'npm:vue',
+            'npm:vue-router'
         ]
     }
 } satisfies GezOptions;
@@ -39,7 +40,8 @@ export default {
             'ssr-core': 'root:../ssr-core/dist'
         },
         externals: {
-            vue: 'ssr-core/npm/vue'
+            vue: 'ssr-core/npm/vue',
+            'vue-router': 'ssr-core/npm/vue-router'
         }
     }
 } satisfies GezOptions;
@@ -48,7 +50,7 @@ export default {
 在聚合服务，可以
 - `import Layout from 'ssr-core/src/components/layout.vue'` 来调用基础服务的公共布局组件
 - `import routes from 'ssr-module-auth/src/routes` 来注册来自其它服务的路由配置
-- `import Vue from 'vue'` 替换为 `import Vue from 'ssr-core/npm/vue'`，来达到依赖共享的目的
+- `import Vue from 'vue'` 替换为 `import Vue from 'ssr-core/npm/vue'`，来达到依赖共享，其它依赖举一反三
 ```ts
 export default {
     name: 'ssr-app',
@@ -58,7 +60,8 @@ export default {
             'ssr-module-auth': 'root:../ssr-module-auth/dist'
         },
         externals: {
-            vue: 'ssr-core/npm/vue'
+            vue: 'ssr-core/npm/vue',
+            'vue-router': 'ssr-core/npm/vue-router'
         }
     }
 } satisfies GezOptions;
