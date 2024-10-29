@@ -11,5 +11,7 @@ Gez 是一个基于 **[Rspack](https://rspack.dev/)** 构建的 **[Pure ESM](htt
 
 ## 📚 文档
 - 快速开始
+  - [为什么选 Gez](./docs/zh-CN/why.md)
+  - [基本概念](./docs/zh-CN/quick-start/basic-concept.md)
   - [HTML](./docs/zh-CN/quick-start/html.md)
   - [vue2-single](./docs/zh-CN/quick-start/vue2-single.md)
