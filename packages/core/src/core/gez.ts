@@ -229,13 +229,11 @@ export class Gez {
         const createDevApp = this._options.createDevApp || defaultCreateDevApp;
 
         this._command = command;
-        // todo 判断 createDevApp的逻辑需要调整
         const app: App =
-            command === COMMAND.build
+            // 只有 dev 和 build 时使用createDevApp
+            [COMMAND.dev, COMMAND.build].includes(command)
                 ? await createDevApp(this)
-                : this.isProd
-                  ? await createApp(this)
-                  : await createDevApp(this);
+                : await createApp(this);
         this._app = app;
     }
 
