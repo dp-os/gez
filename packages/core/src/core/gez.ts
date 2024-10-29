@@ -229,9 +229,13 @@ export class Gez {
         const createDevApp = this._options.createDevApp || defaultCreateDevApp;
 
         this._command = command;
-        const app: App = this.isProd
-            ? await createApp(this)
-            : await createDevApp(this);
+        // todo 判断 createDevApp的逻辑需要调整
+        const app: App =
+            command === COMMAND.build
+                ? await createDevApp(this)
+                : this.isProd
+                  ? await createApp(this)
+                  : await createDevApp(this);
         this._app = app;
     }
 
