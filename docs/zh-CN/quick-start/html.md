@@ -48,3 +48,62 @@ npm install @gez/rspack -D
 ├── package.json           包管理配置
 .
 ```
+### src/entry.client.ts
+```ts
+const time = document.querySelector('time');
+setInterval(() => {
+    time?.setHTMLUnsafe(new Date().toISOString());
+}, 1000);
+```
+### src/entry.server.ts
+```ts
+import type { ServerContext } from '@gez/core';
+
+export default async (ctx: ServerContext, params: { url: string }) => {
+    const script = await ctx.getInjectScript();
+    const time = new Date().toISOString();
+    ctx.html = `
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gez</title>
+</head>
+<body>
+    <h1>Gez</h1>
+    <h2>Hello world!</h2>
+    <p>URL: ${params.url}</p>
+    <time>${time}</time>
+    ${script}
+</body>
+</html>
+`;
+};
+```
+### src/entry.node.ts
+```ts
+import http from 'node:http';
+import type { GezOptions } from '@gez/core';
+
+export default {
+    name: 'ssr-html',
+    async createDevApp(gez) {
+        return import('@gez/rspack').then((m) => m.createApp(gez));
+    },
+    async createServer(gez) {
+        const server = http.createServer((req, res) => {
+            gez.middleware(req, res, async () => {
+                const ctx = await gez.render({
+                    url: req.url
+                });
+                res.end(ctx.html);
+            });
+        });
+        server.listen(3005, () => {
+            console.log('http://localhost:3005');
+        });
+    }
+} satisfies GezOptions;
+
+```
