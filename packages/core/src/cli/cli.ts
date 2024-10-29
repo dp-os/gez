@@ -10,9 +10,9 @@ export function cli() {
             runDevApp(command);
             break;
         case COMMAND.dev:
+        case COMMAND.build:
             runDevApp(command);
             break;
-        case COMMAND.build:
         case COMMAND.release:
         case COMMAND.preview:
             process.env.NODE_ENV = 'production';
