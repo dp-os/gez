@@ -7,7 +7,7 @@ cd 项目目录
 npm init
 ```
 ## 将项目设置为 module
-在 **package.json** 文件添加如下
+在 **package.json** 文件添加
 ```json
 {
     "type": "module"
@@ -22,7 +22,7 @@ npm install @gez/core
 npm install @gez/rspack -D
 ```
 ## 添加脚本
-在 **package.json** 文件添加如下
+在 **package.json** 文件添加
 ```json
 {
   "scripts": {
