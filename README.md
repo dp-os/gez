@@ -19,7 +19,7 @@ npm install @gez/rspack -D
 ### 修改 package.json
 ```json
 {
-"type": "module",
+  "type": "module",
   "scripts": {
     "dev": "gez dev",
     "build": "gez build",
