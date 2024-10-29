@@ -48,7 +48,7 @@ export default {
 在聚合服务，可以
 - `import Layout from 'ssr-core/src/components/layout.vue'` 来调用基础服务的公共布局组件
 - `import routes from 'ssr-module-auth/src/routes` 来注册来自其它服务的路由配置
-- `import Vue from 'vue'` 替换为  `import Vue from 'ssr-core/npm/vue'`。
+- `import Vue from 'vue'` 替换为 `import Vue from 'ssr-core/npm/vue'`，来达到依赖共享的目的
 ```ts
 export default {
     name: 'ssr-app',
