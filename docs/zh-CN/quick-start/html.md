@@ -119,5 +119,5 @@ export default {
 ### 启动项目
 ```bash
 npm run dev
-# 浏览器打开：http://localhost:3005
 ```
+> 浏览器打开：http://localhost:3005
