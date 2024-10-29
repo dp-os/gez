@@ -45,7 +45,10 @@ export default {
 } satisfies GezOptions;
 ```
 ### ssr-app
-在聚合服务，我们可以使用 `import Layout from 'ssr-core/src/components/layout.vue'` 来调用基础服务的公共布局组件，也可以使用 `import routes from 'ssr-module-auth/src/routes` 来注册来自其它服务的路由配置，并且设置当前服务的 `vue` 模块的外部依赖为 `import Vue from 'ssr-core/npm/vue'`。
+在聚合服务，可以
+- `import Layout from 'ssr-core/src/components/layout.vue'` 来调用基础服务的公共布局组件
+- `import routes from 'ssr-module-auth/src/routes` 来注册来自其它服务的路由配置
+- `import Vue from 'vue'` 替换为  `import Vue from 'ssr-core/npm/vue'`。
 ```ts
 export default {
     name: 'ssr-app',
