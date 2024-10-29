@@ -16,9 +16,10 @@ npm install @gez/core
 # 安装开发依赖
 npm install @gez/rspack -D
 ```
-package.json
+### 修改 package.json
 ```json
 {
+"type": "module",
   "scripts": {
     "dev": "gez dev",
     "build": "gez build",
