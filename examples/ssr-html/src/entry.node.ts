@@ -2,7 +2,7 @@ import http from 'node:http';
 import type { GezOptions } from '@gez/core';
 
 export default {
-    name: 'ssr-simple',
+    name: 'ssr-html',
     async createDevApp(gez) {
         return import('@gez/rspack').then((m) => m.createApp(gez));
     },
