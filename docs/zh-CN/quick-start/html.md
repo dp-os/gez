@@ -49,6 +49,7 @@ const time = document.querySelector('time');
 setInterval(() => {
     time?.setHTMLUnsafe(new Date().toISOString());
 }, 1000);
+
 ```
 ### src/entry.server.ts
 模拟框架的 SSR API，渲染出 HTML 内容返回
@@ -78,6 +79,7 @@ export default async (ctx: ServerContext, params: { url: string }) => {
 </html>
 `;
 };
+
 ```
 ### src/entry.node.ts
 创建一个 web 服务器，来处理客户请求
