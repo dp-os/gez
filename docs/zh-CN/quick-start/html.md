@@ -90,7 +90,11 @@ export default {
     name: 'ssr-html',
     // 本地执行 dev 和 build 时会使用
     async createDevApp(gez) {
-        return import('@gez/rspack').then((m) => m.createApp(gez));
+        return import('@gez/rspack').then((m) =>
+            m.createApp(gez, (buildContext) => {
+                // 可以在这里修改 Rspack 编译的配置
+            })
+        );
     },
     async createServer(gez) {
         const server = http.createServer((req, res) => {
