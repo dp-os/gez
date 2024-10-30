@@ -9,5 +9,6 @@
         "type": "section-header",
         "label": "特性"
     },
-    "essentials/module-link"
+    "essentials/module-link",
+    "essentials/command"
 ]
