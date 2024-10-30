@@ -10,8 +10,6 @@ Gez 是一个基于 **[Rspack](https://rspack.dev/)** 构建的 **Pure ESM Like*
 - 👏 **长久维护**：从 [Genesis](https://www.npmjs.com/package/@fmfe/genesis-core) 2020 年迭代至今，现更名为: [Gez](https://www.npmjs.com/package/@gez/core)。
 
 ## 📚 文档
-- [为什么选 Gez ](./docs/zh-CN/why.md)
-- [基本概念](./docs/zh-CN/quick-start/basic-concept.md)
-- 快速开始
-  - [HTML](./docs/zh-CN/quick-start/html.md)
-  - [vue2-single](./docs/zh-CN/quick-start/vue2-single.md)
+- [v3.0](https://dp-os.github.io/gez/index.html)(alpha 阶段)
+- [v2.0](https://github.com/dp-os/gez/blob/v2/docs/zh-CN/README.md)(持续维护)
+- [v1.0](https://fmfe.github.io/genesis-docs/guide/)(停止维护)
