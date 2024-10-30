@@ -1,0 +1,28 @@
+# 介绍
+Gez 是 Genesis 迭代的第三个大版本，`v1.0` 是通过 HTTP 请求来实现的远程组件，`v2.0` 是通过 Module Federation v1.0
+ 实现的远程组件。随着主流浏览器都已经支持 ESM，这使得设计一款基于 ESM 的[模块链接](./essentials/module-link.mdx)系统变成了可能。随着 Rspack v1.0 的发布，提供了对 ESM 更加友好的支持，这使得我们可以将可能变成了现实。于是，我们将 `v3.0` 版本命名为 `Gez`
+
+## 为什么放弃 Module Federation
+- 本地开发调试不友好
+- 内部实现复杂度较高，出了问题较难排查
+- 依赖共享无法精确使用哪个服务的依赖
+## 调研
+- 参考了 Vite 对现代 JavaScript 支持的定义，以浏览器支持 [ESM dynamic import](https://caniuse.com/es6-module-dynamic-import) 和 [import.meta](https://caniuse.com/mdn-javascript_operators_import_meta) 作为基准
+    - Chrome >=87
+    - Firefox >=78
+    - Safari >=14
+    - Edge >=88
+    - node >=20
+- 构建出具有内容哈希的产物，使用 [importmap](https://caniuse.com/?search=import%20map) 将 `import vue from 'vue'` 替换成 `ssr-npm/npm/vue.[contenthash].js`，这样静态文件就可以设置为强缓存了。对于不支持 [importmap](https://caniuse.com/?search=import%20map) 的浏览器，[es-module-shims](https://github.com/guybedford/es-module-shims) 提供了降级的方案
+- Rspack 的 externalsType 支持使用 [module-import](https://rspack.dev/config/externals#externalstypemodule-import)，来设置 ESM 模块的外部依赖。
+- 在 Node 上实现 ESM 模块热更新不是一件容易的事情，庆幸的是可以通过启用 `node --experimental-vm-modules --experimental-import-meta-resolve` 来实现它。
+- **最终确定使用 Rspack 和 Node2 来实现 `v3.0` 版本。**
+
+## 定位
+Gez 的定位并不是成为 [Next.js](https://nextjs.org) 或 [Nuxt.js](https://nuxt.com/) 那样大而全的框架，而是成为一个具有 Typescript、ESM、SSR、[模块链接](./essentials/module-link.mdx)特性的基础设施，你可以在这个基础上来构建属于你自己的 `Next.js`。如果你需要定制化实现，它会很适合你。
+
+## 兼容性
+所有的主流浏览器都已经支持，针对一些低版本的浏览器，可以提供一个升级的页面来引导用户升级它的浏览器。
+
+## 可靠性
+从 `v1.0`、`v2.0` 到现在的 `v3.0`，已经走过了将近 5 年的时光，支持起了公司内部数十个业务的项目，并且不断地推动业务项目的升级。

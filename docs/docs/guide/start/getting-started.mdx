@@ -1,4 +1,6 @@
-# HTML
+import { PackageManagerTabs } from '@theme';
+
+# 快速开始
 这是一个与框架无关的例子，采用原生的 HTML 来开发项目
 
 ## 创建项目
@@ -15,12 +17,14 @@ npm init
 ```
 
 ## 安装依赖
-```bash
-# 安装生产依赖
-npm install @gez/core
-# 安装开发依赖
-npm install @gez/rspack -D
-```
+:::tip
+总是应该将生产依赖和开发依赖区分，会使 `node_modules` 在生产环境中更小。
+:::
+
+**安装生产依赖**
+<PackageManagerTabs command="install @gez/core" />
+**安装开发依赖**
+<PackageManagerTabs command="install @gez/rspack -D" />
 ## 添加脚本
 在 **package.json** 文件添加
 ```json

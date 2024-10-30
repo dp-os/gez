@@ -1,0 +1,142 @@
+# 模块链接
+随着业务规模的增长，我们大概会有两条路线：
+- 单体应用
+    - 将所有业务底代码写在一个仓库中，随着代码膨胀，会导致开发和构建效率越来越低，直到在也无法承受
+    - 随着历史的积累，这条路正在变得越来越难走
+- 微服务化
+    - 将不同的业务板块，放到不同的仓库中，通过 npm 包的方式来共享代码
+    - 使用乾坤或者模块联邦等技术对业务进行拆分
+
+## 构建
+传统的 SSR 程序在构建目标为 `node` 时，会将 `node_modules` 的模块设置为外部依赖，但是 Gez 会把全部代码都打包成 ESM 模块来进行链接。所以在使用一些第三方依赖的时候，尽可能的选择支持 ESM 的包，不然你可能会遇到一些问题。
+构建完成后，通常你可以看到这样的文件输出
+```
+- dist/                            # 构建输出目录
+  - client/                        # 客户端构建输出
+    - chunks/                      # 当前服务抽离的公共代码
+        - [number].js              
+    - npm/                         # 对外导出的 node_modules 包
+        - [name].[contenthash].js  
+    - src/                         # 对外导出的 src 目录下的文件
+        - [name].[contenthash].js  
+    - versions/                    # 执行 gez release 命令，会将 client 和 server 的代码打包到这里
+        - [contenthash].zip        # 压缩文件
+        - [contenthash].json       # 当前压缩的版本号
+        - latest.json              # 最新的版本号
+    - entry.[contenthash].js       # 入口文件
+    - importmap.js                 # 不可缓存文件，执行后往 globalThis 注入 __importmap__ 
+    - importmap.[contenthash].js   # 可缓存文件，执行后往 globalThis 注入 __importmap__ 
+    - package.json                 # 声明模块的基本导出信息
+- server/                          # 服务端构建输出
+    - ...                          # 和客户端目录基本一致
+```
+
+
+## 客户端链接
+服务端会根据 `module.imports` 的配置在 html 中注入 `/[服务名]/importmap.[contenthash].js`，将模块的哈希映射信息写入到 `globalThis.__importmap__` 对象中，最终将该变量值写入到 `<script type="importmap"></script>` 标签中。
+
+在 **src/entry.server.ts** 文件中处理注入代码
+```ts
+import type { ServerContext } from '@gez/core';
+
+export default async (ctx: ServerContext, params: { url: string }) => {
+    const script = await ctx.getInjectScript();
+    ctx.html = `
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gez</title>
+</head>
+<body>
+    ${script}
+</body>
+</html>
+`;
+};
+```
+
+## 服务端链接
+在开发阶段时，我们可以设置一个远程的依赖地址
+```ts
+export default {
+    name: 'ssr-module-auth',
+    modules: {
+        imports: {
+            'ssr-core': ['root:../ssr-core/dist', 'https://<hostname>/ssr-core/versions/latest.json']
+        }
+    }
+} satisfies GezOptions;
+```
+在 **package.json** 配置 postinstall 钩子执行 `gez install` 命令。在安装开发依赖时，就会将远程依赖下载到你配置的 `'root:../ssr-core/dist'` 目录中。
+
+```ts
+"scripts": {
+    "postinstall": "gez install"
+}
+```
+程序会根据你配置路径，自动寻找一个最近可以访问的 `node_modules` 目录，并自动创建软链接。
+
+:::warning
+在生产环境中，你应该使用本地链接，而不是远程链接，这样能提高应用程序的启动速度。如果你使用 Docker，可以通过使用[持久卷](https://docs.docker.com/engine/storage/volumes/)的方式来将不同服务的产物组织到一起。
+:::
+
+## 示例
+
+### ssr-core
+核心服务对外提供了基本的布局组件、vue 库
+```ts
+export default {
+    name: 'ssr-core',
+    modules: {
+        exports: [
+            // 其它服务使用：import Layout from 'ssr-core/src/components/layout.vue' 
+            'root:src/components/layout.vue',
+            // 其它服务可以将 vue 的外部依赖设置为 ssr-core/npm/vue 来达到依赖共享
+            'npm:vue',
+            'npm:vue-router'
+        ]
+    }
+} satisfies GezOptions;
+```
+### ssr-module-auth
+对外提供本服务的路由配置文件，并且将 `vue` 和 `vue-router` 模块指向到 `ssr-core` 导出的模块
+```ts
+export default {
+    name: 'ssr-module-auth',
+    modules: {
+        // 其它服务使用：import routes from 'ssr-module-auth/src/routes
+        exports: ['root:src/routes.ts'],
+        imports: {
+            'ssr-core': 'root:../ssr-core/dist'
+        },
+        externals: {
+            vue: 'ssr-core/npm/vue',
+            'vue-router': 'ssr-core/npm/vue-router'
+        }
+    }
+} satisfies GezOptions;
+```
+### ssr-app
+在聚合服务，可以使用
+- `import Layout from 'ssr-core/src/components/layout.vue'`
+    - 来调用基础服务的公共布局组件
+- `import routes from 'ssr-module-auth/src/routes`
+    - 来注册来自其它服务的路由配置
+- `import Vue from 'vue'`
+    - 构建工具会替换为 `import Vue from 'ssr-core/npm/vue'`
+    - 其它依赖举一反三
+```ts
+export default {
+    name: 'ssr-app',
+    modules: {
+        imports: {
+            'ssr-core': 'root:../ssr-core/dist',
+            'ssr-module-auth': 'root:../ssr-module-auth/dist'
+        },
+        externals: {
+            vue: 'ssr-core/npm/vue',
+            'vue-router': 'ssr-core/npm/vue-router'
+        }
+    }
+} satisfies GezOptions;
+```

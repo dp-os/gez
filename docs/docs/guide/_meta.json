@@ -1,0 +1,14 @@
+[
+    {
+        "type": "section-header",
+        "label": "开始"
+    },
+    "index",
+    "start/why",
+    "start/getting-started",
+    {
+        "type": "section-header",
+        "label": "特性"
+    },
+    "essentials/module-link"
+]
