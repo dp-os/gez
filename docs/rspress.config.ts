@@ -3,8 +3,9 @@ import { defineConfig } from 'rspress/config';
 
 export default defineConfig({
     root: path.join(__dirname, 'docs'),
-    title: 'docs2',
-    description: 'Rspack-based Static Site Generator',
+    title: 'Gez',
+    description:
+        'Gez 是一个基于 Rspack 构建的 Pure ESM Like 解决方案，通过 importmap 将多服务的模块链接到具有哈希缓存的文件中。',
     icon: '/rspress-icon.png',
     base: '/gez/',
     logo: {
@@ -17,7 +18,7 @@ export default defineConfig({
             {
                 icon: 'github',
                 mode: 'link',
-                content: 'https://github.com/web-infra-dev/rspress'
+                content: 'https://github.com/dp-os/gez'
             }
         ]
     }
