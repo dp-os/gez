@@ -21,11 +21,11 @@ importers:
   examples/ssr-html:
     dependencies:
       '@gez/core':
-        specifier: workspace:0.0.15-alpha.85
+        specifier: workspace:0.0.15-alpha.86
         version: link:../../packages/core
     devDependencies:
       '@gez/rspack':
-        specifier: workspace:0.0.15-alpha.85
+        specifier: workspace:0.0.15-alpha.86
         version: link:../../packages/rspack
 
   examples/ssr-vue2-host:
@@ -187,6 +187,9 @@ importers:
       '@types/serialize-javascript':
         specifier: ^5.0.4
         version: 5.0.4
+      es-module-shims:
+        specifier: 1.10.1
+        version: 1.10.1
       fflate:
         specifier: ^0.8.2
         version: 0.8.2
@@ -4216,6 +4219,10 @@ packages:
 
   /es-module-lexer@1.5.4:
     resolution: {integrity: sha512-MVNK56NiMrOwitFB7cqDwq0CQutbw+0BvLshJSse0MUNU+y1FC3bUS/AQg7oUng+/wKrrki7JfmwtVHkVfPLlw==}
+
+  /es-module-shims@1.10.1:
+    resolution: {integrity: sha512-HSSkRLkqFEyX6GrCAHrSOR5iz/QzQJRqZUF7bFJOZ4aoSw0WoSggfsTIGN2yFbF8v6xjQFhT4HGP6b+0qQZmEQ==}
+    dev: false
 
   /es-object-atoms@1.0.0:
     resolution: {integrity: sha512-MZ4iQ6JwHOBQjahnjwaC1ZtIBH+2ohjamzAO3oaHcXYup7qxjF2fixyH+Q71voWHeOkI2q/TnJao/KfXYIZWbw==}

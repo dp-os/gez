@@ -55,6 +55,7 @@ export class ServerContext {
         const { gez } = this;
         const files = await this.getImportmapFiles();
         return `
+        <script src="/es-module-shims.js"></script>
 ${files
     .map((file) => {
         return `<script src="${file}"></script>`;
