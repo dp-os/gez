@@ -1,5 +1,9 @@
 # 模块链接
-一个系统，总是可以拆分成组件库、工具库、业务模块等。它们总是会写在不同的地方，以独立的仓库、monorepo 包的形式存在，但是最终都需要系统的主程序链接这些模块。Gez 的核心功能就是帮你把这些不同地方的模块，快速的链接到一起。实现一个服务发布更新，其它服务同时更新。
+一个系统，总是可以拆分成组件库、工具库、业务模块等。它们总是会写在不同的地方，以独立的仓库、monorepo 包的形式存在，但是最终都需要系统的主程序链接这些模块。Gez 的核心功能就是帮你把这些不同地方的模块，快速的链接到一起。实现一个服务发布，其它服务同时更新。
+
+:::tip
+Gez 默认是支持 SSR 的，你也可以把它当成 CSR 来使用。
+:::
 
 ## 设计理念
 - 我们应该设计一个基础服务，由基础服务提供所有的第三方依赖。
@@ -17,11 +21,11 @@
 - dist/                            # 构建输出目录
   - client/                        # 客户端构建输出
     - chunks/                      # 当前服务抽离的公共代码
-        - [number].js              
+        - [name].[contenthash].js
     - npm/                         # 对外导出的 node_modules 包
-        - [name].[contenthash].js  
+        - [name].[contenthash].js
     - src/                         # 对外导出的 src 目录下的文件
-        - [name].[contenthash].js  
+        - [name].[contenthash].js
     - versions/                    # 执行 gez release 命令，会将 client 和 server 的代码打包到这里
         - [contenthash].zip        # 压缩文件
         - [contenthash].json       # 当前压缩的版本号
@@ -33,7 +37,9 @@
 - server/                          # 服务端构建输出
     - ...                          # 和客户端目录基本一致
 ```
-
+:::tip
+使用 `[contenthash]` 可以让我们生成基于内容哈希的文件名，这样我们的静态资产文件就可以放心的设置为强缓存了。
+:::
 
 ## 客户端链接
 服务端会根据 `module.imports` 的配置在 html 中注入 `/[服务名]/importmap.[contenthash].js`，将模块的哈希映射信息写入到 `globalThis.__importmap__` 对象中，最终将该变量值写入到 `<script type="importmap"></script>` 标签中。
@@ -80,7 +86,7 @@ export default {
 程序会根据你配置路径，自动寻找一个最近可以访问的 `node_modules` 目录，并自动创建软链接。
 
 :::warning
-在生产环境中，你应该使用本地链接，而不是远程链接，这样能提高应用程序的启动速度。如果你使用 Docker，可以通过使用[持久卷](https://docs.docker.com/engine/storage/volumes/)的方式来将不同服务的产物组织到一起。
+在生产环境中，你应该使用本地链接，而不是远程链接，这样能提高应用程序的启动速度。如果你使用 Docker，可以通过使用[持久卷](https://docs.docker.com/engine/storage/volumes/)，将不同服务的产物组织到一个目录中。
 :::
 
 ## 示例
