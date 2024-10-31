@@ -1,5 +1,5 @@
 # 模块链接
-一个系统，总是可以拆分成组件库、工具库、业务模块等。它们总是会写在不同的地方，以独立的仓库、monorepo 包的形式存在，但是最终都需要系统的主程序链接这些模块。Gez 的核心功能就是帮你把这些不同地方的模块，快速的链接到一起。实现一个服务发布，其它服务同时更新。
+一个系统，总是可以拆分成组件库、工具库、业务模块等。它们总是会写在不同的地方，以独立的仓库、monorepo 包等形式存在，但是最终都需要系统的主程序链接这些模块。Gez 的核心功能就是帮你把这些不同地方的模块，快速的链接到一起。实现一个服务发布，其它服务同时更新。
 
 :::tip
 Gez 默认是支持 SSR 的，你也可以把它当成 CSR 来使用。
@@ -7,8 +7,8 @@ Gez 默认是支持 SSR 的，你也可以把它当成 CSR 来使用。
 
 ## 设计理念
 - 我们应该设计一个基础服务，由基础服务提供所有的第三方依赖。
-- 由基于服务统一维护第三方依赖更新，一次发布，所有业务系统生效。
-- 业务服务只构建业务代码，所有的第三方依赖，指向到基础服务中。
+- 由基础服务统一维护第三方依赖更新，一次发布，所有业务系统生效。
+- 业务服务仅构建业务代码，所有的第三方依赖，应指向到基础服务中。
 
 :::tip
 由于第三方依赖，都被指向到了基础服务，不再需要重复打包，这会让 Rspack 的编译速度，再提升一个台阶。
@@ -71,12 +71,12 @@ export default {
     name: 'ssr-module-auth',
     modules: {
         imports: {
-            'ssr-core': ['root:../ssr-core/dist', 'https://<hostname>/ssr-core/versions/latest.json']
+            'ssr-dep': ['root:../ssr-dep/dist', 'https://<hostname>/ssr-dep/versions/latest.json']
         }
     }
 } satisfies GezOptions;
 ```
-在 **package.json** 配置 postinstall 钩子执行 `gez install` 命令。在安装开发依赖时，就会将远程依赖下载到你配置的 `'root:../ssr-core/dist'` 目录中。
+在 **package.json** 配置 postinstall 钩子执行 `gez install` 命令。在安装开发依赖时，就会将远程依赖下载到你配置的 `'root:../ssr-dep/dist'` 目录中。
 
 ```ts
 "scripts": {
@@ -91,16 +91,17 @@ export default {
 
 ## 示例
 
-### ssr-core
+### ssr-dep
 核心服务对外提供了基本的布局组件、vue 库
 ```ts
+// src/entry.node.ts
 export default {
-    name: 'ssr-core',
+    name: 'ssr-dep',
     modules: {
         exports: [
-            // 其它服务使用：import Layout from 'ssr-core/src/components/layout.vue' 
+            // 其它服务使用：import Layout from 'ssr-dep/src/components/layout.vue' 
             'root:src/components/layout.vue',
-            // 其它服务可以将 vue 的外部依赖设置为 ssr-core/npm/vue 来达到依赖共享
+            // 其它服务可以将 vue 的外部依赖设置为 ssr-dep/npm/vue 来达到依赖共享
             'npm:vue',
             'npm:vue-router'
         ]
@@ -108,43 +109,45 @@ export default {
 } satisfies GezOptions;
 ```
 ### ssr-module-auth
-对外提供本服务的路由配置文件，并且将 `vue` 和 `vue-router` 模块指向到 `ssr-core` 导出的模块
+对外提供本服务的路由配置文件，并且将 `vue` 和 `vue-router` 模块指向到 `ssr-dep` 导出的模块
 ```ts
+// src/entry.node.ts
 export default {
     name: 'ssr-module-auth',
     modules: {
         // 其它服务使用：import routes from 'ssr-module-auth/src/routes
         exports: ['root:src/routes.ts'],
         imports: {
-            'ssr-core': 'root:../ssr-core/dist'
+            'ssr-dep': 'root:../ssr-dep/dist'
         },
         externals: {
-            vue: 'ssr-core/npm/vue',
-            'vue-router': 'ssr-core/npm/vue-router'
+            vue: 'ssr-dep/npm/vue',
+            'vue-router': 'ssr-dep/npm/vue-router'
         }
     }
 } satisfies GezOptions;
 ```
-### ssr-app
+### ssr-main
 在聚合服务，可以使用
-- `import Layout from 'ssr-core/src/components/layout.vue'`
+- `import Layout from 'ssr-dep/src/components/layout.vue'`
     - 来调用基础服务的公共布局组件
 - `import routes from 'ssr-module-auth/src/routes`
     - 来注册来自其它服务的路由配置
 - `import Vue from 'vue'`
-    - 构建工具会替换为 `import Vue from 'ssr-core/npm/vue'`
+    - 构建工具会替换为 `import Vue from 'ssr-dep/npm/vue'`
     - 其它依赖举一反三
 ```ts
+// src/entry.node.ts
 export default {
-    name: 'ssr-app',
+    name: 'ssr-main',
     modules: {
         imports: {
-            'ssr-core': 'root:../ssr-core/dist',
+            'ssr-dep': 'root:../ssr-dep/dist',
             'ssr-module-auth': 'root:../ssr-module-auth/dist'
         },
         externals: {
-            vue: 'ssr-core/npm/vue',
-            'vue-router': 'ssr-core/npm/vue-router'
+            vue: 'ssr-dep/npm/vue',
+            'vue-router': 'ssr-dep/npm/vue-router'
         }
     }
 } satisfies GezOptions;
