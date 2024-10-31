@@ -11,6 +11,6 @@ Gez 是一个基于 **[Rspack](https://rspack.dev/)** 构建的 **Pure ESM Like*
 - 🇨🇳 **中文优先**：中文是第一优先级的语言。
 
 ## 📚 文档
-- [v3.x 😎 alpha 阶段](https://dp-os.github.io/gez/index.html)
-- [v2.x 😂 持续维护](https://github.com/dp-os/gez/blob/v2/docs/zh-CN/README.md)
-- [v1.x 😖 停止维护](https://fmfe.github.io/genesis-docs/guide/)
+- [😎 v3.x 开发阶段](https://dp-os.github.io/gez/index.html)
+- [😂 v2.x 持续维护](https://github.com/dp-os/gez/blob/v2/docs/zh-CN/README.md)
+- [😖 v1.x 停止维护](https://fmfe.github.io/genesis-docs/guide/)
