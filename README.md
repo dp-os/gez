@@ -1,7 +1,7 @@
 # Gez
 Gez 是一个基于 **[Rspack](https://rspack.dev/)** 构建的 **Pure ESM Like** 解决方案，通过 **[importmap](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/script/type/importmap)** 将多服务的模块链接到具有哈希缓存的文件中。
 
-## 设计理念
+## 🚀 理念
 - 我们应该设计一个基础服务，由基础服务提供所有的第三方依赖。
 - 由基于服务统一维护第三方依赖更新，一次发布，所有业务系统生效。
 - 业务服务只构建业务代码，所有的第三方依赖，指向到基础服务中。
