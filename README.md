@@ -7,7 +7,7 @@ Gez 是一个基于 **[Rspack](https://rspack.dev/)** 构建的 **Pure ESM Like*
 - 🎯 **依赖管理**：一次发布，多服务生效。
 - 👍 **技术创新**：首个基于 Pure ESM 构建的 SSR 多服务聚合框架。
 - 😎 **基准支持**：Node20 和支持 [ESM dynamic import](https://caniuse.com/es6-module-dynamic-import) 和 [import.meta](https://caniuse.com/mdn-javascript_operators_import_meta) 的浏览器。
-- 👏 **长久维护**：从 [Genesis](https://www.npmjs.com/package/@fmfe/genesis-core) 2020 年迭代至今，现更名为 [Gez](https://www.npmjs.com/package/@gez/core)。
+- 👏 **长久维护**：[Genesis](https://www.npmjs.com/package/@fmfe/genesis-core) 从 2020 年迭代至今，现更名为 [Gez](https://www.npmjs.com/package/@gez/core)。
 - 🇨🇳 **中文文档**：中文是第一优先级的语言。
 
 ## 📚 文档
