@@ -1,6 +1,6 @@
 {
   "name": "ssr-simple",
-  "version": "0.0.15-alpha.85",
+  "version": "0.0.15-alpha.86",
   "main": "index.js",
   "type": "module",
   "scripts": {
@@ -14,9 +14,9 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@gez/core": "workspace:0.0.15-alpha.85"
+    "@gez/core": "workspace:0.0.15-alpha.86"
   },
   "devDependencies": {
-    "@gez/rspack": "workspace:0.0.15-alpha.85"
+    "@gez/rspack": "workspace:0.0.15-alpha.86"
   }
 }

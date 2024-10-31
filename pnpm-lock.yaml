@@ -21,11 +21,11 @@ importers:
   examples/ssr-html:
     dependencies:
       '@gez/core':
-        specifier: workspace:0.0.15-alpha.85
+        specifier: workspace:0.0.15-alpha.86
         version: link:../../packages/core
     devDependencies:
       '@gez/rspack':
-        specifier: workspace:0.0.15-alpha.85
+        specifier: workspace:0.0.15-alpha.86
         version: link:../../packages/rspack
 
   examples/ssr-vue2-host:
