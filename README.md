@@ -20,7 +20,7 @@
 - [😂 v2.x 持续维护](https://github.com/dp-os/gez/blob/v2/docs/zh-CN/README.md)
 - [😖 v1.x 停止维护](https://fmfe.github.io/genesis-docs/guide/)
 
-## 开发
+## 💻 开发
 ```bash
 # 克隆代码
 git clone git@github.com:dp-os/gez.git
@@ -33,5 +33,5 @@ cd examples/项目
 # 本地开发启动
 pnpm run dev
 ```
-## 许可证
+## 😊 许可证
 [MIT](./LICENSE)
