@@ -47,7 +47,7 @@
         "stylelint-order": "^6.0.4",
         "vue-eslint-parser": "^9.4.2"
     },
-    "version": "0.0.15-alpha.86",
+    "version": "0.0.15-alpha.87",
     "type": "module",
     "private": false,
     "exports": {
