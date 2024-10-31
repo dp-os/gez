@@ -29,6 +29,11 @@ export function createBaseConfig(
     const plugins = new Plugins(gez, buildTarget);
     const emit = buildTarget === 'client';
     const module: RspackOptions['module'] = {
+        parser: {
+            javascript: {
+                importMeta: false // 不对 import.meta 进行解析替换
+            }
+        },
         generator: {
             asset: {
                 emit
