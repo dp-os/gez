@@ -38,12 +38,11 @@ Gez 默认是支持 SSR 的，你也可以把它当成 CSR 来使用。
     - ...                          # 除了缺少 versions 目录，其它和 client 目录一致
 ```
 :::tip
-1、使用 `[contenthash]` 可以让我们生成基于内容哈希的文件名，这样我们的静态资产文件就可以放心的设置为强缓存了。    
-2、CSR 项目，可以编写一个脚本，读取每个服务的 `package.json` 来生成一个静态的 `index.html`，可以参考一下 [ServerContext](https://github.com/dp-os/gez/blob/master/packages/core/src/core/server-context.ts) 的实现。
+使用 `[contenthash]` 可以让我们生成基于内容哈希的文件名，这样我们的静态资产文件就可以放心的设置为强缓存了。    
 :::
 
 ## 客户端链接
-服务端会根据 `module.imports` 的配置在 html 中注入 `/[服务名]/importmap.[contenthash].js`，将模块的哈希映射信息写入到 `globalThis.__importmap__` 对象中，最终将该变量值写入到 `<script type="importmap"></script>` 标签中。
+在服务渲染时注入所有服务的 `/[服务名]/importmap.[contenthash].js` 文件，将模块的哈希映射信息写入到 `globalThis.__importmap__` 对象中，最终将该变量值写入到 `<script type="importmap"></script>` 标签中。
 
 在 **src/entry.server.ts** 文件中处理注入代码
 ```ts
@@ -64,6 +63,10 @@ export default async (ctx: ServerContext, params: { url: string }) => {
 `;
 };
 ```
+
+:::tip
+在 `package.json` 中有一个 `hash` 字段，等同于 `importmap.[contenthash].js` 文件的哈希值。如果你只想做客户端渲染，可以编写一个脚本，读取每个服务的 `dist/client/package.json` 来生成一个静态的 `index.html`。可以参考一下 [ServerContext](https://github.com/dp-os/gez/blob/master/packages/core/src/core/server-context.ts) 的实现。
+:::
 
 ## 服务端链接
 在开发阶段时，我们可以设置一个远程的依赖地址
