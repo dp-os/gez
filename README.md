@@ -1,4 +1,4 @@
-# Gez
+# Gez（文档正在整理中）
 [Gez](https://dp-os.github.io/gez/index.html) 是一个基于 **[Rspack](https://rspack.dev/)** 构建的 **[模块链接（Module Like）](https://dp-os.github.io/gez/guide/essentials/module-link.html)** 解决方案，通过 **[importmap](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/script/type/importmap)** 将多服务的模块映射到具有内容哈希缓存的 URL 中。
 
 ## 🚀 理念
