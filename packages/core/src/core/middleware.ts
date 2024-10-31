@@ -1,3 +1,4 @@
+import fs from 'node:fs';
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import path from 'node:path';
 import send from 'send';
@@ -22,11 +23,33 @@ export function createMiddleware(gez: Gez): Middleware {
         };
         return (req, res, next) => {
             const url = req.url ?? '/';
+            const { pathname } = new URL(req.url ?? '/', baseUrl);
+
+            const fileList = [
+                '/es-module-shims.debug.js',
+                '/es-module-shims.dev.js',
+                '/es-module-shims.js',
+                '/es-module-shims.wasm.dev.js',
+                '/es-module-shims.wasm.js'
+            ];
+            if (fileList.includes(pathname) && req.method === 'GET') {
+                const dir = path.resolve(
+                    new URL(import.meta.url).pathname,
+                    '../../',
+                    'public'
+                );
+                const filename = pathname.substring(1).replace(/\.js$/, '.mjs');
+                const filepath = path.resolve(dir, filename);
+                const text = fs.readFileSync(filepath, 'utf-8');
+                res.end(text);
+                return;
+            }
+
             if (!url.startsWith(base) || req.method !== 'GET') {
                 next();
                 return;
             }
-            const { pathname } = new URL(req.url ?? '/', baseUrl);
+
             send(req, pathname.substring(base.length - 1), {
                 root
             })

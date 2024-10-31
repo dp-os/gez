@@ -17,6 +17,7 @@
     },
     "dependencies": {
         "@types/serialize-javascript": "^5.0.4",
+        "es-module-shims": "1.10.1",
         "fflate": "^0.8.2",
         "find": "^0.3.0",
         "send": "^1.1.0",
@@ -46,6 +47,9 @@
             "import": "./dist/index.mjs",
             "require": "./dist/index.cjs",
             "types": "./dist/index.d.ts"
+        },
+        "./node_modules/es-module-shims/dist": {
+            "default": "./dist/public"
         }
     },
     "main": "./dist/index.cjs",
