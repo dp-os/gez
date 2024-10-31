@@ -10,9 +10,9 @@
 - 🚀 **项目构建**：基于 Rspack 实现，构建速度极快，带给你极致的开发体验。
 - ☁️ **同构渲染**：支持 Vue2、Vue3、React 等不同框架实现 SSR。
 - 🎯 **依赖管理**：一次发布，多服务生效。
-- 👍 **技术创新**：首个基于 Pure ESM 构建的 SSR 多服务聚合框架。
+- 👍 **技术创新**：首个基于 ESM 构建的 SSR 多服务模块链接。
 - 😎 **基准支持**：Node20 和支持 [ESM dynamic import](https://caniuse.com/es6-module-dynamic-import) 和 [import.meta](https://caniuse.com/mdn-javascript_operators_import_meta) 的浏览器。
-- 👏 **长久维护**：[Genesis](https://www.npmjs.com/package/@fmfe/genesis-core) 从 2020 年迭代至今，现更名为 [Gez](https://www.npmjs.com/package/@gez/core)。
+- 👏 **长久维护**：[Genesis](https://www.npmjs.com/package/@fmfe/genesis-core) 从 2020 年迭代至今，现更名为 [Gez](https://dp-os.github.io/gez/index.html)。
 - 🇨🇳 **中文文档**：中文是第一优先级的语言。
 
 ## 📚 文档
