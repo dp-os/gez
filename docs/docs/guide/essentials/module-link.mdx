@@ -16,7 +16,7 @@ Gez 默认是支持 SSR 的，你也可以把它当成 CSR 来使用。
 
 ## 构建
 传统的 SSR 程序在构建目标为 `node` 时，会将 `node_modules` 的模块设置为外部依赖，但是 Gez 会把全部代码都打包成 ESM 模块来进行链接。所以在使用一些第三方依赖的时候，尽可能的选择支持 ESM 的包，不然你可能会遇到一些问题。
-构建完成后，通常你可以看到这样的文件输出
+构建完成后，通常你可以看到这样的文件输出。
 ```
 - dist/                            # 构建输出目录
   - client/                        # 客户端构建输出
@@ -35,7 +35,7 @@ Gez 默认是支持 SSR 的，你也可以把它当成 CSR 来使用。
     - importmap.[contenthash].js   # 可缓存文件，执行后往 globalThis 注入 __importmap__ 
     - package.json                 # 声明模块的基本导出信息
 - server/                          # 服务端构建输出
-    - ...                          # 和客户端目录基本一致
+    - ...                          # 除了缺少 versions 目录，其它和 client 目录一致
 ```
 :::tip
 1、使用 `[contenthash]` 可以让我们生成基于内容哈希的文件名，这样我们的静态资产文件就可以放心的设置为强缓存了。    
@@ -77,7 +77,7 @@ export default {
     }
 } satisfies GezOptions;
 ```
-在 **package.json** 配置 postinstall 钩子执行 `gez install` 命令。在安装开发依赖时，就会将远程依赖下载到你配置的 `'root:../ssr-dep/dist'` 目录中。
+在 **package.json** 配置 `postinstall` 钩子执行 `gez install` 命令。在安装开发依赖时，就会将远程依赖下载到你配置的 `'root:../ssr-dep/dist'` 目录中。
 
 ```ts
 "scripts": {
