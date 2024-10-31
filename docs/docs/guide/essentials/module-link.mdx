@@ -38,7 +38,8 @@ Gez 默认是支持 SSR 的，你也可以把它当成 CSR 来使用。
     - ...                          # 和客户端目录基本一致
 ```
 :::tip
-使用 `[contenthash]` 可以让我们生成基于内容哈希的文件名，这样我们的静态资产文件就可以放心的设置为强缓存了。
+1、使用 `[contenthash]` 可以让我们生成基于内容哈希的文件名，这样我们的静态资产文件就可以放心的设置为强缓存了。    
+2、CSR 项目，可以编写一个脚本，读取每个服务的 `package.json` 来生成一个静态的 `index.html`，可以参考一下 [ServerContext](https://github.com/dp-os/gez/blob/master/packages/core/src/core/server-context.ts) 的实现。
 :::
 
 ## 客户端链接
