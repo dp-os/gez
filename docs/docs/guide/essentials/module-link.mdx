@@ -64,7 +64,7 @@ export default async (ctx: ServerContext, params: { url: string }) => {
 };
 ```
 
-:::tip
+:::tip 
 在 `package.json` 中有一个 `hash` 字段，等同于 `importmap.[contenthash].js` 文件的哈希值。如果你只想做客户端渲染，可以编写一个脚本，读取每个服务的 `dist/client/package.json` 来生成一个静态的 `index.html`。可以参考一下 [ServerContext](https://github.com/dp-os/gez/blob/master/packages/core/src/core/server-context.ts) 的实现。
 :::
 
@@ -96,7 +96,7 @@ export default {
 ## 示例
 
 ### ssr-dep
-核心服务对外提供了基本的布局组件、vue 库
+基础服务，提供了所有的第三方依赖。
 ```ts
 // src/entry.node.ts
 export default {
@@ -112,6 +112,10 @@ export default {
     }
 } satisfies GezOptions;
 ```
+:::tip
+以往我们会针对业务来封装一些组件、工具函数，常常会使用 monorepo 的形式组织，如果不想对外，还需要搭建自己的 npm 私有镜像源，现在你可以直接在基础服务中封装好库对外导出。
+:::
+
 ### ssr-module-auth
 对外提供本服务的路由配置文件，并且将 `vue` 和 `vue-router` 模块指向到 `ssr-dep` 导出的模块
 ```ts
