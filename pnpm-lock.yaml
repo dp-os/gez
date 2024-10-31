@@ -18,14 +18,14 @@ importers:
         specifier: 15.2.4
         version: 15.2.4
 
-  examples/ssr-simple:
+  examples/ssr-html:
     dependencies:
       '@gez/core':
-        specifier: workspace:0.0.15-alpha.84
+        specifier: workspace:0.0.15-alpha.85
         version: link:../../packages/core
     devDependencies:
       '@gez/rspack':
-        specifier: workspace:0.0.15-alpha.84
+        specifier: workspace:0.0.15-alpha.85
         version: link:../../packages/rspack
 
   examples/ssr-vue2-host:
