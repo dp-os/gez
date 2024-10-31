@@ -15,10 +15,6 @@
 }
 ```
 
-:::tip
-在涉及对外导出模块时，可以封装一个 `build` 命令，将多个命令封装到一起。
-:::
-
 ## gez dev
 本地开发时启动。
 
@@ -42,11 +38,11 @@ export default {
 有三个产物，分别是 client、server、node。
 :::
 ## gez release
-当前服务如果有对外导出模块时使用
-- 执行 `gez build` 命令，构建生产产物
-- 执行 `npm run build:dts` 命令，将类型输出到 `dist/server/src` 目录，本地开发时，可以得到类型提示
+当前服务如果有对外导出模块时使用。
+- 执行 `gez build` 命令，构建生产产物。
+- 执行 `npm run build:dts` 命令，将类型输出到 `dist/server/src` 目录，本地开发时，可以得到类型提示。
 - 执行 `gez release` 命令，将 `dist/client` 和 `dist/server` 目录生成 zip 压缩文件，放到 `dist/client/versions` 目录中。
-- 将 `dist` 目录的代码，部署到生产环境中
+- 将 `dist` 目录的代码，部署到生产环境中。
 - 其它服务调用
     - **entry.node.ts** 配置
         ```ts
@@ -60,6 +56,10 @@ export default {
         } satisfies GezOptions;
         ```
     - 执行 `npm install` 命令，触发 `postinstall` 钩子，再执行  `gez install` 命令下载
+
+:::tip
+可以封装一个 `build` 命令，将多个命令封装到一起。
+:::
 ## gez preview
 等同于执行 `gez build && gez start`
 ## gez start
@@ -73,5 +73,5 @@ export default {
 安装远程依赖到本地
 
 :::tip
-执行生产依赖安装时无效，例如 `npm install --production`
+在 `postinstall` 钩子中，执行 `npm install --production` 安装生产依赖无效。
 :::
