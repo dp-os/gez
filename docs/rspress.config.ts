@@ -6,7 +6,7 @@ export default defineConfig({
     globalStyles: path.join(__dirname, 'styles/index.css'),
     title: 'Gez',
     description:
-        'Gez 是一个基于 Rspack 构建的 Pure ESM Like 解决方案，通过 importmap 将多服务的模块链接到具有哈希缓存的文件中。',
+        'Gez 是一个基于 Rspack 构建的模块链接（Module Link） 解决方案，通过 importmap 将多服务的模块映射到具有强缓存，基于内容哈希的 URL 中。',
     icon: '/logo.svg',
     base: '/gez/',
     logo: '/logo.svg',
