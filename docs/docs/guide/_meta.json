@@ -10,8 +10,8 @@
         "label": "特性"
     },
     "essentials/module-link",
-    "essentials/command",
     "essentials/alias",
+    "essentials/command",
     {
         "type": "section-header",
         "label": "高级"
