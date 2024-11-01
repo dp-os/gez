@@ -1,0 +1,37 @@
+# 别名
+在 Gez 中，默认使用服务名来作为别名，这样有两个好处。
+- 在调用其它服务时保持命名风格的统一
+- 执行 [npm run build:dts](./command.mdx) 命令，生成的类型可以被其它服务使用。
+
+### entry.node.ts
+
+```ts
+import type { GezOptions } from '@gez/core';
+
+export default {
+    name: 'ssr-module-auth'
+} satisfies GezOptions;
+
+```
+
+程序会读取这里的 `name` 配置，设置别名为 `ssr-module-auth`。
+
+### tsconfig.json
+同时还需要在 `tsconfig.json` 配置别名。
+```json
+{
+    "compilerOptions": {
+        "paths": {
+            "ssr-rspack-vue2/src/*": [
+                "./src/*"
+            ],
+            "ssr-rspack-vue2/*": [
+                "./*"
+            ]
+        }
+    }
+}
+```
+::: tip
+如果你想了解多服务类型如何工作的，可以了解一下 [gez release](./command.mdx#gez-release) 命令的说明。
+:::

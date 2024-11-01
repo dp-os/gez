@@ -11,6 +11,7 @@
     },
     "essentials/module-link",
     "essentials/command",
+    "essentials/alias",
     {
         "type": "section-header",
         "label": "高级"
