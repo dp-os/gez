@@ -17,7 +17,7 @@ Gez 完全是基于 ESM 模块系统进行设计，默认支持 SSR，每个服�
 - 构建出具有内容哈希的产物，使用 [importmap](https://caniuse.com/?search=import%20map) 将 `import vue from 'vue'` 替换成 `ssr-npm/npm/vue.[contenthash].js`，这样静态文件就可以设置为强缓存了。对于不支持 [importmap](https://caniuse.com/?search=import%20map) 的浏览器，[es-module-shims](https://github.com/guybedford/es-module-shims) 提供了降级的方案
 - Rspack 的 externalsType 支持使用 [module-import](https://rspack.dev/config/externals#externalstypemodule-import)，来设置 ESM 模块的外部依赖。
 - 在 Node 上实现 ESM 模块热更新不是一件容易的事情，庆幸的是可以通过启用 `node --experimental-vm-modules --experimental-import-meta-resolve` 来实现它。
-- **最终确定使用 Rspack 和 Node2 来实现 `v3.0` 版本。**
+- **最终确定使用 Rspack 和 Node20 来实现 `v3.0` 版本。**
 
 ::: tip
 从最早的构思，到开始调研 Vite、Rspack，中间经历了一年多的时间，庆幸的是这条路最终走通了，并且达到了生产可用。
