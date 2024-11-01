@@ -19,8 +19,12 @@ Gez 完全是基于 ESM 模块系统进行设计，默认支持 SSR，每个服�
 - 在 Node 上实现 ESM 模块热更新不是一件容易的事情，庆幸的是可以通过启用 `node --experimental-vm-modules --experimental-import-meta-resolve` 来实现它。
 - **最终确定使用 Rspack 和 Node2 来实现 `v3.0` 版本。**
 
+::: tip
+从最早的构思，到开始调研 Vite、Rspack，中间经历了一年多的时间，庆幸的是这条路最终走通了，并且达到了生产可用。
+:::
+
 ## 定位
-Gez 的定位并不是成为 [Next.js](https://nextjs.org) 或 [Nuxt.js](https://nuxt.com/) 那样大而全的框架，而是成为一个具有 Typescript、ESM、SSR、[模块链接](./essentials/module-link.mdx)特性的基础设施，你可以在这个基础上来构建属于你自己的 `Next.js`。如果你需要定制化实现，它会很适合你。
+Gez 的定位并不是成为 [Next.js](https://nextjs.org) 或 [Nuxt.js](https://nuxt.com/) 那样大而全的框架，而是成为一个具有 Typescript、ESM、SSR、[模块链接](./essentials/module-link.mdx)等特性的基础设施，你可以在这个基础上来构建属于你自己的 `Next.js`。如果你需要定制化实现，它会很适合你。
 
 ## 兼容性
 所有的主流浏览器都已经支持，针对一些低版本的浏览器，可以提供一个升级的页面来引导用户升级它的浏览器。
