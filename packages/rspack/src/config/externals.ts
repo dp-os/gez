@@ -11,7 +11,7 @@ export class Externals extends BuildConfig<Config> {
     }
 
     protected getServer(): Config {
-        return ['@gez/core'];
+        return [];
     }
 
     protected getNode(): Config {
