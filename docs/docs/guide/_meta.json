@@ -11,10 +11,5 @@
     },
     "essentials/module-link",
     "essentials/alias",
-    "essentials/command",
-    {
-        "type": "section-header",
-        "label": "高级"
-    },
-    "senior/module-link"
+    "essentials/command"
 ]
