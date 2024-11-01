@@ -1,5 +1,5 @@
 # Gez（文档正在整理中）
-[Gez](https://dp-os.github.io/gez/index.html) 是一个基于 **[Rspack](https://rspack.dev/)** 构建的 **[模块链接（Module Like）](https://dp-os.github.io/gez/guide/essentials/module-link.html)** 解决方案，通过 **[importmap](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/script/type/importmap)** 将多服务的模块映射到具有强缓存，基于内容哈希的 URL 中。
+[Gez](https://dp-os.github.io/gez/index.html) 是一个基于 **[Rspack](https://rspack.dev/)** 构建的 **[模块链接（Module Link）](https://dp-os.github.io/gez/guide/essentials/module-link.html)** 解决方案，通过 **[importmap](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/script/type/importmap)** 将多服务的模块映射到具有强缓存，基于内容哈希的 URL 中。
 
 ## 🌈 理念
 - 我们应该设计一个基础服务，由基础服务提供所有的第三方依赖。
