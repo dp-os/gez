@@ -4,7 +4,7 @@ import { createApp } from './create-app';
 
 const renderer = createRenderer();
 
-export default async (ctx: ServerContext, params: any) => {
+export default async (params: any, ctx: ServerContext) => {
     const script = await ctx.getInjectScript();
 
     const { app } = createApp();

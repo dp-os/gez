@@ -91,6 +91,7 @@ export class ImportmapPlugin implements RspackPluginInstance {
             hash: true,
             entrypoints: true
         });
+        const isWeb = compilation.options.target === 'web';
         const entrypoints = stats.entrypoints || {};
         const exports: Record<string, string> = {};
         const hash = stats.hash ?? String(Date.now());
@@ -124,8 +125,10 @@ export class ImportmapPlugin implements RspackPluginInstance {
 
         const { RawSource } = compiler.webpack.sources;
         const code = toImportmapJsCode(options.name, exports);
-        compilation.emitAsset('importmap.js', new RawSource(code));
-        compilation.emitAsset(importmapHash, new RawSource(code));
+        if (isWeb) {
+            compilation.emitAsset('importmap.js', new RawSource(code));
+            compilation.emitAsset(importmapHash, new RawSource(code));
+        }
 
         compilation.emitAsset(
             'package.json',
@@ -142,11 +145,12 @@ function toImportmapJsCode(name: string, imports: Record<string, string>) {
     const importmapKey = '__importmap__';
     const importmap = global[importmapKey] = global[importmapKey] || {};
     const imports = importmap.imports = importmap.imports || {};
+    const arr = new URL(document.currentScript.src).pathname.split('/' + name + '/');
     const joinName = (value) => {
         return name + value.substring(1);
     }
     Object.entries(importsMap).forEach(([key, value]) => {
-        imports[joinName(key)] = '/' + joinName(value);
+        imports[joinName(key)] = arr[0] + '/' + joinName(value);
     });
 })(globalThis);
 `.trim();

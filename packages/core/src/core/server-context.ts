@@ -3,14 +3,26 @@ import path from 'node:path';
 import serialize from 'serialize-javascript';
 import type { Gez, PackageJson } from './gez';
 
+export interface ServerContextOptions {
+    base?: string;
+}
+
 export class ServerContext {
     public html = '';
     public redirect: string | null = null;
     public status: number | null = null;
     public gez: Gez;
     private _packages: PackageJson[] | null = null;
-    public constructor(gez: Gez) {
+    private _options: ServerContextOptions;
+    public constructor(gez: Gez, options: ServerContextOptions = {}) {
         this.gez = gez;
+        this._options = options;
+    }
+    /**
+     * 静态资源请求的基本地址
+     */
+    public get base() {
+        return this._options.base ?? '/';
     }
     /**
      * 透传 https://github.com/yahoo/serialize-javascript
@@ -43,9 +55,10 @@ export class ServerContext {
      */
     public async getImportmapFiles() {
         const list = await this.getPackagesJson();
+        const { base } = this;
         return list.map((item) => {
             const hash = item.hash ? '.' + item.hash : '';
-            return `/${item.name}/importmap${hash}.js`;
+            return `${base}${item.name}/importmap${hash}.js`;
         });
     }
     /**
@@ -55,7 +68,6 @@ export class ServerContext {
         const { gez } = this;
         const files = await this.getImportmapFiles();
         return `
-        <script src="/es-module-shims.js"></script>
 ${files
     .map((file) => {
         return `<script src="${file}"></script>`;

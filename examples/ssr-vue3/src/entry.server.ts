@@ -3,7 +3,7 @@ import { renderToString } from 'vue/server-renderer';
 
 import { createApp } from './create-app';
 
-export default async (ctx: ServerContext, params: any) => {
+export default async (params: any, ctx: ServerContext) => {
     const { app } = createApp('server');
     const script = await ctx.getInjectScript();
     const body = await renderToString(app, {});

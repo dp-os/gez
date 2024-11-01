@@ -5,6 +5,7 @@ import {
     type Gez,
     type Middleware,
     ServerContext,
+    type ServerContextOptions,
     type ServerRenderHandle,
     createApp as _createApp,
     mergeMiddlewares
@@ -90,7 +91,10 @@ export async function createApp(
     const urlObj = new URL(resolve(url));
     urlObj.search = '';
 
-    app.render = async (params: any): Promise<ServerContext> => {
+    app.render = async (
+        params?: any,
+        options?: ServerContextOptions
+    ): Promise<ServerContext> => {
         const module = await import$(
             gez.getProjectPath('dist/server/entry.js'),
             urlObj.href,
@@ -104,9 +108,9 @@ export async function createApp(
             }
         );
         const serverRender: ServerRenderHandle = module.default;
-        const context = new ServerContext(gez);
+        const context = new ServerContext(gez, options);
         if (typeof serverRender === 'function') {
-            await serverRender(context, params);
+            await serverRender(params, context);
         }
         return context;
     };

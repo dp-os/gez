@@ -26,7 +26,12 @@ export default {
         exports: ['root:src/components/layout.vue', 'npm:vue']
     },
     async generateHtml(gez) {
-        const ctx = await gez.render({ url: '/' });
+        const ctx = await gez.render(
+            { url: '/' },
+            {
+                base: '/gez/'
+            }
+        );
         gez.write(
             path.resolve(gez.getProjectPath('dist/client'), 'index.html'),
             ctx.html

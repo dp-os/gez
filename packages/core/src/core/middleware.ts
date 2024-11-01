@@ -9,15 +9,6 @@ export type Middleware = (
     next: Function
 ) => void;
 
-// 目前只需要提供 es-module-shims.js 这个文件
-const esModuleShimsFileList = [
-    // '/es-module-shims.debug.js',
-    // '/es-module-shims.dev.js',
-    '/es-module-shims.js'
-    // '/es-module-shims.wasm.dev.js',
-    // '/es-module-shims.wasm.js'
-];
-
 export function createMiddleware(gez: Gez): Middleware {
     const middlewares = gez.moduleConfig.imports.map((item): Middleware => {
         const base = `/${item.name}/`;
@@ -32,25 +23,6 @@ export function createMiddleware(gez: Gez): Middleware {
         return (req, res, next) => {
             const url = req.url ?? '/';
             const { pathname } = new URL(req.url ?? '/', baseUrl);
-            if (
-                esModuleShimsFileList.includes(pathname) &&
-                req.method === 'GET'
-            ) {
-                const dir = path.resolve(
-                    new URL(import.meta.url).pathname,
-                    '../../../',
-                    'public'
-                );
-                const filename = pathname.substring(1);
-
-                console.log(dir, filename);
-                send(req, filename, {
-                    root: dir
-                })
-                    .on('headers', onHeaders)
-                    .pipe(res);
-                return;
-            }
 
             if (!url.startsWith(base) || req.method !== 'GET') {
                 next();
