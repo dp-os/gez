@@ -3,7 +3,7 @@ pageType: home
 
 hero:
   name: Gez
-  text: 
+  text: 基于 ESM 的模块链接。
   actions:
     - theme: brand
       text: Quick Start
