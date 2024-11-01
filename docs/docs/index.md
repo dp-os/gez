@@ -3,8 +3,7 @@ pageType: home
 
 hero:
   name: Gez
-  text: Rspack-based Static Site Generator
-  tagline: Gez tagline
+  text: 
   actions:
     - theme: brand
       text: Quick Start
@@ -12,26 +11,23 @@ hero:
     - theme: alt
       text: GitHub
       link: https://github.com/dp-os/gez
-  image:
-    src: /rspress-icon.png
-    alt: Gez Logo
 features:
-  - title: Blazing fast build speed
-    details: The core compilation module is based on the Rust front-end toolchain, providing a more ultimate development experience.
-    icon: 🏃🏻‍♀️
-  - title: Support for MDX content writing
-    details: MDX is a powerful way to write content, allowing you to use React components in Markdown.
-    icon: 📦
-  - title: Built-in full-text search
-    details: Automatically generates a full-text search index for you during construction, providing out-of-the-box full-text search capabilities.
-    icon: 🎨
-  - title: Simpler I18n solution
-    details: With the built-in I18n solution, you can easily provide multi-language support for documents or components.
-    icon: 🌍
-  - title: Static site generation
-    details: In production, it automatically builds into static HTML files, which can be easily deployed anywhere.
-    icon: 🌈
-  - title: Providing multiple custom capabilities
-    details: Through its extension mechanism, you can easily extend theme UI and build process.
-    icon: 🔥
+  - title: 技术创新
+    details: 首个基于 ESM 构建的 SSR 多服务模块链接。
+    icon: 👍
+  - title: 项目构建
+    details: 基于 Rspack 实现，构建速度极快，带给你极致的开发体验。
+    icon: 🚀
+  - title: 依赖管理
+    details: 一次构建，一次发布，多服务生效。
+    icon: 🎯
+  - title: 同构渲染
+    details: 支持 Vue2、Vue3、React 等不同框架实现 SSR。
+    icon: ☁️
+  - title: 基准支持
+    details: Node20 和支持 ESM dynamic import 和 import.meta 的浏览器。
+    icon: 😎
+  - title: 长久维护
+    details: Genesis 从 2020 年迭代至今，现更名为 Gez。
+    icon: 👏
 ---
