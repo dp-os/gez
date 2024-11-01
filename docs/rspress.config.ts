@@ -7,7 +7,7 @@ export default defineConfig({
     title: 'Gez',
     description:
         'Gez 是一个基于 Rspack 构建的 Pure ESM Like 解决方案，通过 importmap 将多服务的模块链接到具有哈希缓存的文件中。',
-    icon: '/rspress-icon.png',
+    icon: '/logo.svg',
     base: '/gez/',
     logo: '/logo.svg',
     themeConfig: {
