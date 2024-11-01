@@ -26,7 +26,7 @@ export class Output extends BuildConfig<Config> {
             chunkFormat: 'module',
             chunkLoading: 'import',
             chunkFilename: 'chunks/[name].[contenthash:8].js',
-            filename: gez.isProd ? '[name].[contenthash:8].js' : '[name].js',
+            filename: '[name].js',
             path: gez.getProjectPath('dist/server')
         };
     }
@@ -39,7 +39,7 @@ export class Output extends BuildConfig<Config> {
             chunkFormat: 'module',
             chunkLoading: 'import',
             chunkFilename: 'chunks/[name].[contenthash:8].js',
-            filename: gez.isProd ? '[name].[contenthash:8].js' : '[name].js',
+            filename: '[name].js',
             path: gez.getProjectPath('dist/node')
         };
     }
