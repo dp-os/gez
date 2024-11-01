@@ -1,3 +1,4 @@
+import path from 'node:path';
 import type { GezOptions } from '@gez/core';
 import express from 'express';
 
@@ -23,5 +24,12 @@ export default {
          * 导出的文件
          */
         exports: ['root:src/components/layout.vue', 'npm:vue']
+    },
+    async generateHtml(gez) {
+        const ctx = await gez.render({ url: '/' });
+        gez.write(
+            path.resolve(gez.getProjectPath('dist/client'), 'index.html'),
+            ctx.html
+        );
     }
 } satisfies GezOptions;

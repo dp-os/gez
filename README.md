@@ -27,7 +27,7 @@ git clone git@github.com:dp-os/gez.git
 # 安装依赖
 pnpm i
 # 编译包代码
-pnpm build:packages
+pnpm build
 # 进入示例项目
 cd examples/项目
 # 本地开发启动

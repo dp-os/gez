@@ -11,7 +11,8 @@
         "test": "lerna run test",
         "build": "lerna run build",
         "build:packages": "lerna run build --no-private",
-        "release": "npm run build:packages && lerna publish --force-publish --exact"
+        "release": "npm run build:packages && lerna publish --force-publish --exact",
+        "deploy": "npm run build && ./deploy.sh"
     },
     "engines": {
         "lerna": "~8.1.3",

@@ -56,6 +56,7 @@ async function runDevApp(command: COMMAND) {
         case COMMAND.build:
             exit(await gez.build());
             exit(await gez.destroy());
+            exit(await generateHtml(gez));
             break;
         case COMMAND.release:
             exit(await gez.release());
@@ -70,13 +71,31 @@ async function runDevApp(command: COMMAND) {
 }
 
 async function runProdApp() {
+    const gez = await getProdGez();
+    return gez.createServer(gez);
+}
+
+async function getProdGez(): Promise<Gez> {
     const file = getProjectPath(path.resolve(), 'dist/node/entry.js');
-    await import(file).then(async (module) => {
+    return import(file).then(async (module) => {
         const options: GezOptions = module.default || {};
 
         const gez = new Gez(options);
         await gez.init(COMMAND.start);
-
-        options?.createServer?.(gez);
+        return gez;
     });
+}
+
+async function generateHtml(gez: Gez): Promise<boolean> {
+    if (!gez.generateHtml) {
+        return true;
+    }
+    gez = await getProdGez();
+    try {
+        await gez.generateHtml?.(gez);
+    } catch (e) {
+        console.error(e);
+        return false;
+    }
+    return true;
 }

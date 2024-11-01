@@ -1,5 +1,6 @@
 import path from 'node:path';
 import { cwd } from 'node:process';
+import write from 'write';
 
 import { type App, createApp } from './app';
 import {
@@ -33,6 +34,10 @@ export interface GezOptions {
      * 模块配置
      */
     modules?: ModuleConfig;
+    /**
+     * 构建完成后以生产模式运行，你可以在这里生成 HTML。
+     */
+    generateHtml?: (gez: Gez) => Promise<void>;
     /**
      * 当 isProd = false 时调用
      * @param gez
@@ -82,6 +87,7 @@ export interface PackageJson {
      */
     files: string[];
 }
+function noon(gez: Gez) {}
 
 export class Gez {
     private readonly _options: GezOptions;
@@ -103,6 +109,12 @@ export class Gez {
             return _app;
         }
         throw new Error(`'app' does not exist`);
+    }
+    public get createServer() {
+        return this._options.createServer ?? noon;
+    }
+    public get generateHtml() {
+        return this._options.generateHtml;
     }
 
     /**
@@ -239,6 +251,14 @@ export class Gez {
 
     public getProjectPath(projectPath: ProjectPath): string {
         return getProjectPath(this.root, projectPath);
+    }
+    /**
+     * 提供一个简单的写入文件
+     * @param file 文件地址
+     * @param data 写入的文本
+     */
+    public write(file: string, data: any) {
+        write.sync(file, data);
     }
 }
 

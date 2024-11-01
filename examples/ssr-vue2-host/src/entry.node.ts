@@ -1,3 +1,4 @@
+import path from 'node:path';
 import type { GezOptions } from '@gez/core';
 import express from 'express';
 
@@ -25,5 +26,12 @@ export default {
         externals: {
             vue: 'ssr-vue2-remote/npm/vue'
         }
+    },
+    async generateHtml(gez) {
+        const ctx = await gez.render({ url: '/' });
+        gez.write(
+            path.resolve(gez.getProjectPath('dist/client'), 'index.html'),
+            ctx.html
+        );
     }
 } satisfies GezOptions;
