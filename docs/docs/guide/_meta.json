@@ -10,5 +10,10 @@
         "label": "特性"
     },
     "essentials/module-link",
-    "essentials/command"
+    "essentials/command",
+    {
+        "type": "section-header",
+        "label": "高级"
+    },
+    "senior/module-link"
 ]

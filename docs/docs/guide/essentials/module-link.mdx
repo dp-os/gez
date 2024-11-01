@@ -65,13 +65,15 @@ export default async (ctx: ServerContext, params: { url: string }) => {
 ```
 ### 客户端渲染
 :::tip 
-在 `package.json` 中有一个 `hash` 字段，等同于 `importmap.[contenthash].js` 文件的哈希值。如果你只想做客户端渲染，可以编写一个脚本，读取每个服务的 `dist/client/package.json` 来生成一个静态的 `index.html`。可以参考一下 [ServerContext](https://github.com/dp-os/gez/blob/master/packages/core/src/core/server-context.ts) 的实现。
+- 在 `package.json` 中有一个 `hash` 字段，等同于 `importmap.[contenthash].js` 文件的哈希值。
+- 如果你只想做客户端渲染，可以编写一个脚本，读取每个服务的 `dist/client/package.json` 来生成一个静态的 `index.html`。可以参考一下 [ServerContext](https://github.com/dp-os/gez/blob/master/packages/core/src/core/server-context.ts) 的实现。
+
 :::
 
 ## 服务端链接
 ### src/entry.node.ts
-1、在开发阶段时，我们可以设置一个远程的依赖地址。    
-2、程序会根据你配置的本地路径，计算出一个所有服务可以共同访问的 `node_modules` 路径，并自动创建软链接。   
+- 在开发阶段时，我们可以设置一个远程的依赖地址。    
+- 程序会根据你配置的本地路径，计算出一个所有服务可以共同访问的 `node_modules` 路径，并自动创建软链接。   
 
 
 ```ts
@@ -79,7 +81,7 @@ export default {
     name: 'ssr-module-auth',
     modules: {
         imports: {
-            'ssr-dep': ['root:../ssr-dep/dist', 'https://<hostname>/ssr-dep/versions/latest.json']
+            'ssr-base': ['root:../ssr-base/dist', 'https://<hostname>/ssr-base/versions/latest.json']
         }
     }
 } satisfies GezOptions;
@@ -88,7 +90,7 @@ export default {
 在生产环境中，你应该使用本地链接，而不是远程链接，这样能提高应用程序的启动速度。如果你使用 Docker，可以通过使用[持久卷](https://docs.docker.com/engine/storage/volumes/)，将不同服务的产物组织到一个目录中。
 :::
 ### package.json
-配置 `postinstall` 钩子执行 `gez install` 命令。在安装开发依赖时，就会将远程依赖下载到你配置的 `'root:../ssr-dep/dist'` 目录中。
+配置 `postinstall` 钩子执行 `gez install` 命令。在安装开发依赖时，就会将远程依赖下载到你配置的 `'root:../ssr-base/dist'` 目录中。
 ```ts
 "scripts": {
     "postinstall": "gez install"
@@ -101,30 +103,39 @@ export default {
 
 ## 示例
 
-### ssr-dep
-基础服务，提供了所有的第三方依赖。
+### ssr-base
+基础服务，提供了所有的第三方依赖和基础组件。
 
 #### src/entry.node.ts
 ```ts
 export default {
-    name: 'ssr-dep',
+    name: 'ssr-base',
     modules: {
         exports: [
-            // 不需要配置 modules.externals
             'root:src/components/layout.vue',
-            // 需要配置 modules.externals
+            'root:src/utils/index.ts',
             'npm:vue',
             'npm:vue-router'
         ]
     }
 } satisfies GezOptions;
 ```
-:::tip
-1、在一个服务中，对外导出的软件包，总是使用 `npm:包名` 这样的格式，然后在其它服务使用 `导出的服务名/npm/包名`。    
-2、在一个服务中，对外导出的文件，总是使用 `root:src/文件名` 这样的格式，然后在其它服务使用 `导出的服务名/src/文件名`。    
-3、以往我们会针对业务来封装一些组件、工具函数，常常会使用 monorepo 的形式组织，如果不想对外，还需要搭建自己的 npm 私有镜像源。
-4、现在你可以直接在基础服务中封装好库对外导出。
+
+:::warning
+如果一个依赖包，只在 SSR 中使用，那么你应该总是将它放到开发依赖中，这样能显著减少安装生产依赖的大小。
 :::
+
+#### 导出类型
+- 使用方式
+    - 在其它的服务的 `src/entry.node.ts` 文件中的 `modules.imports` 配置添加 `ssr-base`。
+- `root:`
+    - 配置项目文件路径，通常是 `src` 目录的。
+    - 例如：
+        - `import Layout from 'ssr-base/src/components/layout.vue'`
+        - `import utils from 'ssr-base/utils/index'`
+- `npm:`
+    -  指向的是当前项目的依赖包，通常是 `package.json` 字段中 `devDependencies` 配置的依赖名。
+    - 需要配置 `modules.externals`，将对应的依赖名，指向到 `ssr-base/npm/包名`
 
 #### 多版本依赖共存
 在 `package.json` 中配置别名。
@@ -139,12 +150,12 @@ export default {
 在 `src/entry.node.ts` 文件中配置对外导出。
 ```ts
 export default {
-    name: 'ssr-dep',
+    name: 'ssr-base',
     modules: {
         exports: [
             // ...
-            'npm:query-string5', // 模块链接：ssr-dep/npm/query-string5
-            'npm:query-string6'  // 模块链接：ssr-dep/npm/query-string6
+            'npm:query-string5', // 模块链接：ssr-base/npm/query-string5
+            'npm:query-string6'  // 模块链接：ssr-base/npm/query-string6
         ]
     }
 } satisfies GezOptions;
@@ -152,9 +163,11 @@ export default {
 在对应的服务将 `query-string` 模块链接到你需要的版本。
 
 ### ssr-module-auth
-对外提供本服务的路由配置文件，并且将 `vue` 和 `vue-router` 模块指向到 `ssr-dep` 导出的模块
+将登录、注册、验证码、修改密码、找回密码等用户信息认证的业务单独在一个服务中实现，对外导出相关的页面路由地址。
+
+#### src/entry.node.ts
+
 ```ts
-// src/entry.node.ts
 export default {
     name: 'ssr-module-auth',
     modules: {
@@ -162,38 +175,50 @@ export default {
         exports: ['root:src/routes.ts'],
         // 总是需要配置依赖服务的地址
         imports: {
-            'ssr-dep': 'root:../ssr-dep/dist'
+            'ssr-base': 'root:../ssr-base/dist'
         },
         // 这里只配置链接的第三方依赖，实现依赖共享
         externals: {
-            vue: 'ssr-dep/npm/vue',
-            'vue-router': 'ssr-dep/npm/vue-router'
+            vue: 'ssr-base/npm/vue',
+            'vue-router': 'ssr-base/npm/vue-router'
         }
     }
 } satisfies GezOptions;
 ```
+
+::: tip 
+- 当我们开发一个很大的系统时，可以按照业务模块来划分不同的服务，明确每个服务的职责。
+- 当你将第三方依赖全部指向到 `ssr-base` 服务时，项目构建速度总是会非常快，基本上都能在瞬间完成。
+
+:::
+
 ### ssr-main
-在主服务，可以使用
-- `import Layout from 'ssr-dep/src/components/layout.vue'`
-    - 来调用基础服务的公共布局组件
-- `import routes from 'ssr-module-auth/src/routes`
-    - 来注册来自其它服务的路由配置
-- `import Vue from 'vue'`
-    - 构建工具会替换为 `import Vue from 'ssr-dep/npm/vue'`
-    - 其它依赖举一反三
+系统的主程序，负责将不同的业务服务，链接到一起。
+
+#### src/entry.node.ts
+
 ```ts
-// src/entry.node.ts
 export default {
     name: 'ssr-main',
     modules: {
         imports: {
-            'ssr-dep': 'root:../ssr-dep/dist',
+            'ssr-base': 'root:../ssr-base/dist',
             'ssr-module-auth': 'root:../ssr-module-auth/dist'
         },
         externals: {
-            vue: 'ssr-dep/npm/vue',
-            'vue-router': 'ssr-dep/npm/vue-router'
+            vue: 'ssr-base/npm/vue',
+            'vue-router': 'ssr-base/npm/vue-router'
         }
     }
 } satisfies GezOptions;
 ```
+
+#### 使用方式
+- `import Layout from 'ssr-base/src/components/layout.vue'`
+    - 调用 `ssr-base` 服务的路由配置文件
+- `import routes from 'ssr-module-auth/src/routes`
+    - 调用 `ssr-module-auth` 服务的路由配置文件
+- `import Vue from 'vue'`
+    - 构建工具会替换为 `import Vue from 'ssr-base/npm/vue'`
+    - 其它依赖举一反三
+## 总结

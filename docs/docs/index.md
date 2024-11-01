@@ -6,7 +6,7 @@ hero:
   text: 基于 ESM 的模块链接。
   actions:
     - theme: brand
-      text: Quick Start
+      text: 快速开始
       link: /guide/
     - theme: alt
       text: GitHub
