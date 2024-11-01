@@ -9,6 +9,7 @@
         "lint:css": "lerna run lint:css",
         "lint:type": "lerna run lint:type",
         "test": "lerna run test",
+        "build": "lerna run build",
         "build:packages": "lerna run build --no-private",
         "release": "npm run build:packages && lerna publish --force-publish --exact"
     },

@@ -5,11 +5,13 @@
     "type": "module",
     "scripts": {
         "dev": "gez dev",
-        "build": "gez build",
-        "build:release": "gez release",
+        "build": "npm run build:ssr && npm run build:dts && npm run release",
+        "build:ssr": "gez build",
         "build:dts": "vue-tsc --declaration --emitDeclarationOnly --noEmit false --outDir dist/server/src",
-        "build:all": "gez build && npm run build:dts && gez release",
-        "start": "gez start"
+        "release": "gez release",
+        "preview": "gez preview",
+        "start": "gez start",
+        "postinstall": "gez install"
     },
     "dependencies": {
         "@gez/core": "workspace:^",

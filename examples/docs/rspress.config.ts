@@ -2,8 +2,9 @@ import * as path from 'node:path';
 import { defineConfig } from 'rspress/config';
 
 export default defineConfig({
-    root: path.join(__dirname, 'docs'),
-    globalStyles: path.join(__dirname, 'styles/index.css'),
+    root: path.join(__dirname, 'src'),
+    outDir: path.join(__dirname, 'dist/client'),
+    globalStyles: path.join(__dirname, 'src/styles/index.css'),
     title: 'Gez',
     description:
         'Gez 是一个基于 Rspack 构建的模块链接（Module Link） 解决方案，通过 importmap 将多服务的模块映射到具有强缓存，基于内容哈希的 URL 中。',

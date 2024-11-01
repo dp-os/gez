@@ -1,13 +1,16 @@
 {
-  "name": "ssr-simple",
+  "name": "ssr-html",
   "version": "0.0.15-alpha.89",
   "main": "index.js",
   "type": "module",
   "scripts": {
     "dev": "gez dev",
-    "build": "gez build",
-    "start": "gez start",
+    "build": "npm run build:ssr && npm run build:dts && npm run release",
+    "build:ssr": "gez build",
+    "build:dts": "tsc --noEmit --outDir dist/server/src",
+    "release": "gez release",
     "preview": "gez preview",
+    "start": "gez start",
     "postinstall": "gez install"
   },
   "author": "",
@@ -17,6 +20,8 @@
     "@gez/core": "workspace:0.0.15-alpha.89"
   },
   "devDependencies": {
+    "@types/node": "22.8.6",
+    "typescript": "^5.2.2",
     "@gez/rspack": "workspace:0.0.15-alpha.89"
   }
 }

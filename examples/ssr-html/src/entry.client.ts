@@ -1,4 +1,6 @@
 const time = document.querySelector('time');
 setInterval(() => {
-    time?.setHTMLUnsafe(new Date().toISOString());
+    if (time) {
+        time.innerText = new Date().toISOString();
+    }
 }, 1000);

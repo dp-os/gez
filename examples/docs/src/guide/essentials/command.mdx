@@ -2,16 +2,16 @@
 一个典型的命令配置。
 ```json
 {
-  "scripts": {
-    "dev": "gez dev",
-    "build": "npm run build && npm run build:dts && npm run release",
-    "build:ssr": "gez build",
-    "build:dts": "vue-tsc --declaration --emitDeclarationOnly --noEmit false --outDir dist/server/src",
-    "release": "gez release",
-    "preview": "gez preview",
-    "start": "gez start",
-    "postinstall": "gez install"
-  }
+    "scripts": {
+        "dev": "gez dev",
+        "build": "npm run build:ssr && npm run build:dts && npm run release",
+        "build:ssr": "gez build",
+        "build:dts": "vue-tsc --declaration --emitDeclarationOnly --noEmit false --outDir dist/server/src",
+        "release": "gez release",
+        "preview": "gez preview",
+        "start": "gez start",
+        "postinstall": "gez install"
+    }
 }
 ```
 
