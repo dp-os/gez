@@ -5,11 +5,11 @@
     },
     "index",
     "start/getting-started",
-    "start/csr",
     {
         "type": "section-header",
         "label": "特性"
     },
+    "essentials/csr",
     "essentials/module-link",
     "essentials/alias",
     "essentials/command"

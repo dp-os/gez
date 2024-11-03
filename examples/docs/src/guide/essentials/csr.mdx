@@ -1,5 +1,5 @@
 # 客户端渲染
-生产环境如果不允许部署一个 Node 实例，可以在构建阶段就生成 CSR 入口的 HTML 文件。
+生产环境如果不允许部署一个 Node 实例，可以在构建阶段就生成客户端渲染的 `index.html` 文件。
 
 ## src/entry.server.ts
 在服务渲染时，返回一个通用的模板即可。
@@ -40,7 +40,9 @@ export default {
     // ... 其它选项
     async postCompileProdHook(gez) {
         const render = await gez.render({
-            base: '/gez/'
+            params: {
+                url: req.url
+            }
         });
         gez.write(
             path.resolve(gez.getProjectPath('dist/client'), 'index.html'),
