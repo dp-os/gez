@@ -37,7 +37,7 @@ export interface GezOptions {
     /**
      * 构建完成后以生产模式运行，你可以在这里生成 HTML。
      */
-    generateHtml?: (gez: Gez) => Promise<void>;
+    postCompileProdHook?: (gez: Gez) => Promise<void>;
     /**
      * 当 isProd = false 时调用
      * @param gez
@@ -113,8 +113,8 @@ export class Gez {
     public get createServer() {
         return this._options.createServer ?? noon;
     }
-    public get generateHtml() {
-        return this._options.generateHtml;
+    public get postCompileProdHook() {
+        return this._options.postCompileProdHook;
     }
 
     /**

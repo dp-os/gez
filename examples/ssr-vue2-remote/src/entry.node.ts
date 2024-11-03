@@ -28,7 +28,7 @@ export default {
          */
         exports: ['root:src/components/layout.vue', 'npm:vue']
     },
-    async generateHtml(gez) {
+    async postCompileProdHook(gez) {
         const render = await gez.render({
             base: '/gez/',
             params: { url: '/' }
