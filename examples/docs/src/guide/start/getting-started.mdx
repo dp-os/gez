@@ -64,11 +64,11 @@ setInterval(() => {
 // 这里必须使用 import type，否则开发阶段会报错
 import type { RenderContext } from '@gez/core';
 
-export default async (ctx: RenderContext) => {
+export default async (rc: RenderContext) => {
     // 获取注入的代码
-    const script = await ctx.script();
+    const script = await rc.script();
     const time = new Date().toISOString();
-    ctx.html = `
+    rc.html = `
 <!DOCTYPE html>
 <html>
 <head>
