@@ -1,11 +1,11 @@
 // 这里必须使用 import type，否则开发阶段会报错
-import type { ServerContext } from '@gez/core';
+import type { RenderContext } from '@gez/core';
 
-export default async (params: { url: string }, ctx: ServerContext) => {
+export default async (rc: RenderContext) => {
     // 获取注入的代码
-    const script = await ctx.getInjectScript();
+    const script = await rc.script();
     const time = new Date().toISOString();
-    ctx.html = `
+    rc.html = `
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,7 +16,7 @@ export default async (params: { url: string }, ctx: ServerContext) => {
 <body>
     <h1>Gez</h1>
     <h2>Hello world!</h2>
-    <p>URL: ${params.url}</p>
+    <p>URL: ${rc.params.url}</p>
     <time>${time}</time>
     ${script}
 </body>

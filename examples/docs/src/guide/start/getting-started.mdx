@@ -60,11 +60,11 @@ setInterval(() => {
 模拟框架的 SSR API，渲染出 HTML 内容返回
 ```ts
 // 这里必须使用 import type，否则开发阶段会报错
-import type { ServerContext } from '@gez/core';
+import type { RenderContext } from '@gez/core';
 
-export default async (ctx: ServerContext, params: { url: string }) => {
+export default async (ctx: RenderContext) => {
     // 获取注入的代码
-    const script = await ctx.getInjectScript();
+    const script = await ctx.script();
     const time = new Date().toISOString();
     ctx.html = `
 <!DOCTYPE html>
@@ -77,7 +77,7 @@ export default async (ctx: ServerContext, params: { url: string }) => {
 <body>
     <h1>Gez</h1>
     <h2>Hello world!</h2>
-    <p>URL: ${params.url}</p>
+    <p>URL: ${rc.params.url}</p>
     <time>${time}</time>
     ${script}
 </body>

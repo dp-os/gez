@@ -1,11 +1,11 @@
-import type { ServerContext } from '@gez/core';
+import type { RenderContext } from '@gez/core';
 import { createRenderer } from 'vue-server-renderer';
 import { createApp } from './create-app';
 
 const renderer = createRenderer();
 
-export default async (params: any, ctx: ServerContext) => {
-    const script = await ctx.getInjectScript();
+export default async (rc: RenderContext) => {
+    const script = await rc.script();
 
     const { app } = createApp();
     const vueCtx = {
@@ -13,7 +13,7 @@ export default async (params: any, ctx: ServerContext) => {
     };
     const html = await renderer.renderToString(app, vueCtx);
 
-    ctx.html = `
+    rc.html = `
 <!DOCTYPE html>
 <html>
 <head>

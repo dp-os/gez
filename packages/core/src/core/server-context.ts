@@ -3,26 +3,38 @@ import path from 'node:path';
 import serialize from 'serialize-javascript';
 import type { Gez, PackageJson } from './gez';
 
-export interface ServerContextOptions {
+/**
+ * 渲染的参数
+ */
+export interface RenderContextOptions {
+    /**
+     * 静态资产的 base 地址，默认为空
+     */
     base?: string;
+    /**
+     * 自定义请求的参数
+     */
+    params?: Record<string, any>;
 }
 
-export class ServerContext {
+/**
+ * 渲染上下文
+ */
+export class RenderContext {
     public html = '';
     public redirect: string | null = null;
     public status: number | null = null;
     public gez: Gez;
     private _packages: PackageJson[] | null = null;
-    private _options: ServerContextOptions;
-    public constructor(gez: Gez, options: ServerContextOptions = {}) {
-        this.gez = gez;
-        this._options = options;
-    }
     /**
      * 静态资源请求的基本地址
      */
-    public get base() {
-        return this._options.base ?? '/';
+    public readonly base: string;
+    public readonly params: Record<string, any>;
+    public constructor(gez: Gez, options: RenderContextOptions = {}) {
+        this.gez = gez;
+        this.base = options.base ?? '/';
+        this.params = options.params ?? {};
     }
     /**
      * 透传 https://github.com/yahoo/serialize-javascript
@@ -64,7 +76,7 @@ export class ServerContext {
     /**
      * 获取当前注入的 JS 代码
      */
-    public async getInjectScript() {
+    public async script() {
         const { gez } = this;
         const files = await this.getImportmapFiles();
         return `
@@ -94,6 +106,6 @@ ${files
  * 服务渲染的处理函数
  */
 export type ServerRenderHandle = (
-    ctx: ServerContext,
-    params: any
+    render: RenderContext,
+    ...args: any[]
 ) => Promise<void>;

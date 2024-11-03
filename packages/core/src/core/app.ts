@@ -1,8 +1,8 @@
 import type { Gez } from './gez';
 import { type Middleware, createMiddleware } from './middleware';
 import {
-    ServerContext,
-    type ServerContextOptions,
+    RenderContext,
+    type RenderContextOptions,
     type ServerRenderHandle
 } from './server-context';
 import { compression, decompression } from './version';
@@ -14,14 +14,10 @@ export interface App {
     middleware: Middleware;
     /**
      * 渲染函数
-     * @param params 渲染的参数
-     * @param options 透传给 ServerContextOptions
+     * @param options 透传给 RenderContextOptions
      * @returns
      */
-    render: (
-        params?: any,
-        options?: ServerContextOptions
-    ) => Promise<ServerContext>;
+    render: (options?: RenderContextOptions) => Promise<RenderContext>;
     /**
      * 执行构建
      */
@@ -43,17 +39,17 @@ export interface App {
 export async function createApp(gez: Gez): Promise<App> {
     return {
         middleware: createMiddleware(gez),
-        async render(params?: any, options?: ServerContextOptions) {
-            const context = new ServerContext(gez, options);
+        async render(options?: RenderContextOptions) {
+            const rc = new RenderContext(gez, options);
             const result = await import(
                 gez.getProjectPath('dist/server/entry.js')
             );
             const serverRender: ServerRenderHandle = result.default;
             if (typeof serverRender === 'function') {
-                await serverRender(params, context);
+                await serverRender(rc);
             }
 
-            return context;
+            return rc;
         },
         async build() {
             return true;

@@ -3,6 +3,7 @@
   "version": "0.0.15-alpha.89",
   "main": "index.js",
   "type": "module",
+  "private": true,
   "scripts": {
     "dev": "gez dev",
     "build": "npm run build:ssr && npm run build:dts && npm run release",

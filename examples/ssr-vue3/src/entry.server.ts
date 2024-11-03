@@ -1,13 +1,13 @@
-import type { ServerContext } from '@gez/core';
+import type { RenderContext } from '@gez/core';
 import { renderToString } from 'vue/server-renderer';
 
 import { createApp } from './create-app';
 
-export default async (params: any, ctx: ServerContext) => {
+export default async (rc: RenderContext) => {
     const { app } = createApp('server');
-    const script = await ctx.getInjectScript();
+    const script = await rc.script();
     const body = await renderToString(app, {});
-    ctx.html = `
+    rc.html = `
   <!DOCTYPE html>
   <html>
   <head>

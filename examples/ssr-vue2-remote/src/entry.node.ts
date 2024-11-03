@@ -1,9 +1,10 @@
 import path from 'node:path';
 import type { GezOptions } from '@gez/core';
 import express from 'express';
+import { name } from '../package.json';
 
 export default {
-    name: 'ssr-vue2-remote',
+    name,
     async createDevApp(gez) {
         return import('@gez/rspack-vue').then((m) => m.createVue2App(gez));
     },
@@ -12,7 +13,9 @@ export default {
         server.use(gez.middleware);
         server.get('*', async (req, res) => {
             res.setHeader('Content-Type', 'text/html;charset=UTF-8');
-            const result = await gez.render({ url: '/' });
+            const result = await gez.render({
+                params: { url: '/' }
+            });
             res.send(result.html);
         });
         server.listen(3003, () => {
@@ -26,15 +29,13 @@ export default {
         exports: ['root:src/components/layout.vue', 'npm:vue']
     },
     async generateHtml(gez) {
-        const ctx = await gez.render(
-            { url: '/' },
-            {
-                base: '/gez/'
-            }
-        );
+        const render = await gez.render({
+            base: '/gez/',
+            params: { url: '/' }
+        });
         gez.write(
             path.resolve(gez.getProjectPath('dist/client'), 'index.html'),
-            ctx.html
+            render.html
         );
     }
 } satisfies GezOptions;
