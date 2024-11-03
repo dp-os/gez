@@ -5,6 +5,7 @@
     },
     "index",
     "start/getting-started",
+    "start/csr",
     {
         "type": "section-header",
         "label": "特性"

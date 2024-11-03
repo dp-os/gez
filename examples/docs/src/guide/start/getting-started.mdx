@@ -3,6 +3,9 @@ import { PackageManagerTabs } from '@theme';
 # 快速开始
 这是一个与框架无关的例子，采用原生的 HTML 来开发项目
 
+::: tip
+Gez 默认支持 SSR，但是你可以当成 [CSR](./csr.mdx) 来使用。
+:::
 ## 创建项目
 ```bash
 cd 项目目录
@@ -88,15 +91,17 @@ export default async (rc: RenderContext) => {
 };
 
 ```
+
 ### src/entry.node.ts
 创建一个 web 服务器，来处理客户请求
 ```ts
 import http from 'node:http';
 import type { GezOptions } from '@gez/core';
+import { name } from '../package.json';
 
 export default {
     // 设置应用的唯一名字，如果有多个项目，则名字不能重复
-    name: 'ssr-html',
+    name,
     // 本地执行 dev 和 build 时会使用
     async createDevApp(gez) {
         return import('@gez/rspack').then((m) =>
