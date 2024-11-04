@@ -1,0 +1,51 @@
+# 静态资源处理
+静态资源构建出来的路径，总是以 `/${name}/文件路径`。
+
+## src/entry.node.ts
+```ts
+import http from 'node:http';
+import type { GezOptions } from '@gez/core';
+import { name } from '../package.json';
+
+export default {
+    name,
+} satisfies GezOptions;
+
+```
+## 高级
+有时，我们将一套代码部署在不同的国家或地区，允许独立域名访问和二级目录访问。
+```
+- www.域名.com -> 默认主站
+- www.域名.com/cn/ -> 中文站点
+- www.域名.com/en/ -> 英文站点
+```
+你可以根据请求上下文，在给渲染函数传入不同的基本 URL。
+```ts
+const render = await gez.render({
+    base: '/gez',
+    params: { url: req.url }
+});
+```
+除此之外，业务程序处理静态资产时，还需要手动拼接上基本地址。
+```ts
+// 这里必须使用 import type，否则开发阶段会报错
+import type { RenderContext } from '@gez/core';
+import svg from './logo.svg';
+
+export default async (rc: RenderContext) => {
+    // 获取注入的代码
+    const script = await rc.script();
+    rc.html = `
+<ul>
+    <li>${rc.base + svg} <br>
+        <img height="100" src="${rc.base + svg}">
+    </li>
+</ul>
+${script}
+`;
+};
+
+```
+::: tip
+在服务端渲染时，由于 Rspack 的公共路径被写入到一个单例的配置中，是无法实现动态地址的，需要你手动拼接上 base 地址。
+:::

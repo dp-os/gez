@@ -9,8 +9,9 @@
         "type": "section-header",
         "label": "特性"
     },
-    "essentials/csr",
     "essentials/module-link",
+    "essentials/csr",
+    "essentials/assets",
     "essentials/alias",
     "essentials/command"
 ]
