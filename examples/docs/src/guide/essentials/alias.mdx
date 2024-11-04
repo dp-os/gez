@@ -1,4 +1,7 @@
 # 别名
+路径别名允许开发者为模块定义别名，以便于在代码中更方便的引用它们。当你想要使用一个简短、易于记忆的名称来代替冗长复杂的路径时，这将非常有用。
+
+## 默认别名
 在 Gez 中，默认使用服务名来作为别名，这样有两个好处。
 - 在调用其它服务时保持命名风格的统一
 - 执行 [npm run build:dts](./command.mdx) 命令，生成的类型可以被其它服务使用。
@@ -34,4 +37,27 @@ export default {
 ```
 ::: tip
 如果你想了解多服务类型如何工作的，可以了解一下 [gez release](./command.mdx#gez-release) 命令的说明。
+:::
+
+## 自定义别名
+业务模块，你应该总是使用默认的别名，但是一些第三方包有时需要设置别名，你可以这样做。
+```ts
+export default {
+    async createDevApp(gez) {
+        return import('@gez/rspack').then((m) =>
+            m.createApp(gez, (buildContext) => {
+                buildContext.config.resolve = {
+                    ...buildContext.config.resolve,
+                    alias: {
+                        ...buildContext.config.resolve?.alias,
+                        vue$: 'vue/dist/vue.esm.js',
+                    }
+                }
+            })
+        );
+    }
+} satisfies GezOptions;
+```
+::: warning
+业务模块对外导出时，程序会做一些打包的优化。如果你自定义了业务模块的别名，可能会导致打包出来的内容不正确。
 :::
