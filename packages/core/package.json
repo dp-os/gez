@@ -38,7 +38,7 @@
         "unbuild": "2.0.0",
         "vitest": "1.6.0"
     },
-    "version": "0.0.15-alpha.91",
+    "version": "0.0.15-alpha.92",
     "type": "module",
     "private": false,
     "exports": {
@@ -58,5 +58,5 @@
         "template",
         "public"
     ],
-    "gitHead": "1a5bde313f7bc6003a07bb4f0c36c2b48804b536"
+    "gitHead": "a1175657723ffc3c0979cabe8ce4978268618270"
 }

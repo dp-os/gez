@@ -11,8 +11,8 @@
     },
     "devDependencies": {
         "@biomejs/biome": "1.9.2",
-        "@gez/core": "workspace:^",
-        "@gez/lint": "workspace:^",
+        "@gez/core": "0.0.15-alpha.92",
+        "@gez/lint": "0.0.15-alpha.92",
         "@types/node": "20.12.12",
         "@vitest/coverage-v8": "1.6.0",
         "stylelint": "16.5.0",
@@ -20,7 +20,7 @@
         "unbuild": "2.0.0",
         "vitest": "1.6.0"
     },
-    "version": "0.0.15-alpha.91",
+    "version": "0.0.15-alpha.92",
     "type": "module",
     "private": false,
     "exports": {
@@ -39,5 +39,5 @@
         "*.mjs",
         "template"
     ],
-    "gitHead": "1a5bde313f7bc6003a07bb4f0c36c2b48804b536"
+    "gitHead": "a1175657723ffc3c0979cabe8ce4978268618270"
 }

@@ -31,11 +31,11 @@ importers:
   examples/ssr-html:
     dependencies:
       '@gez/core':
-        specifier: workspace:0.0.15-alpha.91
+        specifier: workspace:0.0.15-alpha.92
         version: link:../../packages/core
     devDependencies:
       '@gez/rspack':
-        specifier: workspace:0.0.15-alpha.91
+        specifier: workspace:0.0.15-alpha.92
         version: link:../../packages/rspack
       '@types/node':
         specifier: 22.8.6
@@ -171,7 +171,7 @@ importers:
         specifier: 1.9.2
         version: 1.9.2
       '@gez/lint':
-        specifier: workspace:^
+        specifier: 0.0.15-alpha.92
         version: link:../lint
       '@types/node':
         specifier: 20.12.12
@@ -265,10 +265,10 @@ importers:
         specifier: 1.9.2
         version: 1.9.2
       '@gez/core':
-        specifier: workspace:^
+        specifier: 0.0.15-alpha.92
         version: link:../core
       '@gez/lint':
-        specifier: workspace:^
+        specifier: 0.0.15-alpha.92
         version: link:../lint
       '@types/node':
         specifier: 20.12.12
@@ -389,10 +389,10 @@ importers:
   packages/rspack:
     dependencies:
       '@gez/core':
-        specifier: workspace:^
+        specifier: 0.0.15-alpha.92
         version: link:../core
       '@gez/import':
-        specifier: workspace:^
+        specifier: 0.0.15-alpha.92
         version: link:../import
       '@rspack/core':
         specifier: ^1.0.14
@@ -417,7 +417,7 @@ importers:
         specifier: 1.9.2
         version: 1.9.2
       '@gez/lint':
-        specifier: workspace:^
+        specifier: 0.0.15-alpha.92
         version: link:../lint
       '@types/node':
         specifier: 20.12.12
@@ -447,7 +447,7 @@ importers:
   packages/rspack-vue:
     dependencies:
       '@gez/rspack':
-        specifier: workspace:^
+        specifier: 0.0.15-alpha.92
         version: link:../rspack
       '@gez/vue2-loader':
         specifier: ^1.0.1
@@ -478,10 +478,10 @@ importers:
         specifier: 1.9.2
         version: 1.9.2
       '@gez/core':
-        specifier: workspace:^
+        specifier: 0.0.15-alpha.92
         version: link:../core
       '@gez/lint':
-        specifier: workspace:^
+        specifier: 0.0.15-alpha.92
         version: link:../lint
       '@types/node':
         specifier: 20.12.12

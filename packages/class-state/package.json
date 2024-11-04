@@ -14,7 +14,7 @@
     },
     "devDependencies": {
         "@biomejs/biome": "1.9.2",
-        "@gez/lint": "workspace:^",
+        "@gez/lint": "0.0.15-alpha.92",
         "@types/node": "20.12.12",
         "@vitest/coverage-v8": "1.6.0",
         "@vue/compiler-dom": "^3.5.6",
@@ -24,7 +24,7 @@
         "vitest": "1.6.0",
         "vue": "^3.5.6"
     },
-    "version": "0.0.15-alpha.91",
+    "version": "0.0.15-alpha.92",
     "type": "module",
     "private": false,
     "exports": {
@@ -43,5 +43,5 @@
         "*.mjs",
         "template"
     ],
-    "gitHead": "1a5bde313f7bc6003a07bb4f0c36c2b48804b536"
+    "gitHead": "a1175657723ffc3c0979cabe8ce4978268618270"
 }
