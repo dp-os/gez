@@ -1,3 +1,4 @@
+export * from './images';
 const time = document.querySelector('time');
 setInterval(() => {
     if (time) {
