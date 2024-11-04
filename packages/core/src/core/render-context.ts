@@ -33,7 +33,7 @@ export class RenderContext {
     public readonly params: Record<string, any>;
     public constructor(gez: Gez, options: RenderContextOptions = {}) {
         this.gez = gez;
-        this.base = options.base ?? '/';
+        this.base = options.base ?? '';
         this.params = options.params ?? {};
     }
     /**
@@ -70,7 +70,7 @@ export class RenderContext {
         const { base } = this;
         return list.map((item) => {
             const hash = item.hash ? '.' + item.hash : '';
-            return `${base}${item.name}/importmap${hash}.js`;
+            return `${base}/${item.name}/importmap${hash}.js`;
         });
     }
     /**

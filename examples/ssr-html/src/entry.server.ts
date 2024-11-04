@@ -26,20 +26,20 @@ export default async (rc: RenderContext) => {
     ${script}
     <h2>格式支持</h2>
     <ul>
-        <li>${svg} <br>
-            <img height="100" src="${svg}">
+        <li>${rc.base + svg} <br>
+            <img height="100" src="${rc.base + svg}">
         </li>
-        <li>${jpg} <br>
-            <img height="100" src="${jpg}">
+        <li>${rc.base + jpg} <br>
+            <img height="100" src="${rc.base + jpg}">
         </li>
-        <li>${cat} <br>
-            <img height="100" src="${cat}">
+        <li>${rc.base + cat} <br>
+            <img height="100" src="${rc.base + cat}">
         </li>
-        <li>${loading} <br>
-            <img height="100" src="${loading}">
+        <li>${rc.base + loading} <br>
+            <img height="100" src="${rc.base + loading}">
         </li>
-        <li>${sun} <br>
-            <img height="100" src="${sun}">
+        <li>${rc.base + sun} <br>
+            <img height="100" src="${rc.base + sun}">
         </li>
     </ul>
 </body>

@@ -4,7 +4,7 @@ import {
     RenderContext,
     type RenderContextOptions,
     type ServerRenderHandle
-} from './server-context';
+} from './render-context';
 import { compression, decompression } from './version';
 
 export interface App {

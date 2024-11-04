@@ -37,7 +37,7 @@ export default {
     },
     async postCompileProdHook(gez) {
         const render = await gez.render({
-            base: '/gez/',
+            base: '/gez',
             params: { url: '/' }
         });
         gez.write(
