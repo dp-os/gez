@@ -53,7 +53,7 @@ export interface GezOptions {
     /**
      * 动态路径变量名，如果你不需要，可以设置为 false，能提高渲染性能。
      * 注意：仅在服务端生效
-     * 默认值：__GEZ_DYNAMIC_BASE__
+     * 默认值： __GEZ_DYNAMIC_BASE__
      */
     dynamicBasePathVar?: string | false;
 }
@@ -110,7 +110,11 @@ export class Gez {
     }
 
     public get dynamicBaseVar(): string {
-        return this._options.dynamicBasePathVar || '';
+        const varName = this._options.dynamicBasePathVar;
+        if (varName === false) {
+            return '';
+        }
+        return varName ?? '__GEZ_DYNAMIC_BASE__';
     }
 
     private get app() {

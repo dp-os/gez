@@ -41,7 +41,10 @@ export class RenderContext {
         return this._html;
     }
     public set html(html) {
-        this._html = html.replaceAll(this.gez.dynamicBaseVar, this.base);
+        const varName = this.gez.dynamicBaseVar;
+        this._html = varName
+            ? html.replaceAll(this.gez.dynamicBaseVar, this.base)
+            : html;
     }
     /**
      * 透传 https://github.com/yahoo/serialize-javascript
