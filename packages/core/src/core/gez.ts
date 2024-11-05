@@ -11,51 +11,19 @@ import {
 import { moduleLink } from './module-link';
 import { type ProjectPath, getProjectPath } from './project-path';
 
+/**
+ * 详细说明，请看文档：https://dp-os.github.io/gez/guide/essentials/config.html
+ */
 export interface GezOptions {
-    /**
-     * 项目的根目录
-     */
-    root?: string;
-    /**
-     * 服务名称，全局唯一
-     */
     name?: string;
-    /**
-     * 是否是生产模式
-     * @default process.env.NODE_ENV === 'production'
-     */
+    root?: string;
     isProd?: boolean;
-    /**
-     * 是否安装远程模块
-     * @default process.env.npm_config_production !== 'true'
-     */
     isInstall?: boolean;
-    /**
-     * 模块配置
-     */
-    modules?: ModuleConfig;
-    /**
-     * 构建完成后以生产模式运行，你可以在这里生成 HTML。
-     */
-    postCompileProdHook?: (gez: Gez) => Promise<void>;
-    /**
-     * 当 isProd = false 时调用
-     * @param gez
-     * @returns
-     */
-    createDevApp?: (gez: Gez) => Promise<App>;
-    /**
-     * 创建自己的服务器
-     * @param gez
-     * @returns
-     */
-    createServer?: (gez: Gez) => Promise<void>;
-    /**
-     * 动态路径变量名，如果你不需要，可以设置为 false，能提高渲染性能。
-     * 注意：仅在服务端生效
-     * 默认值： {{{GEZ_DYNAMIC_BASE}}}
-     */
     dynamicBasePathVar?: string | false;
+    modules?: ModuleConfig;
+    postCompileProdHook?: (gez: Gez) => Promise<void>;
+    createDevApp?: (gez: Gez) => Promise<App>;
+    createServer?: (gez: Gez) => Promise<void>;
 }
 
 export enum COMMAND {

@@ -16,7 +16,7 @@ export interface ModuleConfig {
      *   root:src/routes
      *   root:src/[filename]
      */
-    exports?: `${PathType}${string}`[];
+    exports?: string[];
     /**
      * 导入的模块基本配置
      */

@@ -1,0 +1,214 @@
+import { Badge } from '@theme';
+
+# 基础配置
+Gez 作为基础设施，它的配置总是非常简单的。
+## 使用配置
+```ts
+import type { GezOptions } from '@gez/core';
+
+export default {
+    // 配置
+} satisfies GezOptions;
+
+```
+
+## 常规配置
+### name <Badge text="v1.0.0" type="tip" />
+- **类型：**`string`
+- **默认值：**`gez`
+- **描述：** 服务的名称，全局唯一。
+
+:::tip
+如果你的网站，同一个域名下，使用 Gez 打包了多个项目，那么你需要配置一个 `name` 来区分不同的项目。
+:::
+
+### root <Badge text="v1.0.0" type="tip" />
+- **类型：**`string`
+- **默认值：**`cwd()`
+- **描述：** 项目根目录，默认为当前执行命令的目录。
+
+
+:::warning
+如果你没有充足的理由，你都不应该配置它。
+
+:::
+
+### isProd <Badge text="v1.0.0" type="tip" />
+- **类型：**`boolean`
+- **默认值：** `process.env.NODE_ENV === 'production'`
+- **描述：** 是否是生产环境。
+
+:::warning
+如果你没有充足的理由，你都不应该配置它。
+
+:::
+
+### isInstall <Badge text="v1.0.0" type="tip" />
+- **类型：**`boolean`
+- **默认值：** `process.env.npm_config_production !== 'true'`
+- **描述：** 安装生产依赖时，是否安装远程依赖。
+
+:::warning
+如果你没有充足的理由，你都不应该配置它。
+
+:::
+
+### dynamicBasePathVar <Badge text="v1.0.0" type="tip" />
+- **类型：**`string | false`
+- **默认值：** `[[[___GEZ_DYNAMIC_BASE___]]]`
+- **描述：** 动态路径的变量占位符。
+
+:::warning
+如果你的业务上，没有出现用户的内容被误替换，你都不应该配置它。
+:::
+
+## 模块链接
+这是 Gez 的核心功能，深入了解[点击这里](./module-link.mdx)。
+### modules.exports <Badge text="v1.0.0" type="tip" />
+- **类型：**`string[]`
+- **默认值：** `[]`
+- **描述：** 对外模块导出。
+
+```ts title="src/entry.node.ts"
+export default {
+    modules: {
+        exports: [
+            'root:src/components/layout.vue',
+            'root:src/utils/index.ts',
+            'npm:vue',
+            'npm:vue-router'
+        ]
+    }
+} satisfies GezOptions;
+```
+
+::: tip
+你可以将当前项目的模块或者当前项目的第三方依赖，对外导出，这样其它服务就可以使用了。
+:::
+
+### modules.imports <Badge text="v1.0.0" type="tip" />
+- **类型：**`Record<string, string | [string, string]>`
+- **默认值：** `{}`
+- **描述：** 配置远程依赖。
+```ts title="src/entry.node.ts"
+export default {
+    modules: {
+        imports: {
+            'ssr-base': ['root:../ssr-base/dist', 'https://<hostname>/ssr-base/versions/latest.json']
+        }
+    }
+} satisfies GezOptions;
+```
+
+:::tip
+- 数组的第一个参数为本地的存储路径，第二个参数是远程依赖的地址。执行 `gez install` 命令可以下载远程依赖到本地的地址。
+- 第二个参数是可选参数，非必须。
+
+:::
+
+### modules.externals <Badge text="v1.0.0" type="tip" />
+- **类型：**`Record<string, string>`
+- **默认值：** `{}`
+- **描述：** 将当前服务的模块，链接到其它的服务。
+```ts title="src/entry.node.ts"
+export default {
+    name: 'ssr-main',
+    modules: {
+        externals: {
+            vue: 'ssr-base/npm/vue',
+            'vue-router': 'ssr-base/npm/vue-router'
+        }
+    }
+} satisfies GezOptions;
+```
+
+:::tip
+需要配合 [modules.imports](#modulesimports) 使用。
+:::
+
+## 回调函数
+
+### postCompileProdHook() <Badge text="v1.0.0" type="tip" />
+- **类型：**`(gez: Gez) => Promise<void>`
+- **默认值：** `undefined`
+- **描述：** 构建完成后，生产模式运行执行的钩子。
+
+```ts title="src/entry.node.ts"
+import path from 'node:path';
+
+export default {
+    async postCompileProdHook(gez) {
+        const render = await gez.render({
+            base: '/gez',
+            params: { url: '/' }
+        });
+        gez.write(
+            path.resolve(gez.getProjectPath('dist/client'), 'index.html'),
+            render.html
+        );
+    }
+} satisfies GezOptions;
+```
+
+:::tip 
+你可以使用这个钩子来生成静态网站。
+:::
+
+### createDevApp() <Badge text="v1.0.0" type="tip" />
+- **类型：**`(gez: Gez) => Promise<App>`
+- **默认值：** `isProd = false`
+- **描述：** 创建开发环境应用。
+
+```ts title="src/entry.node.ts"
+
+export default {
+    async createDevApp(gez) {
+        // 这里应使用动态模块。生产依赖不存在。
+        return import('@gez/rspack').then((m) =>
+            m.createApp(gez, (buildContext) => {
+                // 可以在这里修改 Rspack 编译的配置
+                // 自定义你的 Vue、React等框架的打包逻辑
+            })
+        );
+    }
+} satisfies GezOptions;
+```
+
+::: tip
+- Rspack 配置请看[这里](./rspack.mdx)
+
+:::
+
+### createServer() <Badge text="v1.0.0" type="tip" />
+- **类型：**`(gez: Gez) => Promise<void>`
+- **默认值：** `undefined`
+- **描述：** 创建服务器
+
+```ts title="src/entry.node.ts"
+import http from 'node:http';
+
+export default {
+    async createServer(gez) {
+        const server = http.createServer((req, res) => {
+            // 静态文件处理
+            gez.middleware(req, res, async () => {
+                // 传入渲染的参数
+                const render = await gez.render({
+                    params: {
+                        url: req.url
+                    }
+                });
+                // 响应 HTML 内容
+                res.end(render.html);
+            });
+        });
+        // 监听端口
+        server.listen(3005, () => {
+            console.log('http://localhost:3005');
+        });
+    },
+} satisfies GezOptions;
+```
+::: tip
+你也可以使用其它的框架来创建服务器，例如：[Express](https://expressjs.com/)。
+:::
