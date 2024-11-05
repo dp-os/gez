@@ -1,2 +1,37 @@
 # Rspack
-Gez 是完全基于 Rspack 开发的，由此我们封装了 `@gez/rspack` 库。
+Gez 是完全基于 [Rspack](https://rspack.dev/) 打包，同时也就继承了 Rspack 的全部优势。由于 Gez 的定位是一个基础设施，所以大多数的时候，你都需要根据自己的业务来配置自己的打包逻辑。
+
+## entry.node.ts
+在默认的情况下，内置了一些基本的打包[规则](https://github.com/dp-os/gez/blob/master/packages/rspack/src/config/rules.ts)，但是你可以完全重写它。
+```ts
+import type { BuildTarget, Gez } from '@gez/core';
+import type { RuleSetRules, SwcLoaderOptions } from '@gez/rspack';
+export default {
+    async createDevApp(gez) {
+        return import('@gez/rspack').then((m) =>
+            m.createApp(gez, (buildContext) => {
+
+                // buildContext.config Rspack 的配置
+                // buildContext.target 构建的目标，分别是：'node' | 'client' | 'server'
+                // buildContext.gez 传入的 gez 对象
+
+                buildContext.config.module = {
+                    ...buildContext.config.module,
+                    rules: [
+                        // 如果需要继承，则加上这句，否则删除
+                        ...buildContext.config.module?.rules ?? [],
+                        // 你自定义的打包规则
+                    ]
+                }
+            })
+        );
+    }
+}
+```
+::: tip
+建议单独抽离一个 `entry.rspack.ts` 文件来实现 `createDevApp` 的逻辑，然后再动态导入使用。
+:::
+
+::: warning
+`@gez/rspack` 要使用 import type，避免被打包到生产代码中。
+:::
