@@ -11,9 +11,8 @@ Gez 默认支持 SSR，但是你可以当成 [CSR](./csr.mdx) 来使用。
 cd 项目目录
 npm init
 ```
-## 将项目设置为 module
-在 **package.json** 文件添加
-```json
+## 设置 ESM
+```json title="package.json"
 {
     "type": "module"
 }
@@ -29,8 +28,7 @@ npm init
 **安装开发依赖**
 <PackageManagerTabs command="install @gez/rspack typescript @types/node -D" />
 ## 添加脚本
-在 **package.json** 文件添加
-```json
+```json title="package.json"
 {
     "scripts": {
         "dev": "gez dev",
@@ -49,26 +47,26 @@ npm init
 你需要手动配置 [tsconfig.json](https://www.typescriptlang.org/tsconfig/) 文件，否则执行 `build:dts` 命令会报错。
 :::
 
-## 入口文件
+## 基本例子
 基本结构
 ```
 - src/
-  - entry.client.ts  # 客户端程序入口，一般会处理水合
-  - entry.server.ts  # 使用框架的 SSR API 渲染出 HTML 内容
-  - entry.node.ts    # 创建一个服务器程序，来处理请求
+  - entry.client.ts  # 客户端渲染入口
+  - entry.server.ts  # 服务端渲染入口
+  - entry.node.ts    # 创建服务器
 ```
-### src/entry.client.ts
-模拟水合，更新当前时间
-```ts
+### 客户端渲染
+更新当前时间
+```ts title="src/entry.client.ts"
 const time = document.querySelector('time');
 setInterval(() => {
     time?.setHTMLUnsafe(new Date().toISOString());
 }, 1000);
 
 ```
-### src/entry.server.ts
+### 服务端渲染
 模拟框架的 SSR API，渲染出 HTML 内容返回
-```ts
+```ts title="src/entry.server.ts"
 // 这里必须使用 import type，否则开发阶段会报错
 import type { RenderContext } from '@gez/core';
 
@@ -97,9 +95,9 @@ export default async (rc: RenderContext) => {
 
 ```
 
-### src/entry.node.ts
+### 创建服务器
 创建一个 web 服务器，来处理客户请求
-```ts
+```ts title="src/entry.node.ts"
 import http from 'node:http';
 import type { GezOptions } from '@gez/core';
 import { name } from '../package.json';
@@ -137,6 +135,7 @@ export default {
 } satisfies GezOptions;
 
 ```
+
 ### 启动项目
 ```bash
 npm run dev

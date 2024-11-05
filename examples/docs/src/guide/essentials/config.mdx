@@ -3,7 +3,7 @@ import { Badge } from '@theme';
 # 基础配置
 Gez 作为基础设施，它的配置总是非常简单的。
 ## 使用配置
-```ts
+```ts title="src/entry.node.ts"
 import type { GezOptions } from '@gez/core';
 
 export default {
@@ -17,6 +17,15 @@ export default {
 - **类型：**`string`
 - **默认值：**`gez`
 - **描述：** 服务的名称，全局唯一。
+```ts title="src/entry.node.ts"
+import type { GezOptions } from '@gez/core';
+import { name } from '../package.json';
+
+export default {
+    name,
+} satisfies GezOptions;
+
+```
 
 :::tip
 如果你的网站，同一个域名下，使用 Gez 打包了多个项目，那么你需要配置一个 `name` 来区分不同的项目。
@@ -63,7 +72,7 @@ export default {
 :::
 
 ## 模块链接
-这是 Gez 的核心功能，深入了解[点击这里](./module-link.mdx)。
+这是 Gez 的核心功能，[点击这里深入了解](./module-link.mdx)。
 ### modules.exports <Badge text="v1.0.0" type="tip" />
 - **类型：**`string[]`
 - **默认值：** `[]`
@@ -101,10 +110,24 @@ export default {
 ```
 
 :::tip
-- 数组的第一个参数为本地的存储路径，第二个参数是远程依赖的地址。执行 `gez install` 命令可以下载远程依赖到本地的地址。
-- 第二个参数是可选参数，非必须。
+- 第一个参数为本地的存储路径
+- 第二个参数是远程依赖的地址
+- 执行 `gez install` 命令可以下载远程依赖到本地的地址。
 
 :::
+
+你也可以直接配置本地地址。
+
+```ts title="src/entry.node.ts"
+export default {
+    modules: {
+        imports: {
+            'ssr-base': 'root:../ssr-base/dist'
+        }
+    }
+} satisfies GezOptions;
+```
+
 
 ### modules.externals <Badge text="v1.0.0" type="tip" />
 - **类型：**`Record<string, string>`
@@ -122,37 +145,11 @@ export default {
 } satisfies GezOptions;
 ```
 
-:::tip
-需要配合 [modules.imports](#modulesimports) 使用。
+:::warning
+需要先配置对应服务的 [modules.imports](#modulesimports)，否则运行起来会报错，提示找不到模块。
 :::
 
-## 回调函数
-
-### postCompileProdHook() <Badge text="v1.0.0" type="tip" />
-- **类型：**`(gez: Gez) => Promise<void>`
-- **默认值：** `undefined`
-- **描述：** 构建完成后，生产模式运行执行的钩子。
-
-```ts title="src/entry.node.ts"
-import path from 'node:path';
-
-export default {
-    async postCompileProdHook(gez) {
-        const render = await gez.render({
-            base: '/gez',
-            params: { url: '/' }
-        });
-        gez.write(
-            path.resolve(gez.getProjectPath('dist/client'), 'index.html'),
-            render.html
-        );
-    }
-} satisfies GezOptions;
-```
-
-:::tip 
-你可以使用这个钩子来生成静态网站。
-:::
+## 钩子
 
 ### createDevApp() <Badge text="v1.0.0" type="tip" />
 - **类型：**`(gez: Gez) => Promise<App>`
@@ -211,4 +208,30 @@ export default {
 ```
 ::: tip
 你也可以使用其它的框架来创建服务器，例如：[Express](https://expressjs.com/)。
+:::
+
+### postCompileProdHook() <Badge text="v1.0.0" type="tip" />
+- **类型：**`(gez: Gez) => Promise<void>`
+- **默认值：** `undefined`
+- **描述：** [gez build](./command.mdx#gez-build) 构建完成后，以生产模式执行的钩子。
+
+```ts title="src/entry.node.ts"
+import path from 'node:path';
+
+export default {
+    async postCompileProdHook(gez) {
+        const render = await gez.render({
+            base: '/gez',
+            params: { url: '/' }
+        });
+        gez.write(
+            path.resolve(gez.getProjectPath('dist/client'), 'index.html'),
+            render.html
+        );
+    }
+} satisfies GezOptions;
+```
+
+:::tip 
+你可以使用这个钩子来生成静态网站。
 :::
