@@ -37,5 +37,5 @@ const render = await gez.render({
 });
 ```
 :::tip 实现原理
-在服务端，默认的编译路径为 `__GEZ_DYNAMIC_BASE__/${name}/`，程序会将你返回的 `html` 中的 `__GEZ_DYNAMIC_BASE__` 占位符替换成你传入的 `base`。
+在服务端，静态资产文件的编译路径为 `__GEZ_DYNAMIC_BASE__/${name}/`，程序会将你返回的 `html` 中的 `__GEZ_DYNAMIC_BASE__` 占位符替换成你传入的 `base`。
 :::
