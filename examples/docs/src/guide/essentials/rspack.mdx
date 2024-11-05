@@ -1,9 +1,9 @@
 # Rspack
 Gez 是完全基于 [Rspack](https://rspack.dev/) 打包，同时也就继承了 Rspack 的全部优势。由于 Gez 的定位是一个基础设施，所以大多数的时候，你都需要根据自己的业务来配置自己的打包逻辑。
 
-## entry.node.ts
+## 打包配置
 在默认的情况下，内置了一些基本的打包[规则](https://github.com/dp-os/gez/blob/master/packages/rspack/src/config/rules.ts)，但是你可以完全重写它。
-```ts
+```ts title="src/entry.node.ts"
 import type { BuildTarget, Gez } from '@gez/core';
 import type { RuleSetRules, SwcLoaderOptions } from '@gez/rspack';
 export default {
