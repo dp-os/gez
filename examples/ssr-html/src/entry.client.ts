@@ -7,6 +7,8 @@ async function init() {
     const Page = await getRoutePage(pathname);
     const page = new Page(props);
     page.state = (window as any).__INIT_STATE__;
+    // 执行客户端初始化逻辑
+    page.onClient();
 }
 
 init();

@@ -11,6 +11,10 @@ export default async (rc: RenderContext) => {
     const script = await rc.script();
     const Page = await getRoutePage(pathname);
     const page = new Page(props);
+
+    // 在服务端请求数据
+    await page.onServer();
+
     rc.html = `
 <!DOCTYPE html>
 <html>
