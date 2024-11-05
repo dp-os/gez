@@ -7,7 +7,7 @@ hero:
   actions:
     - theme: brand
       text: 快速开始
-      link: /guide/
+      link: /guide/start/introduction
     - theme: alt
       text: GitHub
       link: https://github.com/dp-os/gez

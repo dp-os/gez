@@ -1,17 +1,12 @@
 [
     {
-        "type": "section-header",
+        "type": "dir",
+        "name": "start",
         "label": "开始"
     },
-    "index",
-    "start/getting-started",
     {
-        "type": "section-header",
+        "type": "dir",
+        "name": "essentials",
         "label": "特性"
-    },
-    "essentials/module-link",
-    "essentials/csr",
-    "essentials/assets",
-    "essentials/alias",
-    "essentials/command"
+    }
 ]
