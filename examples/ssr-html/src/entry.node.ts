@@ -36,13 +36,20 @@ export default {
         });
     },
     async postCompileProdHook(gez) {
-        const render = await gez.render({
-            base: '/gez',
-            params: { url: '/' }
-        });
-        gez.write(
-            path.resolve(gez.getProjectPath('dist/client'), 'index.html'),
-            render.html
-        );
+        const list: string[] = ['/', '/about'];
+        for (const url of list) {
+            const render = await gez.render({
+                base: '/gez',
+                params: { url: url, htmlBase: `/gez/${name}` }
+            });
+            gez.write(
+                path.resolve(
+                    gez.getProjectPath('dist/client'),
+                    url.substring(1),
+                    'index.html'
+                ),
+                render.html
+            );
+        }
     }
 } satisfies GezOptions;

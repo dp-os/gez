@@ -8,5 +8,10 @@
         "type": "dir",
         "name": "essentials",
         "label": "特性"
+    },
+    {
+        "type": "dir",
+        "name": "framework",
+        "label": "框架"
     }
 ]

@@ -1,14 +1,16 @@
 import type { RenderContext } from '@gez/core';
-import { App } from './app';
+import type { PageProps } from './page';
+import { getRoutePage } from './routes';
 
 export default async (rc: RenderContext) => {
-    const state = {
-        url: rc.params.url ?? '/'
+    const props: PageProps = {
+        url: rc.params.url
     };
+    const htmlBase = rc.params.htmlBase ?? '';
+    const pathname = new URL(rc.params.url, 'file:').pathname;
     const script = await rc.script();
-    const app = new App({
-        state
-    });
+    const Page = await getRoutePage(pathname);
+    const page = new Page(props);
     rc.html = `
 <!DOCTYPE html>
 <html>
@@ -19,10 +21,11 @@ export default async (rc: RenderContext) => {
 </head>
 <body>
     <div id="app">
-        ${app.render()}
+        ${page.render().replaceAll(`{{__HTML_BASE__}}`, htmlBase)}
     </div>
     <script>
-        window.__INIT_STATE__ = ${rc.serialize(state, { isJSON: true })}
+        window.__INIT_PROPS__ = ${rc.serialize(props, { isJSON: true })}
+        window.__INIT_STATE__ = ${rc.serialize(page.state, { isJSON: true })}
     </script>
     ${script}
 </body>
