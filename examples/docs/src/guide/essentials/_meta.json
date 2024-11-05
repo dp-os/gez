@@ -1,7 +1,7 @@
 [
     "module-link",
     "csr",
-    "assets",
+    "base-path",
     "alias",
     "command"
 ]
