@@ -117,7 +117,10 @@ export function createBaseConfig(
         externals: externals.get(),
         entry: entry.get(),
         output: {
-            publicPath: gez.base,
+            publicPath:
+                buildTarget === 'client'
+                    ? undefined
+                    : `${gez.dynamicBaseVar}${gez.base}`,
             uniqueName: gez.varName,
             hotUpdateChunkFilename: 'hot-update/[id].[fullhash].hot-update.js',
             ...output.get()

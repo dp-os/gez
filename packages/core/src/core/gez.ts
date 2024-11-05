@@ -50,6 +50,12 @@ export interface GezOptions {
      * @returns
      */
     createServer?: (gez: Gez) => Promise<void>;
+    /**
+     * 动态路径变量名，如果你不需要，可以设置为 false，能提高渲染性能。
+     * 注意：仅在服务端生效
+     * 默认值：__GEZ_DYNAMIC_BASE__
+     */
+    dynamicBasePathVar?: string | false;
 }
 
 export enum COMMAND {
@@ -101,6 +107,10 @@ export class Gez {
             this.root,
             options.modules
         );
+    }
+
+    public get dynamicBaseVar(): string {
+        return this._options.dynamicBasePathVar || '';
     }
 
     private get app() {

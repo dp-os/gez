@@ -21,10 +21,11 @@ export interface RenderContextOptions {
  * 渲染上下文
  */
 export class RenderContext {
-    public html = '';
+    // public html = '';
     public redirect: string | null = null;
     public status: number | null = null;
     public gez: Gez;
+    private _html = '';
     private _packages: PackageJson[] | null = null;
     /**
      * 静态资源请求的基本地址
@@ -35,6 +36,12 @@ export class RenderContext {
         this.gez = gez;
         this.base = options.base ?? '';
         this.params = options.params ?? {};
+    }
+    public get html() {
+        return this._html;
+    }
+    public set html(html) {
+        this._html = html.replaceAll(this.gez.dynamicBaseVar, this.base);
     }
     /**
      * 透传 https://github.com/yahoo/serialize-javascript
