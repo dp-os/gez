@@ -26,10 +26,10 @@
         "forceConsistentCasingInFileNames": true,
         "noEmit": true,
         "paths": {
-            "ssr-rspack-vue2/src/*": [
+            "ssr-vue2-host/src/*": [
                 "./src/*"
             ],
-            "ssr-rspack-vue2/*": [
+            "ssr-vue2-host/*": [
                 "./*"
             ]
         }
