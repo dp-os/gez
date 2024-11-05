@@ -1,7 +1,6 @@
-export * from './images';
-const time = document.querySelector('time');
-setInterval(() => {
-    if (time) {
-        time.innerText = new Date().toISOString();
-    }
-}, 1000);
+import { App } from './app';
+
+const app = new App({
+    state: (window as any).__INIT_STATE__
+});
+app.mount('#app');
