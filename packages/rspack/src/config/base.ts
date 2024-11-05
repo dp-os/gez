@@ -1,6 +1,4 @@
-import type { Gez } from '@gez/core';
-
-export type BuildTarget = 'node' | 'client' | 'server';
+import type { BuildTarget, Gez } from '@gez/core';
 
 export abstract class BuildConfig<T> {
     protected gez: Gez;

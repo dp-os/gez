@@ -1,4 +1,5 @@
 [
+    "rspack",
     "module-link",
     "csr",
     "base-path",

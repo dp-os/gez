@@ -1,6 +1,6 @@
-import fs from 'node:fs';
 import {
     type App,
+    type BuildTarget,
     COMMAND,
     type Gez,
     type Middleware,
@@ -15,11 +15,7 @@ import { type RspackOptions, rspack } from '@rspack/core';
 import devMiddleware from 'webpack-dev-middleware';
 import hotMiddleware from 'webpack-hot-middleware';
 
-import {
-    type BuildTarget,
-    type ModifyBuildContext,
-    createBuildContext
-} from './build-config';
+import { type ModifyBuildContext, createBuildContext } from './build-config';
 
 function createConfig(gez: Gez, modifyBuildContext?: ModifyBuildContext) {
     const client = createBuildContext(gez, 'client');

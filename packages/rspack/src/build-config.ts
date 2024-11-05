@@ -1,8 +1,6 @@
-import type { Gez } from '@gez/core';
+import type { BuildTarget, Gez } from '@gez/core';
 import type { RspackOptions } from '@rspack/core';
-import { type BuildTarget, createBaseConfig } from './config';
-
-export type { BuildTarget };
+import { createBaseConfig } from './config';
 
 export interface BuildContext {
     /**
