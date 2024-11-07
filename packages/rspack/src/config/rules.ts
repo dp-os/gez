@@ -1,8 +1,13 @@
 import type { BuildTarget, Gez } from '@gez/core';
-import type { RuleSetRules, SwcLoaderOptions } from '@rspack/core';
+import { type RuleSetRules, type SwcLoaderOptions, rspack } from '@rspack/core';
 
 export function createRules(gez: Gez, buildTarget: BuildTarget): RuleSetRules {
     return [
+        {
+            test: /\.css$/i,
+            use: [rspack.CssExtractRspackPlugin.loader, resolve('css-loader')],
+            type: 'javascript/auto'
+        },
         {
             test: /\.(png|jpe?g|gif|svg)$/i,
             type: 'asset/resource',

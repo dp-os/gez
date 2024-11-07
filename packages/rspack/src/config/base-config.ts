@@ -56,7 +56,7 @@ export function createBaseConfig(
         externalsPresets: {
             ...externalsPresets.get()
         },
-        externalsType: 'module',
+        externalsType: 'module-import',
         externals: externals.get(),
         entry: entry.get(),
         output: {

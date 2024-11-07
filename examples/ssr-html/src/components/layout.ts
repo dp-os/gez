@@ -1,3 +1,5 @@
+import './layout.css';
+
 export function layout(slot: string) {
     return `
 <div>

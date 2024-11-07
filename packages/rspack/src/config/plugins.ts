@@ -1,18 +1,26 @@
+import { moduleLinkPlugin } from '@gez/rspack-module-link';
 import { type RspackOptions, rspack } from '@rspack/core';
 import NodePolyfillPlugin from 'node-polyfill-webpack-plugin';
-import { ImportmapPlugin } from '../importmap';
 import { BuildConfig } from './base';
 
 type Config = NonNullable<RspackOptions['plugins']>;
 
 export class Plugins extends BuildConfig<Config> {
+    public getBase(): Config {
+        const { gez } = this;
+        return [
+            new rspack.CssExtractRspackPlugin({
+                filename: gez.isProd
+                    ? `css/[name].[contenthash:8].css`
+                    : `css/[name].css`
+            }),
+            this.getProgressPlugin(),
+            moduleLinkPlugin(gez.moduleConfig)
+        ];
+    }
     protected getClient(): Config {
         const { gez } = this;
-        const plugins: Config = [
-            this.getProgressPlugin(),
-            new NodePolyfillPlugin(),
-            new ImportmapPlugin(gez.moduleConfig)
-        ];
+        const plugins: Config = [...this.getBase(), new NodePolyfillPlugin()];
         if (!gez.isProd) {
             plugins.push(new rspack.HotModuleReplacementPlugin());
         }
@@ -20,11 +28,7 @@ export class Plugins extends BuildConfig<Config> {
     }
 
     protected getServer(): Config {
-        const { gez } = this;
-        return [
-            this.getProgressPlugin(),
-            new ImportmapPlugin(gez.moduleConfig)
-        ];
+        return [...this.getBase()];
     }
 
     protected getNode(): Config {

@@ -1,3 +1,4 @@
+import './styles/global.css';
 import type { Page } from './page';
 
 interface Route {

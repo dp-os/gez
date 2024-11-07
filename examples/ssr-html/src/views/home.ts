@@ -4,14 +4,14 @@ import { Page } from 'ssr-html/src/page';
 
 export default class Home extends Page {
     public state = {
-        time: ''
+        count: 0
     };
     public render(): string {
         const { url } = this.props;
-        const { time } = this.state;
+        const { count } = this.state;
         return layout(`
-        <h2>模拟客户端水合</h2>
-        <time>${time}</time>
+        <h2>计数器</h2>
+        <div id="count">${count}</div>
         <h2>请求地址</h2>
         <pre>${url}</pre>
         <h2>图片</h2>
@@ -34,10 +34,19 @@ export default class Home extends Page {
         </ul>
 `);
     }
+    public onClient() {
+        setInterval(() => {
+            this.state.count++;
+            const countEl = document.querySelector('#count');
+            if (countEl instanceof HTMLDivElement) {
+                countEl.innerText = String(this.state.count);
+            }
+        }, 1000);
+    }
     /**
      * 模拟服务端请求数据
      */
     public async onServer() {
-        this.state.time = new Date().toISOString();
+        this.state.count = 1;
     }
 }

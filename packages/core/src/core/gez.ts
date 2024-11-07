@@ -60,6 +60,35 @@ export interface PackageJson {
      * 构建的全部文件清单
      */
     files: string[];
+    /**
+     * 编译的文件信息
+     * 类型：Record<源文件, 编译信息>
+     */
+    build: Record<
+        string,
+        {
+            /**
+             * 当前编译的 JS 文件。
+             */
+            js: string;
+            /**
+             * 当前编译的 CSS 文件。
+             */
+            css: string[];
+            /**
+             * 其它的资源文件。
+             */
+            resources: string[];
+            /**
+             * 构建产物的大小。
+             */
+            sizes: {
+                js: number;
+                css: number;
+                resource: number;
+            };
+        }
+    >;
 }
 function noon(gez: Gez) {}
 

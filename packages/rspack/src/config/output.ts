@@ -5,15 +5,27 @@ import { BuildConfig } from './base';
 type Config = NonNullable<RspackOptions['output']>;
 
 export class Output extends BuildConfig<Config> {
-    protected getClient(): Config {
+    public getBase(): Config {
         const { gez } = this;
         return {
-            clean: gez.isProd,
+            clean: true,
             module: true,
             chunkFormat: gez.isProd ? 'module' : undefined,
             chunkLoading: gez.isProd ? 'import' : undefined,
             chunkFilename: 'chunks/[name].[contenthash:8].js',
             filename: gez.isProd ? '[name].[contenthash:8].js' : '[name].js',
+            cssFilename: gez.isProd
+                ? 'css/[name].[contenthash:8].css'
+                : 'css/[name].css',
+            cssChunkFilename: gez.isProd
+                ? 'css/chunks/[name].[contenthash:8].css'
+                : 'css/[name].css'
+        };
+    }
+    protected getClient(): Config {
+        const { gez } = this;
+        return {
+            ...this.getBase(),
             path: gez.getProjectPath('dist/client')
         };
     }
@@ -21,11 +33,7 @@ export class Output extends BuildConfig<Config> {
     protected getServer(): Config {
         const { gez } = this;
         return {
-            clean: gez.isProd,
-            module: true,
-            chunkFormat: 'module',
-            chunkLoading: 'import',
-            chunkFilename: 'chunks/[name].[contenthash:8].js',
+            ...this.getBase(),
             filename: '[name].js',
             path: gez.getProjectPath('dist/server')
         };
@@ -34,11 +42,7 @@ export class Output extends BuildConfig<Config> {
     protected getNode(): Config {
         const { gez } = this;
         return {
-            clean: gez.isProd,
-            module: true,
-            chunkFormat: 'module',
-            chunkLoading: 'import',
-            chunkFilename: 'chunks/[name].[contenthash:8].js',
+            ...this.getBase(),
             filename: '[name].js',
             path: gez.getProjectPath('dist/node')
         };
