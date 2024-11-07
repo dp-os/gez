@@ -12,13 +12,13 @@ export class Output extends BuildConfig<Config> {
             module: true,
             chunkFormat: gez.isProd ? 'module' : undefined,
             chunkLoading: gez.isProd ? 'import' : undefined,
-            chunkFilename: 'chunks/[name].[contenthash:8].js',
+            chunkFilename: 'js/[name].[contenthash:8].js',
             filename: gez.isProd ? '[name].[contenthash:8].js' : '[name].js',
             cssFilename: gez.isProd
                 ? 'css/[name].[contenthash:8].css'
                 : 'css/[name].css',
             cssChunkFilename: gez.isProd
-                ? 'css/chunks/[name].[contenthash:8].css'
+                ? 'css/[name].[contenthash:8].css'
                 : 'css/[name].css'
         };
     }

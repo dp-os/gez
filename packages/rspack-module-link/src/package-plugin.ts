@@ -128,7 +128,7 @@ function getBuildInfo(config: ParsedModuleConfig, stats: StatsCompilation) {
                     resources: statsChunk.auxiliaryFiles ?? [],
                     sizes: {
                         js: sizes?.javascript ?? 0 + sizes.runtime ?? 0,
-                        css: sizes.css ?? 0,
+                        css: sizes.css ?? 0 + sizes['css/mini-extract'] ?? 0,
                         resource: sizes.asset ?? 0
                     }
                 };
