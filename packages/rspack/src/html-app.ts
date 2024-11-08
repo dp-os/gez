@@ -43,7 +43,7 @@ export async function createRspackHtmlApp(
                 isWebApp
                     ? new rspack.CssExtractRspackPlugin({
                           filename: gez.isProd
-                              ? `css/[name].[contenthash:8].css`
+                              ? `css/[name].[contenthash:8].final.css`
                               : `css/[name].css`
                       })
                     : false
@@ -128,6 +128,6 @@ function resolve(name: string) {
 }
 function filename(gez: Gez, name: string) {
     return gez.isProd
-        ? `${name}/[name].[contenthash:8][ext]`
+        ? `${name}/[name].[contenthash:8].final[ext]`
         : `${name}/[path][name][ext]`;
 }

@@ -22,7 +22,7 @@ export function importmapPlugin(
                         entrypoints: true
                     });
                     const exports = getExports(stats);
-                    const importmapHash = `importmap.${stats.hash}.js`;
+                    const importmapHash = `importmap.${stats.hash}.final.js`;
                     const isWeb = compilation.options.target === 'web';
 
                     const { RawSource } = compiler.webpack.sources;
