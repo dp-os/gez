@@ -6,10 +6,11 @@ const renderer = createRenderer();
 
 export default async (rc: RenderContext) => {
     const { app } = createApp();
-    const vueCtx = {};
-    const html = await renderer.renderToString(app, vueCtx);
-    await rc.bind([import.meta]);
-
+    const context = {
+        imports: []
+    };
+    const html = await renderer.renderToString(app, context);
+    await rc.bind(context.imports);
     rc.html = `
 <!DOCTYPE html>
 <html>

@@ -37,9 +37,6 @@ export function createRspackVue2App(gez: Gez, options?: RspackVue2AppOptions) {
                         test: /\.vue$/,
                         use: [
                             {
-                                loader: resolve('./vue2-loader.mjs')
-                            },
-                            {
                                 loader: resolve('vue2-loader'),
                                 options:
                                     buildTarget === 'server'
@@ -50,6 +47,9 @@ export function createRspackVue2App(gez: Gez, options?: RspackVue2AppOptions) {
                                         : {
                                               experimentalInlineMatchResource: true
                                           }
+                            },
+                            {
+                                loader: resolve('./vue2-loader.mjs')
                             }
                         ]
                     },
