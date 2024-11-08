@@ -161,7 +161,8 @@ export function createRspackConfig(
         },
         devtool: false,
         target: buildTarget === 'client' ? 'web' : 'node20',
-        mode: gez.isProd ? 'production' : 'development'
+        mode: gez.isProd ? 'production' : 'development',
+        cache: false
     };
 }
 

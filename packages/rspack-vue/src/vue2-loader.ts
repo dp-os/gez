@@ -5,7 +5,7 @@ function initImport () {
     const mixins = Array.isArray(component.options.mixins) ? component.options.mixins : [];
     mixins.push({
         created () {
-        this.$ssrContext?.imports?.push(import.meta);
+            this.$ssrContext?.imports?.push(import.meta);
         }
     });
     component.options.mixins = mixins;
