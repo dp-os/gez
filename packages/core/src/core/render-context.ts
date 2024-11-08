@@ -113,7 +113,7 @@ export class RenderContext {
 
         packages.forEach((item) => {
             const base = `${this.base}/${item.name}/`;
-            files.importmap.push(`${base}importmap.${item.hash}.js`);
+            files.importmap.push(`${base}importmap.${item.hash}.final.js`);
             Object.entries(item.build).forEach(([filepath, info]) => {
                 if (fromSet.has(filepath)) {
                     appendFile(info.js, () => {
