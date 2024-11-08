@@ -1,4 +1,4 @@
-import type { PackageJson, RenderContext } from '@gez/core';
+import type { RenderContext } from '@gez/core';
 import type { PageProps } from './page';
 import { getRoutePage } from './routes';
 
