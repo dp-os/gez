@@ -150,10 +150,7 @@ export class RenderContext {
     }
     public css() {
         return this.files.css
-            .map(
-                (url) =>
-                    `<link rel="preload stylesheet" href="${url}" as="style">`
-            )
+            .map((url) => `<link rel="stylesheet" href="${url}">`)
             .join('');
     }
     public importmap() {
