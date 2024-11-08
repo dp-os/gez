@@ -133,7 +133,10 @@ export function createRspackConfig(
                         errorRecovery: false
                     }
                 })
-            ]
+            ],
+            splitChunks: {
+                chunks: 'async'
+            }
         },
         externalsPresets: {
             web: buildTarget === 'client',

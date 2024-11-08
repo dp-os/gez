@@ -42,9 +42,7 @@ export function packagePlugin(
                     const hash = stats.hash ?? String(Date.now());
                     const files = Object.keys(assets)
                         .map(transFileName)
-                        .filter(
-                            (file) => !/.hot-update\.(js|json)$/.test(file)
-                        );
+                        .filter((file) => !file.includes('hot-update'));
 
                     packageJson = {
                         name: moduleConfig.name,
@@ -124,8 +122,7 @@ export function getExports(stats: StatsCompilation) {
     Object.entries(entrypoints).forEach(([key, value]) => {
         const asset = value.assets?.find((item) => {
             return (
-                item.name.endsWith('.js') &&
-                item.name.indexOf('.hot-update.') === -1
+                item.name.endsWith('.js') && !item.name.includes('hot-update')
             );
         });
         if (!asset) return;
