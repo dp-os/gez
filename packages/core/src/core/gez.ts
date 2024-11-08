@@ -240,10 +240,6 @@ export class Gez {
         );
     }
 
-    public get browserslist() {
-        return ['chrome >=87', 'firefox >=78', 'safari >=14', 'edge >=88'];
-    }
-
     public async init(command: COMMAND) {
         if (this._command) {
             throw new Error('Cannot be initialized repeatedly');

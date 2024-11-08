@@ -14,6 +14,15 @@ export function packagePlugin(
     compiler.hooks.thisCompilation.tap(
         'importmap-plugin',
         (compilation: Compilation) => {
+            let packageJson: PackageJson = {
+                name: moduleConfig.name,
+                version: '1.0.0',
+                hash: '',
+                type: 'module',
+                exports: {},
+                files: [],
+                build: {}
+            };
             compilation.hooks.processAssets.tap(
                 {
                     name: 'importmap-plugin',
@@ -37,7 +46,7 @@ export function packagePlugin(
                             (file) => !/.hot-update\.(js|json)$/.test(file)
                         );
 
-                    const packageJson: PackageJson = {
+                    packageJson = {
                         name: moduleConfig.name,
                         version: '1.0.0',
                         hash,
@@ -53,6 +62,45 @@ export function packagePlugin(
                         'package.json',
                         new RawSource(JSON.stringify(packageJson, null, 4))
                     );
+                }
+            );
+
+            if (
+                typeof compilation.options.target !== 'string' ||
+                !compilation.options.target.startsWith('node')
+            ) {
+                return;
+            }
+            compilation.hooks.processAssets.tap(
+                {
+                    name: 'import-meta-build-from',
+                    stage: compiler.rspack.Compilation
+                        .PROCESS_ASSETS_STAGE_ADDITIONS
+                },
+                (assets) => {
+                    const deps: Record<string, string[]> = {};
+                    Object.entries(packageJson.build).forEach(
+                        ([name, value]) => {
+                            const asset = assets[value.js];
+                            if (!asset) {
+                                return;
+                            }
+                            deps[value.js] = deps[value.js] || [];
+                            deps[value.js].push(name);
+                        }
+                    );
+                    Object.entries(deps).forEach(([name, value]) => {
+                        const asset = assets[name];
+                        if (!asset) {
+                            return;
+                        }
+
+                        const { RawSource } = compiler.webpack.sources;
+                        const newContent = `import.meta.buildFrom = ${JSON.stringify(value)};${asset.source()}`;
+                        const source = new RawSource(newContent);
+
+                        compilation.updateAsset(name, source);
+                    });
                 }
             );
         }
@@ -103,7 +151,7 @@ function getBuildInfo(config: ParsedModuleConfig, stats: StatsCompilation) {
             if (
                 child.moduleType?.startsWith('javascript/') &&
                 child.nameForCondition &&
-                child.chunks?.length === 1
+                child.chunks?.length
             ) {
                 const statsChunk = child.chunks.map((id) => {
                     return chunks.find((chunk) => chunk.id === id);

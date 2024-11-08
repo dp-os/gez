@@ -6,7 +6,11 @@ import { name } from '../package.json';
 export default {
     name,
     async createDevApp(gez) {
-        return import('@gez/rspack-vue').then((m) => m.createVue2App(gez));
+        return import('@gez/rspack-vue').then((m) =>
+            m.createRspackVue2App(gez, {
+                swcLoader: {}
+            })
+        );
     },
     async createServer(gez) {
         const server = express();

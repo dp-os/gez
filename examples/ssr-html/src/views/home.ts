@@ -3,6 +3,10 @@ import * as images from 'ssr-html/src/images';
 import { Page } from 'ssr-html/src/page';
 
 export default class Home extends Page {
+    public constructor(imports: ImportMeta[]) {
+        imports.push(import.meta);
+        super(imports);
+    }
     public state = {
         count: 0
     };
