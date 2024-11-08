@@ -11,11 +11,7 @@ import {
     mergeMiddlewares
 } from '@gez/core';
 import { import$ } from '@gez/import';
-import {
-    type RspackOptions,
-    type SwcLoaderOptions,
-    rspack
-} from '@rspack/core';
+import { type RspackOptions, rspack } from '@rspack/core';
 import devMiddleware from 'webpack-dev-middleware';
 import hotMiddleware from 'webpack-hot-middleware';
 import { createRspackConfig } from './config';

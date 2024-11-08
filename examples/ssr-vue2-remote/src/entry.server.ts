@@ -5,26 +5,26 @@ import { createApp } from './create-app';
 const renderer = createRenderer();
 
 export default async (rc: RenderContext) => {
-    const script = await rc.script();
-
     const { app } = createApp();
-    const vueCtx = {
-        renderStyles: () => ''
-    };
+    const vueCtx = {};
     const html = await renderer.renderToString(app, vueCtx);
+    await rc.bind([import.meta]);
 
     rc.html = `
 <!DOCTYPE html>
 <html>
 <head>
+    ${rc.preload()}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gez</title>
-    ${vueCtx.renderStyles()}
+    ${rc.css()}
 </head>
 <body>
     ${html}
-    ${script}
+    ${rc.importmap()}
+    ${rc.moduleEntry()}
+    ${rc.modulePreload()}
 </body>
 </html>
 `;
