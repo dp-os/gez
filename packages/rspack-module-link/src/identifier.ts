@@ -6,5 +6,5 @@ export function generateIdentifier({
     filePath
 }: { root: string; name: string; filePath: string }) {
     const file = upath.relative(upath.toUnix(root), upath.toUnix(filePath));
-    return `${name}/${file}`;
+    return `${name}@${file}`;
 }

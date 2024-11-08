@@ -42,9 +42,12 @@ export async function createRspackHtmlApp(
                 // CSS 抽离插件
                 isWebApp
                     ? new rspack.CssExtractRspackPlugin({
-                          filename: gez.isProd
-                              ? `css/[name].[contenthash:8].final.css`
-                              : `css/[name].css`
+                          //   filename: gez.isProd
+                          //       ? '[name].[contenthash:8].final.css'
+                          //       : '[name].css',
+                          //     chunkFilename: gez.isProd
+                          //       ? 'chunks/[name].[contenthash:8].final.css'
+                          //       : 'chunks/[name].css'
                       })
                     : false
             ];

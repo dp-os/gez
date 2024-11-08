@@ -43,7 +43,7 @@ export function packagePlugin(
                     const files = Object.keys(assets)
                         .map(transFileName)
                         .filter((file) => !file.includes('hot-update'));
-
+                    const isWeb = compilation.options.target === 'web';
                     packageJson = {
                         name: moduleConfig.name,
                         version: '1.0.0',
@@ -141,7 +141,7 @@ export function getExports(stats: StatsCompilation) {
 function getBuildInfo(config: ParsedModuleConfig, stats: StatsCompilation) {
     const chunkMaps: PackageJson['build'] = {};
 
-    const chunks = stats.chunks ?? [];
+    const chunks = (stats.chunks ?? []).filter((item) => item.initial);
     const each = (children?: StatsModule[]) => {
         if (!children) return;
         children.forEach((child) => {
@@ -150,9 +150,12 @@ function getBuildInfo(config: ParsedModuleConfig, stats: StatsCompilation) {
                 child.nameForCondition &&
                 child.chunks?.length
             ) {
-                const statsChunk = child.chunks.map((id) => {
-                    return chunks.find((chunk) => chunk.id === id);
-                })?.[0];
+                const statsChunk = child.chunks
+                    .map((id) => {
+                        return chunks.find((chunk) => chunk.id === id);
+                    })
+                    .filter((item) => item?.initial)?.[0];
+
                 if (!statsChunk) return;
                 const js = statsChunk.files?.find((file) =>
                     file.endsWith('.js')
@@ -172,8 +175,9 @@ function getBuildInfo(config: ParsedModuleConfig, stats: StatsCompilation) {
                     css,
                     resources: statsChunk.auxiliaryFiles ?? [],
                     sizes: {
-                        js: sizes?.javascript ?? 0 + sizes.runtime ?? 0,
-                        css: sizes.css ?? 0 + sizes['css/mini-extract'] ?? 0,
+                        js: (sizes?.javascript ?? 0) + (sizes.runtime ?? 0),
+                        css:
+                            (sizes.css ?? 0) + (sizes['css/mini-extract'] ?? 0),
                         resource: sizes.asset ?? 0
                     }
                 };
@@ -181,6 +185,7 @@ function getBuildInfo(config: ParsedModuleConfig, stats: StatsCompilation) {
             each(child.modules);
         });
     };
+
     each(stats.modules);
     return chunkMaps;
 }

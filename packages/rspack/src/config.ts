@@ -52,17 +52,17 @@ export function createRspackConfig(
             module: true,
             chunkFormat: gez.isProd ? 'module' : undefined,
             chunkLoading: gez.isProd ? 'import' : undefined,
-            chunkFilename: 'js/[name].[contenthash:8].final.js',
+            chunkFilename: 'chunks/[name].[contenthash:8].final.js',
             filename:
                 buildTarget === 'client' && gez.isProd
                     ? '[name].[contenthash:8].final.js'
                     : '[name].js',
             cssFilename: gez.isProd
-                ? 'css/[name].[contenthash:8].final.css'
-                : 'css/[name].css',
+                ? '[name].[contenthash:8].final.css'
+                : '[name].css',
             cssChunkFilename: gez.isProd
-                ? 'css/[name].[contenthash:8].final.css'
-                : 'css/[name].css',
+                ? 'chunks/[name].[contenthash:8].final.css'
+                : 'chunks/[name].css',
             publicPath:
                 buildTarget === 'client'
                     ? 'auto'
