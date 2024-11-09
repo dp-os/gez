@@ -72,29 +72,20 @@ export function packagePlugin(
                         .PROCESS_ASSETS_STAGE_ADDITIONS
                 },
                 (assets) => {
-                    const deps: Record<string, string[]> = {};
                     Object.entries(packageJson.chunks).forEach(
                         ([name, value]) => {
                             const asset = assets[value.js];
                             if (!asset) {
                                 return;
                             }
-                            deps[value.js] = deps[value.js] || [];
-                            deps[value.js].push(name);
+                            const { RawSource } = compiler.rspack.sources;
+                            const source = new RawSource(
+                                `import.meta.chunkName = ${JSON.stringify(name)};${asset.source()}`
+                            );
+
+                            compilation.updateAsset(value.js, source);
                         }
                     );
-                    Object.entries(deps).forEach(([name, value]) => {
-                        const asset = assets[name];
-                        if (!asset) {
-                            return;
-                        }
-
-                        const { RawSource } = compiler.webpack.sources;
-                        const newContent = `import.meta.buildFrom = ${JSON.stringify(value)};${asset.source()}`;
-                        const source = new RawSource(newContent);
-
-                        compilation.updateAsset(name, source);
-                    });
                 }
             );
         }

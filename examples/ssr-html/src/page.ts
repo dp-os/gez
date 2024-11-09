@@ -3,13 +3,7 @@ export interface PageProps {
 }
 
 export class Page {
-    /**
-     * 页面渲染的模块依赖收集
-     */
-    public imports: ImportMeta[];
-    public constructor(imports: ImportMeta[]) {
-        this.imports = imports;
-    }
+    public importMeta = new Set<ImportMeta>();
     private _props: PageProps | null = null;
     public get props(): PageProps {
         if (this._props === null) {
@@ -41,5 +35,7 @@ export class Page {
     /**
      * 服务端执行
      */
-    public async onServer() {}
+    public async onServer() {
+        this.importMeta.add(import.meta);
+    }
 }
