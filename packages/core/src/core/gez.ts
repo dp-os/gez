@@ -64,7 +64,7 @@ export interface PackageJson {
      * 编译的文件信息
      * 类型：Record<源文件, 编译信息>
      */
-    build: Record<
+    chunks: Record<
         string,
         {
             /**

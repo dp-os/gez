@@ -88,7 +88,7 @@ export class RenderContext {
     }
     public async bind(importsMeta: ImportMeta[]) {
         const packages = await this.getPackagesJson();
-        const fromSet = new Set<string>();
+        const fromSet = new Set([`${this.gez.name}@src/entry.client.ts`]);
         importsMeta.forEach((item) => {
             if ('buildFrom' in item && Array.isArray(item.buildFrom)) {
                 item.buildFrom.forEach((item) => fromSet.add(item));
@@ -114,7 +114,7 @@ export class RenderContext {
         packages.forEach((item) => {
             const base = `${this.base}/${item.name}/`;
             files.importmap.push(`${base}importmap.${item.hash}.final.js`);
-            Object.entries(item.build).forEach(([filepath, info]) => {
+            Object.entries(item.chunks).forEach(([filepath, info]) => {
                 if (fromSet.has(filepath)) {
                     appendFile(info.js, () => {
                         files.modulepreload.push(`${base}${info.js}`);

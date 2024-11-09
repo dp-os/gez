@@ -21,7 +21,7 @@ export function packagePlugin(
                 type: 'module',
                 exports: {},
                 files: [],
-                build: {}
+                chunks: {}
             };
             compilation.hooks.processAssets.tap(
                 {
@@ -31,19 +31,15 @@ export function packagePlugin(
                 },
                 (assets) => {
                     const stats = compilation.getStats().toJson({
-                        all: false,
-                        chunks: true,
-                        modules: true,
-                        ids: true,
                         hash: true,
                         entrypoints: true
                     });
+
                     const exports = getExports(stats);
                     const hash = stats.hash ?? String(Date.now());
                     const files = Object.keys(assets)
                         .map(transFileName)
                         .filter((file) => !file.includes('hot-update'));
-                    const isWeb = compilation.options.target === 'web';
                     packageJson = {
                         name: moduleConfig.name,
                         version: '1.0.0',
@@ -51,7 +47,7 @@ export function packagePlugin(
                         type: 'module',
                         exports: exports,
                         files,
-                        build: getBuildInfo(moduleConfig, stats)
+                        chunks: getChunks(moduleConfig, compilation)
                     };
 
                     const { RawSource } = compiler.webpack.sources;
@@ -77,7 +73,7 @@ export function packagePlugin(
                 },
                 (assets) => {
                     const deps: Record<string, string[]> = {};
-                    Object.entries(packageJson.build).forEach(
+                    Object.entries(packageJson.chunks).forEach(
                         ([name, value]) => {
                             const asset = assets[value.js];
                             if (!asset) {
@@ -138,54 +134,46 @@ export function getExports(stats: StatsCompilation) {
     return exports;
 }
 
-function getBuildInfo(config: ParsedModuleConfig, stats: StatsCompilation) {
-    const chunkMaps: PackageJson['build'] = {};
+function getChunks(config: ParsedModuleConfig, compilation: Compilation) {
+    const stats = compilation.getStats().toJson({
+        all: false,
+        chunks: true,
+        modules: true,
+        chunkModules: true,
+        ids: true
+    });
+    const buildChunks: PackageJson['chunks'] = {};
+    stats.chunks?.forEach((chunk) => {
+        const module = chunk.modules
+            ?.sort((a, b) => {
+                return (a.index ?? -1) - (b?.index ?? -1);
+            })
+            ?.find((module) => {
+                return module.moduleType?.includes('javascript/');
+            });
+        if (!module?.nameForCondition) return;
+        const js = chunk.files?.find((file) => file.endsWith('.js'));
+        if (!js) return;
 
-    const chunks = (stats.chunks ?? []).filter((item) => item.initial);
-    const each = (children?: StatsModule[]) => {
-        if (!children) return;
-        children.forEach((child) => {
-            if (
-                child.moduleType?.startsWith('javascript/') &&
-                child.nameForCondition &&
-                child.chunks?.length
-            ) {
-                const statsChunk = child.chunks
-                    .map((id) => {
-                        return chunks.find((chunk) => chunk.id === id);
-                    })
-                    .filter((item) => item?.initial)?.[0];
-
-                if (!statsChunk) return;
-                const js = statsChunk.files?.find((file) =>
-                    file.endsWith('.js')
-                );
-                if (!js) return;
-                const name = generateIdentifier({
-                    root: config.root,
-                    name: config.name,
-                    filePath: child.nameForCondition
-                });
-                const css =
-                    statsChunk.files?.filter((file) => file.endsWith('.css')) ??
-                    [];
-                const sizes = statsChunk.sizes ?? {};
-                chunkMaps[name] = {
-                    js,
-                    css,
-                    resources: statsChunk.auxiliaryFiles ?? [],
-                    sizes: {
-                        js: (sizes?.javascript ?? 0) + (sizes.runtime ?? 0),
-                        css:
-                            (sizes.css ?? 0) + (sizes['css/mini-extract'] ?? 0),
-                        resource: sizes.asset ?? 0
-                    }
-                };
-            }
-            each(child.modules);
+        const name = generateIdentifier({
+            root: config.root,
+            name: config.name,
+            filePath: module.nameForCondition
         });
-    };
 
-    each(stats.modules);
-    return chunkMaps;
+        const css = chunk.files?.filter((file) => file.endsWith('.css')) ?? [];
+        const resources = chunk.auxiliaryFiles ?? [];
+        const sizes = chunk.sizes ?? {};
+        buildChunks[name] = {
+            js,
+            css,
+            resources,
+            sizes: {
+                js: (sizes?.javascript ?? 0) + (sizes.runtime ?? 0),
+                css: (sizes.css ?? 0) + (sizes['css/mini-extract'] ?? 0),
+                resource: sizes.asset ?? 0
+            }
+        };
+    });
+    return buildChunks;
 }
