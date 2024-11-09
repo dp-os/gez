@@ -2,6 +2,7 @@
     <div class="box">
         <layout>
             Hello world!
+            <Next />
         </layout>
     </div>
 </template>
@@ -9,6 +10,7 @@
 import layout from 'ssr-vue2-remote/src/components/layout.vue';
 import { defineComponent } from 'vue';
 import { Define, Setup } from 'vue-class-setup';
+import Next from './next.vue';
 
 @Setup
 class App extends Define {}

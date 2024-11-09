@@ -10,9 +10,11 @@ export default {
     async createDevApp(gez) {
         // 这里应使用动态模块。生产依赖不存在。
         return import('@gez/rspack').then((m) =>
-            m.createApp(gez, (buildContext) => {
-                // 可以在这里修改 Rspack 编译的配置
-                // 自定义你的 Vue、React等框架的打包逻辑
+            m.createRspackHtmlApp(gez, {
+                config(context) {
+                    // 可以在这里修改 Rspack 编译的配置
+                    // 自定义你的 Vue、React等框架的打包逻辑
+                }
             })
         );
     },

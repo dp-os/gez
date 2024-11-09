@@ -1,8 +1,10 @@
-export { createApp } from './app';
 export {
-    createBuildContext,
-    type BuildContext,
-    type ModifyBuildContext
-} from './build-config';
+    type RspackAppConfigContext,
+    type RspackAppOptions,
+    createRspackApp
+} from './app';
+export { createRspackHtmlApp, type RspackHtmlAppOptions } from './html-app';
 
-export * from '@rspack/core';
+import * as rspack from '@rspack/core';
+
+export { rspack };

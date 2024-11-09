@@ -13,8 +13,10 @@
         "@gez/core": "*"
     },
     "dependencies": {
+        "css-loader": "^7.1.2",
+        "@gez/rspack-module-link": "workspace:0.0.15-alpha.92",
         "@gez/import": "0.0.15-alpha.92",
-        "@rspack/core": "^1.1.0-beta.0",
+        "@rspack/core": "^1.1.0",
         "node-polyfill-webpack-plugin": "^4.0.0",
         "webpack-dev-middleware": "^7.4.2",
         "webpack-hot-middleware": "^2.26.1",

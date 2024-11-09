@@ -1,13 +1,18 @@
 <template>
     <layout>
-        <Logo />
+        <Logo :width="120" :height="120" />
         <p>
             Time: {{time}}
         </p>
     </layout>
 </template>
 <script lang="ts">
-import { defineComponent, onBeforeUnmount, onMounted } from 'vue';
+import {
+    defineAsyncComponent,
+    defineComponent,
+    onBeforeUnmount,
+    onMounted
+} from 'vue';
 import { Define, PassOnTo, Setup } from 'vue-class-setup';
 import layout from './components/layout.vue';
 import Logo from './components/logo.vue';

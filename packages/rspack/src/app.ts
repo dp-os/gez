@@ -7,43 +7,54 @@ import {
     RenderContext,
     type RenderContextOptions,
     type ServerRenderHandle,
-    createApp as _createApp,
+    createApp,
     mergeMiddlewares
 } from '@gez/core';
 import { import$ } from '@gez/import';
 import { type RspackOptions, rspack } from '@rspack/core';
 import devMiddleware from 'webpack-dev-middleware';
 import hotMiddleware from 'webpack-hot-middleware';
+import { createRspackConfig } from './config';
 
-import { type ModifyBuildContext, createBuildContext } from './build-config';
-
-function createConfig(gez: Gez, modifyBuildContext?: ModifyBuildContext) {
-    const client = createBuildContext(gez, 'client');
-    const server = createBuildContext(gez, 'server');
-    const node = createBuildContext(gez, 'node');
-
-    modifyBuildContext?.(client);
-    modifyBuildContext?.(server);
-    modifyBuildContext?.(node);
-    return {
-        clientConfig: client.config,
-        serverConfig: server.config,
-        nodeConfig: node.config
-    };
+export interface RspackAppConfigContext {
+    gez: Gez;
+    buildTarget: BuildTarget;
+    config: RspackOptions;
+    options: RspackAppOptions;
+}
+export interface RspackAppOptions {
+    config?: (context: RspackAppConfigContext) => void;
 }
 
+export async function createRspackApp(
+    gez: Gez,
+    options?: RspackAppOptions
+): Promise<App> {
+    const app = await createApp(gez);
+    if (gez.command === COMMAND.dev) {
+        app.middleware = mergeMiddlewares([
+            ...(await createMiddleware(gez, options)),
+            app.middleware
+        ]);
+    }
+
+    app.render = rewriteRender(gez);
+    app.build = rewriteBuild(gez, options);
+
+    return app;
+}
 async function createMiddleware(
     gez: Gez,
-    modifyBuildContext?: ModifyBuildContext
+    options: RspackAppOptions = {}
 ): Promise<Middleware[]> {
     const middlewares: Middleware[] = [];
     if (gez.command === COMMAND.dev) {
-        const { clientConfig, serverConfig } = createConfig(
-            gez,
-            modifyBuildContext
+        const clientCompiler = rspack(
+            generateBuildConfig(gez, options, 'client')
         );
-        const clientCompiler = rspack(clientConfig);
-        const serverCompiler = rspack(serverConfig);
+        const serverCompiler = rspack(
+            generateBuildConfig(gez, options, 'server')
+        );
         // @ts-expect-error
         devMiddleware(clientCompiler, {
             writeToDisk: true
@@ -73,23 +84,22 @@ async function createMiddleware(
     return middlewares;
 }
 
-export async function createApp(
+function generateBuildConfig(
     gez: Gez,
-    modifyBuildContext?: ModifyBuildContext
-): Promise<App> {
-    const app = await _createApp(gez);
-    app.middleware = mergeMiddlewares([
-        ...(await createMiddleware(gez, modifyBuildContext)),
-        app.middleware
-    ]);
+    options: RspackAppOptions,
+    buildTarget: BuildTarget
+) {
+    const config = createRspackConfig(gez, buildTarget);
+    options.config?.({ gez, options, buildTarget, config });
 
+    return config;
+}
+
+function rewriteRender(gez: Gez) {
     const { resolve, url } = import.meta;
     const urlObj = new URL(resolve(url));
     urlObj.search = '';
-
-    app.render = async (
-        options?: RenderContextOptions
-    ): Promise<RenderContext> => {
+    return async (options?: RenderContextOptions): Promise<RenderContext> => {
         const module = await import$(
             gez.getProjectPath('dist/server/entry.js'),
             urlObj.href,
@@ -109,39 +119,23 @@ export async function createApp(
         }
         return rc;
     };
-    app.build = async () => {
-        const { clientConfig, serverConfig, nodeConfig } = createConfig(
-            gez,
-            modifyBuildContext
-        );
-        const list: BuildItem[] = [
-            {
-                target: 'client',
-                build: () => rspackBuild(clientConfig)
-            },
-            {
-                target: 'server',
-                build: () => rspackBuild(serverConfig)
-            },
-            {
-                target: 'node',
-                build: () => rspackBuild(nodeConfig)
-            }
+}
+
+function rewriteBuild(gez: Gez, options: RspackAppOptions = {}) {
+    return async (): Promise<boolean> => {
+        const list: (() => Promise<boolean>)[] = [
+            () => rspackBuild(generateBuildConfig(gez, options, 'client')),
+            () => rspackBuild(generateBuildConfig(gez, options, 'server')),
+            () => rspackBuild(generateBuildConfig(gez, options, 'node'))
         ];
-        for (const item of list) {
-            const successful = await item.build();
+        for (const build of list) {
+            const successful = await build();
             if (!successful) {
                 return false;
             }
         }
         return true;
     };
-    return app;
-}
-
-interface BuildItem {
-    target: BuildTarget;
-    build: () => Promise<boolean>;
 }
 
 async function rspackBuild(options: RspackOptions) {
