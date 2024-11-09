@@ -6,7 +6,7 @@ export default class NotFound extends Page {
         return layout(`<h2>Not Found</h2>`);
     }
     public async onServer() {
-        this.importMeta.add(import.meta);
+        this.importMetaSet.add(import.meta);
         super.onServer();
     }
 }

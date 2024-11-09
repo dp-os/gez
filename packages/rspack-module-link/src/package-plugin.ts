@@ -150,7 +150,7 @@ function getChunks(config: ParsedModuleConfig, compilation: Compilation) {
             root: config.root,
             name: config.name,
             filePath: module.nameForCondition
-        });
+        }).replace(/\/entry\.(client|server)\.ts$/, '/entry.ts');
 
         const css = chunk.files?.filter((file) => file.endsWith('.css')) ?? [];
         const resources = chunk.auxiliaryFiles ?? [];

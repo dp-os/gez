@@ -2,14 +2,11 @@ import type { RenderContext } from '@gez/core';
 import { getRoutePage } from './routes';
 
 export default async (rc: RenderContext) => {
-    // 模块依赖收集
-    rc.importMeta.add(import.meta);
-
     // 渲染页面内容
     const Page = await getRoutePage(new URL(rc.params.url, 'file:').pathname);
     const page = new Page();
 
-    page.importMeta = rc.importMeta;
+    page.importMetaSet = rc.importMetaSet;
     page.props = {
         url: rc.params.url
     };

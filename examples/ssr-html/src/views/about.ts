@@ -14,7 +14,7 @@ export default class Home extends Page {
      * 模拟服务端请求数据
      */
     public async onServer() {
-        this.importMeta.add(import.meta);
+        this.importMetaSet.add(import.meta);
         super.onServer();
         this.state.time = new Date().toISOString();
     }

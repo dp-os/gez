@@ -3,7 +3,7 @@ export interface PageProps {
 }
 
 export class Page {
-    public importMeta = new Set<ImportMeta>();
+    public importMetaSet = new Set<ImportMeta>();
     private _props: PageProps | null = null;
     public get props(): PageProps {
         if (this._props === null) {
@@ -36,6 +36,6 @@ export class Page {
      * 服务端执行
      */
     public async onServer() {
-        this.importMeta.add(import.meta);
+        this.importMetaSet.add(import.meta);
     }
 }

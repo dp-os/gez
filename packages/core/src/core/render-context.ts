@@ -43,7 +43,7 @@ export class RenderContext {
     /**
      * 收集渲染过程中执行模块的元信息
      */
-    public importMeta = new Set<ImportMeta>();
+    public importMetaSet = new Set<ImportMeta>();
 
     public files: RenderFiles = {
         js: [],
@@ -98,7 +98,7 @@ export class RenderContext {
     public async commit() {
         const packages = await this.getPackagesJson();
         const chunkSet = new Set([`${this.gez.name}@src/entry.client.ts`]);
-        for (const item of this.importMeta) {
+        for (const item of this.importMetaSet) {
             if ('chunkName' in item && typeof item.chunkName === 'string') {
                 chunkSet.add(item.chunkName);
             }

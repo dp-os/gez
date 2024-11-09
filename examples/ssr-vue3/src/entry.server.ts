@@ -4,11 +4,13 @@ import { createApp } from './create-app';
 
 export default async (rc: RenderContext) => {
     const { app } = createApp('server');
-    const context = {
-        imports: []
-    };
-    const html = await renderToString(app, context);
-    await rc.bind(context.imports);
+
+    const html = await renderToString(app, {
+        importMetaSet: rc.importMetaSet
+    });
+
+    await rc.commit();
+
     rc.html = `
 <!DOCTYPE html>
 <html>
