@@ -13,7 +13,7 @@ export default {
 ```
 
 ## 常规配置
-### name <Badge text="v1.0.0" type="tip" />
+### name <Badge text="v3.0.0" type="tip" />
 - **类型：**`string`
 - **默认值：**`gez`
 - **描述：** 服务的名称，全局唯一。
@@ -31,7 +31,7 @@ export default {
 如果你的网站，同一个域名下，使用 Gez 打包了多个项目，那么你需要配置一个 `name` 来区分不同的项目。
 :::
 
-### root <Badge text="v1.0.0" type="tip" />
+### root <Badge text="v3.0.0" type="tip" />
 - **类型：**`string`
 - **默认值：**`cwd()`
 - **描述：** 项目根目录，默认为当前执行命令的目录。
@@ -42,7 +42,7 @@ export default {
 
 :::
 
-### isProd <Badge text="v1.0.0" type="tip" />
+### isProd <Badge text="v3.0.0" type="tip" />
 - **类型：**`boolean`
 - **默认值：** `process.env.NODE_ENV === 'production'`
 - **描述：** 是否是生产环境。
@@ -52,7 +52,7 @@ export default {
 
 :::
 
-### isInstall <Badge text="v1.0.0" type="tip" />
+### isInstall <Badge text="v3.0.0" type="tip" />
 - **类型：**`boolean`
 - **默认值：** `process.env.npm_config_production !== 'true'`
 - **描述：** 安装生产依赖时，是否安装远程依赖。
@@ -62,7 +62,7 @@ export default {
 
 :::
 
-### dynamicBasePathVar <Badge text="v1.0.0" type="tip" />
+### dynamicBasePathVar <Badge text="v3.0.0" type="tip" />
 - **类型：**`string | false`
 - **默认值：** `[[[___GEZ_DYNAMIC_BASE___]]]`
 - **描述：** 动态路径的变量占位符，深入了解请看[基本路径](./base-path.mdx)说明。
@@ -73,7 +73,7 @@ export default {
 
 ## 模块链接
 这是 Gez 的核心功能，[点击这里深入了解](./module-link.mdx)。
-### modules.exports <Badge text="v1.0.0" type="tip" />
+### modules.exports <Badge text="v3.0.0" type="tip" />
 - **类型：**`string[]`
 - **默认值：** `[]`
 - **描述：** 对外模块导出。
@@ -95,7 +95,7 @@ export default {
 你可以将当前项目的模块或者当前项目的第三方依赖，对外导出，这样其它服务就可以使用了。
 :::
 
-### modules.imports <Badge text="v1.0.0" type="tip" />
+### modules.imports <Badge text="v3.0.0" type="tip" />
 - **类型：**`Record<string, string | [string, string]>`
 - **默认值：** `{}`
 - **描述：** 配置远程依赖。
@@ -129,7 +129,7 @@ export default {
 ```
 
 
-### modules.externals <Badge text="v1.0.0" type="tip" />
+### modules.externals <Badge text="v3.0.0" type="tip" />
 - **类型：**`Record<string, string>`
 - **默认值：** `{}`
 - **描述：** 将当前服务的模块，链接到其它的服务。
@@ -151,7 +151,7 @@ export default {
 
 ## 钩子
 
-### createDevApp() <Badge text="v1.0.0" type="tip" />
+### createDevApp() <Badge text="v3.0.0" type="tip" />
 - **类型：**`(gez: Gez) => Promise<App>`
 - **默认值：** `isProd = false`
 - **描述：** 创建开发环境应用。
@@ -160,11 +160,11 @@ export default {
 
 export default {
     async createDevApp(gez) {
-        // 这里应使用动态模块。生产依赖不存在。
         return import('@gez/rspack').then((m) =>
-            m.createApp(gez, (buildContext) => {
-                // 可以在这里修改 Rspack 编译的配置
-                // 自定义你的 Vue、React等框架的打包逻辑
+            m.createRspackHtmlApp(gez, {
+                config(context) {
+                    // 可以在这里修改 Rspack 编译的配置
+                }
             })
         );
     }
@@ -176,7 +176,7 @@ export default {
 
 :::
 
-### createServer() <Badge text="v1.0.0" type="tip" />
+### createServer() <Badge text="v3.0.0" type="tip" />
 - **类型：**`(gez: Gez) => Promise<void>`
 - **默认值：** `undefined`
 - **描述：** 创建服务器
@@ -210,7 +210,7 @@ export default {
 你也可以使用其它的框架来创建服务器，例如：[Express](https://expressjs.com/)。
 :::
 
-### postCompileProdHook() <Badge text="v1.0.0" type="tip" />
+### postCompileProdHook() <Badge text="v3.0.0" type="tip" />
 - **类型：**`(gez: Gez) => Promise<void>`
 - **默认值：** `undefined`
 - **描述：** [gez build](./command.mdx#gez-build) 构建完成后，以生产模式执行的钩子。

@@ -2,10 +2,6 @@ import { layout } from 'ssr-html/src/components/layout';
 import { Page } from 'ssr-html/src/page';
 
 export default class Home extends Page {
-    public constructor(imports: ImportMeta[]) {
-        imports.push(import.meta);
-        super(imports);
-    }
     public state = {
         time: ''
     };
@@ -18,6 +14,8 @@ export default class Home extends Page {
      * 模拟服务端请求数据
      */
     public async onServer() {
+        this.importMetaSet.add(import.meta);
+        super.onServer();
         this.state.time = new Date().toISOString();
     }
 }

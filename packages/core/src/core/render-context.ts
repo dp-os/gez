@@ -39,6 +39,12 @@ export class RenderContext {
      * 请求的参数
      */
     public readonly params: Record<string, any>;
+
+    /**
+     * 收集渲染过程中执行模块的元信息
+     */
+    public importMetaSet = new Set<ImportMeta>();
+
     public files: RenderFiles = {
         js: [],
         css: [],
@@ -86,14 +92,17 @@ export class RenderContext {
             })
         );
     }
-    public async bind(importsMeta: ImportMeta[]) {
+    /**
+     * 当 imports 依赖收集完毕后，需要提交变更
+     */
+    public async commit() {
         const packages = await this.getPackagesJson();
-        const fromSet = new Set([`${this.gez.name}@src/entry.client.ts`]);
-        importsMeta.forEach((item) => {
-            if ('buildFrom' in item && Array.isArray(item.buildFrom)) {
-                item.buildFrom.forEach((item) => fromSet.add(item));
+        const chunkSet = new Set([`${this.gez.name}@src/entry.client.ts`]);
+        for (const item of this.importMetaSet) {
+            if ('chunkName' in item && typeof item.chunkName === 'string') {
+                chunkSet.add(item.chunkName);
             }
-        });
+        }
         const files: RenderFiles = {
             js: [],
             modulepreload: [],
@@ -115,7 +124,7 @@ export class RenderContext {
             const base = `${this.base}/${item.name}/`;
             files.importmap.push(`${base}importmap.${item.hash}.final.js`);
             Object.entries(item.chunks).forEach(([filepath, info]) => {
-                if (fromSet.has(filepath)) {
+                if (chunkSet.has(filepath)) {
                     appendFile(info.js, () => {
                         files.modulepreload.push(`${base}${info.js}`);
                     });

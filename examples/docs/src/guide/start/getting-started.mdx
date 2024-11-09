@@ -34,7 +34,7 @@ npm init
         "dev": "gez dev",
         "build": "npm run build:ssr && npm run build:dts && npm run release",
         "build:ssr": "gez build",
-        "build:dts": "tsc --noEmit --outDir dist/server/src",
+        "build:dts": "tsc --noEmit --outDir dist/server",
         "release": "gez release",
         "preview": "gez preview",
         "start": "gez start",
@@ -67,27 +67,29 @@ setInterval(() => {
 ### 服务端渲染
 模拟框架的 SSR API，渲染出 HTML 内容返回
 ```ts title="src/entry.server.ts"
-// 这里必须使用 import type，否则开发阶段会报错
 import type { RenderContext } from '@gez/core';
 
 export default async (rc: RenderContext) => {
-    // 获取注入的代码
-    const script = await rc.script();
+
     const time = new Date().toISOString();
     rc.html = `
 <!DOCTYPE html>
 <html>
 <head>
+    ${rc.preload()}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gez</title>
+    ${rc.css()}
 </head>
 <body>
     <h1>Gez</h1>
     <h2>Hello world!</h2>
     <p>URL: ${rc.params.url}</p>
     <time>${time}</time>
-    ${script}
+    ${rc.importmap()}
+    ${rc.moduleEntry()}
+    ${rc.modulePreload()}
 </body>
 </html>
 `;
@@ -108,8 +110,10 @@ export default {
     // 本地执行 dev 和 build 时会使用
     async createDevApp(gez) {
         return import('@gez/rspack').then((m) =>
-            m.createApp(gez, (buildContext) => {
-                // 可以在这里修改 Rspack 编译的配置
+            m.createRspackHtmlApp(gez, {
+                config(context) {
+                    // 可以在这里修改 Rspack 编译的配置
+                }
             })
         );
     },
