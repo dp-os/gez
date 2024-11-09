@@ -504,12 +504,12 @@ importers:
       vue:
         specifier: '>=2.7.8 || >=3.0.0'
         version: 3.5.12(typescript@5.4.5)
-      vue-loader:
-        specifier: ^17.4.2
-        version: 17.4.2(vue@3.5.12)(webpack@5.95.0)
       vue2-loader:
         specifier: npm:vue-loader@15.11.1
         version: /vue-loader@15.11.1(css-loader@7.1.2)(webpack@5.95.0)
+      vue3-loader:
+        specifier: npm:vue-loader@^17.4.2
+        version: /vue-loader@17.4.2(vue@3.5.12)(webpack@5.95.0)
     devDependencies:
       '@biomejs/biome':
         specifier: 1.9.2

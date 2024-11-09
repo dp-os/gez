@@ -5,11 +5,10 @@ import { name } from '../package.json';
 
 export default {
     name,
-    modules: {
-        exports: ['npm:vue']
-    },
     async createDevApp(gez) {
-        return import('@gez/rspack-vue').then((m) => m.createVue3App(gez));
+        return import('@gez/rspack-vue').then((m) =>
+            m.createRspackVue3App(gez)
+        );
     },
     async createServer(gez) {
         const server = express();
