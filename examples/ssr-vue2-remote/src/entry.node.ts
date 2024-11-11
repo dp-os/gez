@@ -7,9 +7,7 @@ export default {
     name,
     async createDevApp(gez) {
         return import('@gez/rspack-vue').then((m) =>
-            m.createRspackVue2App(gez, {
-                swcLoader: {}
-            })
+            m.createRspackVue2App(gez)
         );
     },
     async createServer(gez) {

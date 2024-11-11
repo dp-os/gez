@@ -1,9 +1,38 @@
 import type { Gez } from '@gez/core';
-import { type SwcLoaderOptions, rspack } from '@rspack/core';
-import { type RspackAppOptions, createRspackApp } from './app';
+import { type RuleSetUse, type SwcLoaderOptions, rspack } from '@rspack/core';
+import {
+    type RspackAppConfigContext,
+    type RspackAppOptions,
+    createRspackApp
+} from './app';
 
 export interface RspackHtmlAppOptions extends RspackAppOptions {
+    /**
+     * 是否启用相关的 CSS 规则，默认为 true。
+     */
+    css?: boolean;
+    /**
+     * 透传：https://rspack.dev/guide/features/builtin-swc-loader
+     */
     swcLoader?: SwcLoaderOptions;
+    /**
+     * 透传：https://github.com/webpack-contrib/css-loader
+     */
+    cssLoader?: Record<string, any>;
+    /**
+     * 透传：https://github.com/webpack-contrib/less-loader
+     */
+    lessLoader?: Record<string, any>;
+    /**
+     * 透传 https://github.com/yenshih/style-resources-loader
+     */
+    styleResourcesLoader?: Record<string, any>;
+
+    /**
+     * 透传 DefinePlugin 的值 https://rspack.dev/plugins/webpack/define-plugin
+     */
+    definePlugin?: Record<string, string>;
+
     /**
      * 构建目标
      */
@@ -34,35 +63,11 @@ export async function createRspackHtmlApp(
         ...options,
         config(context) {
             const { config, buildTarget } = context;
-
-            const isWebApp =
-                buildTarget === 'client' || buildTarget === 'server';
-            config.plugins = [
-                ...(config.plugins ?? []),
-                // CSS 抽离插件
-                isWebApp
-                    ? new rspack.CssExtractRspackPlugin({
-                          //   filename: gez.isProd
-                          //       ? '[name].[contenthash:8].final.css'
-                          //       : '[name].css',
-                          //     chunkFilename: gez.isProd
-                          //       ? 'chunks/[name].[contenthash:8].final.css'
-                          //       : 'chunks/[name].css'
-                      })
-                    : false
-            ];
+            config.stats = 'errors-warnings';
             config.module = {
                 ...config.module,
                 rules: [
                     ...(config.module?.rules ?? []),
-                    {
-                        test: /\.css$/i,
-                        use: [
-                            rspack.CssExtractRspackPlugin.loader,
-                            resolve('css-loader')
-                        ],
-                        type: 'javascript/auto'
-                    },
                     {
                         test: /\.(png|jpe?g|gif|svg)$/i,
                         type: 'asset/resource',
@@ -78,6 +83,13 @@ export async function createRspackHtmlApp(
                         }
                     },
                     {
+                        test: /\.(woff|woff2|eot|ttf|otf)$/,
+                        type: 'asset/resource',
+                        generator: {
+                            filename: filename(gez, 'fonts')
+                        }
+                    },
+                    {
                         test: /\.json$/i,
                         type: 'json'
                     },
@@ -87,13 +99,6 @@ export async function createRspackHtmlApp(
                         options: {
                             esModule: false,
                             filename: filename(gez, 'worker')
-                        }
-                    },
-                    {
-                        test: /\.(woff|woff2|eot|ttf|otf)$/,
-                        type: 'asset/resource',
-                        generator: {
-                            filename: filename(gez, 'fonts')
                         }
                     },
                     {
@@ -110,7 +115,6 @@ export async function createRspackHtmlApp(
                             jsc: {
                                 parser: {
                                     syntax: 'typescript',
-                                    decorators: true,
                                     ...options?.swcLoader?.jsc?.parser
                                 },
                                 ...options?.swcLoader?.jsc
@@ -121,6 +125,34 @@ export async function createRspackHtmlApp(
                     }
                 ]
             };
+            config.optimization = {
+                ...config.optimization,
+                minimizer: [
+                    new rspack.SwcJsMinimizerRspackPlugin({
+                        minimizerOptions: {
+                            format: {
+                                comments: false
+                            }
+                        }
+                    }),
+                    new rspack.LightningCssMinimizerRspackPlugin({
+                        minimizerOptions: {
+                            errorRecovery: false
+                        }
+                    })
+                ]
+            };
+            config.plugins = config.plugins ?? [];
+            config.devtool = false;
+            config.cache = false;
+            if (options.definePlugin) {
+                config.plugins.push(
+                    new rspack.DefinePlugin(options.definePlugin)
+                );
+            }
+            if (options.css) {
+                addCssConfig(options, context);
+            }
             options?.config?.(context);
         }
     });
@@ -133,4 +165,63 @@ function filename(gez: Gez, name: string) {
     return gez.isProd
         ? `${name}/[name].[contenthash:8].final[ext]`
         : `${name}/[path][name][ext]`;
+}
+
+function addCssConfig(
+    options: RspackHtmlAppOptions,
+    { config, buildTarget }: RspackAppConfigContext
+) {
+    const isWebApp = buildTarget === 'client' || buildTarget === 'server';
+    // 启用 CSS
+    config.experiments = {
+        ...config.experiments,
+        css: true
+    };
+    // 添加 CSS 插件，将样式抽离
+    config.plugins = config.plugins ?? [];
+    if (isWebApp) {
+        config.plugins.push(new rspack.CssExtractRspackPlugin());
+    }
+    // 添加 CSS 相关的 loader
+    const cssLoaders: RuleSetUse = [
+        rspack.CssExtractRspackPlugin.loader,
+        {
+            loader: 'builtin:lightningcss-loader',
+            options: {
+                targets: options.target
+            }
+        },
+        {
+            loader: resolve('css-loader'),
+            options: options.cssLoader
+        }
+    ];
+    const lessLoaders: RuleSetUse = [
+        {
+            loader: resolve('less-loader'),
+            options: options.lessLoader
+        }
+    ];
+    if (options.styleResourcesLoader) {
+        lessLoaders.push({
+            loader: resolve('style-resources-loader'),
+            options: options.styleResourcesLoader
+        });
+    }
+    config.module = {
+        ...config.module,
+        rules: [
+            ...(config.module?.rules ?? []),
+            {
+                test: /\.css$/i,
+                use: cssLoaders,
+                type: 'javascript/auto'
+            },
+            {
+                test: /\.less$/,
+                use: [...cssLoaders, ...lessLoaders],
+                type: 'javascript/auto'
+            }
+        ]
+    };
 }

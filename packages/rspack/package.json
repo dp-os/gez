@@ -13,6 +13,8 @@
         "@gez/core": "*"
     },
     "dependencies": {
+        "less-loader": "^12.2.0",
+        "style-resources-loader": "^1.5.0",
         "@gez/import": "0.0.15-alpha.94",
         "@gez/rspack-module-link": "workspace:0.0.15-alpha.94",
         "@rspack/core": "^1.1.0",

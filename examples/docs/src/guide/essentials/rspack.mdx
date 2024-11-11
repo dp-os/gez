@@ -1,37 +1,178 @@
-# Rspack
-Gez 是完全基于 [Rspack](https://rspack.dev/) 打包，同时也就继承了 Rspack 的全部优势。由于 Gez 的定位是一个基础设施，所以大多数的时候，你都需要根据自己的业务来配置自己的打包逻辑。
+import { PackageManagerTabs, Badge } from '@theme';
 
-## 打包配置
-在默认的情况下，内置了一些基本的打包[规则](https://github.com/dp-os/gez/blob/master/packages/rspack/src/config/rules.ts)，但是你可以完全重写它。
+# Rspack
+Gez 是基于 [Rspack](https://rspack.dev/) 打包，同时也就继承了 Rspack 的全部优势。Gez 提供了一些 Rspack 的配置，你可以根据自己的情况来选择使用哪个。
+
+::: tip
+你可以基于  `@gez/rspack` 来创建自己的 [Vue](../framework/vue.mdx)、[React](../framework/react.mdx)、[Preact](../framework/preact.mdx)、[Solid](../framework/solid.mdx)、[Svelte](../framework/solid.mdx) 等不同框架的配置。
+:::
+
+## @gez/rspack
+
+提供了 Rspack 的基本配置。
+
+### 安装依赖
+如果你没有 `@gez/rspack` 的依赖，那么你可以通过如下命令安装。
+<PackageManagerTabs command="install @gez/rspack -D" />
+
+## No Loader
+提供了 Gez 的必要配置，默认情况下不提供任何 [loader](https://rspack.dev/guide/features/loader) 相关的配置，你还需要配置一些 [loader](https://rspack.dev/guide/features/loader) 才能将项目跑起来。
+
+::: danger
+Gez 的默认配置不可修改，否则 Gez 无法正常工作，[点击这里](https://github.com/dp-os/gez/blob/master/packages/rspack/src/config.ts) 了解默认配置。
+:::
+
+### 选项
+#### config() <Badge text="v3.0.0" type="tip" />
+- **类型：** `config?: (context: RspackAppConfigContext) => void;`
+- **默认值：** `undefined`
+- **描述：** 自定义 Rspack 配置。
+
+### 例子
 ```ts title="src/entry.node.ts"
-import type { BuildTarget, Gez } from '@gez/core';
-import type { RuleSetRules, SwcLoaderOptions } from '@gez/rspack';
+import type { GezOptions } from '@gez/core';
+
 export default {
     async createDevApp(gez) {
         return import('@gez/rspack').then((m) =>
-            m.createApp(gez, (buildContext) => {
-
-                // buildContext.config Rspack 的配置
-                // buildContext.target 构建的目标，分别是：'node' | 'client' | 'server'
-                // buildContext.gez 传入的 gez 对象
-
-                buildContext.config.module = {
-                    ...buildContext.config.module,
-                    rules: [
-                        // 如果需要继承，则加上这句，否则删除
-                        ...buildContext.config.module?.rules ?? [],
-                        // 你自定义的打包规则
-                    ]
+            m.createRspackApp(gez, {
+                config({ config }) {
+                    config.module = {
+                        ...config.module,
+                        rules: [
+                            {
+                                test: /\.ts$/,
+                                exclude: [/node_modules/],
+                                loader: 'builtin:swc-loader',
+                                options: {
+                                  jsc: {
+                                    parser: {
+                                      syntax: 'typescript',
+                                    },
+                                  },
+                                },
+                                type: 'javascript/auto',
+                              }
+                        ]
+                    }
                 }
             })
         );
     }
-}
-```
-::: tip
-建议单独抽离一个 `entry.rspack.ts` 文件来实现 `createDevApp` 的逻辑，然后再动态导入使用。
-:::
+} satisfies GezOptions;
 
-::: warning
-`@gez/rspack` 要使用 import type，避免被打包到生产代码中。
-:::
+```
+
+
+
+## Html
+提供了一些开箱即用的配置，支持 Typescript、Worker、JSON、CSS、Less、Video、Image、Font 的相关文件。
+
+### 选项
+#### css <Badge text="v3.0.0" type="tip" />
+- **类型：** `boolean`
+- **默认值：** `true`
+- **描述：** 是否启用默认的 CSS 配置。
+
+#### swcLoader <Badge text="v3.0.0" type="tip" />
+- **类型：** `SwcLoaderOptions`
+- **默认值：** `undefined`
+- **描述：** 透传：[builtin-swc-loader](https://rspack.dev/guide/features/builtin-swc-loader)
+#### cssLoader <Badge text="v3.0.0" type="tip" />
+- **类型：** `Record<string, any>;`
+- **默认值：** `undefined`
+- **描述：** 透传：[css-loader](https://github.com/webpack-contrib/css-loader)
+#### lessLoader <Badge text="v3.0.0" type="tip" />
+- **类型：** `Record<string, any>;`
+- **默认值：** `undefined`
+- **描述：** 透传：[less-loader](https://github.com/webpack-contrib/less-loader)
+#### styleResourcesLoader <Badge text="v3.0.0" type="tip" />
+- **类型：** `Record<string, any>;`
+- **默认值：** `undefined`
+- **描述：** 透传：[style-resources-loader](https://github.com/yenshih/style-resources-loader)
+#### definePlugin <Badge text="v3.0.0" type="tip" />
+- **类型：** `Record<string, any>;`
+- **默认值：** `undefined`
+- **描述：** 透传：[define-plugin](https://rspack.dev/plugins/webpack/define-plugin)
+#### target.web <Badge text="v3.0.0" type="tip" />
+- **类型：** `string[]`
+- **默认值：** `['chrome>=87', 'firefox>=78', 'safari>=14', 'edge>=88']`
+- **描述：** 浏览器的构建目标
+#### target.node <Badge text="v3.0.0" type="tip" />
+- **类型：** `string[]`
+- **默认值：** `['node>=20']`
+- **描述：** Node.js 的构建目标
+
+### 例子
+```ts title="src/entry.node.ts"
+import type { GezOptions } from '@gez/core';
+
+export default {
+    async createDevApp(gez) {
+        return import('@gez/rspack').then((m) =>
+            m.createRspackHtmlApp(gez, {
+                config({ config }) {
+                    // 自定义 Rspack 的配置
+                }
+            })
+        );
+    },
+} satisfies GezOptions;
+
+```
+
+## @gez/rspack-vue
+提供了 Rspack vue 的基本配置。
+
+### 安装
+如果你没有 `@gez/rspack-vue` 的依赖，那么你可以通过如下命令安装。
+<PackageManagerTabs command="install @gez/rspack-vue -D" />
+
+### 选项
+#### vueLoader <Badge text="v3.0.0" type="tip" />
+- **类型：** `Record<string, any>`
+- **默认值：** `undefined`
+- **描述：** 透传：[vue-loader](https://github.com/vuejs/vue-loader)
+
+
+### Vue2 例子
+提供了 Vue2 的 `.vue` 文件的支持
+
+```ts title="src/entry.node.ts"
+import type { GezOptions } from '@gez/core';
+
+export default {
+    async createDevApp(gez) {
+        return import('@gez/rspack-vue').then((m) =>
+            m.createRspackVue2App(gez, {
+                config ({ config }) {
+                    // 自定义 Rspack 配置
+                }
+            })
+        );
+    }
+} satisfies GezOptions;
+
+```
+
+### Vue3 例子
+提供了 Vue3 的 `.vue` 文件的支持
+```ts title="src/entry.node.ts"
+import type { GezOptions } from '@gez/core';
+
+export default {
+    async createDevApp(gez) {
+        return import('@gez/rspack-vue').then((m) =>
+            m.createRspackVue3App(gez, {
+                config ({ config }) {
+                    // 自定义 Rspack 配置
+                }
+            })
+        );
+    }
+} satisfies GezOptions;
+
+```
+
+### JSX/TSX
+目前暂不支持 JSX/TSX ，如果你想要支持它。需要自行添加相关的 Rspack 配置。[点击这里](https://rspack.dev/guide/tech/vue)了解 Vue 的相关配置。

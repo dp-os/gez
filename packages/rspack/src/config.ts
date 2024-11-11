@@ -95,7 +95,6 @@ export function createRspackConfig(
                     : false
             ];
         })(),
-        stats: 'errors-warnings',
         module: {
             parser: {
                 javascript: {
@@ -120,20 +119,6 @@ export function createRspackConfig(
         },
         optimization: {
             minimize: isWebApp && gez.isProd,
-            minimizer: [
-                new rspack.SwcJsMinimizerRspackPlugin({
-                    minimizerOptions: {
-                        format: {
-                            comments: false
-                        }
-                    }
-                }),
-                new rspack.LightningCssMinimizerRspackPlugin({
-                    minimizerOptions: {
-                        errorRecovery: false
-                    }
-                })
-            ],
             splitChunks: {
                 chunks: 'async'
             }
@@ -156,13 +141,10 @@ export function createRspackConfig(
             return [];
         })(),
         experiments: {
-            css: true,
             outputModule: true
         },
-        devtool: false,
         target: buildTarget === 'client' ? 'web' : 'node20',
-        mode: gez.isProd ? 'production' : 'development',
-        cache: false
+        mode: gez.isProd ? 'production' : 'development'
     };
 }
 
