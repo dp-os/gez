@@ -154,7 +154,7 @@ export default {
 ### createDevApp() <Badge text="v3.0.0" type="tip" />
 - **类型：**`(gez: Gez) => Promise<App>`
 - **默认值：** `isProd = false`
-- **描述：** 在开发阶段时创建 Gez 应用。
+- **描述：** 创建开发应用，在执行 [dev](./command.mdx#gez-dev)、[build](./command.mdx#gez-build)、[preview](./command.mdx#gez-preview) 命令时调用。
 
 ```ts title="src/entry.node.ts"
 
@@ -179,7 +179,7 @@ export default {
 ### createServer() <Badge text="v3.0.0" type="tip" />
 - **类型：**`(gez: Gez) => Promise<void>`
 - **默认值：** `undefined`
-- **描述：** 创建服务器
+- **描述：** 创建服务器，执行  [dev](./command.mdx#gez-dev)、[build](./command.mdx#gez-build)、[preview](./command.mdx#gez-preview) 命令时调用。
 
 ```ts title="src/entry.node.ts"
 import http from 'node:http';
