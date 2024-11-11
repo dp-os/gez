@@ -1,6 +1,6 @@
 <template>
     <layout>
-        <Logo :width="120" :height="120" />
+        <Logo :width="120" :height="60" />
         <p>
             Time: {{time}}
         </p>
@@ -8,6 +8,8 @@
 </template>
 <script lang="ts" setup>
 import { onBeforeUnmount, onMounted, ref } from 'vue';
+import layout from './components/layout.vue';
+import Logo from './components/logo.vue';
 defineProps();
 let time = ref(new Date().toISOString());
 onMounted(() => {

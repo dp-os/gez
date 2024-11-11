@@ -11,13 +11,7 @@
     },
     "peerDependencies": {
         "@gez/core": "*",
-        "less": "*",
         "vue": ">=2.7.8 || >=3.0.0"
-    },
-    "peerDependenciesMeta": {
-        "less": {
-            "optional": true
-        }
     },
     "dependencies": {
         "@gez/rspack": "0.0.15-alpha.94",

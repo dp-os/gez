@@ -12,14 +12,6 @@ export interface RspackHtmlAppOptions extends RspackAppOptions {
      */
     css?: boolean;
     /**
-     * 透传：https://rspack.dev/guide/features/builtin-swc-loader
-     */
-    swcLoader?: SwcLoaderOptions;
-    /**
-     * 透传：https://github.com/webpack-contrib/css-loader
-     */
-    cssLoader?: Record<string, any>;
-    /**
      * 透传：https://github.com/webpack-contrib/less-loader
      */
     lessLoader?: Record<string, any>;
@@ -27,6 +19,10 @@ export interface RspackHtmlAppOptions extends RspackAppOptions {
      * 透传 https://github.com/yenshih/style-resources-loader
      */
     styleResourcesLoader?: Record<string, any>;
+    /**
+     * 透传：https://rspack.dev/guide/features/builtin-swc-loader
+     */
+    swcLoader?: SwcLoaderOptions;
 
     /**
      * 透传 DefinePlugin 的值 https://rspack.dev/plugins/webpack/define-plugin
@@ -169,42 +165,13 @@ function filename(gez: Gez, name: string) {
 
 function addCssConfig(
     options: RspackHtmlAppOptions,
-    { config, gez, buildTarget }: RspackAppConfigContext
+    { config }: RspackAppConfigContext
 ) {
-    const isWebApp = buildTarget === 'client' || buildTarget === 'server';
     // 启用 CSS
     config.experiments = {
         ...config.experiments,
         css: true
     };
-    // 添加 CSS 插件，将样式抽离
-    config.plugins = config.plugins ?? [];
-    if (isWebApp) {
-        config.plugins.push(
-            new rspack.CssExtractRspackPlugin({
-                filename: gez.isProd
-                    ? '[name].[contenthash:8].final.css'
-                    : '[name].css',
-                chunkFilename: gez.isProd
-                    ? 'chunks/[name].[contenthash:8].final.css'
-                    : 'chunks/[name].css'
-            })
-        );
-    }
-    // 添加 CSS 相关的 loader
-    const cssLoaders: RuleSetUse = [
-        {
-            loader: 'builtin:lightningcss-loader',
-            options: {
-                targets: options.target?.web
-            }
-        },
-        rspack.CssExtractRspackPlugin.loader,
-        {
-            loader: resolve('css-loader'),
-            options: options.cssLoader
-        }
-    ];
     const lessLoaders: RuleSetUse = [
         {
             loader: resolve('less-loader'),
@@ -222,14 +189,9 @@ function addCssConfig(
         rules: [
             ...(config.module?.rules ?? []),
             {
-                test: /\.css$/i,
-                use: cssLoaders,
-                type: 'javascript/auto'
-            },
-            {
                 test: /\.less$/,
-                use: [...cssLoaders, ...lessLoaders],
-                type: 'javascript/auto'
+                use: [...lessLoaders],
+                type: 'css'
             }
         ]
     };

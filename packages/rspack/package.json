@@ -10,7 +10,14 @@
         "build": "unbuild"
     },
     "peerDependencies": {
-        "@gez/core": "*"
+        "@gez/core": "*",
+        "less": "*",
+        "vue": ">=2.7.8 || >=3.0.0"
+    },
+    "peerDependenciesMeta": {
+        "less": {
+            "optional": true
+        }
     },
     "dependencies": {
         "less-loader": "^12.2.0",
@@ -18,7 +25,6 @@
         "@gez/import": "0.0.15-alpha.94",
         "@gez/rspack-module-link": "workspace:0.0.15-alpha.94",
         "@rspack/core": "^1.1.0",
-        "css-loader": "^7.1.2",
         "node-polyfill-webpack-plugin": "^4.0.0",
         "webpack-dev-middleware": "^7.4.2",
         "webpack-hot-middleware": "^2.26.1",
