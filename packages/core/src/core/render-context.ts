@@ -97,7 +97,7 @@ export class RenderContext {
      */
     public async commit() {
         const packages = await this.getPackagesJson();
-        const chunkSet = new Set([`${this.gez.name}@src/entry.client.ts`]);
+        const chunkSet = new Set([`${this.gez.name}@src/entry.ts`]);
         for (const item of this.importMetaSet) {
             if ('chunkName' in item && typeof item.chunkName === 'string') {
                 chunkSet.add(item.chunkName);
