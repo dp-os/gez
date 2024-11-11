@@ -150,7 +150,7 @@ export async function createRspackHtmlApp(
                     new rspack.DefinePlugin(options.definePlugin)
                 );
             }
-            if (options.css) {
+            if (options.css !== false) {
                 addCssConfig(options, context);
             }
             options?.config?.(context);
@@ -169,7 +169,7 @@ function filename(gez: Gez, name: string) {
 
 function addCssConfig(
     options: RspackHtmlAppOptions,
-    { config, buildTarget }: RspackAppConfigContext
+    { config, gez, buildTarget }: RspackAppConfigContext
 ) {
     const isWebApp = buildTarget === 'client' || buildTarget === 'server';
     // 启用 CSS
@@ -180,17 +180,26 @@ function addCssConfig(
     // 添加 CSS 插件，将样式抽离
     config.plugins = config.plugins ?? [];
     if (isWebApp) {
-        config.plugins.push(new rspack.CssExtractRspackPlugin());
+        config.plugins.push(
+            new rspack.CssExtractRspackPlugin({
+                filename: gez.isProd
+                    ? '[name].[contenthash:8].final.css'
+                    : '[name].css',
+                chunkFilename: gez.isProd
+                    ? 'chunks/[name].[contenthash:8].final.css'
+                    : 'chunks/[name].css'
+            })
+        );
     }
     // 添加 CSS 相关的 loader
     const cssLoaders: RuleSetUse = [
-        rspack.CssExtractRspackPlugin.loader,
         {
             loader: 'builtin:lightningcss-loader',
             options: {
-                targets: options.target
+                targets: options.target?.web
             }
         },
+        rspack.CssExtractRspackPlugin.loader,
         {
             loader: resolve('css-loader'),
             options: options.cssLoader
