@@ -1,9 +1,10 @@
 # 介绍
-Gez 是 Genesis 迭代的第三个大版本，[v1.0](https://github.com/dp-os/gez/tree/v1) 是通过 HTTP 请求来实现的远程组件，[v2.0](https://github.com/dp-os/gez/tree/v2) 是通过 Module Federation v1.0
+Gez 是 Genesis 迭代的第三个大版本，[v1.0](https://github.com/dp-os/gez/tree/v1) 是基于 HTTP 请求来实现的远程组件，[v2.0](https://github.com/dp-os/gez/tree/v2) 是基于 Module Federation v1.0
  实现的远程组件。随着主流浏览器都已经支持 ESM，这使得设计一款基于 ESM 的[模块链接](./essentials/module-link.mdx)变成了可能。随着 Rspack v1.0 的发布，提供了对 ESM 更加友好的支持，这使得我们可以将可能变成了现实。于是，我们将 [v3.0](https://github.com/dp-os/gez) 版本重命名为 `Gez`。
 
 ## 为什么选 Gez
-目前社区类微服务的解决方案基本可以分为 iframe、micro-app、module federation 三种代表。其中 iframe 和 micro-app 这种模式只适合对已有的老项目进行缝合，是以降低程序运行效率所做的一种妥协，而 module federation 的接入成本较高，里面又是一个黑盒子，一旦出了问题，都十分难以排查。
+目前社区类微服务的解决方案基本可以分为 [iframe](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe)、[micro-app
+](https://github.com/micro-zoe/micro-app)、[Module Federation](https://module-federation.io/) 三种代表。其中 iframe 和 micro-app 这种模式只适合对已有的老项目进行缝合，是以降低程序运行效率所做的一种妥协，而 Module Federation 的接入成本较高，里面又是一个黑盒子，一旦出了问题，都十分难以排查。
 
 Gez 完全是基于 ESM 模块系统进行设计，默认支持 SSR，每个服务都可以对外导出模块，也可以使用外部模块，整个过程简单透明，能够精准的控制依赖管理。通过 importmap 将多服务的模块映射到具有强缓存，基于内容哈希的 URL 中
 
