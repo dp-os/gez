@@ -137,7 +137,12 @@ export default {
 如果你没有 `@gez/rspack-vue` 的依赖，那么你可以通过如下命令安装。
 <PackageManagerTabs command="install @gez/rspack-vue -D" />
 
+:::tip
+该软件包同时支持 [Vue2](https://v2.vuejs.org/) 和 [Vue3](https://vuejs.org/)。
+:::
+
 ### 选项
+选项继承于 [createRspackHtmlApp](#html)。
 #### vueLoader <Badge text="v3.0.0" type="tip" />
 - **类型：** `Record<string, any>`
 - **默认值：** `undefined`
@@ -147,8 +152,8 @@ export default {
 `experimentalInlineMatchResource` 和 `optimizeSSR` 由程序自动设置，你传入也无效。
 :::
 
-### Vue2 例子
-提供了 Vue2 的 `.vue` 文件支持。
+### Vue2
+`createRspackVue2App` 提供了 Vue2 的 `.vue` 文件支持。
 
 ```ts title="src/entry.node.ts"
 import type { GezOptions } from '@gez/core';
@@ -167,8 +172,8 @@ export default {
 
 ```
 
-### Vue3 例子
-提供了 Vue3 的 `.vue` 文件的支持
+### Vue3
+`createRspackVue3App` 提供了 Vue3 的 `.vue` 文件的支持
 ```ts title="src/entry.node.ts"
 import type { GezOptions } from '@gez/core';
 
