@@ -6,21 +6,9 @@
         </layout>
     </div>
 </template>
-<script lang="ts">
-import layout from 'ssr-vue2-remote/src/components/layout.vue';
-import { defineComponent } from 'vue';
-import { Define, Setup } from 'vue-class-setup';
-import Next from './next.vue';
-
-@Setup
-class App extends Define {}
-
-export default defineComponent({
-    name: 'app',
-    ...App.inject()
-});
-</script>
 <script lang="ts" setup>
+import layout from 'ssr-vue2-remote/src/components/layout.vue';
+import Next from './next.vue';
 defineProps();
 </script>
 <style lang="less">

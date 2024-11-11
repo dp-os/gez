@@ -28,11 +28,7 @@ export default {
         /**
          * 导出的文件
          */
-        exports: [
-            'root:src/components/layout.vue',
-            'npm:vue',
-            'npm:vue-class-setup'
-        ]
+        exports: ['root:src/components/layout.vue', 'npm:vue']
     },
     async postCompileProdHook(gez) {
         const render = await gez.render({

@@ -52,9 +52,6 @@ importers:
       express:
         specifier: ^4.19.2
         version: 4.21.1
-      vue-class-setup:
-        specifier: ^1.4.4
-        version: 1.4.4(vue@2.7.16)
     devDependencies:
       '@gez/rspack':
         specifier: workspace:^
@@ -114,9 +111,6 @@ importers:
       vue:
         specifier: 2.7.16
         version: 2.7.16
-      vue-class-setup:
-        specifier: ^1.4.4
-        version: 1.4.4(vue@2.7.16)
       vue-server-renderer:
         specifier: 2.7.16
         version: 2.7.16
@@ -132,9 +126,6 @@ importers:
       express:
         specifier: ^4.19.2
         version: 4.21.1
-      vue-class-setup:
-        specifier: ^1.4.4
-        version: 1.4.4(vue@3.5.12)
     devDependencies:
       '@gez/rspack':
         specifier: workspace:^
@@ -3416,6 +3407,7 @@ packages:
       source-map: 0.6.1
     optionalDependencies:
       prettier: 2.8.8
+    dev: true
 
   /@vue/compiler-sfc@3.5.12:
     resolution: {integrity: sha512-2k973OGo2JuAa5+ZlekuQJtitI5CgLMOwgl94BzMCsKZCX/xiqzJYzapl4opFogKHqwJk34vfsaKpfEhd1k5nw==}
@@ -11284,21 +11276,6 @@ packages:
     resolution: {integrity: sha512-AyFQ0EVmsOZOlAnxoFOGOq1SQDWAB7C6aqMGS23svWAllfOaxbuFvcT8D1i8z3Gyn8fraVeZNNmN6e9bxxXkKw==}
     dev: true
 
-  /vue-class-setup@1.4.4(vue@2.7.16):
-    resolution: {integrity: sha512-qv9U6BnXZurL/HmZqONr6MC6HW/fOxfDndgMnidZUxQSZJAW2eM7yaxAAjshz8fXIjCTHQJCcgq8LxlCCfGBnw==}
-    peerDependencies:
-      vue: '>=2.7.8 || >=3.0.0'
-    dependencies:
-      vue: 2.7.16
-
-  /vue-class-setup@1.4.4(vue@3.5.12):
-    resolution: {integrity: sha512-qv9U6BnXZurL/HmZqONr6MC6HW/fOxfDndgMnidZUxQSZJAW2eM7yaxAAjshz8fXIjCTHQJCcgq8LxlCCfGBnw==}
-    peerDependencies:
-      vue: '>=2.7.8 || >=3.0.0'
-    dependencies:
-      vue: 3.5.12(typescript@5.4.5)
-    dev: false
-
   /vue-eslint-parser@9.4.3(eslint@8.57.1):
     resolution: {integrity: sha512-2rYRLWlIpaiN8xbPiDyXZXRgLGOtWxERV7ND5fFAv5qo1D2N9Fu9MNajBNc6o13lZ+24DAWCkQCvj4klgmcITg==}
     engines: {node: ^14.17.0 || >=16.0.0}
@@ -11482,6 +11459,7 @@ packages:
     dependencies:
       '@vue/compiler-sfc': 2.7.16
       csstype: 3.1.3
+    dev: true
 
   /vue@3.5.12(typescript@5.4.5):
     resolution: {integrity: sha512-CLVZtXtn2ItBIi/zHZ0Sg1Xkb7+PU32bJJ8Bmy7ts3jxXTcbfsEfBivFYYWz1Hur+lalqGAh65Coin0r+HRUfg==}

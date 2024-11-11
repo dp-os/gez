@@ -6,22 +6,10 @@
         <button @click="count++">Add</button>
     </div>
 </template>
-<script lang="ts">
-import { defineComponent } from 'vue';
-import { Define, Setup } from 'vue-class-setup';
-
-@Setup
-class App extends Define {
-    public count = 1;
-}
-
-export default defineComponent({
-    name: 'app',
-    ...App.inject()
-});
-</script>
 <script lang="ts" setup>
+import { ref } from 'vue';
 defineProps<{}>();
+const count = ref(1);
 </script>
 <style lang="less">
 div,

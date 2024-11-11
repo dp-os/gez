@@ -13,7 +13,7 @@ export interface RspackVueAppOptions extends RspackHtmlAppOptions {
     /**
      * 透传：https://github.com/vuejs/vue-loader
      */
-    vueLoader: Record<string, any>;
+    vueLoader?: Record<string, any>;
 }
 
 type VueType = '2' | '3';
