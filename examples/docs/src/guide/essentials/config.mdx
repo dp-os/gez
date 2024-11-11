@@ -2,7 +2,7 @@ import { Badge } from '@theme';
 
 # 基础配置
 Gez 作为基础设施，它的配置总是非常简单的。
-## 使用配置
+## 使用
 ```ts title="src/entry.node.ts"
 import type { GezOptions } from '@gez/core';
 
@@ -12,7 +12,7 @@ export default {
 
 ```
 
-## 常规配置
+## 选项
 ### name <Badge text="v3.0.0" type="tip" />
 - **类型：**`string`
 - **默认值：**`gez`
@@ -132,7 +132,7 @@ export default {
 ### modules.externals <Badge text="v3.0.0" type="tip" />
 - **类型：**`Record<string, string>`
 - **默认值：** `{}`
-- **描述：** 将当前服务的模块，链接到其它的服务。
+- **描述：** 外部依赖设置，你可以将当前服务的依赖，指向到其它导出的服务。
 ```ts title="src/entry.node.ts"
 export default {
     name: 'ssr-main',
@@ -154,7 +154,7 @@ export default {
 ### createDevApp() <Badge text="v3.0.0" type="tip" />
 - **类型：**`(gez: Gez) => Promise<App>`
 - **默认值：** `isProd = false`
-- **描述：** 创建开发环境应用。
+- **描述：** 在开发阶段时创建 Gez 应用。
 
 ```ts title="src/entry.node.ts"
 
