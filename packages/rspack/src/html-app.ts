@@ -146,9 +146,7 @@ export async function createRspackHtmlApp(
                     new rspack.DefinePlugin(options.definePlugin)
                 );
             }
-            if (options.css !== false) {
-                addCssConfig(options, context);
-            }
+            addCssConfig(options, context);
             options?.config?.(context);
         }
     });
@@ -170,8 +168,11 @@ function addCssConfig(
     // 启用 CSS
     config.experiments = {
         ...config.experiments,
-        css: true
+        css: options.css !== false
     };
+    if (!config.experiments.css) {
+        return;
+    }
     const lessLoaders: RuleSetUse = [
         {
             loader: resolve('less-loader'),

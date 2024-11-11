@@ -54,15 +54,11 @@ export function createRspackVueApp(
             const vueRuleUse: rspack.RuleSetUse = [
                 {
                     loader: resolve(`vue${vueType}-loader`),
-                    options:
-                        buildTarget === 'server'
-                            ? {
-                                  experimentalInlineMatchResource: true,
-                                  optimizeSSR: true
-                              }
-                            : {
-                                  experimentalInlineMatchResource: true
-                              }
+                    options: {
+                        ...options?.vueLoader,
+                        experimentalInlineMatchResource: true,
+                        optimizeSSR: buildTarget === 'server'
+                    }
                 }
             ];
             switch (vueType) {
