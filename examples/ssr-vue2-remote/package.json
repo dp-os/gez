@@ -1,6 +1,6 @@
 {
     "name": "ssr-vue2-remote",
-    "version": "3.0.0-alpha.3",
+    "version": "3.0.0-alpha.4",
     "private": true,
     "type": "module",
     "scripts": {
