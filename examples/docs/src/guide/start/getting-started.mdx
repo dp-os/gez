@@ -72,7 +72,9 @@ setInterval(() => {
 import type { RenderContext } from '@gez/core';
 
 export default async (rc: RenderContext) => {
-
+    // 提交依赖收集
+    await rc.commit();
+    // 响应 HTML
     const time = new Date().toISOString();
     rc.html = `
 <!DOCTYPE html>

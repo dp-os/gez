@@ -7,7 +7,7 @@
 import type { RenderContext } from '@gez/core';
 
 export default async (rc: RenderContext) => {
-    // 完成依赖收集
+    // 提交依赖收集
     await rc.commit();
     // 响应 HTML
     rc.html = `
