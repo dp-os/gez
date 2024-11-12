@@ -34,7 +34,7 @@ export default async (rc: RenderContext) => {
 ## 构建时生成 index.html
 - 在 `postCompileProdHook` 钩子中，手动执行一次 SSR 渲染，将生成的 HTML 写入到 `dist/client/index.html` 文件中。
 - 将 `dist/client/` 目录复制到你的服务器上。
-```ts
+```ts title="src/entry.node.ts"
 import path from 'node:path';
 import type { GezOptions } from '@gez/core';
 

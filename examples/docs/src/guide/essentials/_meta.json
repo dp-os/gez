@@ -2,6 +2,7 @@
     "config",
     "rspack",
     "module-link",
+    "render-context",
     "csr",
     "base-path",
     "alias",

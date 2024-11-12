@@ -44,8 +44,7 @@ Gez 默认支持 SSR，你也可以把它当成 [CSR](./csr.mdx) 来使用。
 ## 客户端链接
 在服务渲染时注入所有服务的 `/[服务名]/importmap.[contenthash].js` 文件，将模块的哈希映射信息写入到 `globalThis.__importmap__` 对象中，最终将该变量值写入到 `<script type="importmap"></script>` 标签中。
 
-### src/entry.server.ts
-```ts
+```ts title="src/entry.server.ts"
 import type { RenderContext } from '@gez/core';
 
 export default async (rc: RenderContext) => {
@@ -63,20 +62,12 @@ export default async (rc: RenderContext) => {
 `;
 };
 ```
-### 客户端渲染
-:::tip 
-- 在 `package.json` 中有一个 `hash` 字段，等同于 `importmap.[contenthash].js` 文件的哈希值。
-- 如果你只想做客户端渲染，可以编写一个脚本，读取每个服务的 `dist/client/package.json` 来生成一个静态的 `index.html`。可以参考一下 [RenderContext](https://github.com/dp-os/gez/blob/master/packages/core/src/core/server-context.ts) 的实现。
-
-:::
 
 ## 服务端链接
-### src/entry.node.ts
 - 在开发阶段时，我们可以设置一个远程的依赖地址。    
 - 程序会根据你配置的本地路径，计算出一个所有服务可以共同访问的 `node_modules` 路径，并自动创建软链接。   
 
-
-```ts
+```ts title="src/entry.node.ts"
 export default {
     name: 'ssr-module-auth',
     modules: {
@@ -89,9 +80,9 @@ export default {
 :::warning
 在生产环境中，你应该使用本地链接，而不是远程链接，这样能提高应用程序的启动速度。如果你使用 Docker，可以通过使用[持久卷](https://docs.docker.com/engine/storage/volumes/)，将不同服务的产物组织到一个目录中。
 :::
-### package.json
+## 远程依赖安装
 配置 `postinstall` 钩子执行 `gez install` 命令。在安装开发依赖时，就会将远程依赖下载到你配置的 `'root:../ssr-base/dist'` 目录中。
-```ts
+```ts title="package.json"
 "scripts": {
     "postinstall": "gez install"
 }
