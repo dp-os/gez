@@ -33,8 +33,8 @@ export default {
             });
         });
         // 监听端口
-        server.listen(3000, () => {
-            console.log('http://localhost:3000');
+        server.listen(3001, () => {
+            console.log('http://localhost:3001');
         });
     },
     async postCompileProdHook(gez) {

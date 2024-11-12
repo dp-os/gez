@@ -22,8 +22,8 @@ export default {
             });
             res.send(result.html);
         });
-        server.listen(3100, () => {
-            console.log('http://localhost:3100');
+        server.listen(3004, () => {
+            console.log('http://localhost:3004');
         });
     },
     async postCompileProdHook(gez) {
