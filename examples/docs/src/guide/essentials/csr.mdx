@@ -7,6 +7,9 @@
 import type { RenderContext } from '@gez/core';
 
 export default async (rc: RenderContext) => {
+    // 完成依赖收集
+    await rc.commit();
+    // 响应 HTML
     rc.html = `
 <!DOCTYPE html>
 <html>
@@ -26,7 +29,6 @@ export default async (rc: RenderContext) => {
 </html>
 `;
 };
-
 ```
 
 ## 构建时生成 index.html
