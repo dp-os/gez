@@ -26,7 +26,7 @@
 - [😂 v2.x 持续维护](https://github.com/dp-os/gez/blob/v2/docs/zh-CN/README.md)
 - [😖 v1.x 停止维护](https://fmfe.github.io/genesis-docs/guide/)
 
-## 例子
+## 📖 例子
 - [ssr-html](https://dp-os.github.io/gez/ssr-html/)
 - [ssr-preact-htm](https://dp-os.github.io/gez/ssr-preact-htm/)
 - [ssr-vue2-host](https://dp-os.github.io/gez/ssr-vue2-host/)
