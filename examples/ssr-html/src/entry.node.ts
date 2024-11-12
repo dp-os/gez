@@ -23,13 +23,13 @@ export default {
             // 静态文件处理
             gez.middleware(req, res, async () => {
                 // 传入渲染的参数
-                const render = await gez.render({
+                const rc = await gez.render({
                     params: {
                         url: req.url
                     }
                 });
                 // 响应 HTML 内容
-                res.end(render.html);
+                res.end(rc.html);
             });
         });
         // 监听端口
@@ -40,7 +40,7 @@ export default {
     async postCompileProdHook(gez) {
         const list: string[] = ['/', '/about'];
         for (const url of list) {
-            const render = await gez.render({
+            const rc = await gez.render({
                 base: '/gez',
                 params: { url: url, htmlBase: `/gez/${name}` }
             });
@@ -50,7 +50,7 @@ export default {
                     url.substring(1),
                     'index.html'
                 ),
-                render.html
+                rc.html
             );
         }
     }

@@ -44,7 +44,7 @@ export async function createApp(gez: Gez): Promise<App> {
             const result = await import(
                 gez.getProjectPath('dist/server/entry.js')
             );
-            const serverRender: ServerRenderHandle = result.default;
+            const serverRender: ServerRenderHandle = result[rc.entryName];
             if (typeof serverRender === 'function') {
                 await serverRender(rc);
             }

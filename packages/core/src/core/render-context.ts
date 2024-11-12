@@ -12,6 +12,10 @@ export interface RenderContextOptions {
      */
     base?: string;
     /**
+     * 调用 src/entry.server.ts 文件导出的哪个函数渲染，默认为 default。
+     */
+    entryName?: string;
+    /**
      * 自定义请求的参数
      */
     params?: Record<string, any>;
@@ -21,6 +25,7 @@ export interface RenderContextOptions {
  * 渲染上下文
  */
 export class RenderContext {
+    public gez: Gez;
     /**
      * 设置重定向的地址
      */
@@ -29,7 +34,6 @@ export class RenderContext {
      * 设置状态码
      */
     public status: number | null = null;
-    public gez: Gez;
     private _html = '';
     /**
      * 静态资源的基本地址
@@ -39,6 +43,10 @@ export class RenderContext {
      * 请求的参数
      */
     public readonly params: Record<string, any>;
+    /**
+     * 调用 src/entry.server.ts 文件导出的哪个函数渲染，默认为 default。
+     */
+    public readonly entryName: string;
 
     /**
      * 收集渲染过程中执行模块的元信息
@@ -56,6 +64,7 @@ export class RenderContext {
         this.gez = gez;
         this.base = options.base ?? '';
         this.params = options.params ?? {};
+        this.entryName = options.entryName ?? 'default';
     }
     public get html() {
         return this._html;
@@ -170,13 +179,13 @@ export class RenderContext {
             `<script>if (window.__importmap__) {const s = document.createElement('script');s.type = 'importmap';s.innerText = JSON.stringify(window.__importmap__);document.body.appendChild(s);}</script>`
         );
     }
+    public moduleEntry() {
+        return `<script type="module">import "${this.gez.name}/entry";</script>`;
+    }
     public modulePreload() {
         return this.files.modulepreload
             .map((url) => `<link rel="modulepreload" href="${url}">`)
             .join('');
-    }
-    public moduleEntry() {
-        return `<script type="module">import "${this.gez.name}/entry";</script>`;
     }
 }
 

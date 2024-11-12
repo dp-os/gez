@@ -1,1 +1,137 @@
+import { Badge } from '@theme';
+
 # RenderContext
+
+## 选项
+使用方式：
+```ts title="src/entry.node.ts"
+const rc = await gez.render({
+    // 配置选项
+});
+
+```
+### base <Badge text="v3.0.0" type="tip" />
+- **类型：** `string`
+- **默认值：** `''`
+- **描述：** 静态资产的公共路径，可以根据业务的上下文来动态设置不同的路径。
+
+::: warning
+如果 Gez 的 [basePathPlaceholder](./gez.mdx#basepathplaceholder) 选项设置为 `false`，该功能将无法使用。
+:::
+
+### entryName <Badge text="v3.0.0" type="tip" />
+- **类型：** `string`
+- **默认值：** `'default'`
+- **描述：** 渲染时，执行 `entry.server.ts` 文件导出函数的名称。
+
+### params <Badge text="v3.0.0" type="tip" />
+- **类型：** `Record<string, any>`
+- **默认值：** `{}`
+- **描述：** 自定义渲染参数。
+
+
+## 实例
+
+使用方式：
+```ts title="src/entry.server.ts"
+import type { RenderContext } from '@gez/core';
+
+export default async (rc: RenderContext) => {
+    // SSR 服务端渲染的值
+    const html = '';
+    // 提交依赖收集
+    await rc.commit();
+    // 响应 HTML
+    rc.html = `
+<!DOCTYPE html>
+<html>
+<head>
+    ${rc.preload()}
+    <title>Gez</title>
+    ${rc.css()}
+</head>
+<body>
+    ${html}
+    ${rc.importmap()}
+    ${rc.moduleEntry()}
+    ${rc.modulePreload()}
+</body>
+</html>
+`;
+};
+
+```
+
+### gez <Badge text="v3.0.0" type="tip" />
+- **类型：** [Gez](./gez.mdx#gez-1)
+- **描述：** Gez 的实例。
+
+### redirect <Badge text="v3.0.0" type="tip" />
+- **类型：** `string | null`
+- **描述：** 重定向地址。
+
+### status <Badge text="v3.0.0" type="tip" />
+- **类型：** `number | null`
+- **描述：** 响应的状态码。
+
+### base <Badge text="v3.0.0" type="tip" />
+- **类型：** `string`
+- **描述：** 参数传入的 `base`。
+
+### params <Badge text="v3.0.0" type="tip" />
+- **类型：** `string`
+- **描述：** 参数传入的 `params`。
+
+### entryName <Badge text="v3.0.0" type="tip" />
+- **类型：** `string`
+- **描述：** 参数传入的 `entryName`。
+
+### importMetaSet <Badge text="v3.0.0" type="tip" />
+- **类型：** `Set<ImportMeta>`
+- **描述：** 服务端渲染过程中，收集执行模块的元信息。
+
+### files <Badge text="v3.0.0" type="tip" />
+- **类型：** `RenderFiles`
+- **描述：** 根据 `importMetaSet` 收集的模块元信息，当成当前页面在客户端首次加载所需要的资源文件。
+
+
+### html <Badge text="v3.0.0" type="tip" />
+- **类型：** `string`
+- **描述：** 当前请求响应的 html 内容。
+
+### serialize() <Badge text="v3.0.0" type="tip" />
+- **类型：** `(input: any, options?: serialize.SerializeJSOptions): string`
+- **描述：** 透传 [serialize-javascript](https://github.com/yahoo/serialize-javascript)。
+
+### state() <Badge text="v3.0.0" type="tip" />
+- **类型：** `(varName: string, data: Record<string, any>): string`
+- **描述：** 在 window 对象，注入一个 JS 变量对象，data 必须是可以被序列化的。
+
+### getPackagesJson() <Badge text="v3.0.0" type="tip" />
+- **类型：** `(): Promise<PackageJson[]>`
+- **描述：** 获取全部服务的远程包信息。
+
+### commit() <Badge text="v3.0.0" type="tip" />
+- **类型：** `(): Promise<void>`
+- **描述：** 通过应用渲染完成后，提交模块依赖更新 `files` 对象。
+
+### preload() <Badge text="v3.0.0" type="tip" />
+- **类型：** `(): string`
+- **描述：** 生成 JS 和 CSS 文件的预加载代码。
+
+### css() <Badge text="v3.0.0" type="tip" />
+- **类型：** `(): string`
+- **描述：** 生成服务端首屏加载的 CSS 文件。
+
+### importmap() <Badge text="v3.0.0" type="tip" />
+- **类型：** `(): string`
+- **描述：** 生成 importmap 相关代码。
+
+### moduleEntry() <Badge text="v3.0.0" type="tip" />
+- **类型：** `(): string`
+- **描述：** 生成模块入口执行代码。
+
+### modulePreload() <Badge text="v3.0.0" type="tip" />
+- **类型：** `(): string`
+- **描述：** ESM 模块预加载代码。
+

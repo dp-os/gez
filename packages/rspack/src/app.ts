@@ -112,8 +112,8 @@ function rewriteRender(gez: Gez) {
                 global
             }
         );
-        const serverRender: ServerRenderHandle = module.default;
         const rc = new RenderContext(gez, options);
+        const serverRender: ServerRenderHandle = module[rc.entryName];
         if (typeof serverRender === 'function') {
             await serverRender(rc);
         }
