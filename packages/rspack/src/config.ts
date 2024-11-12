@@ -1,5 +1,5 @@
 import type { BuildTarget, Gez } from '@gez/core';
-import { moduleLinkPlugin } from '@gez/rspack-module-link';
+import { moduleLinkPlugin } from '@gez/rspack-module-link-plugin';
 import {
     type ExternalItem,
     type Plugins,

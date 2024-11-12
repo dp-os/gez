@@ -1,5 +1,5 @@
 {
-    "name": "@gez/rspack-module-link",
+    "name": "@gez/rspack-module-link-plugin",
     "template": "library",
     "scripts": {
         "lint:css": "stylelint '**/*.{css,vue}' --fix --aei",

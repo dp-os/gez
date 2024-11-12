@@ -21,7 +21,7 @@
     },
     "dependencies": {
         "@gez/import": "3.0.0-alpha.2",
-        "@gez/rspack-module-link": "workspace:3.0.0-alpha.2",
+        "@gez/rspack-module-link-plugin": "workspace:3.0.0-alpha.2",
         "@rspack/core": "^1.1.0",
         "less-loader": "^12.2.0",
         "node-polyfill-webpack-plugin": "^4.0.0",

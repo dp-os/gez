@@ -259,6 +259,10 @@ export default {
 - **类型：** `ParsedModuleConfig`
 - **描述：** 根据传入的 [modules](#modules) 选项解析出来的对象。
 
+::: tip
+我们提供了一个 Rspack 的插件 `@gez/rspack-module-link-plugin`，`moduleConfig` 会传递为该插件的选项，除非你想要深入了解模块链接的实现，不然大多数时候你都不需要关心它。
+:::
+
 ### init() <Badge text="v3.0.0" type="tip" />
 - **类型：** `init(command: COMMAND): Promise<void>`
 - **描述：** 初始化 Gez 实例。
@@ -297,5 +301,3 @@ export default {
 ### writeSync <Badge text="v3.0.0" type="tip" />
 - **类型：** `(filepath: string, data: any): void`
 - **描述：** 同步的写入一个文件。
-
-
