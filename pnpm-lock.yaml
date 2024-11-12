@@ -31,11 +31,11 @@ importers:
   examples/ssr-html:
     dependencies:
       '@gez/core':
-        specifier: workspace:3.0.0-alpha.1
+        specifier: workspace:3.0.0-alpha.2
         version: link:../../packages/core
     devDependencies:
       '@gez/rspack':
-        specifier: workspace:3.0.0-alpha.1
+        specifier: workspace:3.0.0-alpha.2
         version: link:../../packages/rspack
       '@types/node':
         specifier: 22.8.6
@@ -47,11 +47,11 @@ importers:
   examples/ssr-preact-htm:
     dependencies:
       '@gez/core':
-        specifier: workspace:3.0.0-alpha.1
+        specifier: workspace:3.0.0-alpha.2
         version: link:../../packages/core
     devDependencies:
       '@gez/rspack':
-        specifier: workspace:3.0.0-alpha.1
+        specifier: workspace:3.0.0-alpha.2
         version: link:../../packages/rspack
       '@types/node':
         specifier: 22.8.6
@@ -187,7 +187,7 @@ importers:
         specifier: 1.9.2
         version: 1.9.2
       '@gez/lint':
-        specifier: 3.0.0-alpha.1
+        specifier: 3.0.0-alpha.2
         version: link:../lint
       '@types/node':
         specifier: 20.12.12
@@ -281,10 +281,10 @@ importers:
         specifier: 1.9.2
         version: 1.9.2
       '@gez/core':
-        specifier: 3.0.0-alpha.1
+        specifier: 3.0.0-alpha.2
         version: link:../core
       '@gez/lint':
-        specifier: 3.0.0-alpha.1
+        specifier: 3.0.0-alpha.2
         version: link:../lint
       '@types/node':
         specifier: 20.12.12
@@ -405,10 +405,10 @@ importers:
   packages/rspack:
     dependencies:
       '@gez/import':
-        specifier: 3.0.0-alpha.1
+        specifier: 3.0.0-alpha.2
         version: link:../import
       '@gez/rspack-module-link':
-        specifier: workspace:3.0.0-alpha.1
+        specifier: workspace:3.0.0-alpha.2
         version: link:../rspack-module-link
       '@rspack/core':
         specifier: ^1.1.0
@@ -445,10 +445,10 @@ importers:
         specifier: 1.9.2
         version: 1.9.2
       '@gez/core':
-        specifier: 3.0.0-alpha.1
+        specifier: 3.0.0-alpha.2
         version: link:../core
       '@gez/lint':
-        specifier: 3.0.0-alpha.1
+        specifier: 3.0.0-alpha.2
         version: link:../lint
       '@types/node':
         specifier: 20.12.12
@@ -485,7 +485,7 @@ importers:
         specifier: 1.9.2
         version: 1.9.2
       '@gez/core':
-        specifier: 3.0.0-alpha.1
+        specifier: 3.0.0-alpha.2
         version: link:../core
       '@gez/lint':
         specifier: 0.0.9
@@ -515,7 +515,7 @@ importers:
   packages/rspack-vue:
     dependencies:
       '@gez/rspack':
-        specifier: 3.0.0-alpha.1
+        specifier: 3.0.0-alpha.2
         version: link:../rspack
       vue:
         specifier: '>=2.7.8 || >=3.0.0'
@@ -531,10 +531,10 @@ importers:
         specifier: 1.9.2
         version: 1.9.2
       '@gez/core':
-        specifier: 3.0.0-alpha.1
+        specifier: 3.0.0-alpha.2
         version: link:../core
       '@gez/lint':
-        specifier: 3.0.0-alpha.1
+        specifier: 3.0.0-alpha.2
         version: link:../lint
       '@types/node':
         specifier: 20.12.12

@@ -1,7 +1,13 @@
 {
     "name": "@gez/core",
     "template": "library-node",
-    "keywords": ["Vue", "React", "Preact", "Solid", "Svelte"],
+    "keywords": [
+        "Vue",
+        "React",
+        "Preact",
+        "Solid",
+        "Svelte"
+    ],
     "bin": {
         "gez": "./cli.mjs"
     },
@@ -39,7 +45,7 @@
         "unbuild": "2.0.0",
         "vitest": "1.6.0"
     },
-    "version": "3.0.0-alpha.1",
+    "version": "3.0.0-alpha.2",
     "type": "module",
     "private": false,
     "exports": {
