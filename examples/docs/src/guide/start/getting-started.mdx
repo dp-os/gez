@@ -126,13 +126,13 @@ export default {
             // 静态文件处理
             gez.middleware(req, res, async () => {
                 // 传入渲染的参数
-                const ctx = await gez.render({
+                const rc = await gez.render({
                     params: {
                         url: req.url
                     }
                 });
                 // 响应 HTML 内容
-                res.end(ctx.html);
+                res.end(rc.html);
             });
         });
         // 监听端口

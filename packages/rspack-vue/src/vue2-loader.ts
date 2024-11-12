@@ -4,7 +4,7 @@ const ADD_IMPORT = `
 function initImport () {
     const mixins = Array.isArray(component.options.mixins) ? component.options.mixins : [];
     mixins.push({
-        created () {
+        serverPrefetch () {
             this.$ssrContext?.importMetaSet.add(import.meta);
         }
     });

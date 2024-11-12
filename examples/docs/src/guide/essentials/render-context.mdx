@@ -1,2 +1,93 @@
 # 渲染上下文
-待编写
+我们有 `entry.node.ts` 和 `entry.server.ts` 两个入口文件，`entry.node.ts` 负责创建服务器，来调用 `entry.server.ts` 生成 HTML。为了简化 CSS 和 JS 的注入，于是提供了一个 `RenderContext` 对象。
+
+## 基本传参
+在 `entry.node.ts` 通常可以看到这样的代码，调用一个渲染函数，然后服务响应 HTML。
+```ts title="entry.node.ts"
+const rc = await gez.render({
+    // 传入渲染的参数
+    params: {
+        url: req.url
+    }
+});
+// 响应 HTML 内容
+res.end(rc.html);
+```
+在 `entry.server.ts` 接收到传入的参数，并且根据传入的参数来响应内容。
+```ts title="entry.server.ts"
+import type { RenderContext } from '@gez/core';
+
+export default async (rc: RenderContext) => {
+    // 传入的参数
+    console.log(rc.params);
+    // 提交模块依赖收集
+    await rc.commit();
+    // 响应内容
+    rc.html = `你好世界！`;
+}
+```
+## 模块依赖收集
+在 SSR 应用程序中，要处理注入渲染页面的 CSS 和 JS 文件，并不是一件简单的事情，当需要考虑多服务提供的模块时，这个问题将会变得更难。庆幸的是，Gez 提供了一个标准的实现方案，并且在 Vue 中提供了完整的实现。    
+
+在构建阶段，Gez 会给服务端生成的每一个 JS 文件头部注入一个 `import.meta.chunkName` 字段，该字段提供了一个 chunk 文件打包的入口源文件。
+```ts title="[chunk].js"
+import.meta.chunkName="ssr-vue2-remote@src/entry.ts";
+```
+`ssr-vue2-remote` 是我们的服务名，`src/entry.ts` 是该服务的源文件路径。    
+
+我们拿一个 Vue2 的实现例子，将渲染上下文的 `importMetaSet` 对象传递给 Vue SSR 渲染的上下文对象中。
+```ts title="entry.server.ts"
+export default async (rc: RenderContext) => {
+    const { app } = createApp();
+
+    const html = await renderer.renderToString(app, {
+        importMetaSet: rc.importMetaSet
+    });
+    // ......
+};
+
+```
+在 Vue 组件中，收集上下文依赖。
+```ts title="App.vue"
+export default {
+    serverPrefetch () {
+        this.$ssrContext?.importMetaSet.add(import.meta);
+    }
+}
+```
+
+::: tip
+在实际的操作中，`@gez/rspack-vue` 已经在编译 `.vue` 组件时，已经将这段代码注入，你不需要手动调用。
+:::
+
+等 Vue 组件渲染完成后，调用 `await rc.commit()` 函数来提交模块上下文的依赖收集， `rc.preload()`、`rc.css()`、`rc.importmap()`、`rc.modulePreload()` 才能正确的注入客户端所需的依赖。
+```ts title="entry.server.ts"
+
+export default async (rc: RenderContext) => {
+    // ......
+    await rc.commit();
+
+    rc.html = `
+<!DOCTYPE html>
+<html>
+<head>
+    ${rc.preload()}
+    <title>Gez</title>
+    ${rc.css()}
+</head>
+<body>
+    ${html}
+    ${rc.importmap()}
+    ${rc.moduleEntry()}
+    ${rc.modulePreload()}
+</body>
+</html>
+`;
+};
+
+```
+
+## 深入了解
+::: tip
+如果你想更加深入了解模块依赖收集，可以看下 [ssr-html](https://github.com/dp-os/gez/tree/master/examples/ssr-html) 这个例子，它是通过编码的形式来实现模块的依赖收集。
+:::
