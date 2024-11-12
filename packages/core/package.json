@@ -1,6 +1,7 @@
 {
     "name": "@gez/core",
     "template": "library-node",
+    "keywords": ["Vue", "React", "Preact", "Solid", "Svelte"],
     "bin": {
         "gez": "./cli.mjs"
     },
