@@ -1,6 +1,6 @@
 {
   "name": "docs",
-  "version": "0.0.15-alpha.95",
+  "version": "0.0.15-alpha.96",
   "private": true,
   "scripts": {
     "dev": "rspress dev",

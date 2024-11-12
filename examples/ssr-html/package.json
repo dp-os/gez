@@ -1,6 +1,6 @@
 {
   "name": "ssr-html",
-  "version": "0.0.15-alpha.95",
+  "version": "0.0.15-alpha.96",
   "main": "index.js",
   "type": "module",
   "private": true,
@@ -18,10 +18,10 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@gez/core": "workspace:0.0.15-alpha.95"
+    "@gez/core": "workspace:0.0.15-alpha.96"
   },
   "devDependencies": {
-    "@gez/rspack": "workspace:0.0.15-alpha.95",
+    "@gez/rspack": "workspace:0.0.15-alpha.96",
     "@types/node": "22.8.6",
     "typescript": "^5.2.2"
   }
