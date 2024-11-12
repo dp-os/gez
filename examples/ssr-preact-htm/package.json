@@ -1,6 +1,6 @@
 {
   "name": "ssr-preact-htm",
-  "version": "3.0.0-alpha.2",
+  "version": "3.0.0-alpha.3",
   "main": "index.js",
   "type": "module",
   "private": true,
@@ -18,10 +18,10 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@gez/core": "workspace:3.0.0-alpha.2"
+    "@gez/core": "workspace:3.0.0-alpha.3"
   },
   "devDependencies": {
-    "@gez/rspack": "workspace:3.0.0-alpha.2",
+    "@gez/rspack": "workspace:3.0.0-alpha.3",
     "@types/node": "22.8.6",
     "htm": "^3.1.1",
     "preact": "^10.24.3",
