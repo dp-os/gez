@@ -1,8 +1,9 @@
 import { Badge } from '@theme';
 
-# 基础配置
-Gez 作为基础设施，它的配置总是非常简单的。
-## 使用
+# Gez
+
+## GezOptions
+使用方式
 ```ts title="src/entry.node.ts"
 import type { GezOptions } from '@gez/core';
 
@@ -12,38 +13,26 @@ export default {
 
 ```
 
-## 选项
 ### name <Badge text="v3.0.0" type="tip" />
-- **类型：**`string`
-- **默认值：**`gez`
+- **类型：** `string`
+- **默认值：** `gez`
 - **描述：** 服务的名称，全局唯一。
-```ts title="src/entry.node.ts"
-import type { GezOptions } from '@gez/core';
-import { name } from '../package.json';
-
-export default {
-    name,
-} satisfies GezOptions;
-
-```
 
 :::tip
 如果你的网站，同一个域名下，使用 Gez 打包了多个项目，那么你需要配置一个 `name` 来区分不同的项目。
 :::
 
 ### root <Badge text="v3.0.0" type="tip" />
-- **类型：**`string`
-- **默认值：**`cwd()`
+- **类型：** `string`
+- **默认值：** `cwd()`
 - **描述：** 项目根目录，默认为当前执行命令的目录。
-
 
 :::warning
 如果你没有充足的理由，你都不应该配置它。
-
 :::
 
 ### isProd <Badge text="v3.0.0" type="tip" />
-- **类型：**`boolean`
+- **类型：** `boolean`
 - **默认值：** `process.env.NODE_ENV === 'production'`
 - **描述：** 是否是生产环境。
 
@@ -52,7 +41,7 @@ export default {
 :::
 
 ### isInstall <Badge text="v3.0.0" type="tip" />
-- **类型：**`boolean`
+- **类型：** `boolean`
 - **默认值：** `process.env.npm_config_production !== 'true'`
 - **描述：** 安装生产依赖时，是否安装远程依赖。
 
@@ -61,18 +50,18 @@ export default {
 :::
 
 ### basePathPlaceholder <Badge text="v3.0.0" type="tip" />
-- **类型：**`string | false`
+- **类型：** `string | false`
 - **默认值：** `[[[___GEZ_DYNAMIC_BASE___]]]`
-- **描述：** 动态路径的变量占位符，深入了解请看[基本路径](./base-path.mdx)说明。
+- **描述：** 动态路径的变量占位符，深入了解请看[基本路径](../guide/essentials/base-path.mdx)说明。
 
 :::warning
 如果你的业务上，没有出现用户的内容被误替换，你都不应该配置它。
 :::
 
-## 模块链接
-这是 Gez 的核心功能，[点击这里深入了解](./module-link.mdx)。
-### modules.exports <Badge text="v3.0.0" type="tip" />
-- **类型：**`string[]`
+### modules
+模块链接配置。
+#### modules.exports <Badge text="v3.0.0" type="tip" />
+- **类型：** `string[]`
 - **默认值：** `[]`
 - **描述：** 对外模块导出。
 
@@ -93,8 +82,8 @@ export default {
 你可以将当前项目的模块或者当前项目的第三方依赖，对外导出，这样其它服务就可以使用了。
 :::
 
-### modules.imports <Badge text="v3.0.0" type="tip" />
-- **类型：**`Record<string, string | [string, string]>`
+#### modules.imports <Badge text="v3.0.0" type="tip" />
+- **类型：** `Record<string, string | [string, string]>`
 - **默认值：** `{}`
 - **描述：** 配置远程依赖。
 ```ts title="src/entry.node.ts"
@@ -126,9 +115,8 @@ export default {
 } satisfies GezOptions;
 ```
 
-
-### modules.externals <Badge text="v3.0.0" type="tip" />
-- **类型：**`Record<string, string>`
+#### modules.externals <Badge text="v3.0.0" type="tip" />
+- **类型：** `Record<string, string>`
 - **默认值：** `{}`
 - **描述：** 外部依赖设置，你可以将当前服务的依赖，指向到其它导出的服务。
 ```ts title="src/entry.node.ts"
@@ -147,10 +135,8 @@ export default {
 需要先配置对应服务的 [modules.imports](#modulesimports)，否则运行起来会报错，提示找不到模块。
 :::
 
-## 钩子
-
 ### createDevApp() <Badge text="v3.0.0" type="tip" />
-- **类型：**`(gez: Gez) => Promise<App>`
+- **类型：** `(gez: Gez) => Promise<App>`
 - **默认值：** `isProd = false`
 - **描述：** 创建开发应用，在执行 [dev](./command.mdx#gez-dev)、[build](./command.mdx#gez-build)、[preview](./command.mdx#gez-preview) 命令时调用。
 
@@ -175,7 +161,7 @@ export default {
 :::
 
 ### createServer() <Badge text="v3.0.0" type="tip" />
-- **类型：**`(gez: Gez) => Promise<void>`
+- **类型：** `(gez: Gez) => Promise<void>`
 - **默认值：** `undefined`
 - **描述：** 创建服务器，执行  [dev](./command.mdx#gez-dev)、[build](./command.mdx#gez-build)、[preview](./command.mdx#gez-preview) 命令时调用。
 
@@ -209,7 +195,7 @@ export default {
 :::
 
 ### postCompileProdHook() <Badge text="v3.0.0" type="tip" />
-- **类型：**`(gez: Gez) => Promise<void>`
+- **类型：** `(gez: Gez) => Promise<void>`
 - **默认值：** `undefined`
 - **描述：** [gez build](./command.mdx#gez-build) 构建完成后，以生产模式执行的钩子。
 
@@ -233,3 +219,83 @@ export default {
 :::tip 
 你可以使用这个钩子来生成静态网站。
 :::
+
+## Gez
+创建的实例。
+
+### name <Badge text="v3.0.0" type="tip" />
+- **类型：** `string`
+- **描述：** 服务名称。
+
+### root <Badge text="v3.0.0" type="tip" />
+- **类型：** `string`
+- **描述：** 项目根目录。
+
+### isProd <Badge text="v3.0.0" type="tip" />
+- **类型：** `boolean`
+- **描述：** 是否是生产环境。
+
+### isInstall <Badge text="v3.0.0" type="tip" />
+- **类型：** `boolean`
+- **描述：** 是否安装远程依赖。
+
+### basePath <Badge text="v3.0.0" type="tip" />
+- **类型：** `string`
+- **描述：** 根据服务名称生成的静态资源基本路径。
+
+### basePathPlaceholder <Badge text="v3.0.0" type="tip" />
+- **类型：** `string`
+- **描述：** 基本路径变量占位符。
+
+### varName <Badge text="v3.0.0" type="tip" />
+- **类型：** `string`
+- **描述：** 根据服务名称生成的 JS 变量名称。
+
+### command <Badge text="v3.0.0" type="tip" />
+- **类型：** `COMMAND`
+- **描述：** 当前执行的命令。
+
+### moduleConfig <Badge text="v3.0.0" type="tip" />
+- **类型：** `ParsedModuleConfig`
+- **描述：** 根据传入的 [modules](#modules) 选项解析出来的对象。
+
+### init() <Badge text="v3.0.0" type="tip" />
+- **类型：** `init(command: COMMAND): Promise<void>`
+- **描述：** 初始化 Gez 实例。
+
+### install() <Badge text="v3.0.0" type="tip" />
+- **类型：** `(): Promise<boolean>`
+- **描述：** 安装远程模块到本地。
+
+### build() <Badge text="v3.0.0" type="tip" />
+- **类型：** `(): Promise<boolean>`
+- **描述：** 构建生产代码。
+
+### release() <Badge text="v3.0.0" type="tip" />
+- **类型：** `(): Promise<boolean>`
+- **描述：** 生产代码构建完成后，可以构建版本代码，提供给其它服务使用。
+
+### middleware() <Badge text="v3.0.0" type="tip" />
+- **类型：** `Middleware`
+- **描述：** 生产代码构建完成后，可以构建版本代码，提供给其它服务使用。
+
+### render() <Badge text="v3.0.0" type="tip" />
+- **类型：** `(options?: RenderContextOptions) => Promise<RenderContext>`
+- **描述：** 调用 `entry.server.ts` 导出的渲染函数。
+### getProjectPath() <Badge text="v3.0.0" type="tip" />
+- **类型：** `getProjectPath(projectPath: ProjectPath): string`
+- **描述：** 获取项目文件的绝对路径。
+
+### destroy() <Badge text="v3.0.0" type="tip" />
+- **类型：** `(): Promise<boolean>`
+- **描述：** 调用 `entry.server.ts` 导出的渲染函数。
+
+### write <Badge text="v3.0.0" type="tip" />
+- **类型：** `(filepath: string, data: any): Promise<void>`
+- **描述：** 异步的写入一个文件。
+
+### writeSync <Badge text="v3.0.0" type="tip" />
+- **类型：** `(filepath: string, data: any): void`
+- **描述：** 同步的写入一个文件。
+
+

@@ -44,7 +44,7 @@ export default {
                 base: '/gez',
                 params: { url: url, htmlBase: `/gez/${name}` }
             });
-            gez.write(
+            gez.writeSync(
                 path.resolve(
                     gez.getProjectPath('dist/client'),
                     url.substring(1),

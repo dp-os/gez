@@ -19,7 +19,7 @@ export interface GezOptions {
     root?: string;
     isProd?: boolean;
     isInstall?: boolean;
-    dynamicBasePathVar?: string | false;
+    basePathPlaceholder?: string | false;
     modules?: ModuleConfig;
     postCompileProdHook?: (gez: Gez) => Promise<void>;
     createDevApp?: (gez: Gez) => Promise<App>;
@@ -106,12 +106,66 @@ export class Gez {
         );
     }
 
-    public get dynamicBaseVar(): string {
-        const varName = this._options.dynamicBasePathVar;
+    /**
+     * 服务的名称
+     */
+    public get name() {
+        return this._options.name ?? 'gez';
+    }
+
+    /**
+     * 本地开发根目录
+     */
+    public get root(): string {
+        const { root = cwd() } = this._options;
+        if (path.isAbsolute(root)) {
+            return root;
+        }
+        return path.resolve(cwd(), root);
+    }
+    /**
+     * 是否是生产环境
+     */
+    public get isProd(): boolean {
+        return this._options?.isProd ?? process.env.NODE_ENV === 'production';
+    }
+    /**
+     * 是否安装生产依赖
+     */
+    get isInstall() {
+        return (
+            this._options?.isInstall ??
+            process.env.npm_config_production !== 'true'
+        );
+    }
+
+    /**
+     * 静态资源请求目录
+     * 例如：/gez/
+     */
+    public get basePath() {
+        return `/${this.name}/`;
+    }
+    /**
+     * 动态的 base 地址占位符。
+     */
+    public get basePathPlaceholder(): string {
+        const varName = this._options.basePathPlaceholder;
         if (varName === false) {
             return '';
         }
         return varName ?? '[[[___GEZ_DYNAMIC_BASE___]]]';
+    }
+
+    /**
+     * 当前程序执行的命令
+     */
+    public get command(): COMMAND {
+        const { _command } = this;
+        if (_command) {
+            return _command;
+        }
+        throw new Error(`'command' does not exist`);
     }
 
     private get app() {
@@ -121,54 +175,41 @@ export class Gez {
         }
         throw new Error(`'app' does not exist`);
     }
-    public get createServer() {
+    public get _createServer() {
         return this._options.createServer ?? noon;
     }
-    public get postCompileProdHook() {
+    public get _postCompileProdHook() {
         return this._options.postCompileProdHook;
-    }
-
-    /**
-     * 当前程序执行的命令
-     */
-    public get command() {
-        const { _command } = this;
-        if (_command) {
-            return _command;
-        }
-        throw new Error(`'command' does not exist`);
     }
 
     /**
      * 安装代码方法，对 npm install 的补充
      * 目前用于远程模块的安装(包括类型文件)
      */
-    public get install() {
-        return this.app.install;
+    public install(): Promise<boolean> {
+        return this.app.install();
     }
 
     /**
      * 构建应用代码
      */
-    public get build() {
-        return async () => {
-            const startTime = Date.now();
-            console.log('[gez]: build start');
+    public async build(): Promise<boolean> {
+        const startTime = Date.now();
+        console.log('[gez]: build start');
 
-            const successful = await this.app.build();
+        const successful = await this.app.build();
 
-            const endTime = Date.now();
-            console.log(`[gez]: build end, cost: ${endTime - startTime}ms`);
+        const endTime = Date.now();
+        console.log(`[gez]: build end, cost: ${endTime - startTime}ms`);
 
-            return successful;
-        };
+        return successful;
     }
 
     /**
      * 生成应用代码压缩包
      */
-    public get release() {
-        return this.app.release;
+    public release(): Promise<boolean> {
+        return this.app.release();
     }
 
     /**
@@ -188,7 +229,7 @@ export class Gez {
     /**
      * 销毁实例，释放内存
      */
-    public async destroy() {
+    public async destroy(): Promise<boolean> {
         const { _app } = this;
         if (_app) {
             return _app.destroy();
@@ -197,47 +238,10 @@ export class Gez {
     }
 
     /**
-     * 本地开发根目录
-     */
-    public get root(): string {
-        const { root = cwd() } = this._options;
-        if (path.isAbsolute(root)) {
-            return root;
-        }
-        return path.resolve(cwd(), root);
-    }
-
-    /**
-     * 静态资源请求目录
-     * 例如：/gez/
-     */
-    public get base() {
-        return `/${this.name}/`;
-    }
-
-    /**
-     * 服务的名称
-     */
-    public get name() {
-        return this._options.name ?? 'gez';
-    }
-
-    /**
      * 当前服务，生成一个全局唯一的变量名称
      */
     public get varName() {
         return '__' + this.name.replace(/[^a-zA-Z]/g, '_') + '__';
-    }
-
-    public get isProd(): boolean {
-        return this._options?.isProd ?? process.env.NODE_ENV === 'production';
-    }
-
-    get isInstall() {
-        return (
-            this._options?.isInstall ??
-            process.env.npm_config_production !== 'true'
-        );
     }
 
     public async init(command: COMMAND) {
@@ -259,13 +263,11 @@ export class Gez {
     public getProjectPath(projectPath: ProjectPath): string {
         return getProjectPath(this.root, projectPath);
     }
-    /**
-     * 提供一个简单的写入文件
-     * @param file 文件地址
-     * @param data 写入的文本
-     */
-    public write(file: string, data: any) {
-        write.sync(file, data);
+    public writeSync(filepath: string, data: any) {
+        write.sync(filepath, data);
+    }
+    public async write(filepath: string, data: any) {
+        await write(filepath, data);
     }
 }
 

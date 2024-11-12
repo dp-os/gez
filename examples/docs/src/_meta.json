@@ -1,7 +1,12 @@
 [
   {
     "text": "指南",
-    "link": "/guide/",
+    "link": "/guide/start/introduction",
     "activeMatch": "/guide/"
+  },
+  {
+    "text": "API",
+    "link": "/api/gez",
+    "activeMatch": "/api/"
   }
 ]

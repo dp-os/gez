@@ -28,7 +28,7 @@ export function createRspackConfig(
                     importPaths.push(gez.getProjectPath(`src/entry.client.ts`));
                     !gez.isProd &&
                         importPaths.push(
-                            `${resolve('webpack-hot-middleware/client')}?path=${gez.base}hot-middleware&timeout=5000&overlay=false`
+                            `${resolve('webpack-hot-middleware/client')}?path=${gez.basePath}hot-middleware&timeout=5000&overlay=false`
                         );
                     break;
                 case 'server':
@@ -66,7 +66,7 @@ export function createRspackConfig(
             publicPath:
                 buildTarget === 'client'
                     ? 'auto'
-                    : `${gez.dynamicBaseVar}${gez.base}`,
+                    : `${gez.basePathPlaceholder}${gez.basePath}`,
             uniqueName: gez.varName,
             hotUpdateChunkFilename: '__hot__/[id].[fullhash].hot-update.js',
             path: ((): string => {

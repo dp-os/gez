@@ -67,7 +67,7 @@ async function createMiddleware(
             // @ts-expect-error
             hotMiddleware(clientCompiler, {
                 heartbeat: 5000,
-                path: `${gez.base}hot-middleware`
+                path: `${gez.basePath}hot-middleware`
             })
         );
         await new Promise<void>((resolve) => {

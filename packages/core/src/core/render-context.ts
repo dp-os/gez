@@ -61,9 +61,9 @@ export class RenderContext {
         return this._html;
     }
     public set html(html) {
-        const varName = this.gez.dynamicBaseVar;
+        const varName = this.gez.basePathPlaceholder;
         this._html = varName
-            ? html.replaceAll(this.gez.dynamicBaseVar, this.base)
+            ? html.replaceAll(this.gez.basePathPlaceholder, this.base)
             : html;
     }
     /**

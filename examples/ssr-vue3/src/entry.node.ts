@@ -31,7 +31,7 @@ export default {
             base: '/gez',
             params: { url: '/' }
         });
-        gez.write(
+        gez.writeSync(
             path.resolve(gez.getProjectPath('dist/client'), 'index.html'),
             render.html
         );

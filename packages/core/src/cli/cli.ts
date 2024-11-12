@@ -72,7 +72,7 @@ async function runDevApp(command: COMMAND) {
 
 async function runProdApp() {
     const gez = await getProdGez();
-    return gez.createServer(gez);
+    return gez._createServer(gez);
 }
 
 async function getProdGez(): Promise<Gez> {
@@ -87,12 +87,12 @@ async function getProdGez(): Promise<Gez> {
 }
 
 async function postCompileProdHook(gez: Gez): Promise<boolean> {
-    if (!gez.postCompileProdHook) {
+    if (!gez._postCompileProdHook) {
         return true;
     }
     gez = await getProdGez();
     try {
-        await gez.postCompileProdHook?.(gez);
+        await gez._postCompileProdHook?.(gez);
     } catch (e) {
         console.error(e);
         return false;
