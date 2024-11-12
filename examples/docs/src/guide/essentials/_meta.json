@@ -1,10 +1,10 @@
 [
     "config",
     "rspack",
-    "module-link",
     "render-context",
     "csr",
-    "base-path",
     "alias",
+    "base-path",
+    "module-link",
     "command"
 ]
