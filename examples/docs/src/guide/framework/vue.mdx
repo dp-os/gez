@@ -1,7 +1,10 @@
 import { PackageManagerTabs } from '@theme';
 
 # Vue
-这里提供了一个简单的 Vue2、Vue3 支持，如果它满足不了你的需求，你可以自己实现，这里有[源码参考](https://github.com/dp-os/gez/blob/master/packages/rspack-vue/src/index.ts)。
+Gez 提供了 Vue 开箱即用的支持。
+## 例子
+- [vue2](https://github.com/dp-os/gez/tree/master/examples/ssr-vue2-remote)
+- [vue3](https://github.com/dp-os/gez/tree/master/examples/ssr-vue3)
 
 ::: tip
 自定义实现，需要基于 [@gez/rspack](../essentials/rspack.mdx) 来实现，Vue 相关的配置，可以在[这里](https://rspack.dev/guide/tech/vue)了解。
@@ -10,7 +13,6 @@ import { PackageManagerTabs } from '@theme';
 ## 安装依赖
 
 ## Vue2
-完整的例子， [点击这里](https://github.com/dp-os/gez/tree/master/examples/ssr-vue2-remote)
 
 <PackageManagerTabs command="install @gez/rspack-vue vue@2.7.16 vue-tsc vue-server-renderer@2.7.16 -D" />
 
@@ -68,7 +70,6 @@ export default async (rc: RenderContext) => {
 :::
 
 ## Vue3
-完整的例子， [点击这里](https://github.com/dp-os/gez/tree/master/examples/ssr-vue3)
 <PackageManagerTabs command="install @gez/rspack-vue vue -D" />
 
 ### entry.node.ts
