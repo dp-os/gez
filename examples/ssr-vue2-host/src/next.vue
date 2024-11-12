@@ -1,5 +1,5 @@
 <template>
-    <button>Next</button>
+    <button>这是自己服务的组件</button>
 </template>
 <style lang="less" scoped>
 button {
