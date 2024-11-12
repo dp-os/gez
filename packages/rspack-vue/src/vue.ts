@@ -11,7 +11,7 @@ import { vue3Loader } from './vue3-loader';
 
 export interface RspackVueAppOptions extends RspackHtmlAppOptions {
     /**
-     * 透传：https://github.com/vuejs/vue-loader
+     * 透传 https://github.com/vuejs/vue-loader
      */
     vueLoader?: Record<string, any>;
 }

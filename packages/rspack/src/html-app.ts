@@ -12,7 +12,7 @@ export interface RspackHtmlAppOptions extends RspackAppOptions {
      */
     css?: boolean;
     /**
-     * 透传：https://github.com/webpack-contrib/less-loader
+     * 透传 https://github.com/webpack-contrib/less-loader
      */
     lessLoader?: Record<string, any>;
     /**
@@ -20,7 +20,7 @@ export interface RspackHtmlAppOptions extends RspackAppOptions {
      */
     styleResourcesLoader?: Record<string, any>;
     /**
-     * 透传：https://rspack.dev/guide/features/builtin-swc-loader
+     * 透传 https://rspack.dev/guide/features/builtin-swc-loader
      */
     swcLoader?: SwcLoaderOptions;
 
