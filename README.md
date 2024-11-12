@@ -1,4 +1,8 @@
 # Gez
+[![npm](https://img.shields.io/npm/v/@gez/core.svg)](https://www.npmjs.com/package/@gez/core) 
+[![npm](https://img.shields.io/npm/dm/@gez/core.svg)](https://www.npmjs.com/package/@gez/core)
+[![npm](https://img.shields.io/npm/dt/@gez/core.svg)](https://www.npmjs.com/package/@gez/core)
+
 [Gez](https://dp-os.github.io/gez/index.html) 是一个基于 **[Rspack](https://rspack.dev/)** 构建的[模块链接（Module Link）](https://dp-os.github.io/gez/guide/essentials/module-link.html) 解决方案，通过 **[importmap](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/script/type/importmap)** 将多服务模块映射到具有强缓存，基于内容哈希的 URL 中。
 
 > **提示：** 正在进行 API 审核以及文档编写，计划2024年11月底完成，发布一个 beta 版本。
