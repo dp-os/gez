@@ -1,7 +1,7 @@
 <template>
     <div class="layout">
         <div class="tip">
-            我是一个来自于 <a class="menu-list-item-link" href="https://github.com/dp-os/gez/blob/master/examples/ssr-vue2-remote/src/components/layout.vue" target="_blank">ssr-vue2-remote</a> 服务的组件。
+            我是一个来自于 <a class="menu-list-item-link" href="https://github.com/dp-os/gez/blob/master/examples/ssr-vue2-remote/src/components/layout.vue" rel="noopener" target="_blank">ssr-vue2-remote</a> 服务的组件。
         </div>
         <header class="menu-list">
             <div class="menu-list-item">
