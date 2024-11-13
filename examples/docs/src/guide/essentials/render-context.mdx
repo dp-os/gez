@@ -33,9 +33,18 @@ export default async (rc: RenderContext) => {
 ```ts title="[chunk].js"
 import.meta.chunkName="ssr-vue2-remote@src/entry.ts";
 ```
-`ssr-vue2-remote` 是我们的服务名，`src/entry.ts` 是该服务的源文件路径。    
+`ssr-vue2-remote` 是我们的服务名，`src/entry.ts` 是这个文件打包的第一个文件。    
 
-我们拿一个 Vue2 的实现例子，将渲染上下文的 `importMetaSet` 对象传递给 Vue SSR 渲染的上下文对象中。
+例如：
+```ts
+import('ssr-vue2-remote/src/app.ts');
+```
+上述代码，就会生成
+```ts
+import.meta.chunkName="ssr-vue2-remote@src/app.ts";
+```
+### Vue2 例子
+将渲染上下文的 `importMetaSet` 对象传递给 Vue SSR 渲染的上下文对象中。
 ```ts title="entry.server.ts"
 export default async (rc: RenderContext) => {
     const { app } = createApp();
