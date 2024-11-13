@@ -12,7 +12,7 @@ import { moduleLink } from './module-link';
 import { type ProjectPath, getProjectPath } from './project-path';
 
 /**
- * 详细说明，请看文档：https://dp-os.github.io/gez/guide/essentials/config.html
+ * 详细说明，请看文档：https://dp-os.github.io/gez/api/gez.html
  */
 export interface GezOptions {
     name?: string;
