@@ -1,0 +1,66 @@
+import { Badge } from '@theme';
+
+# PackageJson
+每次构建完成后，都会在 `client` 和 `server` 目录创建一个 `package.json` 文件用来描述当前服务的一些基本信息。
+
+## 基本字段
+
+### name <Badge text="v3.0.0" type="tip" />
+- **类型：** `string`
+- **描述：** 服务的名字。
+
+### version <Badge text="v3.0.0" type="tip" />
+- **类型：** `string`
+- **描述：** 版本号，目前无实际意义。
+
+### hash <Badge text="v3.0.0" type="tip" />
+- **类型：** `string`
+- **描述：** Rspack 本次构建的版本号。
+
+### type <Badge text="v3.0.0" type="tip" />
+- **类型：** `'module'`
+- **描述：** 软件包的模块系统。
+
+### exports <Badge text="v3.0.0" type="tip" />
+- **类型：** `Record<string, string>`
+- **描述：** 当前服务对外导出的模块。
+
+### files <Badge text="v3.0.0" type="tip" />
+- **类型：** `string[]`
+- **描述：** 构建产物的清单。
+
+### chunks <Badge text="v3.0.0" type="tip" />
+- **类型：** `Record<string, PackageJsonChunks>`
+- **描述：** 构建产物的依赖信息。
+
+## PackageJsonChunks
+
+### js <Badge text="v3.0.0" type="tip" />
+- **类型：** `string`
+- **描述：** 当前编译的 JS 文件。
+
+### css <Badge text="v3.0.0" type="tip" />
+- **类型：** `string[]`
+- **描述：** 当前 JS 抽离出来的 CSS 文件列表。
+
+### resources <Badge text="v3.0.0" type="tip" />
+- **类型：** `string[]`
+- **描述：** 除了 JS 和 CSS 之外的其它的文件。
+
+### sizes <Badge text="v3.0.0" type="tip" />
+- **类型：** `PackageJsonChunkSizes`
+- **描述：** 资源的大小。
+
+## PackageJsonChunkSizes
+
+### js <Badge text="v3.0.0" type="tip" />
+- **类型：** `number`
+- **描述：** JS 文件的大小。
+
+### css <Badge text="v3.0.0" type="tip" />
+- **类型：** `number`
+- **描述：** CSS 文件的大小。
+
+### resource <Badge text="v3.0.0" type="tip" />
+- **类型：** `number`
+- **描述：** 除了 JS 和 CSS 之外的其它的文件的大小。

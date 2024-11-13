@@ -35,13 +35,38 @@ export enum COMMAND {
     start = 'start'
 }
 
+export interface PackageJsonChunks {
+    /**
+     * 当前编译的 JS 文件。
+     */
+    js: string;
+    /**
+     * 当前编译的 CSS 文件。
+     */
+    css: string[];
+    /**
+     * 其它的资源文件。
+     */
+    resources: string[];
+    /**
+     * 构建产物的大小。
+     */
+    sizes: PackageJsonChunkSizes;
+}
+
+export interface PackageJsonChunkSizes {
+    js: number;
+    css: number;
+    resource: number;
+}
+
 export interface PackageJson {
     /**
      * 服务名字，来自于：GezOptions.name
      */
     name: string;
     /**
-     * 版本号
+     * 版本号，默认为 1.0.0
      */
     version: string;
     /**
@@ -64,31 +89,7 @@ export interface PackageJson {
      * 编译的文件信息
      * 类型：Record<源文件, 编译信息>
      */
-    chunks: Record<
-        string,
-        {
-            /**
-             * 当前编译的 JS 文件。
-             */
-            js: string;
-            /**
-             * 当前编译的 CSS 文件。
-             */
-            css: string[];
-            /**
-             * 其它的资源文件。
-             */
-            resources: string[];
-            /**
-             * 构建产物的大小。
-             */
-            sizes: {
-                js: number;
-                css: number;
-                resource: number;
-            };
-        }
-    >;
+    chunks: Record<string, PackageJsonChunks>;
 }
 function noon(gez: Gez) {}
 
