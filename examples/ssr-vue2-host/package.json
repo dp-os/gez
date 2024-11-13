@@ -7,7 +7,7 @@
         "dev": "gez dev",
         "build": "npm run build:ssr && npm run build:dts && npm run release",
         "build:ssr": "gez build",
-        "build:dts": "vue-tsc --declaration --emitDeclarationOnly --noEmit false --outDir dist/server/src",
+        "build:dts": "vue-tsc --declaration --emitDeclarationOnly --outDir dist/server/",
         "release": "gez release",
         "preview": "gez preview",
         "start": "gez start",

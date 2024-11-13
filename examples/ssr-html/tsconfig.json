@@ -1,7 +1,6 @@
 {
     "compilerOptions": {
         "isolatedModules": true,
-        "allowJs": false,
         "experimentalDecorators": true,
         "resolveJsonModule": true,
         "types": [
@@ -9,22 +8,10 @@
         ],
         "target": "ESNext",
         "module": "ESNext",
-        "importHelpers": false,
-        "declaration": true,
-        "sourceMap": true,
         "strict": true,
-        "noImplicitAny": false,
-        "noImplicitReturns": false,
-        "noFallthroughCasesInSwitch": true,
-        "noUnusedLocals": false,
-        "noUnusedParameters": false,
         "moduleResolution": "node",
-        "allowImportingTsExtensions": true,
-        "esModuleInterop": true,
         "skipLibCheck": true,
         "allowSyntheticDefaultImports": true,
-        "forceConsistentCasingInFileNames": true,
-        "noEmit": true,
         "paths": {
             "ssr-html/src/*": [
                 "./src/*"
@@ -35,26 +22,10 @@
         }
     },
     "include": [
-        "micro",
-        "service",
-        "server",
-        "test",
-        "src",
-        "bin",
-        "**.cjs",
-        "**.js",
-        "**.mjs",
-        "**.ts",
-        "private",
-        "public"
+        "src"
     ],
     "exclude": [
         "dist"
-    ],
-    "vueCompilerOptions": {
-        "extensions": [
-            ".vue"
-        ],
-        "target": 2.7
-    }
-}
+    ]
+  }
+  
