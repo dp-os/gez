@@ -15,7 +15,7 @@
     "postinstall": "gez install"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "description": "",
   "dependencies": {
     "@gez/core": "workspace:3.0.0-alpha.4"

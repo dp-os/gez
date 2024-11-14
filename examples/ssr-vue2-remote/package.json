@@ -13,6 +13,7 @@
         "start": "gez start",
         "postinstall": "gez install"
     },
+    "license": "MIT",
     "dependencies": {
         "@gez/core": "workspace:^",
         "express": "^4.19.2"

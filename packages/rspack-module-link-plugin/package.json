@@ -1,6 +1,7 @@
 {
     "name": "@gez/rspack-module-link-plugin",
     "template": "library",
+    "license": "MIT",
     "scripts": {
         "lint:css": "stylelint '**/*.{css,vue}' --fix --aei",
         "lint:type": "tsc --noEmit",

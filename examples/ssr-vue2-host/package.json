@@ -3,6 +3,7 @@
     "version": "3.0.0-alpha.4",
     "private": true,
     "type": "module",
+    "license": "MIT",
     "scripts": {
         "dev": "gez dev",
         "build": "npm run build:ssr && npm run build:dts && npm run release",
