@@ -15,7 +15,7 @@
     },
     "devDependencies": {
         "@biomejs/biome": "1.9.2",
-        "@gez/lint": "3.0.0-alpha.4",
+        "@gez/lint": "3.0.0-alpha.5",
         "@types/node": "20.12.12",
         "@vitest/coverage-v8": "1.6.0",
         "@vue/compiler-dom": "^3.5.6",
@@ -25,7 +25,7 @@
         "vitest": "1.6.0",
         "vue": "^3.5.6"
     },
-    "version": "3.0.0-alpha.4",
+    "version": "3.0.0-alpha.5",
     "type": "module",
     "private": false,
     "exports": {

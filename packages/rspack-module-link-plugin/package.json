@@ -15,7 +15,7 @@
     },
     "devDependencies": {
         "@biomejs/biome": "1.9.2",
-        "@gez/core": "3.0.0-alpha.4",
+        "@gez/core": "3.0.0-alpha.5",
         "@gez/lint": "0.0.9",
         "@rspack/core": "^1.1.0-beta.0",
         "@types/node": "20.12.12",
@@ -25,7 +25,7 @@
         "unbuild": "2.0.0",
         "vitest": "1.6.0"
     },
-    "version": "3.0.0-alpha.4",
+    "version": "3.0.0-alpha.5",
     "type": "module",
     "private": false,
     "exports": {
