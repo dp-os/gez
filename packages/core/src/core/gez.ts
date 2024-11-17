@@ -1,121 +1,101 @@
+import fs from 'node:fs';
 import path from 'node:path';
 import { cwd } from 'node:process';
+import type { ImportMap } from '@gez/import';
 import write from 'write';
 
 import { type App, createApp } from './app';
+import type { ManifestJson } from './manifest-json';
 import {
     type ModuleConfig,
     type ParsedModuleConfig,
     parseModuleConfig
 } from './module-config';
-import { moduleLink } from './module-link';
-import { type ProjectPath, getProjectPath } from './project-path';
-
+import {
+    type PackConfig,
+    type ParsedPackConfig,
+    parsePackConfig
+} from './pack-config';
+import { type ProjectPath, resolvePath } from './resolve-path';
 /**
  * 详细说明，请看文档：https://dp-os.github.io/gez/api/gez.html
  */
 export interface GezOptions {
-    name?: string;
+    /**
+     * 项目根目录，默认为当前执行命令的目录。
+     */
     root?: string;
+    /**
+     * 是否是生产环境。
+     */
     isProd?: boolean;
-    isInstall?: boolean;
+    /**
+     * 动态路径的变量占位符。
+     */
     basePathPlaceholder?: string | false;
+    /**
+     * 模块链接配置。
+     */
     modules?: ModuleConfig;
-    postCompileProdHook?: (gez: Gez) => Promise<void>;
+    /**
+     * 是否启用归档，等同于 npm pack。
+     */
+    packs?: PackConfig;
+    /**
+     * 创建开发应用，在执行 dev、build、preview 命令时调用。
+     */
     createDevApp?: (gez: Gez) => Promise<App>;
+    /**
+     * 创建服务器，执行 dev、build、preview 命令时调用。
+     */
     createServer?: (gez: Gez) => Promise<void>;
+    /**
+     * gez build 构建完成后，以生产模式执行的钩子。
+     */
+    postCompileProdHook?: (gez: Gez) => Promise<void>;
 }
 
 export enum COMMAND {
     dev = 'dev',
     build = 'build',
-    release = 'release',
     preview = 'preview',
-    install = 'install',
     start = 'start'
 }
 
-export interface PackageJsonChunks {
-    /**
-     * 当前编译的 JS 文件。
-     */
-    js: string;
-    /**
-     * 当前编译的 CSS 文件。
-     */
-    css: string[];
-    /**
-     * 其它的资源文件。
-     */
-    resources: string[];
-    /**
-     * 构建产物的大小。
-     */
-    sizes: PackageJsonChunkSizes;
-}
-
-export interface PackageJsonChunkSizes {
-    js: number;
-    css: number;
-    resource: number;
-}
-
-export interface PackageJson {
-    /**
-     * 服务名字，来自于：GezOptions.name
-     */
-    name: string;
-    /**
-     * 版本号，默认为 1.0.0
-     */
-    version: string;
-    /**
-     * 构建的版本号
-     */
-    hash: string;
-    /**
-     * 模块系统
-     */
-    type: 'module';
-    /**
-     * 对外导出的文件
-     */
-    exports: Record<string, string>;
-    /**
-     * 构建的全部文件清单
-     */
-    files: string[];
-    /**
-     * 编译的文件信息
-     * 类型：Record<源文件, 编译信息>
-     */
-    chunks: Record<string, PackageJsonChunks>;
-}
 function noon(gez: Gez) {}
 
 export class Gez {
     private readonly _options: GezOptions;
     private _app: App | null = null;
     private _command: COMMAND | null = null;
+    /**
+     * 根据传入的 modules 选项解析出来的对象。
+     */
     readonly moduleConfig: ParsedModuleConfig;
+    readonly packConfig: ParsedPackConfig;
     public constructor(options: GezOptions = {}) {
         this._options = options;
-        this.moduleConfig = parseModuleConfig(
-            this.name,
-            this.root,
-            options.modules
-        );
+        const name = this.readJsonSync(
+            path.resolve(this.root, 'package.json')
+        ).name;
+        this.moduleConfig = parseModuleConfig(name, this.root, options.modules);
+        this.packConfig = parsePackConfig(options.packs);
     }
 
     /**
-     * 服务的名称
+     * 服务名称，来源于 package.json 文件的 name 字段。
      */
     public get name() {
-        return this._options.name ?? 'gez';
+        return this.moduleConfig.name;
     }
-
     /**
-     * 本地开发根目录
+     * 根据 name 生成的 JS 变量名称。
+     */
+    public get varName() {
+        return '__' + this.name.replace(/[^a-zA-Z]/g, '_') + '__';
+    }
+    /**
+     * 项目根目录。
      */
     public get root(): string {
         const { root = cwd() } = this._options;
@@ -125,24 +105,14 @@ export class Gez {
         return path.resolve(cwd(), root);
     }
     /**
-     * 是否是生产环境
+     * 是否是生产环境。
      */
     public get isProd(): boolean {
         return this._options?.isProd ?? process.env.NODE_ENV === 'production';
     }
-    /**
-     * 是否安装生产依赖
-     */
-    get isInstall() {
-        return (
-            this._options?.isInstall ??
-            process.env.npm_config_production !== 'true'
-        );
-    }
 
     /**
-     * 静态资源请求目录
-     * 例如：/gez/
+     * 根据服务名称生成的静态资源基本路径。
      */
     public get basePath() {
         return `/${this.name}/`;
@@ -159,7 +129,7 @@ export class Gez {
     }
 
     /**
-     * 当前程序执行的命令
+     * 当前执行的命令。
      */
     public get command(): COMMAND {
         const { _command } = this;
@@ -167,6 +137,12 @@ export class Gez {
             return _command;
         }
         throw new Error(`'command' does not exist`);
+    }
+    /**
+     * 全部命令的枚举对象。
+     */
+    public get COMMAND() {
+        return COMMAND;
     }
 
     private get app() {
@@ -184,72 +160,12 @@ export class Gez {
     }
 
     /**
-     * 安装代码方法，对 npm install 的补充
-     * 目前用于远程模块的安装(包括类型文件)
+     * 初始化实例。
      */
-    public install(): Promise<boolean> {
-        return this.app.install();
-    }
-
-    /**
-     * 构建应用代码
-     */
-    public async build(): Promise<boolean> {
-        const startTime = Date.now();
-        console.log('[gez]: build start');
-
-        const successful = await this.app.build();
-
-        const endTime = Date.now();
-        console.log(`[gez]: build end, cost: ${endTime - startTime}ms`);
-
-        return successful;
-    }
-
-    /**
-     * 生成应用代码压缩包
-     */
-    public release(): Promise<boolean> {
-        return this.app.release();
-    }
-
-    /**
-     * 静态资源中间件
-     */
-    public get middleware() {
-        return this.app.middleware;
-    }
-
-    /**
-     * 渲染函数
-     */
-    public get render() {
-        return this.app.render;
-    }
-
-    /**
-     * 销毁实例，释放内存
-     */
-    public async destroy(): Promise<boolean> {
-        const { _app } = this;
-        if (_app) {
-            return _app.destroy();
-        }
-        return true;
-    }
-
-    /**
-     * 当前服务，生成一个全局唯一的变量名称
-     */
-    public get varName() {
-        return '__' + this.name.replace(/[^a-zA-Z]/g, '_') + '__';
-    }
-
     public async init(command: COMMAND) {
         if (this._command) {
             throw new Error('Cannot be initialized repeatedly');
         }
-        moduleLink(this.root, this.moduleConfig);
         const createDevApp = this._options.createDevApp || defaultCreateDevApp;
 
         this._command = command;
@@ -260,15 +176,107 @@ export class Gez {
                 : await createApp(this);
         this._app = app;
     }
-
-    public getProjectPath(projectPath: ProjectPath): string {
-        return getProjectPath(this.root, projectPath);
+    /**
+     * 销毁实例，释放内存。
+     */
+    public async destroy(): Promise<boolean> {
+        const { _app } = this;
+        if (_app?.destroy) {
+            return _app.destroy();
+        }
+        return true;
     }
+    /**
+     * 构建生产代码。
+     */
+    public async build(): Promise<boolean> {
+        const startTime = Date.now();
+        console.log('[gez]: build start');
+
+        const successful = await this.app?.build?.();
+
+        const endTime = Date.now();
+        console.log(`[gez]: build end, cost: ${endTime - startTime}ms`);
+
+        return successful ?? true;
+    }
+    /**
+     * 中间件。
+     */
+    public get middleware() {
+        return this.app.middleware;
+    }
+    /**
+     * 调用 entry.server.ts 导出的渲染函数。
+     */
+    public get render() {
+        return this.app.render;
+    }
+    /**
+     * 解析项目路径。
+     */
+    public resolvePath(projectPath: ProjectPath, ...args: string[]): string {
+        return resolvePath(this.root, projectPath, ...args);
+    }
+    /**
+     * 同步写入一个文件。
+     */
     public writeSync(filepath: string, data: any) {
         write.sync(filepath, data);
     }
-    public async write(filepath: string, data: any) {
-        await write(filepath, data);
+    /**
+     * 异步的读取一个 JSON 文件。
+     */
+    public readJsonSync(filename: string): any {
+        return JSON.parse(fs.readFileSync(filename, 'utf-8'));
+    }
+    /**
+     * 获取全部服务的清单文件。
+     */
+    public getManifestList(target: 'client' | 'server'): ManifestJson[] {
+        return this.moduleConfig.imports.map((item) => {
+            const filename = path.resolve(
+                item.localPath,
+                target,
+                'manifest.json'
+            );
+            try {
+                const text = fs.readFileSync(filename, 'utf-8');
+                const data = JSON.parse(text);
+                data.name = item.name;
+                return data;
+            } catch (e) {
+                throw new Error(
+                    `'${item.name}' service '${target}/manifest.json' file read error`
+                );
+            }
+        });
+    }
+    /**
+     * 获取服务端的 importmap 映射文件。
+     */
+    public getServerImportMap(): ImportMap {
+        const imports: Record<string, string> = {};
+        this.getManifestList('server').forEach((manifest) => {
+            const importItem = this.moduleConfig.imports.find((item) => {
+                return item.name === manifest.name;
+            });
+            if (!importItem) {
+                throw new Error(
+                    `'${manifest.name}' service did not find module config`
+                );
+            }
+            Object.entries(manifest.exports).forEach(([name, value]) => {
+                imports[`${manifest.name}/${name.substring(2)}`] = path.resolve(
+                    importItem.localPath,
+                    'server',
+                    value
+                );
+            });
+        });
+        return {
+            imports
+        };
     }
 }
 

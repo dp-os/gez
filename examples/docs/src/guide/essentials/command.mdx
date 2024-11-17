@@ -6,7 +6,7 @@
         "dev": "gez dev",
         "build": "npm run build:ssr && npm run build:dts && npm run release",
         "build:ssr": "gez build",
-        "build:dts": "tsc --noEmit --outDir dist/server",
+        "build:dts": "tsc --noEmit --outDir dist/src",
         "release": "gez release",
         "preview": "gez preview",
         "start": "gez start",
@@ -42,7 +42,7 @@ export default {
 ## gez release
 当前服务如果有对外导出模块时使用。
 - 执行 `gez build` 命令，构建生产产物。
-- 执行 `npm run build:dts` 命令，将类型输出到 `dist/server/src` 目录，本地开发时，可以得到类型提示。
+- 执行 `npm run build:dts` 命令，将类型输出到 `dist/server/` 目录，本地开发时，可以得到类型提示。
 - 执行 `gez release` 命令，将 `dist/client` 和 `dist/server` 目录生成 zip 压缩文件，放到 `dist/client/versions` 目录中。
 - 将 `dist` 目录的代码，部署到生产环境中。
 - 其它服务调用

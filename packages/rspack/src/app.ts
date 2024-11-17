@@ -1,7 +1,6 @@
+import { pathToFileURL } from 'node:url';
 import {
     type App,
-    type BuildTarget,
-    COMMAND,
     type Gez,
     type Middleware,
     RenderContext,
@@ -10,11 +9,13 @@ import {
     createApp,
     mergeMiddlewares
 } from '@gez/core';
-import { import$ } from '@gez/import';
+import { createVmImport } from '@gez/import';
 import { type RspackOptions, rspack } from '@rspack/core';
 import devMiddleware from 'webpack-dev-middleware';
 import hotMiddleware from 'webpack-hot-middleware';
+import type { BuildTarget } from './build-target';
 import { createRspackConfig } from './config';
+import { pack } from './pack';
 
 export interface RspackAppConfigContext {
     gez: Gez;
@@ -31,16 +32,18 @@ export async function createRspackApp(
     options?: RspackAppOptions
 ): Promise<App> {
     const app = await createApp(gez);
-    if (gez.command === COMMAND.dev) {
-        app.middleware = mergeMiddlewares([
-            ...(await createMiddleware(gez, options)),
-            app.middleware
-        ]);
+    switch (gez.command) {
+        case gez.COMMAND.dev:
+            app.middleware = mergeMiddlewares([
+                ...(await createMiddleware(gez, options)),
+                app.middleware
+            ]);
+            app.render = rewriteRender(gez);
+            break;
+        case gez.COMMAND.build:
+            app.build = rewriteBuild(gez, options);
+            break;
     }
-
-    app.render = rewriteRender(gez);
-    app.build = rewriteBuild(gez, options);
-
     return app;
 }
 async function createMiddleware(
@@ -48,7 +51,7 @@ async function createMiddleware(
     options: RspackAppOptions = {}
 ): Promise<Middleware[]> {
     const middlewares: Middleware[] = [];
-    if (gez.command === COMMAND.dev) {
+    if (gez.command === gez.COMMAND.dev) {
         const clientCompiler = rspack(
             generateBuildConfig(gez, options, 'client')
         );
@@ -96,13 +99,14 @@ function generateBuildConfig(
 }
 
 function rewriteRender(gez: Gez) {
-    const { resolve, url } = import.meta;
-    const urlObj = new URL(resolve(url));
-    urlObj.search = '';
     return async (options?: RenderContextOptions): Promise<RenderContext> => {
-        const module = await import$(
-            gez.getProjectPath('dist/server/entry.js'),
-            urlObj.href,
+        const baseURL = pathToFileURL(gez.root) as URL;
+        const importMap = gez.getServerImportMap();
+        const vmImport = createVmImport(baseURL, importMap);
+        const rc = new RenderContext(gez, options);
+        const module = await vmImport(
+            `${gez.name}/src/entry.server`,
+            import.meta.url,
             {
                 console,
                 setTimeout,
@@ -112,7 +116,6 @@ function rewriteRender(gez: Gez) {
                 global
             }
         );
-        const rc = new RenderContext(gez, options);
         const serverRender: ServerRenderHandle = module[rc.entryName];
         if (typeof serverRender === 'function') {
             await serverRender(rc);
@@ -134,7 +137,7 @@ function rewriteBuild(gez: Gez, options: RspackAppOptions = {}) {
                 return false;
             }
         }
-        return true;
+        return pack(gez);
     };
 }
 

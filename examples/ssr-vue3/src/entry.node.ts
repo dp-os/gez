@@ -1,10 +1,7 @@
-import path from 'node:path';
 import type { GezOptions } from '@gez/core';
 import express from 'express';
-import { name } from '../package.json';
 
 export default {
-    name,
     async createDevApp(gez) {
         return import('@gez/rspack-vue').then((m) =>
             m.createRspackVue3App(gez)
@@ -32,7 +29,7 @@ export default {
             params: { url: '/' }
         });
         gez.writeSync(
-            path.resolve(gez.getProjectPath('dist/client'), 'index.html'),
+            gez.resolvePath('dist/client', 'index.html'),
             render.html
         );
     }

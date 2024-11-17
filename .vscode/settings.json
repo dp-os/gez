@@ -8,7 +8,6 @@
         "source.fixAll": "explicit"
     },
     "cSpell.words": [
-        "fflate",
         "Importmap",
         "rspack"
     ]

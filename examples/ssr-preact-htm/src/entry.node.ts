@@ -1,11 +1,8 @@
 import http from 'node:http';
 import path from 'node:path';
 import type { GezOptions } from '@gez/core';
-import { name } from '../package.json';
 
 export default {
-    // 设置应用的唯一名字，如果有多个项目，则名字不能重复
-    name,
     // 本地执行 dev 和 build 时会使用
     async createDevApp(gez) {
         // 这里应使用动态模块。生产依赖不存在。
@@ -43,7 +40,7 @@ export default {
             params: { url: '/' }
         });
         gez.writeSync(
-            path.resolve(gez.getProjectPath('dist/client'), 'index.html'),
+            gez.resolvePath('dist/client', 'index.html'),
             render.html
         );
     }

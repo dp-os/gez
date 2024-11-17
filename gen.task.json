@@ -1,9 +1,11 @@
 {
     "packages": [
-        "packages/lint",
         "packages/class-state",
         "packages/core",
+        "packages/import",
+        "packages/lint",
         "packages/rspack",
-        "packages/rspack-vue2"
+        "packages/rspack-module-link-plugin",
+        "packages/rspack-vue"
     ]
 }

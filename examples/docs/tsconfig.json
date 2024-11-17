@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
-    "lib": ["DOM", "ES2020"],
+    "target": "ESNext",
+    "lib": ["DOM", "ESNext"],
     "module": "ESNext",
     "jsx": "react-jsx",
     "noEmit": true,
@@ -13,7 +13,7 @@
     "useDefineForClassFields": true,
     "allowImportingTsExtensions": true
   },
-  "include": ["docs", "theme", "rspress.config.ts"],
+  "include": ["docs", "theme", "rspress.config.ts", "../../packages/core/src"],
   "mdx": {
     "checkMdx": true
   }

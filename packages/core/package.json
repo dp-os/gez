@@ -10,7 +10,7 @@
     ],
     "license": "MIT",
     "bin": {
-        "gez": "./cli.mjs"
+        "gez": "./dist/cli/index.mjs"
     },
     "engines": {
         "node": ">=20.13"
@@ -24,25 +24,24 @@
         "build": "unbuild"
     },
     "dependencies": {
-        "@types/serialize-javascript": "^5.0.4",
-        "fflate": "^0.8.2",
+        "@gez/import": "workspace:*",
         "find": "^0.3.0",
         "send": "^1.1.0",
+        "@types/serialize-javascript": "^5.0.4",
         "serialize-javascript": "^6.0.2",
-        "symlink-dir": "^6.0.2",
-        "tsx": "4.19.1",
         "write": "^2.0.0"
     },
     "devDependencies": {
+        "@types/tar-fs": "^2.0.4",
         "@biomejs/biome": "1.9.2",
         "@gez/lint": "0.0.9",
         "@types/find": "^0.2.4",
-        "@types/node": "20.12.12",
+        "@types/node": "22.9.0",
         "@types/send": "^0.17.4",
         "@types/write": "^2.0.4",
         "@vitest/coverage-v8": "1.6.0",
-        "stylelint": "16.5.0",
-        "typescript": "5.4.5",
+        "stylelint": "16.10.0",
+        "typescript": "5.6.3",
         "unbuild": "2.0.0",
         "vitest": "1.6.0"
     },
@@ -54,6 +53,11 @@
             "import": "./dist/index.mjs",
             "require": "./dist/index.cjs",
             "types": "./dist/index.d.ts"
+        },
+        "./cli": {
+            "import": "./dist/cli/index.mjs",
+            "require": "./dist/cli/index.cjs",
+            "types": "./dist/cli/index.d.ts"
         }
     },
     "main": "./dist/index.cjs",

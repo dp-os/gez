@@ -1,19 +1,15 @@
 import path from 'node:path';
 
-import { COMMAND, Gez, type GezOptions, getProjectPath } from '../core';
+import { COMMAND, Gez, type GezOptions } from '../core/gez';
+import { resolvePath } from '../core/resolve-path';
 
 export function cli() {
     const command = process.argv.slice(2)[0] || '';
     switch (command) {
-        case COMMAND.install:
-            process.env.NODE_ENV = 'production';
-            runDevApp(command);
-            break;
         case COMMAND.dev:
             runDevApp(command);
             break;
         case COMMAND.build:
-        case COMMAND.release:
         case COMMAND.preview:
             process.env.NODE_ENV = 'production';
             runDevApp(command);
@@ -29,9 +25,7 @@ export function cli() {
 }
 
 async function tsImport(file: string): Promise<Record<string, any>> {
-    // @ts-ignore
-    const result = await import('tsx/esm/api');
-    return result.tsImport(path.resolve(file), import.meta.url);
+    return import(path.resolve(file));
 }
 
 async function runDevApp(command: COMMAND) {
@@ -46,10 +40,6 @@ async function runDevApp(command: COMMAND) {
         }
     };
     switch (command) {
-        case COMMAND.install:
-            exit(await gez.install());
-            exit(await gez.destroy());
-            break;
         case COMMAND.dev:
             options?.createServer?.(gez);
             break;
@@ -57,10 +47,6 @@ async function runDevApp(command: COMMAND) {
             exit(await gez.build());
             exit(await gez.destroy());
             exit(await postCompileProdHook(gez));
-            break;
-        case COMMAND.release:
-            exit(await gez.release());
-            exit(await gez.destroy());
             break;
         case COMMAND.preview:
             exit(await gez.build());
@@ -76,7 +62,7 @@ async function runProdApp() {
 }
 
 async function getProdGez(): Promise<Gez> {
-    const file = getProjectPath(path.resolve(), 'dist/node/entry.js');
+    const file = resolvePath(path.resolve(), 'dist/node/src/entry.node.js');
     return import(file).then(async (module) => {
         const options: GezOptions = module.default || {};
 

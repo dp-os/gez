@@ -1,22 +1,20 @@
-import fs from 'node:fs/promises';
-import path from 'node:path';
 import serialize from 'serialize-javascript';
-import type { Gez, PackageJson } from './gez';
+import type { Gez } from './gez';
 
 /**
  * 渲染的参数
  */
 export interface RenderContextOptions {
     /**
-     * 静态资产的 base 地址，默认为空
+     * 静态资产的公共路径，可以根据业务的上下文来动态设置不同的路径。
      */
     base?: string;
     /**
-     * 调用 src/entry.server.ts 文件导出的哪个函数渲染，默认为 default。
+     * gez.render() 函数执行时，会调用 entry.server.ts 文件导出的名称。
      */
     entryName?: string;
     /**
-     * 自定义请求的参数
+     * 传递给 RenderContext 对象的 params 字段。
      */
     params?: Record<string, any>;
 }
@@ -25,34 +23,39 @@ export interface RenderContextOptions {
  * 渲染上下文
  */
 export class RenderContext {
+    /**
+     * Gez 的实例。
+     */
     public gez: Gez;
     /**
-     * 设置重定向的地址
+     * 重定向地址。
      */
     public redirect: string | null = null;
     /**
-     * 设置状态码
+     * 响应的状态码。
      */
     public status: number | null = null;
     private _html = '';
     /**
-     * 静态资源的基本地址
+     * 参数传入的 base。
      */
     public readonly base: string;
     /**
-     * 请求的参数
+     * 参数传入的 params。
      */
     public readonly params: Record<string, any>;
     /**
-     * 调用 src/entry.server.ts 文件导出的哪个函数渲染，默认为 default。
+     * 参数传入的 entryName。
      */
     public readonly entryName: string;
 
     /**
-     * 收集渲染过程中执行模块的元信息
+     * 服务端渲染过程中，收集模块执行过程中的 import.meta 对象。
      */
     public importMetaSet = new Set<ImportMeta>();
-
+    /**
+     * importMetaSet 收集完成后，调用 rc.commit() 函数时，会更新这个对象的信息。
+     */
     public files: RenderFiles = {
         js: [],
         css: [],
@@ -66,6 +69,9 @@ export class RenderContext {
         this.params = options.params ?? {};
         this.entryName = options.entryName ?? 'default';
     }
+    /**
+     * 响应的 html 内容。
+     */
     public get html() {
         return this._html;
     }
@@ -81,32 +87,18 @@ export class RenderContext {
     public serialize(input: any, options?: serialize.SerializeJSOptions) {
         return serialize(input, options);
     }
+    /**
+     * 在 window 对象，注入一个 JS 变量对象，data 必须是可以被序列化的。
+     */
     public state(varName: string, data: Record<string, any>): string {
         return `<script>window[${serialize(varName)}] = JSON.parse(${serialize(JSON.stringify(data))});</script>`;
     }
     /**
-     * 获取全部的远程包信息
-     */
-    public async getPackagesJson(): Promise<PackageJson[]> {
-        return Promise.all(
-            this.gez.moduleConfig.imports.map(async (item) => {
-                const file = path.resolve(
-                    item.localPath,
-                    'client/package.json'
-                );
-                const result = await fs.readFile(file, 'utf-8');
-                const json = JSON.parse(result) as PackageJson;
-                json.name = item.name;
-                return json;
-            })
-        );
-    }
-    /**
-     * 当 imports 依赖收集完毕后，需要提交变更
+     * 同构应用渲染完成后，提交模块依赖更新 files 对象。
      */
     public async commit() {
-        const packages = await this.getPackagesJson();
-        const chunkSet = new Set([`${this.gez.name}@src/entry.ts`]);
+        const { gez } = this;
+        const chunkSet = new Set([`${gez.name}@src/entry.client.ts`]);
         for (const item of this.importMetaSet) {
             if ('chunkName' in item && typeof item.chunkName === 'string') {
                 chunkSet.add(item.chunkName);
@@ -129,7 +121,7 @@ export class RenderContext {
             cb();
         };
 
-        packages.forEach((item) => {
+        this.gez.getManifestList('client').forEach((item) => {
             const base = `${this.base}/${item.name}/`;
             files.importmap.push(`${base}importmap.${item.hash}.final.js`);
             Object.entries(item.chunks).forEach(([filepath, info]) => {
@@ -153,6 +145,9 @@ export class RenderContext {
         files.js.push(...files.importmap, ...files.modulepreload);
         this.files = files;
     }
+    /**
+     * 根据 files 生成 JS 和 CSS 文件的预加载代码。
+     */
     public preload() {
         const css = this.files.css
             .map((url) => {
@@ -166,11 +161,17 @@ export class RenderContext {
             .join('');
         return css + js;
     }
+    /**
+     * 根据 files 生成服务端首屏加载的 CSS。
+     */
     public css() {
         return this.files.css
             .map((url) => `<link rel="stylesheet" href="${url}">`)
             .join('');
     }
+    /**
+     * 根据 files 生成 importmap 相关代码。
+     */
     public importmap() {
         return (
             this.files.importmap
@@ -179,9 +180,15 @@ export class RenderContext {
             `<script>if (window.__importmap__) {const s = document.createElement('script');s.type = 'importmap';s.innerText = JSON.stringify(window.__importmap__);document.body.appendChild(s);}</script>`
         );
     }
+    /**
+     * 根据 files 生成模块入口执行代码。
+     */
     public moduleEntry() {
-        return `<script type="module">import "${this.gez.name}/entry";</script>`;
+        return `<script type="module">import "${this.gez.name}/src/entry.client";</script>`;
     }
+    /**
+     * 根据 files 生成 ESM 模块预加载代码。
+     */
     public modulePreload() {
         return this.files.modulepreload
             .map((url) => `<link rel="modulepreload" href="${url}">`)
@@ -190,7 +197,7 @@ export class RenderContext {
 }
 
 /**
- * 服务渲染的处理函数
+ * 服务端渲染处理函数。
  */
 export type ServerRenderHandle = (render: RenderContext) => Promise<void>;
 
@@ -198,9 +205,24 @@ export type ServerRenderHandle = (render: RenderContext) => Promise<void>;
  * 当前页面渲染的文件
  */
 export interface RenderFiles {
-    js: string[];
+    /**
+     * CSS 文件列表。
+     */
     css: string[];
+    /**
+     * ESM 模块列表。
+     */
     modulepreload: string[];
+    /**
+     * importmap.js 文件列表。
+     */
     importmap: string[];
+    /**
+     * 全部的 JS 文件列表，包含 modulepreload 和 importmap。
+     */
+    js: string[];
+    /**
+     * 除了 JS 和 CSS 之外的其它文件列表。
+     */
     resources: string[];
 }

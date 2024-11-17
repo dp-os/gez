@@ -8,8 +8,8 @@
         ],
         "target": "ESNext",
         "module": "ESNext",
-        "strict": true,
         "moduleResolution": "node",
+        "strict": true,
         "skipLibCheck": true,
         "allowSyntheticDefaultImports": true,
         "paths": {

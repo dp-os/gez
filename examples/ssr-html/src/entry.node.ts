@@ -1,11 +1,10 @@
 import http from 'node:http';
-import path from 'node:path';
 import type { GezOptions } from '@gez/core';
-import { name } from '../package.json';
 
 export default {
-    // 设置应用的唯一名字，如果有多个项目，则名字不能重复
-    name,
+    packs: {
+        enable: true
+    },
     // 本地执行 dev 和 build 时会使用
     async createDevApp(gez) {
         // 这里应使用动态模块。生产依赖不存在。
@@ -42,14 +41,10 @@ export default {
         for (const url of list) {
             const rc = await gez.render({
                 base: '/gez',
-                params: { url: url, htmlBase: `/gez/${name}` }
+                params: { url: url, htmlBase: `/gez/${gez.name}` }
             });
             gez.writeSync(
-                path.resolve(
-                    gez.getProjectPath('dist/client'),
-                    url.substring(1),
-                    'index.html'
-                ),
+                gez.resolvePath('dist/client', url.substring(1), 'index.html'),
                 rc.html
             );
         }

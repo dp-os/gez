@@ -47,8 +47,8 @@ export default {
             }
         });
         gez.writeSync(
-            path.resolve(gez.getProjectPath('dist/client'), 'index.html'),
-            render.html
+            gez.resolvePath('dist/client', url.substring(1), 'index.html'),
+            rc.html
         );
     }
 } satisfies GezOptions;

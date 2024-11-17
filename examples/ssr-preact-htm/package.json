@@ -6,22 +6,20 @@
   "private": true,
   "scripts": {
     "dev": "gez dev",
-    "build": "npm run build:ssr && npm run build:dts && npm run release",
+    "build": "npm run build:dts && npm run build:ssr",
     "build:ssr": "gez build",
-    "build:dts": "tsc --declaration --emitDeclarationOnly --outDir dist/server/",
-    "release": "gez release",
     "preview": "gez preview",
     "start": "gez start",
-    "postinstall": "gez install"
+    "build:dts": "tsc --declaration --emitDeclarationOnly --outDir dist/src"
   },
   "author": "",
   "license": "MIT",
   "description": "",
   "dependencies": {
-    "@gez/core": "workspace:3.0.0-alpha.5"
+    "@gez/core": "workspace:*"
   },
   "devDependencies": {
-    "@gez/rspack": "workspace:3.0.0-alpha.5",
+    "@gez/rspack": "workspace:*",
     "@types/node": "22.8.6",
     "htm": "^3.1.1",
     "preact": "^10.24.3",

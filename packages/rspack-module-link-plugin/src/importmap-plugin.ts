@@ -25,7 +25,7 @@ export function importmapPlugin(
                     const importmapHash = `importmap.${stats.hash}.final.js`;
                     const isWeb = compilation.options.target === 'web';
 
-                    const { RawSource } = compiler.webpack.sources;
+                    const { RawSource } = compiler.rspack.sources;
                     const code = toImportmapJsCode(moduleConfig.name, exports);
                     if (isWeb) {
                         compilation.emitAsset(

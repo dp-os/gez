@@ -1,4 +1,4 @@
-import type { BuildTarget, Gez } from '@gez/core';
+import type { Gez } from '@gez/core';
 import { moduleLinkPlugin } from '@gez/rspack-module-link-plugin';
 import {
     type ExternalItem,
@@ -7,6 +7,7 @@ import {
     rspack
 } from '@rspack/core';
 import nodeExternals from 'webpack-node-externals';
+import type { BuildTarget } from './build-target';
 
 /**
  * 构建 Client、Server、Node 的基础配置
@@ -25,21 +26,21 @@ export function createRspackConfig(
             const importPaths: string[] = [];
             switch (buildTarget) {
                 case 'client':
-                    importPaths.push(gez.getProjectPath(`src/entry.client.ts`));
+                    importPaths.push(gez.resolvePath('src/entry.client.ts'));
                     !gez.isProd &&
                         importPaths.push(
                             `${resolve('webpack-hot-middleware/client')}?path=${gez.basePath}hot-middleware&timeout=5000&overlay=false`
                         );
                     break;
                 case 'server':
-                    importPaths.push(gez.getProjectPath(`src/entry.server.ts`));
+                    importPaths.push(gez.resolvePath('src/entry.server.ts'));
                     break;
                 case 'node':
-                    importPaths.push(gez.getProjectPath(`src/entry.node.ts`));
+                    importPaths.push(gez.resolvePath('src/entry.node.ts'));
                     break;
             }
             return {
-                './entry': {
+                [`./src/entry.${buildTarget}`]: {
                     import: importPaths,
                     library: {
                         type: 'module'
@@ -54,7 +55,7 @@ export function createRspackConfig(
             chunkLoading: gez.isProd ? 'import' : undefined,
             chunkFilename: 'chunks/[name].[contenthash:8].final.js',
             filename:
-                buildTarget === 'client' && gez.isProd
+                buildTarget !== 'node' && gez.isProd
                     ? '[name].[contenthash:8].final.js'
                     : '[name].js',
             cssFilename: gez.isProd
@@ -72,11 +73,11 @@ export function createRspackConfig(
             path: ((): string => {
                 switch (buildTarget) {
                     case 'client':
-                        return gez.getProjectPath('dist/client');
+                        return gez.resolvePath('dist/client');
                     case 'server':
-                        return gez.getProjectPath('dist/server');
+                        return gez.resolvePath('dist/server');
                     case 'node':
-                        return gez.getProjectPath('dist/node');
+                        return gez.resolvePath('dist/node');
                 }
             })()
         },

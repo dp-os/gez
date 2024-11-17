@@ -1,10 +1,5 @@
-import type { PackageJson, ParsedModuleConfig } from '@gez/core';
-import type {
-    Compilation,
-    Compiler,
-    StatsCompilation,
-    StatsModule
-} from '@rspack/core';
+import type { ManifestJson, ParsedModuleConfig } from '@gez/core';
+import type { Compilation, Compiler, StatsCompilation } from '@rspack/core';
 import { generateIdentifier } from './identifier';
 
 export function packagePlugin(
@@ -14,13 +9,13 @@ export function packagePlugin(
     compiler.hooks.thisCompilation.tap(
         'importmap-plugin',
         (compilation: Compilation) => {
-            let packageJson: PackageJson = {
+            let manifestJson: ManifestJson = {
                 name: moduleConfig.name,
                 version: '1.0.0',
                 hash: '',
                 type: 'module',
                 exports: {},
-                files: [],
+                buildFiles: [],
                 chunks: {}
             };
             compilation.hooks.processAssets.tap(
@@ -37,24 +32,24 @@ export function packagePlugin(
 
                     const exports = getExports(stats);
                     const hash = stats.hash ?? String(Date.now());
-                    const files = Object.keys(assets)
+                    const resources = Object.keys(assets)
                         .map(transFileName)
                         .filter((file) => !file.includes('hot-update'));
-                    packageJson = {
+                    manifestJson = {
                         name: moduleConfig.name,
                         version: '1.0.0',
                         hash,
                         type: 'module',
                         exports: exports,
-                        files,
+                        buildFiles: resources,
                         chunks: getChunks(moduleConfig, compilation)
                     };
 
-                    const { RawSource } = compiler.webpack.sources;
+                    const { RawSource } = compiler.rspack.sources;
 
                     compilation.emitAsset(
-                        'package.json',
-                        new RawSource(JSON.stringify(packageJson, null, 4))
+                        'manifest.json',
+                        new RawSource(JSON.stringify(manifestJson, null, 4))
                     );
                 }
             );
@@ -72,7 +67,7 @@ export function packagePlugin(
                         .PROCESS_ASSETS_STAGE_ADDITIONS
                 },
                 (assets) => {
-                    Object.entries(packageJson.chunks).forEach(
+                    Object.entries(manifestJson.chunks).forEach(
                         ([name, value]) => {
                             const asset = assets[value.js];
                             if (!asset) {
@@ -80,7 +75,7 @@ export function packagePlugin(
                             }
                             const { RawSource } = compiler.rspack.sources;
                             const source = new RawSource(
-                                `import.meta.chunkName = ${JSON.stringify(name)};${asset.source()}`
+                                `import.meta.chunkName = import.meta.chunkName ?? ${JSON.stringify(name)};${asset.source()}`
                             );
 
                             compilation.updateAsset(value.js, source);
@@ -133,7 +128,7 @@ function getChunks(config: ParsedModuleConfig, compilation: Compilation) {
         chunkModules: true,
         ids: true
     });
-    const buildChunks: PackageJson['chunks'] = {};
+    const buildChunks: ManifestJson['chunks'] = {};
     stats.chunks?.forEach((chunk) => {
         const module = chunk.modules
             ?.sort((a, b) => {
@@ -150,7 +145,7 @@ function getChunks(config: ParsedModuleConfig, compilation: Compilation) {
             root: config.root,
             name: config.name,
             filePath: module.nameForCondition
-        }).replace(/\/entry\.(client|server)\.ts$/, '/entry.ts');
+        });
 
         const css = chunk.files?.filter((file) => file.endsWith('.css')) ?? [];
         const resources = chunk.auxiliaryFiles ?? [];

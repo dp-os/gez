@@ -10,14 +10,16 @@
         "coverage": "vitest run --coverage --pass-with-no-tests",
         "build": "unbuild"
     },
+    "dependencies": {
+        "@import-maps/resolve": "^2.0.0"
+    },
     "devDependencies": {
         "@biomejs/biome": "1.9.2",
-        "@gez/core": "3.0.0-alpha.5",
-        "@gez/lint": "3.0.0-alpha.5",
-        "@types/node": "20.12.12",
+        "@gez/lint": "0.0.9",
+        "@types/node": "22.9.0",
         "@vitest/coverage-v8": "1.6.0",
-        "stylelint": "16.5.0",
-        "typescript": "5.4.5",
+        "stylelint": "16.10.0",
+        "typescript": "5.6.3",
         "unbuild": "2.0.0",
         "vitest": "1.6.0"
     },
@@ -38,7 +40,8 @@
         "src",
         "dist",
         "*.mjs",
-        "template"
+        "template",
+        "public"
     ],
     "gitHead": "a1175657723ffc3c0979cabe8ce4978268618270"
 }

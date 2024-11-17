@@ -20,7 +20,7 @@ export interface ModuleConfig {
     /**
      * 导入的模块基本配置
      */
-    imports?: Record<string, string | [string, string]>;
+    imports?: Record<string, string>;
     /**
      * 设置项目的外部依赖
      * 例如：
@@ -89,11 +89,6 @@ export interface ParsedModuleConfig {
          * 用于读取依赖 和 存放远程下载的依赖
          */
         localPath: string;
-        /**
-         * 远程路径
-         * 用于下载远程依赖
-         */
-        remoteUrl?: string;
     }[];
     /**
      * 外部依赖
@@ -156,24 +151,11 @@ export function parseModuleConfig(
         };
         const _imports = config.imports;
         Object.keys(config.imports).forEach((key) => {
-            const value = _imports[key];
-            if (typeof value === 'string') {
-                imports.push({
-                    name: key,
-                    localPath: getLocalPath(value)
-                });
-            } else if (Array.isArray(value)) {
-                try {
-                    const url = new URL(value[1]);
-                    imports.push({
-                        name: key,
-                        localPath: getLocalPath(value[0]),
-                        remoteUrl: url.href
-                    });
-                } catch {
-                    throw new TypeError(`'${key}' 'remoteUrl' parsing failed`);
-                }
-            }
+            const value = _imports[key].trim();
+            imports.push({
+                name: key,
+                localPath: getLocalPath(value)
+            });
         });
     }
 
