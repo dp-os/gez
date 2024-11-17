@@ -1,6 +1,6 @@
 {
     "name": "ssr-vue3",
-    "version": "3.0.0-alpha.5",
+    "version": "3.0.0-alpha.6",
     "private": true,
     "type": "module",
     "license": "MIT",
@@ -11,7 +11,7 @@
         "preview": "gez preview",
         "start": "gez start",
         "build:dts": "vue-tsc --declaration --emitDeclarationOnly --outDir dist/src"
-      },
+    },
     "dependencies": {
         "@gez/core": "workspace:*",
         "express": "^4.19.2"
