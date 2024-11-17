@@ -20,15 +20,15 @@ export async function pack(gez: Gez): Promise<boolean> {
 
     await packConfig.onBefore(gez, pkgJson);
 
-    const file = await pacote.tarball(gez.resolvePath('dist'), {
+    const data = await pacote.tarball(gez.resolvePath('dist'), {
         Arborist
     });
 
     packConfig.outputs.forEach((file) => {
-        gez.writeSync(gez.resolvePath('./', file), file);
+        gez.writeSync(gez.resolvePath('./', file), data);
     });
 
-    await packConfig.onAfter(gez, pkgJson, file);
+    await packConfig.onAfter(gez, pkgJson, data);
     return true;
 }
 
