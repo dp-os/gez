@@ -31,7 +31,7 @@ export default async (rc: RenderContext) => {
 
 在构建阶段，Gez 会给服务端生成的每一个 JS 文件头部注入一个 `import.meta.chunkName` 字段，该字段提供了一个 chunk 文件打包的入口源文件。
 ```ts title="[chunk].js"
-import.meta.chunkName="ssr-vue2-remote@src/entry.ts";
+import.meta.chunkName= import.meta.chunkName ?? "ssr-vue2-remote@src/entry.ts";
 ```
 `ssr-vue2-remote` 是我们的服务名，`src/entry.ts` 是这个文件打包的第一个文件。    
 
@@ -41,7 +41,7 @@ import('ssr-vue2-remote/src/app.ts');
 ```
 上述代码，就会生成
 ```ts
-import.meta.chunkName="ssr-vue2-remote@src/app.ts";
+import.meta.chunkName = import.meta.chunkName ?? "ssr-vue2-remote@src/app.ts";
 ```
 ### Vue2 例子
 将渲染上下文的 `importMetaSet` 对象传递给 Vue SSR 渲染的上下文对象中。
