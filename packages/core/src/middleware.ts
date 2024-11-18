@@ -14,12 +14,7 @@ export function createMiddleware(gez: Gez): Middleware {
         const base = `/${item.name}/`;
         const baseUrl = new URL(`file:`);
         const root = path.resolve(item.localPath, 'client');
-        const onHeaders = (res: ServerResponse) => {
-            res.setHeader(
-                'cache-control',
-                gez.isProd ? 'public, max-age=31536000, immutable' : 'no-cache'
-            );
-        };
+        const reFinal = /\.final\.[A-z]+$/;
         return (req, res, next) => {
             const url = req.url ?? '/';
             const { pathname } = new URL(req.url ?? '/', baseUrl);
@@ -32,7 +27,16 @@ export function createMiddleware(gez: Gez): Middleware {
             send(req, pathname.substring(base.length - 1), {
                 root
             })
-                .on('headers', onHeaders)
+                .on('headers', () => {
+                    if (reFinal.test(pathname)) {
+                        res.setHeader(
+                            'cache-control',
+                            'public, max-age=31536000, immutable'
+                        );
+                    } else {
+                        res.setHeader('cache-control', 'no-cache');
+                    }
+                })
                 .pipe(res);
         };
     });

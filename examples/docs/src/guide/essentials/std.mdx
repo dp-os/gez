@@ -21,14 +21,27 @@ root
 │  ├─ entry.client.ts    # 客户端应用程序入口。
 │  └─ entry.node.ts      # Node 服务器应用程序入口。
 ```
-::: tip
+::: tip 拓展知识
 - `gez.name` 来源于 `package.json` 的 `name` 字段。
 - `dist/package.json` 来源于根目录的 `package.json`。
+- 设置 `packs.enable` 为 `true` 时，才会对 `dist` 目录进行归档。
 
 :::
 
 ## 缓存策略
 在构建生产代码时，可以设置强缓存部分的资源，总是以 `.final[ext]` 作为文件名生成规则。也就是说符合这个规则的文件，可以设置强缓存，否则应设置协商缓存。
+
+### `final` 文件
+```ts
+res.setHeader('cache-control', 'public, max-age=31536000, immutable')
+```
+### 其它文件
+```ts
+res.setHeader('cache-control', 'no-cache')
+```
+::: tip 小知识
+使用了 `gez.middleware` 中间件，就会默认帮你处理这个逻辑。在生产环境时，你可以自己来实现静态服务器来控制不同的缓存策略，对于你来说 `gez.middleware` 是可选的。[点击这里](https://github.com/dp-os/gez/blob/master/packages/core/src/middleware.ts) 可以参考实现。
+:::
 
 ## Node experimental
 在开发时，`gez` 会启用一些 Node 实验性质的功能，来获得开发环境支持 ESM 热更新和 TypeScript 的原生支持。
@@ -40,5 +53,5 @@ node --experimental-vm-modules --experimental-import-meta-resolve --experimental
 NODE_ENV=production node dist/index.js
 ```
 ::: warning
-如果你在生产环境中使用 `gez start` 来启动你的应用程序，可能会存在未知的风险，请始终使用 `NODE_ENV=production node dist/index.js` 来启动。
+如果你在生产环境中使用 `gez start` 来启动你的应用程序，由于启用了 Node 实验性功能的原因，可能会给你的程序带来未知的风险，请始终使用 `NODE_ENV=production node dist/index.js` 来启动。
 :::
