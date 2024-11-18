@@ -1,8 +1,8 @@
 {
-    "version": "3.0.0-alpha.9",
-    "packages": [
-        "packages/*",
-        "examples/*"
-    ],
-    "npmClient": "pnpm"
+  "version": "3.0.0-alpha.10",
+  "packages": [
+    "packages/*",
+    "examples/*"
+  ],
+  "npmClient": "pnpm"
 }
