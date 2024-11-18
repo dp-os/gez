@@ -1,6 +1,6 @@
 export { type GezOptions, Gez } from './gez';
 export {
-    type PathType,
+    PathType,
     type ModuleConfig,
     type ParsedModuleConfig,
     parseModuleConfig
