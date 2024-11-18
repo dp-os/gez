@@ -1,17 +1,12 @@
 # 基本路径
 
 ## 默认路径
-静态资产的文件路径，总是使用 `name` 来生成固定的路径：`/${name}/`。
+静态资产的文件路径，总是会读取 `package.json` 的 `name` 来生成固定的路径：`/${name}/`。
 ### src/entry.node.ts
-```ts
-import http from 'node:http';
-import type { GezOptions } from '@gez/core';
-import { name } from '../package.json';
-
-export default {
-    name,
-} satisfies GezOptions;
-
+```json title="package.json"
+{
+    "name": "ssr-module-auth"
+}
 ```
 
 ## 动态路径
