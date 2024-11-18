@@ -10,7 +10,7 @@
     "build:ssr": "gez build",
     "preview": "gez preview",
     "start": "gez start",
-    "build:dts": "tsc --declaration --emitDeclarationOnly --outDir dist/types"
+    "build:dts": "tsc --declaration --emitDeclarationOnly --outDir dist/src"
   },
   "author": "",
   "license": "MIT",
