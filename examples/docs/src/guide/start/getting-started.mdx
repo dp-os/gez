@@ -34,13 +34,11 @@ npm init
 {
     "scripts": {
         "dev": "gez dev",
-        "build": "npm run build:ssr && npm run build:dts && npm run release",
+        "build": "npm run build:dts && npm run build:ssr",
         "build:ssr": "gez build",
-        "build:dts": "tsc --noEmit --outDir dist/src",
-        "release": "gez release",
         "preview": "gez preview",
         "start": "gez start",
-        "postinstall": "gez install"
+        "build:dts": "tsc --declaration --emitDeclarationOnly --outDir dist/src"
     }
 }
 ```
@@ -49,15 +47,54 @@ npm init
 你需要手动配置 [tsconfig.json](https://www.typescriptlang.org/tsconfig/) 文件，否则执行 `build:dts` 命令会报错。
 :::
 
-## 基本例子
-基本结构
+## 目录结构
 ```
 - src/
-  - entry.client.ts  # 客户端渲染入口
-  - entry.server.ts  # 服务端渲染入口
-  - entry.node.ts    # 创建服务器
+  - entry.client.ts  # 客户端渲染入口。
+  - entry.server.ts  # 服务端渲染入口。
+  - entry.node.ts    # 创建服务器。
+- tsconfig.json      # TS 的配置。
+- package.json       # 软件包配置。
 ```
-### 客户端渲染
+## tsconfig.json
+
+```json
+{
+    "compilerOptions": {
+        "isolatedModules": true,
+        "experimentalDecorators": true,
+        "resolveJsonModule": true,
+        "types": [
+            "@types/node"
+        ],
+        "target": "ESNext",
+        "module": "ESNext",
+        "moduleResolution": "node",
+        "strict": true,
+        "skipLibCheck": true,
+        "allowSyntheticDefaultImports": true,
+        "paths": {
+            "ssr-html/src/*": [
+                "./src/*"
+            ],
+            "ssr-html/*": [
+                "./*"
+            ]
+        }
+    },
+    "include": [
+        "src"
+    ],
+    "exclude": [
+        "dist"
+    ]
+  }
+```
+::: warning
+你需要将上面的 `ssr-html`，替换成 `package.json` 的 `name` 字段的值。
+:::
+
+## 客户端渲染
 更新当前时间
 ```ts title="src/entry.client.ts"
 const time = document.querySelector('time');
@@ -66,7 +103,7 @@ setInterval(() => {
 }, 1000);
 
 ```
-### 服务端渲染
+## 服务端渲染
 模拟框架的 SSR API，渲染出 HTML 内容返回
 ```ts title="src/entry.server.ts"
 import type { RenderContext } from '@gez/core';
@@ -101,7 +138,7 @@ export default async (rc: RenderContext) => {
 
 ```
 
-### 创建服务器
+## 创建服务器
 创建一个 web 服务器，来处理客户请求
 ```ts title="src/entry.node.ts"
 import http from 'node:http';
@@ -144,7 +181,7 @@ export default {
 
 ```
 
-### 启动项目
+## 启动项目
 ```bash
 npm run dev
 ```
