@@ -31,7 +31,14 @@ root
 在构建生产代码时，可以设置强缓存部分的资源，总是以 `.final[ext]` 作为文件名生成规则。也就是说符合这个规则的文件，可以设置强缓存，否则应设置协商缓存。
 
 ## Node experimental
-在开发时，由于需要支持 ESM 热更新 和 TypeScript，`gez` 会启用一些 Node 实验性质的功能。
+在开发时，`gez` 会启用一些 Node 实验性质的功能，来获得开发环境支持 ESM 热更新和 TypeScript 的原生支持。
 ```bash
 node --experimental-vm-modules --experimental-import-meta-resolve --experimental-strip-types
 ```
+但是在生产环境中，我们完全不需要这些，你应该使用构建后的产物来运行程序。
+```bash
+NODE_ENV=production node dist/index.js
+```
+::: warning
+如果你在生产环境中使用 `gez start` 来启动你的应用程序，可能会存在未知的风险，请始终使用 `NODE_ENV=production node dist/index.js` 来启动。
+:::
