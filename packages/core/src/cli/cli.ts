@@ -64,7 +64,7 @@ async function runProdApp() {
 async function getProdGez(): Promise<Gez> {
     const file = resolvePath(process.cwd(), 'dist/node/src/entry.node.js');
     return import(file).then(async (module) => {
-        const options: GezOptions = module.default || {};
+        const options: GezOptions = module.default ?? {};
 
         const gez = new Gez(options);
         await gez.init(COMMAND.start);
@@ -73,9 +73,6 @@ async function getProdGez(): Promise<Gez> {
 }
 
 async function postCompileProdHook(gez: Gez): Promise<boolean> {
-    if (!gez._postCompileProdHook) {
-        return true;
-    }
     gez = await getProdGez();
     try {
         await gez._postCompileProdHook?.(gez);

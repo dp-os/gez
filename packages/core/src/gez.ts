@@ -62,7 +62,7 @@ export enum COMMAND {
     start = 'start'
 }
 
-function noon(gez: Gez) {}
+async function noon(gez: Gez) {}
 
 export class Gez {
     private readonly _options: GezOptions;
@@ -156,7 +156,7 @@ export class Gez {
         return this._options.createServer ?? noon;
     }
     public get _postCompileProdHook() {
-        return this._options.postCompileProdHook;
+        return this._options.postCompileProdHook ?? noon;
     }
 
     /**
