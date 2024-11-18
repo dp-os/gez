@@ -1,0 +1,31 @@
+# 通用约定
+
+## 目录规范
+这是一个约定，无法通过程序配置来修改。
+```txt
+root
+├─ package.json          # 软件包配置。
+├─ tsconfig.json         # TypeScript 配置。
+│─ dist                  # 编译输出目录。
+│  ├─ package.json       # 编译输出后的软件包配置。
+│  ├─ server             # 服务端编译输出。
+│  │  └─ manifest.json   # 编译清单输出，用于生成 importmap。
+│  ├─ node               # Node 服务器程序编译输出。
+│  ├─ client             # 客户端编译输出。
+│  │  ├─ versions        # 版本存储目录。
+│  │  │  └─ latest.tgz   # 将 dist 目录归档，对外提供软件包分发。
+│  │  └─ manifest.json   # 编译清单输出，用于生成 importmap。
+│  └─ src                # 使用 tsc 生成的文件类型。
+├─ src
+│  ├─ entry.server.ts    # 服务端应用程序入口。
+│  ├─ entry.client.ts    # 客户端应用程序入口。
+│  └─ entry.node.ts      # Node 服务器应用程序入口。
+```
+::: tip
+- `gez.name` 来源于 `package.json` 的 `name` 字段。
+- `dist/package.json` 来源于根目录的 `package.json`。
+
+:::
+
+## 缓存策略
+在构建生产代码时，可以设置强缓存部分的资源，总是以 `.final[ext]` 作为文件名生成规则。也就是说符合这个规则的文件，可以设置强缓存，否则应设置协商缓存。

@@ -1,4 +1,5 @@
 [
+    "std",
     "rspack",
     "render-context",
     "csr",
