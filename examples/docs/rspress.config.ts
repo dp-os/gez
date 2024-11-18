@@ -1,5 +1,8 @@
-import * as path from 'node:path';
+import path from 'node:path';
 import { defineConfig } from 'rspress/config';
+import { generateDts } from './generate-dts';
+
+generateDts();
 
 export default defineConfig({
     root: path.join(__dirname, 'src'),
@@ -20,6 +23,5 @@ export default defineConfig({
                 content: 'https://github.com/dp-os/gez'
             }
         ]
-    },
-    markdown: {}
+    }
 });

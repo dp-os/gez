@@ -27,9 +27,15 @@ importers:
       '@types/node':
         specifier: ^16
         version: 16.18.119
+      '@types/write':
+        specifier: ^2.0.4
+        version: 2.0.4
       typescript:
         specifier: 5.1.3
         version: 5.1.3
+      write:
+        specifier: ^2.0.0
+        version: 2.0.0
 
   examples/ssr-html:
     dependencies:

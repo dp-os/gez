@@ -1,7 +1,7 @@
 import path from 'node:path';
 
-import { COMMAND, Gez, type GezOptions } from '../core/gez';
-import { resolvePath } from '../core/resolve-path';
+import { COMMAND, Gez, type GezOptions } from '../gez';
+import { resolvePath } from '../resolve-path';
 
 export function cli() {
     const command = process.argv.slice(2)[0] || '';
