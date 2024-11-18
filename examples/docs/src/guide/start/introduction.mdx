@@ -22,14 +22,14 @@ Gez 诞生的初衷，就是为了实现一个支持 SSR 的微服务架构，�
 - 构建出具有内容哈希的产物，使用 [importmap](https://caniuse.com/?search=import%20map) 将 `import vue from 'vue'` 替换成 `ssr-npm/npm/vue.[contenthash].js`，这样静态文件就可以设置为强缓存了。对于不支持 [importmap](https://caniuse.com/?search=import%20map) 的浏览器，[es-module-shims](https://github.com/guybedford/es-module-shims) 提供了降级的方案
 - Rspack 的 externalsType 支持使用 [module-import](https://rspack.dev/config/externals#externalstypemodule-import)，来设置 ESM 模块的外部依赖。
 - 在 Node 上实现 ESM 模块热更新不是一件容易的事情，庆幸的是可以通过启用 `node --experimental-vm-modules --experimental-import-meta-resolve` 来实现它。
-- **最终确定使用 Rspack 和 Node20 来实现 `v3.0` 版本。**
+- 在 Node 上运行 TypeScript 并不是一件复杂的事情，在 Node22.6 版本支持 `--experimental-strip-types`，可以原生支持运行 TS 了。
 
 ::: tip
 从最早的构思，到调研 Vite、farmfe、Rspack的调研，中间经历了一年多的时间，庆幸的是这条路最终走通了，并且达到了生产可用。
 :::
 
 ## 定位
-Gez 的定位并不是成为 [Next.js](https://nextjs.org) 或 [Nuxt.js](https://nuxt.com/) 那样大而全的框架，而是成为一个具有 Typescript、ESM、SSR、[模块链接](./essentials/module-link.mdx)等特性的基础设施，你可以在这个基础上来构建属于你自己的 `Next.js`。如果你需要定制化实现，它会很适合你。
+Gez 的定位并不是成为 [Next.js](https://nextjs.org) 或 [Nuxt.js](https://nuxt.com/) 那样大而全的框架，而是成为一个具有 Typescript、ESM、SSR、[模块链接](/guide/essentials/module-link.mdx)等特性的基础设施，你可以在这个基础上来构建属于你自己的 `Next.js`。如果你需要定制化实现，它会很适合你。
 
 ## 兼容性
 所有的主流浏览器都已经支持，针对一些低版本的浏览器，可以提供一个升级的页面来引导用户升级它的浏览器。
