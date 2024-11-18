@@ -177,7 +177,7 @@ export class RenderContext {
             this.files.importmap
                 .map((url) => `<script src="${url}"></script>`)
                 .join('') +
-            `<script>if (window.__importmap__) {const s = document.createElement('script');s.type = 'importmap';s.innerText = JSON.stringify(window.__importmap__);document.body.appendChild(s);}</script>`
+            `<script>(() => {const s = document.createElement("script");s.type = "importmap";s.innerText = JSON.stringify(window.__importmap__ ?? {});document.body.appendChild(s);})();</script>`
         );
     }
     /**
