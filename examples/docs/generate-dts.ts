@@ -16,7 +16,7 @@ interface PkgItem {
 
 const list: PkgItem[] = [
     {
-        title: '@gen/core',
+        title: '@gez/core',
         input: path.resolve('../../packages/core/dist'),
         name: 'core',
         files: [
@@ -51,7 +51,7 @@ const list: PkgItem[] = [
         ]
     },
     {
-        title: '@gen/rspack',
+        title: '@gez/rspack',
         input: path.resolve('../../packages/rspack/dist'),
         name: 'rspack',
         files: [
@@ -70,7 +70,7 @@ const list: PkgItem[] = [
         ]
     },
     {
-        title: '@gen/rspack-vue',
+        title: '@gez/rspack-vue',
         input: path.resolve('../../packages/rspack-vue/dist'),
         name: 'rspack-vue',
         files: [
