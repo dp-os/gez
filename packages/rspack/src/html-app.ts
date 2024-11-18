@@ -45,7 +45,7 @@ export interface RspackHtmlAppOptions extends RspackAppOptions {
 }
 export async function createRspackHtmlApp(
     gez: Gez,
-    options?: RspackHtmlAppOptions
+    options: RspackHtmlAppOptions = {}
 ) {
     options = {
         ...options,

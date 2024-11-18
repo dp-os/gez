@@ -9,9 +9,10 @@
     "preview": "rspress preview"
   },
   "dependencies": {
-    "rspress": "^1.32.0"
+    "rspress": "^1.37.1"
   },
   "devDependencies": {
+    "@rspress/plugin-typedoc": "^1.37.1",
     "@types/node": "^16",
     "@types/write": "^2.0.4",
     "typescript": "5.1.3",

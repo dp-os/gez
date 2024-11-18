@@ -1,8 +1,9 @@
 import path from 'node:path';
+// import { generateDts } from './generate-dts';
+import { pluginTypeDoc } from '@rspress/plugin-typedoc';
 import { defineConfig } from 'rspress/config';
-import { generateDts } from './generate-dts';
 
-generateDts();
+// generateDts();
 
 export default defineConfig({
     root: path.join(__dirname, 'src'),
@@ -23,5 +24,14 @@ export default defineConfig({
                 content: 'https://github.com/dp-os/gez'
             }
         ]
-    }
+    },
+    plugins: [
+        // @ts-ignore
+        pluginTypeDoc({
+            entryPoints: [
+                path.join('../../packages/core/src/index.ts')
+                // path.join('../../packages/rspack/src/index.ts')
+            ]
+        })
+    ]
 });
