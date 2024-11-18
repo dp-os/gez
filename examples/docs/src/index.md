@@ -25,7 +25,7 @@ features:
     details: 支持 Vue2、Vue3、React 等不同框架实现 SSR。
     icon: ☁️
   - title: 基准支持
-    details: Node20 和支持 ESM dynamic import 和 import.meta 的浏览器。
+    details: Node22.9 和支持 ESM dynamic import 和 import.meta 的浏览器。
     icon: 😎
   - title: 长久维护
     details: Genesis 从 2020 年迭代至今，现更名为 Gez。
