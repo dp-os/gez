@@ -8,7 +8,7 @@ export async function cli(command: string) {
     switch (command) {
         case COMMAND.dev:
             gez = new Gez(await Gez.getSrcOptions());
-            exit(await gez.init(COMMAND.start));
+            exit(await gez.init(COMMAND.dev));
             gez = null;
             break;
         case COMMAND.start:
