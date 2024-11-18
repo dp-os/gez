@@ -1,6 +1,6 @@
 {
   "name": "ssr-html",
-  "version": "3.0.0-alpha.7",
+  "version": "3.0.0-alpha.8",
   "main": "index.js",
   "type": "module",
   "private": true,
