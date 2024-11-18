@@ -164,8 +164,14 @@ export class Gez {
     /**
      * 执行 gez build 命令回调。
      */
-    public get postCompileProdHook() {
-        return this._options.postCompileProdHook ?? noon;
+    public async postCompileProdHook(): Promise<boolean> {
+        try {
+            await this._options.postCompileProdHook?.(this);
+            return true;
+        } catch (e) {
+            console.error(e);
+            return false;
+        }
     }
 
     /**

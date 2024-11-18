@@ -48,7 +48,7 @@ async function runDevApp(command: COMMAND): Promise<void> {
         case COMMAND.build:
             exit(await gez.build());
             exit(await gez.destroy());
-            exit(await postCompileProdHook(gez));
+            exit(await (await getProdGez()).postCompileProdHook());
             break;
     }
 }
@@ -67,15 +67,4 @@ async function getProdGez(): Promise<Gez> {
         await gez.init(COMMAND.start);
         return gez;
     });
-}
-
-async function postCompileProdHook(gez: Gez): Promise<boolean> {
-    gez = await getProdGez();
-    try {
-        await gez.postCompileProdHook(gez);
-    } catch (e) {
-        console.error(e);
-        return false;
-    }
-    return true;
 }
