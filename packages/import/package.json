@@ -23,7 +23,7 @@
         "unbuild": "2.0.0",
         "vitest": "1.6.0"
     },
-    "version": "3.0.0-alpha.11",
+    "version": "3.0.0-alpha.12",
     "type": "module",
     "private": false,
     "exports": {
