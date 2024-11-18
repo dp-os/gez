@@ -137,6 +137,19 @@ function rewriteBuild(gez: Gez, options: RspackAppOptions = {}) {
                 return false;
             }
         }
+        gez.writeSync(
+            gez.resolvePath('dist/index.js'),
+            `
+import { Gez } from '@gez/core';
+import options from './node/src/entry.node.js';
+
+process.env.NODE_ENV = 'production';
+
+const gez = new Gez(options);
+await gez.init(gez.COMMAND.start);
+
+`.trim()
+        );
         return pack(gez);
     };
 }

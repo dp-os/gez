@@ -3,6 +3,7 @@ import path from 'node:path';
 export type ProjectPath =
     | './'
     | 'dist'
+    | 'dist/index.js'
     | 'dist/package.json'
     | 'dist/client'
     | 'dist/client/manifest.json'
