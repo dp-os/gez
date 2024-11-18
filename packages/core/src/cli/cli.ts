@@ -3,23 +3,26 @@ import path from 'node:path';
 import { COMMAND, Gez, type GezOptions } from '../gez';
 import { resolvePath } from '../resolve-path';
 
-export function cli() {
-    const command = process.argv.slice(2)[0] || '';
+export async function cli(command: string) {
     switch (command) {
         case COMMAND.dev:
-            runDevApp(command);
+            await runDevApp(COMMAND.dev);
             break;
         case COMMAND.build:
+            process.env.NODE_ENV = 'production';
+            await runDevApp(COMMAND.build);
+            break;
         case COMMAND.preview:
             process.env.NODE_ENV = 'production';
-            runDevApp(command);
+            await runDevApp(COMMAND.build);
+            await runProdApp();
             break;
         case COMMAND.start:
             process.env.NODE_ENV = 'production';
-            runProdApp();
+            await runProdApp();
             break;
         default:
-            tsImport(command);
+            await tsImport(command);
             break;
     }
 }
@@ -28,11 +31,10 @@ async function tsImport(file: string): Promise<Record<string, any>> {
     return import(path.resolve(file));
 }
 
-async function runDevApp(command: COMMAND) {
+async function runDevApp(command: COMMAND): Promise<void> {
     const module = await tsImport(path.resolve('src/entry.node.ts'));
-    const options: GezOptions = module.default || {};
 
-    const gez = new Gez(options);
+    const gez = new Gez(module.default);
     await gez.init(command);
     const exit = (ok: boolean) => {
         if (!ok) {
@@ -41,24 +43,19 @@ async function runDevApp(command: COMMAND) {
     };
     switch (command) {
         case COMMAND.dev:
-            options?.createServer?.(gez);
+            await gez.createServer(gez);
             break;
         case COMMAND.build:
             exit(await gez.build());
             exit(await gez.destroy());
             exit(await postCompileProdHook(gez));
             break;
-        case COMMAND.preview:
-            exit(await gez.build());
-            exit(await gez.destroy());
-            await runProdApp();
-            break;
     }
 }
 
 async function runProdApp() {
     const gez = await getProdGez();
-    return gez._createServer(gez);
+    return gez.createServer(gez);
 }
 
 async function getProdGez(): Promise<Gez> {
@@ -75,7 +72,7 @@ async function getProdGez(): Promise<Gez> {
 async function postCompileProdHook(gez: Gez): Promise<boolean> {
     gez = await getProdGez();
     try {
-        await gez._postCompileProdHook?.(gez);
+        await gez.postCompileProdHook(gez);
     } catch (e) {
         console.error(e);
         return false;

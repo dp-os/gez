@@ -2,4 +2,4 @@
 
 import { cli } from './cli';
 
-cli();
+cli(process.argv.slice(2)[0] || '');

@@ -152,10 +152,19 @@ export class Gez {
         }
         throw new Error(`'app' does not exist`);
     }
-    public get _createServer() {
+    /**
+     * 执行下面的命令，会创建服务器。
+     * - gez dev
+     * - gez start
+     * - gez preview
+     */
+    public get createServer() {
         return this._options.createServer ?? noon;
     }
-    public get _postCompileProdHook() {
+    /**
+     * 执行 gez build 命令回调。
+     */
+    public get postCompileProdHook() {
         return this._options.postCompileProdHook ?? noon;
     }
 
