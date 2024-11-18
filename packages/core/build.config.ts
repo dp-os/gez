@@ -11,7 +11,7 @@ export default defineBuildConfig({
             cleanDist: true,
             declaration: true,
             esbuild: {
-                target: 'node20'
+                target: 'node22'
             }
         },
         {
@@ -19,7 +19,7 @@ export default defineBuildConfig({
             ext: 'cjs',
             format: 'cjs',
             esbuild: {
-                target: 'node20'
+                target: 'node22'
             }
         }
     ]

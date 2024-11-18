@@ -16,7 +16,7 @@ export default defineBuildConfig({
                     'firefox78',
                     'safari14',
                     'edge88',
-                    'node20'
+                    'node22'
                 ]
             }
         },
@@ -25,7 +25,7 @@ export default defineBuildConfig({
             ext: 'cjs',
             format: 'cjs',
             esbuild: {
-                target: 'node20'
+                target: 'node22'
             }
         }
     ]
