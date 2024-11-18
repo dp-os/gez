@@ -6,18 +6,15 @@
 - 在调用其它服务时保持命名风格的统一
 - 执行 [npm run build:dts](./command.mdx) 命令，生成的类型可以被其它服务使用。
 
-### entry.node.ts
+### package.json
 
-```ts
-import type { GezOptions } from '@gez/core';
-
-export default {
-    name: 'ssr-module-auth'
-} satisfies GezOptions;
-
+```json title="package.json"
+{
+    "name": "ssr-module-auth"
+}
 ```
 
-程序会读取这里的 `name` 配置，设置别名为 `ssr-module-auth`。
+程序会读取 `package.json` 的 `name` 字段，设置别名为 `ssr-module-auth`。
 
 ### tsconfig.json
 同时还需要在 `tsconfig.json` 配置别名。
@@ -35,9 +32,6 @@ export default {
     }
 }
 ```
-::: tip
-如果你想了解多服务类型如何工作的，可以了解一下 [gez release](./command.mdx#gez-release) 命令的说明。
-:::
 
 ## 自定义别名
 业务模块，你应该总是使用默认的别名，但是一些第三方包有时需要设置别名，你可以这样做。
