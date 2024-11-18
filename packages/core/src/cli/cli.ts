@@ -62,7 +62,7 @@ async function runProdApp() {
 }
 
 async function getProdGez(): Promise<Gez> {
-    const file = resolvePath(path.resolve(), 'dist/node/src/entry.node.js');
+    const file = resolvePath(process.cwd(), 'dist/node/src/entry.node.js');
     return import(file).then(async (module) => {
         const options: GezOptions = module.default || {};
 
