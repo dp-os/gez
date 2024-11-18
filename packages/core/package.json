@@ -55,9 +55,9 @@
             "types": "./dist/index.d.ts"
         },
         "./cli": {
-            "import": "./dist/cli/index.mjs",
-            "require": "./dist/cli/index.cjs",
-            "types": "./dist/cli/index.d.ts"
+            "import": "./dist/cli/cli.mjs",
+            "require": "./dist/cli/cli.cjs",
+            "types": "./dist/cli/cli.d.ts"
         }
     },
     "main": "./dist/index.cjs",

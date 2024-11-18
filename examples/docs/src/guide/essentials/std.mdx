@@ -29,3 +29,9 @@ root
 
 ## 缓存策略
 在构建生产代码时，可以设置强缓存部分的资源，总是以 `.final[ext]` 作为文件名生成规则。也就是说符合这个规则的文件，可以设置强缓存，否则应设置协商缓存。
+
+## Node experimental
+在开发时，由于需要支持 ESM 热更新 和 TypeScript，`gez` 会启用一些 Node 实验性质的功能。
+```bash
+node --experimental-vm-modules --experimental-import-meta-resolve --experimental-strip-types
+```

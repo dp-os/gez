@@ -62,9 +62,23 @@ export enum COMMAND {
     start = 'start'
 }
 
-async function noon(gez: Gez) {}
-
 export class Gez {
+    /**
+     * 获取 src/entry.node.ts 文件导出的选项
+     */
+    public static async getSrcOptions(): Promise<GezOptions> {
+        return import(path.resolve(process.cwd(), './src/entry.node.ts')).then(
+            (m) => m.default
+        );
+    }
+    /**
+     * 获取 dist/node/src/entry.node.js 文件导出的选项
+     */
+    public static async getDistOptions(): Promise<GezOptions> {
+        return import(path.resolve(process.cwd(), './src/entry.node.ts')).then(
+            (m) => m.default
+        );
+    }
     private readonly _options: GezOptions;
     private _app: App | null = null;
     private _command: COMMAND | null = null;
@@ -158,8 +172,8 @@ export class Gez {
      * - gez start
      * - gez preview
      */
-    public get createServer() {
-        return this._options.createServer ?? noon;
+    public async createServer(): Promise<void> {
+        await this._options?.createServer?.(this);
     }
     /**
      * 执行 gez build 命令回调。
@@ -177,7 +191,7 @@ export class Gez {
     /**
      * 初始化实例。
      */
-    public async init(command: COMMAND) {
+    public async init(command: COMMAND): Promise<boolean> {
         if (this._command) {
             throw new Error('Cannot be initialized repeatedly');
         }
@@ -190,6 +204,17 @@ export class Gez {
                 ? await createDevApp(this)
                 : await createApp(this);
         this._app = app;
+        switch (command) {
+            case COMMAND.dev:
+            case COMMAND.start:
+                await this.createServer();
+                break;
+            case COMMAND.build:
+                return this.build();
+            case COMMAND.preview:
+                break;
+        }
+        return true;
     }
     /**
      * 销毁实例，释放内存。
