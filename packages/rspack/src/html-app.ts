@@ -1,5 +1,6 @@
 import type { Gez } from '@gez/core';
 import { type RuleSetUse, type SwcLoaderOptions, rspack } from '@rspack/core';
+import NodePolyfillPlugin from 'node-polyfill-webpack-plugin';
 import {
     type RspackAppConfigContext,
     type RspackAppOptions,
@@ -138,7 +139,10 @@ export async function createRspackHtmlApp(
                     })
                 ]
             };
-            config.plugins = config.plugins ?? [];
+            config.plugins = [
+                new NodePolyfillPlugin(),
+                ...(config.plugins ?? [])
+            ];
             config.devtool = false;
             config.cache = false;
             if (options.definePlugin) {
