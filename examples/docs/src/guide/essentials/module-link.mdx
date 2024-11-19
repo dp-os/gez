@@ -1,196 +1,129 @@
 # 模块链接
-一个大型项目，总是会拆分成组件库、工具库、业务模块等。它们总是会写在不同的地方，以独立的仓库、monorepo 包等形式存在，但最终都需要系统的主程序来链接这些模块。Gez 的核心功能就是帮你把这些不同地方的模块，快速的链接到一起。实现一个服务发布，其它服务同时更新。
+我们假设有三个服务，分别是 `ssr-base`、`ssr-module-auth`、`ssr-main`，其中
+- **ssr-base** 基础服务，负责第三方依赖的管理，以及提供基础的业务组件、工具函数。
+- **ssr-module-auth** 业务服务，按照业务模块来拆分服务，这里是负责用户认证相关，包含登录、注册、找回密码、验证码相关，最终对外会导出一个路由的配置文件。
+- **ssr-main** 聚合服务，将不同业务服务导出的路由配置注册进路由总线中，实现应用程序的聚合。
 
-:::tip
-Gez 默认支持 SSR，你也可以把它当成 [CSR](./csr.mdx) 来使用。
+
+## 基本概念
+### Remote
+
+* **定义**：提供远程模块供其他应用使用的应用。
+* **功能**：导出自己的模块，以便其他应用可以动态加载和运行。
+* **特点**：独立、灵活，可独立更新和扩展，共享依赖以优化资源加载。
+
+### Host
+
+* **定义**：加载并运行远程模块的应用，通常作为微前端架构的宿主。
+* **功能**：动态加载 Remote 应用提供的模块，并在需要的地方导入和使用。
+* **特点**：整合能力强，能将多个 Remote 应用组合成完整前端应用，提供扩展点和钩子函数。
+
+::: tip
+每一个服务，既可以是 Host，也可以是 Remote。下面将会以 `ssr-base` 和 `ssr-main` 作为例子，分别扮演 Remote 和 Host，你将会了解到它是如何工作的。
 :::
 
-## 设计理念
-- 我们应该设计一个基础服务，由基础服务提供所有的第三方依赖。
-- 基础服务统一维护第三方依赖更新，一次发布，所有业务系统生效。
-- 业务服务仅构建业务代码，所有的第三方依赖，应指向到基础服务中。
+## 无类型导出
+在执行 `tsc --declaration --emitDeclarationOnly --outDir dist/src` 命令时，由于找不到 `npm/axios.ts` 这个文件，所以不会生成类型文件。
+### Remote
+直接将 `axios` 模块导出。
+```ts title="ssr-base/src/entry.node.ts" {5}
+import type { GezOptions } from '@gez/core';
 
-:::tip
-由于第三方依赖，都被指向到了基础服务，不再需要重复打包，这会让 Rspack 的编译速度，再提升一个台阶。
-:::
-
-## 构建
-传统的 SSR 应用程序在构建目标为 `node` 时，会将 `node_modules` 的模块设置为外部依赖，但是 Gez 会把全部代码都打包成 ESM 模块来进行链接。所以在使用一些第三方依赖的时候，尽可能的选择支持 ESM 的包，否则你可能会遇到一些问题。
-
-
-## 客户端链接
-在服务渲染时调用 `rc.importmap()` 会将注入所有服务的 `/[服务名]/importmap.[contenthash].js` 文件，将模块的哈希映射信息写入到 `globalThis.__importmap__` 对象中，最终将该变量值写入到 `<script type="importmap"></script>` 标签中。
-
-```ts title="src/entry.server.ts" {19}
-import type { RenderContext } from '@gez/core';
-
-export default async (rc: RenderContext) => {
-    // 提交依赖收集
-    await rc.commit();
-    // 响应 HTML
-    rc.html = `
-<!DOCTYPE html>
-<html>
-<head>
-    ${rc.preload()}
-    <title>Gez</title>
-    ${rc.css()}
-</head>
-<body>
-    <div id="app"></div>
-    ${rc.importmap()}
-    ${rc.moduleEntry()}
-    ${rc.modulePreload()}
-</body>
-</html>
-`;
-};
+export default {
+    modules: {
+        exports: ['npm:axios']
+    },
+} satisfies GezOptions;
 ```
 
-## 服务端链接
+### Host
+`ssr-main` 此时作为 Host，需要将 `axios` 链接到 `ssr-base/npm/axios`，并且需要在项目安装 `axios` 模块来获得类型提示。
+```ts title="ssr-main/src/entry.node.ts" {6,9}
+import type { GezOptions } from '@gez/core';
 
-```ts title="src/entry.node.ts"
 export default {
-    name: 'ssr-module-auth',
+    modules: {
+        imports: {
+            'ssr-base': 'root:../ssr-base/dist'
+        },
+        externals: {
+            axios: 'ssr-base/npm/axios'
+        }
+    },
+} satisfies GezOptions;
+```
+源码：
+```ts
+import axios from 'axios';
+```
+将会被替换成：
+```ts
+import axios from 'ssr-base/npm/axios';
+```
+
+## 有类型导出
+在执行 `tsc --declaration --emitDeclarationOnly --outDir dist/src` 命令时，由于存在 `src/axios.ts` 这个文件，就会生成相关的类型文件。
+### Remote
+创建文件，并导出 `axios`。
+```ts title="ssr-base/src/axios.ts"
+export * from 'axios';
+```
+导出 `axios` 软件包。
+```ts title="ssr-base/src/entry.node.ts" {5}
+import type { GezOptions } from '@gez/core';
+
+export default {
+    modules: {
+        exports: ['root:src/axios.ts']
+    },
+} satisfies GezOptions;
+```
+
+### Host
+`ssr-main` 此时作为 Host，需要导入 `ssr-base` 服务。
+```ts title="ssr-main/src/entry.node.ts" {6}
+import type { GezOptions } from '@gez/core';
+
+export default {
     modules: {
         imports: {
             'ssr-base': 'root:../ssr-base/dist'
         }
-    }
+    },
 } satisfies GezOptions;
 ```
-:::warning
-在生产环境中，你应该使用本地链接，而不是远程链接，这样能提高应用程序的启动速度。如果你使用 Docker，可以通过使用[持久卷](https://docs.docker.com/engine/storage/volumes/)，将不同服务的产物组织到一个目录中。
-:::
-## 远程依赖安装
-配置 `postinstall` 钩子执行 `gez install` 命令。在安装开发依赖时，就会将远程依赖下载到你配置的 `'root:../ssr-base/dist'` 目录中。
-```ts title="package.json"
-"scripts": {
-    "postinstall": "gez install"
-}
+此时，你在业务代码中将会获得类型提示。
+```ts title="ssr-main/src/app.ts"
+import axios from 'ssr-base/src/axios';
 ```
 
-:::warning
-这个需要在构建时，提供对应的版本才能下载。更多请查看 [gez release](./command.mdx#gez-release) 命令说明。
+::: tip
+如果要考虑到老系统需要迁移，你还是可以选择将 `axios` 替换成 `ssr-base/src/axios`，并且需要安装 `axios` 模块到当前项目下才能获得类型提示。
 :::
 
-## 示例
+```ts title="ssr-main/src/entry.node.ts" {6}
+import type { GezOptions } from '@gez/core';
 
-### ssr-base
-基础服务，提供了所有的第三方依赖和基础组件。
-
-#### src/entry.node.ts
-```ts
 export default {
-    name: 'ssr-base',
     modules: {
-        exports: [
-            'root:src/components/layout.vue',
-            'root:src/utils/index.ts',
-            'npm:vue',
-            'npm:vue-router'
-        ]
-    }
-} satisfies GezOptions;
-```
-
-:::warning
-如果一个依赖包，只在 SSR 中使用，那么你应该总是将它放到开发依赖中，这样能显著减少安装生产依赖的大小。
-:::
-
-#### 导出类型
-- 使用方式
-    - 在其它的服务的 `src/entry.node.ts` 文件中的 `modules.imports` 配置添加 `ssr-base`。
-- `root:`
-    - 配置项目文件路径，通常是 `src` 目录的。
-    - 例如：
-        - `import Layout from 'ssr-base/src/components/layout.vue'`
-        - `import utils from 'ssr-base/utils/index'`
-- `npm:`
-    -  指向的是当前项目的依赖包，通常是 `package.json` 字段中 `devDependencies` 配置的依赖名。
-    - 需要配置 `modules.externals`，将对应的依赖名，指向到 `ssr-base/npm/包名`
-
-#### 多版本依赖共存
-在 `package.json` 中配置别名。
-```json
-{
-    "dependencies": {
-        "query-string5": "npm:query-string@^5.1.1",
-        "query-string6": "npm:query-string@^6.11.1"
-    }
-}
-```
-在 `src/entry.node.ts` 文件中配置对外导出。
-```ts
-export default {
-    name: 'ssr-base',
-    modules: {
-        exports: [
-            // ...
-            'npm:query-string5', // 模块链接：ssr-base/npm/query-string5
-            'npm:query-string6'  // 模块链接：ssr-base/npm/query-string6
-        ]
-    }
-} satisfies GezOptions;
-```
-在对应的服务将 `query-string` 模块链接到你需要的版本。
-
-### ssr-module-auth
-将登录、注册、验证码、修改密码、找回密码等用户信息认证的业务单独在一个服务中实现，对外导出相关的页面路由地址。
-
-#### src/entry.node.ts
-
-```ts
-export default {
-    name: 'ssr-module-auth',
-    modules: {
-        // 其它服务使用：import routes from 'ssr-module-auth/src/routes
-        exports: ['root:src/routes.ts'],
-        // 总是需要配置依赖服务的地址
-        imports: {
-            'ssr-base': 'root:../ssr-base/dist'
-        },
-        // 这里只配置链接的第三方依赖，实现依赖共享
         externals: {
-            vue: 'ssr-base/npm/vue',
-            'vue-router': 'ssr-base/npm/vue-router'
+            axios: 'ssr-base/src/axios'
         }
-    }
+    },
 } satisfies GezOptions;
 ```
 
-::: tip 
-- 当我们开发一个很大的系统时，可以按照业务模块来划分不同的服务，明确每个服务的职责。
-- 当你将第三方依赖全部指向到 `ssr-base` 服务时，项目构建速度总是会非常快，基本上都能在瞬间完成。
-
-:::
-
-### ssr-main
-系统的主程序，负责将不同的业务服务，链接到一起。
-
-#### src/entry.node.ts
-
+## 软件包发布
+`packs.enable` 配置为 `true` 时，在编译完成后，会将 `dist` 目录进行归档，默认写入到 `dist/client/versions/latest.tgz`。
 ```ts
+import type { GezOptions } from '@gez/core';
+
 export default {
-    name: 'ssr-main',
-    modules: {
-        imports: {
-            'ssr-base': 'root:../ssr-base/dist',
-            'ssr-module-auth': 'root:../ssr-module-auth/dist'
-        },
-        externals: {
-            vue: 'ssr-base/npm/vue',
-            'vue-router': 'ssr-base/npm/vue-router'
-        }
+    packs: {
+        enable: true
     }
 } satisfies GezOptions;
 ```
-
-#### 使用方式
-- `import Layout from 'ssr-base/src/components/layout.vue'`
-    - 调用 `ssr-base` 服务的路由配置文件
-- `import routes from 'ssr-module-auth/src/routes`
-    - 调用 `ssr-module-auth` 服务的路由配置文件
-- `import Vue from 'vue'`
-    - 构建工具会替换为 `import Vue from 'ssr-base/npm/vue'`
-    - 其它依赖举一反三
+::: warning
+未完待续！
+:::

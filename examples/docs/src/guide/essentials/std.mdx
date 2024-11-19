@@ -4,8 +4,6 @@
 这是一个约定，无法通过程序配置来修改。
 ```txt
 root
-├─ package.json          # 软件包配置。
-├─ tsconfig.json         # TypeScript 配置。
 │─ dist                  # 编译输出目录。
 │  ├─ package.json       # 编译输出后的软件包配置。
 │  ├─ server             # 服务端编译输出。
@@ -20,6 +18,8 @@ root
 │  ├─ entry.server.ts    # 服务端应用程序入口。
 │  ├─ entry.client.ts    # 客户端应用程序入口。
 │  └─ entry.node.ts      # Node 服务器应用程序入口。
+├─ tsconfig.json         # TypeScript 配置。
+└─ package.json          # 软件包配置。
 ```
 ::: tip 拓展知识
 - `gez.name` 来源于 `package.json` 的 `name` 字段。

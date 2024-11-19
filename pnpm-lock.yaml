@@ -37,6 +37,28 @@ importers:
         specifier: ^2.0.0
         version: 2.0.0
 
+  examples/ssr-base:
+    dependencies:
+      '@gez/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+    devDependencies:
+      '@gez/rspack':
+        specifier: workspace:*
+        version: link:../../packages/rspack
+      '@types/node':
+        specifier: 22.8.6
+        version: 22.8.6
+      axios:
+        specifier: ^1.7.7
+        version: 1.7.7
+      date-fns:
+        specifier: ^4.1.0
+        version: 4.1.0
+      typescript:
+        specifier: ^5.2.2
+        version: 5.6.3
+
   examples/ssr-html:
     dependencies:
       '@gez/core':
@@ -2151,6 +2173,9 @@ packages:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
     engines: {node: '>= 0.4'}
 
+  axios@1.7.7:
+    resolution: {integrity: sha512-S4kL7XrjgBmvdGut0sN3yJxqYzrDOnivkBiN0OFs6hLiUam3UPvswUo0kqGyhqUZGEOytHyumEdXsAkgCOUf3Q==}
+
   bail@2.0.2:
     resolution: {integrity: sha512-0xO6mYd7JB2YesxDKplafRpsiOzPt9V02ddPCLbY1xYGPOX24NTyN50qnUxgCPcSoYMhKpAuBTjQoRZCAkUDRw==}
 
@@ -2731,6 +2756,9 @@ packages:
     resolution: {integrity: sha512-0R9ikRb668HB7QDxT1vkpuUBtqc53YyAwMwGeUFKRojY/NWKvdZ+9UYtRfGmhqNbRkTSVpMbmyhXipFFv2cb/A==}
     engines: {node: '>= 12'}
 
+  date-fns@4.1.0:
+    resolution: {integrity: sha512-Ukq0owbQXxa/U3EGtsdVBkR1w7KOQ5gIBqdH2hkvknzZPYvBxb/aa6E8L7tmjFtkwZBu3UXBbjIgPo/Ez4xaNg==}
+
   de-indent@1.0.2:
     resolution: {integrity: sha512-e/1zu3xH5MQryN2zdVaF0OrdNLUbvWxzMbi+iNA6Bky7l1RoP8a2fIbRocyHclXt/arDrrR6lL3TqFD9pMQTsg==}
 
@@ -3130,6 +3158,15 @@ packages:
 
   flush-write-stream@1.1.1:
     resolution: {integrity: sha512-3Z4XhFZ3992uIq0XOqb9AreonueSYphE6oYbpt5+3u06JWklbsPkNv3ZKkP9Bz/r+1MWCaMoSQ28P85+1Yc77w==}
+
+  follow-redirects@1.15.9:
+    resolution: {integrity: sha512-gew4GsXizNgdoRyqmyfMHyAmXsZDk6mHkSxZFCzW9gwlbtOW44CDtYavM+y+72qD/Vq2l550kMF52DT8fOLJqQ==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
 
   for-each@0.3.3:
     resolution: {integrity: sha512-jqYfLp7mo9vIyQf8ykW2v7A+2N4QjeCeI5+Dz9XraiO1ign81wjiH7Fb9vSOWvQfNtmSa4H2RoQTrrXivdUZmw==}
@@ -4949,6 +4986,9 @@ packages:
   proxy-addr@2.0.7:
     resolution: {integrity: sha512-llQsMLSUDUPT44jdrU/O37qlnifitDP+ZwrmmZcoSKyLKvtZxpyV0n2/bD/N4tBAAZ/gJEdZU7KMraoK1+XYAg==}
     engines: {node: '>= 0.10'}
+
+  proxy-from-env@1.1.0:
+    resolution: {integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==}
 
   prr@1.0.1:
     resolution: {integrity: sha512-yPw4Sng1gWghHQWj0B3ZggWUm4qVbPwPFcRG8KyxiU7J2OHFSoEHKS+EZ3fv5l1t9CyCiop6l/ZYeWbrgoQejw==}
@@ -7340,11 +7380,11 @@ snapshots:
 
   '@types/cacache@17.0.2':
     dependencies:
-      '@types/node': 22.9.0
+      '@types/node': 20.17.6
 
   '@types/connect@3.4.38':
     dependencies:
-      '@types/node': 22.9.0
+      '@types/node': 20.17.6
 
   '@types/debug@4.1.12':
     dependencies:
@@ -7406,7 +7446,7 @@ snapshots:
 
   '@types/node-fetch@2.6.12':
     dependencies:
-      '@types/node': 22.9.0
+      '@types/node': 20.17.6
       form-data: 4.0.1
 
   '@types/node@16.18.119': {}
@@ -7427,7 +7467,7 @@ snapshots:
 
   '@types/npm-registry-fetch@8.0.7':
     dependencies:
-      '@types/node': 22.9.0
+      '@types/node': 20.17.6
       '@types/node-fetch': 2.6.12
       '@types/npm-package-arg': 6.1.4
       '@types/npmlog': 7.0.0
@@ -7437,7 +7477,7 @@ snapshots:
     dependencies:
       '@npm/types': 1.0.2
       '@types/cacache': 17.0.2
-      '@types/node': 22.9.0
+      '@types/node': 20.17.6
       '@types/npmcli__package-json': 4.0.4
       '@types/pacote': 11.1.8
 
@@ -7445,11 +7485,11 @@ snapshots:
 
   '@types/npmlog@7.0.0':
     dependencies:
-      '@types/node': 22.9.0
+      '@types/node': 20.17.6
 
   '@types/pacote@11.1.8':
     dependencies:
-      '@types/node': 22.9.0
+      '@types/node': 20.17.6
       '@types/npm-registry-fetch': 8.0.7
       '@types/npmlog': 7.0.0
       '@types/ssri': 7.1.5
@@ -7472,7 +7512,7 @@ snapshots:
   '@types/send@0.17.4':
     dependencies:
       '@types/mime': 1.3.5
-      '@types/node': 22.9.0
+      '@types/node': 20.17.6
 
   '@types/serialize-javascript@5.0.4': {}
 
@@ -7484,16 +7524,16 @@ snapshots:
 
   '@types/ssri@7.1.5':
     dependencies:
-      '@types/node': 22.9.0
+      '@types/node': 20.17.6
 
   '@types/tar-fs@2.0.4':
     dependencies:
-      '@types/node': 22.9.0
+      '@types/node': 20.17.6
       '@types/tar-stream': 3.1.3
 
   '@types/tar-stream@3.1.3':
     dependencies:
-      '@types/node': 22.9.0
+      '@types/node': 20.17.6
 
   '@types/unist@2.0.11': {}
 
@@ -7512,7 +7552,7 @@ snapshots:
 
   '@types/webpack-node-externals@3.0.4':
     dependencies:
-      '@types/node': 22.9.0
+      '@types/node': 20.17.6
       webpack: 5.96.1
     transitivePeerDependencies:
       - '@swc/core'
@@ -7977,6 +8017,14 @@ snapshots:
   available-typed-arrays@1.0.7:
     dependencies:
       possible-typed-array-names: 1.0.0
+
+  axios@1.7.7:
+    dependencies:
+      follow-redirects: 1.15.9
+      form-data: 4.0.1
+      proxy-from-env: 1.1.0
+    transitivePeerDependencies:
+      - debug
 
   bail@2.0.2: {}
 
@@ -8489,6 +8537,8 @@ snapshots:
 
   data-uri-to-buffer@4.0.1: {}
 
+  date-fns@4.1.0: {}
+
   de-indent@1.0.2: {}
 
   debug@2.6.9:
@@ -8969,6 +9019,8 @@ snapshots:
     dependencies:
       inherits: 2.0.4
       readable-stream: 2.3.8
+
+  follow-redirects@1.15.9: {}
 
   for-each@0.3.3:
     dependencies:
@@ -9609,7 +9661,7 @@ snapshots:
 
   jest-worker@27.5.1:
     dependencies:
-      '@types/node': 22.9.0
+      '@types/node': 20.17.6
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
@@ -11222,6 +11274,8 @@ snapshots:
     dependencies:
       forwarded: 0.2.0
       ipaddr.js: 1.9.1
+
+  proxy-from-env@1.1.0: {}
 
   prr@1.0.1:
     optional: true

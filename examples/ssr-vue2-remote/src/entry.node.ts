@@ -1,4 +1,3 @@
-import path from 'node:path';
 import type { GezOptions } from '@gez/core';
 import express from 'express';
 
