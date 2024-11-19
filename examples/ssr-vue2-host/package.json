@@ -1,6 +1,6 @@
 {
     "name": "ssr-vue2-host",
-    "version": "3.0.0-alpha.15",
+    "version": "3.0.0-alpha.16",
     "private": true,
     "type": "module",
     "license": "MIT",
@@ -21,8 +21,8 @@
         "@gez/rspack-vue": "workspace:*",
         "@types/express": "^4.17.21",
         "@types/node": "^20.6.3",
-        "ssr-vue2-remote": "workspace:ssr-vue2-remote@*",
         "less": "^4.2.0",
+        "ssr-vue2-remote": "workspace:ssr-vue2-remote",
         "typescript": "^5.2.2",
         "vue": "2.7.16",
         "vue-server-renderer": "2.7.16",

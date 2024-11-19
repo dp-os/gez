@@ -1,6 +1,6 @@
 {
   "name": "ssr-base",
-  "version": "3.0.0-alpha.15",
+  "version": "3.0.0-alpha.16",
   "main": "index.js",
   "type": "module",
   "private": true,
@@ -19,10 +19,10 @@
     "@gez/core": "workspace:*"
   },
   "devDependencies": {
-    "date-fns": "^4.1.0",
-    "axios": "^1.7.7",
     "@gez/rspack": "workspace:*",
     "@types/node": "22.8.6",
+    "axios": "^1.7.7",
+    "date-fns": "^4.1.0",
     "typescript": "^5.2.2"
   }
 }
