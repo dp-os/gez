@@ -1,0 +1,31 @@
+{
+    "compilerOptions": {
+        "isolatedModules": true,
+        "experimentalDecorators": true,
+        "resolveJsonModule": true,
+        "types": [
+            "@types/node"
+        ],
+        "target": "ESNext",
+        "module": "ESNext",
+        "moduleResolution": "node",
+        "strict": true,
+        "skipLibCheck": true,
+        "allowSyntheticDefaultImports": true,
+        "paths": {
+            "ssr-base/src/*": [
+                "./src/*"
+            ],
+            "ssr-base/*": [
+                "./*"
+            ]
+        }
+    },
+    "include": [
+        "src"
+    ],
+    "exclude": [
+        "dist"
+    ]
+  }
+  

@@ -1,0 +1,28 @@
+{
+  "name": "ssr-base",
+  "version": "3.0.0-alpha.15",
+  "main": "index.js",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "gez dev",
+    "build": "npm run build:dts && npm run build:ssr",
+    "build:ssr": "gez build",
+    "preview": "gez preview",
+    "start": "gez start",
+    "build:dts": "tsc --declaration --emitDeclarationOnly --outDir dist/src"
+  },
+  "author": "",
+  "license": "MIT",
+  "description": "",
+  "dependencies": {
+    "@gez/core": "workspace:*"
+  },
+  "devDependencies": {
+    "date-fns": "^4.1.0",
+    "axios": "^1.7.7",
+    "@gez/rspack": "workspace:*",
+    "@types/node": "22.8.6",
+    "typescript": "^5.2.2"
+  }
+}
