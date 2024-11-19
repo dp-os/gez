@@ -25,6 +25,7 @@
 ## 无类型导出
 在执行 `tsc --declaration --emitDeclarationOnly --outDir dist/src` 命令时，由于找不到 `npm/axios.ts` 这个文件，所以不会生成类型文件。
 ### Remote
+直接将 `axios` 模块导出。
 ```ts title="ssr-base/src/entry.node.ts" {5}
 import type { GezOptions } from '@gez/core';
 
@@ -63,7 +64,7 @@ import axios from 'ssr-base/npm/axios';
 ## 有类型导出
 在执行 `tsc --declaration --emitDeclarationOnly --outDir dist/src` 命令时，由于存在 `src/axios.ts` 这个文件，就会生成相关的类型文件。
 ### Remote
-创建文件，导出 `axios`。
+创建文件，并导出 `axios`。
 ```ts title="ssr-base/src/axios.ts"
 export * from 'axios';
 ```
