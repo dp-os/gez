@@ -21,7 +21,7 @@
         "@gez/rspack-vue": "workspace:*",
         "@types/express": "^4.17.21",
         "@types/node": "^20.6.3",
-        "@types/ssr-vue2-remote": "workspace:ssr-vue2-remote@^",
+        "ssr-vue2-remote": "workspace:ssr-vue2-remote@*",
         "less": "^4.2.0",
         "typescript": "^5.2.2",
         "vue": "2.7.16",

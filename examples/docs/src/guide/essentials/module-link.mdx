@@ -16,45 +16,31 @@ Gez 默认支持 SSR，你也可以把它当成 [CSR](./csr.mdx) 来使用。
 
 ## 构建
 传统的 SSR 应用程序在构建目标为 `node` 时，会将 `node_modules` 的模块设置为外部依赖，但是 Gez 会把全部代码都打包成 ESM 模块来进行链接。所以在使用一些第三方依赖的时候，尽可能的选择支持 ESM 的包，否则你可能会遇到一些问题。
-构建完成后，通常你可以看到这样的目录结构。
-```
-- dist/                                 # 构建输出目录。
-  - client/                             # 客户端构建输出。
-    - chunks/                           # 当前服务抽离的公共代码。
-      - [name].[contenthash].final.js 
-    - npm/                              # 对外导出的 node_modules 包。
-      - [name].[contenthash].final.js 
-    - src/                              # 对外导出的 src 目录下的文件。
-      - [name].[contenthash].final.js 
-    - versions/                         # packs.enable 设置为 true 时，会将 dist 目录打包成一个可
-      - latest.tgz                      # 最新的版本号
-    - entry.[contenthash].final.js      # 等同于 npm pack 命令执行构建的产物。
-    - importmap.js                      # 不可缓存文件，执行后往 globalThis 注入 __importmap__ 
-    - importmap.[contenthash].final.js  # 可缓存文件，执行后往 globalThis 注入 __importmap__ 
-    - package.json                      # 声明模块的基本导出信息
-  - server/                             # 服务端构建输出
-    - ...                               # 除了缺少 versions 目录，其它和 client 目录一致
-```
-:::tip
-文件名携带 `.final.拓展名` 时，程序会认为这是一个基于 `[contenthash]` 构建出来的URL，`gez.middleware` 将会在请求头设置强缓存。
-:::
+
 
 ## 客户端链接
-在服务渲染时注入所有服务的 `/[服务名]/importmap.[contenthash].js` 文件，将模块的哈希映射信息写入到 `globalThis.__importmap__` 对象中，最终将该变量值写入到 `<script type="importmap"></script>` 标签中。
+在服务渲染时调用 `rc.importmap()` 会将注入所有服务的 `/[服务名]/importmap.[contenthash].js` 文件，将模块的哈希映射信息写入到 `globalThis.__importmap__` 对象中，最终将该变量值写入到 `<script type="importmap"></script>` 标签中。
 
-```ts title="src/entry.server.ts"
+```ts title="src/entry.server.ts" {19}
 import type { RenderContext } from '@gez/core';
 
 export default async (rc: RenderContext) => {
-    const script = await rc.script();
+    // 提交依赖收集
+    await rc.commit();
+    // 响应 HTML
     rc.html = `
 <!DOCTYPE html>
 <html>
 <head>
+    ${rc.preload()}
     <title>Gez</title>
+    ${rc.css()}
 </head>
 <body>
-    ${script}
+    <div id="app"></div>
+    ${rc.importmap()}
+    ${rc.moduleEntry()}
+    ${rc.modulePreload()}
 </body>
 </html>
 `;
@@ -62,15 +48,13 @@ export default async (rc: RenderContext) => {
 ```
 
 ## 服务端链接
-- 在开发阶段时，我们可以设置一个远程的依赖地址。    
-- 程序会根据你配置的本地路径，计算出一个所有服务可以共同访问的 `node_modules` 路径，并自动创建软链接。   
 
 ```ts title="src/entry.node.ts"
 export default {
     name: 'ssr-module-auth',
     modules: {
         imports: {
-            'ssr-base': ['root:../ssr-base/dist', 'https://<hostname>/ssr-base/versions/latest.json']
+            'ssr-base': 'root:../ssr-base/dist'
         }
     }
 } satisfies GezOptions;

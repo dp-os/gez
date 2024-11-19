@@ -99,12 +99,12 @@ importers:
       '@types/node':
         specifier: ^20.6.3
         version: 20.17.6
-      '@types/ssr-vue2-remote':
-        specifier: workspace:ssr-vue2-remote@^
-        version: link:../ssr-vue2-remote
       less:
         specifier: ^4.2.0
         version: 4.2.0
+      ssr-vue2-remote:
+        specifier: workspace:ssr-vue2-remote@*
+        version: link:../ssr-vue2-remote
       typescript:
         specifier: ^5.2.2
         version: 5.6.3

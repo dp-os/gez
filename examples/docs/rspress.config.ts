@@ -23,5 +23,8 @@ export default defineConfig({
                 content: 'https://github.com/dp-os/gez'
             }
         ]
+    },
+    markdown: {
+        showLineNumbers: true
     }
 });
