@@ -10,7 +10,7 @@ export const RSPACK_LOADER = {
     /**
      * Rspack 内置的 lightningcss-loader
      */
-    lightningcssLoader: 'lightningcss-loader',
+    lightningcssLoader: 'builtin:lightningcss-loader',
     /**
      * css-loader
      */
