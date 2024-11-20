@@ -1,17 +1,35 @@
 import type { Gez } from '@gez/core';
-import { type RuleSetUse, type SwcLoaderOptions, rspack } from '@rspack/core';
+import {
+    type LightningcssLoaderOptions,
+    type RuleSetUse,
+    type SwcLoaderOptions,
+    rspack
+} from '@rspack/core';
 import NodePolyfillPlugin from 'node-polyfill-webpack-plugin';
 import {
     type RspackAppConfigContext,
     type RspackAppOptions,
     createRspackApp
 } from './app';
+import { RSPACK_LOADER } from './loader';
 
 export interface RspackHtmlAppOptions extends RspackAppOptions {
     /**
-     * 是否启用相关的 CSS 规则，默认为 true。
+     * CSS 输出到 css 文件还是 js 文件中，默认为 css，设置 为 false，则关闭 css 相关的 loader 规则，需要你手动配置。
      */
-    css?: boolean;
+    css?: 'css' | 'js' | false;
+    /**
+     * 你可以选择重写一部分 loader 的。比如把 style-loader 替换成 new URL(import.meta.resolve('vue-style-loader')).pathname
+     */
+    loaders?: Partial<Record<keyof typeof RSPACK_LOADER, string>>;
+    /**
+     * 透传 https://github.com/webpack-contrib/style-loader
+     */
+    styleLoader?: Record<string, any>;
+    /**
+     * 透传 https://github.com/webpack-contrib/css-loader
+     */
+    cssLoader?: Record<string, any>;
     /**
      * 透传 https://github.com/webpack-contrib/less-loader
      */
@@ -66,21 +84,21 @@ export async function createRspackHtmlApp(
                 rules: [
                     ...(config.module?.rules ?? []),
                     {
-                        test: /\.(png|jpe?g|gif|svg)$/i,
+                        test: /\.(jpe?g|png|gif|bmp|webp|svg)$/i,
                         type: 'asset/resource',
                         generator: {
                             filename: filename(gez, 'images')
                         }
                     },
                     {
-                        test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/i,
+                        test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)$/i,
                         type: 'asset/resource',
                         generator: {
                             filename: filename(gez, 'media')
                         }
                     },
                     {
-                        test: /\.(woff|woff2|eot|ttf|otf)$/,
+                        test: /\.(woff|woff2|eot|ttf|otf)(\?.*)?$/i,
                         type: 'asset/resource',
                         generator: {
                             filename: filename(gez, 'fonts')
@@ -92,15 +110,19 @@ export async function createRspackHtmlApp(
                     },
                     {
                         test: /\.worker\.(c|m)?(t|j)s$/i,
-                        loader: resolve('worker-rspack-loader'),
+                        loader:
+                            options.loaders?.workerRspackLoader ??
+                            RSPACK_LOADER.workerRspackLoader,
                         options: {
                             esModule: false,
                             filename: filename(gez, 'worker')
                         }
                     },
                     {
-                        test: /\.ts$/,
-                        loader: 'builtin:swc-loader',
+                        test: /\.ts$/i,
+                        loader:
+                            options.loaders?.builtinSwcLoader ??
+                            RSPACK_LOADER.builtinSwcLoader,
                         options: {
                             env: {
                                 targets:
@@ -150,15 +172,12 @@ export async function createRspackHtmlApp(
                     new rspack.DefinePlugin(options.definePlugin)
                 );
             }
-            addCssConfig(options, context);
+            addCssConfig(gez, options, context);
             options?.config?.(context);
         }
     });
 }
 
-function resolve(name: string) {
-    return new URL(import.meta.resolve(name)).pathname;
-}
 function filename(gez: Gez, name: string) {
     return gez.isProd
         ? `${name}/[name].[contenthash:8].final[ext]`
@@ -166,26 +185,86 @@ function filename(gez: Gez, name: string) {
 }
 
 function addCssConfig(
+    gez: Gez,
     options: RspackHtmlAppOptions,
     { config }: RspackAppConfigContext
 ) {
-    // 启用 CSS
+    if (options.css === false) {
+        return;
+    }
+    // 输出在 .js 文件中
+    if (options.css === 'js') {
+        const cssRule: RuleSetUse = [
+            {
+                loader:
+                    options.loaders?.styleLoader ?? RSPACK_LOADER.styleLoader,
+                options: options.styleLoader
+            },
+            {
+                loader: options.loaders?.cssLoader ?? RSPACK_LOADER.cssLoader,
+                options: options.cssLoader
+            },
+            {
+                loader:
+                    options.loaders?.lightningcssLoader ??
+                    RSPACK_LOADER.lightningcssLoader,
+                options: {
+                    targets: options.target?.web ?? [],
+                    minify: gez.isProd
+                } satisfies LightningcssLoaderOptions
+            }
+        ];
+        const lessRule: RuleSetUse = [
+            {
+                loader: options.loaders?.lessLoader ?? RSPACK_LOADER.lessLoader,
+                options: options.swcLoader
+            }
+        ];
+        if (options.styleResourcesLoader) {
+            lessRule.push({
+                loader:
+                    options.loaders?.styleResourcesLoader ??
+                    RSPACK_LOADER.styleResourcesLoader,
+                options: options.styleResourcesLoader
+            });
+        }
+        config.module = {
+            ...config.module,
+            rules: [
+                ...(config.module?.rules ?? []),
+                {
+                    test: /\.less$/,
+                    use: [...cssRule, ...lessRule],
+                    type: 'javascript/auto'
+                },
+                {
+                    test: /\.css$/,
+                    use: cssRule,
+                    type: 'javascript/auto'
+                }
+            ]
+        };
+        return;
+    }
+    // 输出在 .css 文件中
     config.experiments = {
         ...config.experiments,
-        css: options.css !== false
+        css: true
     };
     if (!config.experiments.css) {
         return;
     }
     const lessLoaders: RuleSetUse = [
         {
-            loader: resolve('less-loader'),
+            loader: options.loaders?.lessLoader ?? RSPACK_LOADER.lessLoader,
             options: options.lessLoader
         }
     ];
     if (options.styleResourcesLoader) {
         lessLoaders.push({
-            loader: resolve('style-resources-loader'),
+            loader:
+                options.loaders?.styleResourcesLoader ??
+                RSPACK_LOADER.styleResourcesLoader,
             options: options.styleResourcesLoader
         });
     }

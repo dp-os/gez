@@ -15,12 +15,17 @@ export function createRspackVueApp(
 ) {
     return createRspackHtmlApp(gez, {
         ...options,
+        loaders: {
+            styleLoader: new URL(import.meta.resolve('vue-style-loader'))
+                .pathname,
+            ...options?.loaders
+        },
         config(context) {
             const { config, buildTarget } = context;
             // 支持 Vue 拓展名
             config.resolve = {
                 ...config.resolve,
-                extensions: ['.vue', ...(config.resolve?.extensions ?? [])]
+                extensions: [...(config.resolve?.extensions ?? []), '.vue']
             };
             config.plugins = config.plugins || [];
             switch (vueType) {
