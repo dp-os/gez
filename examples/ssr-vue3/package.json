@@ -1,6 +1,6 @@
 {
     "name": "ssr-vue3",
-    "version": "3.0.0-alpha.17",
+    "version": "3.0.0-alpha.18",
     "private": true,
     "type": "module",
     "license": "MIT",
