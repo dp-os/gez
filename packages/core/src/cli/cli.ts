@@ -1,3 +1,6 @@
+import module from 'node:module';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { COMMAND, Gez } from '../gez';
 
 export async function cli(command: string) {
@@ -42,6 +45,12 @@ export async function cli(command: string) {
             exit(await gez.postCompileProdHook());
 
             break;
+        default:
+            module.register(fileURLToPath(import.meta.url), {
+                parentURL: import.meta.url
+            });
+            await import(path.resolve(process.cwd(), command));
+            break;
     }
 }
 
@@ -49,4 +58,19 @@ function exit(ok: boolean) {
     if (!ok) {
         process.exit(17);
     }
+}
+
+export function resolve(
+    specifier: string,
+    context: Record<string, any>,
+    nextResolve: Function
+) {
+    if (
+        context?.parentURL.endsWith('.ts') &&
+        specifier.startsWith('.') &&
+        !specifier.endsWith('.ts')
+    ) {
+        return nextResolve(specifier + '.ts', context);
+    }
+    return nextResolve(specifier, context);
 }
