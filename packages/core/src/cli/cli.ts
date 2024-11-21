@@ -46,9 +46,6 @@ export async function cli(command: string) {
 
             break;
         default:
-            module.register(fileURLToPath(import.meta.url), {
-                parentURL: import.meta.url
-            });
             await import(path.resolve(process.cwd(), command));
             break;
     }
@@ -59,6 +56,11 @@ function exit(ok: boolean) {
         process.exit(17);
     }
 }
+
+// 支持 TS 文件不需要编写 .ts 后缀。
+module.register(fileURLToPath(import.meta.url), {
+    parentURL: import.meta.url
+});
 
 export function resolve(
     specifier: string,
