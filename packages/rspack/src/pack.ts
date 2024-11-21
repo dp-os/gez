@@ -38,11 +38,10 @@ async function buildPackageJson(gez: Gez): Promise<Record<string, any>> {
         gez.readJsonSync(gez.resolvePath('dist/server/manifest.json')),
         gez.readJsonSync(gez.resolvePath('package.json'))
     ]);
-    const dependencies: Record<string, string | undefined> = {
-        ...curJson.dependencies,
-        ...curJson.devDependencies
+    const exports: Record<string, any> = {
+        ...curJson?.exports,
+        './src/entry.client': `./client/${clientJson.exports['./src/entry.client'].substring(2)}`
     };
-    const exports: Record<string, any> = {};
     Object.entries<string>(serverJson.exports).forEach(([name, server]) => {
         const client = clientJson.exports[name];
         if (client) {
@@ -54,11 +53,9 @@ async function buildPackageJson(gez: Gez): Promise<Record<string, any>> {
             exports[name] = `./server/${server.substring(2)}`;
         }
     });
+
     const buildJson: Record<string, any> = {
-        name: gez.name,
-        version: curJson.version,
-        type: 'module',
-        dependencies,
+        ...curJson,
         exports
     };
     return buildJson;

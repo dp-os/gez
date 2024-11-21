@@ -163,7 +163,7 @@ async function rspackBuild(options: RspackOptions) {
                 resolve(false);
                 return;
             } else if (stats?.hasErrors()) {
-                stats.toJson({ errors: true }).errors?.forEach((err) => {
+                stats.toJson({ errors: true })?.errors?.forEach((err) => {
                     console.error(err);
                 });
 
