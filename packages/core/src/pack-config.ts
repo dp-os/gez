@@ -2,30 +2,28 @@ import type { Gez } from './gez';
 
 export interface PackConfig {
     /**
-     * 是否启用归档
+     * 是否启用归档，默认启用。
      */
     enable?: boolean;
     /**
-     * 输出的文件
+     * 输出的文件，支持同时输出多个。
+     * 默认输出为：dist.tgz
      */
     outputs?: string | string[] | boolean;
     /**
-     * 发布的类型
-     * 环境变量设置：process.env.RELEASE_TYPE
+     * 创建 packages.json 执行的回调，你可以在这里修改一些数据。
      */
-    releaseType?:
-        | 'major'
-        | 'premajor'
-        | 'minor'
-        | 'preminor'
-        | 'patch'
-        | 'prepatch'
-        | 'prerelease';
     packageJson?: (
         gez: Gez,
         pkgJson: Record<string, any>
     ) => Promise<Record<string, any>>;
+    /**
+     * 归档之前执行钩子，你可以在这里添加一些文件。
+     */
     onBefore?: (gez: Gez, pkgJson: Record<string, any>) => Promise<void>;
+    /**
+     * 归档之后执行钩子，你可以在这里直接上传到服务器。
+     */
     onAfter?: (
         gez: Gez,
         pkgJson: Record<string, any>,
@@ -57,20 +55,11 @@ export function parsePackConfig(config: PackConfig = {}): ParsedPackConfig {
         outputs.push('dist.tgz');
     }
     return {
-        enable: config.enable ?? false,
+        enable: config.enable ?? true,
         outputs,
         async packageJson(gez, pkgJson) {
-            const { dependencies } = pkgJson;
             if (config.packageJson) {
                 pkgJson = await config.packageJson(gez, pkgJson);
-            }
-            if (dependencies) {
-                Object.keys(dependencies).forEach((name) => {
-                    const value = dependencies[name];
-                    if (value && /^(workspace|file):/.test(value)) {
-                        dependencies[name] = undefined;
-                    }
-                });
             }
             return pkgJson;
         },
