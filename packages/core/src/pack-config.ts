@@ -54,7 +54,7 @@ export function parsePackConfig(config: PackConfig = {}): ParsedPackConfig {
     } else if (Array.isArray(config.outputs)) {
         outputs.push(...config.outputs);
     } else if (config.outputs !== false) {
-        outputs.push('dist/client/versions/latest.tgz');
+        outputs.push('dist.tgz');
     }
     return {
         enable: config.enable ?? false,

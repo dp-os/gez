@@ -2,13 +2,13 @@ import path from 'node:path';
 
 export type ProjectPath =
     | './'
+    | 'dist.tgz'
     | 'dist'
     | 'dist/index.js'
     | 'dist/package.json'
     | 'dist/client'
     | 'dist/client/manifest.json'
     | 'dist/client/versions'
-    | 'dist/client/versions/latest.json'
     | 'dist/server'
     | 'dist/server/manifest.json'
     | 'dist/node'

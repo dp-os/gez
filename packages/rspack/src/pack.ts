@@ -5,10 +5,6 @@ import pacote from 'pacote';
 export async function pack(gez: Gez): Promise<boolean> {
     const { packConfig } = gez;
 
-    if (!packConfig.enable) {
-        return true;
-    }
-
     const pkgJson = await packConfig.packageJson(
         gez,
         await buildPackageJson(gez)
@@ -17,6 +13,10 @@ export async function pack(gez: Gez): Promise<boolean> {
         gez.resolvePath('dist/package.json'),
         JSON.stringify(pkgJson, null, 4)
     );
+
+    if (!packConfig.enable) {
+        return true;
+    }
 
     await packConfig.onBefore(gez, pkgJson);
 
