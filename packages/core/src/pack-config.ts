@@ -2,7 +2,7 @@ import type { Gez } from './gez';
 
 export interface PackConfig {
     /**
-     * 是否启用归档，默认启用。
+     * 是否启用归档，默认关闭。
      */
     enable?: boolean;
     /**
@@ -55,7 +55,7 @@ export function parsePackConfig(config: PackConfig = {}): ParsedPackConfig {
         outputs.push('dist.tgz');
     }
     return {
-        enable: config.enable ?? true,
+        enable: config.enable ?? false,
         outputs,
         async packageJson(gez, pkgJson) {
             if (config.packageJson) {
