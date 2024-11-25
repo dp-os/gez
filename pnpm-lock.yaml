@@ -221,8 +221,8 @@ importers:
         specifier: 1.9.4
         version: 1.9.4
       '@gez/lint':
-        specifier: 3.0.0-alpha.29
-        version: 3.0.0-alpha.29(postcss-html@1.7.0)(postcss@8.4.49)(stylelint@16.10.0(typescript@5.6.3))
+        specifier: workspace:*
+        version: link:../lint
       '@types/node':
         specifier: 22.9.0
         version: 22.9.0
@@ -273,8 +273,8 @@ importers:
         specifier: 1.9.4
         version: 1.9.4
       '@gez/lint':
-        specifier: 3.0.0-alpha.29
-        version: 3.0.0-alpha.29(postcss-html@1.7.0)(postcss@8.4.49)(stylelint@16.10.0(typescript@5.6.3))
+        specifier: workspace:*
+        version: link:../lint
       '@types/find':
         specifier: ^0.2.4
         version: 0.2.4
@@ -316,8 +316,8 @@ importers:
         specifier: 1.9.4
         version: 1.9.4
       '@gez/lint':
-        specifier: 3.0.0-alpha.29
-        version: 3.0.0-alpha.29(postcss-html@1.7.0)(postcss@8.4.49)(stylelint@16.10.0(typescript@5.6.3))
+        specifier: workspace:*
+        version: link:../lint
       '@types/node':
         specifier: 22.9.0
         version: 22.9.0
@@ -362,8 +362,8 @@ importers:
         specifier: 1.9.4
         version: 1.9.4
       '@gez/lint':
-        specifier: 3.0.0-alpha.29
-        version: 3.0.0-alpha.29(postcss-html@1.7.0)(postcss@8.4.49)(stylelint@16.10.0(typescript@5.6.3))
+        specifier: workspace:*
+        version: 'link:'
       '@types/node':
         specifier: 22.9.0
         version: 22.9.0
@@ -444,8 +444,8 @@ importers:
         specifier: workspace:*
         version: link:../core
       '@gez/lint':
-        specifier: 3.0.0-alpha.29
-        version: 3.0.0-alpha.29(postcss-html@1.7.0)(postcss@8.4.49)(stylelint@16.10.0(typescript@5.6.3))
+        specifier: workspace:*
+        version: link:../lint
       '@types/node':
         specifier: 22.9.0
         version: 22.9.0
@@ -487,8 +487,8 @@ importers:
         specifier: workspace:*
         version: link:../core
       '@gez/lint':
-        specifier: 3.0.0-alpha.29
-        version: 3.0.0-alpha.29(postcss-html@1.7.0)(postcss@8.4.49)(stylelint@16.10.0(typescript@5.6.3))
+        specifier: workspace:*
+        version: link:../lint
       '@rspack/core':
         specifier: ^1.1.0-beta.0
         version: 1.1.1(@swc/helpers@0.5.15)
@@ -536,8 +536,8 @@ importers:
         specifier: workspace:*
         version: link:../core
       '@gez/lint':
-        specifier: 3.0.0-alpha.29
-        version: 3.0.0-alpha.29(postcss-html@1.7.0)(postcss@8.4.49)(stylelint@16.10.0(typescript@5.6.3))
+        specifier: workspace:*
+        version: link:../lint
       '@types/node':
         specifier: 22.9.0
         version: 22.9.0
@@ -1138,11 +1138,6 @@ packages:
     engines: {node: '>=18'}
     cpu: [x64]
     os: [win32]
-
-  '@gez/lint@3.0.0-alpha.29':
-    resolution: {integrity: sha512-IGrSCGXFtYJm+RRl5pyWvv1KtvF2cJ/6hMWZWli+r7pAYdnyH6nwafHJU9AXw/uE0wEZNHGjvIt8XDzV1k3QBw==}
-    peerDependencies:
-      stylelint: '>=16.5.0'
 
   '@import-maps/resolve@2.0.0':
     resolution: {integrity: sha512-RwzRTpmrrS6Q1ZhQExwuxJGK1Wqhv4stt+OF2JzS+uawewpwNyU7EJL1WpBex7aDiiGLs4FsXGkfUBdYuX7xiQ==}
@@ -6735,19 +6730,6 @@ snapshots:
 
   '@esbuild/win32-x64@0.24.0':
     optional: true
-
-  '@gez/lint@3.0.0-alpha.29(postcss-html@1.7.0)(postcss@8.4.49)(stylelint@16.10.0(typescript@5.6.3))':
-    dependencies:
-      stylelint: 16.10.0(typescript@5.6.3)
-      stylelint-config-html: 1.1.0(postcss-html@1.7.0)(stylelint@16.10.0(typescript@5.6.3))
-      stylelint-config-recess-order: 5.1.1(stylelint@16.10.0(typescript@5.6.3))
-      stylelint-config-recommended-less: 3.0.1(postcss@8.4.49)(stylelint@16.10.0(typescript@5.6.3))
-      stylelint-config-recommended-vue: 1.5.0(postcss-html@1.7.0)(stylelint@16.10.0(typescript@5.6.3))
-      stylelint-config-standard: 36.0.1(stylelint@16.10.0(typescript@5.6.3))
-      stylelint-order: 6.0.4(stylelint@16.10.0(typescript@5.6.3))
-    transitivePeerDependencies:
-      - postcss
-      - postcss-html
 
   '@import-maps/resolve@2.0.0': {}
 

@@ -12,7 +12,7 @@
     },
     "devDependencies": {
         "@biomejs/biome": "1.9.4",
-        "@gez/lint": "3.0.0-alpha.29",
+        "@gez/lint": "workspace:*",
         "@types/node": "22.9.0",
         "@vitest/coverage-v8": "2.1.5",
         "stylelint": "16.10.0",
@@ -31,7 +31,7 @@
         "stylelint-config-standard": "^36.0.1",
         "stylelint-order": "^6.0.4"
     },
-    "version": "3.0.0-alpha.29",
+    "version": "3.0.0-alpha.30",
     "type": "module",
     "private": false,
     "exports": {
