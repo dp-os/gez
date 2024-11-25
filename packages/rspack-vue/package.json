@@ -21,9 +21,9 @@
         "vue3-loader": "npm:vue-loader@^17.4.2"
     },
     "devDependencies": {
-        "@biomejs/biome": "1.9.2",
+        "@biomejs/biome": "1.9.4",
         "@gez/core": "workspace:*",
-        "@gez/lint": "3.0.0-alpha.13",
+        "@gez/lint": "3.0.0-alpha.29",
         "@types/node": "22.9.0",
         "@vitest/coverage-v8": "2.1.5",
         "stylelint": "16.10.0",
@@ -37,11 +37,9 @@
     "exports": {
         ".": {
             "import": "./dist/index.mjs",
-            "require": "./dist/index.cjs",
             "types": "./dist/index.d.ts"
         }
     },
-    "main": "./dist/index.cjs",
     "module": "dist/index.mjs",
     "types": "./dist/index.d.ts",
     "files": [

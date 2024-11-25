@@ -13,14 +13,6 @@ export default defineBuildConfig({
             esbuild: {
                 target: 'node22'
             }
-        },
-        {
-            input: './src/',
-            ext: 'cjs',
-            format: 'cjs',
-            esbuild: {
-                target: 'node22'
-            }
         }
     ]
 });

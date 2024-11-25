@@ -22,8 +22,8 @@ export {
     createMiddleware,
     mergeMiddlewares
 } from './middleware';
-export {
-    type ManifestJson,
-    type ManifestJsonChunkSizes,
-    type ManifestJsonChunks
+export type {
+    ManifestJson,
+    ManifestJsonChunkSizes,
+    ManifestJsonChunks
 } from './manifest-json';

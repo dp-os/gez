@@ -19,14 +19,6 @@ export default defineBuildConfig({
                     'node22'
                 ]
             }
-        },
-        {
-            input: './src/',
-            ext: 'cjs',
-            format: 'cjs',
-            esbuild: {
-                target: 'node22'
-            }
         }
     ]
 });

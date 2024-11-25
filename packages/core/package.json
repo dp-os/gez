@@ -32,8 +32,8 @@
         "write": "^2.0.0"
     },
     "devDependencies": {
-        "@biomejs/biome": "1.9.2",
-        "@gez/lint": "3.0.0-alpha.13",
+        "@biomejs/biome": "1.9.4",
+        "@gez/lint": "3.0.0-alpha.29",
         "@types/find": "^0.2.4",
         "@types/node": "22.9.0",
         "@types/send": "^0.17.4",
@@ -51,16 +51,13 @@
     "exports": {
         ".": {
             "import": "./dist/index.mjs",
-            "require": "./dist/index.cjs",
             "types": "./dist/index.d.ts"
         },
         "./cli": {
             "import": "./dist/cli/cli.mjs",
-            "require": "./dist/cli/cli.cjs",
             "types": "./dist/cli/cli.d.ts"
         }
     },
-    "main": "./dist/index.cjs",
     "module": "dist/index.mjs",
     "types": "./dist/index.d.ts",
     "files": [
