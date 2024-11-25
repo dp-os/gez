@@ -1,46 +1,53 @@
 import module from 'node:module';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { COMMAND, Gez } from '../gez';
+import { COMMAND, Gez, type GezOptions } from '../gez';
 
 export async function cli(command: string) {
     if (command !== COMMAND.dev) {
         process.env.NODE_ENV = 'production';
     }
     let gez: Gez | null;
+    let opts: GezOptions | null = null;
     switch (command) {
         case COMMAND.dev:
-            gez = new Gez(await Gez.getSrcOptions());
+            opts = await Gez.getSrcOptions();
+            gez = new Gez(opts);
             exit(await gez.init(COMMAND.dev));
             gez = null;
             break;
         case COMMAND.start:
-            gez = new Gez(await Gez.getDistOptions());
+            opts = await Gez.getDistOptions();
+            gez = new Gez(opts);
             exit(await gez.init(COMMAND.start));
             gez = null;
             break;
         case COMMAND.build:
             // 编译代码。
-            gez = new Gez(await Gez.getSrcOptions());
+            opts = await Gez.getSrcOptions();
+            gez = new Gez(opts);
             exit(await gez.init(COMMAND.build));
             exit(await gez.destroy());
 
-            // 生产模式运行
-            gez = new Gez({
-                ...(await Gez.getDistOptions()),
-                createServer: undefined
-            });
-            exit(await gez.init(COMMAND.start));
-            exit(await gez.postCompileProdHook());
+            if (opts.postCompileProdHook) {
+                // 生产模式运行
+                gez = new Gez({
+                    ...opts,
+                    createServer: undefined
+                });
+                exit(await gez.init(COMMAND.start));
+                exit(await gez.postCompileProdHook());
+            }
             break;
         case COMMAND.preview:
+            opts = await Gez.getSrcOptions();
             // 编译代码
-            gez = new Gez(await Gez.getSrcOptions());
+            gez = new Gez(opts);
             exit(await gez.init(COMMAND.build));
             exit(await gez.destroy());
 
             // 生产模式运行
-            gez = new Gez(await Gez.getDistOptions());
+            gez = new Gez(opts);
             exit(await gez.init(COMMAND.start));
             exit(await gez.postCompileProdHook());
 
