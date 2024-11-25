@@ -45,6 +45,9 @@ export async function cli(command: string) {
             exit(await gez.postCompileProdHook());
 
             break;
+        case 'install':
+            console.log('TODO');
+            break;
         default:
             await import(path.resolve(process.cwd(), command));
             break;

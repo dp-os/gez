@@ -7,7 +7,7 @@ export interface PackConfig {
     enable?: boolean;
     /**
      * 输出的文件，支持同时输出多个。
-     * 默认输出为：dist.tgz
+     * 默认输出为：dist/client/versions/latest.tgz
      */
     outputs?: string | string[] | boolean;
     /**
@@ -52,7 +52,7 @@ export function parsePackConfig(config: PackConfig = {}): ParsedPackConfig {
     } else if (Array.isArray(config.outputs)) {
         outputs.push(...config.outputs);
     } else if (config.outputs !== false) {
-        outputs.push('dist.tgz');
+        outputs.push('dist/client/versions/latest.tgz');
     }
     return {
         enable: config.enable ?? false,
