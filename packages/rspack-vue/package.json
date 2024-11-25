@@ -15,14 +15,14 @@
         "vue": ">=2.7.8 || >=3.0.0"
     },
     "dependencies": {
-        "@gez/rspack": "workspace:*",
+        "@gez/rspack": "3.0.0-alpha.26",
         "vue-style-loader": "^4.1.3",
         "vue2-loader": "npm:vue-loader@15.11.1",
         "vue3-loader": "npm:vue-loader@^17.4.2"
     },
     "devDependencies": {
         "@biomejs/biome": "1.9.2",
-        "@gez/core": "workspace:*",
+        "@gez/core": "3.0.0-alpha.26",
         "@gez/lint": "3.0.0-alpha.13",
         "@types/node": "22.9.0",
         "@vitest/coverage-v8": "2.1.5",
@@ -51,5 +51,5 @@
         "template",
         "public"
     ],
-    "gitHead": "a1175657723ffc3c0979cabe8ce4978268618270"
+    "gitHead": "2e16b175552400382913b445ae7e112b78c422f5"
 }

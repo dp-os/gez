@@ -24,7 +24,7 @@
         "build": "unbuild"
     },
     "dependencies": {
-        "@gez/import": "workspace:*",
+        "@gez/import": "3.0.0-alpha.26",
         "@types/serialize-javascript": "^5.0.4",
         "find": "^0.3.0",
         "send": "^1.1.0",
@@ -70,5 +70,5 @@
         "template",
         "public"
     ],
-    "gitHead": "a1175657723ffc3c0979cabe8ce4978268618270"
+    "gitHead": "2e16b175552400382913b445ae7e112b78c422f5"
 }

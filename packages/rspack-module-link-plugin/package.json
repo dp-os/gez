@@ -15,7 +15,7 @@
     },
     "devDependencies": {
         "@biomejs/biome": "1.9.2",
-        "@gez/core": "workspace:*",
+        "@gez/core": "3.0.0-alpha.26",
         "@gez/lint": "3.0.0-alpha.13",
         "@rspack/core": "^1.1.0-beta.0",
         "@types/node": "22.9.0",
@@ -44,5 +44,6 @@
         "*.mjs",
         "template",
         "public"
-    ]
+    ],
+    "gitHead": "2e16b175552400382913b445ae7e112b78c422f5"
 }

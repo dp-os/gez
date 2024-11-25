@@ -21,8 +21,8 @@
         }
     },
     "dependencies": {
-        "@gez/import": "workspace:*",
-        "@gez/rspack-module-link-plugin": "workspace:*",
+        "@gez/import": "3.0.0-alpha.26",
+        "@gez/rspack-module-link-plugin": "3.0.0-alpha.26",
         "@npmcli/arborist": "^8.0.0",
         "@rspack/core": "^1.1.2",
         "@types/pacote": "^11.1.8",
@@ -39,7 +39,7 @@
     },
     "devDependencies": {
         "@biomejs/biome": "1.9.2",
-        "@gez/core": "workspace:*",
+        "@gez/core": "3.0.0-alpha.26",
         "@gez/lint": "3.0.0-alpha.13",
         "@types/node": "22.9.0",
         "@types/npmcli__arborist": "^5.6.11",
@@ -71,5 +71,5 @@
         "template",
         "public"
     ],
-    "gitHead": "a1175657723ffc3c0979cabe8ce4978268618270"
+    "gitHead": "2e16b175552400382913b445ae7e112b78c422f5"
 }
