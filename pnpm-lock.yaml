@@ -361,39 +361,6 @@ importers:
       '@biomejs/biome':
         specifier: 1.9.2
         version: 1.9.2
-      '@gez/core':
-        specifier: workspace:*
-        version: link:../core
-      '@gez/lint':
-        specifier: 3.0.0-alpha.13
-        version: 3.0.0-alpha.13(postcss-html@1.7.0)(postcss@8.4.49)(stylelint@16.10.0(typescript@5.6.3))
-      '@types/node':
-        specifier: 22.9.0
-        version: 22.9.0
-      '@vitest/coverage-v8':
-        specifier: 2.1.5
-        version: 2.1.5(vitest@2.1.5(@types/node@22.9.0)(less@4.2.0)(sass-embedded@1.81.0)(terser@5.36.0))
-      stylelint:
-        specifier: 16.10.0
-        version: 16.10.0(typescript@5.6.3)
-      typescript:
-        specifier: 5.6.3
-        version: 5.6.3
-      unbuild:
-        specifier: 2.0.0
-        version: 2.0.0(typescript@5.6.3)(vue-tsc@2.1.10(typescript@5.6.3))
-      vitest:
-        specifier: 2.1.5
-        version: 2.1.5(@types/node@22.9.0)(less@4.2.0)(sass-embedded@1.81.0)(terser@5.36.0)
-
-  packages/modules:
-    devDependencies:
-      '@biomejs/biome':
-        specifier: 1.9.2
-        version: 1.9.2
-      '@gez/core':
-        specifier: workspace:*
-        version: link:../core
       '@gez/lint':
         specifier: 3.0.0-alpha.13
         version: 3.0.0-alpha.13(postcss-html@1.7.0)(postcss@8.4.49)(stylelint@16.10.0(typescript@5.6.3))
