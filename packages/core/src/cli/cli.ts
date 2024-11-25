@@ -14,13 +14,19 @@ export async function cli(command: string) {
             opts = await Gez.getSrcOptions();
             gez = new Gez(opts);
             exit(await gez.init(COMMAND.dev));
+
+            // 释放内存
             gez = null;
+            opts = null;
             break;
         case COMMAND.start:
             opts = await Gez.getDistOptions();
             gez = new Gez(opts);
             exit(await gez.init(COMMAND.start));
+
+            // 释放内存
             gez = null;
+            opts = null;
             break;
         case COMMAND.build:
             // 编译代码。
@@ -29,7 +35,7 @@ export async function cli(command: string) {
             exit(await gez.init(COMMAND.build));
             exit(await gez.destroy());
 
-            if (opts.postCompileProdHook) {
+            if (typeof opts.postCompileProdHook === 'function') {
                 // 生产模式运行
                 gez = new Gez({
                     ...opts,
@@ -38,6 +44,10 @@ export async function cli(command: string) {
                 exit(await gez.init(COMMAND.start));
                 exit(await gez.postCompileProdHook());
             }
+
+            // 释放内存
+            gez = null;
+            opts = null;
             break;
         case COMMAND.preview:
             opts = await Gez.getSrcOptions();
@@ -51,6 +61,9 @@ export async function cli(command: string) {
             exit(await gez.init(COMMAND.start));
             exit(await gez.postCompileProdHook());
 
+            // 释放内存
+            gez = null;
+            opts = null;
             break;
         case 'install':
             console.log('TODO');
