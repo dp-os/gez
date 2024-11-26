@@ -24,4 +24,5 @@ export default function (this: rspack.LoaderContext, text: string) {
     return text;
 }
 
-export const vue2Loader = import.meta.resolve(import.meta.url);
+export const vue2Loader = new URL(import.meta.resolve(import.meta.url))
+    .pathname;

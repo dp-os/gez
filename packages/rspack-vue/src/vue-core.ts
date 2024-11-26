@@ -16,7 +16,8 @@ export function createRspackVueApp(
     return createRspackHtmlApp(gez, {
         ...options,
         loaders: {
-            styleLoader: import.meta.resolve('vue-style-loader'),
+            styleLoader: new URL(import.meta.resolve('vue-style-loader'))
+                .pathname,
             ...options?.loaders
         },
         config(context) {
@@ -47,7 +48,8 @@ export function createRspackVueApp(
             // 设置 vue-loader
             const vueRuleUse: rspack.RuleSetUse = [
                 {
-                    loader: import.meta.resolve(`vue${vueType}-loader`),
+                    loader: new URL(import.meta.resolve(`vue${vueType}-loader`))
+                        .pathname,
                     options: {
                         ...options?.vueLoader,
                         experimentalInlineMatchResource: true,
