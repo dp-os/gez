@@ -172,6 +172,10 @@ export async function createRspackHtmlApp(
                     new rspack.DefinePlugin(options.definePlugin)
                 );
             }
+            config.resolve = {
+                ...config.resolve,
+                extensions: ['...', '.ts']
+            };
             addCssConfig(gez, options, context);
             options?.config?.(context);
         }

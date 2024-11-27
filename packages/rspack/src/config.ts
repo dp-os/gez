@@ -115,8 +115,7 @@ export function createRspackConfig(
         resolve: {
             alias: {
                 [gez.name]: gez.root
-            },
-            extensions: ['.ts', '...']
+            }
         },
         optimization: {
             minimize: isWebApp && gez.isProd,
