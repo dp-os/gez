@@ -56,13 +56,11 @@ function getImportResult(
      * ['./serviceName/src/utils/index', './serviceName/src/utils'] => ['/Users/xxx/serviceName/src/utils/index', '/Users/xxx/serviceName/src/utils']
      */
     const filePaths = matches.reduce<string[]>((acc, item) => {
-        if (item.startsWith('./')) {
-            const target = path.resolve(
-                moduleConfig.root,
-                item.replace(new RegExp(`^${moduleConfig.name}\/`), '')
-            );
-            acc.push(target);
-        }
+        const target = path.resolve(
+            moduleConfig.root,
+            item.replace(new RegExp(`^${moduleConfig.name}\/`), '')
+        );
+        acc.push(target);
         return acc;
     }, []);
 
@@ -89,7 +87,7 @@ function getImportResult(
             }
         }
 
-        if (request.startsWith(`./`)) {
+        if (request.startsWith(`.`)) {
             const index = request.indexOf('?');
             const requestFile =
                 index > 0 ? request.substring(2, index) : request;
