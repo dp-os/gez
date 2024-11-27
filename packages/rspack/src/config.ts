@@ -52,7 +52,7 @@ export function createRspackConfig(
             chunkLoading: gez.isProd ? 'import' : undefined,
             chunkFilename: 'chunks/[name].[contenthash:8].final.js',
             library: {
-                type: 'modern-module'
+                type: 'module'
             },
             filename:
                 buildTarget !== 'node' && gez.isProd
