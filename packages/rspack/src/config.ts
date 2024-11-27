@@ -119,6 +119,7 @@ export function createRspackConfig(
         },
         optimization: {
             minimize: isWebApp && gez.isProd,
+            concatenateModules: true,
             splitChunks: {
                 chunks: 'async'
             }
@@ -141,11 +142,13 @@ export function createRspackConfig(
             return [];
         })(),
         experiments: {
-            outputModule: true
+            outputModule: true,
+            rspackFuture: {
+                bundlerInfo: { force: false }
+            }
         },
-        target: buildTarget === 'client' ? 'web' : 'node20'
-        // 暂时不能设置，否则会有 BUG：https://github.com/web-infra-dev/rspack/issues/8546
-        // mode: gez.isProd ? 'production' : 'development'
+        target: buildTarget === 'client' ? 'web' : 'node22',
+        mode: gez.isProd ? 'production' : 'development'
     };
 }
 
