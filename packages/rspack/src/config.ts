@@ -41,10 +41,7 @@ export function createRspackConfig(
             }
             return {
                 [`./src/entry.${buildTarget}`]: {
-                    import: importPaths,
-                    library: {
-                        type: 'module'
-                    }
+                    import: importPaths
                 }
             };
         })(),
@@ -54,6 +51,9 @@ export function createRspackConfig(
             chunkFormat: gez.isProd ? 'module' : undefined,
             chunkLoading: gez.isProd ? 'import' : undefined,
             chunkFilename: 'chunks/[name].[contenthash:8].final.js',
+            library: {
+                type: 'modern-module'
+            },
             filename:
                 buildTarget !== 'node' && gez.isProd
                     ? '[name].[contenthash:8].final.js'
@@ -143,8 +143,9 @@ export function createRspackConfig(
         experiments: {
             outputModule: true
         },
-        target: buildTarget === 'client' ? 'web' : 'node20',
-        mode: gez.isProd ? 'production' : 'development'
+        target: buildTarget === 'client' ? 'web' : 'node20'
+        // 暂时不能设置，否则会有 BUG：https://github.com/web-infra-dev/rspack/issues/8546
+        // mode: gez.isProd ? 'production' : 'development'
     };
 }
 

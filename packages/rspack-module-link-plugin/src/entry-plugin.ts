@@ -11,10 +11,7 @@ export function entryPlugin(
     const entry = compiler.options.entry;
     moduleConfig.exports.forEach(({ exportName, exportPath }) => {
         entry[exportName] = {
-            import: [exportPath],
-            library: {
-                type: 'module'
-            }
+            import: [exportPath]
         };
     });
 }
