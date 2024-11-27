@@ -26,7 +26,7 @@ export default async (rc: RenderContext) => {
     ${rc.preload()}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gez</title>
+    <title>${page.title}</title>
     ${rc.css()}
 </head>
 <body>

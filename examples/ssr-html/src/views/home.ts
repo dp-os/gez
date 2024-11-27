@@ -1,11 +1,13 @@
 import { layout } from 'ssr-html/src/components/layout';
 import * as images from 'ssr-html/src/images';
 import { Page } from 'ssr-html/src/page';
+import { title } from '../title';
 
 export default class Home extends Page {
     public state = {
         count: 0
     };
+    public title = title.home;
     public render(): string {
         const { url } = this.props;
         const { count } = this.state;

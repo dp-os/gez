@@ -14,6 +14,7 @@ export class Page {
     public set props(props) {
         this._props = props;
     }
+    public title = '';
     /**
      * 自定义页面状态
      */

@@ -48,5 +48,8 @@ export default {
                 rc.html
             );
         }
+    },
+    modules: {
+        exports: ['root:src/title.ts']
     }
 } satisfies GezOptions;
