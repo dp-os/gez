@@ -27,10 +27,10 @@ export function createRspackConfig(
             switch (buildTarget) {
                 case 'client':
                     importPaths.push(gez.resolvePath('src/entry.client.ts'));
-                    !gez.isProd &&
-                        importPaths.push(
-                            `${resolve('webpack-hot-middleware/client')}?path=${gez.basePath}hot-middleware&timeout=5000&overlay=false`
-                        );
+                    // !gez.isProd &&
+                    //     importPaths.push(
+                    //         `${resolve('webpack-hot-middleware/client')}?path=${gez.basePath}hot-middleware&timeout=5000&overlay=false`
+                    //     );
                     break;
                 case 'server':
                     importPaths.push(gez.resolvePath('src/entry.server.ts'));
@@ -89,11 +89,11 @@ export function createRspackConfig(
                     prefix: buildTarget
                 }),
                 // 模块链接插件
-                isWebApp ? moduleLinkPlugin(gez.moduleConfig) : false,
+                isWebApp ? moduleLinkPlugin(gez.moduleConfig) : false
                 // 热更新插件
-                buildTarget === 'client' && !gez.isProd
-                    ? new rspack.HotModuleReplacementPlugin()
-                    : false
+                // buildTarget === 'client' && !gez.isProd
+                //     ? new rspack.HotModuleReplacementPlugin()
+                //     : false
             ];
         })(),
         module: {
