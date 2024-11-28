@@ -72,6 +72,7 @@ export function createRspackVueApp(
                     ...(config.module?.rules ?? []),
                     {
                         test: /\.vue$/,
+                        include: options?.transpile,
                         use: vueRuleUse
                     }
                 ]

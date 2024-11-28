@@ -1,6 +1,7 @@
 import type { Gez } from '@gez/core';
 import {
     type LightningcssLoaderOptions,
+    type RuleSetCondition,
     type RuleSetUse,
     type SwcLoaderOptions,
     rspack
@@ -65,6 +66,10 @@ export interface RspackHtmlAppOptions extends RspackAppOptions {
          */
         node?: string[];
     };
+    /**
+     * 有些 node_modules 的模块，你可能需要打包，就可以在这里配置规则。
+     */
+    transpile?: RuleSetCondition;
 }
 export async function createRspackHtmlApp(
     gez: Gez,
@@ -90,6 +95,7 @@ export async function createRspackHtmlApp(
                     {
                         test: /\.(jpe?g|png|gif|bmp|webp|svg)$/i,
                         type: 'asset/resource',
+                        include: options.transpile,
                         generator: {
                             filename: filename(gez, 'images')
                         }
@@ -97,6 +103,7 @@ export async function createRspackHtmlApp(
                     {
                         test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)$/i,
                         type: 'asset/resource',
+                        include: options.transpile,
                         generator: {
                             filename: filename(gez, 'media')
                         }
@@ -104,16 +111,19 @@ export async function createRspackHtmlApp(
                     {
                         test: /\.(woff|woff2|eot|ttf|otf)(\?.*)?$/i,
                         type: 'asset/resource',
+                        include: options.transpile,
                         generator: {
                             filename: filename(gez, 'fonts')
                         }
                     },
                     {
                         test: /\.json$/i,
+                        include: options.transpile,
                         type: 'json'
                     },
                     {
                         test: /\.worker\.(c|m)?(t|j)s$/i,
+                        include: options.transpile,
                         loader:
                             options.loaders?.workerRspackLoader ??
                             RSPACK_LOADER.workerRspackLoader,
@@ -124,6 +134,7 @@ export async function createRspackHtmlApp(
                     },
                     {
                         test: /\.ts$/i,
+                        include: options.transpile,
                         loader:
                             options.loaders?.builtinSwcLoader ??
                             RSPACK_LOADER.builtinSwcLoader,
@@ -254,11 +265,13 @@ function addCssConfig(
                 ...(config.module?.rules ?? []),
                 {
                     test: /\.less$/,
+                    include: options.transpile,
                     use: [...cssRule, ...lessRule],
                     type: 'javascript/auto'
                 },
                 {
                     test: /\.css$/,
+                    include: options.transpile,
                     use: cssRule,
                     type: 'javascript/auto'
                 }
@@ -294,6 +307,7 @@ function addCssConfig(
             ...(config.module?.rules ?? []),
             {
                 test: /\.less$/,
+                include: options.transpile,
                 use: [...lessLoaders],
                 type: 'css'
             }
