@@ -11,6 +11,7 @@ import {
     type RspackAppOptions,
     createRspackApp
 } from './app';
+import type { BuildTarget } from './build-target';
 import { RSPACK_LOADER } from './loader';
 
 export interface RspackHtmlAppOptions extends RspackAppOptions {
@@ -46,7 +47,10 @@ export interface RspackHtmlAppOptions extends RspackAppOptions {
     /**
      * 透传 DefinePlugin 的值 https://rspack.dev/plugins/webpack/define-plugin
      */
-    definePlugin?: Record<string, string>;
+    definePlugin?: Record<
+        string,
+        string | Partial<Record<BuildTarget, string>>
+    >;
 
     /**
      * 构建目标
@@ -168,9 +172,21 @@ export async function createRspackHtmlApp(
             config.devtool = false;
             config.cache = false;
             if (options.definePlugin) {
-                config.plugins.push(
-                    new rspack.DefinePlugin(options.definePlugin)
+                const defineOptions: Record<string, string> = {};
+                Object.entries(options.definePlugin).forEach(
+                    ([name, value]) => {
+                        const targetValue =
+                            typeof value === 'string'
+                                ? value
+                                : value[buildTarget];
+                        if (typeof targetValue === 'string') {
+                            defineOptions[name] = targetValue;
+                        }
+                    }
                 );
+                if (Object.keys(defineOptions).length) {
+                    config.plugins.push(new rspack.DefinePlugin(defineOptions));
+                }
             }
             config.resolve = {
                 ...config.resolve,
