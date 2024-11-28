@@ -118,8 +118,7 @@ export function createRspackConfig(
             }
         },
         optimization: {
-            // 启用压缩之后，在 node 端编译时，会导致 export * 相关错误。
-            minimize: buildTarget === 'client' && gez.isProd,
+            minimize: isWebApp && gez.isProd,
             concatenateModules: true,
             splitChunks: {
                 chunks: 'async'
@@ -149,7 +148,8 @@ export function createRspackConfig(
             }
         },
         target: buildTarget === 'client' ? 'web' : 'node22',
-        mode: gez.isProd ? 'production' : 'development'
+        mode: gez.isProd ? 'production' : 'development',
+        cache: false
     };
 }
 
