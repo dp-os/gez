@@ -11,8 +11,7 @@ export function entryPlugin(
     const entry = compiler.options.entry;
     moduleConfig.exports.forEach(({ exportName, exportPath }) => {
         entry[exportName] = {
-            import: [exportPath],
-            layer: exportPath
+            import: [exportPath]
         };
     });
 }

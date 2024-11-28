@@ -41,7 +41,6 @@ export function createRspackConfig(
             }
             return {
                 [`./src/entry.${buildTarget}`]: {
-                    layer: buildTarget,
                     import: importPaths
                 }
             };
@@ -144,7 +143,6 @@ export function createRspackConfig(
         })(),
         experiments: {
             outputModule: true,
-            layers: true,
             rspackFuture: {
                 bundlerInfo: { force: false }
             }
