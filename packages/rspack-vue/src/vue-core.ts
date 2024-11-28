@@ -65,14 +65,17 @@ export function createRspackVueApp(
                     vueRuleUse.unshift(vue3Loader);
                     break;
             }
-
+            const include = [
+                gez.resolvePath('src'),
+                ...(options?.transpile ?? [])
+            ];
             config.module = {
                 ...config.module,
                 rules: [
                     ...(config.module?.rules ?? []),
                     {
                         test: /\.vue$/,
-                        include: options?.transpile,
+                        include,
                         use: vueRuleUse
                     }
                 ]

@@ -1,7 +1,7 @@
 import type { Gez } from '@gez/core';
 import {
     type LightningcssLoaderOptions,
-    type RuleSetCondition,
+    type RuleSetConditions,
     type RuleSetUse,
     type SwcLoaderOptions,
     rspack
@@ -69,7 +69,7 @@ export interface RspackHtmlAppOptions extends RspackAppOptions {
     /**
      * 有些 node_modules 的模块，你可能需要打包，就可以在这里配置规则。
      */
-    transpile?: RuleSetCondition;
+    transpile?: RuleSetConditions;
 }
 export async function createRspackHtmlApp(
     gez: Gez,
@@ -87,6 +87,10 @@ export async function createRspackHtmlApp(
         ...options,
         config(context) {
             const { config, buildTarget } = context;
+            const include = [
+                gez.resolvePath('src'),
+                ...(options.transpile ?? [])
+            ];
             config.stats = 'errors-warnings';
             config.module = {
                 ...config.module,
@@ -95,7 +99,7 @@ export async function createRspackHtmlApp(
                     {
                         test: /\.(jpe?g|png|gif|bmp|webp|svg)$/i,
                         type: 'asset/resource',
-                        include: options.transpile,
+                        include,
                         generator: {
                             filename: filename(gez, 'images')
                         }
@@ -103,7 +107,7 @@ export async function createRspackHtmlApp(
                     {
                         test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)$/i,
                         type: 'asset/resource',
-                        include: options.transpile,
+                        include,
                         generator: {
                             filename: filename(gez, 'media')
                         }
@@ -111,19 +115,19 @@ export async function createRspackHtmlApp(
                     {
                         test: /\.(woff|woff2|eot|ttf|otf)(\?.*)?$/i,
                         type: 'asset/resource',
-                        include: options.transpile,
+                        include,
                         generator: {
                             filename: filename(gez, 'fonts')
                         }
                     },
                     {
                         test: /\.json$/i,
-                        include: options.transpile,
+                        include,
                         type: 'json'
                     },
                     {
                         test: /\.worker\.(c|m)?(t|j)s$/i,
-                        include: options.transpile,
+                        include,
                         loader:
                             options.loaders?.workerRspackLoader ??
                             RSPACK_LOADER.workerRspackLoader,
@@ -134,7 +138,7 @@ export async function createRspackHtmlApp(
                     },
                     {
                         test: /\.ts$/i,
-                        include: options.transpile,
+                        include,
                         loader:
                             options.loaders?.builtinSwcLoader ??
                             RSPACK_LOADER.builtinSwcLoader,
@@ -223,6 +227,7 @@ function addCssConfig(
     if (options.css === false) {
         return;
     }
+    const include = [gez.resolvePath('src'), ...(options.transpile ?? [])];
     // 输出在 .js 文件中
     if (options.css === 'js') {
         const cssRule: RuleSetUse = [
@@ -265,13 +270,13 @@ function addCssConfig(
                 ...(config.module?.rules ?? []),
                 {
                     test: /\.less$/,
-                    include: options.transpile,
+                    include,
                     use: [...cssRule, ...lessRule],
                     type: 'javascript/auto'
                 },
                 {
                     test: /\.css$/,
-                    include: options.transpile,
+                    include,
                     use: cssRule,
                     type: 'javascript/auto'
                 }
@@ -307,7 +312,7 @@ function addCssConfig(
             ...(config.module?.rules ?? []),
             {
                 test: /\.less$/,
-                include: options.transpile,
+                include,
                 use: [...lessLoaders],
                 type: 'css'
             }
