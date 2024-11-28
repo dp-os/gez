@@ -4,9 +4,8 @@
 [![npm](https://img.shields.io/npm/dt/@gez/core.svg)](https://www.npmjs.com/package/@gez/core)
 
 [Gez](https://dp-os.github.io/gez/index.html) 基于 **[Rspack](https://rspack.dev/)** 编译，通过 **[importmap](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/script/type/importmap)** 将模块映射到具有强缓存，基于内容哈希的 URL 中。
-
-> **提示：** 正在进行 API 审核以及文档编写，计划2024年11月底完成，发布一个 beta 版本。    
-> **警告：** 目前 Rspack 对 ESM 的支持，还存在一些问题，目前还无法应用在生产。
+   
+> **⚠️：** 目前 Rspack 对 ESM 的支持，还存在一些问题，目前还无法应用在生产。
 
 ## 🌈 理念
 - 我们应该设计一个基础服务，由基础服务提供所有的第三方依赖。
