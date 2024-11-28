@@ -7,6 +7,7 @@ import {
     rspack
 } from '@rspack/core';
 import nodeExternals from 'webpack-node-externals';
+import type { RspackAppOptions } from './app';
 import type { BuildTarget } from './build-target';
 
 /**
@@ -14,9 +15,21 @@ import type { BuildTarget } from './build-target';
  */
 export function createRspackConfig(
     gez: Gez,
-    buildTarget: BuildTarget
+    buildTarget: BuildTarget,
+    options: RspackAppOptions
 ): RspackOptions {
+    const moduleType = options.module ?? 'auto';
     const isWebApp = buildTarget === 'client' || buildTarget === 'server';
+    const isHot =
+        (buildTarget === 'client' && !gez.isProd && moduleType === 'auto') ||
+        moduleType === 'module';
+
+    const libraryType =
+        moduleType === 'auto'
+            ? gez.isProd
+                ? 'modern-module'
+                : 'module'
+            : moduleType;
     return {
         /**
          * 项目根目录，不可修改
@@ -27,10 +40,10 @@ export function createRspackConfig(
             switch (buildTarget) {
                 case 'client':
                     importPaths.push(gez.resolvePath('src/entry.client.ts'));
-                    // !gez.isProd &&
-                    //     importPaths.push(
-                    //         `${resolve('webpack-hot-middleware/client')}?path=${gez.basePath}hot-middleware&timeout=5000&overlay=false`
-                    //     );
+                    isHot &&
+                        importPaths.push(
+                            `${resolve('webpack-hot-middleware/client')}?path=${gez.basePath}hot-middleware&timeout=5000&overlay=false`
+                        );
                     break;
                 case 'server':
                     importPaths.push(gez.resolvePath('src/entry.server.ts'));
@@ -52,7 +65,7 @@ export function createRspackConfig(
             chunkLoading: gez.isProd ? 'import' : undefined,
             chunkFilename: 'chunks/[name].[contenthash:8].final.js',
             library: {
-                type: 'modern-module'
+                type: libraryType
             },
             filename:
                 buildTarget !== 'node' && gez.isProd
@@ -89,11 +102,9 @@ export function createRspackConfig(
                     prefix: buildTarget
                 }),
                 // 模块链接插件
-                isWebApp ? moduleLinkPlugin(gez.moduleConfig) : false
+                isWebApp ? moduleLinkPlugin(gez.moduleConfig) : false,
                 // 热更新插件
-                // buildTarget === 'client' && !gez.isProd
-                //     ? new rspack.HotModuleReplacementPlugin()
-                //     : false
+                isHot ? new rspack.HotModuleReplacementPlugin() : false
             ];
         })(),
         module: {
