@@ -118,7 +118,8 @@ export function createRspackConfig(
             }
         },
         optimization: {
-            minimize: isWebApp && gez.isProd,
+            // 启用压缩之后，在 node 端编译时，会导致 export * 相关错误。
+            minimize: buildTarget === 'client' && gez.isProd,
             concatenateModules: true,
             splitChunks: {
                 chunks: 'async'
