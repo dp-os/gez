@@ -17,6 +17,7 @@
         "express": "^4.19.2"
     },
     "devDependencies": {
+        "@gez/vue-ui": "workspace:*",
         "@gez/rspack": "workspace:*",
         "@gez/rspack-vue": "workspace:*",
         "@types/express": "^4.17.21",

@@ -25,7 +25,11 @@ export default {
         /**
          * 导出的文件
          */
-        exports: ['root:src/components/layout.vue', 'npm:vue']
+        exports: [
+            'root:src/components/layout.vue',
+            'npm:vue',
+            'npm:@gez/vue-ui'
+        ]
     },
     async postCompileProdHook(gez) {
         const render = await gez.render({

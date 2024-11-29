@@ -4,12 +4,15 @@
         <p>
             Time: {{time}}
         </p>
+        <GezFooter />
     </layout>
 </template>
 <script lang="ts" setup>
+import { GezFooter } from '@gez/vue-ui';
 import { onBeforeUnmount, onMounted, ref } from 'vue';
 import layout from './components/layout.vue';
 import Logo from './components/logo.vue';
+
 defineProps();
 let time = ref(new Date().toISOString());
 onMounted(() => {
