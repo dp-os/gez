@@ -120,7 +120,7 @@ export async function createRspackHtmlApp(
                             RSPACK_LOADER.workerRspackLoader,
                         options: {
                             esModule: false,
-                            filename: filename(gez, 'worker')
+                            filename: filename(gez, 'worker', '.js')
                         }
                     },
                     {
@@ -199,10 +199,10 @@ export async function createRspackHtmlApp(
     });
 }
 
-function filename(gez: Gez, name: string) {
+function filename(gez: Gez, name: string, ext = '[ext]') {
     return gez.isProd
-        ? `${name}/[name].[contenthash:8].final[ext]`
-        : `${name}/[path][name][ext]`;
+        ? `${name}/[name].[contenthash:8].final${ext}`
+        : `${name}/[path][name]${ext}`;
 }
 
 function addCssConfig(
