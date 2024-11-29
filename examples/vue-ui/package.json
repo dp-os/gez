@@ -1,6 +1,6 @@
 {
   "name": "@gez/vue-ui",
-  "version": "1.0.0",
+  "version": "3.0.0-beta.17",
   "description": "",
   "main": "src/index.ts",
   "scripts": {
@@ -11,7 +11,7 @@
   "license": "ISC",
   "peerDependencies": {
     "vue": ">=2.7.8 || >=3.0.0"
-},
+  },
   "devDependencies": {
     "vue": "^3.5.13"
   }
