@@ -155,14 +155,19 @@ function rewriteBuild(gez: Gez, options: RspackAppOptions = {}) {
         gez.writeSync(
             gez.resolvePath('dist/index.js'),
             `
-import { Gez } from '@gez/core';
-
 process.env.NODE_ENV = process.env.NODE_ENV ?? 'production';
 
-const options = await import('./node/src/entry.node.js').then(m => m.default);
-const gez = new Gez(options);
+async function start() {
+    const options = await import('./node/src/entry.node.js').then(
+        (mod) => mod.default
+    );
+    const { Gez } = await import('@gez/core');
+    const gez = new Gez(options);
 
-await gez.init(gez.COMMAND.start);
+    await gez.init(gez.COMMAND.start);
+}
+
+start();
 `.trim()
         );
         return pack(gez);
