@@ -51,7 +51,7 @@
         "unbuild": "2.0.0",
         "vitest": "2.1.5"
     },
-    "version": "3.0.0-beta.20",
+    "version": "3.0.0-beta.21",
     "type": "module",
     "private": false,
     "exports": {
