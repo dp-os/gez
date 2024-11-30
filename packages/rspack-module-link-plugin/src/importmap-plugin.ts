@@ -65,12 +65,8 @@ function toImportmapJsCode(name: string, imports: Record<string, string>) {
 `.trim();
 }
 
-/**
- * 生成内容的hash值
- * @param text 内容
- */
-export function contentHash(text: string) {
-    const hash = crypto.createHash('md5');
+const hash = crypto.createHash('md5');
+function contentHash(text: string) {
     hash.update(text);
     return hash.digest('hex');
 }
