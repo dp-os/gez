@@ -26,7 +26,7 @@ export function importmapPlugin(
                     const { RawSource } = compiler.rspack.sources;
                     const code = toImportmapJsCode(moduleConfig.name, exports);
 
-                    const hash = contentHash(code).substring(0, 8);
+                    const hash = contentHash(code).substring(0, 12);
                     const importmapHash = `importmap.${hash}.final.js`;
                     const isWeb = compilation.options.target === 'web';
 
@@ -65,8 +65,8 @@ function toImportmapJsCode(name: string, imports: Record<string, string>) {
 `.trim();
 }
 
-const hash = crypto.createHash('md5');
 function contentHash(text: string) {
+    const hash = crypto.createHash('sha256');
     hash.update(text);
     return hash.digest('hex');
 }
