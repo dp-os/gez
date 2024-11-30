@@ -12,9 +12,9 @@ export function packagePlugin(
             let manifestJson: ManifestJson = {
                 name: moduleConfig.name,
                 version: '1.0.0',
-                hash: '',
                 type: 'module',
                 exports: {},
+                importmapJs: '',
                 buildFiles: [],
                 chunks: {}
             };
@@ -31,17 +31,22 @@ export function packagePlugin(
                     });
 
                     const exports = getExports(stats);
-                    const hash = stats.hash ?? String(Date.now());
                     const resources = Object.keys(assets)
                         .map(transFileName)
                         .filter((file) => !file.includes('hot-update'));
+                    const importmapJs =
+                        resources.find(
+                            (file) =>
+                                file.startsWith('importmap.') &&
+                                file.endsWith('.final.js')
+                        ) ?? 'importmap.js';
                     manifestJson = {
                         name: moduleConfig.name,
                         version: '1.0.0',
-                        hash,
                         type: 'module',
                         exports: exports,
                         buildFiles: resources,
+                        importmapJs,
                         chunks: getChunks(moduleConfig, compilation)
                     };
 

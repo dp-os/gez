@@ -123,7 +123,7 @@ export class RenderContext {
 
         this.gez.getManifestList('client').forEach((item) => {
             const base = `${this.base}/${item.name}/`;
-            files.importmap.push(`${base}importmap.${item.hash}.final.js`);
+            files.importmap.push(`${base}${item.importmapJs}`);
             Object.entries(item.chunks).forEach(([filepath, info]) => {
                 if (chunkSet.has(filepath)) {
                     appendFile(info.js, () => {
