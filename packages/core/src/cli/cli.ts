@@ -65,9 +65,6 @@ export async function cli(command: string) {
             gez = null;
             opts = null;
             break;
-        case 'install':
-            console.log('TODO');
-            break;
         default:
             await import(path.resolve(process.cwd(), command));
             break;
