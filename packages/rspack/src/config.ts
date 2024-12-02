@@ -63,7 +63,9 @@ export function createRspackConfig(
             module: true,
             chunkFormat: gez.isProd ? 'module' : undefined,
             chunkLoading: gez.isProd ? 'import' : undefined,
-            chunkFilename: 'chunks/[name].[contenthash:8].final.js',
+            chunkFilename: gez.isProd
+                ? 'chunks/[name].[contenthash:8].final.js'
+                : 'chunks/[name].js',
             library: {
                 type: libraryType
             },
