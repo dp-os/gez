@@ -131,7 +131,7 @@ export function createRspackConfig(
             }
         },
         optimization: {
-            minimize: buildTarget === 'client' && gez.isProd,
+            minimize: options.minimize ?? gez.isProd,
             concatenateModules: true,
             splitChunks: {
                 chunks: 'async'

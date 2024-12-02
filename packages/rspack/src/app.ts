@@ -26,6 +26,10 @@ export interface RspackAppConfigContext {
 
 export interface RspackAppOptions {
     /**
+     * 是否压缩代码，默认情况下在生产环境压缩代码。
+     */
+    minimize?: boolean;
+    /**
      * 这是一个过渡的方案，等 Rspack 完全支持 ESM 之后，这个参数会废弃。
      * - auto 默认值，在开发环境时，使用 module 获得热更新，生产环境编译使用 modern-module
      * - module 支持热更新，但是不支持 export *
