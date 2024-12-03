@@ -1,3 +1,4 @@
+import crypto from 'node:crypto';
 import type { Gez } from '@gez/core';
 import Arborist from '@npmcli/arborist';
 import pacote from 'pacote';
@@ -23,9 +24,12 @@ export async function pack(gez: Gez): Promise<boolean> {
     const data = await pacote.tarball(gez.resolvePath('dist'), {
         Arborist
     });
-
+    const hash = contentHash(data);
     packConfig.outputs.forEach((file) => {
-        gez.writeSync(gez.resolvePath('./', file), data);
+        const tgz = gez.resolvePath('./', file);
+        const txt = tgz.replace(/\.tgz$/, '.txt');
+        gez.writeSync(tgz, data);
+        gez.writeSync(txt, hash);
     });
 
     await packConfig.onAfter(gez, pkgJson, data);
@@ -59,4 +63,15 @@ async function buildPackageJson(gez: Gez): Promise<Record<string, any>> {
         exports
     };
     return buildJson;
+}
+
+function contentHash(buffer: Buffer) {
+    // 创建一个哈希实例，指定使用 SHA256 算法
+    const hash = crypto.createHash('sha256');
+
+    // 更新哈希实例以包含 Buffer 对象的内容
+    hash.update(buffer);
+
+    // 计算并返回哈希值的十六进制字符串表示
+    return hash.digest('hex');
 }
