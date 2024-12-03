@@ -296,9 +296,6 @@ importers:
       '@types/send':
         specifier: ^0.17.4
         version: 0.17.4
-      '@types/tar-fs':
-        specifier: ^2.0.4
-        version: 2.0.4
       '@types/write':
         specifier: ^2.0.4
         version: 2.0.4
@@ -1918,12 +1915,6 @@ packages:
 
   '@types/ssri@7.1.5':
     resolution: {integrity: sha512-odD/56S3B51liILSk5aXJlnYt99S6Rt9EFDDqGtJM26rKHApHcwyU/UoYHrzKkdkHMAIquGWCuHtQTbes+FRQw==}
-
-  '@types/tar-fs@2.0.4':
-    resolution: {integrity: sha512-ipPec0CjTmVDWE+QKr9cTmIIoTl7dFG/yARCM5MqK8i6CNLIG1P8x4kwDsOQY1ChZOZjH0wO9nvfgBvWl4R3kA==}
-
-  '@types/tar-stream@3.1.3':
-    resolution: {integrity: sha512-Zbnx4wpkWBMBSu5CytMbrT5ZpMiF55qgM+EpHzR4yIDu7mv52cej8hTkOc6K+LzpkOAbxwn/m7j3iO+/l42YkQ==}
 
   '@types/unist@2.0.11':
     resolution: {integrity: sha512-CmBKiL6NNo/OqgmMn95Fk9Whlp2mtvIv+KNpQKN2F4SjvrEesubTRWGYSg+BnWZOnlCaSTU1sMpsBOzgbYhnsA==}
@@ -7424,15 +7415,6 @@ snapshots:
       '@types/send': 0.17.4
 
   '@types/ssri@7.1.5':
-    dependencies:
-      '@types/node': 20.17.6
-
-  '@types/tar-fs@2.0.4':
-    dependencies:
-      '@types/node': 20.17.6
-      '@types/tar-stream': 3.1.3
-
-  '@types/tar-stream@3.1.3':
     dependencies:
       '@types/node': 20.17.6
 
