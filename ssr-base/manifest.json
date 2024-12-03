@@ -1,0 +1,62 @@
+{
+    "name": "ssr-base",
+    "version": "1.0.0",
+    "type": "module",
+    "exports": {
+        "./src/entry.client": "./src/entry.client.ef46db37.final.js",
+        "./npm/axios": "./npm/axios.614f39dd.final.js",
+        "./src/date-fns": "./src/date-fns.58515d12.final.js",
+        "./src/title": "./src/title.f87b9567.final.js"
+    },
+    "buildFiles": [
+        "src/title.f87b9567.final.js",
+        "npm/axios.614f39dd.final.js",
+        "src/entry.client.ef46db37.final.js",
+        "src/date-fns.58515d12.final.js",
+        "importmap.js",
+        "importmap.5bd8cd6c7af9.final.js"
+    ],
+    "importmapJs": "importmap.5bd8cd6c7af9.final.js",
+    "chunks": {
+        "ssr-base@src/title.ts": {
+            "js": "./src/title.f87b9567.final.js",
+            "css": [],
+            "resources": [],
+            "sizes": {
+                "js": 49,
+                "css": 0,
+                "resource": 0
+            }
+        },
+        "ssr-base@../../node_modules/.pnpm/axios@1.7.7/node_modules/axios/index.js": {
+            "js": "./npm/axios.614f39dd.final.js",
+            "css": [],
+            "resources": [],
+            "sizes": {
+                "js": 169416,
+                "css": 0,
+                "resource": 0
+            }
+        },
+        "ssr-base@src/entry.client.ts": {
+            "js": "./src/entry.client.ef46db37.final.js",
+            "css": [],
+            "resources": [],
+            "sizes": {
+                "js": 1,
+                "css": 0,
+                "resource": 0
+            }
+        },
+        "ssr-base@src/date-fns.ts": {
+            "js": "./src/date-fns.58515d12.final.js",
+            "css": [],
+            "resources": [],
+            "sizes": {
+                "js": 532936,
+                "css": 0,
+                "resource": 0
+            }
+        }
+    }
+}

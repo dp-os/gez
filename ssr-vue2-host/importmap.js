@@ -1,0 +1,1 @@
+(t=>{let r="ssr-vue2-host",e="__importmap__",s=t[e]=t[e]||{},c=s.imports=s.imports||{},i=new URL(document.currentScript.src).pathname.split("/"+r+"/"),n=t=>r+t.substring(1);Object.entries({"./src/entry.client":"./src/entry.client.a939d662.final.js"}).forEach(([t,r])=>{c[n(t)]=i[0]+"/"+n(r)})})(globalThis);

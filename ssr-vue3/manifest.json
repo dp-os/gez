@@ -1,0 +1,29 @@
+{
+    "name": "ssr-vue3",
+    "version": "1.0.0",
+    "type": "module",
+    "exports": {
+        "./src/entry.client": "./src/entry.client.b52efe2b.final.js"
+    },
+    "buildFiles": [
+        "importmap.js",
+        "importmap.ea8411fcb81b.final.js",
+        "src/entry.client.c9263133.final.css",
+        "src/entry.client.b52efe2b.final.js"
+    ],
+    "importmapJs": "importmap.ea8411fcb81b.final.js",
+    "chunks": {
+        "ssr-vue3@src/entry.client.ts": {
+            "js": "./src/entry.client.b52efe2b.final.js",
+            "css": [
+                "./src/entry.client.c9263133.final.css"
+            ],
+            "resources": [],
+            "sizes": {
+                "js": 371807,
+                "css": 665,
+                "resource": 0
+            }
+        }
+    }
+}
