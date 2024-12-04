@@ -94,7 +94,10 @@ export function createRspackConfig(
                     case 'node':
                         return gez.resolvePath('dist/node');
                 }
-            })()
+            })(),
+            environment: {
+                nodePrefixForCoreModules: true
+            }
         },
         // 默认插件，不可修改
         plugins: ((): Plugins => {
