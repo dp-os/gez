@@ -135,7 +135,7 @@ export function createRspackConfig(
         },
         optimization: {
             minimize: options.minimize ?? gez.isProd,
-            concatenateModules: true,
+            concatenateModules: gez.isProd || libraryType === 'modern-module',
             splitChunks: {
                 chunks: 'async'
             }
