@@ -321,8 +321,8 @@ importers:
         specifier: 1.9.4
         version: 1.9.4
       '@gez/lint':
-        specifier: 3.0.0-beta.27
-        version: 3.0.0-beta.27(postcss-html@1.7.0)(postcss@8.4.49)(stylelint@16.10.0(typescript@5.6.3))
+        specifier: workspace:*
+        version: link:../lint
       '@types/cli-progress':
         specifier: ^3.11.6
         version: 3.11.6
@@ -1183,11 +1183,6 @@ packages:
     engines: {node: '>=18'}
     cpu: [x64]
     os: [win32]
-
-  '@gez/lint@3.0.0-beta.27':
-    resolution: {integrity: sha512-j59f766Rljr30Q97UQixCuuTFx97dehb9YiRCBvT8IMd9DvP321X39VJ9/UYXooALF6O49i7LTYK7Bmx+NEJ4A==}
-    peerDependencies:
-      stylelint: '>=16.5.0'
 
   '@import-maps/resolve@2.0.0':
     resolution: {integrity: sha512-RwzRTpmrrS6Q1ZhQExwuxJGK1Wqhv4stt+OF2JzS+uawewpwNyU7EJL1WpBex7aDiiGLs4FsXGkfUBdYuX7xiQ==}
@@ -6514,19 +6509,6 @@ snapshots:
 
   '@esbuild/win32-x64@0.24.0':
     optional: true
-
-  '@gez/lint@3.0.0-beta.27(postcss-html@1.7.0)(postcss@8.4.49)(stylelint@16.10.0(typescript@5.6.3))':
-    dependencies:
-      stylelint: 16.10.0(typescript@5.6.3)
-      stylelint-config-html: 1.1.0(postcss-html@1.7.0)(stylelint@16.10.0(typescript@5.6.3))
-      stylelint-config-recess-order: 5.1.1(stylelint@16.10.0(typescript@5.6.3))
-      stylelint-config-recommended-less: 3.0.1(postcss@8.4.49)(stylelint@16.10.0(typescript@5.6.3))
-      stylelint-config-recommended-vue: 1.5.0(postcss-html@1.7.0)(stylelint@16.10.0(typescript@5.6.3))
-      stylelint-config-standard: 36.0.1(stylelint@16.10.0(typescript@5.6.3))
-      stylelint-order: 6.0.4(stylelint@16.10.0(typescript@5.6.3))
-    transitivePeerDependencies:
-      - postcss
-      - postcss-html
 
   '@import-maps/resolve@2.0.0': {}
 
