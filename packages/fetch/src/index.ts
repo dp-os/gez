@@ -158,7 +158,7 @@ export async function fetchPkgsWithProgress({
     });
     const logger = (str = '') => {
         // multiBar.log 最后一个字符需要是换行符
-        multiBar.log(str.replace(/\n+$/, '') + '\n');
+        multiBar.log(str.trimEnd() + '\n');
         multiBar.update(); // force redraw
     };
     const bars: { [url: string]: SingleBar } = urls.reduce(
@@ -178,7 +178,6 @@ export async function fetchPkgsWithProgress({
                 ...(axiosOptions?.[url] || {}),
                 url,
                 onDownloadProgress(progressEvent) {
-                    // logger(`${progressEvent.loaded}/${progressEvent?.total ?? progressEvent.loaded + 1} ${url}`);
                     bars[url].setTotal(
                         progressEvent?.total ?? progressEvent.loaded + 1
                     );
