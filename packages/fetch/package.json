@@ -10,13 +10,13 @@
         "build": "unbuild"
     },
     "dependencies": {
-        "cli-progress": "^3.12.0",
-        "axios": "^1.7.7"
+        "axios": "^1.7.7",
+        "cli-progress": "^3.12.0"
     },
     "devDependencies": {
-        "@types/cli-progress": "^3.11.6",
         "@biomejs/biome": "1.9.4",
         "@gez/lint": "workspace:*",
+        "@types/cli-progress": "^3.11.6",
         "@types/node": "22.9.0",
         "@vitest/coverage-v8": "2.1.5",
         "stylelint": "16.10.0",
@@ -24,7 +24,7 @@
         "unbuild": "2.0.0",
         "vitest": "2.1.5"
     },
-    "version": "3.0.0-beta.30",
+    "version": "3.0.0-beta.31",
     "type": "module",
     "private": false,
     "exports": {
