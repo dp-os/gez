@@ -17,7 +17,7 @@
         "@biomejs/biome": "1.9.4",
         "@gez/core": "workspace:*",
         "@gez/lint": "workspace:*",
-        "@rspack/core": "^1.1.0-beta.0",
+        "@rspack/core": "^1.1.6",
         "@types/node": "22.9.0",
         "@vitest/coverage-v8": "2.1.5",
         "stylelint": "16.10.0",
