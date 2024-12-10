@@ -317,12 +317,12 @@ importers:
 
   packages/fetch:
     dependencies:
-      '@types/cli-progress':
-        specifier: ^3.11.6
-        version: 3.11.6
       axios:
         specifier: ^1.7.7
         version: 1.7.7
+      cli-progress:
+        specifier: ^3.12.0
+        version: 3.12.0
     devDependencies:
       '@biomejs/biome':
         specifier: 1.9.4
@@ -330,15 +330,15 @@ importers:
       '@gez/lint':
         specifier: workspace:*
         version: link:../lint
+      '@types/cli-progress':
+        specifier: ^3.11.6
+        version: 3.11.6
       '@types/node':
         specifier: 22.9.0
         version: 22.9.0
       '@vitest/coverage-v8':
         specifier: 2.1.5
         version: 2.1.5(vitest@2.1.5(@types/node@22.9.0)(less@4.2.0)(sass-embedded@1.81.0)(terser@5.36.0))
-      cli-progress:
-        specifier: ^3.12.0
-        version: 3.12.0
       stylelint:
         specifier: 16.10.0
         version: 16.10.0(typescript@5.6.3)

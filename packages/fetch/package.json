@@ -10,15 +10,15 @@
         "build": "unbuild"
     },
     "dependencies": {
-        "@types/cli-progress": "^3.11.6",
+        "cli-progress": "^3.12.0",
         "axios": "^1.7.7"
     },
     "devDependencies": {
+        "@types/cli-progress": "^3.11.6",
         "@biomejs/biome": "1.9.4",
         "@gez/lint": "workspace:*",
         "@types/node": "22.9.0",
         "@vitest/coverage-v8": "2.1.5",
-        "cli-progress": "^3.12.0",
         "stylelint": "16.10.0",
         "typescript": "5.6.3",
         "unbuild": "2.0.0",
