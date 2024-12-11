@@ -65,13 +65,8 @@ async function buildPackageJson(gez: Gez): Promise<Record<string, any>> {
     return buildJson;
 }
 
-function contentHash(buffer: Buffer) {
-    // 创建一个哈希实例，指定使用 SHA256 算法
+function contentHash(buffer: Buffer, algorithm = 'sha256') {
     const hash = crypto.createHash('sha256');
-
-    // 更新哈希实例以包含 Buffer 对象的内容
     hash.update(buffer);
-
-    // 计算并返回哈希值的十六进制字符串表示
-    return hash.digest('hex');
+    return `${algorithm}-${hash.digest('hex')}`;
 }
