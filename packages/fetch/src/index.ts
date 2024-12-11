@@ -14,7 +14,7 @@ const outputDir = path.join(path.dirname(fileURLToPath(import.meta.url)), 'outpu
 fetchPkgsWithProgress({
     baseURL: 'https://dp-os.github.io/gez/',
     urls,
-    outputPaths: urls.map(url => path.join(outputDir, 'output', url.split('/')[0] + '.tgz')),
+    outputPaths: urls.map(url => path.join(outputDir, url.split('/')[0] + '.tgz')),
     returnLevel: 1,
     timeout: 4500,
 }).then((...args) => {
@@ -28,11 +28,14 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { URL } from 'node:url';
 import axios, { type AxiosResponse, type AxiosRequestConfig } from 'axios';
+import genSysCacheDir from 'cachedir';
 import { MultiBar, type SingleBar } from 'cli-progress';
+
+const sysCacheDir = path.join(genSysCacheDir('npm-gez'), 'packages');
 
 export interface FetchPkgWithCacheOptions extends AxiosRequestConfig {
     /**
-     * 缓存文件夹路径 默认为 `.root/packages`
+     * 缓存文件夹路径 默认为 `{system cache dir}/npm-gez/packages`
      */
     cacheDir?: string;
     /**
@@ -68,7 +71,7 @@ export type FetchResult = {
            */
           filePath: string;
           /**
-           * 缓存文件路径 默认为 `{cachePath}/prj/path/filename-hash.ext`
+           * 缓存文件路径 默认为 `{system cache dir}/npm-gez/packages/hash.ext`
            * 如果不使用缓存，则为空字符串。
            */
           cacheFilePath: string;
@@ -96,7 +99,7 @@ export type FetchResult = {
  * 获取文件，并缓存到本地。如果有缓存则使用缓存
  */
 export async function fetchPkgWithCache({
-    cacheDir = '.root/packages',
+    cacheDir = sysCacheDir,
     noCache = false,
     outputPath = '',
     logger = console.log,
@@ -106,13 +109,14 @@ export async function fetchPkgWithCache({
     logger(`[fetch] Start ${url}`);
     const pathInfo = path.parse(new URL(url).pathname);
 
-    if (outputPath && !fs.existsSync(path.dirname(outputPath)))
+    if (outputPath && !fs.existsSync(path.dirname(outputPath))) {
         await fs.promises.mkdir(path.dirname(outputPath), { recursive: true });
+    }
 
     if (!noCache) {
-        cacheDir = path.join(cacheDir, pathInfo.dir);
-        if (!fs.existsSync(cacheDir))
+        if (!fs.existsSync(cacheDir)) {
             await fs.promises.mkdir(cacheDir, { recursive: true });
+        }
     }
 
     /*
@@ -123,7 +127,7 @@ export async function fetchPkgWithCache({
     const hashUrl = url.replace(new RegExp(path.extname(url) + '$'), '.txt');
     let hash = '';
     let hashAlg = 'sha256';
-    if (!noCache)
+    if (!noCache) {
         try {
             hash = (
                 await axios.get(hashUrl, {
@@ -146,13 +150,13 @@ export async function fetchPkgWithCache({
             logger(`[fetch] Get hash error ${url}: ${error.message}`);
             return { url, hasError: true, error };
         }
-    const cacheFilePath = path.join(
-        cacheDir,
-        pathInfo.name + '-' + hash + pathInfo.ext
-    );
+    }
+    const cacheFilePath = path.join(cacheDir, hash + pathInfo.ext);
     if (hash && fs.existsSync(cacheFilePath)) {
         logger(`[fetch] Hit cache ${url}: ${cacheFilePath}`);
-        if (outputPath) await fs.promises.cp(cacheFilePath, outputPath);
+        if (outputPath) {
+            await fs.promises.cp(cacheFilePath, outputPath);
+        }
         return {
             url,
             hasError: false,
@@ -210,12 +214,12 @@ export async function fetchPkgWithCache({
 
     /*
         使用缓存时
-        这里先将文件下载到 pathInfo.base + '.tmp'，然后下载时同步校验 hash 值.
+        这里先将文件下载到 hash + pathInfo.ext + '.tmp'，然后下载时同步校验 hash 值.
         这样在校验失败时，或者下载未完成时，不会将错误的文件保存到缓存中。
-        校验成功后，重命名为 pathInfo.name + '-' + hash + pathInfo.ext
+        校验成功后，重命名为 hash + pathInfo.ext
     */
     const hashStream = crypto.createHash(hashAlg);
-    const tmpFilePath = path.join(cacheDir, pathInfo.base + '.tmp');
+    const tmpFilePath = cacheFilePath + '.tmp';
     const fileStream = fs.createWriteStream(tmpFilePath);
     const streamPromise = new Promise((resolve, reject) => {
         fileStream.on('finish', resolve);
@@ -238,9 +242,11 @@ export async function fetchPkgWithCache({
         return { url, hasError: true, error: new Error('Hash not match') };
     }
     await fs.promises.rename(tmpFilePath, cacheFilePath);
-    if (outputPath) await fs.promises.cp(cacheFilePath, outputPath);
+    if (outputPath) {
+        await fs.promises.cp(cacheFilePath, outputPath);
+    }
 
-    logger(`[fetch] Downloaded ${url}: ${cacheFilePath}`);
+    logger(`[fetch] Downloaded ${url}: ${outputPath || cacheFilePath}`);
     return {
         url,
         hasError: false,
@@ -258,7 +264,7 @@ export interface FetchPkgs extends AxiosRequestConfig {
      */
     noCache?: boolean;
     /**
-     * 缓存文件路径 默认为 `.root/packages`
+     * 缓存文件路径 默认为 `{system cache dir}/npm-gez/packages`
      */
     cacheDir?: string;
     /**
@@ -310,7 +316,7 @@ export type FetchPkgsResult<Level extends number> = Level extends 0
  * 获取多个文件，并缓存到本地。如果有缓存则使用缓存。带有进度条
  */
 export async function fetchPkgsWithProgress<Level extends number>({
-    cacheDir = '.root/packages',
+    cacheDir = sysCacheDir,
     noCache = false,
     urls,
     outputPaths,
