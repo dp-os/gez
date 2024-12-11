@@ -122,6 +122,7 @@ export async function fetchPkgWithCache({
     */
     const hashUrl = url.replace(new RegExp(path.extname(url) + '$'), '.txt');
     let hash = '';
+    let hashAlg = 'sha256';
     if (!noCache)
         try {
             hash = (
@@ -130,6 +131,17 @@ export async function fetchPkgWithCache({
                     responseType: 'text'
                 })
             ).data;
+            if (hash.includes('-')) {
+                const t = hash.split('-');
+                hash = t.pop() as string;
+                hashAlg = t.join('-');
+                if (!crypto.getHashes().includes(hashAlg)) {
+                    logger(
+                        `[fetch] Unsupported hash algorithm ${url}: ${hashAlg}`
+                    );
+                    hashAlg = 'sha256';
+                }
+            }
         } catch (error: any) {
             logger(`[fetch] Get hash error ${url}: ${error.message}`);
             return { url, hasError: true, error };
@@ -202,7 +214,7 @@ export async function fetchPkgWithCache({
         这样在校验失败时，或者下载未完成时，不会将错误的文件保存到缓存中。
         校验成功后，重命名为 pathInfo.name + '-' + hash + pathInfo.ext
     */
-    const hashStream = crypto.createHash('sha256');
+    const hashStream = crypto.createHash(hashAlg);
     const tmpFilePath = path.join(cacheDir, pathInfo.base + '.tmp');
     const fileStream = fs.createWriteStream(tmpFilePath);
     const streamPromise = new Promise((resolve, reject) => {
@@ -280,6 +292,12 @@ export interface FetchPkgs extends AxiosRequestConfig {
      * `2`: 返回详细结果。
      */
     returnLevel?: number;
+    /**
+     * 日志输出函数 默认为 `<cli-progress>.<MultiBar>.log`
+     * @param str string 输出的字符串
+     * @returns void
+     */
+    logger?: (str?: string) => void;
 }
 
 export type FetchPkgsResult<Level extends number> = Level extends 0
@@ -298,20 +316,24 @@ export async function fetchPkgsWithProgress<Level extends number>({
     outputPaths,
     specificOptions,
     returnLevel = 2 as Level,
+    logger,
     ...comAxiosOptions
 }: FetchPkgs & { returnLevel?: Level }): Promise<FetchPkgsResult<Level>> {
     const multiBar = new MultiBar({
         stopOnComplete: true,
-        format: ' [{bar}] {percentage}% | {eta_formatted}/{duration_formatted} | {value}/{total} | {url}',
+        format: ' [{bar}] {percentage}% | {url}',
         forceRedraw: true,
         barCompleteChar: '#',
-        barIncompleteChar: '_'
+        barIncompleteChar: '_',
+        autopadding: true
     });
-    const logger = (str = '') => {
-        // multiBar.log 最后一个字符需要是换行符
-        multiBar.log(str.trimEnd() + '\n');
-        multiBar.update(); // force redraw
-    };
+    logger =
+        logger ||
+        ((str = '') => {
+            // multiBar.log 最后一个字符需要是换行符
+            multiBar.log(str.trimEnd() + '\n');
+            multiBar.update(); // force redraw
+        });
     const bars: { [url: string]: SingleBar } = urls.reduce((obj, url) => {
         obj[url] = multiBar.create(1, 0, { url });
         return obj;
