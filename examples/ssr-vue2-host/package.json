@@ -1,6 +1,6 @@
 {
     "name": "ssr-vue2-host",
-    "version": "3.0.0-beta.32",
+    "version": "3.0.0-beta.33",
     "private": true,
     "type": "module",
     "license": "MIT",
