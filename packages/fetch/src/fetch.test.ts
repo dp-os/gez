@@ -10,13 +10,12 @@ test('base', async () => {
         'output'
     );
     await fetchPkgsWithProgress({
-        baseURL: 'https://dp-os.github.io/gez/',
-        urls,
-        outputPaths: urls.map((url) =>
-            path.join(outputDir, 'output', url.split('/')[0] + '.tgz')
-        ),
-        returnLevel: 1,
-        timeout: 4500
+        outputDir,
+        axiosReqCfg: {
+            baseURL: 'https://dp-os.github.io/gez/',
+            timeout: 4500
+        },
+        packs: urls.map((url) => ({ url, name: url.split('/')[0] }))
     }).then((...args) => {
         console.log(...args);
     });
