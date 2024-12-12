@@ -15,13 +15,16 @@ export async function fetchPkg<Level extends number>({
     outputDir,
     noCache,
     returnLevel = 2 as Level,
-    logger,
+    logger = console.log,
     axiosReqCfg = {},
     name,
-    url = ''
+    url = '',
+    onFinally = () => {}
 }: FetchPkgOptions & { returnLevel?: Level }): Promise<FetchResult<Level>> {
-    const returnWrapper = (ans: FetchResult<2>) =>
-        (returnLevel === 0 ? ans.hasError : ans) as FetchResult<Level>;
+    const returnWrapper = (ans: FetchResult<2>) => {
+        onFinally(ans);
+        return (returnLevel === 0 ? ans.hasError : ans) as FetchResult<Level>;
+    };
 
     const paramsChecker = () => {
         url = axiosReqCfg.url || url;
@@ -91,7 +94,10 @@ export async function fetchPkg<Level extends number>({
     let hash = '';
     let hashAlg = '';
     if (!noCache) {
-        const hashInfo = await getHashText(hashUrl, axiosReqCfg);
+        const hashInfo = await getHashText(hashUrl, {
+            ...axiosReqCfg,
+            onDownloadProgress: undefined
+        });
         if (hashInfo.error) {
             logger?.(`[fetch] [${name}] Error: ${hashInfo.error}`);
             return returnWrapper({

@@ -1,3 +1,4 @@
+import colors from 'ansi-colors';
 import { MultiBar } from 'cli-progress';
 
 import { fetchPkg } from './fetch-pkg';
@@ -17,6 +18,7 @@ import type {
 export async function fetchPkgs<Level extends number>({
     packs,
     returnLevel = 2 as Level,
+    onEachFinally = () => {},
     ...options
 }: FetchPkgsOptions & { returnLevel?: Level }): Promise<FetchResults<Level>> {
     if (new Set(packs.map((pack) => pack.name)).size !== packs.length) {
@@ -43,7 +45,8 @@ export async function fetchPkgs<Level extends number>({
                 axiosReqCfg: {
                     ...axiosReqCfg,
                     ...(pack.axiosReqCfg || {})
-                }
+                },
+                onFinally: (result) => onEachFinally(result)
             })
         )
     );
@@ -63,13 +66,15 @@ export async function fetchPkgsWithBar<Level extends number>({
     packs,
     axiosReqCfg = {},
     multiBarCfg = {},
+    logger = (barLogger, str) => barLogger(str),
+    onEachFinally = () => {},
     ...options
 }: FetchPkgsWithBarOptions & { returnLevel?: Level }): Promise<
     FetchResults<Level>
 > {
     const multiBar = new MultiBar({
         stopOnComplete: true,
-        format: ' [{bar}] {percentage}% | {name}',
+        format: ' [{bar}] {percentage}% | {status} | {name}',
         forceRedraw: true,
         barCompleteChar: '#',
         barIncompleteChar: '_',
@@ -82,7 +87,7 @@ export async function fetchPkgsWithBar<Level extends number>({
         multiBar.update(); // force redraw
     };
     const bars = packs.reduce((obj, { name }) => {
-        obj[name] = multiBar.create(1, 0, { name });
+        obj[name] = multiBar.create(1, 0, { status: 'WAT', name });
         return obj;
     }, {});
     // 不知为何，有的时候不会更新，强制每秒重绘一次
@@ -92,20 +97,20 @@ export async function fetchPkgsWithBar<Level extends number>({
         ans.axiosReqCfg = ans.axiosReqCfg || {};
         const onDownloadProgress =
             ans.axiosReqCfg.onDownloadProgress ||
-            axiosReqCfg?.onDownloadProgress;
+            axiosReqCfg.onDownloadProgress;
         ans.axiosReqCfg.onDownloadProgress = (progressEvent) => {
             bars[ans.name].setTotal(
                 progressEvent?.total ?? progressEvent.loaded + 1
             );
-            bars[ans.name].update(progressEvent.loaded, { name: ans.name });
-            bars[ans.name].updateETA();
+            bars[ans.name].update(progressEvent.loaded, {
+                status: colors.yellow('DLD'),
+                name: ans.name
+            });
             onDownloadProgress?.(progressEvent);
         };
         if (ans.logger) {
             const orgLogger = ans.logger as FetchPkgWithBarLogger;
-            ans.logger = (str = '') => {
-                orgLogger(multiBarLogger, str);
-            };
+            ans.logger = (str = '') => orgLogger(multiBarLogger, str);
         }
         return ans as FetchPkgOptions;
     });
@@ -113,8 +118,17 @@ export async function fetchPkgsWithBar<Level extends number>({
         packs: fetchPkgsPacks,
         ...options,
         axiosReqCfg,
-        logger:
-            options.logger && ((str) => options.logger?.(multiBarLogger, str))
+        logger: logger && ((str) => logger(multiBarLogger, str)),
+        onEachFinally: (result) => {
+            bars[result.name].update(Number.POSITIVE_INFINITY, {
+                status: result.hasError
+                    ? colors.red('ERR')
+                    : colors.green(result.hitCache ? 'HIT' : 'SUC'),
+                name: result.name
+            });
+            multiBar.update(); // force redraw
+            onEachFinally(result);
+        }
     });
     clearInterval(timer);
     multiBar.update(); // force redraw

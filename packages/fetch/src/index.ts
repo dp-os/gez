@@ -14,7 +14,7 @@ const outputDir = path.join(path.dirname(fileURLToPath(import.meta.url)), 'outpu
 fetchPkgsWithProgress({
     outputDir,
     axiosReqCfg: {
-        baseURL: 'https://portal-up.betaactstrade.com',
+        baseURL: 'https://dp-os.github.io/gez/',
         timeout: 10000,
     },
     packs: urls.map(url => ({ url, name: url.split('/')[0] })),

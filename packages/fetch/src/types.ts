@@ -37,6 +37,12 @@ export interface FetchBaseOptions {
      * axios 请求配置
      */
     axiosReqCfg?: AxiosRequestConfig;
+    /**
+     * 包下载结束时的回调函数
+     * @param pack 包信息
+     * @param result 结果
+     */
+    onFinally?: (result: FetchResultSuccess | FetchResultError) => void;
 }
 export interface FetchPkgOptions extends FetchBaseOptions {
     /**
@@ -53,6 +59,12 @@ export interface FetchPkgsOptions extends FetchBaseOptions {
      * 请确保每个包的 `name` 不同，否则会报错 `Duplicate name`。文件将会被下载到 `{outputDir}/{name}.ext`。
      */
     packs: FetchPkgOptions[];
+    /**
+     * 每个包下载结束时的回调函数
+     * @param pack 包信息
+     * @param result 结果
+     */
+    onEachFinally?: (result: FetchResultSuccess | FetchResultError) => void;
 }
 
 export type FetchPkgWithBarLogger = (
@@ -72,13 +84,22 @@ export interface FetchPkgWithBarOptions
 export interface FetchPkgsWithBarOptions
     extends Omit<FetchBaseOptions, 'logger'> {
     /**
-     * 进度条日志输出函数，默认为空（不输出东西）。可以使用 `(barLogger, str) => barLogger(str)` 来输出日志。
+     * 进度条日志输出函数，默认为 `(barLogger, str) => barLogger(str)`
      * @param multiBarLogger `(data: string) => void` 进度条自带的日志输出函数，请通过该函数进行日志输出
      * @param str string 输出的字符串
      * @returns void
      */
     logger?: FetchPkgWithBarLogger;
+    /**
+     * 进度条配置
+     */
     multiBarCfg?: MultiBarOptions;
+    /**
+     * 每个包下载结束时的回调函数
+     * @param pack 包信息
+     * @param result 结果
+     */
+    onEachFinally?: (result: FetchResultSuccess | FetchResultError) => void;
     packs: FetchPkgWithBarOptions[];
 }
 
