@@ -1,4 +1,4 @@
-import colors from 'ansi-colors';
+import { styleText } from 'node:util';
 import { MultiBar } from 'cli-progress';
 
 import { fetchPkg } from './fetch-pkg';
@@ -103,7 +103,7 @@ export async function fetchPkgsWithBar<Level extends number>({
                 progressEvent?.total ?? progressEvent.loaded + 1
             );
             bars[ans.name].update(progressEvent.loaded, {
-                status: colors.yellow('DLD'),
+                status: styleText('yellow', 'DLD'),
                 name: ans.name
             });
             onDownloadProgress?.(progressEvent);
@@ -122,8 +122,8 @@ export async function fetchPkgsWithBar<Level extends number>({
         onEachFinally: (result) => {
             bars[result.name].update(Number.POSITIVE_INFINITY, {
                 status: result.hasError
-                    ? colors.red('ERR')
-                    : colors.green(result.hitCache ? 'HIT' : 'SUC'),
+                    ? styleText('red', 'ERR')
+                    : styleText('green', result.hitCache ? 'HIT' : 'SUC'),
                 name: result.name
             });
             multiBar.update(); // force redraw
