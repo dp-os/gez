@@ -18,6 +18,7 @@ export {
     type RenderFiles
 } from './render-context';
 export {
+    isImmutableFile,
     type Middleware,
     createMiddleware,
     mergeMiddlewares

@@ -9,12 +9,21 @@ export type Middleware = (
     next: Function
 ) => void;
 
+const reFinal = /\.final\.[a-zA-Z0-9]+$/;
+/**
+ * 判断文件路径是否是一个符合 gez 规范的不可变文件
+ * @param path 文件路径
+ */
+export function isImmutableFile(filename: string) {
+    return reFinal.test(filename);
+}
+
 export function createMiddleware(gez: Gez): Middleware {
     const middlewares = gez.moduleConfig.imports.map((item): Middleware => {
         const base = `/${item.name}/`;
         const baseUrl = new URL(`file:`);
         const root = path.resolve(item.localPath, 'client');
-        const reFinal = /\.final\.[A-z]+$/;
+        // const reFinal = /\.final\.[a-zA-Z0-9]+$/;
         return (req, res, next) => {
             const url = req.url ?? '/';
             const { pathname } = new URL(req.url ?? '/', baseUrl);
@@ -28,7 +37,7 @@ export function createMiddleware(gez: Gez): Middleware {
                 root
             })
                 .on('headers', () => {
-                    if (reFinal.test(pathname)) {
+                    if (isImmutableFile(pathname)) {
                         res.setHeader(
                             'cache-control',
                             'public, max-age=31536000, immutable'
