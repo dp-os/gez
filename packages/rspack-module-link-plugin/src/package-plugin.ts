@@ -11,8 +11,6 @@ export function packagePlugin(
         (compilation: Compilation) => {
             let manifestJson: ManifestJson = {
                 name: moduleConfig.name,
-                version: '1.0.0',
-                type: 'module',
                 exports: {},
                 importmapJs: '',
                 buildFiles: [],
@@ -42,8 +40,6 @@ export function packagePlugin(
                         ) ?? 'importmap.js';
                     manifestJson = {
                         name: moduleConfig.name,
-                        version: '1.0.0',
-                        type: 'module',
                         exports: exports,
                         buildFiles: resources,
                         importmapJs,
@@ -106,6 +102,7 @@ function transFileName(fileName: string): string {
 export function getExports(stats: StatsCompilation) {
     const entrypoints = stats.entrypoints || {};
     const exports: Record<string, string> = {};
+    const prefix = './';
     Object.entries(entrypoints).forEach(([key, value]) => {
         const asset = value.assets?.find((item) => {
             return (
@@ -114,13 +111,9 @@ export function getExports(stats: StatsCompilation) {
         });
         if (!asset) return;
         const target = asset.name;
-        if (!key.startsWith('./') && !target.endsWith('.js')) return;
+        if (!key.startsWith(prefix) && !target.endsWith('.js')) return;
 
-        exports[key] = target;
-        // 支持 index 导出; 当导出文件为 src/utils/index.js 时, exports 和 importmap 需要支持 src/utils 和 src/utils/index 的路径使用
-        if (key.endsWith('/index')) {
-            exports[key.replace(/\/index$/, '')] = target;
-        }
+        exports[key.substring(prefix.length)] = target.substring(prefix.length);
     });
     return exports;
 }

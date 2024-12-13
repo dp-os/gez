@@ -54,12 +54,11 @@ function toImportmapJsCode(name: string, imports: Record<string, string>) {
     const importmapKey = '__importmap__';
     const importmap = global[importmapKey] = global[importmapKey] || {};
     const imports = importmap.imports = importmap.imports || {};
-    const arr = new URL(document.currentScript.src).pathname.split('/' + name + '/');
-    const joinName = (value) => {
-        return name + value.substring(1);
-    }
+    const urlArr = new URL(document.currentScript.src).pathname.split('/');
+    urlArr.pop();
+    const baseUrl = urlArr.join('/') + '/';
     Object.entries(importsMap).forEach(([key, value]) => {
-        imports[joinName(key)] = arr[0] + '/' + joinName(value);
+        imports[name + '/' + key] =  baseUrl + value;
     });
 })(globalThis);
 `.trim();

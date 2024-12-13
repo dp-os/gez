@@ -43,18 +43,25 @@ async function buildPackageJson(gez: Gez): Promise<Record<string, any>> {
         gez.readJsonSync(gez.resolvePath('package.json'))
     ]);
     const exports: Record<string, any> = {
-        ...curJson?.exports,
-        './src/entry.client': `./client/${clientJson.exports['./src/entry.client'].substring(2)}`
+        ...curJson?.exports
     };
-    Object.entries<string>(serverJson.exports).forEach(([name, server]) => {
+    const set = new Set([
+        ...Object.keys(clientJson.exports),
+        ...Object.keys(serverJson.exports)
+    ]);
+    set.forEach((name) => {
         const client = clientJson.exports[name];
-        if (client) {
-            exports[name] = {
-                default: `./server/${server.substring(2)}`,
-                browser: `./client/${client.substring(2)}`
+        const server = serverJson.exports[name];
+        const exportName = `./${name}`;
+        if (client && server) {
+            exports[exportName] = {
+                default: `./server/${server}`,
+                browser: `./client/${client}`
             };
-        } else {
-            exports[name] = `./server/${server.substring(2)}`;
+        } else if (client) {
+            exports[exportName] = `./client/${client}`;
+        } else if (server) {
+            exports[exportName] = `./server/${server}`;
         }
     });
 

@@ -1,7 +1,7 @@
 import { layout } from 'ssr-html/src/components/layout';
 import * as images from 'ssr-html/src/images';
 import { Page } from 'ssr-html/src/page';
-import { title } from '../title';
+import { title } from 'ssr-html/src/title';
 
 export default class Home extends Page {
     public state = {

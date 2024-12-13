@@ -29,14 +29,6 @@ export interface ManifestJson {
      */
     name: string;
     /**
-     * 版本号，默认为 1.0.0
-     */
-    version: string;
-    /**
-     * 模块系统
-     */
-    type: 'module';
-    /**
      * 对外导出的文件
      */
     exports: Record<string, string>;

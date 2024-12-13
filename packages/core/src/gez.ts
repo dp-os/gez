@@ -302,26 +302,41 @@ export class Gez {
     /**
      * 获取服务端的 importmap 映射文件。
      */
-    public async getImportMap(target: AppBuildTarget): Promise<ImportMap> {
+    public async getImportMap(
+        target: AppBuildTarget,
+        withoutIndex = true
+    ): Promise<ImportMap> {
         const imports: Record<string, string> = {};
         const manifests = await this.getManifestList(target);
-        manifests.forEach((manifest) => {
-            const importItem = this.moduleConfig.imports.find((item) => {
-                return item.name === manifest.name;
+        if (target === 'client') {
+            manifests.forEach((manifest) => {
+                Object.entries(manifest.exports).forEach(([name, value]) => {
+                    imports[`${manifest.name}/${name}`] =
+                        `/${manifest.name}/${value}`;
+                });
             });
-            if (!importItem) {
-                throw new Error(
-                    `'${manifest.name}' service did not find module config`
-                );
-            }
-            Object.entries(manifest.exports).forEach(([name, value]) => {
-                imports[`${manifest.name}/${name.substring(2)}`] = path.resolve(
-                    importItem.localPath,
-                    'server',
-                    value
-                );
+        } else {
+            manifests.forEach((manifest) => {
+                const importItem = this.moduleConfig.imports.find((item) => {
+                    return item.name === manifest.name;
+                });
+                if (!importItem) {
+                    throw new Error(
+                        `'${manifest.name}' service did not find module config`
+                    );
+                }
+                Object.entries(manifest.exports).forEach(([name, value]) => {
+                    imports[`${manifest.name}/${name}`] = path.resolve(
+                        importItem.localPath,
+                        'server',
+                        value
+                    );
+                });
             });
-        });
+        }
+        if (withoutIndex) {
+            pathWithoutIndex(imports);
+        }
         return {
             imports
         };
@@ -330,4 +345,14 @@ export class Gez {
 
 async function defaultCreateDevApp(): Promise<App> {
     throw new Error("'createDevApp' function not set");
+}
+
+export function pathWithoutIndex(imports: Record<string, string>) {
+    const suffix = '/index';
+    Object.entries(imports).forEach(([key, value]) => {
+        if (key.endsWith(suffix)) {
+            key = key.substring(0, key.length - suffix.length);
+            imports[key] = value;
+        }
+    });
 }

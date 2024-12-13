@@ -1,5 +1,6 @@
 <template>
     <div class="box">
+        <h1>{{ title }}</h1>
         <layout>
             Hello world!
 
@@ -15,6 +16,7 @@
 <script lang="ts" setup>
 import { GezFooter } from '@gez/vue-ui';
 import layout from 'ssr-vue2-remote/src/components/layout.vue';
+import { title } from 'ssr-vue2-remote/src/title';
 import Next from './next.vue';
 defineProps();
 </script>

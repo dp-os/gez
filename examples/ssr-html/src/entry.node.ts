@@ -50,6 +50,6 @@ export default {
         }
     },
     modules: {
-        exports: ['root:src/title.ts']
+        exports: ['root:src/title/index.ts']
     }
 } satisfies GezOptions;

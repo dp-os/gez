@@ -1,5 +1,5 @@
 import serialize from 'serialize-javascript';
-import type { Gez } from './gez';
+import { type Gez, pathWithoutIndex } from './gez';
 
 /**
  * 渲染的参数
@@ -17,6 +17,12 @@ export interface RenderContextOptions {
      * 传递给 RenderContext 对象的 params 字段。
      */
     params?: Record<string, any>;
+    /**
+     * auto：这是默认模式。如果文件数量小于或等于10，则选择inline模式；否则，选择js模式。
+     * inline：在此模式下，导入映射会被直接嵌入到HTML输出中。
+     * js：在此模式下，导入映射会被放置在一个外部JS文件中。
+     */
+    importmapMode?: 'auto' | 'inline' | 'js';
 }
 
 /**
@@ -177,7 +183,22 @@ export class RenderContext {
             this.files.importmap
                 .map((url) => `<script src="${url}"></script>`)
                 .join('') +
-            `<script>(() => {const s = document.createElement("script");s.type = "importmap";s.innerText = JSON.stringify(window.__importmap__ ?? {});document.body.appendChild(s);})();</script>`
+            `<script>
+(() => {
+const importmap = window.__importmap__;
+if (!importmap) {
+    return;
+}
+if (importmap.imports) {
+    ${pathWithoutIndex.name}(importmap.imports);
+}
+const script = document.createElement('script');
+script.type = 'importmap';
+script.innerText = JSON.stringify(importmap);
+document.head.appendChild(script);
+${pathWithoutIndex}
+})();
+</script>`
         );
     }
     /**

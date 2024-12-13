@@ -26,6 +26,7 @@ export default {
          * 导出的文件
          */
         exports: [
+            'root:src/title/index.ts',
             'root:src/components/layout.vue',
             'npm:vue',
             'npm:@gez/vue-ui'
