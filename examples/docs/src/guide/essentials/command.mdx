@@ -7,7 +7,7 @@
         "build": "npm run build:dts && npm run build:ssr",
         "build:ssr": "gez build",
         "preview": "gez preview",
-        "start": "gez start",
+        "start": "NODE_ENV=production node dist/index.js",
         "build:dts": "tsc --declaration --emitDeclarationOnly --outDir dist/src"
     }
 }
@@ -15,7 +15,7 @@
 :::tip 
 你需要手动配置 [tsconfig.json](/guide/start/getting-started.html#tsconfigjson) 文件，否则执行 `build:dts` 命令会报错。
 :::
-## gez dev
+## dev
 本地开发时启动。
 
 :::tip
@@ -31,16 +31,16 @@ export default {
     }
 } satisfies GezOptions;
 ```
-## gez build
+## build
 构建生产代码
 
 :::tip
 有三个产物，分别是 client、server、node。
 :::
 
-## gez preview
-等同于执行 `gez build && gez start`
-## gez start
+## preview
+等同于执行 `build && start`
+## start
 运行生产环境代码。
 
 :::tip

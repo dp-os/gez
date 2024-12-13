@@ -9,7 +9,7 @@
     "build": "npm run build:dts && npm run build:ssr",
     "build:ssr": "gez build",
     "preview": "gez preview",
-    "start": "gez start",
+    "start": "NODE_ENV=production node dist/index.js",
     "build:dts": "tsc --declaration --emitDeclarationOnly --outDir dist/src"
   },
   "author": "",

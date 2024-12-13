@@ -52,6 +52,3 @@ node --experimental-vm-modules --experimental-import-meta-resolve --experimental
 ```bash
 NODE_ENV=production node dist/index.js
 ```
-::: warning
-如果你在生产环境中使用 `gez start` 来启动你的应用程序，由于启用了 Node 实验性功能的原因，可能会给你的程序带来未知的风险，请始终使用 `NODE_ENV=production node dist/index.js` 来启动。
-:::

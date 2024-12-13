@@ -20,14 +20,9 @@ export async function cli(command: string) {
             opts = null;
             break;
         case COMMAND.start:
-            opts = await Gez.getDistOptions();
-            gez = new Gez(opts);
-            exit(await gez.init(COMMAND.start));
-
-            // 释放内存
-            gez = null;
-            opts = null;
-            break;
+            throw new Error(
+                `Please use 'NODE_ENV=production node dist/index.js' to run the built program`
+            );
         case COMMAND.build:
             // 编译代码。
             opts = await Gez.getSrcOptions();
