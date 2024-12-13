@@ -119,8 +119,8 @@ function generateBuildConfig(
 
 function rewriteRender(gez: Gez) {
     return async (options?: RenderContextOptions): Promise<RenderContext> => {
-        const baseURL = pathToFileURL(gez.root) as URL;
-        const importMap = gez.getServerImportMap();
+        const baseURL = pathToFileURL(gez.root);
+        const importMap = await gez.getImportMap('server');
         const vmImport = createVmImport(baseURL, importMap);
         const rc = new RenderContext(gez, options);
         const module = await vmImport(

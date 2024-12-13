@@ -120,8 +120,8 @@ export class RenderContext {
             fileSet.add(file);
             cb();
         };
-
-        this.gez.getManifestList('client').forEach((item) => {
+        const manifests = await this.gez.getManifestList('client');
+        manifests.forEach((item) => {
             const base = `${this.base}/${item.name}/`;
             files.importmap.push(`${base}${item.importmapJs}`);
             Object.entries(item.chunks).forEach(([filepath, info]) => {

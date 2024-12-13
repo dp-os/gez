@@ -55,6 +55,11 @@ export interface GezOptions {
     postCompileProdHook?: (gez: Gez) => Promise<void>;
 }
 
+/**
+ * 同构应用的编译目标
+ */
+export type AppBuildTarget = 'client' | 'server';
+
 export enum COMMAND {
     dev = 'dev',
     build = 'build',
@@ -273,7 +278,9 @@ export class Gez {
     /**
      * 获取全部服务的清单文件。
      */
-    public getManifestList(target: 'client' | 'server'): ManifestJson[] {
+    public async getManifestList(
+        target: AppBuildTarget
+    ): Promise<ManifestJson[]> {
         return this.moduleConfig.imports.map((item) => {
             const filename = path.resolve(
                 item.localPath,
@@ -295,9 +302,10 @@ export class Gez {
     /**
      * 获取服务端的 importmap 映射文件。
      */
-    public getServerImportMap(): ImportMap {
+    public async getImportMap(target: AppBuildTarget): Promise<ImportMap> {
         const imports: Record<string, string> = {};
-        this.getManifestList('server').forEach((manifest) => {
+        const manifests = await this.getManifestList(target);
+        manifests.forEach((manifest) => {
             const importItem = this.moduleConfig.imports.find((item) => {
                 return item.name === manifest.name;
             });

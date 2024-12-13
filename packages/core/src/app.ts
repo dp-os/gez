@@ -32,7 +32,7 @@ export interface App {
 export async function createApp(gez: Gez): Promise<App> {
     const render =
         gez.command === gez.COMMAND.start
-            ? createStartRender(gez)
+            ? await createStartRender(gez)
             : createErrorRender(gez);
     return {
         middleware: createMiddleware(gez),
@@ -40,9 +40,9 @@ export async function createApp(gez: Gez): Promise<App> {
     };
 }
 
-function createStartRender(gez: Gez) {
+async function createStartRender(gez: Gez) {
     const baseURL = pathToFileURL(gez.root) as URL;
-    const importMap = gez.getServerImportMap();
+    const importMap = await gez.getImportMap('server');
     const loaderImport = createLoaderImport(baseURL, importMap);
 
     return async (options?: RenderContextOptions): Promise<RenderContext> => {
