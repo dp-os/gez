@@ -64,12 +64,17 @@ export interface GezOptions {
  */
 export type AppBuildTarget = 'client' | 'server';
 
+/**
+ * 应用程序执行的动作
+ */
 export enum COMMAND {
     dev = 'dev',
     build = 'build',
     preview = 'preview',
     start = 'start'
 }
+
+export type { ImportMap };
 
 interface Readied {
     app: App;

@@ -1,7 +1,12 @@
 import serialize from 'serialize-javascript';
-import type { Gez } from './gez';
+import type { Gez, ImportMap } from './gez';
 import { pathWithoutIndex } from './path-without-index';
 
+/**
+ * inline：导入映射会被直接嵌入到HTML输出中。
+ * js：导入映射会被放置在一个外部 JS 文件中。
+ */
+export type ImportmapMode = 'inline' | 'js';
 /**
  * 渲染的参数
  */
@@ -19,17 +24,34 @@ export interface RenderContextOptions {
      */
     params?: Record<string, any>;
     /**
-     * auto：这是默认模式。如果文件数量小于或等于10，则选择inline模式；否则，选择js模式。
-     * inline：在此模式下，导入映射会被直接嵌入到HTML输出中。
-     * js：在此模式下，导入映射会被放置在一个外部JS文件中。
+     * 导入映射使用的模式
      */
-    importmapMode?: 'auto' | 'inline' | 'js';
+    importmapMode?: ImportmapMode;
 }
 
 /**
  * 渲染上下文
  */
 export class RenderContext {
+    /**
+     * 导入映射创建的脚步代码
+     */
+    public static IMPORTMAP_CREATE_SCRIPT_CODE = `
+(() => {
+const i = window.__importmap__;
+if (!i) {
+    return;
+}
+if (i.imports) {
+    ${pathWithoutIndex.name}(i.imports);
+}
+const s = document.createElement("script");
+s.type = 'importmap';
+s.innerText = JSON.stringify(i);
+document.head.appendChild(s);
+${pathWithoutIndex}
+})();
+`.trim();
     /**
      * Gez 的实例。
      */
@@ -70,11 +92,14 @@ export class RenderContext {
         importmap: [],
         resources: []
     };
+    private _importMap: ImportMap | null = null;
+    public importmapMode: RenderContextOptions['importmapMode'] = 'js';
     public constructor(gez: Gez, options: RenderContextOptions = {}) {
         this.gez = gez;
         this.base = options.base ?? '';
         this.params = options.params ?? {};
         this.entryName = options.entryName ?? 'default';
+        this.importmapMode = options.importmapMode ?? 'inline';
     }
     /**
      * 响应的 html 内容。
@@ -151,6 +176,10 @@ export class RenderContext {
         });
         files.js.push(...files.importmap, ...files.modulepreload);
         this.files = files;
+        this._importMap =
+            this.importmapMode === 'inline'
+                ? await gez.getImportMap('client', false)
+                : null;
     }
     /**
      * 根据 files 生成 JS 和 CSS 文件的预加载代码。
@@ -180,27 +209,11 @@ export class RenderContext {
      * 根据 files 生成 importmap 相关代码。
      */
     public importmap() {
-        return (
-            this.files.importmap
-                .map((url) => `<script src="${url}"></script>`)
-                .join('') +
-            `<script>
-(() => {
-const importmap = window.__importmap__;
-if (!importmap) {
-    return;
-}
-if (importmap.imports) {
-    ${pathWithoutIndex.name}(importmap.imports);
-}
-const script = document.createElement('script');
-script.type = 'importmap';
-script.innerText = JSON.stringify(importmap);
-document.head.appendChild(script);
-${pathWithoutIndex}
-})();
-</script>`
-        );
+        if (this._importMap) {
+            return `<script>window.__importmap__ = ${this.serialize(this._importMap)};${RenderContext.IMPORTMAP_CREATE_SCRIPT_CODE}</script>`;
+        } else {
+            return `${this.files.importmap.map((url) => `<script src="${url}"></script>`).join('')}<script>${RenderContext.IMPORTMAP_CREATE_SCRIPT_CODE}</script>`;
+        }
     }
     /**
      * 根据 files 生成模块入口执行代码。

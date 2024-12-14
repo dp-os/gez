@@ -1,9 +1,9 @@
-export function pathWithoutIndex(imports: Record<string, string>) {
-    const suffix = '/index';
-    Object.entries(imports).forEach(([key, value]) => {
-        if (key.endsWith(suffix)) {
-            key = key.substring(0, key.length - suffix.length);
-            imports[key] = value;
+export function pathWithoutIndex(i: Record<string, string>) {
+    const s = '/index';
+    Object.entries(i).forEach(([k, v]) => {
+        if (k.endsWith(s)) {
+            k = k.substring(0, k.length - s.length);
+            i[k] = v;
         }
     });
 }

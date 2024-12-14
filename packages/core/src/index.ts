@@ -1,4 +1,10 @@
-export { type GezOptions, Gez } from './gez';
+export {
+    type GezOptions,
+    type COMMAND,
+    type AppBuildTarget,
+    type ImportMap,
+    Gez
+} from './gez';
 export {
     PathType,
     type ModuleConfig,
