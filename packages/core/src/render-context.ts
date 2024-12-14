@@ -3,7 +3,7 @@ import type { Gez, ImportMap } from './gez';
 import { pathWithoutIndex } from './path-without-index';
 
 /**
- * inline：导入映射会被直接嵌入到HTML输出中。
+ * inline：导入映射会被直接嵌入到HTML输出中（默认）。
  * js：导入映射会被放置在一个外部 JS 文件中。
  */
 export type ImportmapMode = 'inline' | 'js';
