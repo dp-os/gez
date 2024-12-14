@@ -1,6 +1,6 @@
 import { pathToFileURL } from 'node:url';
 import { createLoaderImport } from '@gez/import';
-import type { Gez } from './gez';
+import type { COMMAND, Gez } from './gez';
 import { type Middleware, createMiddleware } from './middleware';
 import {
     RenderContext,
@@ -29,9 +29,9 @@ export interface App {
     destroy?: () => Promise<boolean>;
 }
 
-export async function createApp(gez: Gez): Promise<App> {
+export async function createApp(gez: Gez, command: COMMAND): Promise<App> {
     const render =
-        gez.command === gez.COMMAND.start
+        command === gez.COMMAND.start
             ? await createStartRender(gez)
             : createErrorRender(gez);
     return {

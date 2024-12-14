@@ -38,9 +38,9 @@ export async function pack(gez: Gez): Promise<boolean> {
 
 async function buildPackageJson(gez: Gez): Promise<Record<string, any>> {
     const [clientJson, serverJson, curJson] = await Promise.all([
-        gez.readJsonSync(gez.resolvePath('dist/client/manifest.json')),
-        gez.readJsonSync(gez.resolvePath('dist/server/manifest.json')),
-        gez.readJsonSync(gez.resolvePath('package.json'))
+        gez.readJson(gez.resolvePath('dist/client/manifest.json')),
+        gez.readJson(gez.resolvePath('dist/server/manifest.json')),
+        gez.readJson(gez.resolvePath('package.json'))
     ]);
     const exports: Record<string, any> = {
         ...curJson?.exports

@@ -1,10 +1,12 @@
 import fs from 'node:fs';
+import fsp from 'node:fs/promises';
 import path from 'node:path';
 import { cwd } from 'node:process';
 import type { ImportMap } from '@gez/import';
 import write from 'write';
 
 import { type App, createApp } from './app';
+import { type CacheHandle, createCache } from './cache';
 import type { ManifestJson } from './manifest-json';
 import {
     type ModuleConfig,
@@ -18,6 +20,7 @@ import {
 } from './pack-config';
 import { pathWithoutIndex } from './path-without-index';
 import { type ProjectPath, resolvePath } from './resolve-path';
+
 /**
  * 详细说明，请看文档：https://dp-os.github.io/gez/api/gez.html
  */
@@ -68,6 +71,14 @@ export enum COMMAND {
     start = 'start'
 }
 
+interface Readied {
+    app: App;
+    command: COMMAND;
+    moduleConfig: ParsedModuleConfig;
+    packConfig: ParsedPackConfig;
+    cache: CacheHandle;
+}
+
 export class Gez {
     /**
      * 获取 src/entry.node.ts 文件导出的选项
@@ -85,21 +96,22 @@ export class Gez {
             (m) => m.default
         );
     }
-    private readonly _options: GezOptions;
-    private _app: App | null = null;
-    private _command: COMMAND | null = null;
     /**
-     * 根据传入的 modules 选项解析出来的对象。
+     * 传入的选项
      */
-    readonly moduleConfig: ParsedModuleConfig;
-    readonly packConfig: ParsedPackConfig;
+    private readonly _options: GezOptions;
+    /**
+     * 程序是否准备就绪
+     */
+    private _readied: Readied | null = null;
     public constructor(options: GezOptions = {}) {
         this._options = options;
-        const name = this.readJsonSync(
-            path.resolve(this.root, 'package.json')
-        ).name;
-        this.moduleConfig = parseModuleConfig(name, this.root, options.modules);
-        this.packConfig = parsePackConfig(options.packs);
+    }
+    private get readied() {
+        if (this._readied) {
+            return this._readied;
+        }
+        throw new NotReadyError();
     }
 
     /**
@@ -152,11 +164,7 @@ export class Gez {
      * 当前执行的命令。
      */
     public get command(): COMMAND {
-        const { _command } = this;
-        if (_command) {
-            return _command;
-        }
-        throw new Error(`'command' does not exist`);
+        return this.readied.command;
     }
     /**
      * 全部命令的枚举对象。
@@ -164,14 +172,19 @@ export class Gez {
     public get COMMAND() {
         return COMMAND;
     }
-
-    private get app() {
-        const { _app } = this;
-        if (_app) {
-            return _app;
-        }
-        throw new Error(`'app' does not exist`);
+    /**
+     * 模块解析配置
+     */
+    public get moduleConfig() {
+        return this.readied.moduleConfig;
     }
+    /**
+     * 归档解析配置
+     */
+    public get packConfig() {
+        return this.readied.packConfig;
+    }
+
     /**
      * 执行下面的命令，会创建服务器。
      * - gez dev
@@ -198,18 +211,45 @@ export class Gez {
      * 初始化实例。
      */
     public async init(command: COMMAND): Promise<boolean> {
-        if (this._command) {
+        if (this._readied) {
             throw new Error('Cannot be initialized repeatedly');
         }
-        const createDevApp = this._options.createDevApp || defaultCreateDevApp;
 
-        this._command = command;
+        // 初始化实例
+        const { name } = await this.readJson(
+            path.resolve(this.root, 'package.json')
+        );
+        const moduleConfig = parseModuleConfig(
+            name,
+            this.root,
+            this._options.modules
+        );
+        const packConfig = parsePackConfig(this._options.packs);
+        this._readied = {
+            command,
+            app: {
+                middleware() {
+                    throw new NotReadyError();
+                },
+                async render() {
+                    throw new NotReadyError();
+                }
+            },
+            moduleConfig,
+            packConfig,
+            cache: createCache(this.isProd)
+        };
+
+        // 更新正确的 App 实例
+        const createDevApp = this._options.createDevApp || defaultCreateDevApp;
         const app: App =
-            // 只有 dev 和 build 时使用createDevApp
+            // 只有 dev 和 build 时使用 createDevApp
             [COMMAND.dev, COMMAND.build].includes(command)
                 ? await createDevApp(this)
-                : await createApp(this);
-        this._app = app;
+                : await createApp(this, command);
+
+        this.readied.app = app;
+
         switch (command) {
             case COMMAND.dev:
             case COMMAND.start:
@@ -226,9 +266,9 @@ export class Gez {
      * 销毁实例，释放内存。
      */
     public async destroy(): Promise<boolean> {
-        const { _app } = this;
-        if (_app?.destroy) {
-            return _app.destroy();
+        const { readied } = this;
+        if (readied.app?.destroy) {
+            return readied.app.destroy();
         }
         return true;
     }
@@ -239,7 +279,7 @@ export class Gez {
         const startTime = Date.now();
         console.log('[gez]: build start');
 
-        const successful = await this.app.build?.();
+        const successful = await this.readied.app.build?.();
 
         const endTime = Date.now();
         console.log(`[gez]: build end, cost: ${endTime - startTime}ms`);
@@ -250,13 +290,13 @@ export class Gez {
      * 中间件。
      */
     public get middleware() {
-        return this.app.middleware;
+        return this.readied.app.middleware;
     }
     /**
      * 调用 entry.server.ts 导出的渲染函数。
      */
     public get render() {
-        return this.app.render;
+        return this.readied.app.render;
     }
     /**
      * 解析项目路径。
@@ -267,83 +307,117 @@ export class Gez {
     /**
      * 同步写入一个文件。
      */
-    public writeSync(filepath: string, data: any) {
+    public writeSync(filepath: string, data: any): void {
         write.sync(filepath, data);
     }
     /**
-     * 异步的读取一个 JSON 文件。
+     * 异步写入一个文件。
+     */
+    public async write(filepath: string, data: any): Promise<void> {
+        await write(filepath, data);
+    }
+    /**
+     * 同步的读取一个 JSON 文件。
      */
     public readJsonSync(filename: string): any {
         return JSON.parse(fs.readFileSync(filename, 'utf-8'));
     }
     /**
-     * 获取全部服务的清单文件。
+     * 异步的读取一个 JSON 文件。
+     */
+    public async readJson(filename: string): Promise<any> {
+        return JSON.parse(await fsp.readFile(filename, 'utf-8'));
+    }
+    /**
+     * 获取服务清单文件，仅只读。
      */
     public async getManifestList(
         target: AppBuildTarget
-    ): Promise<ManifestJson[]> {
-        return this.moduleConfig.imports.map((item) => {
-            const filename = path.resolve(
-                item.localPath,
-                target,
-                'manifest.json'
+    ): Promise<Readonly<ManifestJson>[]> {
+        return this.readied.cache(`getManifestList-${target}`, () => {
+            return Promise.all(
+                this.moduleConfig.imports.map(async (item) => {
+                    const filename = path.resolve(
+                        item.localPath,
+                        target,
+                        'manifest.json'
+                    );
+                    try {
+                        const data: ManifestJson =
+                            await this.readJson(filename);
+                        data.name = item.name;
+                        return Object.freeze(data);
+                    } catch (e) {
+                        throw new Error(
+                            `'${item.name}' service '${target}/manifest.json' file read error`
+                        );
+                    }
+                })
             );
-            try {
-                const text = fs.readFileSync(filename, 'utf-8');
-                const data = JSON.parse(text);
-                data.name = item.name;
-                return data;
-            } catch (e) {
-                throw new Error(
-                    `'${item.name}' service '${target}/manifest.json' file read error`
-                );
-            }
         });
     }
     /**
-     * 获取服务端的 importmap 映射文件。
+     * 获取导入映射对象，仅只读。
      */
     public async getImportMap(
         target: AppBuildTarget,
         withoutIndex = true
-    ): Promise<ImportMap> {
-        const imports: Record<string, string> = {};
-        const manifests = await this.getManifestList(target);
-        if (target === 'client') {
-            manifests.forEach((manifest) => {
-                Object.entries(manifest.exports).forEach(([name, value]) => {
-                    imports[`${manifest.name}/${name}`] =
-                        `/${manifest.name}/${value}`;
-                });
-            });
-        } else {
-            manifests.forEach((manifest) => {
-                const importItem = this.moduleConfig.imports.find((item) => {
-                    return item.name === manifest.name;
-                });
-                if (!importItem) {
-                    throw new Error(
-                        `'${manifest.name}' service did not find module config`
-                    );
+    ): Promise<Readonly<ImportMap>> {
+        return this.readied.cache(
+            `getImportMap-${target}-${withoutIndex}`,
+            async () => {
+                const imports: Record<string, string> = {};
+                const manifests = await this.getManifestList(target);
+                if (target === 'client') {
+                    manifests.forEach((manifest) => {
+                        Object.entries(manifest.exports).forEach(
+                            ([name, value]) => {
+                                imports[`${manifest.name}/${name}`] =
+                                    `/${manifest.name}/${value}`;
+                            }
+                        );
+                    });
+                } else {
+                    manifests.forEach((manifest) => {
+                        const importItem = this.moduleConfig.imports.find(
+                            (item) => {
+                                return item.name === manifest.name;
+                            }
+                        );
+                        if (!importItem) {
+                            throw new Error(
+                                `'${manifest.name}' service did not find module config`
+                            );
+                        }
+                        Object.entries(manifest.exports).forEach(
+                            ([name, value]) => {
+                                imports[`${manifest.name}/${name}`] =
+                                    path.resolve(
+                                        importItem.localPath,
+                                        'server',
+                                        value
+                                    );
+                            }
+                        );
+                    });
                 }
-                Object.entries(manifest.exports).forEach(([name, value]) => {
-                    imports[`${manifest.name}/${name}`] = path.resolve(
-                        importItem.localPath,
-                        'server',
-                        value
-                    );
+                if (withoutIndex) {
+                    pathWithoutIndex(imports);
+                }
+                return Object.freeze({
+                    imports
                 });
-            });
-        }
-        if (withoutIndex) {
-            pathWithoutIndex(imports);
-        }
-        return {
-            imports
-        };
+            }
+        );
     }
 }
 
 async function defaultCreateDevApp(): Promise<App> {
     throw new Error("'createDevApp' function not set");
+}
+
+class NotReadyError extends Error {
+    constructor() {
+        super(`The Gez has not been initialized yet`);
+    }
 }
