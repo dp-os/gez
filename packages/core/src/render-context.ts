@@ -4,7 +4,7 @@ import { pathWithoutIndex } from './path-without-index';
 
 /**
  * inline：导入映射会被直接嵌入到HTML输出中（默认）。
- * js：导入映射会被放置在一个外部 JS 文件中。
+ * js：导入映射会被放置在一个外部 JS 文件中，适合对象较大的情况，可以利用缓存复用。
  */
 export type ImportmapMode = 'inline' | 'js';
 /**
