@@ -1,6 +1,6 @@
 {
   "name": "@gez/vue-ui",
-  "version": "3.0.0-beta.36",
+  "version": "3.0.0-beta.37",
   "description": "",
   "main": "src/index.ts",
   "private": true,
