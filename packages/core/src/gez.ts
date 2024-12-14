@@ -238,7 +238,7 @@ export class Gez {
         const startTime = Date.now();
         console.log('[gez]: build start');
 
-        const successful = await this.app?.build?.();
+        const successful = await this.app.build?.();
 
         const endTime = Date.now();
         console.log(`[gez]: build end, cost: ${endTime - startTime}ms`);
