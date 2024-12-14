@@ -1,5 +1,6 @@
 import serialize from 'serialize-javascript';
-import { type Gez, pathWithoutIndex } from './gez';
+import type { Gez } from './gez';
+import { pathWithoutIndex } from './path-without-index';
 
 /**
  * 渲染的参数

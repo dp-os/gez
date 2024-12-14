@@ -16,6 +16,7 @@ import {
     type ParsedPackConfig,
     parsePackConfig
 } from './pack-config';
+import { pathWithoutIndex } from './path-without-index';
 import { type ProjectPath, resolvePath } from './resolve-path';
 /**
  * 详细说明，请看文档：https://dp-os.github.io/gez/api/gez.html
@@ -345,14 +346,4 @@ export class Gez {
 
 async function defaultCreateDevApp(): Promise<App> {
     throw new Error("'createDevApp' function not set");
-}
-
-export function pathWithoutIndex(imports: Record<string, string>) {
-    const suffix = '/index';
-    Object.entries(imports).forEach(([key, value]) => {
-        if (key.endsWith(suffix)) {
-            key = key.substring(0, key.length - suffix.length);
-            imports[key] = value;
-        }
-    });
 }
