@@ -48,10 +48,7 @@ export async function fetchPkg<Level extends number>({
             });
         }
         const urlInfo = new URL(url);
-        urlInfo.searchParams.append(
-            Date.now() + '_' + Math.random(),
-            Date.now() + ''
-        );
+        urlInfo.searchParams.append(Date.now() + '_', Date.now() + '');
         axiosReqCfg.headers = axiosReqCfg.headers || {};
         axiosReqCfg.headers['Cache-Control'] =
             axiosReqCfg.headers['Cache-Control'] || 'no-cache';
