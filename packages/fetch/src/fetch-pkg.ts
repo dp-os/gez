@@ -47,6 +47,17 @@ export async function fetchPkg<Level extends number>({
                 error: new Error('url is empty')
             });
         }
+        const urlInfo = new URL(url);
+        urlInfo.searchParams.append(
+            Date.now() + '_' + Math.random(),
+            Date.now() + ''
+        );
+        axiosReqCfg.headers = axiosReqCfg.headers || {};
+        axiosReqCfg.headers['Cache-Control'] =
+            axiosReqCfg.headers['Cache-Control'] || 'no-cache';
+        axiosReqCfg.headers.Pragma = axiosReqCfg.headers.Pragma || 'no-cache';
+        axiosReqCfg.headers.Expires = axiosReqCfg.headers.Expires || '0';
+        url = urlInfo.href;
         if (noCache && !outputDir) {
             return returnWrapper({
                 hasError: true,
@@ -83,8 +94,13 @@ export async function fetchPkg<Level extends number>({
     }
     await initDirs();
 
-    const pathInfo = path.parse(new URL(url).pathname);
-    const hashUrl = url.replace(new RegExp(path.extname(url) + '$'), '.txt');
+    const urlInfo = new URL(url);
+    const fileExt = path.parse(urlInfo.pathname).ext;
+    urlInfo.pathname = urlInfo.pathname.replace(
+        new RegExp(fileExt + '$'),
+        '.txt'
+    );
+    const hashUrl = urlInfo.href;
 
     /*
         获取 hash。使用缓存时，一定要有 hash 值。
@@ -94,8 +110,7 @@ export async function fetchPkg<Level extends number>({
     let hash = '';
     let hashAlg = '';
     if (!noCache) {
-        // 加入时间戳，防止缓存
-        const hashInfo = await getHashText(hashUrl + '?t=' + +new Date(), {
+        const hashInfo = await getHashText(hashUrl, {
             ...axiosReqCfg,
             onDownloadProgress: undefined
         });
@@ -122,14 +137,14 @@ export async function fetchPkg<Level extends number>({
         });
     }
     const outputFilePath = outputDir
-        ? path.join(outputDir, name + pathInfo.ext)
+        ? path.join(outputDir, name + fileExt)
         : '';
 
-    const cacheFilePath = path.join(cacheDir, hash + pathInfo.ext);
+    const cacheFilePath = path.join(cacheDir, hash + fileExt);
     const tmpFilePath =
         (download2output
             ? outputFilePath
-            : path.join(cacheDir, hash + pathInfo.ext)) + '.tmp';
+            : path.join(cacheDir, hash + fileExt)) + '.tmp';
 
     if (hash && fs.existsSync(cacheFilePath)) {
         logger?.(`[fetch] [${name}] Hit cache`);
