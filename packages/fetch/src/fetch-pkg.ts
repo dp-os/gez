@@ -94,7 +94,8 @@ export async function fetchPkg<Level extends number>({
     let hash = '';
     let hashAlg = '';
     if (!noCache) {
-        const hashInfo = await getHashText(hashUrl, {
+        // 加入时间戳，防止缓存
+        const hashInfo = await getHashText(hashUrl + '?t=' + +new Date(), {
             ...axiosReqCfg,
             onDownloadProgress: undefined
         });
