@@ -1,3 +1,4 @@
+import path from 'node:path';
 import serialize from 'serialize-javascript';
 import type { Gez, ImportMap } from './gez';
 import { pathWithoutIndex } from './path-without-index';
@@ -136,46 +137,58 @@ ${pathWithoutIndex}
                 chunkSet.add(item.chunkName);
             }
         }
-        const files: RenderFiles = {
-            js: [],
-            modulepreload: [],
-            importmap: [],
-            css: [],
-            resources: []
+
+        // 生成文件列表 直接用set去重
+        const files: {
+            [K in keyof RenderFiles]: Set<string>;
+        } = {
+            js: new Set(),
+            modulepreload: new Set(),
+            importmap: new Set(),
+            css: new Set(),
+            resources: new Set()
         };
 
-        const fileSet = new Set<string>();
-        const appendFile = (file: string, cb: () => void) => {
-            if (fileSet.has(file)) {
-                return;
-            }
-            fileSet.add(file);
-            cb();
-        };
+        // 拼装出url风格的路径 闭包this.base
+        const getUrlPath = (...paths: string[]) =>
+            path.posix.join('/', this.base, ...paths);
+
         const manifests = await this.gez.getManifestList('client');
         manifests.forEach((item) => {
-            const base = `${this.base}/${item.name}/`;
-            files.importmap.push(`${base}${item.importmapJs}`);
+            // 添加文件路径 闭包item.name
+            const addPath = (setName: keyof RenderFiles, filepath: string) =>
+                files[setName].add(getUrlPath(item.name, filepath));
+            const addPaths = (
+                setName: keyof RenderFiles,
+                filepaths: string[]
+            ) => filepaths.forEach((filepath) => addPath(setName, filepath));
+            addPath('importmap', item.importmapJs);
             Object.entries(item.chunks).forEach(([filepath, info]) => {
                 if (chunkSet.has(filepath)) {
-                    appendFile(info.js, () => {
-                        files.modulepreload.push(`${base}${info.js}`);
-                    });
-                    info.css.forEach((css) => {
-                        appendFile(css, () => {
-                            files.css.push(`${base}${css}`);
-                        });
-                    });
-                    info.resources.forEach((resource) => {
-                        appendFile(resource, () => {
-                            files.resources.push(`${base}${resource}`);
-                        });
-                    });
+                    addPath('js', info.js);
+                    addPaths('css', info.css);
+                    addPaths('resources', info.resources);
                 }
             });
         });
-        files.js.push(...files.importmap, ...files.modulepreload);
-        this.files = files;
+
+        // 获取入口文件的静态 import 预加载信息
+        const preloadInfo = await gez.getImportPreloadInfo(
+            gez.name + '/src/entry.client'
+        );
+        Object.entries(preloadInfo).forEach(([specifier, filepath]) => {
+            files.modulepreload.add(getUrlPath(filepath));
+        });
+
+        files.js = new Set([
+            ...files.js,
+            ...files.modulepreload,
+            ...files.importmap
+        ]);
+        Object.keys(files).forEach(
+            (key) => (this.files[key] = Array.from(files[key]))
+        );
+
         this._importMap =
             this.importmapMode === 'inline'
                 ? await gez.getImportMap('client', false)

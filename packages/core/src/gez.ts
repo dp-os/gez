@@ -3,6 +3,7 @@ import fsp from 'node:fs/promises';
 import path from 'node:path';
 import { cwd } from 'node:process';
 import type { ImportMap } from '@gez/import';
+import * as esmLexer from 'es-module-lexer';
 import write from 'write';
 
 import { type App, createApp } from './app';
@@ -414,6 +415,67 @@ export class Gez {
                 });
             }
         );
+    }
+    /**
+     * 从 JS 文件中获取静态 import 的模块名列表。
+     * @param filepath js 文件路径
+     * @returns `Promise<string[]>` 静态 import 的模块名列表
+     */
+    public async getImportsFromJsFile(
+        filepath: fs.PathLike | fs.promises.FileHandle
+    ) {
+        const source = await fsp.readFile(filepath, 'utf-8');
+        return this.getImportsFromJsCode(source);
+    }
+    /**
+     * 从 JS 代码中获取静态 import 的模块名列表。
+     * @param code js 代码
+     * @returns `Promise<string[]>` 静态 import 的模块名列表
+     */
+    public async getImportsFromJsCode(code: string) {
+        await esmLexer.init;
+        const [imports] = esmLexer.parse(code);
+        // 静态导入 && 拥有模块名
+        return imports
+            .filter((item) => item.t === 1 && item.n)
+            .map((item) => item.n as string);
+    }
+    /**
+     * 获取导入的预加载信息。只有 client 端有效。
+     * @param specifier 模块名
+     * @returns `Promise<{[specifier: string]: string}>` 模块名和文件路径的映射对象
+     */
+    public async getImportPreloadInfo(specifier: string) {
+        const importInfo = (await this.getImportMap('client')).imports;
+        if (!importInfo || !(specifier in importInfo)) {
+            return {};
+        }
+        const ans: Record<string, string> = {};
+        const dfs = async (specifier: string) => {
+            let filepath = importInfo[specifier];
+            const splitRes = filepath.split('/');
+            if (splitRes[0] === '') splitRes.shift();
+            const name = splitRes.shift();
+            const cfg = this.moduleConfig.imports.find(
+                (item) => item.name === name
+            );
+            if (!cfg) {
+                return;
+            }
+            filepath = path.join(cfg.localPath, 'client', ...splitRes);
+            const imports = await this.getImportsFromJsFile(filepath);
+            const needHandle: string[] = [];
+            imports.forEach((specifier) => {
+                // 如果模块名在 importMap 中存在，且没处理过
+                if (specifier in importInfo && !ans[specifier]) {
+                    ans[specifier] = importInfo[specifier];
+                    needHandle.push(specifier);
+                }
+            });
+            await Promise.all(needHandle.map((item) => dfs(item)));
+        };
+        await dfs(specifier);
+        return ans;
     }
 }
 
