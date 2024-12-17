@@ -46,3 +46,44 @@ export interface ManifestJson {
      */
     importmapJs: string;
 }
+
+import fsp from 'node:fs/promises';
+
+/**
+ * 异步的读取一个 JSON 文件。
+ */
+async function readJson(filename: string): Promise<any> {
+    return JSON.parse(await fsp.readFile(filename, 'utf-8'));
+}
+
+import path from 'node:path';
+
+import type { AppBuildTarget } from './gez';
+import type { ParsedModuleConfig } from './module-config';
+
+/**
+ * 获取服务清单文件
+ */
+export async function getManifestList(
+    target: AppBuildTarget,
+    moduleConfig: ParsedModuleConfig
+): Promise<ManifestJson[]> {
+    return Promise.all(
+        moduleConfig.imports.map(async (item) => {
+            const filename = path.resolve(
+                item.localPath,
+                target,
+                'manifest.json'
+            );
+            try {
+                const data: ManifestJson = await readJson(filename);
+                data.name = item.name;
+                return data;
+            } catch (e) {
+                throw new Error(
+                    `'${item.name}' service '${target}/manifest.json' file read error`
+                );
+            }
+        })
+    );
+}

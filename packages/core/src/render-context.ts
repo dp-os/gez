@@ -173,12 +173,12 @@ ${pathWithoutIndex}
         });
 
         // 获取入口文件的静态 import 预加载信息
-        const preloadInfo = await gez.getImportPreloadInfo(
+        const preloadPaths = await gez.getImportPreloadPaths(
             gez.name + '/src/entry.client'
         );
-        Object.entries(preloadInfo).forEach(([specifier, filepath]) => {
-            files.modulepreload.add(getUrlPath(filepath));
-        });
+        preloadPaths?.forEach((filepath) =>
+            files.modulepreload.add(getUrlPath(filepath))
+        );
 
         files.js = new Set([
             ...files.js,
@@ -223,10 +223,15 @@ ${pathWithoutIndex}
      */
     public importmap() {
         if (this._importMap) {
-            return `<script>window.__importmap__ = ${this.serialize(this._importMap)};${RenderContext.IMPORTMAP_CREATE_SCRIPT_CODE}</script>`;
-        } else {
-            return `${this.files.importmap.map((url) => `<script src="${url}"></script>`).join('')}<script>${RenderContext.IMPORTMAP_CREATE_SCRIPT_CODE}</script>`;
+            return `<script>window.__importmap__ = ${this.serialize(
+                this._importMap
+            )};${RenderContext.IMPORTMAP_CREATE_SCRIPT_CODE}</script>`;
         }
+        return `${this.files.importmap
+            .map((url) => `<script src="${url}"></script>`)
+            .join(
+                ''
+            )}<script>${RenderContext.IMPORTMAP_CREATE_SCRIPT_CODE}</script>`;
     }
     /**
      * 根据 files 生成模块入口执行代码。

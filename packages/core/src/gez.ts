@@ -3,12 +3,12 @@ import fsp from 'node:fs/promises';
 import path from 'node:path';
 import { cwd } from 'node:process';
 import type { ImportMap } from '@gez/import';
-import * as esmLexer from 'es-module-lexer';
 import write from 'write';
 
 import { type App, createApp } from './app';
 import { type CacheHandle, createCache } from './cache';
-import type { ManifestJson } from './manifest-json';
+import { getImportMap } from './import-map';
+import { type ManifestJson, getManifestList } from './manifest-json';
 import {
     type ModuleConfig,
     type ParsedModuleConfig,
@@ -19,8 +19,8 @@ import {
     type ParsedPackConfig,
     parsePackConfig
 } from './pack-config';
-import { pathWithoutIndex } from './path-without-index';
 import { type ProjectPath, resolvePath } from './resolve-path';
+import { getImportPreloadInfo } from './static_import_lexer';
 
 /**
  * 详细说明，请看文档：https://dp-os.github.io/gez/api/gez.html
@@ -339,31 +339,16 @@ export class Gez {
      */
     public async getManifestList(
         target: AppBuildTarget
-    ): Promise<Readonly<ManifestJson>[]> {
-        return this.readied.cache(`getManifestList-${target}`, () => {
-            return Promise.all(
-                this.moduleConfig.imports.map(async (item) => {
-                    const filename = path.resolve(
-                        item.localPath,
-                        target,
-                        'manifest.json'
-                    );
-                    try {
-                        const data: ManifestJson =
-                            await this.readJson(filename);
-                        data.name = item.name;
-                        return Object.freeze(data);
-                    } catch (e) {
-                        throw new Error(
-                            `'${item.name}' service '${target}/manifest.json' file read error`
-                        );
-                    }
-                })
-            );
-        });
+    ): Promise<readonly ManifestJson[]> {
+        return this.readied.cache(`getManifestList-${target}`, async () =>
+            Object.freeze(await getManifestList(target, this.moduleConfig))
+        );
     }
     /**
      * 获取导入映射对象，仅只读。
+     * @param target 构建目标
+     * @param withoutIndex 是否去掉模块名和路径中的 /index
+     * @returns 导入映射对象
      */
     public async getImportMap(
         target: AppBuildTarget,
@@ -371,111 +356,55 @@ export class Gez {
     ): Promise<Readonly<ImportMap>> {
         return this.readied.cache(
             `getImportMap-${target}-${withoutIndex}`,
-            async () => {
-                const imports: Record<string, string> = {};
-                const manifests = await this.getManifestList(target);
-                if (target === 'client') {
-                    manifests.forEach((manifest) => {
-                        Object.entries(manifest.exports).forEach(
-                            ([name, value]) => {
-                                imports[`${manifest.name}/${name}`] =
-                                    `/${manifest.name}/${value}`;
-                            }
-                        );
-                    });
-                } else {
-                    manifests.forEach((manifest) => {
-                        const importItem = this.moduleConfig.imports.find(
-                            (item) => {
-                                return item.name === manifest.name;
-                            }
-                        );
-                        if (!importItem) {
-                            throw new Error(
-                                `'${manifest.name}' service did not find module config`
-                            );
-                        }
-                        Object.entries(manifest.exports).forEach(
-                            ([name, value]) => {
-                                imports[`${manifest.name}/${name}`] =
-                                    path.resolve(
-                                        importItem.localPath,
-                                        'server',
-                                        value
-                                    );
-                            }
-                        );
-                    });
-                }
-                if (withoutIndex) {
-                    pathWithoutIndex(imports);
-                }
-                return Object.freeze({
-                    imports
-                });
-            }
+            () =>
+                Object.freeze(
+                    getImportMap(
+                        target,
+                        withoutIndex,
+                        this.getManifestList(target),
+                        this.moduleConfig
+                    )
+                )
         );
     }
     /**
-     * 从 JS 文件中获取静态 import 的模块名列表。
-     * @param filepath js 文件路径
-     * @returns `Promise<string[]>` 静态 import 的模块名列表
-     */
-    public async getImportsFromJsFile(
-        filepath: fs.PathLike | fs.promises.FileHandle
-    ) {
-        const source = await fsp.readFile(filepath, 'utf-8');
-        return this.getImportsFromJsCode(source);
-    }
-    /**
-     * 从 JS 代码中获取静态 import 的模块名列表。
-     * @param code js 代码
-     * @returns `Promise<string[]>` 静态 import 的模块名列表
-     */
-    public async getImportsFromJsCode(code: string) {
-        await esmLexer.init;
-        const [imports] = esmLexer.parse(code);
-        // 静态导入 && 拥有模块名
-        return imports
-            .filter((item) => item.t === 1 && item.n)
-            .map((item) => item.n as string);
-    }
-    /**
-     * 获取导入的预加载信息。只有 client 端有效。
+     * 获取导入的预加载信息。只有 client 端有效。仅只读。
      * @param specifier 模块名
-     * @returns `Promise<{[specifier: string]: string}>` 模块名和文件路径的映射对象
+     * @returns
+     *   - `Promise<{ [specifier: string]: ImportPreloadPathString }>` 模块名和文件路径的映射对象
+     *   - `null` specifier 不存在
      */
     public async getImportPreloadInfo(specifier: string) {
-        const importInfo = (await this.getImportMap('client')).imports;
-        if (!importInfo || !(specifier in importInfo)) {
-            return {};
-        }
-        const ans: Record<string, string> = {};
-        const dfs = async (specifier: string) => {
-            let filepath = importInfo[specifier];
-            const splitRes = filepath.split('/');
-            if (splitRes[0] === '') splitRes.shift();
-            const name = splitRes.shift();
-            const cfg = this.moduleConfig.imports.find(
-                (item) => item.name === name
-            );
-            if (!cfg) {
-                return;
-            }
-            filepath = path.join(cfg.localPath, 'client', ...splitRes);
-            const imports = await this.getImportsFromJsFile(filepath);
-            const needHandle: string[] = [];
-            imports.forEach((specifier) => {
-                // 如果模块名在 importMap 中存在，且没处理过
-                if (specifier in importInfo && !ans[specifier]) {
-                    ans[specifier] = importInfo[specifier];
-                    needHandle.push(specifier);
+        return this.readied.cache(
+            `getImportPreloadInfo-client-${specifier}`,
+            () =>
+                Object.freeze(
+                    getImportPreloadInfo(
+                        specifier,
+                        this.getImportMap('client'),
+                        this.moduleConfig
+                    )
+                )
+        );
+    }
+    /**
+     * 获取导入的预加载路径。只有 client 端有效。仅只读。
+     * @param specifier 模块名
+     * @returns
+     *   - `Promise<string[]>` 文件路径数组
+     *   - `null` specifier 不存在
+     */
+    public async getImportPreloadPaths(specifier: string) {
+        return this.readied.cache(
+            `getImportPreloadPaths-client-arr-${specifier}`,
+            async () => {
+                const preloadInfo = await this.getImportPreloadInfo(specifier);
+                if (!preloadInfo) {
+                    return null;
                 }
-            });
-            await Promise.all(needHandle.map((item) => dfs(item)));
-        };
-        await dfs(specifier);
-        return ans;
+                return Object.freeze(Object.values(preloadInfo));
+            }
+        );
     }
 }
 
