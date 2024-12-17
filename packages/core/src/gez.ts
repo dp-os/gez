@@ -95,7 +95,7 @@ export class Gez {
         );
     }
     /**
-     * 获取 dist/node/src/entry.node.js 文件导出的选项
+     * 获取 dist/node/src/entry.node.mjs 文件导出的选项
      */
     public static async getDistOptions(): Promise<GezOptions> {
         return import(path.resolve(process.cwd(), './src/entry.node.ts')).then(

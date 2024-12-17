@@ -27,12 +27,12 @@ export function importmapPlugin(
                     const code = toImportmapJsCode(moduleConfig.name, exports);
 
                     const hash = contentHash(code).substring(0, 12);
-                    const importmapHash = `importmap.${hash}.final.js`;
+                    const importmapHash = `importmap.${hash}.final.mjs`;
                     const isWeb = compilation.options.target === 'web';
 
                     if (isWeb) {
                         compilation.emitAsset(
-                            'importmap.js',
+                            'importmap.mjs',
                             new RawSource(code)
                         );
                         compilation.emitAsset(

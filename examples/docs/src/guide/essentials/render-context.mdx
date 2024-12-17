@@ -30,7 +30,7 @@ export default async (rc: RenderContext) => {
 在 SSR 应用程序中，要处理注入渲染页面的 CSS 和 JS 文件，并不是一件简单的事情，当需要考虑多服务提供的模块时，这个问题将会变得更难。庆幸的是，Gez 提供了一个标准的实现方案，并且在 Vue 中提供了完整的实现。    
 
 在构建阶段，Gez 会给服务端生成的每一个 JS 文件头部注入一个 `import.meta.chunkName` 字段，该字段提供了一个 chunk 文件打包的入口源文件。
-```ts title="[chunk].js"
+```ts title="[chunk].mjs"
 import.meta.chunkName= import.meta.chunkName ?? "ssr-vue2-remote@src/entry.ts";
 ```
 `ssr-vue2-remote` 是我们的服务名，`src/entry.ts` 是这个文件打包的第一个文件。    

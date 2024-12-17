@@ -36,8 +36,8 @@ export function packagePlugin(
                         resources.find(
                             (file) =>
                                 file.startsWith('importmap.') &&
-                                file.endsWith('.final.js')
-                        ) ?? 'importmap.js';
+                                file.endsWith('.final.mjs')
+                        ) ?? 'importmap.mjs';
                     manifestJson = {
                         name: moduleConfig.name,
                         exports: exports,
@@ -106,12 +106,12 @@ export function getExports(stats: StatsCompilation) {
     Object.entries(entrypoints).forEach(([key, value]) => {
         const asset = value.assets?.find((item) => {
             return (
-                item.name.endsWith('.js') && !item.name.includes('hot-update')
+                item.name.endsWith('.mjs') && !item.name.includes('hot-update')
             );
         });
         if (!asset) return;
         const target = asset.name;
-        if (!key.startsWith(prefix) && !target.endsWith('.js')) return;
+        if (!key.startsWith(prefix) && !target.endsWith('.mjs')) return;
 
         exports[key.substring(prefix.length)] = target.substring(prefix.length);
     });
@@ -136,7 +136,7 @@ function getChunks(config: ParsedModuleConfig, compilation: Compilation) {
                 return module.moduleType?.includes('javascript/');
             });
         if (!module?.nameForCondition) return;
-        const js = chunk.files?.find((file) => file.endsWith('.js'));
+        const js = chunk.files?.find((file) => file.endsWith('.mjs'));
         if (!js) return;
 
         const name = generateIdentifier({

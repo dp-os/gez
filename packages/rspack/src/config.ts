@@ -58,21 +58,26 @@ export function createRspackConfig(
                 }
             };
         })(),
+        /*
+            https://web.dev/learn/performance/code-split-javascript#dont_inadvertently_disable_streaming_compilation
+            使用模块或不使用模块都无法通过 MIME 类型来区分，对于 v8 引擎来说，使用 .mjs 后缀的文件会被当作模块处理，可以保持流式编译
+            虽然没有在其他任何文章找到相关信息，但宁可信其有吧
+        */
         output: {
             clean: true,
             module: true,
             chunkFormat: gez.isProd ? 'module' : undefined,
             chunkLoading: gez.isProd ? 'import' : undefined,
             chunkFilename: gez.isProd
-                ? 'chunks/[name].[contenthash:8].final.js'
-                : 'chunks/[name].js',
+                ? 'chunks/[name].[contenthash:8].final.mjs'
+                : 'chunks/[name].mjs',
             library: {
                 type: libraryType
             },
             filename:
                 buildTarget !== 'node' && gez.isProd
-                    ? '[name].[contenthash:8].final.js'
-                    : '[name].js',
+                    ? '[name].[contenthash:8].final.mjs'
+                    : '[name].mjs',
             cssFilename: gez.isProd
                 ? '[name].[contenthash:8].final.css'
                 : '[name].css',
@@ -84,7 +89,7 @@ export function createRspackConfig(
                     ? 'auto'
                     : `${gez.basePathPlaceholder}${gez.basePath}`,
             uniqueName: gez.varName,
-            hotUpdateChunkFilename: '__hot__/[id].[fullhash].hot-update.js',
+            hotUpdateChunkFilename: '__hot__/[id].[fullhash].hot-update.mjs',
             path: ((): string => {
                 switch (buildTarget) {
                     case 'client':

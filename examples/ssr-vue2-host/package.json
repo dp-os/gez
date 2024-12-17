@@ -9,7 +9,7 @@
         "build": "npm run build:dts && npm run build:ssr",
         "build:ssr": "gez build",
         "preview": "gez preview",
-        "start": "NODE_ENV=production node dist/index.js",
+        "start": "NODE_ENV=production node dist/index.mjs",
         "build:dts": "vue-tsc --declaration --emitDeclarationOnly --outDir dist/src"
     },
     "dependencies": {

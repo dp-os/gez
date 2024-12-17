@@ -20,7 +20,7 @@ Gez的初衷在于打造一个支持服务器端渲染（SSR）的微服务架�
   - Edge ≥ 88
   - Node.js ≥ 22.6
 
-- **内容哈希与importmap**：构建产物具备内容哈希，利用 [importmap](https://caniuse.com/?search=import%20map) 技术将 `import vue from 'vue'` 转换为 `ssr-npm/npm/vue.[contenthash].final.js`，确保静态文件的强缓存。对于不支持importmap的浏览器，采用 [es-module-shims](https://github.com/guybedford/es-module-shims) 进行降级处理。
+- **内容哈希与importmap**：构建产物具备内容哈希，利用 [importmap](https://caniuse.com/?search=import%20map) 技术将 `import vue from 'vue'` 转换为 `ssr-npm/npm/vue.[contenthash].final.mjs`，确保静态文件的强缓存。对于不支持importmap的浏览器，采用 [es-module-shims](https://github.com/guybedford/es-module-shims) 进行降级处理。
 
 - **Rspack与ESM外部依赖**：Rspack 的 externalsType 支持 [module-import](https://rspack.dev/config/externals#externalstypemodule-import)，便于设置 ESM 模块的外部依赖。
 

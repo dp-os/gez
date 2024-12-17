@@ -37,7 +37,7 @@ npm init
         "build": "npm run build:dts && npm run build:ssr",
         "build:ssr": "gez build",
         "preview": "gez preview",
-        "start": "NODE_ENV=production node dist/index.js",
+        "start": "NODE_ENV=production node dist/index.mjs",
         "build:dts": "tsc --declaration --emitDeclarationOnly --outDir dist/src"
     },
 }
