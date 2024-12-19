@@ -1,0 +1,1 @@
+(t=>{let e="__importmap__",r=t[e]=t[e]||{},i=r.imports=r.imports||{},n=new URL(document.currentScript.src).pathname.split("/");n.pop();let s=n.join("/")+"/";Object.entries({"src/entry.client":"src/entry.client.568bc170.final.js"}).forEach(([t,e])=>{i["ssr-vue3/"+t]=s+e})})(globalThis);

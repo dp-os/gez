@@ -1,0 +1,92 @@
+{
+    "name": "ssr-html",
+    "exports": {
+        "src/entry.client": "src/entry.client.18876c87.final.js",
+        "src/title/index": "src/title/index.23ced5f2.final.js"
+    },
+    "buildFiles": [
+        "src/entry.client.18876c87.final.js",
+        "images/starry.d914a632.final.jpg",
+        "chunks/473.75b27a1c.final.css",
+        "importmap.js",
+        "importmap.17cc98bfe83a.final.js",
+        "images/sun.429a7bc5.final.png",
+        "chunks/887.666a4723.final.js",
+        "images/loading.6e6b1b2e.final.gif",
+        "images/logo.310683d2.final.svg",
+        "src/title/index.23ced5f2.final.js",
+        "chunks/887.75b27a1c.final.css",
+        "chunks/830.d321a942.final.js",
+        "chunks/830.75b27a1c.final.css",
+        "chunks/473.d7e56c14.final.js",
+        "src/entry.client.507f8043.final.css",
+        "images/cat.ed79ef6b.final.jpeg"
+    ],
+    "importmapJs": "importmap.17cc98bfe83a.final.js",
+    "chunks": {
+        "ssr-html@src/views/about.ts": {
+            "js": "chunks/473.d7e56c14.final.js",
+            "css": [
+                "chunks/473.75b27a1c.final.css"
+            ],
+            "resources": [],
+            "sizes": {
+                "js": 2527,
+                "css": 30,
+                "resource": 0
+            }
+        },
+        "ssr-html@src/views/not-found.ts": {
+            "js": "chunks/830.d321a942.final.js",
+            "css": [
+                "chunks/830.75b27a1c.final.css"
+            ],
+            "resources": [],
+            "sizes": {
+                "js": 2212,
+                "css": 30,
+                "resource": 0
+            }
+        },
+        "ssr-html@src/views/home.ts": {
+            "js": "chunks/887.666a4723.final.js",
+            "css": [
+                "chunks/887.75b27a1c.final.css"
+            ],
+            "resources": [
+                "images/cat.ed79ef6b.final.jpeg",
+                "images/loading.6e6b1b2e.final.gif",
+                "images/logo.310683d2.final.svg",
+                "images/starry.d914a632.final.jpg",
+                "images/sun.429a7bc5.final.png"
+            ],
+            "sizes": {
+                "js": 4087,
+                "css": 30,
+                "resource": 187219
+            }
+        },
+        "ssr-html@src/entry.client.ts": {
+            "js": "./src/entry.client.18876c87.final.js",
+            "css": [
+                "./src/entry.client.507f8043.final.css"
+            ],
+            "resources": [],
+            "sizes": {
+                "js": 12109,
+                "css": 44,
+                "resource": 0
+            }
+        },
+        "ssr-html@src/title/index.ts": {
+            "js": "./src/title/index.23ced5f2.final.js",
+            "css": [],
+            "resources": [],
+            "sizes": {
+                "js": 90,
+                "css": 0,
+                "resource": 0
+            }
+        }
+    }
+}

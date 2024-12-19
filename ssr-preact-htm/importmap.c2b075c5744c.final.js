@@ -1,0 +1,1 @@
+(t=>{let r="__importmap__",e=t[r]=t[r]||{},c=e.imports=e.imports||{},i=new URL(document.currentScript.src).pathname.split("/");i.pop();let n=i.join("/")+"/";Object.entries({"src/entry.client":"src/entry.client.ff8dc511.final.js"}).forEach(([t,r])=>{c["ssr-preact-htm/"+t]=n+r})})(globalThis);

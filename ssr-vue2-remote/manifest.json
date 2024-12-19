@@ -1,0 +1,95 @@
+{
+    "name": "ssr-vue2-remote",
+    "exports": {
+        "src/entry.client": "src/entry.client.2343379f.final.js",
+        "src/title/index": "src/title/index.b285904a.final.js",
+        "src/components/layout.vue": "src/components/layout.vue.a897428b.final.js",
+        "npm/vue": "npm/vue.905c1643.final.js",
+        "npm/@gez/vue-ui": "npm/@gez/vue-ui.512e9cca.final.js"
+    },
+    "buildFiles": [
+        "chunks/515.4f9947f3.final.js",
+        "npm/@gez/vue-ui.512e9cca.final.js",
+        "src/entry.client.2343379f.final.js",
+        "src/components/layout.vue.ac3071c0.final.css",
+        "images/logo.310683d2.final.svg",
+        "chunks/515.a2d38135.final.css",
+        "src/components/layout.vue.a897428b.final.js",
+        "src/entry.client.026c3f43.final.css",
+        "importmap.js",
+        "npm/vue.905c1643.final.js",
+        "src/title/index.b285904a.final.js",
+        "importmap.3e18521b43cf.final.js"
+    ],
+    "importmapJs": "importmap.3e18521b43cf.final.js",
+    "chunks": {
+        "ssr-vue2-remote@src/app.vue": {
+            "js": "chunks/515.4f9947f3.final.js",
+            "css": [
+                "chunks/515.a2d38135.final.css"
+            ],
+            "resources": [
+                "images/logo.310683d2.final.svg"
+            ],
+            "sizes": {
+                "js": 10189,
+                "css": 1855,
+                "resource": 188
+            }
+        },
+        "ssr-vue2-remote@src/components/layout.vue": {
+            "js": "./src/components/layout.vue.a897428b.final.js",
+            "css": [
+                "./src/components/layout.vue.ac3071c0.final.css"
+            ],
+            "resources": [],
+            "sizes": {
+                "js": 10926,
+                "css": 1368,
+                "resource": 0
+            }
+        },
+        "ssr-vue2-remote@../vue-ui/src/index.ts": {
+            "js": "./npm/@gez/vue-ui.512e9cca.final.js",
+            "css": [],
+            "resources": [],
+            "sizes": {
+                "js": 8328,
+                "css": 0,
+                "resource": 0
+            }
+        },
+        "ssr-vue2-remote@src/entry.client.ts": {
+            "js": "./src/entry.client.2343379f.final.js",
+            "css": [
+                "./src/entry.client.026c3f43.final.css"
+            ],
+            "resources": [],
+            "sizes": {
+                "js": 11564,
+                "css": 63,
+                "resource": 0
+            }
+        },
+        "ssr-vue2-remote@src/title/index.ts": {
+            "js": "./src/title/index.b285904a.final.js",
+            "css": [],
+            "resources": [],
+            "sizes": {
+                "js": 32,
+                "css": 0,
+                "resource": 0
+            }
+        },
+        "ssr-vue2-remote@../../node_modules/.pnpm/vue@2.7.16/node_modules/vue/dist/vue.esm.js": {
+            "js": "./npm/vue.905c1643.final.js",
+            "css": [],
+            "resources": [],
+            "sizes": {
+                "js": 419337,
+                "css": 0,
+                "resource": 0
+            }
+        }
+    }
+}

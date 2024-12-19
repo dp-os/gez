@@ -1,0 +1,38 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="preload" href="/gez/ssr-vue3/src/entry.client.0db8cdd1.final.css" as="style"><link rel="preload" href="/gez/ssr-vue3/importmap.d6df8c27acf3.final.js" as="script">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gez</title>
+    <link rel="stylesheet" href="/gez/ssr-vue3/src/entry.client.0db8cdd1.final.css">
+</head>
+<body>
+    <div class="box"><h2>rspack + vue3</h2> Count value: 1 <button>Add</button></div>
+    <script>window.__importmap__ = {"imports":{"ssr-vue3\u002Fsrc\u002Fentry.client":"\u002Fssr-vue3\u002Fsrc\u002Fentry.client.568bc170.final.js"}};(() => {
+const i = window.__importmap__;
+if (!i) {
+    return;
+}
+if (i.imports) {
+    pathWithoutIndex(i.imports);
+}
+const s = document.createElement("script");
+s.type = 'importmap';
+s.innerText = JSON.stringify(i);
+document.head.appendChild(s);
+function pathWithoutIndex(i) {
+  const s = "/index";
+  Object.entries(i).forEach(([k, v]) => {
+    if (k.endsWith(s)) {
+      k = k.substring(0, k.length - s.length);
+      i[k] = v;
+    }
+  });
+}
+})();</script>
+    <script type="module">import "ssr-vue3/src/entry.client";</script>
+    
+</body>
+</html>

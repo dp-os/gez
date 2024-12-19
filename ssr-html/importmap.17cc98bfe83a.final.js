@@ -1,0 +1,1 @@
+(t=>{let e="__importmap__",i=t[e]=t[e]||{},r=i.imports=i.imports||{},n=new URL(document.currentScript.src).pathname.split("/");n.pop();let s=n.join("/")+"/";Object.entries({"src/entry.client":"src/entry.client.18876c87.final.js","src/title/index":"src/title/index.23ced5f2.final.js"}).forEach(([t,e])=>{r["ssr-html/"+t]=s+e})})(globalThis);
