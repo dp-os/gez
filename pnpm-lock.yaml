@@ -447,7 +447,7 @@ importers:
         specifier: ^8.0.0
         version: 8.0.0
       '@rspack/core':
-        specifier: ^1.1.6
+        specifier: 1.1.6
         version: 1.1.6(@swc/helpers@0.5.15)
       css-loader:
         specifier: ^7.1.2
