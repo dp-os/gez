@@ -180,7 +180,10 @@ export async function createRspackHtmlApp(
                             typeof value === 'string'
                                 ? value
                                 : value[buildTarget];
-                        if (typeof targetValue === 'string' && value !== name) {
+                        if (
+                            typeof targetValue === 'string' &&
+                            name !== targetValue
+                        ) {
                             defineOptions[name] = targetValue;
                         }
                     }
