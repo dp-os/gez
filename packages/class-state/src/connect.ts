@@ -117,7 +117,7 @@ export class StoreContext<T extends {}> {
      */
     public dispose() {
         const { _stateContext, _proxy } = this;
-        call(_proxy, LIFE_CYCLE_CREATED);
+        call(_proxy, LIFE_CYCLE_DISPOSE);
         if (_stateContext) {
             _stateContext.del(this.keyPath);
             this._stateContext = null;
