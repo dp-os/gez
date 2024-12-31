@@ -269,7 +269,7 @@ export function connectState(state: State) {
     };
 }
 /**
- * 连接外部的 store，如果没有，则实例化 Store 类作为默认值返回
+ * 查找外部的 store。如果没有找到则返回 null
  */
 export function foreignStore<T extends StoreConstructor>(
     Store: T,
