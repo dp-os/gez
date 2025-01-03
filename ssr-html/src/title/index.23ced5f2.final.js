@@ -1,0 +1,1 @@
+let o={home:"Home",about:"About",notFound:"Not found"};export{o as title};

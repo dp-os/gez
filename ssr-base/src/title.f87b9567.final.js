@@ -1,0 +1,1 @@
+function e(){return"Gez"}export{e as getTitle};
