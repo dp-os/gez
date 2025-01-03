@@ -40,7 +40,6 @@ export default {
         const list: string[] = ['/', '/about'];
         for (const url of list) {
             const rc = await gez.render({
-                base: '/gez',
                 params: { url: url, htmlBase: `/gez/${gez.name}` }
             });
             gez.writeSync(
