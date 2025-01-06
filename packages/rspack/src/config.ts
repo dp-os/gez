@@ -115,7 +115,9 @@ export function createRspackConfig(
         module: {
             parser: {
                 javascript: {
-                    importMeta: false
+                    url: buildTarget === 'client' ? true : 'relative',
+                    importMeta: false,
+                    strictExportPresence: true
                 }
             },
             generator: {
