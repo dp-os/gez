@@ -133,7 +133,8 @@ export function createRspackConfig(
         resolve: {
             alias: {
                 [gez.name]: gez.root
-            }
+            },
+            mainFields: ['module', 'main']
         },
         optimization: {
             minimize: options.minimize ?? gez.isProd,
