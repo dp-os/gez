@@ -17,6 +17,9 @@ export function externalPlugin(
                 { request, contextInfo }: any,
                 callback: (...args: any[]) => any
             ) => {
+                if (/\.worker\.(ts|mts|js|mjs)/.test(contextInfo.issuer)) {
+                    return callback();
+                }
                 const getImport = getImportResult(moduleConfig, key, value);
                 const result = getImport(contextInfo.issuer, request);
                 if (result) {

@@ -124,7 +124,7 @@ export async function createRspackHtmlApp(
                         }
                     },
                     {
-                        test: /\.ts$/i,
+                        test: /\.(ts|mts)$/i,
                         loader:
                             options.loaders?.builtinSwcLoader ??
                             RSPACK_LOADER.builtinSwcLoader,
