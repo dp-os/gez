@@ -18,18 +18,10 @@ export function createRspackConfig(
     buildTarget: BuildTarget,
     options: RspackAppOptions
 ): RspackOptions {
-    const moduleType = options.module ?? 'auto';
     const isWebApp = buildTarget === 'client' || buildTarget === 'server';
-    const isHot =
-        (buildTarget === 'client' && !gez.isProd && moduleType === 'auto') ||
-        moduleType === 'module';
+    const isHot = buildTarget === 'client' && !gez.isProd;
 
-    const libraryType =
-        moduleType === 'auto'
-            ? gez.isProd
-                ? 'modern-module'
-                : 'module'
-            : moduleType;
+    const libraryType = 'module';
     return {
         /**
          * 项目根目录，不可修改
@@ -137,7 +129,7 @@ export function createRspackConfig(
         },
         optimization: {
             minimize: options.minimize ?? gez.isProd,
-            concatenateModules: gez.isProd || libraryType === 'modern-module',
+            concatenateModules: gez.isProd,
             splitChunks: {
                 chunks: 'async'
             }
