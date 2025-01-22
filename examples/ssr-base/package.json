@@ -1,6 +1,6 @@
 {
   "name": "ssr-base",
-  "version": "3.0.0-beta.51",
+  "version": "3.0.0-beta.52",
   "main": "index.js",
   "type": "module",
   "private": true,
