@@ -50,7 +50,7 @@ export async function createRspackApp(
     gez: Gez,
     options?: RspackAppOptions
 ): Promise<App> {
-    const app = await createApp(gez);
+    const app = await createApp(gez, gez.command);
     switch (gez.command) {
         case gez.COMMAND.dev:
             app.middleware = mergeMiddlewares([
