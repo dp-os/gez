@@ -25,7 +25,11 @@ export function createRspackConfig(
         moduleType === 'module';
 
     const libraryType =
-        moduleType === 'auto' ? (gez.isProd ? 'module' : 'module') : moduleType;
+        moduleType === 'auto'
+            ? gez.isProd
+                ? 'modern-module'
+                : 'module'
+            : moduleType;
     return {
         /**
          * 项目根目录，不可修改
