@@ -130,6 +130,7 @@ export function createRspackConfig(
         optimization: {
             minimize: options.minimize ?? gez.isProd,
             concatenateModules: gez.isProd,
+            emitOnErrors: true,
             splitChunks: {
                 chunks: 'async'
             }
