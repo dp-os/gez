@@ -154,6 +154,7 @@ export function createRspackConfig(
         })(),
         experiments: {
             outputModule: true,
+            parallelCodeSplitting: true,
             rspackFuture: {
                 bundlerInfo: { force: false }
             }
