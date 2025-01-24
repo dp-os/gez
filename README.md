@@ -5,7 +5,9 @@
 
 [Gez](https://dp-os.github.io/gez/index.html) 基于 **[Rspack](https://rspack.dev/)** 编译，通过 **[importmap](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/script/type/importmap)** 将模块映射到具有强缓存，基于内容哈希的 URL 中。
    
-> **⚠️** 已知，Rspack 目前对 ESM 的热更新和 `export *` 支持不完整，并且在大型项目中有数十个 `entry` 导出的项目上热更新非常慢。目前正在积极解决，探索 Rspack ESM 的最佳实践。
+> **⚠️** 目前 Rspack 对 ESM 支持还存在一些缺陷，如果你不介意，则可以在生产使用，待 Rspack 修复这些缺陷将会发布正式版本。
+> - `modern-module` 对 `export *` 的输出不稳定，详情 https://github.com/web-infra-dev/rspack/issues/8557 、 https://github.com/web-infra-dev/rspack/issues/8546 。
+> - 动态导入模块的依赖模块被提升到顶级模块，详情 https://github.com/web-infra-dev/rspack/issues/8736 。
 
 ## 🌈 理念
 - 我们应该设计一个基础服务，由基础服务提供所有的第三方依赖。
