@@ -6,7 +6,7 @@ export default {
         enable: true
     },
     modules: {
-        exports: ['npm:axios', 'root:src/date-fns', 'root:src/title.ts']
+        exports: ['npm:axios', 'root:src/title.ts']
     },
     // 本地执行 dev 和 build 时会使用
     async createDevApp(gez) {

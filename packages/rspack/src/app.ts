@@ -1,8 +1,11 @@
+import fs from 'fs';
 import { pathToFileURL } from 'node:url';
+import { styleText } from 'node:util';
 import {
     type App,
     type Gez,
     type Middleware,
+    PathType,
     RenderContext,
     type RenderContextOptions,
     type ServerRenderHandle,
@@ -139,6 +142,29 @@ function rewriteBuild(gez: Gez, options: RspackAppOptions = {}) {
             () => rspackBuild(generateBuildConfig(gez, options, 'server')),
             () => rspackBuild(generateBuildConfig(gez, options, 'node'))
         ];
+        for (const item of gez.moduleConfig.exports) {
+            if (item.type === PathType.root) {
+                const text = fs.readFileSync(
+                    gez.resolvePath('./', item.exportPath),
+                    'utf-8'
+                );
+                if (/\bexport\s+\*\s+from\b/.test(text)) {
+                    console.log(
+                        styleText(
+                            'red',
+                            `The export * syntax is used in the file '${item.exportPath}', which will cause the packaging to fail.`
+                        )
+                    );
+                    console.log(
+                        styleText(
+                            'red',
+                            `Please use specific export syntax, such as export { a, b } from './a';`
+                        )
+                    );
+                    return false;
+                }
+            }
+        }
         for (const build of list) {
             const successful = await build();
             if (!successful) {
