@@ -1,8 +1,8 @@
 {
-  "version": "3.0.0-beta.57",
-  "packages": [
-    "packages/*",
-    "examples/*"
-  ],
-  "npmClient": "pnpm"
+    "version": "3.0.0-beta.57",
+    "packages": [
+        "packages/*",
+        "examples/*"
+    ],
+    "npmClient": "pnpm"
 }

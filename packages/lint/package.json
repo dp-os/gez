@@ -6,7 +6,7 @@
         "lint:js": "biome check --write --no-errors-on-unmatched",
         "lint:css": "stylelint '**/*.{css,vue}' --fix --aei",
         "lint:type": "tsc --noEmit",
-        "test": "vitest --pass-with-no-tests",
+        "test": "vitest run --pass-with-no-tests",
         "coverage": "vitest run --coverage --pass-with-no-tests",
         "build": "unbuild"
     },
@@ -14,11 +14,11 @@
         "@biomejs/biome": "1.9.4",
         "@gez/lint": "workspace:*",
         "@types/node": "22.9.0",
-        "@vitest/coverage-v8": "2.1.5",
-        "stylelint": "16.10.0",
-        "typescript": "5.6.3",
+        "@vitest/coverage-v8": "3.0.5",
+        "stylelint": "16.13.1",
+        "typescript": "5.7.3",
         "unbuild": "2.0.0",
-        "vitest": "2.1.5"
+        "vitest": "3.0.5"
     },
     "peerDependencies": {
         "stylelint": ">=16.5.0"
@@ -47,6 +47,7 @@
     "module": "dist/index.mjs",
     "types": "./dist/index.d.ts",
     "files": [
+        "lib",
         "src",
         "dist",
         "*.mjs",
