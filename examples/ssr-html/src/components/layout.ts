@@ -1,4 +1,5 @@
 import './layout.css';
+import * as images from 'ssr-html/src/images';
 
 interface LayoutOptions {
     url?: string;
@@ -26,11 +27,13 @@ export function layout(slot: string, options: LayoutOptions = {}) {
     return `
 <div class="layout">
     <header class="header">
-        <h1>Gez</h1>
-        <nav class="nav">
-            <a href="{{__HTML_BASE__}}/" class="${isActive('/')}">首页</a>
-            <a href="{{__HTML_BASE__}}/about" class="${isActive('about')}">关于我们</a>
-        </nav>
+        <div>
+            <h1><img src="${images.svg}" alt="Gez Logo" width="48" height="48"></h1>
+            <nav class="nav">
+                <a href="{{__HTML_BASE__}}/" class="${isActive('/')}">首页</a>
+                <a href="{{__HTML_BASE__}}/about" class="${isActive('about')}">关于我们</a>
+            </nav>
+        </div>
     </header>
     <main class="main">
     ${slot}
