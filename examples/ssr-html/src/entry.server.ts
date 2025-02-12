@@ -16,6 +16,9 @@ export default async (rc: RenderContext) => {
         .render()
         .replaceAll(`{{__HTML_BASE__}}`, rc.params.htmlBase ?? '');
 
+    // 提交模块依赖收集
+    await rc.commit();
+
     rc.html = `
 <!DOCTYPE html>
 <html>
@@ -38,7 +41,4 @@ export default async (rc: RenderContext) => {
 </body>
 </html>
 `;
-
-    // 提交模块依赖收集
-    await rc.commit();
 };
