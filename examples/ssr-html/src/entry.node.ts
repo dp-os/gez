@@ -20,6 +20,10 @@ export default {
     },
     async createServer(gez) {
         const server = http.createServer((req, res) => {
+            // 设置响应头，确保连接正确关闭
+            res.setHeader('Connection', 'keep-alive');
+            res.setHeader('Keep-Alive', 'timeout=5');
+
             // 静态文件处理
             gez.middleware(req, res, async () => {
                 // 传入渲染的参数
@@ -32,6 +36,7 @@ export default {
                 res.end(rc.html);
             });
         });
+
         // 监听端口
         server.listen(3000, () => {
             console.log('http://localhost:3000');
