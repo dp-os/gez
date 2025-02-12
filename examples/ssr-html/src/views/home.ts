@@ -11,30 +11,41 @@ export default class Home extends Page {
     public render(): string {
         const { url } = this.props;
         const { count } = this.state;
-        return layout(`
-        <h2>计数器</h2>
-        <div id="count">${count}</div>
-        <h2>请求地址</h2>
-        <pre>${url}</pre>
-        <h2>图片</h2>
-        <ul>
-            <li>${images.svg} <br>
-                <img height="100" src="${images.svg}">
-            </li>
-            <li>${images.jpg} <br>
-                <img height="100" src="${images.jpg}">
-            </li>
-            <li>${images.cat} <br>
-                <img height="100" src="${images.cat}">
-            </li>
-            <li>${images.loading} <br>
-                <img height="100" src="${images.loading}">
-            </li>
-            <li>${images.sun} <br>
-                <img height="100" src="${images.sun}">
-            </li>
-        </ul>
-`);
+        return layout(
+            `
+        <div class="counter">
+            <h2>计数器</h2>
+            <div id="count" class="counter-value">${count}</div>
+        </div>
+
+        <div class="url-section">
+            <h2>请求地址</h2>
+            <pre>${url}</pre>
+        </div>
+
+        <section>
+            <h2>图片展示</h2>
+            <ul class="image-grid">
+                <li>
+                    <img src="${images.svg}" alt="SVG示例" width="100" height="60">
+                </li>
+                <li>
+                    <img src="${images.jpg}" alt="JPG示例" width="1024" height="768">
+                </li>
+                <li>
+                    <img src="${images.cat}" alt="猫咪图片" width="769" height="225">
+                </li>
+                <li>
+                    <img src="${images.loading}" alt="加载动画" width="123" height="123">
+                </li>
+                <li>
+                    <img src="${images.sun}" alt="太阳图标" width="351" height="300">
+                </li>
+            </ul>
+        </section>
+`,
+            { url }
+        );
     }
     public onClient() {
         setInterval(() => {
