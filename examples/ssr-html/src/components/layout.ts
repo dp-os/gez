@@ -33,20 +33,14 @@ export function layout(slot: string, options: LayoutOptions = {}) {
         return normalizedUrl === normalizedPath ? 'active' : '';
     };
 
-    // 添加时间戳到链接
-    const addRandomParam = (path: string) => {
-        const timestamp = Date.now();
-        return `${path}?_=${timestamp}`;
-    };
-
     return `
 <div class="layout">
     <header class="header">
         <div>
             <h1><img src="https://www.gez-esm.com/logo.svg" alt="Gez Logo" width="48" height="48"></h1>
             <nav class="nav">
-                <a href="{{__HTML_BASE__}}${addRandomParam('/')}" class="${isActive('/')}">首页</a>
-                <a href="{{__HTML_BASE__}}${addRandomParam('/about')}" class="${isActive('about')}">关于我们</a>
+                <a href="{{__HTML_BASE__}}/" class="${isActive('/')}">首页</a>
+                <a href="{{__HTML_BASE__}}/about" class="${isActive('about')}">关于我们</a>
                 <a href="https://github.com/dp-os/gez/tree/master/examples/ssr-html" target="_blank">示例代码</a>
             </nav>
         </div>
