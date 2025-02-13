@@ -8,7 +8,7 @@ export default class Home extends Page {
     };
     public title = title.about;
     public render(): string {
-        const { url } = this.props;
+        const { url, base } = this.props;
         return layout(
             `<div class="about-page">
                 <section class="about-hero">
@@ -64,7 +64,10 @@ export default class Home extends Page {
                     </div>
                 </section>
             </div>`,
-            { url }
+            {
+                url,
+                base
+            }
         );
     }
     /**

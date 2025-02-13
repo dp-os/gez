@@ -8,7 +8,8 @@ export default async (rc: RenderContext) => {
 
     page.importMetaSet = rc.importMetaSet;
     page.props = {
-        url: rc.params.url
+        url: rc.params.url,
+        base: rc.params.base || '/'
     };
     page.onCreated();
     await page.onServer();

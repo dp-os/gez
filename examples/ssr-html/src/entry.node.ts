@@ -43,7 +43,7 @@ export default {
         const list: string[] = ['/', '/about', '/404'];
         for (const url of list) {
             const rc = await gez.render({
-                params: { url: url }
+                params: { url: url, base: '/ssr-html/' }
             });
             gez.writeSync(
                 gez.resolvePath('dist/client', url.substring(1), 'index.html'),

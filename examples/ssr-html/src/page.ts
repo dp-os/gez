@@ -1,5 +1,6 @@
 export interface PageProps {
     url: string;
+    base: string;
 }
 
 export class Page {

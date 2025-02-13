@@ -10,7 +10,7 @@ export default class Home extends Page {
     };
     public title = title.home;
     public render(): string {
-        const { url } = this.props;
+        const { url, base } = this.props;
         const { count } = this.state;
         return layout(
             `
@@ -99,7 +99,10 @@ export default class Home extends Page {
             </div>
         </section>
 `,
-            { url }
+            {
+                url: url,
+                base: base
+            }
         );
     }
     public onClient() {
