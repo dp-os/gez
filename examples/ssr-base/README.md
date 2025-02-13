@@ -35,10 +35,10 @@ pnpm dev
 
 ```
 src/
-├── entry.client.ts   # 客户端入口文件
-├── entry.node.ts     # Node.js 服务器入口文件
-├── entry.server.ts   # 服务端渲染入口文件
-└── title.ts         # 页面标题配置文件
+├── entry.client.ts     # 客户端入口文件
+├── entry.node.ts       # Node.js 服务器入口文件
+├── entry.server.ts     # 服务端渲染入口文件
+└── title.ts            # 页面标题配置文件
 ```
 
 ## 在线预览

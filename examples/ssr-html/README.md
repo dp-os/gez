@@ -36,20 +36,20 @@ pnpm dev
 
 ```
 src/
-├── components/       # 共享组件
-│   ├── layout.ts    # 布局组件
-│   └── layout.css   # 布局样式
-├── views/           # 页面组件
-│   ├── home.ts      # 首页
-│   ├── about.ts     # 关于页面
-│   └── not-found.ts # 404页面
-├── styles/          # 全局样式
-├── images/          # 图片资源
-├── entry.client.ts  # 客户端入口
-├── entry.server.ts  # 服务端入口
-├── entry.node.ts    # Node 环境入口
-├── routes.ts        # 路由配置
-└── page.ts          # 基础页面类
+├── components/         # 共享组件
+│   ├── layout.ts       # 布局组件
+│   └── layout.css      # 布局样式
+├── views/              # 页面组件
+│   ├── home.ts         # 首页
+│   ├── about.ts        # 关于页面
+│   └── not-found.ts    # 404页面
+├── styles/             # 全局样式
+├── images/             # 图片资源
+├── entry.client.ts     # 客户端入口
+├── entry.server.ts     # 服务端入口
+├── entry.node.ts       # Node 环境入口
+├── routes.ts           # 路由配置
+└── page.ts             # 基础页面类
 ```
 
 ## 在线预览
