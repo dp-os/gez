@@ -21,16 +21,12 @@ export function layout(slot: string, options: LayoutOptions = {}) {
         const urlWithoutQuery = options.url.split('?')[0];
         const pathWithoutQuery = path.split('?')[0];
 
-        // 移除开头和结尾的斜杠，统一格式
-        const normalizedUrl = urlWithoutQuery.replace(/^(\/+)|(\/+)$/, '');
-        const normalizedPath = pathWithoutQuery.replace(/^(\/+)|(\/+)$/, '');
-
         // 对于首页的特殊处理
-        if (path === '/' && !normalizedUrl) {
+        if (path === '/' && urlWithoutQuery === '/') {
             return 'active';
         }
 
-        return normalizedUrl === normalizedPath ? 'active' : '';
+        return urlWithoutQuery === pathWithoutQuery ? 'active' : '';
     };
 
     return `
