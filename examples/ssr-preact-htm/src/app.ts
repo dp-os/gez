@@ -123,7 +123,10 @@ const Features = () => html`
 // 主应用组件
 export const App = () => html`
     <div class="container">
-        <h1>Gez + Preact + HTM 示例</h1>
+        <h1>
+            <img src="https://www.gez-esm.com/logo.svg" alt="Gez Logo" class="logo" />
+            Gez + Preact + HTM 示例
+        </h1>
         <${Counter} />
         <${Form} />
         <${List} />

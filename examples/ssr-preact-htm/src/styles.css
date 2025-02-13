@@ -36,14 +36,24 @@ body {
 }
 
 h1 {
-    text-align: center;
+    font-size: 2rem;
+    font-weight: 600;
     margin-bottom: 2rem;
+    color: var(--primary-dark);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
     background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    font-size: 2.25rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
+}
+
+.logo {
+    width: 40px;
+    height: 40px;
+    vertical-align: middle;
 }
 
 .card {
