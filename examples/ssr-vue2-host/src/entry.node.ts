@@ -27,8 +27,7 @@ export default {
             'ssr-vue2-remote': 'root:../ssr-vue2-remote/dist'
         },
         externals: {
-            vue: 'ssr-vue2-remote/npm/vue',
-            '@gez/vue-ui': 'ssr-vue2-remote/npm/@gez/vue-ui'
+            vue: 'ssr-vue2-remote/npm/vue'
         }
     },
     async postCompileProdHook(gez) {

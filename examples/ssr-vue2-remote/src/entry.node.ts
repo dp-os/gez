@@ -28,8 +28,7 @@ export default {
         exports: [
             'root:src/title/index.ts',
             'root:src/components/layout.vue',
-            'npm:vue',
-            'npm:@gez/vue-ui'
+            'npm:vue'
         ]
     },
     async postCompileProdHook(gez) {
