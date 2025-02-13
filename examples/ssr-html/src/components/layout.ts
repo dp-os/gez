@@ -33,10 +33,10 @@ export function layout(slot: string, options: LayoutOptions = {}) {
         return normalizedUrl === normalizedPath ? 'active' : '';
     };
 
-    // 添加随机参数到链接
+    // 添加时间戳到链接
     const addRandomParam = (path: string) => {
-        const param = Math.random().toString(36).substring(2, 8);
-        return `${path}?_=${param}`;
+        const timestamp = Date.now();
+        return `${path}?_=${timestamp}`;
     };
 
     return `
