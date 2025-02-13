@@ -32,7 +32,9 @@ export default class Home extends Page {
             <h2>图片展示</h2>
             <ul class="image-grid">
                 <li>
-                    <img src="${images.svg}" alt="SVG示例" width="200" height="200">
+                    <div class="image-wrapper">
+                        <img src="${images.svg}" alt="SVG示例" width="200" height="200">
+                    </div>
                     <div class="image-info">
                         <h3>SVG 示例</h3>
                         <p>类型：SVG</p>
@@ -40,7 +42,9 @@ export default class Home extends Page {
                     </div>
                 </li>
                 <li>
-                    <img src="${images.jpg}" alt="JPG示例" width="1024" height="768">
+                    <div class="image-wrapper">
+                        <img src="${images.jpg}" alt="JPG示例" width="1024" height="768">
+                    </div>
                     <div class="image-info">
                         <h3>JPG 示例</h3>
                         <p>类型：JPG</p>
@@ -48,7 +52,9 @@ export default class Home extends Page {
                     </div>
                 </li>
                 <li>
-                    <img src="${images.cat}" alt="猫咪图片" width="769" height="225">
+                    <div class="image-wrapper">
+                        <img src="${images.cat}" alt="猫咪图片" width="769" height="225">
+                    </div>
                     <div class="image-info">
                         <h3>猫咪图片</h3>
                         <p>类型：PNG</p>
@@ -56,15 +62,19 @@ export default class Home extends Page {
                     </div>
                 </li>
                 <li>
-                    <img src="${images.loading}" alt="加载动画" width="123" height="123">
+                    <div class="image-wrapper">
+                        <img src="${images.runningDog}" alt="疯狂编码" width="480" height="297">
+                    </div>
                     <div class="image-info">
-                        <h3>加载动画</h3>
+                        <h3>疯狂编码</h3>
                         <p>类型：GIF</p>
-                        <p>尺寸：123 x 123</p>
+                        <p>尺寸：480 x 297</p>
                     </div>
                 </li>
                 <li>
-                    <img src="${images.sun}" alt="太阳图标" width="351" height="300">
+                    <div class="image-wrapper">
+                        <img src="${images.sun}" alt="太阳图标" width="351" height="300">
+                    </div>
                     <div class="image-info">
                         <h3>太阳图标</h3>
                         <p>类型：SVG</p>
