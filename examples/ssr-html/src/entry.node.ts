@@ -40,7 +40,7 @@ export default {
         });
     },
     async postCompileProdHook(gez) {
-        const list: string[] = ['/', '/about'];
+        const list: string[] = ['/', '/about', '/404'];
         for (const url of list) {
             const rc = await gez.render({
                 params: { url: url }

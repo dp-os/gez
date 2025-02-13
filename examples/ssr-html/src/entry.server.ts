@@ -12,9 +12,7 @@ export default async (rc: RenderContext) => {
     };
     page.onCreated();
     await page.onServer();
-    const html = page
-        .render()
-        .replaceAll(`{{__HTML_BASE__}}`, rc.params.htmlBase ?? '');
+    const html = page.render();
 
     // 提交模块依赖收集
     await rc.commit();

@@ -252,6 +252,76 @@ pre {
     animation: fadeIn 0.5s ease-out forwards;
 }
 
+/* 404 页面样式 */
+.not-found {
+    min-height: calc(100vh - var(--header-height));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: var(--background-color);
+}
+
+.not-found-content {
+    padding: 2rem;
+}
+
+.not-found .error-code {
+    font-size: 6rem;
+    font-weight: bold;
+    line-height: 1;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.not-found h1 {
+    font-size: 1.5rem;
+    color: var(--primary-dark);
+    margin: 0 0 1rem;
+}
+
+.not-found p {
+    color: var(--text-light);
+    margin: 0 0 2rem;
+}
+
+.not-found .actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.not-found .back-home,
+.not-found .go-back {
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.not-found .back-home {
+    background: var(--primary-color);
+    color: var(--text-dark);
+    text-decoration: none;
+}
+
+.not-found .back-home:hover {
+    background: var(--primary-dark);
+    color: white;
+}
+
+.not-found .go-back {
+    background: var(--background-light);
+    border: 1px solid var(--border-color);
+    color: var(--text-light);
+}
+
+.not-found .go-back:hover {
+    background: var(--background-color);
+    color: var(--text-dark);
+}
+
 @media (max-width: 1280px) {
     :root {
         --content-padding: 1.5rem;
