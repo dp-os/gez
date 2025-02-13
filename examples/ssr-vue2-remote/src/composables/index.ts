@@ -1,12 +1,8 @@
-// 函数导出
-export { useTheme } from './use-theme';
+/**
+ * 组合函数导出文件
+ * 注意：这是一个对外导出的文件，必须使用具名导出
+ */
 
-// 类型导出
-export type {
-    Theme,
-    ThemeOptions,
-    UseThemeReturn
-} from './use-theme';
-
-// 常量导出
-export { defaultTheme } from './use-theme';
+// Theme
+export { useTheme, defaultTheme } from './theme';
+export type { Theme, UseThemeReturn } from './theme';

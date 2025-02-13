@@ -1,150 +1,312 @@
 <template>
   <div class="app">
-    <ui-card class="demo-card">
-      <template #header>
-        <h1>Gez UI 组件</h1>
-      </template>
+    <app-nav current="remote" />
+    
+    <ui-module-header
+      title="Gez Module Link Remote"
+      description="这是一个 Module Link 远程模块示例，用于展示可复用的组件。通过 Module Link，你可以轻松地在不同项目间共享和复用组件，实现真正的模块化开发。"
+    />
 
-      <section class="demo-section">
-        <h2>按钮</h2>
-        <div class="button-group">
-          <ui-button v-for="type in buttonTypes" :key="type" :type="type">
-            {{ type }}
-          </ui-button>
-        </div>
-        <div class="button-group">
-          <ui-button v-for="size in buttonSizes" :key="size" :size="size">
-            {{ size }}
-          </ui-button>
-        </div>
-        <div class="button-group">
-          <ui-button>加载中</ui-button>
-          <ui-button disabled>禁用状态</ui-button>
-        </div>
-      </section>
+    <main class="app-main">
+      <div class="container">
+        <div class="showcase-grid">
+          <!-- Remote 核心功能展示 -->
+          <ui-showcase-section title="Remote 服务">
+            <p class="intro-text">Remote 服务是一个独立的微前端服务，可以：</p>
+            <ul class="feature-list">
+              <li>
+                <span class="bullet">•</span>
+                <span>将组件、函数导出给其他应用使用</span>
+              </li>
+              <li>
+                <span class="bullet">•</span>
+                <span>支持运行时动态加载，实现代码共享</span>
+              </li>
+              <li>
+                <span class="bullet">•</span>
+                <span>确保所有应用使用相同版本的依赖</span>
+              </li>
+            </ul>
+          </ui-showcase-section>
 
-      <section class="demo-section">
-        <h2>主题</h2>
-        <div class="theme-controls">
-          <div v-for="(color, key) in theme" :key="key" class="color-picker">
-            <label>{{ formatKey(key) }}</label>
-            <input 
-              type="color" 
-              :value="color" 
-              @input="handleColorChange($event, key)" 
-            />
-          </div>
-        </div>
-      </section>
+          <!-- 配置说明卡片 -->
+          <ui-showcase-section title="配置说明">
+            <div class="demo-item">
+              <h3>模块导出</h3>
+              <pre class="code-block"><code><span class="comment">// entry.node.ts</span>
+<span class="keyword">export</span> <span class="keyword">default</span> {
+  <span class="property">modules</span>: {
+    <span class="property">exports</span>: [
+      <span class="comment">// 导出 Vue 实例</span>
+      <span class="string">'npm:vue'</span>,
+      <span class="comment">// UI 组件</span>
+      <span class="string">'root:src/components/index.ts'</span>,
+      <span class="comment">// 组合式函数</span>
+      <span class="string">'root:src/composables/index.ts'</span>,
+      <span class="comment">// 示例组件</span>
+      <span class="string">'root:src/examples/index.ts'</span>
+    ]
+  }
+}</code></pre>
+              <div class="tips">
+                <div class="tip-item">
+                  <span class="tip-icon">📦</span>
+                  <span>需要支持 ESM 格式</span>
+                </div>
+                <div class="tip-item">
+                  <span class="tip-icon">📝</span>
+                  <span>需要 TypeScript 类型定义</span>
+                </div>
+              </div>
+            </div>
 
-      <template #footer>
-        <p>当前时间: {{ time }}</p>
-      </template>
-    </ui-card>
+            <div class="demo-item">
+              <h3>导出类型</h3>
+              <div class="export-types">
+                <div class="export-type">
+                  <code class="highlight">npm:package</code>
+                  <p>用于共享核心依赖包（如 Vue），确保所有应用使用相同版本。</p>
+                </div>
+                <div class="export-type">
+                  <code class="highlight">root:path</code>
+                  <p>用于共享项目内的组件、函数等可复用模块。</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="demo-item">
+              <h3>导出示例</h3>
+              <pre class="code-block"><code><span class="comment">// src/components/index.ts</span>
+<span class="keyword">export</span> { <span class="property">UiButton</span> } <span class="keyword">from</span> <span class="string">'./ui-button.vue'</span>;
+<span class="keyword">export</span> { <span class="property">UiCard</span> } <span class="keyword">from</span> <span class="string">'./ui-card.vue'</span>;
+
+<span class="comment">// src/composables/index.ts</span>
+<span class="keyword">export</span> { <span class="property">useTheme</span> } <span class="keyword">from</span> <span class="string">'./use-theme'</span>;</code></pre>
+            </div>
+          </ui-showcase-section>
+        </div>
+      </div>
+    </main>
+
+    <app-footer />
   </div>
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from 'vue';
-import { UiButton, UiCard } from './components';
-import { defaultTheme, useTheme } from './composables/use-theme';
-
-const buttonTypes = [
-    'primary',
-    'secondary',
-    'success',
-    'warning',
-    'danger'
-] as const;
-const buttonSizes = ['small', 'medium', 'large'] as const;
-
-const time = ref(new Date().toLocaleString());
-const { theme, updateTheme } = useTheme(defaultTheme);
-
-// 格式化主题 key
-const formatKey = (key: string) => {
-    const keyMap: Record<string, string> = {
-        primary: '主要颜色',
-        secondary: '次要颜色',
-        success: '成功颜色',
-        warning: '警告颜色',
-        danger: '危险颜色',
-        textPrimary: '主要文本',
-        textSecondary: '次要文本',
-        border: '边框颜色',
-        background: '背景颜色'
-    };
-    return keyMap[key] || key;
-};
-
-const handleColorChange = (e: Event, key: string) => {
-    const target = e.target as HTMLInputElement;
-    updateTheme({ [key]: target.value });
-};
-
-// 更新时间
-onMounted(() => {
-    const timer = setInterval(() => {
-        time.value = new Date().toLocaleString();
-    }, 1000);
-
-    onBeforeUnmount(() => {
-        clearInterval(timer);
-    });
-});
+import {
+    AppFooter,
+    AppNav,
+    UiModuleHeader,
+    UiShowcaseSection
+} from './components';
 </script>
 
-<style>
+<style scoped>
 .app {
   min-height: 100vh;
-  padding: 2rem;
-  background-color: #f3f4f6;
+  display: flex;
+  flex-direction: column;
 }
 
-.demo-card {
-  max-width: 800px;
+.container {
+  width: 100%;
+  max-width: 960px;
   margin: 0 auto;
+  padding: 0 2rem;
 }
 
-.demo-section {
-  margin-bottom: 2rem;
+@media (max-width: 960px) {
+  .container {
+    max-width: 100%;
+    padding: 0 1rem;
+  }
 }
 
-.demo-section h2 {
-  margin-bottom: 1rem;
+.app-header {
+  background-color: var(--color-bg-primary);
+  border-bottom: 1px solid var(--color-border);
+  padding: var(--spacing-8) 0;
+}
+
+.header-content {
+  background: var(--color-bg-primary);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-6);
+}
+
+.header-info {
+  max-width: 640px;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 0 0 var(--spacing-4);
   color: var(--color-text-primary);
 }
 
-.button-group {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
+.header-description {
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+  margin: 0 0 var(--spacing-4);
 }
 
-.theme-controls {
+.version-tags {
+  display: flex;
+  gap: var(--spacing-2);
+}
+
+.version-tag {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-secondary);
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.app-main {
+  flex: 1;
+  padding: var(--spacing-8) 0;
+}
+
+.showcase-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 1rem;
+  gap: var(--spacing-6);
 }
 
-.color-picker {
+.feature-list {
+  list-style: none;
+  padding: 0;
+  margin: var(--spacing-4) 0 0;
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin: 0.5rem 0;
+  flex-direction: column;
+  gap: var(--spacing-2);
 }
 
-.color-picker label {
-  min-width: 100px;
+.feature-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-2);
   color: var(--color-text-secondary);
 }
 
-.color-picker input {
-  width: 50px;
-  height: 30px;
-  padding: 0;
+.bullet {
+  color: var(--color-primary);
+  font-weight: bold;
+}
+
+.intro-text {
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.demo-item {
+  margin-bottom: var(--spacing-6);
+}
+
+.demo-item:last-child {
+  margin-bottom: 0;
+}
+
+.demo-item h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0 0 var(--spacing-3);
+}
+
+.code-block {
+  background: var(--color-bg-secondary);
   border: 1px solid var(--color-border);
-  border-radius: 4px;
-  cursor: pointer;
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-4);
+  margin: 0;
+  font-family: ui-monospace, monospace;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  overflow-x: auto;
+}
+
+.code-block .comment {
+  color: var(--color-text-tertiary);
+}
+
+.code-block .keyword {
+  color: var(--color-primary);
+}
+
+.code-block .string {
+  color: var(--color-success);
+}
+
+.code-block .property {
+  color: var(--color-warning);
+}
+
+.export-types {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.export-type {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-4);
+}
+
+.export-type .highlight {
+  margin-bottom: var(--spacing-2);
+}
+
+.export-type p {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.tips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-4);
+  margin-top: var(--spacing-4);
+  padding: var(--spacing-3);
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+}
+
+.tip-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  color: var(--color-text-secondary);
+  font-size: 0.75rem;
+}
+
+@media (min-width: 768px) {
+  .export-types {
+    flex-direction: row;
+  }
+
+  .export-type {
+    flex: 1;
+  }
+}
+
+.highlight {
+  display: inline-block;
+  padding: var(--spacing-1) var(--spacing-3);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  color: var(--color-primary);
+  font-family: ui-monospace, monospace;
+  font-size: 0.875rem;
 }
 </style>

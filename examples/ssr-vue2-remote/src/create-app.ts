@@ -1,4 +1,3 @@
-import './styles/global.less';
 import Vue, { defineAsyncComponent } from 'vue';
 
 const App = defineAsyncComponent(() => import('./app.vue'));

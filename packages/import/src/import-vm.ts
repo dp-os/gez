@@ -81,7 +81,12 @@ export function createVmImport(baseURL: URL, importMap: ImportMap = {}) {
         return pe;
 
         async function moduleBuild(): Promise<vm.SourceTextModule> {
-            const text = fs.readFileSync(parsed.pathname, 'utf-8');
+            let text: string;
+            try {
+                text = fs.readFileSync(parsed.pathname, 'utf-8');
+            } catch {
+                throw new Error(`Failed to read module: ${parsed.pathname}`);
+            }
             const module = new vm.SourceTextModule(text, {
                 initializeImportMeta: (meta) => {
                     meta.filename = parsed.filename;

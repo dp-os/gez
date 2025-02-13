@@ -26,12 +26,14 @@ export default {
          * 导出的文件
          */
         exports: [
-            // Vue 实例
+            // 导出 Vue 实例，确保 Host 和 Remote 使用相同版本
             'npm:vue',
-            // UI 组件统一导出
+            // UI 组件
             'root:src/components/index.ts',
-            // 组合式函数统一导出
-            'root:src/composables/index.ts'
+            // 组合式函数
+            'root:src/composables/index.ts',
+            // 示例组件
+            'root:src/examples/index.ts'
         ]
     },
     async postCompileProdHook(gez) {
