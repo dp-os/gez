@@ -12,8 +12,6 @@ export default {
         server.use(gez.middleware);
         server.get('*', async (req, res) => {
             res.setHeader('Content-Type', 'text/html;charset=UTF-8');
-            res.setHeader('Connection', 'keep-alive');
-            res.setHeader('Keep-Alive', 'timeout=5');
             const result = await gez.render({
                 params: {
                     url: '/'

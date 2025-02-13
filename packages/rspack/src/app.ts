@@ -77,12 +77,28 @@ async function createMiddleware(
         devMiddleware(serverCompiler, {
             writeToDisk: true
         });
+
+        // 创建路径判断中间件
+        function createPathCheckMiddleware(
+            path: string,
+            middleware: Middleware
+        ): Middleware {
+            return (req, res, next) => {
+                if (req.url?.includes(path)) {
+                    return middleware(req, res, next);
+                }
+                next();
+            };
+        }
+
         middlewares.push(
-            // @ts-expect-error
-            hotMiddleware(clientCompiler, {
-                heartbeat: 5000,
-                path: `${gez.basePath}hot-middleware`
-            })
+            createPathCheckMiddleware(
+                `${gez.basePath}hot-middleware`,
+                // @ts-expect-error
+                hotMiddleware(clientCompiler, {
+                    path: `${gez.basePath}hot-middleware`
+                })
+            )
         );
         await new Promise<void>((resolve) => {
             clientCompiler.run(() => {

@@ -20,12 +20,9 @@ export default {
     },
     async createServer(gez) {
         const server = http.createServer((req, res) => {
-            // 设置响应头，确保连接正确关闭
-            res.setHeader('Connection', 'keep-alive');
-            res.setHeader('Keep-Alive', 'timeout=5');
-
             // 静态文件处理
             gez.middleware(req, res, async () => {
+                res.setHeader('Content-Type', 'text/html;charset=UTF-8');
                 // 传入渲染的参数
                 const rc = await gez.render({
                     params: {
