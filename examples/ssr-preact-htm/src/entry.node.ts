@@ -1,5 +1,4 @@
 import http from 'node:http';
-import path from 'node:path';
 import type { GezOptions } from '@gez/core';
 
 export default {

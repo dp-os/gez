@@ -1,27 +1,29 @@
 import type { RenderContext } from '@gez/core';
+import { html } from 'htm/preact';
 import { render } from 'preact-render-to-string';
 import { App } from './app';
 
 export default async (rc: RenderContext) => {
     // 渲染页面内容
-    const html = render(App());
+    const content = render(html`<${App} />`);
 
     // 提交模块依赖收集
     await rc.commit();
 
     rc.html = `
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
     ${rc.preload()}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gez</title>
+    <title>Gez + Preact + HTM 示例</title>
+    <link rel="icon" type="image/svg+xml" href="https://www.gez-esm.com/logo.svg">
     ${rc.css()}
 </head>
 <body>
     <div id="app">
-        ${html}
+        ${content}
     </div>
     ${rc.importmap()}
     ${rc.moduleEntry()}
