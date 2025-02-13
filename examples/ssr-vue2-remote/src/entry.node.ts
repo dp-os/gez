@@ -26,9 +26,12 @@ export default {
          * 导出的文件
          */
         exports: [
-            'root:src/title/index.ts',
-            'root:src/components/layout.vue',
-            'npm:vue'
+            // Vue 实例
+            'npm:vue',
+            // UI 组件统一导出
+            'root:src/components/index.ts',
+            // 组合式函数统一导出
+            'root:src/composables/index.ts'
         ]
     },
     async postCompileProdHook(gez) {
