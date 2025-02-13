@@ -22,8 +22,8 @@ export function layout(slot: string, options: LayoutOptions = {}) {
         const pathWithoutQuery = path.split('?')[0];
 
         // 移除开头和结尾的斜杠，统一格式
-        const normalizedUrl = urlWithoutQuery.replace(/^\/|\/$/g, '');
-        const normalizedPath = pathWithoutQuery.replace(/^\/|\/$/g, '');
+        const normalizedUrl = urlWithoutQuery.replace(/^(\/+)|(\/+)$/, '');
+        const normalizedPath = pathWithoutQuery.replace(/^(\/+)|(\/+)$/, '');
 
         // 对于首页的特殊处理
         if (path === '/' && !normalizedUrl) {
