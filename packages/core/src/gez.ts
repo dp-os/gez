@@ -23,7 +23,34 @@ import { type ProjectPath, resolvePath } from './resolve-path';
 import { getImportPreloadInfo } from './static_import_lexer';
 
 /**
- * 详细说明，请看文档：https://dp-os.github.io/gez/api/gez.html
+ * Gez 应用程序的配置选项接口
+ *
+ * @interface GezOptions
+ * @description
+ * 用于配置 Gez 应用程序实例的选项，包括项目路径、环境设置、模块配置等。
+ *
+ * @example
+ * ```typescript
+ * // 创建一个基本的 Gez 实例
+ * const gez = new Gez({
+ *   root: process.cwd(),
+ *   isProd: process.env.NODE_ENV === 'production',
+ *   modules: {
+ *     remotes: {
+ *       '@app/remote': 'http://localhost:3001'
+ *     }
+ *   }
+ * });
+ *
+ * // 使用自定义服务器
+ * const gez = new Gez({
+ *   createServer: async (gez) => {
+ *     const server = express();
+ *     server.use(gez.middleware);
+ *     server.listen(3000);
+ *   }
+ * });
+ * ```
  */
 export interface GezOptions {
     /**
@@ -61,12 +88,46 @@ export interface GezOptions {
 }
 
 /**
- * 同构应用的编译目标
+ * 同构应用的编译目标类型
+ *
+ * @description
+ * 定义了应用程序的编译目标，可以是客户端（client）或服务端（server）。
+ * - client: 生成在浏览器中运行的代码
+ * - server: 生成在 Node.js 环境中运行的代码
+ *
+ * @example
+ * ```typescript
+ * // 获取客户端的导入映射
+ * const clientImportMap = await gez.getImportMap('client');
+ *
+ * // 获取服务端的清单文件
+ * const serverManifests = await gez.getManifestList('server');
+ * ```
  */
 export type AppBuildTarget = 'client' | 'server';
 
 /**
- * 应用程序执行的动作
+ * 应用程序执行的命令枚举
+ *
+ * @enum {string}
+ * @description
+ * 定义了应用程序可以执行的不同命令：
+ * - dev: 开发模式，启动开发服务器
+ * - build: 构建生产环境代码
+ * - preview: 预览生产环境构建结果
+ * - start: 启动生产环境服务器
+ *
+ * @example
+ * ```typescript
+ * // 初始化开发环境
+ * await gez.init(COMMAND.dev);
+ *
+ * // 构建生产环境代码
+ * await gez.init(COMMAND.build);
+ *
+ * // 启动生产服务器
+ * await gez.init(COMMAND.start);
+ * ```
  */
 export enum COMMAND {
     dev = 'dev',
@@ -85,6 +146,39 @@ interface Readied {
     cache: CacheHandle;
 }
 
+/**
+ * Gez 应用程序的核心类
+ *
+ * @class Gez
+ * @description
+ * Gez 类是应用程序的核心，负责管理应用的生命周期、构建过程、服务端渲染等功能。
+ * 它提供了完整的 API 来处理模块加载、资源管理、中间件集成等任务。
+ *
+ * @example
+ * ```typescript
+ * // 创建 Gez 实例
+ * const gez = new Gez({
+ *   root: process.cwd(),
+ *   isProd: process.env.NODE_ENV === 'production'
+ * });
+ *
+ * // 初始化应用
+ * await gez.init(COMMAND.dev);
+ *
+ * // 使用中间件处理请求
+ * gez.middleware.use(async (ctx, next) => {
+ *   const start = Date.now();
+ *   await next();
+ *   console.log(`请求处理耗时: ${Date.now() - start}ms`);
+ * });
+ *
+ * // 执行服务端渲染
+ * const context = await gez.render({
+ *   url: '/home',
+ *   manifest: true
+ * });
+ * ```
+ */
 export class Gez {
     /**
      * 获取 src/entry.node.ts 文件导出的选项

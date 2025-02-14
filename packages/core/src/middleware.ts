@@ -3,6 +3,25 @@ import path from 'node:path';
 import send from 'send';
 import type { Gez } from './gez';
 
+/**
+ * 中间件函数类型定义
+ *
+ * @description
+ * 中间件是一个函数，用于处理 HTTP 请求。它接收请求对象、响应对象和下一个中间件函数作为参数。
+ * 中间件可以执行以下操作：
+ * - 修改请求和响应对象
+ * - 结束请求-响应循环
+ * - 调用下一个中间件
+ *
+ * @example
+ * ```typescript
+ * // 创建一个简单的日志中间件
+ * const loggerMiddleware: Middleware = (req, res, next) => {
+ *   console.log(`${req.method} ${req.url}`);
+ *   next();
+ * };
+ * ```
+ */
 export type Middleware = (
     req: IncomingMessage,
     res: ServerResponse,
@@ -18,6 +37,29 @@ export function isImmutableFile(filename: string) {
     return reFinal.test(filename);
 }
 
+/**
+ * 创建 Gez 应用的中间件
+ *
+ * @param gez - Gez 实例
+ * @returns 返回一个处理静态资源的中间件
+ *
+ * @description
+ * 该函数创建一个中间件，用于处理模块的静态资源请求。它会：
+ * - 根据模块配置创建对应的静态资源中间件
+ * - 处理资源的缓存控制
+ * - 支持不可变文件的长期缓存
+ *
+ * @example
+ * ```typescript
+ * import { Gez, createMiddleware } from '@gez/core';
+ *
+ * const gez = new Gez();
+ * const middleware = createMiddleware(gez);
+ *
+ * // 在 HTTP 服务器中使用
+ * server.use(middleware);
+ * ```
+ */
 export function createMiddleware(gez: Gez): Middleware {
     const middlewares = gez.moduleConfig.imports.map((item): Middleware => {
         const base = `/${item.name}/`;
