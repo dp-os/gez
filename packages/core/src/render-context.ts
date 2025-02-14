@@ -718,7 +718,10 @@ ${pathWithoutIndex}
      * @param {serialize.SerializeJSOptions} [options] - 序列化选项
      * @returns {string} 序列化后的字符串
      */
-    public serialize(input: any, options?: serialize.SerializeJSOptions) {
+    public serialize(
+        input: any,
+        options?: serialize.SerializeJSOptions
+    ): string {
         return serialize(input, options);
     }
     /**
@@ -1102,9 +1105,8 @@ ${pathWithoutIndex}
      */
     public importmap() {
         if (this._importMap) {
-            return `<script>window.__importmap__ = ${this.serialize(
-                this._importMap
-            )};${RenderContext.IMPORTMAP_CREATE_SCRIPT_CODE}</script>`;
+            const code = this.serialize(this._importMap, { isJSON: true });
+            return `<script>window.__importmap__ = ${code};${RenderContext.IMPORTMAP_CREATE_SCRIPT_CODE}</script>`;
         }
         return `${this.files.importmap
             .map((url) => `<script src="${url}"></script>`)
