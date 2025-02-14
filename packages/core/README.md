@@ -3,6 +3,7 @@
 </p>
 
 <h1 align="center">Gez</h1>
+<p align="center">🚀 基于 ESM 的高性能微前端框架</p>
 
 <p align="center">
   <a href="https://www.npmjs.com/package/@gez/core"><img src="https://img.shields.io/npm/v/@gez/core.svg" alt="npm"></a>
@@ -11,53 +12,90 @@
 </p>
 
 <p align="center">
-  <a href="https://dp-os.github.io/gez/index.html">Gez</a> 基于 <a href="https://rspack.dev/">Rspack</a> 编译，通过 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/script/type/importmap">importmap</a> 将模块映射到具有强缓存、基于内容哈希的 URL 中。
+  <a href="https://www.gez-esm.com/index.html">Gez</a> 基于 <a href="https://rspack.dev/">Rspack</a> 编译，通过 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/script/type/importmap">importmap</a> 将模块映射到具有强缓存、基于内容哈希的 URL 中。
 </p>
 
-> **⚠️** 目前 Rspack 对 ESM 支持还存在一些缺陷，如果你不介意，可以在生产环境中使用，待 Rspack 修复这些缺陷后将发布正式版本。
-> - `modern-module` 对 `export *` 的输出不稳定，详情见 [issue 8557](https://github.com/web-infra-dev/rspack/issues/8557) 和 [issue 8546](https://github.com/web-infra-dev/rspack/issues/8546)。
-> - 动态导入模块的依赖模块被提升到顶级模块，详情见 [issue 8736](https://github.com/web-infra-dev/rspack/issues/8736)。
+## 🌈 设计理念
 
-## 🌈 理念
-- 我们应该设计一个基础服务，由基础服务提供所有的第三方依赖。
-- 基础服务统一维护第三方依赖更新，一次发布，所有业务系统生效。
-- 业务服务仅构建业务代码，所有的第三方依赖应指向基础服务。
+- **基础服务**：设计统一的基础服务，提供所有第三方依赖
+- **依赖管理**：基础服务统一维护依赖更新，一次发布全局生效
+- **业务解耦**：业务服务专注于业务代码，依赖指向基础服务
 
-## ✨ 特性
-- 👍 **技术创新**：首个基于 ESM 构建的 SSR 多服务模块链接。
-- 🚀 **项目构建**：基于 Rspack 实现，构建速度极快，带给你极致的开发体验。
-- 🎯 **依赖管理**：一次构建，一次发布，多服务生效。
-- ☁️ **同构渲染**：支持 Vue2、Vue3、React 等不同框架实现 SSR。
-- 😎 **基准支持**：Node22.9 和支持 [ESM dynamic import](https://caniuse.com/es6-module-dynamic-import) 和 [import.meta](https://caniuse.com/mdn-javascript_operators_import_meta) 的浏览器。
-- 👏 **长久维护**：[Genesis](https://www.npmjs.com/package/@fmfe/genesis-core) 从 2020 年迭代至今，现更名为 [Gez](https://dp-os.github.io/gez/index.html)。
-- 🇨🇳 **中文文档**：中文是第一优先级的语言。
+## ✨ 核心特性
 
-## 📚 文档
-- [😎 v3.x 开发阶段](https://dp-os.github.io/gez/index.html)
-- [😂 v2.x 持续维护](https://github.com/dp-os/gez/blob/v2/docs/zh-CN/README.md)
-- [😖 v1.x 停止维护](https://fmfe.github.io/genesis-docs/guide/)
+### 🚀 高性能构建
+- 基于 [Rspack](https://rspack.dev/) 构建
+- 提供开箱即用的构建配置
+- 专注于 ESM 模块构建
+
+### 🎯 依赖管理
+- 中心化依赖管理
+- 一次构建，多服务生效
+- 运行时按需加载
+
+### ☁️ SSR 能力
+- 支持 Vue2、Vue3、React 等主流框架
+- 提供完整的 SSR 解决方案
+- 灵活的渲染策略配置
+
+### 🔧 开发支持
+- 支持 Node22.6
+- 支持 [ESM dynamic import](https://caniuse.com/es6-module-dynamic-import)
+- 支持 [import.meta](https://caniuse.com/mdn-javascript_operators_import_meta)
 
 ## 📖 示例项目
-探索以下示例项目，快速了解 Gez 的强大功能：
-- [ssr-base](https://dp-os.github.io/gez/ssr-base/)：基础 SSR 示例，快速上手。
-- [ssr-html](https://dp-os.github.io/gez/ssr-html/)：纯 HTML SSR 示例，简单直观。
-- [ssr-preact-htm](https://dp-os.github.io/gez/ssr-preact-htm/)：使用 Preact 和 HTM 的 SSR 示例。
-- [ssr-vue2-host](https://dp-os.github.io/gez/ssr-vue2-host/)：Vue2 主机应用的 SSR 示例。
-- [ssr-vue2-remote](https://dp-os.github.io/gez/ssr-vue2-remote/)：Vue2 远程应用的 SSR 示例。
-- [ssr-vue3](https://dp-os.github.io/gez/ssr-vue3/)：Vue3 的 SSR 示例，体验最新技术。
 
-## 💻 开发
+<table>
+<tr>
+<td align="center" width="50%">
+  <a href="https://www.gez-esm.com/ssr-vue3/">
+    <b>Vue3 SSR</b>
+    <br />
+    现代化 Vue3 开发示例
+  </a>
+</td>
+<td align="center" width="50%">
+  <a href="https://www.gez-esm.com/ssr-html/">
+    <b>纯 HTML</b>
+    <br />
+    轻量级 SSR 方案
+  </a>
+</td>
+</tr>
+</table>
+
+### 更多示例
+- [Vue2 主应用](https://www.gez-esm.com/ssr-vue2-host/) - 微前端架构的主应用示例
+- [Vue2 子应用](https://www.gez-esm.com/ssr-vue2-remote/) - 微前端架构的子应用示例
+- [Preact + HTM](https://www.gez-esm.com/ssr-preact-htm/) - 轻量级框架的 SSR 实现
+
+## 🚀 快速开始
+
 ```bash
 # 克隆代码
 git clone git@github.com:dp-os/gez.git
+
 # 安装依赖
 pnpm install
+
 # 编译代码
 pnpm build
-# 进入示例项目
-cd examples/项目
-# 本地开发启动
+
+# 运行示例
+cd examples/ssr-vue3
 pnpm run dev
 ```
-## 😊 许可证
-[MIT](./LICENSE)
+
+## 📚 版本说明
+
+- [v3.x](https://www.gez-esm.com) - 开发阶段
+  > **注意**：当前版本存在以下已知问题：
+  > - `modern-module` 的 `export *` 输出不稳定 ([#8557](https://github.com/web-infra-dev/rspack/issues/8557), [#8546](https://github.com/web-infra-dev/rspack/issues/8546))
+  > - 动态导入模块依赖提升问题 ([#8736](https://github.com/web-infra-dev/rspack/issues/8736))
+
+- [v2.x](https://github.com/dp-os/gez/blob/v2/docs/zh-CN/README.md) - 稳定维护中
+- [v1.x](https://fmfe.github.io/genesis-docs/guide/) - 已停止维护（原名 Genesis）
+
+## 📄 许可证
+
+本项目采用 [MIT](./LICENSE) 许可证。
