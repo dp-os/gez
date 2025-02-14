@@ -32,13 +32,15 @@ import { pathWithoutIndex } from './path-without-index';
  * @example
  * ```typescript
  * // 使用内联模式
- * const rc = new RenderContext(gez, {
- *   importmapMode: 'inline'
+ * const rc = await gez.render({
+ *   importmapMode: 'inline',
+ *   params: { url: req.url }
  * });
  *
- * // 使用 JS 文件模式
- * const rc = new RenderContext(gez, {
- *   importmapMode: 'js'
+ * // 使用 JS 文件模式（默认）
+ * const rc = await gez.render({
+ *   importmapMode: 'js',
+ *   params: { url: req.url }
  * });
  * ```
  */
@@ -133,13 +135,15 @@ export interface RenderContextOptions {
      * @example
      * ```typescript
      * // 使用内联模式
-     * const rc = new RenderContext(gez, {
-     *   importmapMode: 'inline'
+     * const rc = await gez.render({
+     *   importmapMode: 'inline',
+     *   params: { url: req.url }
      * });
      *
-     * // 使用 JS 文件模式
-     * const rc = new RenderContext(gez, {
-     *   importmapMode: 'js'
+     * // 使用 JS 文件模式（默认）
+     * const rc = await gez.render({
+     *   importmapMode: 'js',
+     *   params: { url: req.url }
      * });
      * ```
      */
@@ -641,13 +645,15 @@ ${pathWithoutIndex}
      * @example
      * ```typescript
      * // 使用内联模式
-     * const rc = new RenderContext(gez, {
-     *   importmapMode: 'inline'
+     * const rc = await gez.render({
+     *   importmapMode: 'inline',
+     *   params: { url: req.url }
      * });
      *
-     * // 使用 JS 文件模式
-     * const rc = new RenderContext(gez, {
-     *   importmapMode: 'js'
+     * // 使用 JS 文件模式（默认）
+     * const rc = await gez.render({
+     *   importmapMode: 'js',
+     *   params: { url: req.url }
      * });
      * ```
      */
