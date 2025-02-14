@@ -89,7 +89,7 @@ const renderToString = (app: any, context: { importMetaSet: Set<ImportMeta> }) =
 
 // 使用示例
 const app = createApp();
-const html = renderToString(app, {
+const html = await renderToString(app, {
     importMetaSet: rc.importMetaSet
 });
 ```
@@ -150,7 +150,7 @@ export default async (rc: RenderContext) => {
     // 1. 渲染页面内容并收集依赖
     // 在渲染过程中，框架会自动收集实际使用到的模块依赖
    const app = createApp();
-   const html = renderToString(app, {
+   const html = await renderToString(app, {
       importMetaSet: rc.importMetaSet
    });
 

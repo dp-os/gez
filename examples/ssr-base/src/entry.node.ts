@@ -25,8 +25,6 @@ export default {
             // 静态文件处理
             gez.middleware(req, res, async () => {
                 // 传入渲染的参数
-                res.setHeader('Connection', 'keep-alive');
-                res.setHeader('Keep-Alive', 'timeout=5');
                 const rc = await gez.render({
                     params: {
                         url: req.url
