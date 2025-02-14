@@ -12,7 +12,7 @@ export default {
          * 导入的模块基本配置
          */
         imports: {
-            'ssr-vue2-remote': 'root:../ssr-vue2-remote/dist'
+            'ssr-vue2-remote': 'root:./node_modules/ssr-vue2-remote/dist'
         },
         /**
          * 外部依赖映射
