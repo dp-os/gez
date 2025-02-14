@@ -12,10 +12,22 @@ import { pathWithoutIndex } from './path-without-index';
  *   - 需要减少 HTTP 请求数量
  *   - importmap 内容较小
  *   - 对首屏加载性能要求较高
- * - `js`: 将 importmap 内容生成为独立的 JS 文件，适用于以下场景：
+ * - `js`: 将 importmap 内容生成为独立的 JS 文件（默认值），适用于以下场景：
  *   - importmap 内容较大
  *   - 需要利用浏览器缓存机制
  *   - 多个页面共享相同的 importmap
+ *
+ * 默认值选择 'js' 的原因：
+ * 1. 性能优化
+ *    - 适合大型应用的缓存策略
+ *    - 减少主文档大小
+ *    - 支持并行加载和预加载
+ * 2. 可维护性
+ *    - 便于动态更新映射内容
+ *    - 支持热更新和增量更新
+ * 3. 灵活性
+ *    - 可以根据需要延迟加载
+ *    - 支持条件加载和按需加载
  *
  * @example
  * ```typescript
@@ -93,17 +105,43 @@ export interface RenderContextOptions {
     params?: Record<string, any>;
 
     /**
-     * 导入映射（Import Map）的生成模式
+     * 定义 importmap 的生成模式
+     *
      * @description
-     * - 默认为 'inline'
-     * - 'inline': 将导入映射内联到 HTML 中
-     *   - 减少 HTTP 请求数量
-     *   - 适合导入映射内容较小的场景
-     *   - 优化首屏加载性能
-     * - 'js': 生成独立的 JS 文件
-     *   - 适合导入映射内容较大的场景
-     *   - 可以利用浏览器缓存机制
-     *   - 支持多个页面共享相同的导入映射
+     * ImportmapMode 用于控制 importmap 的生成方式，支持两种模式：
+     * - `inline`: 将 importmap 内容直接内联到 HTML 中，适用于以下场景：
+     *   - 需要减少 HTTP 请求数量
+     *   - importmap 内容较小
+     *   - 对首屏加载性能要求较高
+     * - `js`: 将 importmap 内容生成为独立的 JS 文件（默认值），适用于以下场景：
+     *   - importmap 内容较大
+     *   - 需要利用浏览器缓存机制
+     *   - 多个页面共享相同的 importmap
+     *
+     * 默认值选择 'js' 的原因：
+     * 1. 性能优化
+     *    - 适合大型应用的缓存策略
+     *    - 减少主文档大小
+     *    - 支持并行加载和预加载
+     * 2. 可维护性
+     *    - 便于动态更新映射内容
+     *    - 支持热更新和增量更新
+     * 3. 灵活性
+     *    - 可以根据需要延迟加载
+     *    - 支持条件加载和按需加载
+     *
+     * @example
+     * ```typescript
+     * // 使用内联模式
+     * const rc = new RenderContext(gez, {
+     *   importmapMode: 'inline'
+     * });
+     *
+     * // 使用 JS 文件模式
+     * const rc = new RenderContext(gez, {
+     *   importmapMode: 'js'
+     * });
+     * ```
      */
     importmapMode?: ImportmapMode;
 }
@@ -583,10 +621,22 @@ ${pathWithoutIndex}
      *   - 需要减少 HTTP 请求数量
      *   - importmap 内容较小
      *   - 对首屏加载性能要求较高
-     * - `js`: 将 importmap 内容生成为独立的 JS 文件，适用于以下场景：
+     * - `js`: 将 importmap 内容生成为独立的 JS 文件（默认值），适用于以下场景：
      *   - importmap 内容较大
      *   - 需要利用浏览器缓存机制
-     *   - 多个页面共享相同的导入映射
+     *   - 多个页面共享相同的 importmap
+     *
+     * 默认值选择 'js' 的原因：
+     * 1. 性能优化
+     *    - 适合大型应用的缓存策略
+     *    - 减少主文档大小
+     *    - 支持并行加载和预加载
+     * 2. 可维护性
+     *    - 便于动态更新映射内容
+     *    - 支持热更新和增量更新
+     * 3. 灵活性
+     *    - 可以根据需要延迟加载
+     *    - 支持条件加载和按需加载
      *
      * @example
      * ```typescript
