@@ -347,7 +347,7 @@ ${pathWithoutIndex}
      * base 属性用于控制静态资源的加载路径，是 Gez 框架动态基础路径配置的核心：
      *
      * 1. **构建时处理**
-     *    - 静态资源路径使用特殊占位符标记：`[[[___GEZ_DYNAMIC_BASE___]]]/${name}/`
+     *    - 静态资源路径使用特殊占位符标记：`[[[___GEZ_DYNAMIC_BASE___]]]/your-app-name/`
      *    - 占位符会被注入到所有静态资源的引用路径中
      *    - 支持 CSS、JavaScript、图片等各类静态资源
      *
@@ -666,7 +666,7 @@ ${pathWithoutIndex}
      *
      * 1. **基础路径替换**
      *    - 在设置 HTML 时自动处理基础路径占位符
-     *    - 将 `[[[___GEZ_DYNAMIC_BASE___]]]/${name}/` 替换为实际的 base 路径
+     *    - 将 `[[[___GEZ_DYNAMIC_BASE___]]]/your-app-name/` 替换为实际的 base 路径
      *    - 确保所有静态资源的引用路径正确
      *
      * 2. **使用场景**
@@ -703,9 +703,9 @@ ${pathWithoutIndex}
      * });
      *
      * // HTML 中的占位符会被自动替换：
-     * // [[[___GEZ_DYNAMIC_BASE___]]]/css/style.css
+     * // [[[___GEZ_DYNAMIC_BASE___]]]/your-app-name/css/style.css
      * // 替换为：
-     * // /app/css/style.css
+     * // /app/your-app-name/css/style.css
      * ```
      */
     public get html() {
@@ -919,7 +919,7 @@ ${pathWithoutIndex}
      * await rc.commit();
      *
      * // 资源路径会自动添加基础路径前缀
-     * // 例如：/app1/${name}/js/main.js
+     * // 例如：/app1/your-app-name/js/main.js
      * ```
      */
     public async commit() {

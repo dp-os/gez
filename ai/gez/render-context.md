@@ -226,11 +226,11 @@ export default async (rc: RenderContext) => {
 
 ### 默认路径
 
-RenderContext 默认会读取项目 `package.json` 的 `name` 字段来生成静态资产的基础路径：`/${name}/`。例如：
+RenderContext 默认会读取项目 `package.json` 的 `name` 字段来生成静态资产的基础路径：`/your-app-name/`。例如：
 
 ```json
 {
-    "name": "ssr-module-auth"
+    "name": "your-app-name"
 }
 ```
 
@@ -241,7 +241,7 @@ RenderContext 提供了一个灵活的动态基础路径配置机制，通过构
 #### 技术实现
 
 1. **构建时处理**
-   - 静态资源路径使用特殊占位符：`[[[___GEZ_DYNAMIC_BASE___]]]/${name}/`
+   - 静态资源路径使用特殊占位符：`[[[___GEZ_DYNAMIC_BASE___]]]/your-app-name/`
    - 占位符会被注入到所有静态资源的引用路径中
    - 支持 CSS、JavaScript、图片等各类静态资源
 
