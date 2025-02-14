@@ -12,7 +12,7 @@ import type { ParsedModuleConfig } from './module-config';
  */
 export async function getImportMap(
     target: AppBuildTarget,
-    withoutIndex = true,
+    withoutIndex: boolean,
     manifestList: ManifestJson[] | Promise<readonly ManifestJson[]>,
     moduleConfig: ParsedModuleConfig
 ): Promise<ImportMap> {

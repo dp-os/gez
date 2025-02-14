@@ -20,7 +20,7 @@ import {
     parsePackConfig
 } from './pack-config';
 import { type ProjectPath, resolvePath } from './resolve-path';
-import { getImportPreloadInfo } from './static_import_lexer';
+import { getImportPreloadInfo } from './static-import-lexer';
 
 /**
  * Gez 应用程序的配置选项接口
