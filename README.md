@@ -12,7 +12,11 @@
 </p>
 
 <p align="center">
-  <a href="https://www.gez-esm.com/index.html">Gez</a> 基于 <a href="https://rspack.dev/">Rspack</a> 编译，通过 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/script/type/importmap">importmap</a> 将模块映射到具有强缓存、基于内容哈希的 URL 中。
+  <a href="https://www.gez-esm.com">Gez</a> 基于 <a href="https://rspack.dev/">Rspack</a> 编译，通过 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/script/type/importmap">importmap</a> 将模块映射到具有强缓存、基于内容哈希的 URL 中。
+</p>
+
+<p align="center">
+  📚 <b>文档：</b><a href="https://www.gez-esm.com">https://www.gez-esm.com</a>
 </p>
 
 ## 🌈 设计理念
