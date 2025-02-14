@@ -1,4 +1,4 @@
-# RenderContext 学习笔记
+# RenderContext
 
 ## 核心概念
 
@@ -108,10 +108,6 @@ export default async (rc: RenderContext) => {
    - 支持 inline 和 js 两种模式
    - inline 模式直接将映射内联到 HTML 中
    - js 模式通过外部文件加载映射
-
-3. 错误处理
-   - 注意处理 `commit()` 可能的异步错误
-   - 确保所有资源路径正确
 
 ## 总结
 
