@@ -969,7 +969,7 @@ ${pathWithoutIndex}
         });
 
         const preloadPaths = await gez.getImportPreloadPaths(
-            gez.name + '/src/entry.client'
+            `${gez.name}/src/entry.client`
         );
         preloadPaths?.forEach((filepath) =>
             files.modulepreload.add(getUrlPath(filepath))

@@ -22,113 +22,19 @@ import {
 import { type ProjectPath, resolvePath } from './resolve-path';
 import { getImportPreloadInfo } from './static-import-lexer';
 
-/**
- * Gez 应用程序的配置选项接口
- *
- * @interface GezOptions
- * @description
- * 用于配置 Gez 应用程序实例的选项，包括项目路径、环境设置、模块配置等。
- *
- * @example
- * ```typescript
- * // 创建一个基本的 Gez 实例
- * const gez = new Gez({
- *   root: process.cwd(),
- *   isProd: process.env.NODE_ENV === 'production',
- *   modules: {
- *     remotes: {
- *       '@app/remote': 'http://localhost:3001'
- *     }
- *   }
- * });
- *
- * // 使用自定义服务器
- * const gez = new Gez({
- *   createServer: async (gez) => {
- *     const server = express();
- *     server.use(gez.middleware);
- *     server.listen(3000);
- *   }
- * });
- * ```
- */
 export interface GezOptions {
-    /**
-     * 项目根目录，默认为当前执行命令的目录。
-     */
     root?: string;
-    /**
-     * 是否是生产环境。
-     */
     isProd?: boolean;
-    /**
-     * 动态路径的变量占位符。
-     */
     basePathPlaceholder?: string | false;
-    /**
-     * 模块链接配置。
-     */
     modules?: ModuleConfig;
-    /**
-     * 是否启用归档，等同于 npm pack。
-     */
     packs?: PackConfig;
-    /**
-     * 创建开发应用，在执行 dev、build、preview 命令时调用。
-     */
     createDevApp?: (gez: Gez) => Promise<App>;
-    /**
-     * 创建服务器，执行 dev、build、preview 命令时调用。
-     */
     createServer?: (gez: Gez) => Promise<void>;
-    /**
-     * gez build 构建完成后，以生产模式执行的钩子。
-     */
     postCompileProdHook?: (gez: Gez) => Promise<void>;
 }
 
-/**
- * 同构应用的编译目标类型
- *
- * @description
- * 定义了应用程序的编译目标，可以是客户端（client）或服务端（server）。
- * - client: 生成在浏览器中运行的代码
- * - server: 生成在 Node.js 环境中运行的代码
- *
- * @example
- * ```typescript
- * // 获取客户端的导入映射
- * const clientImportMap = await gez.getImportMap('client');
- *
- * // 获取服务端的清单文件
- * const serverManifests = await gez.getManifestList('server');
- * ```
- */
 export type AppBuildTarget = 'client' | 'server';
 
-/**
- * 应用程序执行的命令枚举
- *
- * @enum {string}
- * @description
- * 定义了应用程序可以执行的不同命令：
- * - dev: 开发模式，启动开发服务器
- * - build: 构建生产环境代码
- * - preview: 预览生产环境构建结果
- * - start: 启动生产环境服务器
- *
- * @example
- * ```typescript
- * // 初始化开发环境
- * await gez.init(COMMAND.dev);
- *
- * // 构建生产环境代码
- * await gez.init(COMMAND.build);
- *
- * // 启动生产服务器
- * await gez.init(COMMAND.start);
- * ```
- */
 export enum COMMAND {
     dev = 'dev',
     build = 'build',
@@ -146,67 +52,14 @@ interface Readied {
     cache: CacheHandle;
 }
 
-/**
- * Gez 应用程序的核心类
- *
- * @class Gez
- * @description
- * Gez 类是应用程序的核心，负责管理应用的生命周期、构建过程、服务端渲染等功能。
- * 它提供了完整的 API 来处理模块加载、资源管理、中间件集成等任务。
- *
- * @example
- * ```typescript
- * // 创建 Gez 实例
- * const gez = new Gez({
- *   root: process.cwd(),
- *   isProd: process.env.NODE_ENV === 'production'
- * });
- *
- * // 初始化应用
- * await gez.init(COMMAND.dev);
- *
- * // 使用中间件处理请求
- * gez.middleware.use(async (ctx, next) => {
- *   const start = Date.now();
- *   await next();
- *   console.log(`请求处理耗时: ${Date.now() - start}ms`);
- * });
- *
- * // 执行服务端渲染
- * const context = await gez.render({
- *   url: '/home',
- *   manifest: true
- * });
- * ```
- */
 export class Gez {
-    /**
-     * 获取 src/entry.node.ts 文件导出的选项
-     */
-    public static async getSrcOptions(): Promise<GezOptions> {
-        return import(path.resolve(process.cwd(), './src/entry.node.ts')).then(
-            (m) => m.default
-        );
-    }
-    /**
-     * 获取 dist/node/src/entry.node.js 文件导出的选项
-     */
-    public static async getDistOptions(): Promise<GezOptions> {
-        return import(path.resolve(process.cwd(), './src/entry.node.ts')).then(
-            (m) => m.default
-        );
-    }
-    /**
-     * 传入的选项
-     */
     private readonly _options: GezOptions;
-    /**
-     * 程序是否准备就绪
-     */
     private _readied: Readied | null = null;
+
     public constructor(options: GezOptions = {}) {
         this._options = options;
     }
+
     private get readied() {
         if (this._readied) {
             return this._readied;
@@ -214,21 +67,14 @@ export class Gez {
         throw new NotReadyError();
     }
 
-    /**
-     * 服务名称，来源于 package.json 文件的 name 字段。
-     */
     public get name() {
         return this.moduleConfig.name;
     }
-    /**
-     * 根据 name 生成的 JS 变量名称。
-     */
+
     public get varName() {
         return '__' + this.name.replace(/[^a-zA-Z]/g, '_') + '__';
     }
-    /**
-     * 项目根目录。
-     */
+
     public get root(): string {
         const { root = cwd() } = this._options;
         if (path.isAbsolute(root)) {
@@ -236,22 +82,15 @@ export class Gez {
         }
         return path.resolve(cwd(), root);
     }
-    /**
-     * 是否是生产环境。
-     */
+
     public get isProd(): boolean {
         return this._options?.isProd ?? process.env.NODE_ENV === 'production';
     }
 
-    /**
-     * 根据服务名称生成的静态资源基本路径。
-     */
     public get basePath() {
         return `/${this.name}/`;
     }
-    /**
-     * 动态的 base 地址占位符。
-     */
+
     public get basePathPlaceholder(): string {
         const varName = this._options.basePathPlaceholder;
         if (varName === false) {
@@ -260,43 +99,26 @@ export class Gez {
         return varName ?? '[[[___GEZ_DYNAMIC_BASE___]]]';
     }
 
-    /**
-     * 当前执行的命令。
-     */
     public get command(): COMMAND {
         return this.readied.command;
     }
-    /**
-     * 全部命令的枚举对象。
-     */
+
     public get COMMAND() {
         return COMMAND;
     }
-    /**
-     * 模块解析配置
-     */
+
     public get moduleConfig() {
         return this.readied.moduleConfig;
     }
-    /**
-     * 归档解析配置
-     */
+
     public get packConfig() {
         return this.readied.packConfig;
     }
 
-    /**
-     * 执行下面的命令，会创建服务器。
-     * - gez dev
-     * - gez start
-     * - gez preview
-     */
     public async createServer(): Promise<void> {
         await this._options?.createServer?.(this);
     }
-    /**
-     * 执行 gez build 命令回调。
-     */
+
     public async postCompileProdHook(): Promise<boolean> {
         try {
             await this._options.postCompileProdHook?.(this);
@@ -307,15 +129,11 @@ export class Gez {
         }
     }
 
-    /**
-     * 初始化实例。
-     */
     public async init(command: COMMAND): Promise<boolean> {
         if (this._readied) {
             throw new Error('Cannot be initialized repeatedly');
         }
 
-        // 初始化实例
         const { name } = await this.readJson(
             path.resolve(this.root, 'package.json')
         );
@@ -340,13 +158,10 @@ export class Gez {
             cache: createCache(this.isProd)
         };
 
-        // 更新正确的 App 实例
         const createDevApp = this._options.createDevApp || defaultCreateDevApp;
-        const app: App =
-            // 只有 dev 和 build 时使用 createDevApp
-            [COMMAND.dev, COMMAND.build].includes(command)
-                ? await createDevApp(this)
-                : await createApp(this, command);
+        const app: App = [COMMAND.dev, COMMAND.build].includes(command)
+            ? await createDevApp(this)
+            : await createApp(this, command);
 
         this.readied.app = app;
 
@@ -362,9 +177,7 @@ export class Gez {
         }
         return true;
     }
-    /**
-     * 销毁实例，释放内存。
-     */
+
     public async destroy(): Promise<boolean> {
         const { readied } = this;
         if (readied.app?.destroy) {
@@ -372,9 +185,7 @@ export class Gez {
         }
         return true;
     }
-    /**
-     * 构建生产代码。
-     */
+
     public async build(): Promise<boolean> {
         const startTime = Date.now();
         console.log('[gez]: build start');
@@ -386,51 +197,35 @@ export class Gez {
 
         return successful ?? true;
     }
-    /**
-     * 中间件。
-     */
+
     public get middleware() {
         return this.readied.app.middleware;
     }
-    /**
-     * 调用 entry.server.ts 导出的渲染函数。
-     */
+
     public get render() {
         return this.readied.app.render;
     }
-    /**
-     * 解析项目路径。
-     */
+
     public resolvePath(projectPath: ProjectPath, ...args: string[]): string {
         return resolvePath(this.root, projectPath, ...args);
     }
-    /**
-     * 同步写入一个文件。
-     */
+
     public writeSync(filepath: string, data: any): void {
         write.sync(filepath, data);
     }
-    /**
-     * 异步写入一个文件。
-     */
+
     public async write(filepath: string, data: any): Promise<void> {
         await write(filepath, data);
     }
-    /**
-     * 同步的读取一个 JSON 文件。
-     */
+
     public readJsonSync(filename: string): any {
         return JSON.parse(fs.readFileSync(filename, 'utf-8'));
     }
-    /**
-     * 异步的读取一个 JSON 文件。
-     */
+
     public async readJson(filename: string): Promise<any> {
         return JSON.parse(await fsp.readFile(filename, 'utf-8'));
     }
-    /**
-     * 获取服务清单文件，仅只读。
-     */
+
     public async getManifestList(
         target: AppBuildTarget
     ): Promise<readonly ManifestJson[]> {
@@ -438,12 +233,7 @@ export class Gez {
             Object.freeze(await getManifestList(target, this.moduleConfig))
         );
     }
-    /**
-     * 获取导入映射对象，仅只读。
-     * @param target 构建目标
-     * @param withoutIndex 是否去掉模块名和路径中的 /index
-     * @returns 导入映射对象
-     */
+
     public async getImportMap(
         target: AppBuildTarget,
         withoutIndex = true
@@ -461,13 +251,7 @@ export class Gez {
                 )
         );
     }
-    /**
-     * 获取导入的预加载信息。只有 client 端有效。仅只读。
-     * @param specifier 模块名
-     * @returns
-     *   - `Promise<{ [specifier: string]: ImportPreloadPathString }>` 模块名和文件路径的映射对象
-     *   - `null` specifier 不存在
-     */
+
     public async getImportPreloadInfo(specifier: string) {
         return this.readied.cache(
             `getImportPreloadInfo-client-${specifier}`,
@@ -481,13 +265,7 @@ export class Gez {
                 )
         );
     }
-    /**
-     * 获取导入的预加载路径。只有 client 端有效。仅只读。
-     * @param specifier 模块名
-     * @returns
-     *   - `Promise<string[]>` 文件路径数组
-     *   - `null` specifier 不存在
-     */
+
     public async getImportPreloadPaths(specifier: string) {
         return this.readied.cache(
             `getImportPreloadPaths-client-arr-${specifier}`,
