@@ -9,80 +9,94 @@ import {
 } from './render-context';
 
 /**
- * 应用程序实例接口
+ * 应用程序实例接口。
  *
- * @interface App
- * @description
- * App 接口定义了一个 Gez 应用程序实例的基本结构，包含中间件、渲染函数和可选的构建、销毁方法。
+ * App 是 Gez 框架的应用抽象，提供了统一的接口来管理应用的生命周期、
+ * 静态资源和服务端渲染。
  *
  * @example
  * ```typescript
- * // 创建一个应用实例
- * const app = await createApp(gez, COMMAND.start);
- *
- * // 使用中间件
- * app.middleware.use(async (ctx, next) => {
- *   console.log('请求开始');
- *   await next();
- *   console.log('请求结束');
- * });
- *
- * // 渲染页面
- * const context = await app.render({
- *   url: '/home',
- *   manifest: true
- * });
+ * // entry.node.ts
+ * export default {
+ *   // 开发环境配置
+ *   async createDevApp(gez) {
+ *     return import('@gez/rspack').then((m) =>
+ *       m.createRspackHtmlApp(gez, {
+ *         config(rc) {
+ *           // 自定义 Rspack 配置
+ *         }
+ *       })
+ *     );
+ *   }
+ * }
  * ```
  */
 export interface App {
     /**
-     * 中间件列表，用于处理请求的中间件链
+     * 静态资源处理中间件。
+     *
+     * 开发环境：
+     * - 处理源码的静态资源请求
+     * - 支持实时编译和热更新
+     * - 使用 no-cache 缓存策略
+     *
+     * 生产环境：
+     * - 处理构建后的静态资源
+     * - 支持不可变文件的长期缓存（.final.xxx）
+     * - 优化的资源加载策略
+     *
+     * @example
+     * ```typescript
+     * server.use(gez.middleware);
+     * ```
      */
     middleware: Middleware;
+
     /**
-     * 渲染函数，用于服务端渲染页面
-     * @param options - 渲染选项，包含 URL、manifest 等配置
+     * 服务端渲染函数。
+     *
+     * 根据运行环境提供不同实现：
+     * - 生产环境（start）：加载构建后的服务端入口文件（entry.server）执行渲染
+     * - 开发环境（dev）：加载源码中的服务端入口文件执行渲染
+     *
+     * @param options - 渲染选项
      * @returns 返回渲染上下文，包含渲染结果
+     *
+     * @example
+     * ```typescript
+     * const rc = await gez.render({
+     *   params: { url: '/page' }
+     * });
+     * res.end(rc.html);
+     * ```
      */
     render: (options?: RenderContextOptions) => Promise<RenderContext>;
+
     /**
-     * 执行构建，用于生产环境构建
+     * 生产环境构建函数。
+     * 用于资源打包和优化。
+     *
      * @returns 构建成功返回 true，失败返回 false
      */
     build?: () => Promise<boolean>;
+
     /**
-     * 销毁实例，释放内存和资源
-     * @returns 销毁成功返回 true，失败返回 false
+     * 资源清理函数。
+     * 用于关闭服务器、断开连接等。
+     *
+     * @returns 清理成功返回 true，失败返回 false
      */
     destroy?: () => Promise<boolean>;
 }
 
 /**
- * 创建应用程序实例
- *
- * @param gez - Gez 实例，包含应用程序的配置和状态
- * @param command - 执行的命令类型，如 dev、build、preview、start
- * @returns 返回一个 App 实例
- *
- * @example
- * ```typescript
- * import { Gez, COMMAND } from '@gez/core';
- *
- * // 创建 Gez 实例
- * const gez = new Gez({
- *   root: process.cwd(),
- *   isProd: process.env.NODE_ENV === 'production'
- * });
- *
- * // 创建应用实例
- * const app = await createApp(gez, COMMAND.start);
- * ```
+ * 创建生产环境的应用程序实例，开发环境不可用。
  */
 export async function createApp(gez: Gez, command: COMMAND): Promise<App> {
     const render =
         command === gez.COMMAND.start
-            ? await createStartRender(gez)
-            : createErrorRender(gez);
+            ? await createStartRender(gez) // 提供实际的渲染函数
+            : createErrorRender(gez); // 提供错误提示渲染函数
     return {
         middleware: createMiddleware(gez),
         render
@@ -90,14 +104,20 @@ export async function createApp(gez: Gez, command: COMMAND): Promise<App> {
 }
 
 /**
- * 创建启动时的渲染函数
+ * 创建生产环境渲染函数。
+ * 加载构建后的服务端入口文件（entry.server）执行渲染。
  *
  * @param gez - Gez 实例
- * @returns 返回一个渲染函数
+ * @returns 返回渲染函数
  * @internal
  *
- * @description
- * 该函数用于创建应用启动时的渲染函数，会加载服务端入口文件并执行渲染。
+ * @example
+ * ```typescript
+ * // 服务端入口文件 (entry.server)
+ * export default async function render(rc: RenderContext) {
+ *   rc.html = '<html>...</html>';
+ * }
+ * ```
  */
 async function createStartRender(gez: Gez) {
     const baseURL = pathToFileURL(gez.root) as URL;
@@ -115,18 +135,10 @@ async function createStartRender(gez: Gez) {
     };
 }
 
-/**
- * 创建错误渲染函数
- *
- * @param gez - Gez 实例
- * @returns 返回一个始终抛出错误的渲染函数
- * @internal
- *
- * @description
- * 该函数用于在非 start 命令时创建一个渲染函数，调用时会抛出未实现的错误。
- */
 function createErrorRender(gez: Gez) {
     return (options?: RenderContextOptions) => {
-        throw new Error(`Custom rendering function not implemented`);
+        throw new Error(
+            `App instance is only available in production and can only execute built artifacts.`
+        );
     };
 }
