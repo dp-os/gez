@@ -5,103 +5,199 @@ export enum PathType {
     root = 'root:'
 }
 
+/**
+ * 模块配置接口。
+ * 用于定义服务的导出、导入和外部依赖配置。
+ *
+ * @example
+ * ```typescript
+ * // entry.node.ts
+ * import type { GezOptions } from '@gez/core';
+ *
+ * export default {
+ *   modules: {
+ *     // 导出配置
+ *     exports: [
+ *       'root:src/components/button.vue',  // 导出源码文件
+ *       'root:src/utils/format.ts',
+ *       'npm:vue',  // 导出第三方依赖
+ *       'npm:vue-router'
+ *     ],
+ *
+ *     // 导入配置
+ *     imports: {
+ *       // 源码安装方式：需要指向 dist 目录
+ *       'ssr-remote': 'root:./node_modules/ssr-remote/dist',
+ *       // 软件包安装方式：直接指向包目录
+ *       'other-remote': 'root:./node_modules/other-remote'
+ *     },
+ *
+ *     // 外部依赖配置
+ *     externals: {
+ *       'vue': 'ssr-remote/npm/vue',
+ *       'vue-router': 'ssr-remote/npm/vue-router'
+ *     }
+ *   }
+ * } satisfies GezOptions;
+ * ```
+ */
 export interface ModuleConfig {
     /**
-     * 对外导出的文件
-     * 必须以 npm: 或 root: 开头
-     * npm:开头代表 node_modules 的依赖
-     * root:开头代表项目内root目录下的文件
-     * 例如:
-     *   npm:vue
-     *   root:src/routes
-     *   root:src/[filename]
+     * 导出配置列表。
+     * 将服务中的特定代码单元（如组件、工具函数等）以 ESM 格式对外暴露。
+     *
+     * 支持两种类型：
+     * - root:* - 导出源码文件，如：'root:src/components/button.vue'
+     * - npm:* - 导出第三方依赖，如：'npm:vue'
+     *
+     * @example
+     * ```typescript
+     * exports: [
+     *   // 导出源码文件
+     *   'root:src/components/button.vue',
+     *   'root:src/utils/format.ts',
+     *   // 导出第三方依赖
+     *   'npm:vue',
+     *   'npm:vue-router'
+     * ]
+     * ```
      */
     exports?: string[];
+
     /**
-     * 导入的模块基本配置
+     * 导入配置映射。
+     * 配置需要导入的远程模块及其本地路径。
+     *
+     * 安装方式不同，配置也不同：
+     * - 源码安装（Workspace、Git）：需要指向 dist 目录
+     * - 软件包安装（Link、静态服务器、私有镜像源、File）：直接指向包目录
+     *
+     * @example
+     * ```typescript
+     * imports: {
+     *   // 源码安装方式：需要指向 dist 目录
+     *   'ssr-remote': 'root:./node_modules/ssr-remote/dist',
+     *   // 软件包安装方式：直接指向包目录
+     *   'other-remote': 'root:./node_modules/other-remote'
+     * }
+     * ```
      */
     imports?: Record<string, string>;
+
     /**
-     * 设置项目的外部依赖
-     * 例如：
-     * {
-     *  "vue": "ssr-npm/vue"
+     * 外部依赖映射。
+     * 配置要使用的外部依赖，通常是使用远程模块中的依赖。
+     *
+     * @example
+     * ```typescript
+     * externals: {
+     *   // 使用远程模块中的依赖
+     *   'vue': 'ssr-remote/npm/vue',
+     *   'vue-router': 'ssr-remote/npm/vue-router'
      * }
+     * ```
      */
     externals?: Record<string, string>;
 }
 
+/**
+ * 解析后的模块配置。
+ * 将原始的模块配置转换为标准化的内部格式，用于模块的加载和解析。
+ */
 export interface ParsedModuleConfig {
     /**
-     * 当前的服务名字
+     * 当前服务的名称。
+     * 用于标识模块和生成导入路径。
      */
     name: string;
+
     /**
-     * 当前服务运行的根目录
+     * 当前服务的根目录路径。
+     * 用于解析相对路径和构建产物的存放。
      */
     root: string;
+
     /**
-     * 对外导出的文件
+     * 导出配置列表。
+     * 定义了当前服务对外暴露的模块。
      */
     exports: {
         /**
-         * npm:*
-         * root:src/*
-         * root:src/routes/index.ts
+         * 原始导出路径。
+         * 例如：'npm:vue' 或 'root:src/components'
          */
         name: string;
+
         /**
-         * 路径的类型
+         * 路径类型。
+         * - npm: node_modules 中的依赖
+         * - root: 项目根目录下的文件
          */
         type: PathType;
+
         /**
-         * ssr-demo/npm/vue
-         * ssr-demo/src/routes
-         * ssr-demo/src/routes/index
+         * 导入名称。
+         * 格式：'${serviceName}/${type}/${path}'
+         * 例如：'your-app-name/npm/vue' 或 'your-app-name/src/components'
          */
         importName: string;
+
         /**
-         * ./npm/vue
-         * ./src/routes
+         * 导出路径。
+         * 相对于服务根目录的路径。
+         * 例如：'./npm/vue' 或 './src/components'
          */
         exportName: string;
+
         /**
-         * vue
-         * ./src/routes.ts
+         * 实际的文件路径。
+         * 例如：'vue' 或 './src/components.ts'
          */
         exportPath: string;
+
         /**
-         * vue
-         * ssr-demo/src/routes/index
+         * 外部依赖名称。
+         * 用于其他服务导入此模块时的标识。
+         * 例如：'vue' 或 'your-app-name/src/components'
          */
         externalName: string;
     }[];
+
     /**
-     * 导入的外部服务
+     * 导入配置列表。
+     * 定义了当前服务需要导入的外部模块。
      */
     imports: {
         /**
-         * 外部服务名称
+         * 外部服务的名称。
+         * 用于标识导入的模块来源。
          */
         name: string;
+
         /**
-         * 本地路径
-         * 用于读取依赖 和 存放远程下载的依赖
+         * 本地存储路径。
+         * 用于存放外部模块的构建产物。
          */
         localPath: string;
     }[];
+
     /**
-     * 外部依赖
+     * 外部依赖映射。
+     * 将模块的导入路径映射到实际的模块位置。
+     *
+     * @example
+     * ```typescript
+     * {
+     *   'vue': {
+     *     match: /^vue$/,  // 匹配导入语句
+     *     import: 'your-app-name/npm/vue'  // 实际的模块路径
+     *   }
+     * }
+     * ```
      */
     externals: Record<string, { match: RegExp; import?: string }>;
 }
-/**
- * 解析模块配置
- * @param name 当前运行服务的名字
- * @param root 当前运行服务的根路径
- * @param config 模块的配置
- * @returns
- */
+
 export function parseModuleConfig(
     name: string,
     root: string,
@@ -138,7 +234,6 @@ export function parseModuleConfig(
         });
     }
 
-    // 处理导入
     const imports: ParsedModuleConfig['imports'] = [];
     if (config.imports) {
         const getLocalPath = (dir: string) => {
@@ -159,7 +254,6 @@ export function parseModuleConfig(
         });
     }
 
-    // 处理外部依赖
     const externals: ParsedModuleConfig['externals'] = {};
     exports.forEach(({ importName, externalName }) => {
         externals[externalName] = {
@@ -183,7 +277,6 @@ export function parseModuleConfig(
         });
     }
 
-    // 添加当前服务的解析配置
     imports.push({
         name,
         localPath: path.resolve(root, 'dist')
