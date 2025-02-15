@@ -13,11 +13,10 @@ import type { ParsedModuleConfig } from './module-config';
 export async function getImportMap(
     target: AppBuildTarget,
     withoutIndex: boolean,
-    manifestList: ManifestJson[] | Promise<readonly ManifestJson[]>,
+    manifests: readonly ManifestJson[],
     moduleConfig: ParsedModuleConfig
 ): Promise<ImportMap> {
     const imports: SpecifierMap = {};
-    const manifests = await manifestList;
     if (target === 'client') {
         for (const manifest of manifests) {
             for (const [name, value] of Object.entries(manifest.exports)) {

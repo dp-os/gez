@@ -450,12 +450,12 @@ export class Gez {
     ): Promise<Readonly<ImportMap>> {
         return this.readied.cache(
             `getImportMap-${target}-${withoutIndex}`,
-            () =>
+            async () =>
                 Object.freeze(
                     getImportMap(
                         target,
                         withoutIndex,
-                        this.getManifestList(target),
+                        await this.getManifestList(target),
                         this.moduleConfig
                     )
                 )
