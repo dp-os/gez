@@ -19,86 +19,85 @@
   📚 <b>文档：</b><a href="https://www.gez-esm.com">https://www.gez-esm.com</a>
 </p>
 
-## 🌈 设计理念
+## 💫 拥抱现代微前端
 
-- **基础服务**：设计统一的基础服务，提供所有第三方依赖
-- **依赖管理**：基础服务统一维护依赖更新，一次发布全局生效
-- **业务解耦**：业务服务专注于业务代码，依赖指向基础服务
+**是时候告别过去，拥抱真正的微前端架构了。**
 
-## ✨ 核心特性
+在过去的几年里，微前端架构一直在寻找一条正确的道路。然而，我们看到的是各种复杂的技术方案，它们用层层包装和人工隔离来模拟一个理想的微前端世界。这些方案带来了沉重的性能负担，让简单的开发变得复杂，让标准的流程变得晦涩。
 
-### 🚀 高性能构建
-- 基于 [Rspack](https://rspack.dev/) 构建
-- 提供开箱即用的构建配置
-- 专注于 ESM 模块构建
+### 🔧 旧世界的枷锁
 
-### 🎯 依赖管理
-- 中心化依赖管理
-- 一次构建，多服务生效
-- 运行时按需加载
+传统微前端方案的种种限制，正在阻碍我们前进的步伐：
 
-### ☁️ SSR 能力
-- 支持 Vue2、Vue3、React 等主流框架
-- 提供完整的 SSR 解决方案
-- 灵活的渲染策略配置
+- **性能噩梦**：运行时注入依赖、JS 沙箱代理，每一次操作都在消耗宝贵的性能
+- **脆弱的隔离**：人工打造的沙箱环境，始终无法企及浏览器原生的隔离能力
+- **复杂的构建**：为了处理依赖关系，不得不魔改构建工具，让简单的项目变得难以维护
+- **定制的规则**：特殊的部署策略、运行时处理，让每一步都偏离了现代开发的标准流程
+- **有限的生态**：框架耦合、定制API，让技术选型被迫绑定在特定的生态中
 
-### 🔧 开发支持
-- 支持 Node22.6
-- 支持 [ESM dynamic import](https://caniuse.com/es6-module-dynamic-import)
-- 支持 [import.meta](https://caniuse.com/mdn-javascript_operators_import_meta)
+### 🌟 新时代的曙光
 
-## 📖 示例项目
+Web 标准的进化为我们带来了新的可能。现在，我们可以用最纯粹的方式构建微前端：
 
-<table>
-<tr>
-<td align="center" width="50%">
-  <a href="https://www.gez-esm.com/ssr-vue3/">
-    <b>Vue3 SSR</b>
-    <br />
-    现代化 Vue3 开发示例
-  </a>
-</td>
-<td align="center" width="50%">
-  <a href="https://www.gez-esm.com/ssr-html/">
-    <b>纯 HTML</b>
-    <br />
-    轻量级 SSR 方案
-  </a>
-</td>
-</tr>
-</table>
+- **回归原生**：拥抱 ESM 和 importmap，让依赖管理回归浏览器标准
+- **天然隔离**：模块作用域提供了最可靠的隔离，无需任何额外的运行时开销
+- **开放共赢**：任何现代前端框架都能无缝接入，技术选型不再受限
+- **开发体验**：符合直觉的开发模式，熟悉的调试流程，一切都那么自然
+- **极致性能**：零运行时开销，可靠的缓存策略，让应用真正轻量起来
 
-### 更多示例
-- [Vue2 主应用](https://www.gez-esm.com/ssr-vue2-host/) - 微前端架构的主应用示例
-- [Vue2 子应用](https://www.gez-esm.com/ssr-vue2-remote/) - 微前端架构的子应用示例
-- [Preact + HTM](https://www.gez-esm.com/ssr-preact-htm/) - 轻量级框架的 SSR 实现
+### ⚡️ 核心优势对比
 
-## 🚀 快速开始
+| 核心特性 | Gez | 传统微前端框架 |
+|---------|-----|---------------|
+| **依赖管理** | ✅ ESM + importmap 原生加载<br>✅ 基于内容哈希的强缓存<br>✅ 中心化管理，一次生效 | ❌ 运行时注入，性能损耗<br>❌ 缓存策略不可靠<br>❌ 依赖版本冲突风险 |
+| **应用隔离** | ✅ ESM 原生模块隔离<br>✅ 零运行时开销<br>✅ 浏览器标准特性保障 | ❌ JS 沙箱性能开销<br>❌ 复杂的状态维护<br>❌ 隔离实现不稳定 |
+| **构建部署** | ✅ Rspack 高性能构建<br>✅ 开箱即用配置<br>✅ 增量构建，按需加载 | ❌ 构建配置繁琐<br>❌ 部署流程复杂<br>❌ 全量构建更新 |
+| **服务端渲染** | ✅ 原生 SSR 支持<br>✅ 支持任意前端框架<br>✅ 灵活的渲染策略 | ❌ SSR 支持有限<br>❌ 框架耦合严重<br>❌ 渲染策略单一 |
+| **开发体验** | ✅ 完整 TypeScript 支持<br>✅ 原生模块链接<br>✅ 开箱即用的调试能力 | ❌ 类型支持不完善<br>❌ 模块关系难以追踪<br>❌ 调试成本高 |
 
-```bash
-# 克隆代码
-git clone git@github.com:dp-os/gez.git
+## 🎯 示例项目
 
-# 安装依赖
-pnpm install
+### [轻量级 HTML 应用](https://www.gez-esm.com/ssr-html/)
+一个完整的 HTML 服务端渲染示例，展示了如何使用 Gez 构建现代化的 Web 应用：
+- 🚀 基于 Rust 构建的 Rspack，提供极致的构建性能
+- 💡 包含路由、组件、样式、图片等完整功能支持
+- 🛠 快速的热更新、友好的错误提示和完整的类型支持
+- 📱 现代化的响应式设计，完美适配各种设备
 
-# 编译代码
-pnpm build
+### [Vue2 主应用](https://www.gez-esm.com/ssr-vue2-host/)
+Vue2 技术栈的微前端主应用实现，与子应用完美配合：
+- 🎨 中心化的应用注册与管理
+- 🛠 动态的路由配置与分发
+- 🔗 基于 ESM 的应用间通信
 
-# 运行示例
-cd examples/ssr-vue3
-pnpm run dev
-```
+### [Vue2 子应用](https://www.gez-esm.com/ssr-vue2-remote/)
+Vue2 技术栈的微前端子应用实现，展示完整的微前端生态：
+- 🚀 独立开发、构建与部署
+- 🔄 标准的生命周期管理
+- 🌐 原生 ESM 通信机制
+
+### [Preact + HTM](https://www.gez-esm.com/ssr-preact-htm/)
+基于 Preact + HTM 的高性能实现：
+- ⚡️ 极致的包体积优化
+- 🎯 性能优先的架构设计
+- 🛠 适用于资源受限场景
+
+所有示例都包含完整的工程配置和最佳实践指南，帮助你快速上手并应用到生产环境。查看 [examples](https://github.com/dp-os/gez/tree/master/examples) 目录了解更多详情。
 
 ## 📚 版本说明
 
-- [v3.x](https://www.gez-esm.com) - 开发阶段
-  > **注意**：当前版本存在以下已知问题：
-  > - `modern-module` 的 `export *` 输出不稳定 ([#8557](https://github.com/web-infra-dev/rspack/issues/8557), [#8546](https://github.com/web-infra-dev/rspack/issues/8546))
-  > - 动态导入模块依赖提升问题 ([#8736](https://github.com/web-infra-dev/rspack/issues/8736))
+### [v3.x](https://www.gez-esm.com) - 开发阶段
+当前版本基于 Rspack 构建，提供更优的开发体验和构建性能。
 
-- [v2.x](https://github.com/dp-os/gez/blob/v2/docs/zh-CN/README.md) - 稳定维护中
-- [v1.x](https://fmfe.github.io/genesis-docs/guide/) - 已停止维护（原名 Genesis）
+> **已知问题**：
+> - ESM 模块导出优化中：`modern-module` 的 `export *` 语法存在稳定性问题 ([#8557](https://github.com/web-infra-dev/rspack/issues/8557), [#8546](https://github.com/web-infra-dev/rspack/issues/8546))
+> - 动态导入模块的依赖提升机制优化中 ([#8736](https://github.com/web-infra-dev/rspack/issues/8736))
+
+### [v2.x](https://github.com/dp-os/gez/blob/v2/docs/zh-CN/README.md) - 不推荐生产使用
+此版本不再推荐用于生产环境，建议使用最新版本。
+
+### [v1.x](https://fmfe.github.io/genesis-docs/guide/) - 已停止维护
+原名 Genesis，是 Gez 的前身。不再接受新功能和非关键性 bug 修复。
 
 ## 📄 许可证
 
