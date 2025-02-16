@@ -295,7 +295,17 @@ export class Gez {
                     'dist/client/importmap',
                     `${hash}.final.js`
                 );
-                await this.write(filename, code);
+                try {
+                    const existingContent = await fsp.readFile(
+                        filename,
+                        'utf-8'
+                    );
+                    if (existingContent !== code) {
+                        await this.write(filename, code);
+                    }
+                } catch {
+                    await this.write(filename, code);
+                }
                 this._importmapHash = hash;
             }
             return `<script data-base="${basePathPlaceholder}" src="${basePathPlaceholder}${this.basePath}importmap/${this._importmapHash}.final.js"></script>`;
