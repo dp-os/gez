@@ -1,3 +1,4 @@
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 import fsp from 'node:fs/promises';
 import path from 'node:path';
@@ -5,6 +6,7 @@ import { cwd } from 'node:process';
 import type { ImportMap } from '@gez/import';
 import write from 'write';
 
+import serialize from 'serialize-javascript';
 import { type App, createApp } from './app';
 import { type CacheHandle, createCache } from './cache';
 import { getImportMap } from './import-map';
@@ -19,6 +21,7 @@ import {
     type ParsedPackConfig,
     parsePackConfig
 } from './pack-config';
+import type { ImportmapMode } from './render-context';
 import { type ProjectPath, resolvePath } from './resolve-path';
 import { getImportPreloadInfo } from './static-import-lexer';
 
@@ -53,8 +56,21 @@ interface Readied {
 }
 
 export class Gez {
+    public static async getSrcOptions(): Promise<GezOptions> {
+        return import(path.resolve(process.cwd(), './src/entry.node.ts')).then(
+            (m) => m.default
+        );
+    }
+
+    public static async getDistOptions(): Promise<GezOptions> {
+        return import(path.resolve(process.cwd(), './src/entry.node.ts')).then(
+            (m) => m.default
+        );
+    }
+
     private readonly _options: GezOptions;
     private _readied: Readied | null = null;
+    private _importmapHash: string | null = null;
 
     public constructor(options: GezOptions = {}) {
         this._options = options;
@@ -235,21 +251,55 @@ export class Gez {
     }
 
     public async getImportMap(
-        target: AppBuildTarget,
-        withoutIndex = true
+        target: AppBuildTarget
     ): Promise<Readonly<ImportMap>> {
-        return this.readied.cache(
-            `getImportMap-${target}-${withoutIndex}`,
-            async () =>
-                Object.freeze(
-                    getImportMap(
-                        target,
-                        withoutIndex,
-                        await this.getManifestList(target),
-                        this.moduleConfig
-                    )
-                )
-        );
+        return this.readied.cache(`getImportMap-${target}`, async () => {
+            const json = await getImportMap(
+                target,
+                await this.getManifestList(target),
+                this.moduleConfig
+            );
+            return Object.freeze(json);
+        });
+    }
+    public async getImportMapClientCode(mode: ImportmapMode) {
+        return this.readied.cache(`getImportMap-${mode}`, async () => {
+            const importmap = await this.getImportMap('client');
+            const { basePathPlaceholder } = this;
+            if (mode === 'inline') {
+                if (importmap.imports && basePathPlaceholder) {
+                    const imports = importmap.imports;
+                    Object.entries(imports).forEach(([k, v]) => {
+                        imports[k] = basePathPlaceholder + v;
+                    });
+                }
+                return `<script type="importmap">${serialize(importmap, { isJSON: true })}</script>`;
+            }
+            if (this._importmapHash === null) {
+                const code = `(() => {
+    const base = document.currentScript.getAttribute('data-base');
+    const importmap = ${serialize(importmap, { isJSON: true })};
+    if (importmap.imports && base) {
+        const imports = importmap.imports;
+        Object.entries(imports).forEach(([k, v]) => {
+            imports[k] = base + v;
+        });
+    }
+    document.head.appendChild(Object.assign(document.createElement('script'), {
+    type: 'importmap',
+    innerHTML: JSON.stringify(importmap)
+    }));
+})();`;
+                const hash = contentHash(code);
+                const filename = this.resolvePath(
+                    'dist/client/importmap',
+                    `${hash}.final.js`
+                );
+                await this.write(filename, code);
+                this._importmapHash = hash;
+            }
+            return `<script data-base="${basePathPlaceholder}" src="${basePathPlaceholder}${this.basePath}importmap/${this._importmapHash}.final.js"></script>`;
+        });
     }
 
     public async getImportPreloadInfo(specifier: string) {
@@ -288,4 +338,10 @@ class NotReadyError extends Error {
     constructor() {
         super(`The Gez has not been initialized yet`);
     }
+}
+
+function contentHash(text: string) {
+    const hash = crypto.createHash('sha256');
+    hash.update(text);
+    return hash.digest('hex').substring(0, 12);
 }

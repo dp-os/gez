@@ -25,6 +25,7 @@ export default {
                 res.setHeader('Content-Type', 'text/html;charset=UTF-8');
                 // 传入渲染的参数
                 const rc = await gez.render({
+                    importmapMode: 'js',
                     params: {
                         url: req.url
                     }

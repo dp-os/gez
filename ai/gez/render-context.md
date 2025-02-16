@@ -100,9 +100,45 @@ RenderContext 提供了多个方法来注入不同类型的资源，每个方法
 
 - `preload()`：预加载 CSS 和 JS 资源，支持优先级配置
 - `css()`：注入首屏样式表，支持关键 CSS 提取
-- `importmap()`：注入模块导入映射，支持动态路径解析
+- `importmap()`：注入模块导入映射，支持动态路径解析（默认采用 inline 模式，直接内联到 HTML 中）
 - `moduleEntry()`：注入客户端入口模块，支持多入口配置
 - `modulePreload()`：预加载模块依赖，支持按需加载策略
+
+#### 配置选项
+
+RenderContext 支持多种配置选项来适应不同的部署场景：
+
+1. **importmapMode**
+   - 默认值：`'inline'`
+   - 可选值：
+     - `'inline'`：将 importmap 内容直接内联到 HTML 中，适用于以下场景：
+       - 需要减少 HTTP 请求数量
+       - importmap 内容较小
+       - 对首屏加载性能要求较高
+     - `'js'`：将 importmap 内容生成为独立的 JS 文件，适用于以下场景：
+       - importmap 内容较大
+       - 需要利用浏览器缓存机制
+       - 多个页面共享相同的 importmap
+
+   示例：
+   ```ts
+   // 使用内联模式（默认）
+   const rc = await gez.render({
+     params: { url: req.url }
+   });
+
+   // 显式指定内联模式
+   const rc = await gez.render({
+     importmapMode: 'inline',
+     params: { url: req.url }
+   });
+
+   // 使用 JS 文件模式
+   const rc = await gez.render({
+     importmapMode: 'js',
+     params: { url: req.url }
+   });
+   ```
 
 ### 3. 资源注入顺序
 

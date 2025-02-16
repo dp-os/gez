@@ -12,7 +12,6 @@ import type { ParsedModuleConfig } from './module-config';
  */
 export async function getImportMap(
     target: AppBuildTarget,
-    withoutIndex: boolean,
     manifests: readonly ManifestJson[],
     moduleConfig: ParsedModuleConfig
 ): Promise<ImportMap> {
@@ -46,6 +45,6 @@ export async function getImportMap(
             }
         }
     }
-    withoutIndex && pathWithoutIndex(imports);
+    pathWithoutIndex(imports);
     return { imports };
 }

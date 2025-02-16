@@ -41,10 +41,6 @@ export interface ManifestJson {
      * 类型：Record<源文件, 编译信息>
      */
     chunks: Record<string, ManifestJsonChunks>;
-    /**
-     * globalThis.__importmap__ 对象注入导入信息。
-     */
-    importmapJs: string;
 }
 
 import fsp from 'node:fs/promises';

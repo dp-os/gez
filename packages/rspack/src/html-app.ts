@@ -120,7 +120,7 @@ export async function createRspackHtmlApp(
                             RSPACK_LOADER.workerRspackLoader,
                         options: {
                             esModule: false,
-                            filename: `${gez.name}/[name].js`
+                            filename: `${gez.name}/workers/[name].js`
                         }
                     },
                     {

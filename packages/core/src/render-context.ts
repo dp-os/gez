@@ -1,43 +1,49 @@
 import path from 'node:path';
 import serialize from 'serialize-javascript';
 import type { Gez, ImportMap } from './gez';
-import { pathWithoutIndex } from './path-without-index';
 
 /**
  * 定义 importmap 的生成模式
  *
  * @description
  * ImportmapMode 用于控制 importmap 的生成方式，支持两种模式：
- * - `inline`: 将 importmap 内容直接内联到 HTML 中，适用于以下场景：
+ * - `inline`: 将 importmap 内容直接内联到 HTML 中（默认值），适用于以下场景：
  *   - 需要减少 HTTP 请求数量
  *   - importmap 内容较小
  *   - 对首屏加载性能要求较高
- * - `js`: 将 importmap 内容生成为独立的 JS 文件（默认值），适用于以下场景：
+ * - `js`: 将 importmap 内容生成为独立的 JS 文件，适用于以下场景：
  *   - importmap 内容较大
  *   - 需要利用浏览器缓存机制
  *   - 多个页面共享相同的 importmap
  *
- * 默认值选择 'js' 的原因：
- * 1. 性能优化
- *    - 适合大型应用的缓存策略
- *    - 减少主文档大小
- *    - 支持并行加载和预加载
- * 2. 可维护性
- *    - 便于动态更新映射内容
- *    - 支持热更新和增量更新
- * 3. 灵活性
- *    - 可以根据需要延迟加载
- *    - 支持条件加载和按需加载
+ * 默认值选择 'inline' 的原因：
+ * 1. 简单直接
+ *    - 减少额外的 HTTP 请求
+ *    - 无需额外的资源管理
+ *    - 适合大多数应用场景
+ * 2. 首屏性能
+ *    - 避免额外的网络请求
+ *    - 确保导入映射立即可用
+ *    - 减少页面加载时间
+ * 3. 易于调试
+ *    - 导入映射直接可见
+ *    - 便于问题诊断
+ *    - 简化开发流程
  *
  * @example
  * ```typescript
- * // 使用内联模式
+ * // 使用内联模式（默认）
+ * const rc = await gez.render({
+ *   params: { url: req.url }
+ * });
+ *
+ * // 显式指定内联模式
  * const rc = await gez.render({
  *   importmapMode: 'inline',
  *   params: { url: req.url }
  * });
  *
- * // 使用 JS 文件模式（默认）
+ * // 使用 JS 文件模式
  * const rc = await gez.render({
  *   importmapMode: 'js',
  *   params: { url: req.url }
@@ -101,7 +107,7 @@ export interface RenderContextOptions {
      * 渲染参数
      * @description
      * - 可以传递任意类型的参数给渲染函数
-     * - 常用于传递请求 URL、语言设置等信息
+     * - 常用于传递请求信息（URL、query 参数等）
      * - 在服务端渲染过程中可以通过 rc.params 访问
      */
     params?: Record<string, any>;
@@ -111,36 +117,43 @@ export interface RenderContextOptions {
      *
      * @description
      * ImportmapMode 用于控制 importmap 的生成方式，支持两种模式：
-     * - `inline`: 将 importmap 内容直接内联到 HTML 中，适用于以下场景：
+     * - `inline`: 将 importmap 内容直接内联到 HTML 中（默认值），适用于以下场景：
      *   - 需要减少 HTTP 请求数量
      *   - importmap 内容较小
      *   - 对首屏加载性能要求较高
-     * - `js`: 将 importmap 内容生成为独立的 JS 文件（默认值），适用于以下场景：
+     * - `js`: 将 importmap 内容生成为独立的 JS 文件，适用于以下场景：
      *   - importmap 内容较大
      *   - 需要利用浏览器缓存机制
      *   - 多个页面共享相同的 importmap
      *
-     * 默认值选择 'js' 的原因：
-     * 1. 性能优化
-     *    - 适合大型应用的缓存策略
-     *    - 减少主文档大小
-     *    - 支持并行加载和预加载
-     * 2. 可维护性
-     *    - 便于动态更新映射内容
-     *    - 支持热更新和增量更新
-     * 3. 灵活性
-     *    - 可以根据需要延迟加载
-     *    - 支持条件加载和按需加载
+     * 默认值选择 'inline' 的原因：
+     * 1. 简单直接
+     *    - 减少额外的 HTTP 请求
+     *    - 无需额外的资源管理
+     *    - 适合大多数应用场景
+     * 2. 首屏性能
+     *    - 避免额外的网络请求
+     *    - 确保导入映射立即可用
+     *    - 减少页面加载时间
+     * 3. 易于调试
+     *    - 导入映射直接可见
+     *    - 便于问题诊断
+     *    - 简化开发流程
      *
      * @example
      * ```typescript
-     * // 使用内联模式
+     * // 使用内联模式（默认）
+     * const rc = await gez.render({
+     *   params: { url: req.url }
+     * });
+     *
+     * // 显式指定内联模式
      * const rc = await gez.render({
      *   importmapMode: 'inline',
      *   params: { url: req.url }
      * });
      *
-     * // 使用 JS 文件模式（默认）
+     * // 使用 JS 文件模式
      * const rc = await gez.render({
      *   importmapMode: 'js',
      *   params: { url: req.url }
@@ -212,22 +225,6 @@ export interface RenderContextOptions {
  * ```
  */
 export class RenderContext {
-    public static IMPORTMAP_CREATE_SCRIPT_CODE = `
-(() => {
-const i = window.__importmap__;
-if (!i) {
-    return;
-}
-if (i.imports) {
-    ${pathWithoutIndex.name}(i.imports);
-}
-const s = document.createElement("script");
-s.type = 'importmap';
-s.innerText = JSON.stringify(i);
-document.head.appendChild(s);
-${pathWithoutIndex}
-})();
-`.trim();
     public gez: Gez;
     /**
      * 重定向地址
@@ -569,11 +566,11 @@ ${pathWithoutIndex}
      * files 属性存储了在服务端渲染过程中收集到的所有静态资源文件路径：
      *
      * 1. **资源类型**
-     *    - js: JavaScript 文件列表，包含所有需要加载的脚本文件
-     *    - css: 样式表文件列表，用于页面样式渲染
+     *    - js: JavaScript 文件列表，包含所有脚本和模块
+     *    - css: 样式表文件列表
      *    - modulepreload: 需要预加载的 ESM 模块列表
-     *    - importmap: 导入映射文件列表，用于模块路径解析
-     *    - resources: 其他资源文件列表（如图片、字体等）
+     *    - importmap: 导入映射文件列表
+     *    - resources: 其他资源文件列表（图片、字体等）
      *
      * 2. **使用场景**
      *    - 在 commit() 方法中自动收集和分类资源
@@ -597,11 +594,8 @@ ${pathWithoutIndex}
      *   </head>
      *   <body>
      *     ${html}
-     *     <!-- 注入导入映射 -->
      *     ${rc.importmap()}
-     *     <!-- 注入客户端入口 -->
      *     ${rc.moduleEntry()}
-     *     <!-- 预加载模块 -->
      *     ${rc.modulePreload()}
      *   </body>
      *   </html>
@@ -612,52 +606,58 @@ ${pathWithoutIndex}
         js: [],
         css: [],
         modulepreload: [],
-        importmap: [],
         resources: []
     };
-    private _importMap: ImportMap | null = null;
+    private _importMap = '';
     /**
      * 定义 importmap 的生成模式
      *
      * @description
      * ImportmapMode 用于控制 importmap 的生成方式，支持两种模式：
-     * - `inline`: 将 importmap 内容直接内联到 HTML 中，适用于以下场景：
+     * - `inline`: 将 importmap 内容直接内联到 HTML 中（默认值），适用于以下场景：
      *   - 需要减少 HTTP 请求数量
      *   - importmap 内容较小
      *   - 对首屏加载性能要求较高
-     * - `js`: 将 importmap 内容生成为独立的 JS 文件（默认值），适用于以下场景：
+     * - `js`: 将 importmap 内容生成为独立的 JS 文件，适用于以下场景：
      *   - importmap 内容较大
      *   - 需要利用浏览器缓存机制
      *   - 多个页面共享相同的 importmap
      *
-     * 默认值选择 'js' 的原因：
-     * 1. 性能优化
-     *    - 适合大型应用的缓存策略
-     *    - 减少主文档大小
-     *    - 支持并行加载和预加载
-     * 2. 可维护性
-     *    - 便于动态更新映射内容
-     *    - 支持热更新和增量更新
-     * 3. 灵活性
-     *    - 可以根据需要延迟加载
-     *    - 支持条件加载和按需加载
+     * 默认值选择 'inline' 的原因：
+     * 1. 简单直接
+     *    - 减少额外的 HTTP 请求
+     *    - 无需额外的资源管理
+     *    - 适合大多数应用场景
+     * 2. 首屏性能
+     *    - 避免额外的网络请求
+     *    - 确保导入映射立即可用
+     *    - 减少页面加载时间
+     * 3. 易于调试
+     *    - 导入映射直接可见
+     *    - 便于问题诊断
+     *    - 简化开发流程
      *
      * @example
      * ```typescript
-     * // 使用内联模式
+     * // 使用内联模式（默认）
+     * const rc = await gez.render({
+     *   params: { url: req.url }
+     * });
+     *
+     * // 显式指定内联模式
      * const rc = await gez.render({
      *   importmapMode: 'inline',
      *   params: { url: req.url }
      * });
      *
-     * // 使用 JS 文件模式（默认）
+     * // 使用 JS 文件模式
      * const rc = await gez.render({
      *   importmapMode: 'js',
      *   params: { url: req.url }
      * });
      * ```
      */
-    public importmapMode: RenderContextOptions['importmapMode'] = 'js';
+    public importmapMode: ImportmapMode;
     public constructor(gez: Gez, options: RenderContextOptions = {}) {
         this.gez = gez;
         this.base = options.base ?? '';
@@ -875,7 +875,7 @@ ${pathWithoutIndex}
      *    - js: JavaScript 文件，包含所有脚本和模块
      *    - css: 样式表文件
      *    - modulepreload: 需要预加载的 ESM 模块
-     *    - importmap: 模块导入映射
+     *    - importmap: 导入映射文件
      *    - resources: 其他资源文件（图片、字体等）
      *
      * 3. **路径处理**
@@ -942,7 +942,6 @@ ${pathWithoutIndex}
         } = {
             js: new Set(),
             modulepreload: new Set(),
-            importmap: new Set(),
             css: new Set(),
             resources: new Set()
         };
@@ -958,7 +957,6 @@ ${pathWithoutIndex}
                 setName: keyof RenderFiles,
                 filepaths: string[]
             ) => filepaths.forEach((filepath) => addPath(setName, filepath));
-            addPath('importmap', item.importmapJs);
             Object.entries(item.chunks).forEach(([filepath, info]) => {
                 if (chunkSet.has(filepath)) {
                     addPath('js', info.js);
@@ -975,19 +973,11 @@ ${pathWithoutIndex}
             files.modulepreload.add(getUrlPath(filepath))
         );
 
-        files.js = new Set([
-            ...files.js,
-            ...files.modulepreload,
-            ...files.importmap
-        ]);
+        files.js = new Set([...files.js, ...files.modulepreload]);
         Object.keys(files).forEach(
             (key) => (this.files[key] = Array.from(files[key]))
         );
-
-        this._importMap =
-            this.importmapMode === 'inline'
-                ? await gez.getImportMap('client', false)
-                : null;
+        this._importMap = await gez.getImportMapClientCode(this.importmapMode);
     }
     /**
      * 生成资源预加载标签
@@ -1039,12 +1029,7 @@ ${pathWithoutIndex}
                 return `<link rel="preload" href="${url}" as="style">`;
             })
             .join('');
-        const js = this.files.importmap
-            .map((url) => {
-                return `<link rel="preload" href="${url}" as="script">`;
-            })
-            .join('');
-        return css + js;
+        return css;
     }
     /**
      * 注入首屏样式表
@@ -1160,21 +1145,12 @@ ${pathWithoutIndex}
      * ```
      */
     public importmap() {
-        if (this._importMap) {
-            const code = this.serialize(this._importMap, { isJSON: true });
-            return `<script>window.__importmap__ = ${code};${RenderContext.IMPORTMAP_CREATE_SCRIPT_CODE}</script>`;
-        }
-        return `${this.files.importmap
-            .map((url) => `<script src="${url}"></script>`)
-            .join(
-                ''
-            )}<script>${RenderContext.IMPORTMAP_CREATE_SCRIPT_CODE}</script>`;
+        return this._importMap;
     }
     /**
      * 注入客户端入口模块
      * @description
      * moduleEntry() 方法用于注入客户端的入口模块：
-     *
      * 1. **注入位置**
      *    - 必须在 importmap 之后执行
      *    - 确保在执行模块代码前已正确设置导入映射
@@ -1323,7 +1299,6 @@ export type ServerRenderHandle = (rc: RenderContext) => Promise<void>;
 export interface RenderFiles {
     css: string[];
     modulepreload: string[];
-    importmap: string[];
     js: string[];
     resources: string[];
 }
