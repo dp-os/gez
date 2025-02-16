@@ -302,25 +302,18 @@ export class Gez {
         });
     }
 
-    public async getImportPreloadInfo(specifier: string) {
+    public async getStaticImportPaths(
+        target: AppBuildTarget,
+        specifier: string
+    ) {
         return this.readied.cache(
-            `getImportPreloadInfo-client-${specifier}`,
-            () =>
-                Object.freeze(
-                    getImportPreloadInfo(
-                        specifier,
-                        this.getImportMap('client'),
-                        this.moduleConfig
-                    )
-                )
-        );
-    }
-
-    public async getImportPreloadPaths(specifier: string) {
-        return this.readied.cache(
-            `getImportPreloadPaths-client-arr-${specifier}`,
+            `getStaticImportPaths-${target}-${specifier}`,
             async () => {
-                const preloadInfo = await this.getImportPreloadInfo(specifier);
+                const preloadInfo = await getImportPreloadInfo(
+                    specifier,
+                    await this.getImportMap(target),
+                    this.moduleConfig
+                );
                 if (!preloadInfo) {
                     return null;
                 }

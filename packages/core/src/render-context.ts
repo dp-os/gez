@@ -966,7 +966,8 @@ export class RenderContext {
             });
         });
 
-        const preloadPaths = await gez.getImportPreloadPaths(
+        const preloadPaths = await gez.getStaticImportPaths(
+            'client',
             `${gez.name}/src/entry.client`
         );
         preloadPaths?.forEach((filepath) =>

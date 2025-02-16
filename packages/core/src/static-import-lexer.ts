@@ -45,10 +45,10 @@ export type ImportPreloadInfo = SpecifierMap;
  */
 export async function getImportPreloadInfo(
     specifier: string,
-    importMap: ImportMap | Promise<ImportMap>,
+    importMap: ImportMap,
     moduleConfig: ParsedModuleConfig
 ) {
-    const importInfo = (await importMap).imports;
+    const importInfo = importMap.imports;
     if (!importInfo || !(specifier in importInfo)) {
         return null;
     }
