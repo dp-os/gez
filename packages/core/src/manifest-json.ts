@@ -1,3 +1,9 @@
+import fsp from 'node:fs/promises';
+import path from 'node:path';
+
+import type { AppBuildTarget } from './gez';
+import type { ParsedModuleConfig } from './module-config';
+
 export interface ManifestJsonChunks {
     /**
      * 当前编译的 JS 文件。
@@ -43,19 +49,12 @@ export interface ManifestJson {
     chunks: Record<string, ManifestJsonChunks>;
 }
 
-import fsp from 'node:fs/promises';
-
 /**
  * 异步的读取一个 JSON 文件。
  */
 async function readJson(filename: string): Promise<any> {
     return JSON.parse(await fsp.readFile(filename, 'utf-8'));
 }
-
-import path from 'node:path';
-
-import type { AppBuildTarget } from './gez';
-import type { ParsedModuleConfig } from './module-config';
 
 /**
  * 获取服务清单文件

@@ -31,7 +31,7 @@ export async function getImportsFromJsFile(
 }
 
 import type { ImportMap, SpecifierMap } from '@gez/import';
-import type { ParsedModuleConfig } from './module-config';
+import type { ParsedModuleConfig } from '../module-config';
 
 export type ImportPreloadInfo = SpecifierMap;
 /**

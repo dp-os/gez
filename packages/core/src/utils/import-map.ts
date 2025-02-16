@@ -3,9 +3,9 @@ import path from 'node:path';
 import { pathWithoutIndex } from './path-without-index';
 
 import type { ImportMap, SpecifierMap } from '@gez/import';
-import type { AppBuildTarget } from './gez';
-import type { ManifestJson } from './manifest-json';
-import type { ParsedModuleConfig } from './module-config';
+import type { AppBuildTarget } from '../gez';
+import type { ManifestJson } from '../manifest-json';
+import type { ParsedModuleConfig } from '../module-config';
 
 /**
  * 获取导入映射对象

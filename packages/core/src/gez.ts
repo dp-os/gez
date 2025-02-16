@@ -8,8 +8,6 @@ import write from 'write';
 
 import serialize from 'serialize-javascript';
 import { type App, createApp } from './app';
-import { type CacheHandle, createCache } from './cache';
-import { getImportMap } from './import-map';
 import { type ManifestJson, getManifestList } from './manifest-json';
 import {
     type ModuleConfig,
@@ -23,7 +21,9 @@ import {
 } from './pack-config';
 import type { ImportmapMode } from './render-context';
 import { type ProjectPath, resolvePath } from './resolve-path';
-import { getImportPreloadInfo } from './static-import-lexer';
+import { type CacheHandle, createCache } from './utils/cache';
+import { getImportMap } from './utils/import-map';
+import { getImportPreloadInfo } from './utils/static-import-lexer';
 
 export interface GezOptions {
     root?: string;
