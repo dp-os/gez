@@ -28,7 +28,7 @@ export {
     type Middleware,
     createMiddleware,
     mergeMiddlewares
-} from './middleware';
+} from './utils/middleware';
 export type {
     ManifestJson,
     ManifestJsonChunkSizes,

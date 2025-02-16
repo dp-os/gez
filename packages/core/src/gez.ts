@@ -20,9 +20,9 @@ import {
     parsePackConfig
 } from './pack-config';
 import type { ImportmapMode } from './render-context';
-import { type ProjectPath, resolvePath } from './resolve-path';
 import { type CacheHandle, createCache } from './utils/cache';
 import { getImportMap } from './utils/import-map';
+import { type ProjectPath, resolvePath } from './utils/resolve-path';
 import { getImportPreloadInfo } from './utils/static-import-lexer';
 
 export interface GezOptions {

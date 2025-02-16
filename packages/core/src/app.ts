@@ -1,12 +1,12 @@
 import { pathToFileURL } from 'node:url';
 import { createLoaderImport } from '@gez/import';
 import type { COMMAND, Gez } from './gez';
-import { type Middleware, createMiddleware } from './middleware';
 import {
     RenderContext,
     type RenderContextOptions,
     type ServerRenderHandle
 } from './render-context';
+import { type Middleware, createMiddleware } from './utils/middleware';
 
 /**
  * 应用程序实例接口。

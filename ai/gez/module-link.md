@@ -163,6 +163,33 @@ export default {
    - 确保使用正确版本
    - 建议自动化版本切换
 
+### PackConfig 说明
+软件包安装方式需要配置打包选项，包括启用打包、指定输出路径和自定义 package.json。
+
+```ts title="ssr-base/src/entry.node.ts" {5-16}
+import type { GezOptions } from '@gez/core';
+
+export default {
+    modules: {
+        exports: ['root:src/axios.ts']
+    },
+    packs: {
+        // 启用打包功能
+        enable: true,
+        // 指定输出路径，支持多版本
+        outputs: [
+            'dist/versions/latest.tgz',
+            'dist/versions/1.0.0.tgz'
+        ],
+        // 自定义 package.json
+        packageJson: async (gez, pkg) => {
+            pkg.version = '1.0.0';
+            return pkg;
+        }
+    }
+} satisfies GezOptions;
+```
+
 ### 服务导入配置
 
 安装完依赖后，需要在服务中配置模块导入和外部依赖：
@@ -228,7 +255,7 @@ const app = createApp({
     }
 });
 
-const { formatDate, formatTime } = format;
+const { formatDate, formatTime } from format;
 const date = formatDate(new Date());
 ```
 

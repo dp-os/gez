@@ -1,7 +1,7 @@
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import path from 'node:path';
 import send from 'send';
-import type { Gez } from './gez';
+import type { Gez } from '../gez';
 
 /**
  * 中间件函数类型定义
