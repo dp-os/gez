@@ -12,7 +12,6 @@ export function packagePlugin(
             let manifestJson: ManifestJson = {
                 name: moduleConfig.name,
                 exports: {},
-                importmapJs: '',
                 buildFiles: [],
                 chunks: {}
             };
@@ -32,17 +31,10 @@ export function packagePlugin(
                     const resources = Object.keys(assets)
                         .map(transFileName)
                         .filter((file) => !file.includes('hot-update'));
-                    const importmapJs =
-                        resources.find(
-                            (file) =>
-                                file.startsWith('importmap.') &&
-                                file.endsWith('.final.js')
-                        ) ?? 'importmap.js';
                     manifestJson = {
                         name: moduleConfig.name,
                         exports: exports,
                         buildFiles: resources,
-                        importmapJs,
                         chunks: getChunks(moduleConfig, compilation)
                     };
 
