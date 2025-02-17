@@ -4,6 +4,18 @@ import { PackageManagerTabs } from '@theme';
 
 本文将指导您使用 Gez 框架创建一个基于原生 HTML 的服务端渲染（SSR）应用。通过这个示例，您将了解 Gez 的基本用法、项目结构和核心开发流程。本示例适合初学者入门，同时也展示了 Gez 框架的主要特性。
 
+::: tip
+你可以全选复制页面内容，并将其发送给 AI 助手，AI 将帮助你快速创建和配置项目。
+:::
+
+## 环境要求
+
+### Node.js 版本
+需要 Node.js 22.6 或更高版本，这是因为：
+- 原生支持 TypeScript 的类型导入（通过 `--experimental-strip-types` 标志）
+- 完整支持 ESM 特性，包括动态导入和 import.meta
+- 提供更好的开发体验和性能
+
 ## 项目初始化
 
 ### 1. 创建项目目录
@@ -69,8 +81,8 @@ npm init -y
         
         "baseUrl": ".",
         "paths": {
-            "@app/src/*": ["./src/*"],
-            "@app/*": [".*"]
+            "your-app-name/src/*": ["./src/*"],
+            "your-app-name/*": [".*"]
         }
     },
     "include": ["src"],
