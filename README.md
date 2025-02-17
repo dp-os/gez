@@ -16,7 +16,7 @@
 </p>
 
 <p align="center">
-  📚 <b>文档：</b><a href="https://www.gez-esm.com">https://www.gez-esm.com</a>
+  📚 <b>文档：</b><a href="https://www.gez-esm.com">简体中文</a>
 </p>
 
 ## 💫 拥抱现代微前端
