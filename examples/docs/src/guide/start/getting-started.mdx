@@ -19,15 +19,15 @@ npm init -y
 ```json title="package.json"
 {
     "name": "your-app-name",
-    "type": "module",        // 启用 ECMAScript 模块系统，支持原生 ESM 导入导出
-    "private": true,         // 设置为私有包，防止意外发布到 npm 仓库
+    "type": "module",
+    "private": true,
     "scripts": {
-        "dev": "gez dev",                    // 启动开发服务器，支持 HMR 和实时编译
-        "build": "npm run build:dts && npm run build:ssr",  // 执行完整的生产构建流程
-        "build:ssr": "gez build",            // 构建 SSR 应用，优化静态资源
-        "build:dts": "tsc --declaration --emitDeclarationOnly --outDir dist/src",  // 生成 TypeScript 类型声明文件
-        "preview": "gez preview",             // 预览生产构建结果
-        "start": "NODE_ENV=production node dist/index.js"   // 以生产模式启动服务器
+        "dev": "gez dev",
+        "build": "npm run build:dts && npm run build:ssr",
+        "build:ssr": "gez build",
+        "build:dts": "tsc --declaration --emitDeclarationOnly --outDir dist/src",
+        "preview": "gez preview",
+        "start": "NODE_ENV=production node dist/index.js"
     }
 }
 ```
@@ -52,26 +52,21 @@ npm init -y
 ```json title="tsconfig.json"
 {
     "compilerOptions": {
-        // 模块配置
         "module": "ESNext",
         "moduleResolution": "node",
         "isolatedModules": true,
         "resolveJsonModule": true,
         
-        // 编译目标
         "target": "ESNext",
         "lib": ["ESNext", "DOM"],
         
-        // 类型检查
         "strict": true,
         "skipLibCheck": true,
         "types": ["@types/node"],
         
-        // 语言特性
         "experimentalDecorators": true,
         "allowSyntheticDefaultImports": true,
         
-        // 路径映射
         "baseUrl": ".",
         "paths": {
             "@app/src/*": ["./src/*"],
