@@ -57,7 +57,7 @@ export function createRspackConfig(
                 ? 'chunks/[name].[contenthash:8].final.js'
                 : 'chunks/[name].js',
             library: {
-                type: 'modern-module'
+                type: gez.isProd ? 'modern-module' : 'module'
             },
             filename:
                 buildTarget !== 'node' && gez.isProd
@@ -127,7 +127,7 @@ export function createRspackConfig(
         },
         optimization: {
             minimize: options.minimize ?? gez.isProd,
-            avoidEntryIife: true,
+            avoidEntryIife: gez.isProd,
             concatenateModules: gez.isProd,
             emitOnErrors: true,
             splitChunks: {
