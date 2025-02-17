@@ -1,67 +1,79 @@
 # 介绍
-Gez 是 Genesis 迭代的第三个大版本，[v1.0](https://github.com/dp-os/gez/tree/v1) 是基于 HTTP 请求来实现的远程组件，[v2.0](https://github.com/dp-os/gez/tree/v2) 是基于 Module Federation v1.0
- 实现的远程组件。随着主流浏览器都已经支持 ESM，这使得设计一款基于 ESM 的[模块链接](/guide/essentials/module-link)变成了可能。随着 Rspack v1.0 的发布，提供了对 ESM 更加友好的支持，这使得我们可以将可能变成了现实。于是，我们将 [v3.0](https://github.com/dp-os/gez) 版本重命名为 `Gez`。
 
-## 为什么选 Gez
-目前，社区中的微服务解决方案大致可归为三类：iframe、micro-app 和 Module Federation。然而，iframe 和 micro-app 模式更适用于对老旧项目的整合，这种整合往往以牺牲一定的运行效率为代价。而 Module Federation，尽管功能强大，却因其较高的接入成本和复杂的内部机制，使得问题排查变得异常困难。
+## 项目背景
+Gez 是一个基于 ECMAScript Modules (ESM) 的现代微前端框架，专注于构建高性能、可扩展的服务端渲染（SSR）应用。作为 Genesis 项目的第三代产品，Gez 在技术演进过程中不断创新：
 
-相较于这些方案，Gez展现出了显著的优势。它完全基于 ESM（ECMAScript Modules）模块系统设计，不仅默认支持服务器端渲染（SSR），还允许每个服务灵活地导出或使用外部模块。这一过程中，Gez保持了简单透明的特性，使得依赖管理变得精准可控。更值得一提的是，通过 importmap 技术，Gez能够将多个服务的模块映射到具有强缓存、基于内容哈希的URL上，从而确保了应用的高效与稳定。
+- **v1.0**：基于 HTTP 请求实现远程组件按需加载
+- **v2.0**：采用 Webpack Module Federation 实现组件联邦
+- **v3.0**：基于浏览器原生 ESM 重新设计[模块链接](/guide/essentials/module-link)系统
+
+## 技术背景
+在微前端架构发展过程中，传统解决方案主要存在以下局限：
+
+### 现有方案的挑战
+- **性能瓶颈**：运行时依赖注入和 JavaScript 沙箱代理带来显著的性能开销
+- **隔离机制**：自研沙箱环境难以企及浏览器原生的模块隔离能力
+- **构建复杂性**：为实现依赖共享而进行的构建工具改造，增加了项目维护成本
+- **标准偏离**：特殊的部署策略和运行时处理机制，与现代 Web 开发标准相悖
+- **生态限制**：框架耦合和定制 API 导致技术栈选择受限
+
+### 技术创新
+Gez 基于现代 Web 标准，提供了全新的解决方案：
+
+- **原生模块系统**：利用浏览器原生 ESM 和 Import Maps 实现依赖管理
+- **标准隔离机制**：基于 ECMAScript 模块作用域实现可靠的应用隔离
+- **开放技术栈**：支持任意现代前端框架的无缝接入
+- **优化开发体验**：提供符合直觉的开发模式和完整的调试能力
+- **极致性能优化**：通过原生能力实现零运行时开销，配合智能缓存策略
 
 :::tip
-Gez的初衷在于打造一个支持服务器端渲染（SSR）的微服务架构，旨在助力构建高性能且规模庞大的 Web 应用程序。
+Gez 专注于打造高性能、易扩展的微前端基础设施，尤其适合大规模服务端渲染应用场景。
 :::
 
-## 调研
+## 技术规范
 
-- **现代JavaScript支持**：参考了Vite的定义，基准为浏览器对 [ESM dynamic import](https://caniuse.com/es6-module-dynamic-import) 和 [import.meta](https://caniuse.com/mdn-javascript_operators_import_meta) 的支持。
+### 环境依赖
+- **浏览器要求**
   - Chrome ≥ 87
   - Firefox ≥ 78
   - Safari ≥ 14
   - Edge ≥ 88
-  - Node.js ≥ 22.6
 
-- **内容哈希与importmap**：构建产物具备内容哈希，利用 [importmap](https://caniuse.com/?search=import%20map) 技术将 `import vue from 'vue'` 转换为 `ssr-npm/npm/vue.[contenthash].final.js`，确保静态文件的强缓存。对于不支持importmap的浏览器，采用 [es-module-shims](https://github.com/guybedford/es-module-shims) 进行降级处理。
+- **Node.js 要求**
+  - 版本 ≥ 22.6
+  - 支持 ESM 动态导入和 import.meta
+  - 原生支持 TypeScript（通过 --experimental-strip-types 标志）
 
-- **Rspack与ESM外部依赖**：Rspack 的 externalsType 支持 [module-import](https://rspack.dev/config/externals#externalstypemodule-import)，便于设置 ESM 模块的外部依赖。
+### 核心技术栈
+- **ESM 规范**：基于 [ESM dynamic import](https://caniuse.com/es6-module-dynamic-import) 和 [import.meta](https://caniuse.com/mdn-javascript_operators_import_meta)
+- **依赖管理**：采用 [Import Maps](https://caniuse.com/?search=import%20map) 实现模块映射，使用 [es-module-shims](https://github.com/guybedford/es-module-shims) 提供兼容支持
+- **构建系统**：基于 Rspack 的 [module-import](https://rspack.dev/config/externals#externalstypemodule-import) 处理外部依赖
+- **开发工具链**：支持 ESM 热更新和 TypeScript 原生执行
 
-- **Node.js上的ESM热更新**：尽管在 Node.js 上实现 ESM 模块的热更新具有挑战性，但可通过启用 `node --experimental-vm-modules --experimental-import-meta-resolve` 来实现。
+## 框架定位
+Gez 不同于 [Next.js](https://nextjs.org) 或 [Nuxt.js](https://nuxt.com/)，而是专注于提供微前端基础设施：
 
-- **Node.js原生支持TypeScript**：自 Node.js 22.6 版本起，支持 `--experimental-strip-types`，从而原生支持运行TypeScript代码。
+- **模块链接系统**：实现高效、可靠的模块导入导出
+- **服务端渲染**：提供灵活的 SSR 实现机制
+- **类型系统支持**：集成完整的 TypeScript 类型定义
+- **框架中立性**：支持主流前端框架集成
 
-::: tip
-经过一年多的构思与对Vite、farmfe、Rspack的深入调研，我们成功打通了这条路径，并确保其生产环境可用性。
-:::
+## 架构设计
 
-## 定位
-Gez 的定位并非旨在成为一个如同 [Next.js](https://nextjs.org) 或 [Nuxt.js](https://nuxt.com/) 那样功能全面的大型框架。相反，它致力于成为一个具备 [Typescript](https://www.typescriptlang.org/)、ESM、SSR（服务器端渲染）以及[模块链接](/guide/essentials/module-link.mdx)等核心特性的基础设施。基于这样的基础，开发者可以自由地构建出属于自己的 `Next.js`。对于那些追求高度定制化的实现，Gez 将是一个理想的选择。
+### 中心化依赖管理
+- **统一依赖源**：集中化的第三方依赖管理
+- **自动化分发**：依赖更新的全局自动同步
+- **版本一致性**：精确的依赖版本控制
 
-## 模块链接
-在大型项目开发过程中，为了提高代码的可维护性和复用性，通常会将项目拆分为多个组件库、工具库和业务模块。这些部分往往分散在不同的位置，可能以 multirepo 或 monorepo 包的形式进行管理和存储。然而，这些分散的模块最终需要通过系统的主程序进行有效的整合和链接，以确保整个系统的协同工作。
+### 模块化设计
+- **职责分离**：业务逻辑与基础设施解耦
+- **插件机制**：支持模块的灵活组合与替换
+- **标准接口**：规范化的模块间通信协议
 
-在这个过程中，Gez发挥了至关重要的作用。其核心功能在于能够快速地将这些分布在不同地方的模块进行链接，从而形成一个完整、统一的系统。通过Gez，开发者可以轻松地实现一个服务的发布，并确保其他相关服务能够同步更新，大大提高了开发效率和系统的一致性。
+### 性能优化
+- **零开销原则**：最大化利用浏览器原生能力
+- **智能缓存**：基于内容哈希的精确缓存策略
+- **按需加载**：精细化的代码分割与依赖管理
 
-简而言之，Gez为大型项目的模块整合提供了便捷、高效的解决方案，使得分散的模块能够迅速聚合，共同构建出稳定、可靠的大型应用系统。
-
-
-## 设计理念
-在构建大型软件项目时，我们遵循以下核心理念，以确保系统的稳定性、可维护性和高效性：
-
-### 基础服务集中化
-我们倡导设计一个集中的基础服务，该服务将作为所有第三方依赖的单一来源。这种集中化的管理方式能够简化依赖关系，降低系统的复杂性。
-
-### 统一依赖管理
-基础服务不仅提供第三方依赖，还负责这些依赖的统一维护和更新。通过集中管理依赖的生命周期，我们可以确保整个系统中使用的依赖版本是一致的，从而避免版本冲突和不一致性问题。
-
-### 一次发布，全局生效
-当基础服务中的第三方依赖发生更新时，我们采用“一次发布，所有业务系统生效”的策略。这意味着一旦基础服务发布了新的依赖版本，所有依赖该服务的业务系统都将立即使用这些更新，无需在每个业务系统中单独进行更新操作。这种机制大大提高了系统的更新效率和一致性。
-
-### 业务与依赖解耦
-我们鼓励将业务服务与第三方依赖进行解耦。业务服务应专注于构建和处理业务逻辑，而不直接管理第三方依赖。所有对第三方依赖的引用都应通过基础服务进行间接访问。这种设计使得业务服务更加轻量级、灵活，且易于维护和扩展。
-
-综上所述，我们的设计理念旨在通过基础服务的集中化管理和统一维护，简化大型项目中的依赖关系，提高系统的整体稳定性和开发效率。同时，通过解耦业务服务与第三方依赖，我们为系统的未来扩展和维护奠定了坚实的基础。
-
-## 兼容性
-所有的主流浏览器都已经支持，针对一些低版本的浏览器，可以提供一个升级的页面来引导用户升级它的浏览器。
-
-## 可靠性
-从 `v1.0`、`v2.0` 到现在的 `v3.0`，已经走过了将近 5 年的时光，支持起了公司内部数十个业务的项目，并且不断地推动业务项目的升级。
+## 项目成熟度
+Gez 通过近 5 年的迭代演进（v1.0 至 v3.0），已在企业级环境中得到全面验证。目前支撑数十个业务项目稳定运行，并持续推动技术栈现代化升级。框架的稳定性、可靠性和性能优势已在实践中得到充分检验，为大规模应用开发提供了可靠的技术基础。
