@@ -1,22 +1,14 @@
-# manifest-json 模块说明
-
-## 目录
-1. [概述](#概述)
-2. [manifest.json 格式](#manifestjson-格式)
-3. [构建工具接入指南](#构建工具接入指南)
-4. [使用示例](#使用示例)
+# manifest.json 模块说明
 
 ## 概述
 
-manifest-json 是 Gez 框架中负责处理服务构建清单的核心模块。它定义了构建产物的元数据结构，并提供了读取和解析这些元数据的功能。
+manifest.json 是 Gez 框架中负责处理服务构建清单的核心模块。它定义了构建产物的元数据结构，并提供了读取和解析这些元数据的功能。本文档详细说明模块的数据结构和使用方法。
 
-## manifest.json 格式
+## 数据结构
 
-### 数据结构
+### ManifestJsonChunks
 
-#### ManifestJsonChunks
-
-这个接口定义了单个源文件编译后的产物信息：
+定义单个源文件编译后的产物信息：
 
 ```typescript
 interface ManifestJsonChunks {
@@ -31,9 +23,9 @@ interface ManifestJsonChunks {
 }
 ```
 
-#### ManifestJson
+### ManifestJson
 
-这个接口定义了整个服务的构建清单：
+定义整个服务的构建清单：
 
 ```typescript
 interface ManifestJson {
@@ -44,39 +36,30 @@ interface ManifestJson {
 }
 ```
 
-### 示例
+## 使用示例
+
+### 基本示例
 
 ```json
 {
     "name": "your-app-name",
     "exports": {
-        "src/entry": "src/entry.abc123.final.js",
-        "npm/vue": "npm/vue.def456.final.js"
+        "src/entry": "src/entry.abc123.js",
+        "npm/vue": "npm/vue.def456.js"
     },
     "buildFiles": [
-        "src/entry.abc123.final.js",
-        "chunks/common.ghi789.final.js",
-        "chunks/common.jkl012.final.css",
-        "npm/vue.def456.final.js"
+        "src/entry.abc123.js",
+        "chunks/common.ghi789.js",
+        "npm/vue.def456.js"
     ],
     "chunks": {
         "your-app-name@src/entry.ts": {
-            "js": "./src/entry.abc123.final.js",
-            "css": [],
+            "js": "./src/entry.abc123.js",
+            "css": ["./src/entry.abc123.css"],
             "resources": [],
             "sizes": {
                 "js": 10000,
-                "css": 0,
-                "resource": 0
-            }
-        },
-        "your-app-name@npm/vue": {
-            "js": "./npm/vue.def456.final.js",
-            "css": [],
-            "resources": [],
-            "sizes": {
-                "js": 100000,
-                "css": 0,
+                "css": 5000,
                 "resource": 0
             }
         }
@@ -84,66 +67,64 @@ interface ManifestJson {
 }
 ```
 
-## 构建工具接入指南
-
-### 构建工具支持
-
-不同的构建工具需要在特定的构建阶段生成 manifest.json：
-
-1. **Webpack**
-   - 使用 emit 钩子
-   - 在最终输出前收集产物信息
-
-2. **Vite**
-   - 使用 writeBundle 钩子
-   - 在产物写入磁盘时处理
-
-3. **Rollup**
-   - 使用 generateBundle 钩子
-   - 在生成最终产物时处理
-
-### 接入要求
-
-1. **文件命名规范**
-   - 所有产物文件名必须包含内容哈希
-   - JS 文件使用 `.final.js` 后缀
-   - CSS 文件使用 `.final.css` 后缀
-
-2. **目录结构**
-   - npm 依赖放在 `npm/` 目录
-   - 动态生成的代码块放在 `chunks/` 目录
-   - 源码编译产物保持原有目录结构
-
-3. **路径处理**
-   - 导出路径需要保持与源码相对路径一致
-   - 第三方依赖使用 `npm/` 前缀
-
-4. **性能统计**
-   - 确保准确收集各类文件的大小信息
-   - JS、CSS、资源文件分别统计
-   - 文件大小使用字节数表示
-
-## 使用示例
-
-### 基础用法
+### 在代码中使用
 
 ```typescript
 import { Gez } from '@gez/core';
 
-// 创建 Gez 实例
 const gez = new Gez({
     root: './src',
     isProd: process.env.NODE_ENV === 'production'
 });
 
-// 获取客户端构建产物信息
+// 获取构建清单
 const manifests = await gez.getManifestList('client');
 
-// 示例：获取特定组件的资源信息
+// 获取入口模块信息
 const entryModule = manifests.find(m => m.exports['src/entry']);
 if (entryModule) {
     const chunkInfo = entryModule.chunks['src/entry'];
     console.log('Entry JS:', chunkInfo.js);
     console.log('Entry CSS:', chunkInfo.css);
-    console.log('Entry Size:', chunkInfo.sizes);
 }
+```
+
+## 构建工具集成
+
+### 文件命名规范
+
+- JS 文件：`[name].[hash].js`
+- CSS 文件：`[name].[hash].css`
+- 资源文件：`[name].[hash].[ext]`
+
+### 目录结构规范
+
+```
+dist/
+├── src/                 # 源码编译产物
+├── npm/                 # npm 依赖
+└── chunks/              # 动态生成的代码块
+```
+
+### 路径处理规范
+
+- 导出路径：保持与源码相对路径一致
+- npm 依赖：使用 `npm/` 前缀
+- 动态代码块：使用 `chunks/` 前缀
+
+## 最佳实践
+
+1. **文件组织**
+   - 遵循目录结构规范
+   - 使用一致的命名规则
+   - 合理组织代码块
+
+2. **性能优化**
+   - 合理拆分代码块
+   - 优化资源大小
+   - 利用缓存机制
+
+3. **维护管理**
+   - 定期清理旧文件
+   - 监控资源大小
+   - 保持文件结构清晰

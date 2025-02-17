@@ -41,10 +41,6 @@ const list: PkgItem[] = [
                 name: 'render-context'
             },
             {
-                title: 'Middleware',
-                name: 'middleware'
-            },
-            {
                 title: 'ManifestJson',
                 name: 'manifest-json'
             }

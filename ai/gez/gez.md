@@ -92,7 +92,7 @@ interface PackConfig {
 
     /**
      * 指定输出的软件包文件路径
-     * - string: 单个输出路径，如 'dist/versions/my-app.tgz'
+     * - string: 单个输出路径，如 'dist/versions/your-app-name.tgz'
      * - string[]: 多个输出路径，用于同时生成多个版本
      * - boolean: true 时使用默认路径 'dist/client/versions/latest.tgz'
      */
@@ -128,4 +128,3 @@ interface PackConfig {
         file: Buffer
     ) => Promise<void>;
 }
-```
