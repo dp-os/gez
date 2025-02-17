@@ -1,194 +1,191 @@
 import { PackageManagerTabs } from '@theme';
 
 # 快速开始
-这是一个与框架无关的例子，采用原生的 HTML 来开发项目
 
-::: tip
-Gez 默认支持 SSR，但是你可以当成 [CSR](../essentials/csr.mdx) 来使用。
-:::
-## 创建项目
+本文将指导您使用 Gez 框架创建一个基于原生 HTML 的服务端渲染（SSR）应用。通过这个示例，您将了解 Gez 的基本用法、项目结构和核心开发流程。本示例适合初学者入门，同时也展示了 Gez 框架的主要特性。
+
+## 项目初始化
+
+### 1. 创建项目目录
 ```bash
-cd 项目目录
-npm init
+# 创建并进入项目目录
+mkdir your-app-name && cd your-app-name
+
+# 初始化 package.json
+npm init -y
 ```
-## 设置 ESM
+
+### 2. 配置项目基础信息
 ```json title="package.json"
 {
-    "type": "module",
+    "name": "your-app-name",
+    "type": "module",        // 启用 ECMAScript 模块系统，支持原生 ESM 导入导出
+    "private": true,         // 设置为私有包，防止意外发布到 npm 仓库
+    "scripts": {
+        "dev": "gez dev",                    // 启动开发服务器，支持 HMR 和实时编译
+        "build": "npm run build:dts && npm run build:ssr",  // 执行完整的生产构建流程
+        "build:ssr": "gez build",            // 构建 SSR 应用，优化静态资源
+        "build:dts": "tsc --declaration --emitDeclarationOnly --outDir dist/src",  // 生成 TypeScript 类型声明文件
+        "preview": "gez preview",             // 预览生产构建结果
+        "start": "NODE_ENV=production node dist/index.js"   // 以生产模式启动服务器
+    }
 }
 ```
 
-## 安装依赖
+### 3. 安装依赖
 
-**安装生产依赖**
+**运行时依赖**
 <PackageManagerTabs command="install @gez/core" />
-**安装开发依赖**
+
+**开发依赖**
 <PackageManagerTabs command="install @gez/rspack typescript @types/node -D" />
 
-:::tip
-总是应该将生产依赖和开发依赖区分，会使 `node_modules` 在生产环境中更小。
+::: tip 依赖管理说明
+- `@gez/core`：框架核心运行时，提供服务端渲染引擎和模块链接系统，是应用的基础依赖
+- `@gez/rspack`：基于 Rspack 的高性能构建工具，支持开发环境的热更新和生产环境的资源优化
+- `typescript`：JavaScript 的超集，提供静态类型检查和最新的 ECMAScript 特性支持
+- `@types/node`：Node.js 的 TypeScript 类型定义，用于服务端代码的类型提示
+
 :::
 
-## 添加脚本
-```json title="package.json"
+### 4. 配置 TypeScript
+```json title="tsconfig.json"
 {
-    "scripts": {
-        "dev": "gez dev",
-        "build": "npm run build:dts && npm run build:ssr",
-        "build:ssr": "gez build",
-        "preview": "gez preview",
-        "start": "NODE_ENV=production node dist/index.js",
-        "build:dts": "tsc --declaration --emitDeclarationOnly --outDir dist/src"
+    "compilerOptions": {
+        // 模块配置
+        "module": "ESNext",
+        "moduleResolution": "node",
+        "isolatedModules": true,
+        "resolveJsonModule": true,
+        
+        // 编译目标
+        "target": "ESNext",
+        "lib": ["ESNext", "DOM"],
+        
+        // 类型检查
+        "strict": true,
+        "skipLibCheck": true,
+        "types": ["@types/node"],
+        
+        // 语言特性
+        "experimentalDecorators": true,
+        "allowSyntheticDefaultImports": true,
+        
+        // 路径映射
+        "baseUrl": ".",
+        "paths": {
+            "@app/src/*": ["./src/*"],
+            "@app/*": [".*"]
+        }
     },
+    "include": ["src"],
+    "exclude": ["dist", "node_modules"]
 }
 ```
 
-:::tip 
-你需要手动配置 [tsconfig.json](https://www.typescriptlang.org/tsconfig/) 文件，否则执行 `build:dts` 命令会报错。
-:::
+## 核心代码实现
 
-## 目录结构
+### 1. 创建项目结构
 ```
-- src/
-  - entry.client.ts  # 客户端渲染入口。
-  - entry.server.ts  # 服务端渲染入口。
-  - entry.node.ts    # 创建服务器。
-- tsconfig.json      # TS 的配置。
-- package.json       # 软件包配置。
+your-app-name/
+├── src/
+│   ├── entry.client.ts   # 客户端入口：浏览器端逻辑
+│   ├── entry.server.ts   # 服务端入口：SSR 渲染逻辑
+│   └── entry.node.ts     # 服务器入口：HTTP 服务配置
+├── tsconfig.json         # TypeScript 配置
+└── package.json          # 项目配置
 ```
-## tsconfig.json
 
-```json
-{
-    "compilerOptions": {
-        "isolatedModules": true,
-        "experimentalDecorators": true,
-        "resolveJsonModule": true,
-        "types": [
-            "@types/node"
-        ],
-        "target": "ESNext",
-        "module": "ESNext",
-        "moduleResolution": "node",
-        "strict": true,
-        "skipLibCheck": true,
-        "allowSyntheticDefaultImports": true,
-        "paths": {
-            "ssr-html/src/*": [
-                "./src/*"
-            ],
-            "ssr-html/*": [
-                "./*"
-            ]
-        }
-    },
-    "include": [
-        "src"
-    ],
-    "exclude": [
-        "dist"
-    ]
-  }
-```
-::: warning
-你需要将上面的 `ssr-html`，替换成 `package.json` 的 `name` 字段的值。
-:::
-
-## 创建服务器
-创建一个 web 服务器，来处理客户请求
+### 2. 配置 HTTP 服务器
 ```ts title="src/entry.node.ts"
 import http from 'node:http';
 import type { GezOptions } from '@gez/core';
 
 export default {
-    // 本地执行 dev 和 build 时会使用
+    // 配置开发环境的应用创建器
+    // 用于设置开发服务器的编译和热更新功能
     async createDevApp(gez) {
         return import('@gez/rspack').then((m) =>
             m.createRspackHtmlApp(gez, {
                 config(context) {
-                    // 可以在这里修改 Rspack 编译的配置
+                    // 在此处自定义 Rspack 编译配置
+                    // 可配置模块解析、资源处理等选项
                 }
             })
         );
     },
+    // 配置 HTTP 服务器
+    // 处理请求路由和服务端渲染
     async createServer(gez) {
         const server = http.createServer((req, res) => {
-            // 静态文件处理
+            // 使用 Gez 中间件处理静态资源
+            // 支持开发环境的实时编译和生产环境的缓存优化
             gez.middleware(req, res, async () => {
-                // 传入渲染的参数
+                // 执行服务端渲染
+                // 传入 URL 参数用于路由匹配
                 const rc = await gez.render({
                     params: {
                         url: req.url
                     }
                 });
-                // 响应 HTML 内容
+                // 返回渲染后的 HTML
                 res.end(rc.html);
             });
         });
-        // 监听端口
+        // 启动 HTTP 服务器并监听 3000 端口
         server.listen(3000, () => {
-            console.log('http://localhost:3000');
+            console.log('服务器已启动：http://localhost:3000');
         });
     }
 } satisfies GezOptions;
 ```
 
-## 服务端渲染
-模拟框架的 SSR API，渲染出 HTML 内容返回
+### 3. 实现服务端渲染
 ```ts title="src/entry.server.ts"
 import type { RenderContext } from '@gez/core';
 
 export default async (rc: RenderContext) => {
     // 提交依赖收集
     await rc.commit();
-    // 响应 HTML
+
+    // 生成 HTML
     const time = new Date().toISOString();
     rc.html = `
 <!DOCTYPE html>
 <html>
 <head>
-    ${rc.preload()}
-    <title>Gez</title>
-    ${rc.css()}
+    ${rc.preload()}           <!-- 预加载资源 -->
+    <title>Gez 示例</title>
+    ${rc.css()}               <!-- 注入样式 -->
 </head>
 <body>
-    <h1>Gez</h1>
-    <h2>Hello world!</h2>
-    <p>URL: ${rc.params.url}</p>
+    <h1>Gez 示例</h1>
+    <h2>欢迎使用！</h2>
+    <p>当前 URL: ${rc.params.url}</p>
     <time>${time}</time>
-    ${rc.importmap()}
-    ${rc.moduleEntry()}
-    ${rc.modulePreload()}
+    ${rc.importmap()}         <!-- 导入映射 -->
+    ${rc.moduleEntry()}       <!-- 入口模块 -->
+    ${rc.modulePreload()}     <!-- 模块预加载 -->
 </body>
 </html>
 `;
 };
-
 ```
 
-## 客户端渲染
-更新当前时间
+### 4. 实现客户端交互
 ```ts title="src/entry.client.ts"
+// 实现时间自动更新
 const time = document.querySelector('time');
 setInterval(() => {
     time?.setHTMLUnsafe(new Date().toISOString());
 }, 1000);
-
 ```
 
-## 启动项目
+## 启动和预览
+
+1. 启动开发服务器
 ```bash
 npm run dev
 ```
-> 浏览器打开：http://localhost:3000
 
-## 更多例子
-- ssr-html：[源码](https://github.com/dp-os/gez/tree/master/examples/ssr-html)、[预览](https://dp-os.github.io/gez/ssr-html/)
-- ssr-preact-htm：[源码](https://github.com/dp-os/gez/tree/master/examples/ssr-preact-htm)、[预览](https://dp-os.github.io/gez/ssr-preact-htm/)
-- ssr-vue2-remote：[源码](https://github.com/dp-os/gez/tree/master/examples/ssr-vue2-remote)、[预览](https://dp-os.github.io/gez/ssr-vue2-remote/)
-- ssr-vue2-host：[源码](https://github.com/dp-os/gez/tree/master/examples/ssr-vue2-host)、[预览](https://dp-os.github.io/gez/ssr-vue2-host/)
-- ssr-vue3：[源码](https://github.com/dp-os/gez/tree/master/examples/ssr-vue3)、[预览](https://dp-os.github.io/gez/ssr-vue3/)
-
-:::tip
-如果你使用了 Gez，欢迎提交 PR，在这里提供更多的例子。
-:::
+2. 在浏览器中访问：http://localhost:3000
