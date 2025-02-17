@@ -20,8 +20,6 @@ export function createRspackConfig(
 ): RspackOptions {
     const isWebApp = buildTarget === 'client' || buildTarget === 'server';
     const isHot = buildTarget === 'client' && !gez.isProd;
-
-    const libraryType = 'module';
     return {
         /**
          * 项目根目录，不可修改
@@ -59,7 +57,7 @@ export function createRspackConfig(
                 ? 'chunks/[name].[contenthash:8].final.js'
                 : 'chunks/[name].js',
             library: {
-                type: libraryType
+                type: 'modern-module'
             },
             filename:
                 buildTarget !== 'node' && gez.isProd
@@ -129,6 +127,7 @@ export function createRspackConfig(
         },
         optimization: {
             minimize: options.minimize ?? gez.isProd,
+            avoidEntryIife: true,
             concatenateModules: gez.isProd,
             emitOnErrors: true,
             splitChunks: {
