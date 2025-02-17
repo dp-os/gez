@@ -1,12 +1,12 @@
 import path from 'node:path';
 import { defineConfig } from 'rspress/config';
-import { generateDts } from './generate-dts';
-
-generateDts();
 
 export default defineConfig({
     root: path.join(__dirname, 'src'),
-    outDir: path.join(__dirname, 'dist/client'),
+    outDir:
+        process.env.NODE_ENV === 'production'
+            ? path.join(__dirname, 'dist/client')
+            : undefined,
     globalStyles: path.join(__dirname, 'src/styles/index.css'),
     title: 'Gez',
     description:
