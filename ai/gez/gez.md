@@ -39,7 +39,7 @@ export interface GezOptions {
     createServer?: (gez: Gez) => Promise<void>;
 
     /** 生产环境构建后处理器 */
-    postCompileProdHook?: (gez: Gez) => Promise<void>;
+    postBuild?: (gez: Gez) => Promise<void>;
 }
 ```
 

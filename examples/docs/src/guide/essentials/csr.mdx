@@ -43,7 +43,7 @@ export default async (rc: RenderContext) => {
 
 ## 生成静态 HTML
 
-要在生产环境中使用客户端渲染，需要在构建阶段生成静态的 HTML 文件。Gez 提供了 `postCompileProdHook` 钩子函数来实现这一功能。
+要在生产环境中使用客户端渲染，需要在构建阶段生成静态的 HTML 文件。Gez 提供了 `postBuild` 钩子函数来实现这一功能。
 
 ```ts title="src/entry.node.ts"
 import path from 'node:path';
@@ -51,7 +51,7 @@ import type { GezOptions } from '@gez/core';
 
 export default {
     // ... 其它配置项
-    async postCompileProdHook(gez) {
+    async postBuild(gez) {
         // 执行一次渲染，获取渲染上下文
         const { rc } = await gez.render({
             params: {
@@ -70,7 +70,7 @@ export default {
 ```
 
 ::: tip 提示
-`postCompileProdHook` 钩子会在生产环境构建完成后执行。你可以利用这个钩子不仅生成客户端渲染所需的 HTML 文件，还可以实现完整的静态站点生成（SSG）功能。
+`postBuild` 钩子会在生产环境构建完成后执行。你可以利用这个钩子不仅生成客户端渲染所需的 HTML 文件，还可以实现完整的静态站点生成（SSG）功能。
 :::
 
 ## 部署说明

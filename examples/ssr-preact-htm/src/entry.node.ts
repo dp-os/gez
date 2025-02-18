@@ -33,7 +33,7 @@ export default {
             console.log('http://localhost:3001');
         });
     },
-    async postCompileProdHook(gez) {
+    async postBuild(gez) {
         const render = await gez.render({
             params: { url: '/' }
         });

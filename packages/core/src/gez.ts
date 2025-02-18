@@ -33,7 +33,7 @@ export interface GezOptions {
     packs?: PackConfig;
     createDevApp?: (gez: Gez) => Promise<App>;
     createServer?: (gez: Gez) => Promise<void>;
-    postCompileProdHook?: (gez: Gez) => Promise<void>;
+    postBuild?: (gez: Gez) => Promise<void>;
 }
 
 export type AppBuildTarget = 'client' | 'server';
@@ -135,9 +135,9 @@ export class Gez {
         await this._options?.createServer?.(this);
     }
 
-    public async postCompileProdHook(): Promise<boolean> {
+    public async postBuild(): Promise<boolean> {
         try {
-            await this._options.postCompileProdHook?.(this);
+            await this._options.postBuild?.(this);
             return true;
         } catch (e) {
             console.error(e);
@@ -269,10 +269,11 @@ export class Gez {
     }
     public async getImportMapClientCode(
         mode: ImportmapMode
-    ): Promise<{ src: string | null; code: string }> {
+    ): Promise<{ src: string | null; filepath: string | null; code: string }> {
         return this.readied.cache(`getImportMap-${mode}`, async () => {
             const importmap = await this.getImportMap('client');
             const { basePathPlaceholder } = this;
+            let filepath: string | null = null;
             if (this._importmapHash === null) {
                 let wrote = false;
                 const code = `(() => {
@@ -290,20 +291,20 @@ innerHTML: JSON.stringify(importmap)
 }));
 })();`;
                 const hash = contentHash(code);
-                const filename = this.resolvePath(
+                filepath = this.resolvePath(
                     'dist/client/importmap',
                     `${hash}.final.js`
                 );
                 try {
                     const existingContent = await fsp.readFile(
-                        filename,
+                        filepath,
                         'utf-8'
                     );
                     if (existingContent !== code) {
-                        wrote = await this.write(filename, code);
+                        wrote = await this.write(filepath, code);
                     }
                 } catch {
-                    wrote = await this.write(filename, code);
+                    wrote = await this.write(filepath, code);
                 }
                 if (wrote) {
                     this._importmapHash = hash;
@@ -313,6 +314,7 @@ innerHTML: JSON.stringify(importmap)
                 const src = `${basePathPlaceholder}${this.basePath}importmap/${this._importmapHash}.final.js`;
                 return {
                     src,
+                    filepath,
                     code: `<script data-base="${basePathPlaceholder}" src="${src}"></script>`
                 };
             }
@@ -324,6 +326,7 @@ innerHTML: JSON.stringify(importmap)
             }
             return {
                 src: null,
+                filepath: null,
                 code: `<script type="importmap">${serialize(importmap, { isJSON: true })}</script>`
             };
         });

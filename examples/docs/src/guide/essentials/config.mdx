@@ -208,7 +208,7 @@ export default {
 你也可以使用其它的框架来创建服务器，例如：[Express](https://expressjs.com/)。
 :::
 
-### postCompileProdHook() <Badge text="v3.0.0" type="tip" />
+### postBuild() <Badge text="v3.0.0" type="tip" />
 - **类型：**`(gez: Gez) => Promise<void>`
 - **默认值：** `undefined`
 - **描述：** [gez build](./command.mdx#gez-build) 构建完成后，以生产模式执行的钩子。
@@ -217,7 +217,7 @@ export default {
 import path from 'node:path';
 
 export default {
-    async postCompileProdHook(gez) {
+    async postBuild(gez) {
         const render = await gez.render({
             base: '/gez',
             params: { url: '/' }

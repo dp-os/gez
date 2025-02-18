@@ -40,7 +40,7 @@ export default {
             console.log('http://localhost:3000');
         });
     },
-    async postCompileProdHook(gez) {
+    async postBuild(gez) {
         const list: string[] = ['/', '/about', '/404'];
         for (const url of list) {
             const rc = await gez.render({

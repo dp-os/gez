@@ -36,7 +36,7 @@ export default {
             'root:src/examples/index.ts'
         ]
     },
-    async postCompileProdHook(gez) {
+    async postBuild(gez) {
         const render = await gez.render({
             params: { url: '/' }
         });

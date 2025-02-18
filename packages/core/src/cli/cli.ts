@@ -30,14 +30,14 @@ export async function cli(command: string) {
             exit(await gez.init(COMMAND.build));
             exit(await gez.destroy());
 
-            if (typeof opts.postCompileProdHook === 'function') {
+            if (typeof opts.postBuild === 'function') {
                 // 生产模式运行
                 gez = new Gez({
                     ...opts,
                     createServer: undefined
                 });
                 exit(await gez.init(COMMAND.start));
-                exit(await gez.postCompileProdHook());
+                exit(await gez.postBuild());
             }
 
             // 释放内存
@@ -54,7 +54,7 @@ export async function cli(command: string) {
             // 生产模式运行
             gez = new Gez(opts);
             exit(await gez.init(COMMAND.start));
-            exit(await gez.postCompileProdHook());
+            exit(await gez.postBuild());
 
             // 释放内存
             gez = null;
