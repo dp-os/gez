@@ -28,7 +28,7 @@ RenderContext 是 Gez 框架中的一个核心类，主要负责服务端渲染�
 
 在 Gez 框架中，开发者通常不需要直接创建 RenderContext 实例，而是通过 `gez.render()` 方法来获取实例：
 
-```ts
+```ts title="src/entry.node.ts"
 async createServer(gez) {
     const server = http.createServer((req, res) => {
         // 静态文件处理
@@ -97,7 +97,7 @@ RenderContext 严格控制资源注入顺序，这种顺序设计是基于浏览
 
 一个典型的 RenderContext 使用流程如下：
 
-```ts
+```ts title="src/entry.server.ts"
 export default async (rc: RenderContext) => {
     // 1. 渲染页面内容并收集依赖
     const app = createApp();
@@ -133,7 +133,7 @@ export default async (rc: RenderContext) => {
 
 RenderContext 提供了一个灵活的动态基础路径配置机制，支持在运行时动态设置静态资源的基础路径：
 
-```ts
+```ts title="src/entry.node.ts"
 const rc = await gez.render({
     base: '/gez',  // 设置基础路径
     params: {
@@ -171,7 +171,7 @@ RenderContext 提供了两种导入映射（Import Map）模式：
 
 可以通过配置选择合适的模式：
 
-```ts
+```ts title="src/entry.node.ts"
 const rc = await gez.render({
     importmapMode: 'js',  // 'inline' | 'js'
     params: {
@@ -179,6 +179,44 @@ const rc = await gez.render({
     }
 });
 ```
+
+### 入口函数配置
+
+RenderContext 支持通过 `entryName` 配置来指定服务端渲染的入口函数：
+
+```ts title="src/entry.node.ts"
+const rc = await gez.render({
+    entryName: 'mobile',  // 指定使用移动端入口函数
+    params: {
+        url: req.url
+    }
+});
+```
+
+这种机制特别适用于以下场景：
+
+1. **多模板渲染**
+   ```ts title="src/entry.server.ts"
+   // 移动端入口函数
+   export const mobile = async (rc: RenderContext) => {
+       // 移动端特定的渲染逻辑
+   };
+
+   // 桌面端入口函数
+   export const desktop = async (rc: RenderContext) => {
+       // 桌面端特定的渲染逻辑
+   };
+   ```
+
+2. **A/B 测试**
+   - 支持同一页面使用不同的渲染逻辑
+   - 便于进行用户体验实验
+   - 灵活切换不同的渲染策略
+
+3. **特殊渲染需求**
+   - 支持某些页面使用自定义的渲染流程
+   - 适应不同场景的性能优化需求
+   - 实现更精细的渲染控制
 
 ## 最佳实践
 

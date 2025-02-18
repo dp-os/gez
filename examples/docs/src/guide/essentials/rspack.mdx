@@ -2,17 +2,17 @@ import { PackageManagerTabs, Badge } from '@theme';
 
 # Rspack
 
+## 概述
+
 Gez 基于 [Rspack](https://rspack.dev/) 构建系统实现，充分利用了 Rspack 的高性能构建能力。本文档将详细介绍 Gez 提供的 Rspack 相关配置模块及其使用方法。
 
-::: tip
-Gez 提供了 `@gez/rspack` 的 `createRspackHtmlApp` 函数，支持构建 [Vue](../framework/vue.mdx)、[React](../framework/react.mdx)、[Preact](../framework/preact.mdx)、[Solid](../framework/solid.mdx)、[Svelte](../framework/solid.mdx) 等主流前端框架的应用。
-:::
+## 基础配置模块
 
-## 基础配置模块 (@gez/rspack)
+### @gez/rspack
 
-`@gez/rspack` 模块提供了 Rspack 的基础配置能力。
+`@gez/rspack` 模块提供了 Rspack 的基础配置能力，是 Gez 框架的核心构建工具。
 
-### 安装
+#### 安装
 
 使用包管理器安装 `@gez/rspack` 开发依赖：
 
@@ -26,14 +26,14 @@ Gez 提供了 `@gez/rspack` 的 `createRspackHtmlApp` 函数，支持构建 [Vue
 Gez 的默认配置是框架正常运行的基础，请勿修改这些配置。你可以[查看源码](https://github.com/dp-os/gez/blob/master/packages/rspack/src/config.ts)了解默认配置的具体内容。
 :::
 
-#### 配置选项
+## 配置选项
 
-##### config() <Badge text="v3.0.0" type="tip" />
+### config() <Badge text="v3.0.0" type="tip" />
 - **类型：** `config?: (context: RspackAppConfigContext) => void`
 - **默认值：** `undefined`
 - **描述：** 用于自定义 Rspack 配置的函数
 
-#### 使用示例
+## 使用示例
 
 ```ts title="src/entry.node.ts"
 import type { GezOptions } from '@gez/core';
@@ -54,14 +54,13 @@ export default {
                                 options: {
                                     jsc: {
                                         parser: {
-                                            syntax: 'typescript',
-                                        },
-                                    },
-                                },
-                                type: 'javascript/auto',
+                                            syntax: 'typescript'
+                                        }
+                                    }
+                                }
                             }
                         ]
-                    }
+                    };
                 }
             })
         );

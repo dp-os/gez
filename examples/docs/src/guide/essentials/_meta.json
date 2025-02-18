@@ -5,6 +5,5 @@
     "csr",
     "alias",
     "base-path",
-    "module-link",
-    "command"
+    "module-link"
 ]
