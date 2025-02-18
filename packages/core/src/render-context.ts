@@ -981,7 +981,7 @@ export class RenderContext {
         Object.keys(files).forEach(
             (key) => (this.files[key] = Array.from(files[key]))
         );
-        this._importMap = await gez.getImportMapClientCode(this.importmapMode);
+        this._importMap = await gez.getImportMapClientInfo(this.importmapMode);
     }
     /**
      * 生成资源预加载标签

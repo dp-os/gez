@@ -267,7 +267,7 @@ export class Gez {
             return Object.freeze(json);
         });
     }
-    public async getImportMapClientCode(
+    public async getImportMapClientInfo(
         mode: ImportmapMode
     ): Promise<{ src: string | null; filepath: string | null; code: string }> {
         return this.readied.cache(`getImportMap-${mode}`, async () => {
@@ -300,7 +300,9 @@ innerHTML: JSON.stringify(importmap)
                         filepath,
                         'utf-8'
                     );
-                    if (existingContent !== code) {
+                    if (existingContent === code) {
+                        wrote = true;
+                    } else {
                         wrote = await this.write(filepath, code);
                     }
                 } catch {
@@ -350,6 +352,8 @@ innerHTML: JSON.stringify(importmap)
         );
     }
 }
+
+export interface ImportmapResult {}
 
 async function defaultCreateDevApp(): Promise<App> {
     throw new Error("'createDevApp' function not set");
