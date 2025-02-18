@@ -306,11 +306,9 @@ innerHTML: JSON.stringify(importmap)
                 } catch {
                     wrote = await this.write(filepath, code);
                 }
-                if (wrote) {
-                    this._importmapHash = hash;
-                }
+                this._importmapHash = wrote ? hash : '';
             }
-            if (mode === 'js' && this._importmapHash !== null) {
+            if (mode === 'js' && this._importmapHash) {
                 const src = `${basePathPlaceholder}${this.basePath}importmap/${this._importmapHash}.final.js`;
                 return {
                     src,
