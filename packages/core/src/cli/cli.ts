@@ -3,6 +3,12 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { COMMAND, Gez, type GezOptions } from '../gez';
 
+async function getSrcOptions(): Promise<GezOptions> {
+    return import(path.resolve(process.cwd(), './src/entry.node.ts')).then(
+        (m) => m.default
+    );
+}
+
 export async function cli(command: string) {
     if (command !== COMMAND.dev) {
         process.env.NODE_ENV = 'production';
@@ -11,7 +17,7 @@ export async function cli(command: string) {
     let opts: GezOptions | null = null;
     switch (command) {
         case COMMAND.dev:
-            opts = await Gez.getSrcOptions();
+            opts = await getSrcOptions();
             gez = new Gez(opts);
             exit(await gez.init(COMMAND.dev));
 
@@ -25,7 +31,7 @@ export async function cli(command: string) {
             );
         case COMMAND.build:
             // 编译代码。
-            opts = await Gez.getSrcOptions();
+            opts = await getSrcOptions();
             gez = new Gez(opts);
             exit(await gez.init(COMMAND.build));
             exit(await gez.destroy());
@@ -45,7 +51,7 @@ export async function cli(command: string) {
             opts = null;
             break;
         case COMMAND.preview:
-            opts = await Gez.getSrcOptions();
+            opts = await getSrcOptions();
             // 编译代码
             gez = new Gez(opts);
             exit(await gez.init(COMMAND.build));
