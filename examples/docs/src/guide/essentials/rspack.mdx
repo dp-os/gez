@@ -39,7 +39,7 @@ Gez 的默认配置是框架正常运行的基础，请勿修改这些配置。�
 import type { GezOptions } from '@gez/core';
 
 export default {
-    async createDevApp(gez) {
+    async devApp(gez) {
         return import('@gez/rspack').then((m) =>
             m.createRspackApp(gez, {
                 config({ config }) {
@@ -133,7 +133,7 @@ export default {
 import type { GezOptions } from '@gez/core';
 
 export default {
-    async createDevApp(gez) {
+    async devApp(gez) {
         return import('@gez/rspack').then((m) =>
             m.createRspackHtmlApp(gez, {
                 // 自定义构建配置
@@ -181,7 +181,7 @@ export default {
 import type { GezOptions } from '@gez/core';
 
 export default {
-    async createDevApp(gez) {
+    async devApp(gez) {
         return import('@gez/rspack-vue').then((m) =>
             m.createRspackVue2App(gez, {
                 config ({ config }) {
@@ -201,7 +201,7 @@ export default {
 import type { GezOptions } from '@gez/core';
 
 export default {
-    async createDevApp(gez) {
+    async devApp(gez) {
         return import('@gez/rspack-vue').then((m) =>
             m.createRspackVue3App(gez, {
                 config ({ config }) {

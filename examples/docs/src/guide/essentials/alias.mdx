@@ -109,7 +109,7 @@ import { logger } from 'remote-service/src/utils';
 
 ```ts
 export default {
-    async createDevApp(gez) {
+    async devApp(gez) {
         return import('@gez/rspack').then((m) =>
             m.createApp(gez, (buildContext) => {
                 buildContext.config.resolve = {

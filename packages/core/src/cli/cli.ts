@@ -34,7 +34,7 @@ export async function cli(command: string) {
                 // 生产模式运行
                 gez = new Gez({
                     ...opts,
-                    createServer: undefined
+                    server: undefined
                 });
                 exit(await gez.init(COMMAND.start));
                 exit(await gez.postBuild());

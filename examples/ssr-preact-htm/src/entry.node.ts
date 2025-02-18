@@ -3,7 +3,7 @@ import type { GezOptions } from '@gez/core';
 
 export default {
     // 本地执行 dev 和 build 时会使用
-    async createDevApp(gez) {
+    async devApp(gez) {
         // 这里应使用动态模块。生产依赖不存在。
         return import('@gez/rspack').then((m) =>
             m.createRspackHtmlApp(gez, {
@@ -14,8 +14,8 @@ export default {
             })
         );
     },
-    async createServer(gez) {
-        const server = http.createServer((req, res) => {
+    async server(gez) {
+        const server = http.server((req, res) => {
             // 静态文件处理
             gez.middleware(req, res, async () => {
                 // 传入渲染的参数

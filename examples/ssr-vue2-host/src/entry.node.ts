@@ -2,7 +2,7 @@ import type { GezOptions } from '@gez/core';
 import express from 'express';
 
 export default {
-    async createDevApp(gez) {
+    async devApp(gez) {
         return import('@gez/rspack-vue').then((m) =>
             m.createRspackVue2App(gez)
         );
@@ -21,7 +21,7 @@ export default {
             vue: 'ssr-vue2-remote/npm/vue'
         }
     },
-    async createServer(gez) {
+    async server(gez) {
         const server = express();
         server.use(gez.middleware);
         server.get('*', async (req, res) => {

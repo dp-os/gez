@@ -31,8 +31,8 @@ export interface GezOptions {
     basePathPlaceholder?: string | false;
     modules?: ModuleConfig;
     packs?: PackConfig;
-    createDevApp?: (gez: Gez) => Promise<App>;
-    createServer?: (gez: Gez) => Promise<void>;
+    devApp?: (gez: Gez) => Promise<App>;
+    server?: (gez: Gez) => Promise<void>;
     postBuild?: (gez: Gez) => Promise<void>;
 }
 
@@ -131,8 +131,8 @@ export class Gez {
         return this.readied.packConfig;
     }
 
-    public async createServer(): Promise<void> {
-        await this._options?.createServer?.(this);
+    public async server(): Promise<void> {
+        await this._options?.server?.(this);
     }
 
     public async postBuild(): Promise<boolean> {
@@ -174,9 +174,9 @@ export class Gez {
             cache: createCache(this.isProd)
         };
 
-        const createDevApp = this._options.createDevApp || defaultCreateDevApp;
+        const devApp = this._options.devApp || defaultdevApp;
         const app: App = [COMMAND.dev, COMMAND.build].includes(command)
-            ? await createDevApp(this)
+            ? await devApp(this)
             : await createApp(this, command);
 
         this.readied.app = app;
@@ -184,7 +184,7 @@ export class Gez {
         switch (command) {
             case COMMAND.dev:
             case COMMAND.start:
-                await this.createServer();
+                await this.server();
                 break;
             case COMMAND.build:
                 return this.build();
@@ -370,8 +370,8 @@ innerHTML: JSON.stringify(importmap)
 
 export interface ImportmapResult {}
 
-async function defaultCreateDevApp(): Promise<App> {
-    throw new Error("'createDevApp' function not set");
+async function defaultdevApp(): Promise<App> {
+    throw new Error("'devApp' function not set");
 }
 
 class NotReadyError extends Error {

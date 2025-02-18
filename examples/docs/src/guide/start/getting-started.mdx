@@ -111,7 +111,7 @@ import type { GezOptions } from '@gez/core';
 export default {
     // 配置开发环境的应用创建器
     // 用于设置开发服务器的编译和热更新功能
-    async createDevApp(gez) {
+    async devApp(gez) {
         return import('@gez/rspack').then((m) =>
             m.createRspackHtmlApp(gez, {
                 config(context) {
@@ -123,8 +123,8 @@ export default {
     },
     // 配置 HTTP 服务器
     // 处理请求路由和服务端渲染
-    async createServer(gez) {
-        const server = http.createServer((req, res) => {
+    async server(gez) {
+        const server = http.server((req, res) => {
             // 使用 Gez 中间件处理静态资源
             // 支持开发环境的实时编译和生产环境的缓存优化
             gez.middleware(req, res, async () => {

@@ -19,7 +19,7 @@ import { type Middleware, createMiddleware } from './utils/middleware';
  * // entry.node.ts
  * export default {
  *   // 开发环境配置
- *   async createDevApp(gez) {
+ *   async devApp(gez) {
  *     return import('@gez/rspack').then((m) =>
  *       m.createRspackHtmlApp(gez, {
  *         config(rc) {

@@ -31,7 +31,7 @@ middleware 是一个静态资源处理中间件，根据运行环境提供不同
 
 示例：
 ```typescript
-const server = http.createServer((req, res) => {
+const server = http.server((req, res) => {
     // 静态资源处理
     gez.middleware(req, res, async () => {
         const rc = await gez.render({ url: req.url });
@@ -83,7 +83,7 @@ destroy 函数用于清理资源：
 
 ```typescript
 export default {
-    async createDevApp(gez) {
+    async devApp(gez) {
         return import('@gez/rspack').then((m) =>
             m.createRspackHtmlApp(gez)
         );
@@ -95,7 +95,7 @@ export default {
 
 ```typescript
 export default {
-    async createDevApp(gez) {
+    async devApp(gez) {
         return import('@gez/rspack-vue').then((m) =>
             m.createRspackVue2App(gez)
         );
@@ -107,7 +107,7 @@ export default {
 
 ```typescript
 export default {
-    async createDevApp(gez) {
+    async devApp(gez) {
         return import('@gez/rspack').then((m) =>
             m.createRspackHtmlApp(gez)
         );

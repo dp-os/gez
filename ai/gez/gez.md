@@ -33,10 +33,10 @@ export interface GezOptions {
     packs?: PackConfig;
 
     /** 开发环境应用创建器 */
-    createDevApp?: (gez: Gez) => Promise<App>;
+    devApp?: (gez: Gez) => Promise<App>;
 
     /** HTTP 服务创建器 */
-    createServer?: (gez: Gez) => Promise<void>;
+    server?: (gez: Gez) => Promise<void>;
 
     /** 生产环境构建后处理器 */
     postBuild?: (gez: Gez) => Promise<void>;
