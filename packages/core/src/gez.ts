@@ -230,8 +230,13 @@ export class Gez {
         write.sync(filepath, data);
     }
 
-    public async write(filepath: string, data: any): Promise<void> {
-        await write(filepath, data);
+    public async write(filepath: string, data: any): Promise<boolean> {
+        try {
+            await write(filepath, data);
+            return true;
+        } catch {
+            return false;
+        }
     }
 
     public readJsonSync(filename: string): any {
@@ -262,33 +267,27 @@ export class Gez {
             return Object.freeze(json);
         });
     }
-    public async getImportMapClientCode(mode: ImportmapMode) {
+    public async getImportMapClientCode(
+        mode: ImportmapMode
+    ): Promise<{ src: string | null; code: string }> {
         return this.readied.cache(`getImportMap-${mode}`, async () => {
             const importmap = await this.getImportMap('client');
             const { basePathPlaceholder } = this;
-            if (mode === 'inline') {
-                if (importmap.imports && basePathPlaceholder) {
-                    const imports = importmap.imports;
-                    Object.entries(imports).forEach(([k, v]) => {
-                        imports[k] = basePathPlaceholder + v;
-                    });
-                }
-                return `<script type="importmap">${serialize(importmap, { isJSON: true })}</script>`;
-            }
             if (this._importmapHash === null) {
+                let wrote = false;
                 const code = `(() => {
-    const base = document.currentScript.getAttribute('data-base');
-    const importmap = ${serialize(importmap, { isJSON: true })};
-    if (importmap.imports && base) {
-        const imports = importmap.imports;
-        Object.entries(imports).forEach(([k, v]) => {
-            imports[k] = base + v;
-        });
-    }
-    document.head.appendChild(Object.assign(document.createElement('script'), {
-    type: 'importmap',
-    innerHTML: JSON.stringify(importmap)
-    }));
+const base = document.currentScript.getAttribute('data-base');
+const importmap = ${serialize(importmap, { isJSON: true })};
+if (importmap.imports && base) {
+    const imports = importmap.imports;
+    Object.entries(imports).forEach(([k, v]) => {
+        imports[k] = base + v;
+    });
+}
+document.head.appendChild(Object.assign(document.createElement('script'), {
+type: 'importmap',
+innerHTML: JSON.stringify(importmap)
+}));
 })();`;
                 const hash = contentHash(code);
                 const filename = this.resolvePath(
@@ -301,14 +300,32 @@ export class Gez {
                         'utf-8'
                     );
                     if (existingContent !== code) {
-                        await this.write(filename, code);
+                        wrote = await this.write(filename, code);
                     }
                 } catch {
-                    await this.write(filename, code);
+                    wrote = await this.write(filename, code);
                 }
-                this._importmapHash = hash;
+                if (wrote) {
+                    this._importmapHash = hash;
+                }
             }
-            return `<script data-base="${basePathPlaceholder}" src="${basePathPlaceholder}${this.basePath}importmap/${this._importmapHash}.final.js"></script>`;
+            if (mode === 'js' && this._importmapHash !== null) {
+                const src = `${basePathPlaceholder}${this.basePath}importmap/${this._importmapHash}.final.js`;
+                return {
+                    src,
+                    code: `<script data-base="${basePathPlaceholder}" src="${src}"></script>`
+                };
+            }
+            if (importmap.imports && basePathPlaceholder) {
+                const imports = importmap.imports;
+                Object.entries(imports).forEach(([k, v]) => {
+                    imports[k] = basePathPlaceholder + v;
+                });
+            }
+            return {
+                src: null,
+                code: `<script type="importmap">${serialize(importmap, { isJSON: true })}</script>`
+            };
         });
     }
 

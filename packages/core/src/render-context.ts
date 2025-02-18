@@ -608,7 +608,10 @@ export class RenderContext {
         modulepreload: [],
         resources: []
     };
-    private _importMap = '';
+    private _importMap: { src: string | null; code: string } = {
+        src: '',
+        code: ''
+    };
     /**
      * 定义 importmap 的生成模式
      *
@@ -1025,12 +1028,16 @@ export class RenderContext {
      * ```
      */
     public preload() {
-        const css = this.files.css
-            .map((url) => {
-                return `<link rel="preload" href="${url}" as="style">`;
-            })
-            .join('');
-        return css;
+        const { files, _importMap } = this;
+        const list = files.css.map((url) => {
+            return `<link rel="preload" href="${url}" as="style">`;
+        });
+        if (_importMap.src) {
+            list.push(
+                `<link rel="preload" href="${_importMap.src}" as="script">`
+            );
+        }
+        return list.join('');
     }
     /**
      * 注入首屏样式表
@@ -1146,7 +1153,7 @@ export class RenderContext {
      * ```
      */
     public importmap() {
-        return this._importMap;
+        return this._importMap.code;
     }
     /**
      * 注入客户端入口模块
