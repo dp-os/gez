@@ -30,7 +30,7 @@ RenderContext 是 Gez 框架中的一个核心类，主要负责服务端渲染�
 
 ```ts title="src/entry.node.ts"
 async server(gez) {
-    const server = http.server((req, res) => {
+    const server = http.createServer((req, res) => {
         // 静态文件处理
         gez.middleware(req, res, async () => {
             // 通过 gez.render() 获取 RenderContext 实例

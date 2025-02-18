@@ -148,6 +148,7 @@ interface Readied {
 }
 
 export class Gez {
+    // 基础属性和构造函数
     private readonly _options: GezOptions;
     private _readied: Readied | null = null;
     private _importmapHash: string | null = null;
@@ -163,68 +164,7 @@ export class Gez {
         throw new NotReadyError();
     }
 
-    public get name() {
-        return this.moduleConfig.name;
-    }
-
-    public get varName() {
-        return '__' + this.name.replace(/[^a-zA-Z]/g, '_') + '__';
-    }
-
-    public get root(): string {
-        const { root = cwd() } = this._options;
-        if (path.isAbsolute(root)) {
-            return root;
-        }
-        return path.resolve(cwd(), root);
-    }
-
-    public get isProd(): boolean {
-        return this._options?.isProd ?? process.env.NODE_ENV === 'production';
-    }
-
-    public get basePath() {
-        return `/${this.name}/`;
-    }
-
-    public get basePathPlaceholder(): string {
-        const varName = this._options.basePathPlaceholder;
-        if (varName === false) {
-            return '';
-        }
-        return varName ?? '[[[___GEZ_DYNAMIC_BASE___]]]';
-    }
-
-    public get command(): COMMAND {
-        return this.readied.command;
-    }
-
-    public get COMMAND() {
-        return COMMAND;
-    }
-
-    public get moduleConfig() {
-        return this.readied.moduleConfig;
-    }
-
-    public get packConfig() {
-        return this.readied.packConfig;
-    }
-
-    public async server(): Promise<void> {
-        await this._options?.server?.(this);
-    }
-
-    public async postBuild(): Promise<boolean> {
-        try {
-            await this._options.postBuild?.(this);
-            return true;
-        } catch (e) {
-            console.error(e);
-            return false;
-        }
-    }
-
+    // 生命周期相关方法
     public async init(command: COMMAND): Promise<boolean> {
         if (this._readied) {
             throw new Error('Cannot be initialized repeatedly');
@@ -294,6 +234,69 @@ export class Gez {
         return successful ?? true;
     }
 
+    public async server(): Promise<void> {
+        await this._options?.server?.(this);
+    }
+
+    public async postBuild(): Promise<boolean> {
+        try {
+            await this._options.postBuild?.(this);
+            return true;
+        } catch (e) {
+            console.error(e);
+            return false;
+        }
+    }
+
+    // 配置相关的 getter 方法
+    public get name() {
+        return this.moduleConfig.name;
+    }
+
+    public get varName() {
+        return '__' + this.name.replace(/[^a-zA-Z]/g, '_') + '__';
+    }
+
+    public get root(): string {
+        const { root = cwd() } = this._options;
+        if (path.isAbsolute(root)) {
+            return root;
+        }
+        return path.resolve(cwd(), root);
+    }
+
+    public get isProd(): boolean {
+        return this._options?.isProd ?? process.env.NODE_ENV === 'production';
+    }
+
+    public get basePath() {
+        return `/${this.name}/`;
+    }
+
+    public get basePathPlaceholder(): string {
+        const varName = this._options.basePathPlaceholder;
+        if (varName === false) {
+            return '';
+        }
+        return varName ?? '[[[___GEZ_DYNAMIC_BASE___]]]';
+    }
+
+    public get command(): COMMAND {
+        return this.readied.command;
+    }
+
+    public get COMMAND() {
+        return COMMAND;
+    }
+
+    public get moduleConfig() {
+        return this.readied.moduleConfig;
+    }
+
+    public get packConfig() {
+        return this.readied.packConfig;
+    }
+
     public get middleware() {
         return this.readied.app.middleware;
     }
@@ -302,6 +305,7 @@ export class Gez {
         return this.readied.app.render;
     }
 
+    // 文件操作相关方法
     public resolvePath(projectPath: ProjectPath, ...args: string[]): string {
         return resolvePath(this.root, projectPath, ...args);
     }
@@ -327,6 +331,7 @@ export class Gez {
         return JSON.parse(await fsp.readFile(filename, 'utf-8'));
     }
 
+    // importmap 相关方法
     public async getManifestList(
         target: AppBuildTarget
     ): Promise<readonly ManifestJson[]> {
@@ -347,6 +352,7 @@ export class Gez {
             return Object.freeze(json);
         });
     }
+
     public async getImportMapClientInfo<T extends ImportmapMode>(
         mode: T
     ): Promise<

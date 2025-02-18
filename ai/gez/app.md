@@ -31,7 +31,7 @@ middleware 是一个静态资源处理中间件，根据运行环境提供不同
 
 示例：
 ```typescript
-const server = http.server((req, res) => {
+const server = http.createServer((req, res) => {
     // 静态资源处理
     gez.middleware(req, res, async () => {
         const rc = await gez.render({ url: req.url });

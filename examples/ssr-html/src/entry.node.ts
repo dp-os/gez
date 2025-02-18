@@ -19,7 +19,7 @@ export default {
         );
     },
     async server(gez) {
-        const server = http.server((req, res) => {
+        const server = http.createServer((req, res) => {
             // 静态文件处理
             gez.middleware(req, res, async () => {
                 res.setHeader('Content-Type', 'text/html;charset=UTF-8');

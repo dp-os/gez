@@ -124,7 +124,7 @@ export default {
     // 配置 HTTP 服务器
     // 处理请求路由和服务端渲染
     async server(gez) {
-        const server = http.server((req, res) => {
+        const server = http.createServer((req, res) => {
             // 使用 Gez 中间件处理静态资源
             // 支持开发环境的实时编译和生产环境的缓存优化
             gez.middleware(req, res, async () => {
