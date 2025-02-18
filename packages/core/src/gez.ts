@@ -267,16 +267,30 @@ export class Gez {
             return Object.freeze(json);
         });
     }
-    public async getImportMapClientInfo(
-        mode: ImportmapMode
-    ): Promise<{ src: string | null; filepath: string | null; code: string }> {
-        return this.readied.cache(`getImportMap-${mode}`, async () => {
-            const importmap = await this.getImportMap('client');
-            const { basePathPlaceholder } = this;
-            let filepath: string | null = null;
-            if (this._importmapHash === null) {
-                let wrote = false;
-                const code = `(() => {
+    public async getImportMapClientInfo<T extends ImportmapMode>(
+        mode: T
+    ): Promise<
+        T extends 'js'
+            ? {
+                  src: string;
+                  filepath: string;
+                  code: string;
+              }
+            : {
+                  src: null;
+                  filepath: null;
+                  code: string;
+              }
+    > {
+        return this.readied.cache(
+            `getImportMap-${mode}`,
+            async (): Promise<any> => {
+                const importmap = await this.getImportMap('client');
+                const { basePathPlaceholder } = this;
+                let filepath: string | null = null;
+                if (this._importmapHash === null) {
+                    let wrote = false;
+                    const code = `(() => {
 const base = document.currentScript.getAttribute('data-base');
 const importmap = ${serialize(importmap, { isJSON: true })};
 if (importmap.imports && base) {
@@ -290,46 +304,47 @@ type: 'importmap',
 innerHTML: JSON.stringify(importmap)
 }));
 })();`;
-                const hash = contentHash(code);
-                filepath = this.resolvePath(
-                    'dist/client/importmap',
-                    `${hash}.final.js`
-                );
-                try {
-                    const existingContent = await fsp.readFile(
-                        filepath,
-                        'utf-8'
+                    const hash = contentHash(code);
+                    filepath = this.resolvePath(
+                        'dist/client/importmap',
+                        `${hash}.final.js`
                     );
-                    if (existingContent === code) {
-                        wrote = true;
-                    } else {
+                    try {
+                        const existingContent = await fsp.readFile(
+                            filepath,
+                            'utf-8'
+                        );
+                        if (existingContent === code) {
+                            wrote = true;
+                        } else {
+                            wrote = await this.write(filepath, code);
+                        }
+                    } catch {
                         wrote = await this.write(filepath, code);
                     }
-                } catch {
-                    wrote = await this.write(filepath, code);
+                    this._importmapHash = wrote ? hash : '';
                 }
-                this._importmapHash = wrote ? hash : '';
-            }
-            if (mode === 'js' && this._importmapHash) {
-                const src = `${basePathPlaceholder}${this.basePath}importmap/${this._importmapHash}.final.js`;
+                if (mode === 'js' && this._importmapHash) {
+                    const src = `${basePathPlaceholder}${this.basePath}importmap/${this._importmapHash}.final.js`;
+                    return {
+                        src,
+                        filepath,
+                        code: `<script data-base="${basePathPlaceholder}" src="${src}"></script>`
+                    };
+                }
+                if (importmap.imports && basePathPlaceholder) {
+                    const imports = importmap.imports;
+                    Object.entries(imports).forEach(([k, v]) => {
+                        imports[k] = basePathPlaceholder + v;
+                    });
+                }
                 return {
-                    src,
-                    filepath,
-                    code: `<script data-base="${basePathPlaceholder}" src="${src}"></script>`
+                    src: null,
+                    filepath: null,
+                    code: `<script type="importmap">${serialize(importmap, { isJSON: true })}</script>`
                 };
             }
-            if (importmap.imports && basePathPlaceholder) {
-                const imports = importmap.imports;
-                Object.entries(imports).forEach(([k, v]) => {
-                    imports[k] = basePathPlaceholder + v;
-                });
-            }
-            return {
-                src: null,
-                filepath: null,
-                code: `<script type="importmap">${serialize(importmap, { isJSON: true })}</script>`
-            };
-        });
+        );
     }
 
     public async getStaticImportPaths(
