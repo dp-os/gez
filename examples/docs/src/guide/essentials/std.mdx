@@ -1,54 +1,169 @@
-# 通用约定
+# 标准规范
 
-## 目录规范
-这是一个约定，无法通过程序配置来修改。
+## 项目结构规范
+
+Gez 是一个现代化的 SSR 框架，采用标准化的项目结构和路径解析机制，以确保项目在开发和生产环境中的一致性和可维护性。
+
+### 标准目录结构
+
 ```txt
 root
-│─ dist                  # 编译输出目录。
-│  ├─ package.json       # 编译输出后的软件包配置。
-│  ├─ server             # 服务端编译输出。
-│  │  └─ manifest.json   # 编译清单输出，用于生成 importmap。
-│  ├─ node               # Node 服务器程序编译输出。
-│  ├─ client             # 客户端编译输出。
-│  │  ├─ versions        # 版本存储目录。
-│  │  │  └─ latest.tgz   # 将 dist 目录归档，对外提供软件包分发。
-│  │  └─ manifest.json   # 编译清单输出，用于生成 importmap。
-│  └─ src                # 使用 tsc 生成的文件类型。
+│─ dist                  # 编译输出目录
+│  ├─ package.json       # 编译输出后的软件包配置
+│  ├─ server             # 服务端编译输出
+│  │  └─ manifest.json   # 编译清单输出，用于生成 importmap
+│  ├─ node               # Node 服务器程序编译输出
+│  ├─ client             # 客户端编译输出
+│  │  ├─ versions        # 版本存储目录
+│  │  │  └─ latest.tgz   # 将 dist 目录归档，对外提供软件包分发
+│  │  └─ manifest.json   # 编译清单输出，用于生成 importmap
+│  └─ src                # 使用 tsc 生成的文件类型
 ├─ src
-│  ├─ entry.server.ts    # 服务端应用程序入口。
-│  ├─ entry.client.ts    # 客户端应用程序入口。
-│  └─ entry.node.ts      # Node 服务器应用程序入口。
-├─ tsconfig.json         # TypeScript 配置。
-└─ package.json          # 软件包配置。
+│  ├─ entry.server.ts    # 服务端应用程序入口
+│  ├─ entry.client.ts    # 客户端应用程序入口
+│  └─ entry.node.ts      # Node 服务器应用程序入口
+├─ tsconfig.json         # TypeScript 配置
+└─ package.json          # 软件包配置
 ```
+
 ::: tip 拓展知识
-- `gez.name` 来源于 `package.json` 的 `name` 字段。
-- `dist/package.json` 来源于根目录的 `package.json`。
-- 设置 `packs.enable` 为 `true` 时，才会对 `dist` 目录进行归档。
+- `gez.name` 来源于 `package.json` 的 `name` 字段
+- `dist/package.json` 来源于根目录的 `package.json`
+- 设置 `packs.enable` 为 `true` 时，才会对 `dist` 目录进行归档
 
 :::
 
+### 入口文件职责
+
+#### entry.client.ts
+客户端入口文件负责：
+- 初始化客户端应用
+- 处理客户端路由
+- 实现客户端状态管理
+- 处理客户端事件和交互
+
+#### entry.server.ts
+服务端入口文件负责：
+- 执行服务端渲染（SSR）
+- 生成初始 HTML
+- 处理数据预取
+- 注入状态数据
+- 确保 SEO 优化
+
+#### entry.node.ts
+Node.js 服务器入口文件负责：
+- 配置和启动 HTTP 服务器
+- 处理服务端路由
+- 集成中间件
+- 管理环境变量
+- 处理服务端请求和响应
+
+### 配置文件说明
+
+#### package.json
+
+```json
+{
+  "name": "your-app-name",  // 服务唯一标识，用于部署和服务发现
+  "type": "module",        // 启用 ESM 模块系统（必需）
+  "scripts": {
+    "dev": "gez dev",      // 开发环境启动命令
+    "build": "npm run build:dts && npm run build:ssr",  // 生产环境构建命令
+    "build:ssr": "gez build",  // SSR 构建命令
+    "build:dts": "tsc --declaration --emitDeclarationOnly --outDir dist/src",  // 类型声明文件生成命令
+    "preview": "gez preview",  // 预览生产环境命令
+    "start": "NODE_ENV=production node dist/index.js"  // 生产环境启动命令
+  }
+}
+```
+
+## 核心概念
+
+### 服务（Service）
+
+服务是 Gez 框架中的基本功能单元，负责特定的业务逻辑处理。
+
+#### 特点
+- **独立性**：每个服务都是独立的功能模块，有自己的生命周期和状态管理
+- **可复用性**：服务可以被多个应用或模块共享和复用
+- **可配置性**：支持灵活的配置和扩展，适应不同的业务需求
+
+#### 使用场景
+- 数据处理服务：处理数据转换、格式化等
+- 业务逻辑服务：实现具体的业务功能
+- 工具类服务：提供通用的工具函数
+
+### 模块（Module）
+
+模块是以 ESM（ECMAScript Module）格式导出的代码单元，是 Gez 框架中最基本的共享单位。
+
+#### 特点
+- **标准化**：遵循 ESM 规范，支持静态导入导出
+- **独立性**：具有独立的生命周期和版本管理
+- **可组合性**：支持模块间的组合和依赖管理
+- **可配置性**：提供灵活的导入导出配置
+
+#### 使用场景
+- 微前端应用模块：独立的功能单元
+- 共享组件库：可复用的 UI 组件
+- 工具函数库：通用的工具函数集合
+
+### 软件包（Pack）
+
+软件包是将服务的构建产物打包成标准的 npm .tgz 格式文件，用于分发和部署。
+
+#### 特点
+- **标准化**：使用 npm 标准的 .tgz 打包格式
+- **完整性**：包含源代码、类型声明和配置文件
+- **兼容性**：与 npm 生态系统完全兼容
+
+## 最佳实践
+
+### 服务设计
+- 保持服务的单一职责
+- 定义清晰的服务接口
+- 合理划分服务边界
+
+### 模块开发
+- 使用标准的 ESM 语法
+- 提供完整的类型定义
+- 保持向后兼容性
+
+### 包管理
+- 遵循语义化版本
+- 维护更新日志
+- 确保构建产物的完整性
+
 ## 缓存策略
-在构建生产代码时，可以设置强缓存部分的资源，总是以 `.final[ext]` 作为文件名生成规则。也就是说符合这个规则的文件，可以设置强缓存，否则应设置协商缓存。
+
+在构建生产代码时，可以设置强缓存部分的资源，总是以 `.final[ext]` 作为文件名生成规则。
 
 ### `final` 文件
 ```ts
 res.setHeader('cache-control', 'public, max-age=31536000, immutable')
 ```
+
 ### 其它文件
 ```ts
 res.setHeader('cache-control', 'no-cache')
 ```
+
 ::: tip 小知识
-使用了 `gez.middleware` 中间件，就会默认帮你处理这个逻辑。在生产环境时，你可以自己来实现静态服务器来控制不同的缓存策略，对于你来说 `gez.middleware` 是可选的。[点击这里](https://github.com/dp-os/gez/blob/master/packages/core/src/middleware.ts) 可以参考实现。
+使用了 `gez.middleware` 中间件，就会默认帮你处理这个逻辑。在生产环境时，你可以自己来实现静态服务器来控制不同的缓存策略，对于你来说 `gez.middleware` 是可选的。[点击这里](https://github.com/dp-os/gez/blob/master/packages/core/src/utils/middleware.ts) 可以参考实现。
 :::
 
-## Node experimental
+## Node 环境配置
+
+### 开发环境
 在开发时，`gez` 会启用一些 Node 实验性质的功能，来获得开发环境支持 ESM 热更新和 TypeScript 的原生支持。
+
 ```bash
 node --experimental-vm-modules --experimental-import-meta-resolve --experimental-strip-types
 ```
-但是在生产环境中，我们完全不需要这些，你应该使用构建后的产物来运行程序。
+
+### 生产环境
+在生产环境中，我们使用构建后的产物来运行程序，不需要实验性功能。
+
 ```bash
 NODE_ENV=production node dist/index.js
 ```

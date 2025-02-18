@@ -1,102 +1,204 @@
 # 渲染上下文
-我们有 `entry.node.ts` 和 `entry.server.ts` 两个入口文件，`entry.node.ts` 负责创建服务器，来调用 `entry.server.ts` 生成 HTML。为了简化 CSS 和 JS 的注入，于是提供了一个 `RenderContext` 对象。
 
-## 基本传参
-在 `entry.node.ts` 通常可以看到这样的代码，调用一个渲染函数，然后服务响应 HTML。
-```ts title="entry.node.ts"
+## 核心概念
+
+RenderContext 是 Gez 框架中的一个核心类，主要负责服务端渲染（SSR）过程中的资源管理和 HTML 生成。它具有以下核心特点：
+
+1. **基于 ESM 的模块系统**
+   - 采用现代的 ECMAScript Modules 标准
+   - 支持原生的模块导入导出
+   - 实现了更好的代码分割和按需加载
+
+2. **智能依赖收集**
+   - 基于实际渲染路径动态收集依赖
+   - 避免不必要的资源加载
+   - 支持异步组件和动态导入
+
+3. **精确的资源注入**
+   - 严格控制资源加载顺序
+   - 优化首屏加载性能
+   - 确保客户端激活（Hydration）的可靠性
+
+4. **灵活的配置机制**
+   - 支持动态基础路径配置
+   - 提供多种导入映射模式
+   - 适应不同的部署场景
+
+## 使用方式
+
+在 Gez 框架中，开发者通常不需要直接创建 RenderContext 实例，而是通过 `gez.render()` 方法来获取实例：
+
+```ts
+async createServer(gez) {
+    const server = http.createServer((req, res) => {
+        // 静态文件处理
+        gez.middleware(req, res, async () => {
+            // 通过 gez.render() 获取 RenderContext 实例
+            const rc = await gez.render({
+                params: {
+                    url: req.url
+                }
+            });
+            // 响应 HTML 内容
+            res.end(rc.html);
+        });
+    });
+}
+```
+
+## 主要功能
+
+### 1. 依赖收集
+
+RenderContext 实现了一套智能的依赖收集机制，它基于实际渲染的组件来动态收集依赖，而不是简单地预加载所有可能用到的资源：
+
+#### 按需收集
+- 在组件实际渲染过程中自动追踪和记录模块依赖
+- 只收集当前页面渲染时真正使用到的 CSS、JavaScript 等资源
+- 通过 `importMetaSet` 精确记录每个组件的模块依赖关系
+- 支持异步组件和动态导入的依赖收集
+
+#### 自动化处理
+- 开发者无需手动管理依赖收集过程
+- 框架自动在组件渲染时收集依赖信息
+- 通过 `commit()` 方法统一处理所有收集到的资源
+- 自动处理循环依赖和重复依赖的问题
+
+#### 性能优化
+- 避免加载未使用的模块，显著减少首屏加载时间
+- 精确控制资源加载顺序，优化页面渲染性能
+- 自动生成最优的导入映射（Import Map）
+- 支持资源预加载和按需加载策略
+
+### 2. 资源注入
+
+RenderContext 提供了多个方法来注入不同类型的资源，每个方法都经过精心设计以优化资源加载性能：
+
+- `preload()`：预加载 CSS 和 JS 资源，支持优先级配置
+- `css()`：注入首屏样式表，支持关键 CSS 提取
+- `importmap()`：注入模块导入映射，支持动态路径解析
+- `moduleEntry()`：注入客户端入口模块，支持多入口配置
+- `modulePreload()`：预加载模块依赖，支持按需加载策略
+
+### 3. 资源注入顺序
+
+RenderContext 严格控制资源注入顺序，这种顺序设计是基于浏览器的工作原理和性能优化考虑：
+
+1. head 部分：
+   - `preload()`：预加载 CSS 和 JS 资源，让浏览器尽早发现并开始加载这些资源
+   - `css()`：注入首屏样式表，确保页面样式在内容渲染时就位
+
+2. body 部分：
+   - `importmap()`：注入模块导入映射，定义 ESM 模块的路径解析规则
+   - `moduleEntry()`：注入客户端入口模块，必须在 importmap 之后执行
+   - `modulePreload()`：预加载模块依赖，必须在 importmap 之后执行
+
+## 完整渲染流程
+
+一个典型的 RenderContext 使用流程如下：
+
+```ts
+export default async (rc: RenderContext) => {
+    // 1. 渲染页面内容并收集依赖
+    const app = createApp();
+    const html = await renderToString(app, {
+       importMetaSet: rc.importMetaSet
+    });
+
+    // 2. 提交依赖收集
+    await rc.commit();
+    
+    // 3. 生成完整 HTML
+    rc.html = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+            ${rc.preload()}
+            ${rc.css()}
+        </head>
+        <body>
+            ${html}
+            ${rc.importmap()}
+            ${rc.moduleEntry()}
+            ${rc.modulePreload()}
+        </body>
+        </html>
+    `;
+};
+```
+
+## 高级特性
+
+### 基础路径配置
+
+RenderContext 提供了一个灵活的动态基础路径配置机制，支持在运行时动态设置静态资源的基础路径：
+
+```ts
 const rc = await gez.render({
-    // 传入渲染的参数
+    base: '/gez',  // 设置基础路径
     params: {
         url: req.url
     }
 });
-// 响应 HTML 内容
-res.end(rc.html);
 ```
-在 `entry.server.ts` 接收到传入的参数，并且根据传入的参数来响应内容。
-```ts title="entry.server.ts"
-import type { RenderContext } from '@gez/core';
 
-export default async (rc: RenderContext) => {
-    // 传入的参数
-    console.log(rc.params);
-    // 提交模块依赖收集
-    await rc.commit();
-    // 响应内容
-    rc.html = `你好世界！`;
-}
-```
-## 模块依赖收集
-在 SSR 应用程序中，要处理注入渲染页面的 CSS 和 JS 文件，并不是一件简单的事情，当需要考虑多服务提供的模块时，这个问题将会变得更难。庆幸的是，Gez 提供了一个标准的实现方案，并且在 Vue 中提供了完整的实现。    
+这种机制特别适用于以下场景：
 
-在构建阶段，Gez 会给服务端生成的每一个 JS 文件头部注入一个 `import.meta.chunkName` 字段，该字段提供了一个 chunk 文件打包的入口源文件。
-```ts title="[chunk].js"
-import.meta.chunkName= import.meta.chunkName ?? "ssr-vue2-remote@src/entry.ts";
-```
-`ssr-vue2-remote` 是我们的服务名，`src/entry.ts` 是这个文件打包的第一个文件。    
+1. **多语言站点部署**
+   ```
+   主域名.com      → 默认语言
+   主域名.com/cn/  → 中文站点
+   主域名.com/en/  → 英文站点
+   ```
 
-例如：
+2. **微前端应用**
+   - 支持子应用在不同路径下灵活部署
+   - 便于集成到不同的主应用中
+
+### 导入映射模式
+
+RenderContext 提供了两种导入映射（Import Map）模式：
+
+1. **Inline 模式**（默认）
+   - 将导入映射直接内联到 HTML 中
+   - 适合小型应用，减少额外的网络请求
+   - 页面加载时立即可用
+
+2. **JS 模式**
+   - 通过外部 JavaScript 文件加载导入映射
+   - 适合大型应用，可以利用浏览器缓存机制
+   - 支持动态更新映射内容
+
+可以通过配置选择合适的模式：
+
 ```ts
-import('ssr-vue2-remote/src/app.ts');
-```
-上述代码，就会生成
-```ts
-import.meta.chunkName = import.meta.chunkName ?? "ssr-vue2-remote@src/app.ts";
-```
-### Vue2 例子
-将渲染上下文的 `importMetaSet` 对象传递给 Vue SSR 渲染的上下文对象中。
-```ts title="entry.server.ts"
-export default async (rc: RenderContext) => {
-    const { app } = createApp();
-
-    const html = await renderer.renderToString(app, {
-        importMetaSet: rc.importMetaSet
-    });
-    // ......
-};
-
-```
-在 Vue 组件中，收集上下文依赖。
-```ts title="App.vue"
-export default {
-    serverPrefetch () {
-        this.$ssrContext?.importMetaSet.add(import.meta);
+const rc = await gez.render({
+    importmapMode: 'js',  // 'inline' | 'js'
+    params: {
+        url: req.url
     }
-}
+});
 ```
 
-::: tip
-在实际的操作中，`@gez/rspack-vue` 已经在编译 `.vue` 组件时，已经将这段代码注入，你不需要手动调用。
-:::
+## 最佳实践
 
-等 Vue 组件渲染完成后，调用 `await rc.commit()` 函数来提交模块上下文的依赖收集， `rc.preload()`、`rc.css()`、`rc.importmap()`、`rc.modulePreload()` 才能正确的注入客户端所需的依赖。
-```ts title="entry.server.ts"
+1. **获取 RenderContext 实例**
+   - 始终通过 `gez.render()` 方法获取实例
+   - 根据需要传入适当的参数
+   - 避免手动创建实例
 
-export default async (rc: RenderContext) => {
-    // ......
-    await rc.commit();
+2. **依赖收集**
+   - 确保所有模块都正确调用 `importMetaSet.add(import.meta)`
+   - 在渲染完成后立即调用 `commit()` 方法
+   - 合理使用异步组件和动态导入优化首屏加载
 
-    rc.html = `
-<!DOCTYPE html>
-<html>
-<head>
-    ${rc.preload()}
-    <title>Gez</title>
-    ${rc.css()}
-</head>
-<body>
-    ${html}
-    ${rc.importmap()}
-    ${rc.moduleEntry()}
-    ${rc.modulePreload()}
-</body>
-</html>
-`;
-};
+3. **资源注入**
+   - 严格遵循资源注入顺序
+   - 不要在 body 中注入 CSS
+   - 确保 importmap 在 moduleEntry 之前
 
-```
-
-## 深入了解
-::: tip
-如果你想更加深入了解模块依赖收集，可以看下 [ssr-html](https://github.com/dp-os/gez/tree/master/examples/ssr-html) 这个例子，它是通过编码的形式来实现模块的依赖收集。
-:::
+4. **性能优化**
+   - 使用 preload 预加载关键资源
+   - 合理使用 modulePreload 优化模块加载
+   - 避免不必要的资源加载
+   - 利用浏览器缓存机制优化加载性能
