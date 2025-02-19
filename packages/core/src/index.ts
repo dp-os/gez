@@ -3,6 +3,8 @@ export {
     type COMMAND,
     type AppBuildTarget,
     type ImportMap,
+    type SpecifierMap,
+    type ScopesMap,
     Gez
 } from './gez';
 export {
@@ -19,9 +21,9 @@ export {
 export { type App, createApp } from './app';
 export {
     type RenderContextOptions,
-    RenderContext,
     type ServerRenderHandle,
-    type RenderFiles
+    type RenderFiles,
+    RenderContext
 } from './render-context';
 export {
     isImmutableFile,

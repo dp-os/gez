@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import fsp from 'node:fs/promises';
 import path from 'node:path';
 import { cwd } from 'node:process';
-import type { ImportMap } from '@gez/import';
+import type { ImportMap, ScopesMap, SpecifierMap } from '@gez/import';
 import write from 'write';
 
 import serialize from 'serialize-javascript';
@@ -139,7 +139,7 @@ export enum COMMAND {
     start = 'start'
 }
 
-export type { ImportMap };
+export type { ImportMap, SpecifierMap, ScopesMap };
 
 interface Readied {
     app: App;
@@ -155,10 +155,6 @@ export class Gez {
     private _readied: Readied | null = null;
     private _importmapHash: string | null = null;
 
-    public constructor(options: GezOptions = {}) {
-        this._options = options;
-    }
-
     private get readied() {
         if (this._readied) {
             return this._readied;
@@ -166,6 +162,164 @@ export class Gez {
         throw new NotReadyError();
     }
 
+    /**
+     * 获取模块名称
+     * @returns {string} 当前模块的名称，来源于模块配置
+     * @throws {NotReadyError} 在框架实例未初始化时抛出错误
+     */
+    public get name(): string {
+        return this.moduleConfig.name;
+    }
+
+    /**
+     * 获取模块变量名
+     * @returns {string} 基于模块名称生成的合法 JavaScript 变量名
+     * @throws {NotReadyError} 在框架实例未初始化时抛出错误
+     */
+    public get varName(): string {
+        return '__' + this.name.replace(/[^a-zA-Z]/g, '_') + '__';
+    }
+
+    /**
+     * 获取项目根目录的绝对路径
+     * @returns {string} 项目根目录的绝对路径
+     * 如果配置的 root 为相对路径，则基于当前工作目录解析为绝对路径
+     */
+    public get root(): string {
+        const { root = cwd() } = this._options;
+        if (path.isAbsolute(root)) {
+            return root;
+        }
+        return path.resolve(cwd(), root);
+    }
+
+    /**
+     * 判断当前是否为生产环境
+     * @returns {boolean} 环境标识
+     * 优先使用配置项中的 isProd，若未配置则根据 process.env.NODE_ENV 判断
+     */
+    public get isProd(): boolean {
+        return this._options?.isProd ?? process.env.NODE_ENV === 'production';
+    }
+
+    /**
+     * 获取模块的基础路径
+     * @returns {string} 以斜杠开头和结尾的模块基础路径
+     * 用于构建模块资源的访问路径
+     */
+    public get basePath(): string {
+        return `/${this.name}/`;
+    }
+
+    /**
+     * 获取基础路径占位符
+     * @returns {string} 基础路径占位符或空字符串
+     * 用于运行时动态替换模块的基础路径，可通过配置禁用
+     */
+    public get basePathPlaceholder(): string {
+        const varName = this._options.basePathPlaceholder;
+        if (varName === false) {
+            return '';
+        }
+        return varName ?? '[[[___GEZ_DYNAMIC_BASE___]]]';
+    }
+
+    /**
+     * 获取当前执行的命令
+     * @returns {COMMAND} 当前正在执行的命令枚举值
+     * @throws {NotReadyError} 在框架实例未初始化时调用此方法会抛出错误
+     */
+    public get command(): COMMAND {
+        return this.readied.command;
+    }
+
+    /**
+     * 获取命令枚举类型
+     * @returns {typeof COMMAND} 命令枚举类型定义
+     */
+    public get COMMAND(): typeof COMMAND {
+        return COMMAND;
+    }
+
+    /**
+     * 获取模块配置信息
+     * @returns {ParsedModuleConfig} 当前模块的完整配置信息
+     */
+    public get moduleConfig(): ParsedModuleConfig {
+        return this.readied.moduleConfig;
+    }
+
+    /**
+     * 获取打包配置信息
+     * @returns {ParsedPackConfig} 当前模块的打包相关配置
+     */
+    public get packConfig(): ParsedPackConfig {
+        return this.readied.packConfig;
+    }
+
+    /**
+     * 获取应用程序的静态资源处理中间件。
+     *
+     * 该中间件负责处理应用程序的静态资源请求，根据运行环境提供不同的实现：
+     * - 开发环境：支持源码的实时编译、热更新，使用 no-cache 缓存策略
+     * - 生产环境：处理构建后的静态资源，支持不可变文件的长期缓存
+     *
+     * @returns {Middleware} 返回静态资源处理中间件函数
+     * @throws {NotReadyError} 在框架实例未初始化时调用此方法会抛出错误
+     *
+     * @example
+     * ```typescript
+     * const server = http.createServer((req, res) => {
+     *     // 使用中间件处理静态资源请求
+     *     gez.middleware(req, res, async () => {
+     *         const rc = await gez.render({ url: req.url });
+     *         res.end(rc.html);
+     *     });
+     * });
+     * ```
+     */
+    public get middleware(): Middleware {
+        return this.readied.app.middleware;
+    }
+
+    /**
+     * 获取应用程序的服务端渲染函数。
+     *
+     * 该函数负责执行服务端渲染，根据运行环境提供不同的实现：
+     * - 开发环境：加载源码中的服务端入口文件，支持热更新和实时预览
+     * - 生产环境：加载构建后的服务端入口文件，提供优化的渲染性能
+     *
+     * @returns {(options?: RenderContextOptions) => Promise<RenderContext>} 返回服务端渲染函数
+     * @throws {NotReadyError} 在框架实例未初始化时调用此方法会抛出错误
+     *
+     * @example
+     * ```typescript
+     * // 基本用法
+     * const rc = await gez.render({
+     *     params: { url: req.url }
+     * });
+     * res.end(rc.html);
+     *
+     * // 高级配置
+     * const rc = await gez.render({
+     *     base: '',           // 设置基础路径
+     *     importmapMode: 'inline',    // 设置导入映射模式
+     *     entryName: 'default',    // 指定渲染入口
+     *     params: {
+     *         url: req.url,
+     *         state: { user: 'admin' }
+     *     }
+     * });
+     * ```
+     */
+    public get render(): (
+        options?: RenderContextOptions
+    ) => Promise<RenderContext> {
+        return this.readied.app.render;
+    }
+    public constructor(options: GezOptions = {}) {
+        this._options = options;
+    }
     /**
      * 初始化 Gez 框架实例。
      *
@@ -182,7 +336,6 @@ export class Gez {
      *
      * @returns 初始化成功返回 true
      * @throws {Error} 重复初始化时抛出错误
-     * @throws {NotReadyError} 访问未初始化的实例时抛出错误
      *
      * @example
      * ```typescript
@@ -463,160 +616,6 @@ export class Gez {
             return false;
         }
     }
-
-    /**
-     * 获取模块名称
-     * @returns {string} 当前模块的名称，来源于模块配置
-     * @throws {NotReadyError} 在框架实例未初始化时抛出错误
-     */
-    public get name(): string {
-        return this.moduleConfig.name;
-    }
-
-    /**
-     * 获取模块变量名
-     * @returns {string} 基于模块名称生成的合法 JavaScript 变量名
-     * @throws {NotReadyError} 在框架实例未初始化时抛出错误
-     */
-    public get varName(): string {
-        return '__' + this.name.replace(/[^a-zA-Z]/g, '_') + '__';
-    }
-
-    /**
-     * 获取项目根目录的绝对路径
-     * @returns {string} 项目根目录的绝对路径
-     * 如果配置的 root 为相对路径，则基于当前工作目录解析为绝对路径
-     */
-    public get root(): string {
-        const { root = cwd() } = this._options;
-        if (path.isAbsolute(root)) {
-            return root;
-        }
-        return path.resolve(cwd(), root);
-    }
-
-    /**
-     * 判断当前是否为生产环境
-     * @returns {boolean} 环境标识
-     * 优先使用配置项中的 isProd，若未配置则根据 process.env.NODE_ENV 判断
-     */
-    public get isProd(): boolean {
-        return this._options?.isProd ?? process.env.NODE_ENV === 'production';
-    }
-
-    /**
-     * 获取模块的基础路径
-     * @returns {string} 以斜杠开头和结尾的模块基础路径
-     * 用于构建模块资源的访问路径
-     */
-    public get basePath(): string {
-        return `/${this.name}/`;
-    }
-
-    /**
-     * 获取基础路径占位符
-     * @returns {string} 基础路径占位符或空字符串
-     * 用于运行时动态替换模块的基础路径，可通过配置禁用
-     */
-    public get basePathPlaceholder(): string {
-        const varName = this._options.basePathPlaceholder;
-        if (varName === false) {
-            return '';
-        }
-        return varName ?? '[[[___GEZ_DYNAMIC_BASE___]]]';
-    }
-
-    /**
-     * 获取当前执行的命令
-     * @returns {COMMAND} 当前正在执行的命令枚举值
-     */
-    public get command(): COMMAND {
-        return this.readied.command;
-    }
-
-    /**
-     * 获取命令枚举类型
-     * @returns {typeof COMMAND} 命令枚举类型定义
-     */
-    public get COMMAND(): typeof COMMAND {
-        return COMMAND;
-    }
-
-    /**
-     * 获取模块配置信息
-     * @returns {ParsedModuleConfig} 当前模块的完整配置信息
-     */
-    public get moduleConfig(): ParsedModuleConfig {
-        return this.readied.moduleConfig;
-    }
-
-    /**
-     * 获取打包配置信息
-     * @returns {ParsedPackConfig} 当前模块的打包相关配置
-     */
-    public get packConfig(): ParsedPackConfig {
-        return this.readied.packConfig;
-    }
-
-    /**
-     * 获取应用程序的静态资源处理中间件。
-     *
-     * 该中间件负责处理应用程序的静态资源请求，根据运行环境提供不同的实现：
-     * - 开发环境：支持源码的实时编译、热更新，使用 no-cache 缓存策略
-     * - 生产环境：处理构建后的静态资源，支持不可变文件的长期缓存
-     *
-     * @returns {Middleware} 返回静态资源处理中间件函数
-     *
-     * @example
-     * ```typescript
-     * const server = http.createServer((req, res) => {
-     *     // 使用中间件处理静态资源请求
-     *     gez.middleware(req, res, async () => {
-     *         const rc = await gez.render({ url: req.url });
-     *         res.end(rc.html);
-     *     });
-     * });
-     * ```
-     */
-    public get middleware(): Middleware {
-        return this.readied.app.middleware;
-    }
-
-    /**
-     * 获取应用程序的服务端渲染函数。
-     *
-     * 该函数负责执行服务端渲染，根据运行环境提供不同的实现：
-     * - 开发环境：加载源码中的服务端入口文件，支持热更新和实时预览
-     * - 生产环境：加载构建后的服务端入口文件，提供优化的渲染性能
-     *
-     * @returns {(options?: RenderContextOptions) => Promise<RenderContext>} 返回服务端渲染函数
-     *
-     * @example
-     * ```typescript
-     * // 基本用法
-     * const rc = await gez.render({
-     *     params: { url: req.url }
-     * });
-     * res.end(rc.html);
-     *
-     * // 高级配置
-     * const rc = await gez.render({
-     *     base: '',           // 设置基础路径
-     *     importmapMode: 'inline',    // 设置导入映射模式
-     *     entryName: 'default',    // 指定渲染入口
-     *     params: {
-     *         url: req.url,
-     *         state: { user: 'admin' }
-     *     }
-     * });
-     * ```
-     */
-    public get render(): (
-        options?: RenderContextOptions
-    ) => Promise<RenderContext> {
-        return this.readied.app.render;
-    }
-
     /**
      * 解析项目相对路径为绝对路径
      *
@@ -748,6 +747,7 @@ export class Gez {
      *   - 'client': 客户端环境
      *   - 'server': 服务端环境
      * @returns 返回只读的构建清单列表
+     * @throws {NotReadyError} 在框架实例未初始化时调用此方法会抛出错误
      *
      * @example
      * ```typescript
@@ -795,6 +795,7 @@ export class Gez {
      *   - 'client': 生成浏览器环境的导入映射
      *   - 'server': 生成服务端环境的导入映射
      * @returns 返回只读的导入映射对象
+     * @throws {NotReadyError} 在框架实例未初始化时调用此方法会抛出错误
      *
      * @example
      * ```typescript
@@ -861,6 +862,7 @@ export class Gez {
      *   - src: JS 文件的 URL（仅在 js 模式下）
      *   - filepath: JS 文件的本地路径（仅在 js 模式下）
      *   - code: HTML script 标签内容
+     * @throws {NotReadyError} 在框架实例未初始化时调用此方法会抛出错误
      *
      * @example
      * ```typescript
@@ -975,6 +977,7 @@ innerHTML: JSON.stringify(importmap)
      * @param target - 构建目标（'client' | 'server'）
      * @param specifier - 模块标识符
      * @returns 返回静态导入路径列表，如果未找到则返回 null
+     * @throws {NotReadyError} 在框架实例未初始化时调用此方法会抛出错误
      *
      * @example
      * ```typescript

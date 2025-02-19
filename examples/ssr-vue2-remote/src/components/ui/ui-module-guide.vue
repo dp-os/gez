@@ -24,7 +24,7 @@
 
 <script setup lang="ts">
 export interface ModuleGuideProps {
-    // 目前没有 props，但为了保持一致的类型导出模式，我们仍然定义一个空接口
+    // 目前没有 props，但为了保持一致的类型定义模式，我们仍然定义一个空接口
 }
 
 defineProps<ModuleGuideProps>();

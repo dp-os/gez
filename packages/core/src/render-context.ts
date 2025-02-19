@@ -1,56 +1,6 @@
 import path from 'node:path';
 import serialize from 'serialize-javascript';
-import type { Gez, ImportMap } from './gez';
-
-/**
- * 定义 importmap 的生成模式
- *
- * @description
- * ImportmapMode 用于控制 importmap 的生成方式，支持两种模式：
- * - `inline`: 将 importmap 内容直接内联到 HTML 中（默认值），适用于以下场景：
- *   - 需要减少 HTTP 请求数量
- *   - importmap 内容较小
- *   - 对首屏加载性能要求较高
- * - `js`: 将 importmap 内容生成为独立的 JS 文件，适用于以下场景：
- *   - importmap 内容较大
- *   - 需要利用浏览器缓存机制
- *   - 多个页面共享相同的 importmap
- *
- * 默认值选择 'inline' 的原因：
- * 1. 简单直接
- *    - 减少额外的 HTTP 请求
- *    - 无需额外的资源管理
- *    - 适合大多数应用场景
- * 2. 首屏性能
- *    - 避免额外的网络请求
- *    - 确保导入映射立即可用
- *    - 减少页面加载时间
- * 3. 易于调试
- *    - 导入映射直接可见
- *    - 便于问题诊断
- *    - 简化开发流程
- *
- * @example
- * ```typescript
- * // 使用内联模式（默认）
- * const rc = await gez.render({
- *   params: { url: req.url }
- * });
- *
- * // 显式指定内联模式
- * const rc = await gez.render({
- *   importmapMode: 'inline',
- *   params: { url: req.url }
- * });
- *
- * // 使用 JS 文件模式
- * const rc = await gez.render({
- *   importmapMode: 'js',
- *   params: { url: req.url }
- * });
- * ```
- */
-export type ImportmapMode = 'inline' | 'js';
+import type { Gez } from './gez';
 
 /**
  * RenderContext 的配置选项接口
@@ -162,6 +112,125 @@ export interface RenderContextOptions {
      */
     importmapMode?: ImportmapMode;
 }
+
+/**
+ * 服务端渲染函数
+ */
+export type ServerRenderHandle = (rc: RenderContext) => Promise<void>;
+
+/**
+ * 渲染资源文件列表接口
+ * @description
+ * RenderFiles 接口定义了服务端渲染过程中收集的各类静态资源：
+ *
+ * 1. **资源类型**
+ *    - css: 样式表文件列表
+ *    - modulepreload: 需要预加载的 ESM 模块列表
+ *    - importmap: 导入映射文件列表
+ *    - js: JavaScript 文件列表
+ *    - resources: 其他资源文件列表
+ *
+ * 2. **使用场景**
+ *    - 在 commit() 方法中自动收集
+ *    - 通过 preload()、css() 等方法注入
+ *    - 支持基础路径配置
+ *
+ * @example
+ * ```ts
+ * // 1. 资源收集
+ * await rc.commit();
+ *
+ * // 2. 资源注入
+ * rc.html = `
+ *   <!DOCTYPE html>
+ *   <html>
+ *   <head>
+ *     <!-- 预加载资源 -->
+ *     ${rc.preload()}
+ *     <!-- 注入样式表 -->
+ *     ${rc.css()}
+ *   </head>
+ *   <body>
+ *     ${html}
+ *     <!-- 注入导入映射 -->
+ *     ${rc.importmap()}
+ *     <!-- 注入客户端入口 -->
+ *     ${rc.moduleEntry()}
+ *     <!-- 预加载模块 -->
+ *     ${rc.modulePreload()}
+ *   </body>
+ *   </html>
+ * `;
+ * ```
+ */
+export interface RenderFiles {
+    /**
+     * JavaScript 文件列表
+     */
+    js: string[];
+    /**
+     * CSS 文件列表
+     */
+    css: string[];
+    /**
+     * 需要预加载的 ESM 模块列表
+     */
+    modulepreload: string[];
+    /**
+     * 其他资源文件列表（图片、字体等）
+     */
+    resources: string[];
+}
+
+/**
+ * 定义 importmap 的生成模式
+ *
+ * @description
+ * ImportmapMode 用于控制 importmap 的生成方式，支持两种模式：
+ * - `inline`: 将 importmap 内容直接内联到 HTML 中（默认值），适用于以下场景：
+ *   - 需要减少 HTTP 请求数量
+ *   - importmap 内容较小
+ *   - 对首屏加载性能要求较高
+ * - `js`: 将 importmap 内容生成为独立的 JS 文件，适用于以下场景：
+ *   - importmap 内容较大
+ *   - 需要利用浏览器缓存机制
+ *   - 多个页面共享相同的 importmap
+ *
+ * 默认值选择 'inline' 的原因：
+ * 1. 简单直接
+ *    - 减少额外的 HTTP 请求
+ *    - 无需额外的资源管理
+ *    - 适合大多数应用场景
+ * 2. 首屏性能
+ *    - 避免额外的网络请求
+ *    - 确保导入映射立即可用
+ *    - 减少页面加载时间
+ * 3. 易于调试
+ *    - 导入映射直接可见
+ *    - 便于问题诊断
+ *    - 简化开发流程
+ *
+ * @example
+ * ```typescript
+ * // 使用内联模式（默认）
+ * const rc = await gez.render({
+ *   params: { url: req.url }
+ * });
+ *
+ * // 显式指定内联模式
+ * const rc = await gez.render({
+ *   importmapMode: 'inline',
+ *   params: { url: req.url }
+ * });
+ *
+ * // 使用 JS 文件模式
+ * const rc = await gez.render({
+ *   importmapMode: 'js',
+ *   params: { url: req.url }
+ * });
+ * ```
+ */
+export type ImportmapMode = 'inline' | 'js';
 
 /**
  * RenderContext 是 Gez 框架中的核心类，负责服务端渲染（SSR）过程中的资源管理和 HTML 生成
@@ -661,13 +730,6 @@ export class RenderContext {
      * ```
      */
     public importmapMode: ImportmapMode;
-    public constructor(gez: Gez, options: RenderContextOptions = {}) {
-        this.gez = gez;
-        this.base = options.base ?? '';
-        this.params = options.params ?? {};
-        this.entryName = options.entryName ?? 'default';
-        this.importmapMode = options.importmapMode ?? 'inline';
-    }
     /**
      * HTML 内容
      * @description
@@ -725,6 +787,13 @@ export class RenderContext {
         this._html = varName
             ? html.replaceAll(this.gez.basePathPlaceholder, this.base)
             : html;
+    }
+    public constructor(gez: Gez, options: RenderContextOptions = {}) {
+        this.gez = gez;
+        this.base = options.base ?? '';
+        this.params = options.params ?? {};
+        this.entryName = options.entryName ?? 'default';
+        this.importmapMode = options.importmapMode ?? 'inline';
     }
     /**
      * 将 JavaScript 对象序列化为字符串
@@ -1255,58 +1324,4 @@ export class RenderContext {
             .map((url) => `<link rel="modulepreload" href="${url}">`)
             .join('');
     }
-}
-
-export type ServerRenderHandle = (rc: RenderContext) => Promise<void>;
-
-/**
- * 渲染资源文件列表接口
- * @description
- * RenderFiles 接口定义了服务端渲染过程中收集的各类静态资源：
- *
- * 1. **资源类型**
- *    - css: 样式表文件列表
- *    - modulepreload: 需要预加载的 ESM 模块列表
- *    - importmap: 导入映射文件列表
- *    - js: JavaScript 文件列表
- *    - resources: 其他资源文件列表
- *
- * 2. **使用场景**
- *    - 在 commit() 方法中自动收集
- *    - 通过 preload()、css() 等方法注入
- *    - 支持基础路径配置
- *
- * @example
- * ```ts
- * // 1. 资源收集
- * await rc.commit();
- *
- * // 2. 资源注入
- * rc.html = `
- *   <!DOCTYPE html>
- *   <html>
- *   <head>
- *     <!-- 预加载资源 -->
- *     ${rc.preload()}
- *     <!-- 注入样式表 -->
- *     ${rc.css()}
- *   </head>
- *   <body>
- *     ${html}
- *     <!-- 注入导入映射 -->
- *     ${rc.importmap()}
- *     <!-- 注入客户端入口 -->
- *     ${rc.moduleEntry()}
- *     <!-- 预加载模块 -->
- *     ${rc.modulePreload()}
- *   </body>
- *   </html>
- * `;
- * ```
- */
-export interface RenderFiles {
-    css: string[];
-    modulepreload: string[];
-    js: string[];
-    resources: string[];
 }

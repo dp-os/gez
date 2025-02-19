@@ -3,5 +3,59 @@
     "text": "指南",
     "link": "/guide/start/introduction",
     "activeMatch": "/guide/"
+  },
+  {
+    "text": "API",
+    "link": "/api/core/gez",
+    "activeMatch": "/api/",
+    "items": [
+      {
+        "text": "@gez/core",
+        "items": [
+          {
+            "text": "Gez",
+            "link": "/api/core/gez"
+          },
+          {
+            "text": "App",
+            "link": "/api/core/app"
+          },
+          {
+            "text": "RenderContext",
+            "link": "/api/core/render-context"
+          },
+          {
+            "text": "ModuleConfig",
+            "link": "/api/core/module-config"
+          },
+          {
+            "text": "PackConfig",
+            "link": "/api/core/pack-config"
+          },
+          {
+            "text": "manifest.json",
+            "link": "/api/core/manifest-json"
+          }
+        ]
+      },
+      {
+        "text": "@gez/rspack",
+        "items": [
+          {
+            "text": "RspackConfig",
+            "link": "/api/rspack/config"
+          }
+        ]
+      },
+      {
+        "text": "@gez/rspack-vue",
+        "items": [
+          {
+            "text": "VueConfig",
+            "link": "/api/rspack-vue/config"
+          }
+        ]
+      }
+    ]
   }
 ]
