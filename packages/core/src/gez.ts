@@ -467,6 +467,7 @@ export class Gez {
     /**
      * 获取模块名称
      * @returns {string} 当前模块的名称，来源于模块配置
+     * @throws {NotReadyError} 在框架实例未初始化时抛出错误
      */
     public get name(): string {
         return this.moduleConfig.name;
@@ -475,7 +476,7 @@ export class Gez {
     /**
      * 获取模块变量名
      * @returns {string} 基于模块名称生成的合法 JavaScript 变量名
-     * 将非字母字符替换为下划线，并添加双下划线前缀
+     * @throws {NotReadyError} 在框架实例未初始化时抛出错误
      */
     public get varName(): string {
         return '__' + this.name.replace(/[^a-zA-Z]/g, '_') + '__';
