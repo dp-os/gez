@@ -97,7 +97,6 @@ Web 标准的进化为我们带来了新的可能。现在，我们可以用最�
 
 > **已知问题**：
 > - ESM 模块导出优化中：`modern-module` 的 `export *` 语法存在稳定性问题 ([#8557](https://github.com/web-infra-dev/rspack/issues/8557), [#8546](https://github.com/web-infra-dev/rspack/issues/8546))
-> - 动态导入模块的依赖提升机制优化中 ([#8736](https://github.com/web-infra-dev/rspack/issues/8736))
 
 ### [v2.x](https://github.com/dp-os/gez/blob/v2/docs/zh-CN/README.md) - 不推荐生产使用
 此版本不再推荐用于生产环境，建议使用最新版本。
