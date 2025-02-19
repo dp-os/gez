@@ -37,12 +37,9 @@ export default {
         });
     },
     async postBuild(gez) {
-        const render = await gez.render({
+        const rc = await gez.render({
             params: { url: '/' }
         });
-        gez.writeSync(
-            gez.resolvePath('dist/client', 'index.html'),
-            render.html
-        );
+        gez.writeSync(gez.resolvePath('dist/client', 'index.html'), rc.html);
     }
 } satisfies GezOptions;
