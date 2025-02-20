@@ -33,22 +33,7 @@ Gez 专注于打造高性能、易扩展的微前端基础设施，尤其适合�
 ## 技术规范
 
 ### 环境依赖
-- **浏览器要求**
-  - 原生支持：
-    - Chrome ≥ 89
-    - Edge ≥ 89
-    - Firefox ≥ 108
-    - Safari ≥ 16.4
-  - 降级支持（通过 es-module-shims）：
-    - Chrome ≥ 87
-    - Edge ≥ 88
-    - Firefox ≥ 78
-    - Safari ≥ 14
-
-- **Node.js 要求**
-  - 版本 ≥ 22.6
-  - 支持 ESM 动态导入和 import.meta
-  - 原生支持 TypeScript（通过 --experimental-strip-types 标志）
+请参考[环境要求](/guide/start/environment)文档了解详细的浏览器和 Node.js 环境要求。
 
 ### 核心技术栈
 - **依赖管理**：采用 [Import Maps](https://caniuse.com/?search=import%20map) 实现模块映射，使用 [es-module-shims](https://github.com/guybedford/es-module-shims) 提供兼容支持

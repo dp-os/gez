@@ -74,8 +74,8 @@ export async function createRspackHtmlApp(
     options = {
         ...options,
         target: {
-            web: ['chrome>=87', 'firefox>=78', 'safari>=14', 'edge>=88'],
-            node: ['node>=20'],
+            web: ['chrome>=87', 'edge>=88', 'firefox>=78', 'safari>=14'],
+            node: ['node>=22.6'],
             ...options?.target
         }
     };
