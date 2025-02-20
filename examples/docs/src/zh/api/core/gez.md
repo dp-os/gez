@@ -1,3 +1,12 @@
+---
+titleSuffix: 框架核心类 API 参考
+description: 详细介绍 Gez 框架的核心类 API，包括应用生命周期管理、静态资源处理和服务端渲染能力，帮助开发者深入理解框架的核心功能。
+head:
+  - - meta
+    - property: keywords
+      content: Gez, API, 生命周期管理, 静态资源, 服务端渲染, Rspack, Web 应用框架
+---
+
 # Gez
 
 ## 简介

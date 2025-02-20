@@ -1,6 +1,13 @@
-# 渲染上下文
+---
+titleSuffix: Gez 框架服务端渲染核心机制
+description: 详细介绍 Gez 框架的渲染上下文（RenderContext）机制，包括资源管理、HTML 生成和 ESM 模块系统，帮助开发者理解和使用服务端渲染功能。
+head:
+  - - meta
+    - property: keywords
+      content: Gez, 渲染上下文, RenderContext, SSR, 服务端渲染, ESM, 资源管理
+---
 
-## 核心概念
+# 渲染上下文
 
 RenderContext 是 Gez 框架中的一个核心类，主要负责服务端渲染（SSR）过程中的资源管理和 HTML 生成。它具有以下核心特点：
 

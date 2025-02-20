@@ -1,3 +1,12 @@
+---
+titleSuffix: API 文档编写规范
+description: Gez 框架的 API 文档编写规范，包含文档结构、格式要求、示例编写等详细指南，帮助开发者创建高质量的 API 文档。
+head:
+  - - meta
+    - property: keywords
+      content: Gez, API 文档, 编写规范, 文档结构, TypeScript, 开发指南
+---
+
 # API 文档编写规范
 
 ## 文档结构
@@ -107,3 +116,4 @@ export default {
    - 按照重要性和使用频率组织内容
    - 相关的配置项和方法应该放在一起
    - 使用清晰的层级结构
+```

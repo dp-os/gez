@@ -1,6 +1,13 @@
-# 路径别名
+---
+titleSuffix: Gez 框架模块导入路径映射指南
+description: 详细介绍 Gez 框架的路径别名机制，包括简化导入路径、避免深层嵌套、类型安全和模块解析优化等特性，帮助开发者提升代码可维护性。
+head:
+  - - meta
+    - property: keywords
+      content: Gez, 路径别名, Path Alias, TypeScript, 模块导入, 路径映射, 代码可维护性
+---
 
-## 概述
+# 路径别名
 
 路径别名（Path Alias）是一种模块导入路径映射机制，它允许开发者使用简短、语义化的标识符来替代完整的模块路径。在 Gez 中，路径别名机制具有以下优势：
 

@@ -1,3 +1,12 @@
+---
+titleSuffix: Gez 框架构建清单文件参考
+description: 详细介绍 Gez 框架的构建清单文件（manifest.json）结构，包括构建产物管理、导出文件映射和资源统计功能，帮助开发者理解和使用构建系统。
+head:
+  - - meta
+    - property: keywords
+      content: Gez, ManifestJson, 构建清单, 资源管理, 构建产物, 文件映射, API
+---
+
 # ManifestJson
 
 `manifest.json` 是 Gez 框架在构建过程中生成的清单文件，用于记录服务构建的产物信息。它提供了统一的接口来管理构建产物、导出文件和资源大小统计。

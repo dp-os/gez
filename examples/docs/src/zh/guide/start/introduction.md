@@ -1,3 +1,12 @@
+---
+titleSuffix: Gez 框架概述与技术创新
+description: 深入了解 Gez 微前端框架的项目背景、技术演进和核心优势，探索基于 ESM 的现代化服务端渲染解决方案。
+head:
+  - - meta
+    - property: keywords
+      content: Gez, 微前端, ESM, 服务端渲染, SSR, 技术创新, 模块联邦
+---
+
 # 介绍
 
 ## 项目背景

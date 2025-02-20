@@ -1,6 +1,11 @@
 ---
 pageType: home
-
+titleSuffix: 基于 ESM 的高性能服务端渲染框架
+description: Gez 是一个基于 ESM 的高性能服务端渲染框架，提供完整的 SSR 能力、智能的渲染上下文和创新的模块链接系统，适用于大型 Web 应用开发。
+head:
+  - - meta
+    - property: keywords
+      content: Gez, SSR, ESM, 服务端渲染, 模块链接, Vue, React, TypeScript, 微前端
 hero:
   name: Gez
   text: 基于 ESM 的服务端渲染框架

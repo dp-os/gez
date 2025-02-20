@@ -1,3 +1,12 @@
+---
+titleSuffix: Gez 框架应用抽象接口
+description: 详细介绍 Gez 框架的 App 接口，包括应用生命周期管理、静态资源处理和服务端渲染功能，帮助开发者理解和使用应用核心功能。
+head:
+  - - meta
+    - property: keywords
+      content: Gez, App, 应用抽象, 生命周期, 静态资源, 服务端渲染, API
+---
+
 # App
 
 `App` 是 Gez 框架的应用抽象，提供了统一的接口来管理应用的生命周期、静态资源和服务端渲染。

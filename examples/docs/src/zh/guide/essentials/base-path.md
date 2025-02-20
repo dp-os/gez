@@ -1,6 +1,14 @@
+---
+titleSuffix: Gez 框架静态资源路径配置指南
+description: 详细介绍 Gez 框架的基础路径配置，包括多环境部署、CDN 分发和资源访问路径设置，帮助开发者实现灵活的静态资源管理。
+head:
+  - - meta
+    - property: keywords
+      content: Gez, 基础路径, Base Path, CDN, 静态资源, 多环境部署, 资源管理
+---
+
 # 基础路径
 
-## 概述
 基础路径（Base Path）是指应用程序中静态资源（如 JavaScript、CSS、图片等）的访问路径前缀。在 Gez 中，合理配置基础路径对于以下场景至关重要：
 
 - **多环境部署**：支持开发环境、测试环境、生产环境等不同环境的资源访问

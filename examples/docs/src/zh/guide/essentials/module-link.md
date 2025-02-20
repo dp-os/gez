@@ -1,6 +1,13 @@
-# 模块链接
+---
+titleSuffix: Gez 框架服务间代码共享机制
+description: 详细介绍 Gez 框架的模块链接机制，包括服务间代码共享、依赖管理和 ESM 规范实现，帮助开发者构建高效的微前端应用。
+head:
+  - - meta
+    - property: keywords
+      content: Gez, 模块链接, Module Link, ESM, 代码共享, 依赖管理, 微前端
+---
 
-## 概述
+# 模块链接
 
 Gez 框架提供了一套完整的模块链接机制，用于管理服务间的代码共享和依赖关系。该机制基于 ESM（ECMAScript Module）规范实现，支持源码级别的模块导出和导入，以及完整的依赖管理功能。
 

@@ -1,3 +1,12 @@
+---
+titleSuffix: Gez 框架渲染上下文 API 参考
+description: 详细介绍 Gez 框架的 RenderContext 核心类，包括渲染控制、资源管理、状态同步和路由控制等功能，帮助开发者实现高效的服务端渲染。
+head:
+  - - meta
+    - property: keywords
+      content: Gez, RenderContext, SSR, 服务端渲染, 渲染上下文, 状态同步, 资源管理, Web 应用框架
+---
+
 # RenderContext
 
 RenderContext 是 Gez 框架中的核心类，负责管理服务端渲染（SSR）的完整生命周期。它提供了一套完整的 API 来处理渲染上下文、资源管理、状态同步等关键任务：

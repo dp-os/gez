@@ -1,6 +1,13 @@
-# 标准规范
+---
+titleSuffix: Gez 框架项目结构与规范指南
+description: 详细介绍 Gez 框架的标准项目结构、入口文件规范和配置文件规范，帮助开发者构建规范化、可维护的 SSR 应用。
+head:
+  - - meta
+    - property: keywords
+      content: Gez, 项目结构, 入口文件, 配置规范, SSR框架, TypeScript, 项目规范, 开发标准
+---
 
-## 概述
+# 标准规范
 
 Gez 是一个现代化的 SSR 框架，采用标准化的项目结构和路径解析机制，以确保项目在开发和生产环境中的一致性和可维护性。
 

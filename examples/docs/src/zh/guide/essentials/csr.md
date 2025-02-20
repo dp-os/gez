@@ -1,6 +1,13 @@
-# 客户端渲染
+---
+titleSuffix: Gez 框架客户端渲染实现指南
+description: 详细介绍 Gez 框架的客户端渲染机制，包括静态构建、部署策略和最佳实践，帮助开发者在无服务器环境下实现高效的前端渲染。
+head:
+  - - meta
+    - property: keywords
+      content: Gez, 客户端渲染, CSR, 静态构建, 前端渲染, 无服务器部署, 性能优化
+---
 
-## 概述
+# 客户端渲染
 
 客户端渲染（Client-Side Rendering，CSR）是一种在浏览器端执行页面渲染技术方案。在 Gez 中，当你的应用无法部署 Node.js 服务器实例时，可以选择在构建阶段生成静态的 `index.html` 文件，实现纯客户端渲染。
 

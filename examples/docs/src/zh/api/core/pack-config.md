@@ -1,3 +1,12 @@
+---
+titleSuffix: Gez 框架打包配置 API 参考
+description: 详细介绍 Gez 框架的 PackConfig 配置接口，包括软件包打包规则、输出配置和生命周期钩子，帮助开发者实现标准化的构建流程。
+head:
+  - - meta
+    - property: keywords
+      content: Gez, PackConfig, 软件包打包, 构建配置, 生命周期钩子, 打包配置, Web 应用框架
+---
+
 # PackConfig
 
 `PackConfig` 是软件包打包配置接口，用于将服务的构建产物打包成标准的 npm .tgz 格式软件包。
