@@ -20,20 +20,117 @@ import type { BuildTarget } from './build-target';
 import { createRspackConfig } from './config';
 import { pack } from './pack';
 
+/**
+ * Rspack 应用配置上下文接口。
+ *
+ * 该接口提供了在配置钩子函数中可以访问的上下文信息，允许你：
+ * - 访问 Gez 框架实例
+ * - 获取当前的构建目标（client/server/node）
+ * - 修改 Rspack 配置
+ * - 访问应用选项
+ *
+ * @example
+ * ```typescript
+ * // entry.node.ts
+ * export default {
+ *   async devApp(gez) {
+ *     return import('@gez/rspack').then((m) =>
+ *       m.createRspackApp(gez, {
+ *         // 配置钩子函数
+ *         config(context) {
+ *           // 访问构建目标
+ *           if (context.buildTarget === 'client') {
+ *             // 修改客户端构建配置
+ *             context.config.optimization = {
+ *               ...context.config.optimization,
+ *               splitChunks: {
+ *                 chunks: 'all'
+ *               }
+ *             };
+ *           }
+ *         }
+ *       })
+ *     );
+ *   }
+ * };
+ * ```
+ */
 export interface RspackAppConfigContext {
+    /**
+     * Gez 框架实例。
+     * 可用于访问框架提供的 API 和工具函数。
+     */
     gez: Gez;
+
+    /**
+     * 当前的构建目标。
+     * - 'client': 客户端构建，生成浏览器可执行的代码
+     * - 'server': 服务端构建，生成 SSR 渲染代码
+     * - 'node': Node.js 构建，生成服务器入口代码
+     */
     buildTarget: BuildTarget;
+
+    /**
+     * Rspack 编译配置对象。
+     * 你可以在配置钩子中修改这个对象来自定义构建行为。
+     */
     config: RspackOptions;
+
+    /**
+     * 创建应用时传入的选项对象。
+     */
     options: RspackAppOptions;
 }
 
+/**
+ * Rspack 应用配置选项接口。
+ *
+ * 该接口提供了创建 Rspack 应用时可以使用的配置选项，包括：
+ * - 代码压缩选项
+ * - Rspack 配置钩子函数
+ *
+ * @example
+ * ```typescript
+ * // entry.node.ts
+ * export default {
+ *   async devApp(gez) {
+ *     return import('@gez/rspack').then((m) =>
+ *       m.createRspackApp(gez, {
+ *         // 禁用代码压缩
+ *         minimize: false,
+ *         // 自定义 Rspack 配置
+ *         config(context) {
+ *           if (context.buildTarget === 'client') {
+ *             context.config.optimization.splitChunks = {
+ *               chunks: 'all'
+ *             };
+ *           }
+ *         }
+ *       })
+ *     );
+ *   }
+ * };
+ * ```
+ */
 export interface RspackAppOptions {
     /**
-     * 是否压缩代码，默认情况下在生产环境压缩代码。
+     * 是否启用代码压缩。
+     *
+     * - true: 启用代码压缩
+     * - false: 禁用代码压缩
+     * - undefined: 根据环境自动判断（生产环境启用，开发环境禁用）
+     *
+     * @default undefined
      */
     minimize?: boolean;
+
     /**
-     * Rspack 配置钩子，你可以在这里修改 context.config。
+     * Rspack 配置钩子函数。
+     *
+     * 在构建开始前调用，可以通过该函数修改 Rspack 的编译配置。
+     * 支持针对不同的构建目标（client/server/node）进行差异化配置。
+     *
+     * @param context - 配置上下文，包含框架实例、构建目标和配置对象
      */
     config?: (context: RspackAppConfigContext) => void;
 }

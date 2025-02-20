@@ -1,7 +1,7 @@
 import fsp from 'node:fs/promises';
 import path from 'node:path';
 
-import type { AppBuildTarget } from './gez';
+import type { RuntimeTarget } from './gez';
 import type { ParsedModuleConfig } from './module-config';
 
 export interface ManifestJsonChunks {
@@ -60,7 +60,7 @@ async function readJson(filename: string): Promise<any> {
  * 获取服务清单文件
  */
 export async function getManifestList(
-    target: AppBuildTarget,
+    target: RuntimeTarget,
     moduleConfig: ParsedModuleConfig
 ): Promise<ManifestJson[]> {
     return Promise.all(

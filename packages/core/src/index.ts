@@ -1,7 +1,7 @@
 export {
     type GezOptions,
     type COMMAND,
-    type AppBuildTarget,
+    type RuntimeTarget,
     type ImportMap,
     type SpecifierMap,
     type ScopesMap,

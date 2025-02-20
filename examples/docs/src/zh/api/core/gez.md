@@ -15,16 +15,16 @@ Gez 是一个基于 Rspack 的高性能 Web 应用框架，提供了完整的应
 
 ## 类型定义
 
-### AppBuildTarget
+### RuntimeTarget
 
 - **类型定义**:
 ```ts
-type AppBuildTarget = 'client' | 'server'
+type RuntimeTarget = 'client' | 'server'
 ```
 
-应用程序构建目标类型：
-- `client`: 生成浏览器环境代码
-- `server`: 生成 Node.js 环境代码
+应用程序运行时环境类型：
+- `client`: 运行在浏览器环境，支持 DOM 操作和浏览器 API
+- `server`: 运行在 Node.js 环境，支持文件系统和服务器端功能
 
 ### ImportMap
 
@@ -520,7 +520,7 @@ async server(gez) {
 获取构建清单列表。
 
 - **参数**:
-  - `target`: `AppBuildTarget` - 目标环境类型
+  - `target`: `RuntimeTarget` - 目标环境类型
     - `'client'`: 客户端环境
     - `'server'`: 服务端环境
 
@@ -561,7 +561,7 @@ async server(gez) {
 获取导入映射对象。
 
 - **参数**:
-  - `target`: `AppBuildTarget` - 目标环境类型
+  - `target`: `RuntimeTarget` - 目标环境类型
     - `'client'`: 生成浏览器环境的导入映射
     - `'server'`: 生成服务端环境的导入映射
 
@@ -684,7 +684,7 @@ async server(gez) {
 获取模块的静态导入路径列表。
 
 - **参数**:
-  - `target`: `AppBuildTarget` - 构建目标
+  - `target`: `RuntimeTarget` - 构建目标
     - `'client'`: 客户端环境
     - `'server'`: 服务端环境
   - `specifier`: `string` - 模块标识符

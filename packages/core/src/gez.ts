@@ -99,7 +99,7 @@ export interface GezOptions {
  * - client: 客户端构建目标，用于生成浏览器端运行的代码
  * - server: 服务端构建目标，用于生成 Node.js 环境运行的代码
  */
-export type AppBuildTarget = 'client' | 'server';
+export type RuntimeTarget = 'client' | 'server';
 
 /**
  * Gez 框架的命令枚举。
@@ -766,7 +766,7 @@ export class Gez {
      * ```
      */
     public async getManifestList(
-        target: AppBuildTarget
+        target: RuntimeTarget
     ): Promise<readonly ManifestJson[]> {
         return this.readied.cache(`getManifestList-${target}`, async () =>
             Object.freeze(await getManifestList(target, this.moduleConfig))
@@ -822,7 +822,7 @@ export class Gez {
      * ```
      */
     public async getImportMap(
-        target: AppBuildTarget
+        target: RuntimeTarget
     ): Promise<Readonly<ImportMap>> {
         return this.readied.cache(`getImportMap-${target}`, async () => {
             const json = await getImportMap(
@@ -989,7 +989,7 @@ innerHTML: JSON.stringify(importmap)
      * ```
      */
     public async getStaticImportPaths(
-        target: AppBuildTarget,
+        target: RuntimeTarget,
         specifier: string
     ) {
         return this.readied.cache(
