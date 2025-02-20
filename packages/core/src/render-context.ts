@@ -126,7 +126,6 @@ export type ServerRenderHandle = (rc: RenderContext) => Promise<void>;
  * 1. **资源类型**
  *    - css: 样式表文件列表
  *    - modulepreload: 需要预加载的 ESM 模块列表
- *    - importmap: 导入映射文件列表
  *    - js: JavaScript 文件列表
  *    - resources: 其他资源文件列表
  *

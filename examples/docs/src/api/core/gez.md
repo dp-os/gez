@@ -29,7 +29,7 @@ type ImportMap = {
 
 ES 模块导入映射类型。
 
-### SpecifierMap
+#### SpecifierMap
 
 - **类型定义**:
 ```ts
@@ -38,7 +38,7 @@ type SpecifierMap = Record<string, string>
 
 模块标识符映射类型，用于定义模块导入路径的映射关系。
 
-### ScopesMap
+#### ScopesMap
 
 - **类型定义**:
 ```ts
@@ -58,6 +58,12 @@ enum COMMAND {
     start = 'start'
 }
 ```
+
+命令类型枚举：
+- `dev`: 开发环境命令，启动开发服务器并支持热更新
+- `build`: 构建命令，生成生产环境的构建产物
+- `preview`: 预览命令，启动本地预览服务器
+- `start`: 启动命令，运行生产环境服务器
 
 ## 实例选项
 
@@ -117,7 +123,7 @@ interface GezOptions {
 
 开发环境应用创建函数。仅在开发环境中使用，用于创建开发服务器的应用实例。
 
-```ts title="src/entry.node.ts"
+```typescript title="entry.node.ts"
 export default {
   async devApp(gez) {
     return import('@gez/rspack').then((m) =>
@@ -137,7 +143,7 @@ export default {
 
 服务器启动配置函数。用于配置和启动 HTTP 服务器，在开发环境和生产环境中都可使用。
 
-```ts title="src/entry.node.ts"
+```typescript title="entry.node.ts"
 export default {
   async server(gez) {
     const server = http.createServer((req, res) => {
@@ -353,7 +359,7 @@ process.once('SIGTERM', async () => {
 在框架实例未初始化时调用会抛出 `NotReadyError`
 :::
 
-```ts title="src/entry.node.ts"
+```typescript title="entry.node.ts"
 export default {
   async postBuild(gez) {
     await gez.build();
@@ -378,7 +384,7 @@ export default {
 - 开发环境（dev）：启动开发服务器，提供热更新
 - 生产环境（start）：启动生产服务器，提供生产级性能
 
-```ts title="src/entry.node.ts"
+```typescript title="entry.node.ts"
 export default {
   async server(gez) {
     const server = http.createServer((req, res) => {
@@ -409,7 +415,7 @@ export default {
 - 执行部署任务
 - 发送构建通知
 
-```ts title="src/entry.node.ts"
+```typescript title="entry.node.ts"
 export default {
   async postBuild(gez) {
     // 生成多个页面的静态 HTML

@@ -2,8 +2,7 @@
 
 `App` 是 Gez 框架的应用抽象，提供了统一的接口来管理应用的生命周期、静态资源和服务端渲染。
 
-```ts
-// entry.node.ts
+```typescript title="entry.node.ts"
 export default {
   // 开发环境配置
   async devApp(gez) {
