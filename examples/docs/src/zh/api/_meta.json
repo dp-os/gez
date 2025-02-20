@@ -6,12 +6,7 @@
     },
     {
         "type": "dir",
-        "name": "rspack",
-        "label": "@gez/rspack"
-    },
-    {
-        "type": "dir",
-        "name": "rspack-vue",
-        "label": "@gez/rspack-vue"
+        "name": "app",
+        "label": "App"
     }
 ]

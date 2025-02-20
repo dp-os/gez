@@ -1,5 +1,29 @@
 {
     "name": "@gez/rspack-vue",
+    "description": "A high-performance Vue integration for Gez microfrontend framework, providing Vue 2/3 support with SSR and Module Federation capabilities.",
+    "author": {
+        "name": "lzxb",
+        "url": "https://github.com/lzxb"
+    },
+    "contributors": [
+        {
+            "name": "RockShi1994",
+            "url": "https://github.com/RockShi1994"
+        },
+        {
+            "name": "jerrychan7",
+            "url": "https://github.com/jerrychan7"
+        }
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/dp-os/gez.git",
+        "directory": "packages/rspack-vue"
+    },
+    "homepage": "https://github.com/dp-os/gez",
+    "bugs": {
+        "url": "https://github.com/dp-os/gez/issues"
+    },
     "template": "library-node",
     "license": "MIT",
     "keywords": [
