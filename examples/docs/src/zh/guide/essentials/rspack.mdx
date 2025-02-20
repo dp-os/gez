@@ -35,7 +35,7 @@ Gez 的默认配置是框架正常运行的基础，请勿修改这些配置。�
 
 ## 配置选项
 
-### config() <Badge text="v3.0.0" type="tip" />
+### config()
 - **类型：** `config?: (context: RspackAppConfigContext) => void`
 - **默认值：** `undefined`
 - **描述：** 用于自定义 Rspack 配置的函数
@@ -87,7 +87,7 @@ export default {
 
 ### 配置选项
 
-#### css <Badge text="v3.0.0" type="tip" />
+#### css
 - **类型：** `boolean`
 - **默认值：** `true`
 - **描述：** 是否启用默认的 CSS 处理配置
@@ -96,27 +96,27 @@ export default {
 如需自定义 CSS loader 配置，可将此选项设置为 `false`
 :::
 
-#### swcLoader <Badge text="v3.0.0" type="tip" />
+#### swcLoader
 - **类型：** `SwcLoaderOptions`
 - **默认值：** `undefined`
 - **描述：** [builtin-swc-loader](https://rspack.dev/guide/features/builtin-swc-loader) 的配置选项
 
-#### lessLoader <Badge text="v3.0.0" type="tip" />
+#### lessLoader
 - **类型：** `Record<string, any>`
 - **默认值：** `undefined`
 - **描述：** [less-loader](https://github.com/webpack-contrib/less-loader) 的配置选项
 
-#### styleResourcesLoader <Badge text="v3.0.0" type="tip" />
+#### styleResourcesLoader
 - **类型：** `Record<string, any>`
 - **默认值：** `undefined`
 - **描述：** [style-resources-loader](https://github.com/yenshih/style-resources-loader) 的配置选项
 
-#### definePlugin <Badge text="v3.0.0" type="tip" />
+#### definePlugin
 - **类型：** `Record<string, any>`
 - **默认值：** `undefined`
 - **描述：** [DefinePlugin](https://rspack.dev/plugins/webpack/define-plugin) 的配置选项
 
-#### target.web <Badge text="v3.0.0" type="tip" />
+#### target.web
 - **类型：** `string[]`
 - **默认值：** `['chrome>=87', 'firefox>=78', 'safari>=14', 'edge>=88']`
 - **描述：** 浏览器端构建目标配置
@@ -125,7 +125,7 @@ export default {
 请勿将构建目标设置低于默认配置，否则可能影响 Gez 的正常运行。
 :::
 
-#### target.node <Badge text="v3.0.0" type="tip" />
+#### target.node
 - **类型：** `string[]`
 - **默认值：** `['node>=22.6']`
 - **描述：** Node.js 端构建目标配置
@@ -171,7 +171,7 @@ export default {
 
 除继承 [createRspackHtmlApp](#html) 的所有配置选项外，还提供以下专用选项：
 
-#### vueLoader <Badge text="v3.0.0" type="tip" />
+#### vueLoader
 - **类型：** `Record<string, any>`
 - **默认值：** `undefined`
 - **描述：** [vue-loader](https://github.com/vuejs/vue-loader) 的配置选项
