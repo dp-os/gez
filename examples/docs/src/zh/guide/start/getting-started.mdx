@@ -27,7 +27,7 @@ import { PackageManagerTabs } from '@theme';
 
 ## 项目初始化
 
-### 1. 创建项目目录
+### 创建项目目录
 ```bash
 # 创建并进入项目目录
 mkdir your-app-name && cd your-app-name
@@ -36,7 +36,7 @@ mkdir your-app-name && cd your-app-name
 npm init -y
 ```
 
-### 2. 配置项目基础信息
+### 配置项目基础信息
 ```json title="package.json"
 {
     "name": "your-app-name",
@@ -53,7 +53,7 @@ npm init -y
 }
 ```
 
-### 3. 安装依赖
+### 安装依赖
 
 **运行时依赖**
 <PackageManagerTabs command="install @gez/core" />
@@ -69,7 +69,7 @@ npm init -y
 
 :::
 
-### 4. 配置 TypeScript
+### 配置 TypeScript
 ```json title="tsconfig.json"
 {
     "compilerOptions": {
@@ -101,7 +101,7 @@ npm init -y
 
 ## 核心代码实现
 
-### 1. 创建项目结构
+### 创建项目结构
 ```
 your-app-name/
 ├── src/
@@ -112,7 +112,7 @@ your-app-name/
 └── package.json          # 项目配置
 ```
 
-### 2. 配置 HTTP 服务器
+### 配置 HTTP 服务器
 ```ts title="src/entry.node.ts"
 import http from 'node:http';
 import type { GezOptions } from '@gez/core';
@@ -156,7 +156,7 @@ export default {
 } satisfies GezOptions;
 ```
 
-### 3. 实现服务端渲染
+### 实现服务端渲染
 ```ts title="src/entry.server.ts"
 import type { RenderContext } from '@gez/core';
 
@@ -188,7 +188,7 @@ export default async (rc: RenderContext) => {
 };
 ```
 
-### 4. 实现客户端交互
+### 实现客户端交互
 ```ts title="src/entry.client.ts"
 // 实现时间自动更新
 const time = document.querySelector('time');

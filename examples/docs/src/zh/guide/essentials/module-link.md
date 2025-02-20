@@ -232,7 +232,7 @@ npm publish dist/versions/your-app-name.tgz
 
 ## 最佳实践
 
-### 1. 开发环境配置
+### 开发环境配置
 - **依赖管理**
   - 使用 Workspace 或 Link 方式安装依赖
   - 统一管理依赖版本
@@ -243,7 +243,7 @@ npm publish dist/versions/your-app-name.tgz
   - 配置合适的预加载策略
   - 优化构建速度
 
-### 2. 生产环境配置
+### 生产环境配置
 - **部署策略**
   - 使用 NPM Registry 或静态服务器
   - 确保构建产物完整性
@@ -254,7 +254,7 @@ npm publish dist/versions/your-app-name.tgz
   - 优化模块加载顺序
   - 实施有效的缓存策略
 
-### 3. 版本管理
+### 版本管理
 - **版本规范**
   - 遵循语义化版本规范
   - 维护详细的更新日志
