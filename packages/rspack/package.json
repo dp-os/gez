@@ -1,7 +1,43 @@
 {
     "name": "@gez/rspack",
+    "description": "A high-performance Rspack integration for Gez microfrontend framework, providing module federation and SSR capabilities.",
+    "author": {
+        "name": "lzxb",
+        "url": "https://github.com/lzxb"
+    },
+    "contributors": [
+        {
+            "name": "RockShi1994",
+            "url": "https://github.com/RockShi1994"
+        },
+        {
+            "name": "jerrychan7",
+            "url": "https://github.com/jerrychan7"
+        }
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/dp-os/gez.git",
+        "directory": "packages/rspack"
+    },
+    "homepage": "https://github.com/dp-os/gez",
+    "bugs": {
+        "url": "https://github.com/dp-os/gez/issues"
+    },
     "template": "library-node",
     "license": "MIT",
+    "keywords": [
+        "Rspack",
+        "TypeScript",
+        "JavaScript",
+        "CSS",
+        "Less",
+        "High Performance",
+        "Build Tool",
+        "Module Federation",
+        "SSR",
+        "Development Experience"
+    ],
     "scripts": {
         "lint:js": "biome check --write --no-errors-on-unmatched",
         "lint:css": "stylelint '**/*.{css,vue}' --fix --aei",

@@ -2,6 +2,19 @@
     "name": "@gez/rspack-vue",
     "template": "library-node",
     "license": "MIT",
+    "keywords": [
+        "Vue",
+        "Vue 2",
+        "Vue 3",
+        "Rspack",
+        "SSR",
+        "Module Federation",
+        "High Performance",
+        "Build Tool",
+        "Development Experience",
+        "Hot Module Replacement",
+        "TypeScript"
+    ],
     "scripts": {
         "lint:js": "biome check --write --no-errors-on-unmatched",
         "lint:css": "stylelint '**/*.{css,vue}' --fix --aei",

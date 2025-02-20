@@ -135,6 +135,53 @@ export interface RspackAppOptions {
     config?: (context: RspackAppConfigContext) => void;
 }
 
+/**
+ * 创建 Rspack 应用实例。
+ *
+ * 该函数根据运行环境（开发/生产）创建不同的应用实例：
+ * - 开发环境：配置热更新中间件和实时渲染
+ * - 生产环境：配置构建任务
+ *
+ * @param gez - Gez 框架实例
+ * @param options - Rspack 应用配置选项
+ * @returns 返回应用实例
+ *
+ * @example
+ * ```typescript
+ * // entry.node.ts
+ * export default {
+ *   async devApp(gez) {
+ *     return import('@gez/rspack').then((m) =>
+ *       m.createRspackApp(gez, {
+ *         config(context) {
+ *           // 配置 loader 处理不同类型的文件
+ *           context.config.module = {
+ *             rules: [
+ *               {
+ *                 test: /\.ts$/,
+ *                 exclude: [/node_modules/],
+ *                 loader: 'builtin:swc-loader',
+ *                 options: {
+ *                   jsc: {
+ *                     parser: {
+ *                       syntax: 'typescript'
+ *                     }
+ *                   }
+ *                 }
+ *               },
+ *               {
+ *                 test: /\.css$/,
+ *                 use: ['style-loader', 'css-loader']
+ *               }
+ *             ]
+ *           };
+ *         }
+ *       })
+ *     );
+ *   }
+ * };
+ * ```
+ */
 export async function createRspackApp(
     gez: Gez,
     options?: RspackAppOptions
