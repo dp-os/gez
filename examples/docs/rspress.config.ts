@@ -8,6 +8,15 @@ export default defineConfig({
             ? path.join(__dirname, 'dist/client')
             : undefined,
     globalStyles: path.join(__dirname, 'src/styles/index.css'),
+    lang: 'zh',
+    locales: [
+        {
+            lang: 'zh',
+            label: '简体中文',
+            title: 'Rspress',
+            description: '静态网站生成器'
+        }
+    ],
     title: 'Gez',
     description:
         'Gez 是一个基于 Rspack 构建的模块链接（Module Link） 解决方案，通过 importmap 将多服务模块映射到具有强缓存，基于内容哈希的 URL 中。',
@@ -20,7 +29,8 @@ export default defineConfig({
             {
                 icon: 'github',
                 mode: 'link',
-                content: 'https://github.com/dp-os/gez'
+                content:
+                    'https://github.com/dp-os/gez?utm_source=www.gez-esm.com'
             }
         ]
     },
