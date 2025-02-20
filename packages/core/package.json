@@ -1,12 +1,43 @@
 {
     "name": "@gez/core",
+    "description": "A high-performance microfrontend framework supporting Vue, React, Preact, Solid, and Svelte with SSR and Module Federation capabilities.",
+    "author": {
+        "name": "lzxb",
+        "url": "https://github.com/lzxb"
+    },
+    "contributors": [
+        {
+            "name": "RockShi1994",
+            "url": "https://github.com/RockShi1994"
+        },
+        {
+            "name": "jerrychan7",
+            "url": "https://github.com/jerrychan7"
+        }
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/dp-os/gez.git",
+        "directory": "packages/core"
+    },
+    "homepage": "https://github.com/dp-os/gez",
+    "bugs": {
+        "url": "https://github.com/dp-os/gez/issues"
+    },
     "template": "library-node",
     "keywords": [
         "Vue",
         "React",
         "Preact",
         "Solid",
-        "Svelte"
+        "Svelte",
+        "ESM",
+        "Microfrontend",
+        "SSR",
+        "Rspack",
+        "Module Federation",
+        "High Performance",
+        "TypeScript"
     ],
     "license": "MIT",
     "bin": {
