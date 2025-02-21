@@ -23,6 +23,7 @@ head:
     ├── app.vue          # 主应用组件，定义页面结构和交互逻辑
     ├── create-app.ts    # Vue 实例创建工厂，负责初始化应用
     ├── entry.client.ts  # 客户端入口文件，处理浏览器端渲染
+    ├── entry.node.ts    # Node.js 服务器入口文件，负责开发环境配置和服务器启动
     └── entry.server.ts  # 服务端入口文件，处理 SSR 渲染逻辑
 ```
 
@@ -181,6 +182,60 @@ const { app } = createApp();
 // 挂载 Vue 实例
 app.mount('#app');
 ```
+
+### entry.node.ts
+
+创建 `entry.node.ts` 文件，配置开发环境和服务器启动：
+
+```typescript
+import http from 'node:http';
+import type { GezOptions } from '@gez/core';
+
+export default {
+    /**
+     * 配置开发环境的应用创建器
+     * @description 创建并配置 Rspack 应用实例，用于开发环境的构建和热更新
+     * @param gez Gez 框架实例，提供核心功能和配置接口
+     * @returns 返回配置好的 Rspack 应用实例，支持 HMR 和实时预览
+     */
+    async devApp(gez) {
+        return import('@gez/rspack-vue').then((m) =>
+            m.createRspackVue3App(gez, {
+                config(context) {
+                    // 在此处自定义 Rspack 编译配置
+                }
+            })
+        );
+    },
+
+    /**
+     * 配置并启动 HTTP 服务器
+     * @description 创建 HTTP 服务器实例，集成 Gez 中间件，处理 SSR 请求
+     * @param gez Gez 框架实例，提供中间件和渲染功能
+     */
+    async server(gez) {
+        const server = http.createServer((req, res) => {
+            // 使用 Gez 中间件处理请求
+            gez.middleware(req, res, async () => {
+                // 执行服务端渲染
+                const rc = await gez.render({
+                    params: { url: req.url }
+                });
+                res.end(rc.html);
+            });
+        });
+
+        server.listen(3000, () => {
+            console.log('服务启动: http://localhost:3000');
+        });
+    }
+} satisfies GezOptions;
+```
+
+这个文件是开发环境配置和服务器启动的入口文件，主要包含两个核心功能：
+
+1. `devApp` 函数：负责创建和配置开发环境的 Rspack 应用实例，支持热更新和实时预览功能。这里使用 `createRspackVue3App` 来创建专门用于 Vue3 的 Rspack 应用实例。
+2. `server` 函数：负责创建和配置 HTTP 服务器，集成 Gez 中间件处理 SSR 请求。
 
 ### entry.server.ts
 
