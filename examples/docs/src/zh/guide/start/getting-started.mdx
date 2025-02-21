@@ -1,76 +1,51 @@
----
-titleSuffix: Gez 框架入门指南
-description: 本指南将帮助您快速上手 Gez 框架，从环境配置到项目初始化，详细介绍如何创建一个基于原生 HTML 的服务端渲染应用。
-head:
-  - - meta
-    - property: keywords
-      content: Gez, 快速开始, SSR, 服务端渲染, Node.js, TypeScript, 项目初始化
----
-
-import { PackageManagerTabs } from '@theme';
-
 # 快速开始
 
-本文将指导您使用 Gez 框架创建一个基于原生 HTML 的服务端渲染（SSR）应用。通过这个示例，您将了解 Gez 的基本用法、项目结构和核心开发流程。本示例适合初学者入门，同时也展示了 Gez 框架的主要特性。
-
-::: tip
-你可以全选复制页面内容，并将其发送给 AI 助手，AI 将帮助你快速创建和配置项目。
-:::
-
-## 环境要求
-
-### Node.js 版本
-需要 Node.js 22.6 或更高版本，这是因为：
-- 原生支持 TypeScript 的类型导入（通过 `--experimental-strip-types` 标志）
-- 完整支持 ESM 特性，包括动态导入和 import.meta
-- 提供更好的开发体验和性能
+本教程将帮助你从零开始搭建一个基于 Gez 的 SSR 应用。我们将通过一个简单的示例来展示 Gez 的基本用法。
 
 ## 项目初始化
 
-### 创建项目目录
-```bash
-# 创建并进入项目目录
-mkdir your-app-name && cd your-app-name
+首先，让我们创建一个新的项目并配置必要的依赖。创建 `package.json` 文件：
 
-# 初始化 package.json
-npm init -y
-```
-
-### 配置项目基础信息
-```json title="package.json"
+```json
 {
-    "name": "your-app-name",
-    "type": "module",
-    "private": true,
-    "scripts": {
-        "dev": "gez dev",
-        "build": "npm run build:dts && npm run build:ssr",
-        "build:ssr": "gez build",
-        "build:dts": "tsc --declaration --emitDeclarationOnly --outDir dist/src",
-        "preview": "gez preview",
-        "start": "NODE_ENV=production node dist/index.js"
-    }
+  "name": "your-app-name",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "gez dev",
+    "build": "npm run build:dts && npm run build:ssr",
+    "build:ssr": "gez build",
+    "preview": "gez preview",
+    "start": "NODE_ENV=production node dist/index.js",
+    "build:dts": "tsc --declaration --emitDeclarationOnly --outDir dist/src"
+  },
+  "dependencies": {
+    "@gez/core": "*"
+  },
+  "devDependencies": {
+    "@gez/rspack": "*",
+    "@types/node": "22.8.6",
+    "typescript": "^5.2.2"
+  }
 }
 ```
 
-### 安装依赖
+创建完 `package.json` 文件后，需要安装项目依赖。你可以使用以下任一命令来安装：
+```bash
+pnpm add @gez/core
+# 或
+yarn add @gez/core
+# 或
+npm install @gez/core
+```
 
-**运行时依赖**
-<PackageManagerTabs command="install @gez/core" />
+## TypeScript 配置
 
-**开发依赖**
-<PackageManagerTabs command="install @gez/rspack typescript @types/node -D" />
+创建 `tsconfig.json` 文件，配置 TypeScript 编译选项：
 
-::: tip 依赖管理说明
-- `@gez/core`：框架核心运行时，提供服务端渲染引擎和模块链接系统，是应用的基础依赖
-- `@gez/rspack`：基于 Rspack 的高性能构建工具，支持开发环境的热更新和生产环境的资源优化
-- `typescript`：JavaScript 的超集，提供静态类型检查和最新的 ECMAScript 特性支持
-- `@types/node`：Node.js 的 TypeScript 类型定义，用于服务端代码的类型提示
-
-:::
-
-### 配置 TypeScript
-```json title="tsconfig.json"
+```json
 {
     "compilerOptions": {
         "module": "ESNext",
@@ -99,110 +74,144 @@ npm init -y
 }
 ```
 
-## 核心代码实现
+## 入口文件
 
-### 创建项目结构
-```
-your-app-name/
-├── src/
-│   ├── entry.client.ts   # 客户端入口：浏览器端逻辑
-│   ├── entry.server.ts   # 服务端入口：SSR 渲染逻辑
-│   └── entry.node.ts     # 服务器入口：HTTP 服务配置
-├── tsconfig.json         # TypeScript 配置
-└── package.json          # 项目配置
-```
+### 服务端
 
-### 配置 HTTP 服务器
-```ts title="src/entry.node.ts"
+创建 `src/entry.node.ts` 文件，配置服务器和开发环境：
+
+```typescript
+/**
+ * @file Node.js 服务器入口文件
+ * @description 负责开发环境配置和服务器启动，提供 SSR 运行时环境
+ */
+
 import http from 'node:http';
 import type { GezOptions } from '@gez/core';
 
 export default {
-    // 配置开发环境的应用创建器
-    // 用于设置开发服务器的编译和热更新功能
+    /**
+     * 配置开发环境的应用创建器
+     * @description 创建并配置 Rspack 应用实例，用于开发环境的构建和热更新
+     * @param gez Gez 框架实例，提供核心功能和配置接口
+     * @returns 返回配置好的 Rspack 应用实例，支持 HMR 和实时预览
+     */
     async devApp(gez) {
         return import('@gez/rspack').then((m) =>
             m.createRspackHtmlApp(gez, {
                 config(context) {
                     // 在此处自定义 Rspack 编译配置
-                    // 可配置模块解析、资源处理等选项
                 }
             })
         );
     },
-    // 配置 HTTP 服务器
-    // 处理请求路由和服务端渲染
+
+    /**
+     * 配置并启动 HTTP 服务器
+     * @description 创建 HTTP 服务器实例，集成 Gez 中间件，处理 SSR 请求
+     * @param gez Gez 框架实例，提供中间件和渲染功能
+     */
     async server(gez) {
         const server = http.createServer((req, res) => {
-            // 使用 Gez 中间件处理静态资源
-            // 支持开发环境的实时编译和生产环境的缓存优化
+            // 使用 Gez 中间件处理请求
             gez.middleware(req, res, async () => {
                 // 执行服务端渲染
-                // 传入 URL 参数用于路由匹配
                 const rc = await gez.render({
-                    params: {
-                        url: req.url
-                    }
+                    params: { url: req.url }
                 });
-                // 返回渲染后的 HTML
                 res.end(rc.html);
             });
         });
-        // 启动 HTTP 服务器并监听 3000 端口
+
         server.listen(3000, () => {
-            console.log('服务器已启动：http://localhost:3000');
+            console.log('服务启动: http://localhost:3000');
         });
     }
 } satisfies GezOptions;
 ```
 
-### 实现服务端渲染
-```ts title="src/entry.server.ts"
+### 服务端渲染
+
+创建 `src/entry.server.ts` 文件，实现服务端渲染逻辑：
+
+```typescript
+/**
+ * @file 服务端渲染入口文件
+ * @description 负责服务端渲染流程、HTML 生成和资源注入
+ */
+
 import type { RenderContext } from '@gez/core';
 
+// 模拟 renderToString 函数，生成页面内容
+const renderToString = () => {
+    const time = new Date().toISOString();
+    return `
+    <h1><a href="https://www.gez-esm.com/guide/start/getting-started.html" target="_blank">Gez 快速开始</a></h1>
+    <time datetime="${time}">${new Date(time).toLocaleString('zh-CN')}</time>
+    `;
+};
+
 export default async (rc: RenderContext) => {
-    // 提交依赖收集
+    // 使用 renderToString 生成页面内容
+    const html = renderToString();
+
+    // 提交依赖收集，确保所有必要资源都被加载
     await rc.commit();
 
-    // 生成 HTML
-    const time = new Date().toISOString();
-    rc.html = `
-<!DOCTYPE html>
-<html>
+    // 生成完整的 HTML 结构
+    rc.html = `<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
-    ${rc.preload()}           <!-- 预加载资源 -->
-    <title>Gez 示例</title>
-    ${rc.css()}               <!-- 注入样式 -->
+    ${rc.preload()}
+    <title>Gez 快速开始</title>
+    ${rc.css()}
 </head>
 <body>
-    <h1>Gez 示例</h1>
-    <h2>欢迎使用！</h2>
-    <p>当前 URL: ${rc.params.url}</p>
-    <time>${time}</time>
-    ${rc.importmap()}         <!-- 导入映射 -->
-    ${rc.moduleEntry()}       <!-- 入口模块 -->
-    ${rc.modulePreload()}     <!-- 模块预加载 -->
+    ${html}
+    ${rc.importmap()}
+    ${rc.moduleEntry()}
+    ${rc.modulePreload()}
 </body>
 </html>
 `;
 };
 ```
 
-### 实现客户端交互
-```ts title="src/entry.client.ts"
-// 实现时间自动更新
+### 客户端
+
+创建 `src/entry.client.ts` 文件，实现客户端交互逻辑：
+
+```typescript
+/**
+ * @file 客户端入口文件
+ * @description 负责客户端交互逻辑和动态更新
+ */
+
+// 获取时间显示元素并实现自动更新
 const time = document.querySelector('time');
 setInterval(() => {
+    // 使用 ISO 格式更新时间显示
     time?.setHTMLUnsafe(new Date().toISOString());
 }, 1000);
 ```
 
-## 启动和预览
+## 运行项目
 
-1. 启动开发服务器
+完成上述文件配置后，你可以使用以下命令来运行项目：
+
+1. 开发模式：
 ```bash
 npm run dev
 ```
 
-2. 在浏览器中访问：http://localhost:3000
+2. 构建项目：
+```bash
+npm run build
+```
 
+3. 生产环境运行：
+```bash
+npm run start
+```
+
+现在，你已经成功创建了一个基于 Gez 的 SSR 应用！访问 http://localhost:3000 即可看到效果。
