@@ -1,140 +1,85 @@
 ---
-titleSuffix: Gez 框架构建系统配置指南
-description: 详细介绍 Gez 框架的 Rspack 构建系统配置，包括基础配置、性能优化和最佳实践，帮助开发者充分利用 Rspack 的高性能构建能力。
+titleSuffix: Gez 框架高性能构建引擎
+description: 深入解析 Gez 框架的 Rspack 构建系统，包括高性能编译、多环境构建、资源优化等核心特性，助力开发者构建高效、可靠的现代 Web 应用。
 head:
   - - meta
     - property: keywords
-      content: Gez, Rspack, 构建系统, 性能优化, 配置管理, 构建工具, 开发效率
+      content: Gez, Rspack, 构建系统, 高性能编译, 热更新, 多环境构建, Tree Shaking, 代码分割, SSR, 资源优化, 开发效率, 构建工具
 ---
-
-import { PackageManagerTabs, Badge } from '@theme';
 
 # Rspack
 
-Gez 基于 [Rspack](https://rspack.dev/) 构建系统实现，充分利用了 Rspack 的高性能构建能力。本文档将详细介绍 Gez 提供的 Rspack 相关配置模块及其使用方法。
+Gez 基于 [Rspack](https://rspack.dev/) 构建系统实现，充分利用了 Rspack 的高性能构建能力。本文档将介绍 Rspack 在 Gez 框架中的定位和核心功能。
 
-## 基础配置模块
+## 特性
+
+Rspack 是 Gez 框架的核心构建系统，它提供了以下关键特性：
+
+- **高性能构建**：基于 Rust 实现的构建引擎，提供极速的编译性能，显著提升大型项目的构建速度
+- **开发体验优化**：支持热更新（HMR）、增量编译等现代开发特性，提供流畅的开发体验
+- **多环境构建**：统一的构建配置支持客户端（client）、服务端（server）和 Node.js（node）环境，简化多端开发流程
+- **资源优化**：内置的资源处理和优化能力，支持代码分割、Tree Shaking、资源压缩等特性
+
+## 构建应用
+
+Gez 的 Rspack 构建系统采用模块化设计，主要包含以下核心模块：
 
 ### @gez/rspack
 
-`@gez/rspack` 模块提供了 Rspack 的基础配置能力，是 Gez 框架的核心构建工具。
+基础构建模块，提供以下核心能力：
 
-#### 安装
+- **统一构建配置**：提供标准化的构建配置管理，支持多环境配置
+- **资源处理**：内置对 TypeScript、CSS、图片等资源的处理能力
+- **构建优化**：提供代码分割、Tree Shaking 等性能优化特性
+- **开发服务器**：集成高性能的开发服务器，支持 HMR
 
-使用包管理器安装 `@gez/rspack` 开发依赖：
+### @gez/rspack-vue
 
-<PackageManagerTabs command="install @gez/rspack -D" />
+Vue 框架专用构建模块，提供：
 
-### 基础构建配置
+- **Vue 组件编译**：支持 Vue 2/3 组件的高效编译
+- **SSR 优化**：针对服务端渲染场景的特定优化
+- **开发增强**：Vue 开发环境的特定功能增强
 
-`createRspackApp` 函数提供了 Gez 的核心构建配置。默认情况下，该配置不包含任何 [loader](https://rspack.dev/guide/features/loader) 相关配置，你需要根据项目需求添加相应的 loader 配置。
+## 构建流程
 
-::: danger 重要提示
-Gez 的默认配置是框架正常运行的基础，请勿修改这些配置。你可以[查看源码](https://github.com/dp-os/gez/blob/master/packages/rspack/src/config.ts)了解默认配置的具体内容。
-:::
+Gez 的构建流程主要分为以下几个阶段：
 
-## 配置选项
+1. **配置初始化**
+   - 加载项目配置
+   - 合并默认配置和用户配置
+   - 根据环境变量调整配置
 
-### config()
-- **类型：** `config?: (context: RspackAppConfigContext) => void`
-- **默认值：** `undefined`
-- **描述：** 用于自定义 Rspack 配置的函数
+2. **资源编译**
+   - 解析源代码依赖
+   - 转换各类资源（TypeScript、CSS 等）
+   - 处理模块导入导出
 
-## 使用示例
+3. **优化处理**
+   - 执行代码分割
+   - 应用 Tree Shaking
+   - 压缩代码和资源
 
-```ts title="src/entry.node.ts"
-import type { GezOptions } from '@gez/core';
+4. **输出生成**
+   - 生成目标文件
+   - 输出资源映射
+   - 生成构建报告
 
-export default {
-    async devApp(gez) {
-        return import('@gez/rspack').then((m) =>
-            m.createRspackApp(gez, {
-                config({ config }) {
-                    // 配置 TypeScript 文件的编译规则
-                    config.module = {
-                        ...config.module,
-                        rules: [
-                            {
-                                test: /\.ts$/,
-                                exclude: [/node_modules/],
-                                loader: 'builtin:swc-loader',
-                                options: {
-                                    jsc: {
-                                        parser: {
-                                            syntax: 'typescript'
-                                        }
-                                    }
-                                }
-                            }
-                        ]
-                    };
-                }
-            })
-        );
-    }
-} satisfies GezOptions;
-```
+## 最佳实践
 
-## HTML 应用构建配置
+### 开发环境优化
 
-`createRspackHtmlApp` 函数提供了完整的 Web 应用构建配置，支持以下资源类型的处理：
-- TypeScript/JavaScript
-- Web Worker
-- JSON
-- CSS/Less
-- 视频/图片
-- 字体文件
+- **增量编译配置**：合理配置 `cache` 选项，利用缓存加快构建速度
+- **HMR 优化**：针对性配置热更新范围，避免不必要的模块更新
+- **资源处理优化**：使用适当的 loader 配置，避免重复处理
 
-### 配置选项
+### 生产环境优化
 
-#### css
-- **类型：** `boolean`
-- **默认值：** `true`
-- **描述：** 是否启用默认的 CSS 处理配置
+- **代码分割策略**：合理配置 `splitChunks`，优化资源加载
+- **资源压缩**：启用适当的压缩配置，平衡构建时间和产物大小
+- **缓存优化**：利用内容哈希和长期缓存策略，提升加载性能
 
-::: tip
-如需自定义 CSS loader 配置，可将此选项设置为 `false`
-:::
-
-#### swcLoader
-- **类型：** `SwcLoaderOptions`
-- **默认值：** `undefined`
-- **描述：** [builtin-swc-loader](https://rspack.dev/guide/features/builtin-swc-loader) 的配置选项
-
-#### lessLoader
-- **类型：** `Record<string, any>`
-- **默认值：** `undefined`
-- **描述：** [less-loader](https://github.com/webpack-contrib/less-loader) 的配置选项
-
-#### styleResourcesLoader
-- **类型：** `Record<string, any>`
-- **默认值：** `undefined`
-- **描述：** [style-resources-loader](https://github.com/yenshih/style-resources-loader) 的配置选项
-
-#### definePlugin
-- **类型：** `Record<string, any>`
-- **默认值：** `undefined`
-- **描述：** [DefinePlugin](https://rspack.dev/plugins/webpack/define-plugin) 的配置选项
-
-#### target.web
-- **类型：** `string[]`
-- **默认值：** `['chrome>=87', 'firefox>=78', 'safari>=14', 'edge>=88']`
-- **描述：** 浏览器端构建目标配置
-
-::: warning
-请勿将构建目标设置低于默认配置，否则可能影响 Gez 的正常运行。
-:::
-
-#### target.node
-- **类型：** `string[]`
-- **默认值：** `['node>=22.6']`
-- **描述：** Node.js 端构建目标配置
-
-::: warning
-降低 Node.js 构建目标版本可能会影响兼容性，请谨慎设置。
-:::
-
-### 使用示例
+## 配置示例
 
 ```ts title="src/entry.node.ts"
 import type { GezOptions } from '@gez/core';
@@ -153,73 +98,6 @@ export default {
 } satisfies GezOptions;
 ```
 
-## Vue 框架支持 (@gez/rspack-vue)
-
-`@gez/rspack-vue` 模块提供了 Vue 框架的专用构建配置。
-
-### 安装
-
-使用包管理器安装 `@gez/rspack-vue` 开发依赖：
-
-<PackageManagerTabs command="install @gez/rspack-vue -D" />
-
-:::tip
-本模块同时支持 [Vue 2](https://v2.vuejs.org/) 和 [Vue 3](https://vuejs.org/) 版本。
+::: tip
+更多详细的 API 说明和配置选项，请参考 [Rspack API 文档](/api/app/rspack.html)。
 :::
-
-### 配置选项
-
-除继承 [createRspackHtmlApp](#html) 的所有配置选项外，还提供以下专用选项：
-
-#### vueLoader
-- **类型：** `Record<string, any>`
-- **默认值：** `undefined`
-- **描述：** [vue-loader](https://github.com/vuejs/vue-loader) 的配置选项
-
-::: warning
-`experimentalInlineMatchResource` 和 `optimizeSSR` 选项由框架自动设置，手动配置将被忽略。
-:::
-
-### Vue 2 应用构建
-
-使用 `createRspackVue2App` 函数构建 Vue 2 应用：
-
-```ts title="src/entry.node.ts"
-import type { GezOptions } from '@gez/core';
-
-export default {
-    async devApp(gez) {
-        return import('@gez/rspack-vue').then((m) =>
-            m.createRspackVue2App(gez, {
-                config ({ config }) {
-                    // 自定义 Rspack 配置
-                }
-            })
-        );
-    }
-} satisfies GezOptions;
-```
-
-### Vue 3 应用构建
-
-使用 `createRspackVue3App` 函数构建 Vue 3 应用：
-
-```ts title="src/entry.node.ts"
-import type { GezOptions } from '@gez/core';
-
-export default {
-    async devApp(gez) {
-        return import('@gez/rspack-vue').then((m) =>
-            m.createRspackVue3App(gez, {
-                config ({ config }) {
-                    // 自定义 Rspack 配置
-                }
-            })
-        );
-    }
-} satisfies GezOptions;
-```
-
-### JSX/TSX 支持
-
-目前框架尚未内置 JSX/TSX 支持。如需使用 JSX/TSX 语法，请参考 [Rspack Vue 配置指南](https://rspack.dev/guide/tech/vue)自行添加相关构建配置。

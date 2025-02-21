@@ -160,7 +160,7 @@ export function createRspackConfig(
         },
         target: buildTarget === 'client' ? 'web' : 'node22.6',
         mode: gez.isProd ? 'production' : 'development',
-        cache: false
+        cache: !gez.isProd
     };
 }
 
