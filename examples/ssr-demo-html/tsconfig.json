@@ -17,8 +17,8 @@
         
         "baseUrl": ".",
         "paths": {
-            "ssr-demo-getting-started/src/*": ["./src/*"],
-            "ssr-demo-getting-started/*": ["./*"]
+            "ssr-demo-html/src/*": ["./src/*"],
+            "ssr-demo-html/*": ["./*"]
         }
     },
     "include": ["src"],

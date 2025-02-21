@@ -11,7 +11,7 @@
     },
     {
         "type": "dir",
-        "name": "demo",
-        "label": "框架示例"
+        "name": "frameworks",
+        "label": "框架"
     }
 ]
