@@ -113,7 +113,7 @@ npm install
 
 ```html
 <template>
-    <div id="app">
+    <div>
         <h1><a href="https://www.gez-esm.com/guide/frameworks/vue3.html" target="_blank">Gez 快速开始</a></h1>
         <time :datetime="time">{{ time }}</time>
     </div>
@@ -272,7 +272,7 @@ export default async (rc: RenderContext) => {
     ${rc.css()}
 </head>
 <body>
-    ${html}
+    <div id="app">${html}</div>
     ${rc.importmap()}
     ${rc.moduleEntry()}
     ${rc.modulePreload()}
