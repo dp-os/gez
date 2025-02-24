@@ -85,7 +85,7 @@ import { utils } from 'other-service/src/utils';
 
 :::
 
-```
+``` ts
 // 导入组件
 import { Button } from 'your-app-name/src/components';
 import { Layout } from 'your-app-name/src/components/layout';
