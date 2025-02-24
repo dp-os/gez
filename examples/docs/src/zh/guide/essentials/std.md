@@ -39,6 +39,7 @@ root
 - `gez.name` 来源于 `package.json` 的 `name` 字段
 - `dist/package.json` 来源于根目录的 `package.json`
 - 设置 `packs.enable` 为 `true` 时，才会对 `dist` 目录进行归档
+
 :::
 
 ## 入口文件规范

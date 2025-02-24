@@ -211,7 +211,7 @@ export default {
 
 ```
 your-app-name.tgz
-├── package.json         # 包信息
+├── package.json        # 包信息
 ├── index.js            # 生产环境入口
 ├── server/             # 服务端资源
 │   └── manifest.json   # 服务端资源映射
