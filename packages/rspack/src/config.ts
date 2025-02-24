@@ -49,7 +49,9 @@ export function createRspackConfig(
             };
         })(),
         output: {
-            clean: true,
+            clean: {
+                keep: 'importmap'
+            },
             module: true,
             chunkFormat: gez.isProd ? 'module' : undefined,
             chunkLoading: gez.isProd ? 'import' : undefined,
