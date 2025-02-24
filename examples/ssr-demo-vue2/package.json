@@ -1,6 +1,6 @@
 {
   "name": "ssr-demo-vue2",
-  "version": "3.0.0-rc.3",
+  "version": "3.0.0-rc.4",
   "type": "module",
   "private": true,
   "scripts": {
