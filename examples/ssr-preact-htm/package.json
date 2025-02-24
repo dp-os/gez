@@ -22,7 +22,7 @@
     "@gez/rspack": "workspace:*",
     "@types/node": "22.8.6",
     "htm": "^3.1.1",
-    "preact": "^10.25.4",
+    "preact": "^10.26.2",
     "preact-render-to-string": "^6.5.13",
     "typescript": "^5.2.2"
   }
