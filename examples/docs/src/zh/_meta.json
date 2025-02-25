@@ -11,7 +11,7 @@
   },
   {
     "text": "博客",
-    "link": "/blog",
+    "link": "/blog/index",
     "activeMatch": "/blog/"
   }
 ]
