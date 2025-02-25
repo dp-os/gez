@@ -19,6 +19,11 @@ export default defineConfig({
     icon: '/logo.svg',
     base: '/',
     logo: '/logo.svg',
+    builderConfig: {
+        html: {
+            template: './src/index.html'
+        }
+    },
     themeConfig: {
         lastUpdated: true,
         socialLinks: [
