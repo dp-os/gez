@@ -19,14 +19,16 @@ importers:
         version: 15.2.4
 
   examples/docs:
-    dependencies:
-      rspress:
-        specifier: 1.41.2
-        version: 1.41.2(webpack@5.96.1)
     devDependencies:
       '@types/node':
         specifier: 22.13.4
         version: 22.13.4
+      rspress:
+        specifier: 1.41.2
+        version: 1.41.2(webpack@5.96.1)
+      rspress-plugin-sitemap:
+        specifier: ^1.1.1
+        version: 1.1.1
       typescript:
         specifier: 5.7.3
         version: 5.7.3
@@ -50,12 +52,12 @@ importers:
   examples/ssr-demo-preact-htm:
     dependencies:
       '@gez/core':
-        specifier: workspace:*
-        version: link:../../packages/core
+        specifier: '*'
+        version: 3.0.0-rc.4
     devDependencies:
       '@gez/rspack':
-        specifier: workspace:*
-        version: link:../../packages/rspack
+        specifier: '*'
+        version: 3.0.0-rc.4(@gez/core@3.0.0-rc.4)(@swc/helpers@0.5.15)(less@4.2.0)(webpack@5.96.1)
       '@types/node':
         specifier: 22.8.6
         version: 22.8.6
@@ -5291,6 +5293,9 @@ packages:
 
   rspack-plugin-virtual-module@0.1.13:
     resolution: {integrity: sha512-VC0HiVHH6dtGfTgfpbDgVTt6LlYv+uAg9CWGWAR5lBx9FbKPEZeGz7iRUUP8vMymx+PGI8ps0u4a25dne0rtuQ==}
+
+  rspress-plugin-sitemap@1.1.1:
+    resolution: {integrity: sha512-usb6zWoi5wFFmBeA9HKR6BhsnnsItudMBarc54GYpuRL55SWkLxyWyMijv14mUI04FI7J7lEmea08uZE0bVKxg==}
 
   rspress@1.41.2:
     resolution: {integrity: sha512-kAwMGlB3QCroszMfGhdXsKbhwnr1Ys86Ydd35WomAKNMrYZv/8wVd/Grk73ZAAl5rT7tU/FICqXVKdgxpr9wkA==}
@@ -11814,6 +11819,8 @@ snapshots:
   rspack-plugin-virtual-module@0.1.13:
     dependencies:
       fs-extra: 11.2.0
+
+  rspress-plugin-sitemap@1.1.1: {}
 
   rspress@1.41.2(webpack@5.96.1):
     dependencies:

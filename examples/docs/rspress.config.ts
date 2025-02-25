@@ -1,4 +1,5 @@
 import path from 'node:path';
+import sitemap from 'rspress-plugin-sitemap';
 import { defineConfig } from 'rspress/config';
 
 export default defineConfig({
@@ -37,5 +38,12 @@ export default defineConfig({
     },
     markdown: {
         showLineNumbers: true
-    }
+    },
+    plugins: [
+        sitemap({
+            domain: 'https://www.gez-esm.com',
+            defaultChangeFreq: 'monthly',
+            defaultPriority: '0.5'
+        })
+    ]
 });
