@@ -14,7 +14,7 @@ import type { Gez } from '../gez';
  * - 调用下一个中间件
  *
  * @example
- * ```typescript
+ * ```ts
  * // 创建一个简单的日志中间件
  * const loggerMiddleware: Middleware = (req, res, next) => {
  *   console.log(`${req.method} ${req.url}`);
@@ -50,7 +50,7 @@ export function isImmutableFile(filename: string) {
  * - 支持不可变文件的长期缓存
  *
  * @example
- * ```typescript
+ * ```ts
  * import { Gez, createMiddleware } from '@gez/core';
  *
  * const gez = new Gez();

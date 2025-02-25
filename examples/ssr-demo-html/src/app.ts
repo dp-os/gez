@@ -12,9 +12,9 @@ export default class App {
 
     /**
      * 创建应用实例
-     * @param {ServerContext} [serverContext] - 服务端上下文，包含导入元数据集合
+     * @param {SsrContext} [ssrContext] - 服务端上下文，包含导入元数据集合
      */
-    public constructor(public serverContext?: ServerContext) {
+    public constructor(public ssrContext?: SsrContext) {
         // 构造函数中不需要额外初始化
     }
 
@@ -24,8 +24,8 @@ export default class App {
      */
     public render(): string {
         // 确保在服务端环境下正确收集导入元数据
-        if (this.serverContext) {
-            this.serverContext.importMetaSet.add(import.meta);
+        if (this.ssrContext) {
+            this.ssrContext.importMetaSet.add(import.meta);
         }
 
         return `
@@ -67,7 +67,7 @@ export default class App {
  * 服务端上下文接口
  * @interface
  */
-export interface ServerContext {
+export interface SsrContext {
     /**
      * 导入元数据集合
      * @type {Set<ImportMeta>}

@@ -268,7 +268,7 @@ export class Gez {
      * @throws {NotReadyError} 在框架实例未初始化时调用此方法会抛出错误
      *
      * @example
-     * ```typescript
+     * ```ts
      * const server = http.createServer((req, res) => {
      *     // 使用中间件处理静态资源请求
      *     gez.middleware(req, res, async () => {
@@ -293,7 +293,7 @@ export class Gez {
      * @throws {NotReadyError} 在框架实例未初始化时调用此方法会抛出错误
      *
      * @example
-     * ```typescript
+     * ```ts
      * // 基本用法
      * const rc = await gez.render({
      *     params: { url: req.url }
@@ -338,7 +338,7 @@ export class Gez {
      * @throws {Error} 重复初始化时抛出错误
      *
      * @example
-     * ```typescript
+     * ```ts
      * // entry.node.ts
      * import type { GezOptions } from '@gez/core';
      *
@@ -441,7 +441,7 @@ export class Gez {
      *   - false: 清理失败
      *
      * @example
-     * ```typescript
+     * ```ts
      * // 在需要自定义清理逻辑时使用
      * process.once('SIGTERM', async () => {
      *   await gez.destroy(); // 清理资源
@@ -475,7 +475,7 @@ export class Gez {
      * @throws {NotReadyError} 在框架实例未初始化时调用此方法会抛出错误
      *
      * @example
-     * ```typescript
+     * ```ts
      * // entry.node.ts
      * import type { GezOptions } from '@gez/core';
      *
@@ -535,7 +535,7 @@ export class Gez {
      * @throws {NotReadyError} 在框架实例未初始化时调用此方法会抛出错误
      *
      * @example
-     * ```typescript
+     * ```ts
      * // entry.node.ts
      * import http from 'node:http';
      * import type { GezOptions } from '@gez/core';
@@ -582,7 +582,7 @@ export class Gez {
      *   - false: 后处理失败
      *
      * @example
-     * ```typescript
+     * ```ts
      * // entry.node.ts
      * import type { GezOptions } from '@gez/core';
      *
@@ -750,7 +750,7 @@ export class Gez {
      * @throws {NotReadyError} 在框架实例未初始化时调用此方法会抛出错误
      *
      * @example
-     * ```typescript
+     * ```ts
      * // 在 entry.node.ts 中使用
      * async server(gez) {
      *   // 获取客户端构建清单
@@ -798,7 +798,7 @@ export class Gez {
      * @throws {NotReadyError} 在框架实例未初始化时调用此方法会抛出错误
      *
      * @example
-     * ```typescript
+     * ```ts
      * // 在 entry.node.ts 中使用
      * async server(gez) {
      *   // 获取客户端导入映射
@@ -865,7 +865,7 @@ export class Gez {
      * @throws {NotReadyError} 在框架实例未初始化时调用此方法会抛出错误
      *
      * @example
-     * ```typescript
+     * ```ts
      * // 在 entry.node.ts 中使用
      * async server(gez) {
      *   const server = express();
@@ -980,7 +980,7 @@ innerHTML: JSON.stringify(importmap)
      * @throws {NotReadyError} 在框架实例未初始化时调用此方法会抛出错误
      *
      * @example
-     * ```typescript
+     * ```ts
      * // 获取客户端入口模块的静态导入路径
      * const paths = await gez.getStaticImportPaths(
      *   'client',

@@ -15,7 +15,7 @@ import { type Middleware, createMiddleware } from './utils/middleware';
  * 静态资源和服务端渲染。
  *
  * @example
- * ```typescript
+ * ```ts
  * // entry.node.ts
  * export default {
  *   // 开发环境配置
@@ -46,7 +46,7 @@ export interface App {
      * - 优化的资源加载策略
      *
      * @example
-     * ```typescript
+     * ```ts
      * server.use(gez.middleware);
      * ```
      */
@@ -63,7 +63,7 @@ export interface App {
      * @returns 返回渲染上下文，包含渲染结果
      *
      * @example
-     * ```typescript
+     * ```ts
      * const rc = await gez.render({
      *   params: { url: '/page' }
      * });
@@ -112,7 +112,7 @@ export async function createApp(gez: Gez, command: COMMAND): Promise<App> {
  * @internal
  *
  * @example
- * ```typescript
+ * ```ts
  * // 服务端入口文件 (entry.server)
  * export default async function render(rc: RenderContext) {
  *   rc.html = '<html>...</html>';

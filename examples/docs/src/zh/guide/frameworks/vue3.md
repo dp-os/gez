@@ -53,8 +53,8 @@ head:
   "devDependencies": {
     "@gez/rspack-vue": "*",
     "@types/node": "22.8.6",
-    "typescript": "^5.7.3",
     "@vue/server-renderer": "^3.5.13",
+    "typescript": "^5.7.3",
     "vue": "^3.5.13",
     "vue-tsc": "^2.1.6"
   }
@@ -187,7 +187,12 @@ app.mount('#app');
 
 创建 `entry.node.ts` 文件，配置开发环境和服务器启动：
 
-```typescript
+```ts
+/**
+ * @file Node.js 服务器入口文件
+ * @description 负责开发环境配置和服务器启动，提供 SSR 运行时环境
+ */
+
 import http from 'node:http';
 import type { GezOptions } from '@gez/core';
 

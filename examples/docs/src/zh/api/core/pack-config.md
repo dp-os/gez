@@ -17,7 +17,7 @@ head:
 
 ## 类型定义
 
-```typescript
+```ts
 interface PackConfig {
     enable?: boolean;
     outputs?: string | string[] | boolean;
@@ -59,7 +59,7 @@ interface PackConfig {
 - 配置发布相关信息
 
 示例：
-```typescript
+```ts
 packageJson: async (gez, pkg) => {
   // 设置包信息
   pkg.name = 'my-app';
@@ -97,7 +97,7 @@ packageJson: async (gez, pkg) => {
 - 清理临时文件
 
 示例：
-```typescript
+```ts
 onBefore: async (gez, pkg) => {
   // 添加文档
   await fs.writeFile('dist/README.md', '# My App');
@@ -131,7 +131,7 @@ onBefore: async (gez, pkg) => {
 - 触发 CI/CD 流程
 
 示例：
-```typescript
+```ts
 onAfter: async (gez, pkg, file) => {
   // 发布到 npm 私有仓库
   await publishToRegistry(file, {
@@ -151,7 +151,7 @@ onAfter: async (gez, pkg, file) => {
 
 ## 使用示例
 
-```typescript title="entry.node.ts"
+```ts title="entry.node.ts"
 import type { GezOptions } from '@gez/core';
 
 export default {

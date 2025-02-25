@@ -34,12 +34,12 @@ importers:
   examples/ssr-demo-html:
     dependencies:
       '@gez/core':
-        specifier: workspace:*
-        version: link:../../packages/core
+        specifier: '*'
+        version: 3.0.0-rc.4
     devDependencies:
       '@gez/rspack':
-        specifier: workspace:*
-        version: link:../../packages/rspack
+        specifier: '*'
+        version: 3.0.0-rc.4(@gez/core@3.0.0-rc.4)(@swc/helpers@0.5.15)(less@4.2.0)(webpack@5.96.1)
       '@types/node':
         specifier: 22.8.6
         version: 22.8.6
@@ -50,12 +50,12 @@ importers:
   examples/ssr-demo-vue2:
     dependencies:
       '@gez/core':
-        specifier: workspace:*
-        version: link:../../packages/core
+        specifier: '*'
+        version: 3.0.0-rc.4
     devDependencies:
       '@gez/rspack-vue':
-        specifier: workspace:*
-        version: link:../../packages/rspack-vue
+        specifier: '*'
+        version: 3.0.0-rc.4(@gez/core@3.0.0-rc.4)(@swc/helpers@0.5.15)(@vue/compiler-sfc@3.5.13)(css-loader@7.1.2(@rspack/core@1.2.5(@swc/helpers@0.5.15))(webpack@5.96.1))(less@4.2.0)(vue@2.7.16)(webpack@5.96.1)
       '@types/node':
         specifier: 22.8.6
         version: 22.8.6
@@ -75,12 +75,12 @@ importers:
   examples/ssr-demo-vue3:
     dependencies:
       '@gez/core':
-        specifier: workspace:*
-        version: link:../../packages/core
+        specifier: '*'
+        version: 3.0.0-rc.4
     devDependencies:
       '@gez/rspack-vue':
-        specifier: workspace:*
-        version: link:../../packages/rspack-vue
+        specifier: '*'
+        version: 3.0.0-rc.4(@gez/core@3.0.0-rc.4)(@swc/helpers@0.5.15)(@vue/compiler-sfc@3.5.13)(css-loader@7.1.2(@rspack/core@1.2.5(@swc/helpers@0.5.15))(webpack@5.96.1))(less@4.2.0)(vue@3.5.13(typescript@5.7.3))(webpack@5.96.1)
       '@types/node':
         specifier: 22.8.6
         version: 22.8.6
@@ -1205,6 +1205,32 @@ packages:
     engines: {node: '>=18'}
     cpu: [x64]
     os: [win32]
+
+  '@gez/core@3.0.0-rc.4':
+    resolution: {integrity: sha512-nXzgeRwS4Husxof6OUGl79TmxYF10mw50cvHrLBP1PF08KzRf/6tuduDh+Fht1RoES1R6dhVakgUvST/h1Db8g==}
+    engines: {node: '>=22.6'}
+    hasBin: true
+
+  '@gez/import@3.0.0-rc.4':
+    resolution: {integrity: sha512-5YWjeMAUi8Ur5i3Wge5sw4uZOKwqufkHuBkAutdKGef1rFS87ETwNq7ym8Mi2sCbIpI6mxUShCMnud7mkD/3/w==}
+
+  '@gez/rspack-module-link-plugin@3.0.0-rc.4':
+    resolution: {integrity: sha512-QBSW8yFTB5KAbpTw9/bU/gUntDlmYK4VInMWUhv1gaOekLvjEfUuDgpoJaW/X82xOZfB5+IkHjtUacJU0mmd9Q==}
+
+  '@gez/rspack-vue@3.0.0-rc.4':
+    resolution: {integrity: sha512-ZCDD7SK2WIAa7j2ZFTDrB8mLrvGayfJxLa6MkziQ3XbaPVzFE7e+diECYQSepDo1D9NeAcpV15mYGHU7ePidTw==}
+    peerDependencies:
+      '@gez/core': '*'
+      vue: '>=2.7.8 || >=3.0.0'
+
+  '@gez/rspack@3.0.0-rc.4':
+    resolution: {integrity: sha512-LOUBtczVbpKD5f00HoN+y3i0pIiLEJBm1vbiagz3G6j9jkCb+3sHGVxx9IXKjhteZyGPRcy0yy/mRrwQI97kGA==}
+    peerDependencies:
+      '@gez/core': '*'
+      less: '*'
+    peerDependenciesMeta:
+      less:
+        optional: true
 
   '@import-maps/resolve@2.0.0':
     resolution: {integrity: sha512-RwzRTpmrrS6Q1ZhQExwuxJGK1Wqhv4stt+OF2JzS+uawewpwNyU7EJL1WpBex7aDiiGLs4FsXGkfUBdYuX7xiQ==}
@@ -6743,6 +6769,200 @@ snapshots:
 
   '@esbuild/win32-x64@0.24.0':
     optional: true
+
+  '@gez/core@3.0.0-rc.4':
+    dependencies:
+      '@gez/import': 3.0.0-rc.4
+      '@types/serialize-javascript': 5.0.4
+      es-module-lexer: 1.6.0
+      find: 0.3.0
+      send: 1.1.0
+      serialize-javascript: 6.0.2
+      write: 2.0.0
+    transitivePeerDependencies:
+      - supports-color
+
+  '@gez/import@3.0.0-rc.4':
+    dependencies:
+      '@import-maps/resolve': 2.0.0
+
+  '@gez/rspack-module-link-plugin@3.0.0-rc.4':
+    dependencies:
+      upath: 2.0.1
+
+  '@gez/rspack-vue@3.0.0-rc.4(@gez/core@3.0.0-rc.4)(@swc/helpers@0.5.15)(@vue/compiler-sfc@3.5.13)(css-loader@7.1.2(@rspack/core@1.2.5(@swc/helpers@0.5.15))(webpack@5.96.1))(less@4.2.0)(vue@2.7.16)(webpack@5.96.1)':
+    dependencies:
+      '@gez/core': 3.0.0-rc.4
+      '@gez/rspack': 3.0.0-rc.4(@gez/core@3.0.0-rc.4)(@swc/helpers@0.5.15)(less@4.2.0)(webpack@5.96.1)
+      vue: 2.7.16
+      vue-style-loader: 4.1.3
+      vue2-loader: vue-loader@15.11.1(@vue/compiler-sfc@3.5.13)(css-loader@7.1.2(@rspack/core@1.2.5(@swc/helpers@0.5.15))(webpack@5.96.1))(webpack@5.96.1)
+      vue3-loader: vue-loader@17.4.2(@vue/compiler-sfc@3.5.13)(vue@2.7.16)(webpack@5.96.1)
+    transitivePeerDependencies:
+      - '@rspack/tracing'
+      - '@swc/helpers'
+      - '@vue/compiler-sfc'
+      - arc-templates
+      - atpl
+      - babel-core
+      - bluebird
+      - bracket-template
+      - cache-loader
+      - coffee-script
+      - css-loader
+      - dot
+      - dust
+      - dustjs-helpers
+      - dustjs-linkedin
+      - eco
+      - ect
+      - ejs
+      - haml-coffee
+      - hamlet
+      - hamljs
+      - handlebars
+      - hogan.js
+      - htmling
+      - jade
+      - jazz
+      - jqtpl
+      - just
+      - less
+      - liquid-node
+      - liquor
+      - lodash
+      - marko
+      - mote
+      - mustache
+      - nunjucks
+      - plates
+      - prettier
+      - pug
+      - qejs
+      - ractive
+      - razor-tmpl
+      - react
+      - react-dom
+      - slm
+      - squirrelly
+      - supports-color
+      - swig
+      - swig-templates
+      - teacup
+      - templayed
+      - then-jade
+      - then-pug
+      - tinyliquid
+      - toffee
+      - twig
+      - twing
+      - underscore
+      - vash
+      - velocityjs
+      - vue-template-compiler
+      - walrus
+      - webpack
+      - whiskers
+
+  '@gez/rspack-vue@3.0.0-rc.4(@gez/core@3.0.0-rc.4)(@swc/helpers@0.5.15)(@vue/compiler-sfc@3.5.13)(css-loader@7.1.2(@rspack/core@1.2.5(@swc/helpers@0.5.15))(webpack@5.96.1))(less@4.2.0)(vue@3.5.13(typescript@5.7.3))(webpack@5.96.1)':
+    dependencies:
+      '@gez/core': 3.0.0-rc.4
+      '@gez/rspack': 3.0.0-rc.4(@gez/core@3.0.0-rc.4)(@swc/helpers@0.5.15)(less@4.2.0)(webpack@5.96.1)
+      vue: 3.5.13(typescript@5.7.3)
+      vue-style-loader: 4.1.3
+      vue2-loader: vue-loader@15.11.1(@vue/compiler-sfc@3.5.13)(css-loader@7.1.2(@rspack/core@1.2.5(@swc/helpers@0.5.15))(webpack@5.96.1))(webpack@5.96.1)
+      vue3-loader: vue-loader@17.4.2(@vue/compiler-sfc@3.5.13)(vue@3.5.13(typescript@5.7.3))(webpack@5.96.1)
+    transitivePeerDependencies:
+      - '@rspack/tracing'
+      - '@swc/helpers'
+      - '@vue/compiler-sfc'
+      - arc-templates
+      - atpl
+      - babel-core
+      - bluebird
+      - bracket-template
+      - cache-loader
+      - coffee-script
+      - css-loader
+      - dot
+      - dust
+      - dustjs-helpers
+      - dustjs-linkedin
+      - eco
+      - ect
+      - ejs
+      - haml-coffee
+      - hamlet
+      - hamljs
+      - handlebars
+      - hogan.js
+      - htmling
+      - jade
+      - jazz
+      - jqtpl
+      - just
+      - less
+      - liquid-node
+      - liquor
+      - lodash
+      - marko
+      - mote
+      - mustache
+      - nunjucks
+      - plates
+      - prettier
+      - pug
+      - qejs
+      - ractive
+      - razor-tmpl
+      - react
+      - react-dom
+      - slm
+      - squirrelly
+      - supports-color
+      - swig
+      - swig-templates
+      - teacup
+      - templayed
+      - then-jade
+      - then-pug
+      - tinyliquid
+      - toffee
+      - twig
+      - twing
+      - underscore
+      - vash
+      - velocityjs
+      - vue-template-compiler
+      - walrus
+      - webpack
+      - whiskers
+
+  '@gez/rspack@3.0.0-rc.4(@gez/core@3.0.0-rc.4)(@swc/helpers@0.5.15)(less@4.2.0)(webpack@5.96.1)':
+    dependencies:
+      '@gez/core': 3.0.0-rc.4
+      '@gez/import': 3.0.0-rc.4
+      '@gez/rspack-module-link-plugin': 3.0.0-rc.4
+      '@npmcli/arborist': 8.0.0
+      '@rspack/core': 1.2.5(@swc/helpers@0.5.15)
+      css-loader: 7.1.2(@rspack/core@1.2.5(@swc/helpers@0.5.15))(webpack@5.96.1)
+      less-loader: 12.2.0(@rspack/core@1.2.5(@swc/helpers@0.5.15))(less@4.2.0)(webpack@5.96.1)
+      node-polyfill-webpack-plugin: 4.0.0(webpack@5.96.1)
+      pacote: 21.0.0
+      style-loader: 4.0.0(webpack@5.96.1)
+      style-resources-loader: 1.5.0(webpack@5.96.1)
+      webpack-dev-middleware: 7.4.2(webpack@5.96.1)
+      webpack-hot-middleware: 2.26.1
+      webpack-node-externals: 3.0.0
+      worker-rspack-loader: 3.1.2(@rspack/core@1.2.5(@swc/helpers@0.5.15))(webpack@5.96.1)
+    optionalDependencies:
+      less: 4.2.0
+    transitivePeerDependencies:
+      - '@rspack/tracing'
+      - '@swc/helpers'
+      - bluebird
+      - supports-color
+      - webpack
 
   '@import-maps/resolve@2.0.0': {}
 
@@ -12736,6 +12956,16 @@ snapshots:
       - walrus
       - whiskers
 
+  vue-loader@17.4.2(@vue/compiler-sfc@3.5.13)(vue@2.7.16)(webpack@5.96.1):
+    dependencies:
+      chalk: 4.1.2
+      hash-sum: 2.0.0
+      watchpack: 2.4.2
+      webpack: 5.96.1
+    optionalDependencies:
+      '@vue/compiler-sfc': 3.5.13
+      vue: 2.7.16
+
   vue-loader@17.4.2(@vue/compiler-sfc@3.5.13)(vue@3.5.12(typescript@5.7.3))(webpack@5.96.1):
     dependencies:
       chalk: 4.1.2
@@ -12745,6 +12975,16 @@ snapshots:
     optionalDependencies:
       '@vue/compiler-sfc': 3.5.13
       vue: 3.5.12(typescript@5.7.3)
+
+  vue-loader@17.4.2(@vue/compiler-sfc@3.5.13)(vue@3.5.13(typescript@5.7.3))(webpack@5.96.1):
+    dependencies:
+      chalk: 4.1.2
+      hash-sum: 2.0.0
+      watchpack: 2.4.2
+      webpack: 5.96.1
+    optionalDependencies:
+      '@vue/compiler-sfc': 3.5.13
+      vue: 3.5.13(typescript@5.7.3)
 
   vue-server-renderer@2.7.16:
     dependencies:

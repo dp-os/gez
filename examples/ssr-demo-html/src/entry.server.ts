@@ -4,15 +4,14 @@
  */
 
 import type { RenderContext } from '@gez/core';
-import type { ServerContext } from './app';
+import type App from './app';
+import type { SsrContext } from './app';
 import { createApp } from './create-app';
 
 // 封装页面内容生成逻辑
-const renderToString = (serverContext: ServerContext): string => {
-    // 创建应用实例
-    const { app } = createApp();
-
-    app.serverContext = serverContext;
+const renderToString = (app: App, ssrContext: SsrContext): string => {
+    // 将服务端渲染上下文注入到应用实例中
+    app.ssrContext = ssrContext;
     // 初始化服务端
     app.onServer();
 
@@ -21,8 +20,10 @@ const renderToString = (serverContext: ServerContext): string => {
 };
 
 export default async (rc: RenderContext) => {
+    // 创建应用实例，返回包含 app 实例的对象
+    const { app } = createApp();
     // 使用 renderToString 生成页面内容
-    const html = renderToString({
+    const html = renderToString(app, {
         importMetaSet: rc.importMetaSet
     });
 

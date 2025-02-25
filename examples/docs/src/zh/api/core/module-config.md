@@ -61,7 +61,7 @@ interface ModuleConfig {
 外部依赖映射，配置要使用的外部依赖，通常是使用远程模块中的依赖。
 
 **示例**：
-```typescript title="entry.node.ts"
+```ts title="entry.node.ts"
 import type { GezOptions } from '@gez/core';
 
 export default {

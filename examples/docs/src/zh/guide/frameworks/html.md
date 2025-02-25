@@ -125,9 +125,9 @@ export default class App {
 
     /**
      * 创建应用实例
-     * @param {ServerContext} [serverContext] - 服务端上下文，包含导入元数据集合
+     * @param {SsrContext} [ssrContext] - 服务端上下文，包含导入元数据集合
      */
-    public constructor(public serverContext?: ServerContext) {
+    public constructor(public ssrContext?: SsrContext) {
         // 构造函数中不需要额外初始化
     }
 
@@ -137,8 +137,8 @@ export default class App {
      */
     public render(): string {
         // 确保在服务端环境下正确收集导入元数据
-        if (this.serverContext) {
-            this.serverContext.importMetaSet.add(import.meta);
+        if (this.ssrContext) {
+            this.ssrContext.importMetaSet.add(import.meta);
         }
 
         return `
@@ -161,25 +161,31 @@ export default class App {
         }
 
         // 设置定时器，每秒更新一次时间
-        const updateTime = () => {
-            const now = new Date().toISOString();
-            this.time = now;
-            time.textContent = now;
-            time.setAttribute('datetime', now);
-        };
-
-        // 初始化时间并启动定时器
-        updateTime();
-        setInterval(updateTime, 1000);
+        setInterval(() => {
+            this.time = new Date().toISOString();
+            time.setAttribute('datetime', this.time);
+            time.textContent = this.time;
+        }, 1000);
     }
 
     /**
      * 服务端初始化
      */
     public onServer(): void {
-        // 设置初始时间
         this.time = new Date().toISOString();
     }
+}
+
+/**
+ * 服务端上下文接口
+ * @interface
+ */
+export interface SsrContext {
+    /**
+     * 导入元数据集合
+     * @type {Set<ImportMeta>}
+     */
+    importMetaSet: Set<ImportMeta>;
 }
 ```
 
@@ -224,7 +230,12 @@ app.onClient();
 
 创建 `entry.node.ts` 文件，配置开发环境和服务器启动：
 
-```typescript
+```ts
+/**
+ * @file Node.js 服务器入口文件
+ * @description 负责开发环境配置和服务器启动，提供 SSR 运行时环境
+ */
+
 import http from 'node:http';
 import type { GezOptions } from '@gez/core';
 
@@ -285,15 +296,14 @@ export default {
  */
 
 import type { RenderContext } from '@gez/core';
-import type { ServerContext } from './app';
+import type App from './app';
+import type { SsrContext } from './app';
 import { createApp } from './create-app';
 
 // 封装页面内容生成逻辑
-const renderToString = (serverContext: ServerContext): string => {
-    // 创建应用实例
-    const { app } = createApp();
-
-    app.serverContext = serverContext;
+const renderToString = (app: App, ssrContext: SsrContext): string => {
+    // 将服务端渲染上下文注入到应用实例中
+    app.ssrContext = ssrContext;
     // 初始化服务端
     app.onServer();
 
@@ -302,8 +312,10 @@ const renderToString = (serverContext: ServerContext): string => {
 };
 
 export default async (rc: RenderContext) => {
+    // 创建应用实例，返回包含 app 实例的对象
+    const { app } = createApp();
     // 使用 renderToString 生成页面内容
-    const html = renderToString({
+    const html = renderToString(app, {
         importMetaSet: rc.importMetaSet
     });
 

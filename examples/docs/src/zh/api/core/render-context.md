@@ -28,7 +28,7 @@ type ServerRenderHandle = (rc: RenderContext) => Promise<void> | void;
 
 服务端渲染处理函数是一个异步或同步函数，接收 RenderContext 实例作为参数，用于处理服务端渲染逻辑。
 
-```typescript title="entry.node.ts"
+```ts title="entry.node.ts"
 // 1. 异步处理函数
 export default async (rc: RenderContext) => {
   const app = createApp();
@@ -183,7 +183,7 @@ Gez 实例引用。用于访问框架核心功能和配置信息。
 
 重定向地址。设置后，服务端可以根据此值进行 HTTP 重定向，常用于登录验证、权限控制等场景。
 
-```typescript title="entry.node.ts"
+```ts title="entry.node.ts"
 // 登录验证示例
 export default async (rc: RenderContext) => {
   if (!isLoggedIn()) {
@@ -212,7 +212,7 @@ export default async (rc: RenderContext) => {
 
 HTTP 响应状态码。可以设置任意有效的 HTTP 状态码，常用于错误处理、重定向等场景。
 
-```typescript title="entry.node.ts"
+```ts title="entry.node.ts"
 // 404 错误处理示例
 export default async (rc: RenderContext) => {
   const page = await findPage(rc.params.url);
@@ -242,7 +242,7 @@ export default async (rc: RenderContext) => {
 
 HTML 内容。用于设置和获取最终生成的 HTML 内容，在设置时自动处理基础路径占位符。
 
-```typescript title="entry.node.ts"
+```ts title="entry.node.ts"
 // 基础用法
 export default async (rc: RenderContext) => {
   // 设置 HTML 内容
@@ -311,7 +311,7 @@ const rc = await gez.render({
 
 服务端渲染入口函数名称。用于从 entry.server.ts 中选择要使用的渲染函数。
 
-```typescript title="entry.node.ts"
+```ts title="entry.node.ts"
 // 默认入口函数
 export default async (rc: RenderContext) => {
   // 默认渲染逻辑

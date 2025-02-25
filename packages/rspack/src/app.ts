@@ -30,7 +30,7 @@ import { pack } from './pack';
  * - 访问应用选项
  *
  * @example
- * ```typescript
+ * ```ts
  * // entry.node.ts
  * export default {
  *   async devApp(gez) {
@@ -90,7 +90,7 @@ export interface RspackAppConfigContext {
  * - Rspack 配置钩子函数
  *
  * @example
- * ```typescript
+ * ```ts
  * // entry.node.ts
  * export default {
  *   async devApp(gez) {
@@ -147,7 +147,7 @@ export interface RspackAppOptions {
  * @returns 返回应用实例
  *
  * @example
- * ```typescript
+ * ```ts
  * // entry.node.ts
  * export default {
  *   async devApp(gez) {

@@ -7,7 +7,7 @@
  * @returns 返回缓存的数据或新获取的数据
  *
  * @example
- * ```typescript
+ * ```ts
  * const cache = createCache(true);
  *
  * // 第一次调用会执行 fetch 函数
@@ -37,7 +37,7 @@ export type CacheHandle = <T>(
  * 当 enable 为 false 时，每次调用都会执行 fetch 函数，不会缓存结果。
  *
  * @example
- * ```typescript
+ * ```ts
  * // 创建一个启用缓存的处理函数
  * const cacheEnabled = createCache(true);
  *

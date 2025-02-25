@@ -10,7 +10,7 @@ export enum PathType {
  * 用于定义服务的导出、导入和外部依赖配置。
  *
  * @example
- * ```typescript
+ * ```ts
  * // entry.node.ts
  * import type { GezOptions } from '@gez/core';
  *
@@ -51,7 +51,7 @@ export interface ModuleConfig {
      * - npm:* - 导出第三方依赖，如：'npm:vue'
      *
      * @example
-     * ```typescript
+     * ```ts
      * exports: [
      *   // 导出源码文件
      *   'root:src/components/button.vue',
@@ -73,7 +73,7 @@ export interface ModuleConfig {
      * - 软件包安装（Link、静态服务器、私有镜像源、File）：直接指向包目录
      *
      * @example
-     * ```typescript
+     * ```ts
      * imports: {
      *   // 源码安装方式：需要指向 dist 目录
      *   'ssr-remote': 'root:./node_modules/ssr-remote/dist',
@@ -89,7 +89,7 @@ export interface ModuleConfig {
      * 配置要使用的外部依赖，通常是使用远程模块中的依赖。
      *
      * @example
-     * ```typescript
+     * ```ts
      * externals: {
      *   // 使用远程模块中的依赖
      *   'vue': 'ssr-remote/npm/vue',
@@ -186,7 +186,7 @@ export interface ParsedModuleConfig {
      * 将模块的导入路径映射到实际的模块位置。
      *
      * @example
-     * ```typescript
+     * ```ts
      * {
      *   'vue': {
      *     match: /^vue$/,  // 匹配导入语句

@@ -6,7 +6,7 @@
     "scripts": {
         "prepare": "./prepare.sh",
         "lint:js": "biome check --write --no-errors-on-unmatched",
-        "lint:css": "lerna run lint:css",
+        "lint:css": "pnpm --filter \"*\" lint:css",
         "lint:type": "pnpm --filter \"*\" lint:type",
         "test": "pnpm --filter \"*\" test",
         "build": "pnpm --filter \"*\" build",

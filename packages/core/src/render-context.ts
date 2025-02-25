@@ -9,7 +9,7 @@ import type { Gez } from './gez';
  * RenderContextOptions 用于配置 RenderContext 实例的行为，包括基础路径、入口名称、参数和导入映射模式等。
  *
  * @example
- * ```typescript
+ * ```ts
  * // 1. 基础路径配置示例
  * // 支持将静态资源部署到不同的路径下
  * const rc = await gez.render({
@@ -91,7 +91,7 @@ export interface RenderContextOptions {
      *    - 简化开发流程
      *
      * @example
-     * ```typescript
+     * ```ts
      * // 使用内联模式（默认）
      * const rc = await gez.render({
      *   params: { url: req.url }
@@ -210,7 +210,7 @@ export interface RenderFiles {
  *    - 简化开发流程
  *
  * @example
- * ```typescript
+ * ```ts
  * // 使用内联模式（默认）
  * const rc = await gez.render({
  *   params: { url: req.url }
@@ -709,7 +709,7 @@ export class RenderContext {
      *    - 简化开发流程
      *
      * @example
-     * ```typescript
+     * ```ts
      * // 使用内联模式（默认）
      * const rc = await gez.render({
      *   params: { url: req.url }

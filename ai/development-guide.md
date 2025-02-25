@@ -65,7 +65,7 @@ src/
 ## 注释规范
 
 ### 文件注释
-```typescript
+```ts
 /**
  * @file 文件描述
  * @author 作者
@@ -74,7 +74,7 @@ src/
 ```
 
 ### 函数注释
-```typescript
+```ts
 /**
  * 函数描述
  * @param {string} param1 - 参数1描述
