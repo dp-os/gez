@@ -104,6 +104,12 @@ Web 标准的进化为我们带来了新的可能。现在，我们可以用最�
 ### [v1.x](https://fmfe.github.io/genesis-docs/guide/) - 已停止维护
 原名 Genesis，是 Gez 的前身。不再接受新功能和非关键性 bug 修复。
 
+## 👥 贡献者
+
+感谢所有为 Gez 做出贡献的开发者！
+
+[![Contributors](https://contrib.rocks/image?repo=dp-os/gez)](https://github.com/dp-os/gez/graphs/contributors)
+
 ## 📄 许可证
 
 本项目采用 [MIT](./LICENSE) 许可证。
