@@ -1,0 +1,25 @@
+{
+  "name": "ssr-demo-preact-htm",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "gez dev",
+    "build": "npm run build:dts && npm run build:ssr",
+    "build:ssr": "gez build",
+    "preview": "gez preview",
+    "start": "NODE_ENV=production node dist/index.js",
+    "build:dts": "tsc --declaration --emitDeclarationOnly --outDir dist/src"
+  },
+  "dependencies": {
+    "@gez/core": "*"
+  },
+  "devDependencies": {
+    "@gez/rspack": "*",
+    "@types/node": "22.8.6",
+    "htm": "^3.1.1",
+    "preact": "^10.26.2",
+    "preact-render-to-string": "^6.5.13",
+    "typescript": "^5.2.2"
+  }
+}

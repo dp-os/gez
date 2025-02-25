@@ -47,6 +47,31 @@ importers:
         specifier: ^5.7.3
         version: 5.7.3
 
+  examples/ssr-demo-preact-htm:
+    dependencies:
+      '@gez/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+    devDependencies:
+      '@gez/rspack':
+        specifier: workspace:*
+        version: link:../../packages/rspack
+      '@types/node':
+        specifier: 22.8.6
+        version: 22.8.6
+      htm:
+        specifier: ^3.1.1
+        version: 3.1.1
+      preact:
+        specifier: ^10.26.2
+        version: 10.26.2
+      preact-render-to-string:
+        specifier: ^6.5.13
+        version: 6.5.13(preact@10.26.2)
+      typescript:
+        specifier: ^5.2.2
+        version: 5.7.3
+
   examples/ssr-demo-vue2:
     dependencies:
       '@gez/core':
