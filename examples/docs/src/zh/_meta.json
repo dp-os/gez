@@ -8,5 +8,10 @@
     "text": "API",
     "link": "/api/core/gez",
     "activeMatch": "/api/"
+  },
+  {
+    "text": "博客",
+    "link": "/blog",
+    "activeMatch": "/blog/"
   }
 ]
