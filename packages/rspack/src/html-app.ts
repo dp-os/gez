@@ -488,7 +488,7 @@ function addCssConfig(
         const lessRule: RuleSetUse = [
             {
                 loader: options.loaders?.lessLoader ?? RSPACK_LOADER.lessLoader,
-                options: options.swcLoader
+                options: options.lessLoader
             }
         ];
         if (options.styleResourcesLoader) {
