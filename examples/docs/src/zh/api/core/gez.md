@@ -469,8 +469,8 @@ const htmlPath = gez.resolvePath('dist/client', 'index.html');
 - **返回值**: `boolean` - 写入是否成功
 
 - **示例**:
-```ts
-// 在 entry.node.ts 中使用
+```ts title="src/entry.node.ts"
+
 async postBuild(gez) {
   const htmlPath = gez.resolvePath('dist/client', 'index.html');
   const success = await gez.write(htmlPath, '<html>...</html>');
@@ -488,8 +488,7 @@ async postBuild(gez) {
 - **异常**: 当文件不存在或 JSON 格式错误时抛出异常
 
 - **示例**:
-```ts
-// 在 entry.node.ts 中使用
+```ts title="src/entry.node.ts"
 async server(gez) {
   const manifest = gez.readJsonSync(gez.resolvePath('dist/client', 'manifest.json'));
   // 使用 manifest 对象
@@ -507,8 +506,7 @@ async server(gez) {
 - **异常**: 当文件不存在或 JSON 格式错误时抛出异常
 
 - **示例**:
-```ts
-// 在 entry.node.ts 中使用
+```ts title="src/entry.node.ts"
 async server(gez) {
   const manifest = await gez.readJson(gez.resolvePath('dist/client', 'manifest.json'));
   // 使用 manifest 对象
@@ -541,8 +539,7 @@ async server(gez) {
    - 记录资源依赖关系
 
 - **示例**:
-```ts
-// 在 entry.node.ts 中使用
+```ts title="src/entry.node.ts"
 async server(gez) {
   // 获取客户端构建清单
   const manifests = await gez.getManifestList('client');
@@ -583,8 +580,7 @@ async server(gez) {
    - 支持动态基础路径
 
 - **示例**:
-```ts
-// 在 entry.node.ts 中使用
+```ts title="src/entry.node.ts"
 async server(gez) {
   // 获取客户端导入映射
   const importmap = await gez.getImportMap('client');
@@ -653,8 +649,7 @@ async server(gez) {
 - 确保模块加载顺序
 
 - **示例**:
-```ts
-// 在 entry.node.ts 中使用
+```ts title="src/entry.node.ts"
 async server(gez) {
   const server = express();
   server.use(gez.middleware);
