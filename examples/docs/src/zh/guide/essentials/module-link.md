@@ -48,7 +48,7 @@ Gez 框架提供了一套完整的模块链接机制，用于管理服务间的�
 
 在 `entry.node.ts` 中配置需要导出的模块：
 
-```ts
+```ts title="src/entry.node.ts"
 import type { GezOptions } from '@gez/core';
 
 export default {
@@ -75,7 +75,7 @@ export default {
 
 在 `entry.node.ts` 中配置需要导入的模块：
 
-```ts
+```ts title="src/entry.node.ts"
 import type { GezOptions } from '@gez/core';
 
 export default {
@@ -114,7 +114,7 @@ export default {
 
 1. **Workspace 方式**
 推荐在 Monorepo 项目中使用：
-```json
+```ts title="package.json"
 {
     "devDependencies": {
         "ssr-remote": "workspace:*"
@@ -124,7 +124,7 @@ export default {
 
 2. **Link 方式**
 用于本地开发调试：
-```json
+```ts title="package.json"
 {
     "devDependencies": {
         "ssr-remote": "link:../ssr-remote"
@@ -137,7 +137,7 @@ export default {
 
 1. **NPM Registry**
 通过 npm registry 安装：
-```json
+```ts title="package.json"
 {
     "dependencies": {
         "ssr-remote": "^1.0.0"
@@ -147,7 +147,7 @@ export default {
 
 2. **静态服务器**
 通过 HTTP/HTTPS 协议安装：
-```json
+```ts title="package.json"
 {
     "dependencies": {
         "ssr-remote": "https://cdn.example.com/ssr-remote/1.0.0.tgz"
@@ -161,7 +161,7 @@ export default {
 
 在 `entry.node.ts` 中配置构建选项：
 
-```ts
+```ts title="src/entry.node.ts"
 import type { GezOptions } from '@gez/core';
 
 export default {

@@ -33,7 +33,7 @@ head:
 
 创建 `package.json` 文件，配置项目依赖和脚本：
 
-```json
+```json title="package.json"
 {
   "name": "ssr-demo-preact-htm",
   "version": "1.0.0",
@@ -76,7 +76,7 @@ npm install
 
 创建 `tsconfig.json` 文件，配置 TypeScript 编译选项：
 
-```json
+```json title="tsconfig.json"
 {
     "compilerOptions": {
         "isolatedModules": true,
@@ -115,7 +115,7 @@ npm install
 
 创建主应用组件 `src/app.ts`，使用 Preact 的类组件和 HTM：
 
-```ts
+```ts title="src/app.ts"
 /**
  * @file 示例组件
  * @description 展示一个带有自动更新时间的页面标题，用于演示 Gez 框架的基本功能
@@ -161,7 +161,7 @@ export default class App extends Component {
 
 创建 `src/create-app.ts` 文件，负责创建应用实例：
 
-```ts
+```ts title="src/create-app.ts"
 /**
  * @file 应用实例创建
  * @description 负责创建和配置应用实例
@@ -183,7 +183,7 @@ export function createApp(): { app: VNode } {
 
 创建客户端入口文件 `src/entry.client.ts`：
 
-```ts
+```ts title="src/entry.client.ts"
 /**
  * @file 客户端入口文件
  * @description 负责客户端交互逻辑和动态更新
@@ -262,7 +262,7 @@ export default {
 
 创建服务端渲染入口文件 `src/entry.server.ts`：
 
-```ts
+```ts title="src/entry.server.ts"
 /**
  * @file 服务端渲染入口文件
  * @description 负责服务端渲染流程、HTML 生成和资源注入

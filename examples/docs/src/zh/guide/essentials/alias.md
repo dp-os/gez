@@ -114,7 +114,7 @@ import { logger } from 'remote-service/src/utils';
 
 对于第三方包或特殊场景，可以通过 Gez 配置文件自定义别名：
 
-```ts
+```ts title="src/entry.node.ts"
 export default {
     async devApp(gez) {
         return import('@gez/rspack').then((m) =>

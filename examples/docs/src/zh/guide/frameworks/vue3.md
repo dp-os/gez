@@ -33,7 +33,7 @@ head:
 
 创建 `package.json` 文件，配置项目依赖和脚本：
 
-```json
+```json title="package.json"
 {
   "name": "ssr-demo-vue3",
   "version": "1.0.0",
@@ -76,7 +76,7 @@ npm install
 
 创建 `tsconfig.json` 文件，配置 TypeScript 编译选项：
 
-```json
+```json title="tsconfig.json"
 {
     "compilerOptions": {
         "module": "ESNext",
@@ -111,7 +111,7 @@ npm install
 
 创建主应用组件 `src/app.vue`，使用 Vue3 的组合式 API：
 
-```html
+```html title="src/app.vue"
 <template>
     <div>
         <h1><a href="https://www.gez-esm.com/guide/frameworks/vue3.html" target="_blank">Gez 快速开始</a></h1>
@@ -147,7 +147,7 @@ onUnmounted(() => {
 
 创建 `src/create-app.ts` 文件，负责创建 Vue 应用实例：
 
-```ts
+```ts title="src/create-app.ts"
 /**
  * @file Vue 实例创建
  * @description 负责创建和配置 Vue 应用实例
@@ -168,7 +168,7 @@ export function createApp() {
 
 创建客户端入口文件 `src/entry.client.ts`：
 
-```ts
+```ts title="src/entry.client.ts"
 /**
  * @file 客户端入口文件
  * @description 负责客户端交互逻辑和动态更新
@@ -187,7 +187,7 @@ app.mount('#app');
 
 创建 `entry.node.ts` 文件，配置开发环境和服务器启动：
 
-```ts
+```ts title="src/entry.node.ts"
 /**
  * @file Node.js 服务器入口文件
  * @description 负责开发环境配置和服务器启动，提供 SSR 运行时环境
@@ -246,7 +246,7 @@ export default {
 
 创建服务端渲染入口文件 `src/entry.server.ts`：
 
-```ts
+```ts title="src/entry.server.ts"
 /**
  * @file 服务端渲染入口文件
  * @description 负责服务端渲染流程、HTML 生成和资源注入
