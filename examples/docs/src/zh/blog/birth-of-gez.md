@@ -1,5 +1,5 @@
 ---
-titleSuffix: 从微前端困境到 ESM 创新：Gez 框架的演进之路
+titleSuffix: "从微前端困境到 ESM 创新：Gez 框架的演进之路"
 description: 深入探讨 Gez 框架从传统微前端架构的困境到基于 ESM 的创新突破，分享框架在性能优化、依赖管理和构建工具选型等方面的技术实践经验。
 head:
   - - meta

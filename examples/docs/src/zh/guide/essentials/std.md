@@ -125,15 +125,3 @@ Node.js 服务器入口文件负责：
     ]
 }
 ```
-
-::: tip 配置说明
-- `isolatedModules`: 确保每个文件都可以独立编译
-- `experimentalDecorators`: 启用装饰器语法支持
-- `resolveJsonModule`: 允许导入 JSON 文件
-- `target` 和 `module`: 使用最新的 ECMAScript 特性
-- `declaration`: 生成类型声明文件
-- `strict`: 启用严格的类型检查
-- `moduleResolution`: 使用 Node.js 风格的模块解析
-- `esModuleInterop`: 启用 ES 模块互操作性
-- `skipLibCheck`: 跳过声明文件的类型检查以提升性能
-:::
