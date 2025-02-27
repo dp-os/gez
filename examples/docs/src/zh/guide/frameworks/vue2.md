@@ -170,7 +170,7 @@ export function createApp() {
 
 创建客户端入口文件 `src/entry.client.ts`：
 
-```ts
+```ts title="src/entry.client.ts"
 /**
  * @file 客户端入口文件
  * @description 负责客户端交互逻辑和动态更新
@@ -189,7 +189,7 @@ app.$mount('#app');
 
 创建 `entry.node.ts` 文件，配置开发环境和服务器启动：
 
-```ts title="src/node.ts"
+```ts title="src/entry.node.ts"
 /**
  * @file Node.js 服务器入口文件
  * @description 负责开发环境配置和服务器启动，提供 SSR 运行时环境
@@ -249,7 +249,7 @@ export default {
 
 创建服务端渲染入口文件 `src/entry.server.ts`：
 
-```ts title="src/server.ts"
+```ts title="src/entry.server.ts"
 /**
  * @file 服务端渲染入口文件
  * @description 负责服务端渲染流程、HTML 生成和资源注入
