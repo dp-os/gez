@@ -15,6 +15,11 @@ export default defineConfig({
             lang: 'zh',
             label: '简体中文',
             title: 'Gez'
+        },
+        {
+            lang: 'en',
+            label: 'English',
+            title: 'Gez'
         }
     ],
     icon: '/logo.svg',
