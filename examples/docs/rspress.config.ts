@@ -32,7 +32,7 @@ export default defineConfig({
                 icon: 'github',
                 mode: 'link',
                 content:
-                    'https://github.com/dp-os/gez?utm_source=www.gez-esm.com'
+                    'https://github.com/dp-os/gez?utm_source=www.esm-link.com'
             }
         ]
     },
@@ -41,7 +41,7 @@ export default defineConfig({
     },
     plugins: [
         sitemap({
-            domain: 'https://www.gez-esm.com',
+            domain: 'https://www.esm-link.com',
             defaultChangeFreq: 'monthly',
             defaultPriority: '0.5'
         })

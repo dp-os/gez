@@ -3,13 +3,13 @@
     <div class="container">
       <div class="nav-content">
         <div class="nav-brand">
-          <img src="https://www.gez-esm.com/logo.svg" alt="Gez Logo" class="nav-logo" />
+          <img src="https://www.esm-link.com/logo.svg" alt="Gez Logo" class="nav-logo" />
           <span class="nav-title">Gez</span>
         </div>
         <div class="nav-links">
-          <a href="https://www.gez-esm.com/" class="nav-link" :class="{ active: current === 'home' }">首页</a>
-          <a href="https://www.gez-esm.com/ssr-vue2-remote/" class="nav-link" :class="{ active: current === 'remote' }">Remote</a>
-          <a href="https://www.gez-esm.com/ssr-vue2-host/" class="nav-link" :class="{ active: current === 'host' }">Host</a>
+          <a href="https://www.esm-link.com/" class="nav-link" :class="{ active: current === 'home' }">首页</a>
+          <a href="https://www.esm-link.com/ssr-vue2-remote/" class="nav-link" :class="{ active: current === 'remote' }">Remote</a>
+          <a href="https://www.esm-link.com/ssr-vue2-host/" class="nav-link" :class="{ active: current === 'host' }">Host</a>
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://www.gez-esm.com/logo.svg" width="180" alt="Gez Logo" />
+  <img src="https://www.esm-link.com/logo.svg" width="180" alt="Gez Logo" />
 </p>
 
 <h1 align="center">Gez</h1>
@@ -12,11 +12,11 @@
 </p>
 
 <p align="center">
-  <a href="https://www.gez-esm.com">Gez</a> 基于 <a href="https://rspack.dev/">Rspack</a> 编译，通过 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/script/type/importmap">importmap</a> 将模块映射到具有强缓存、基于内容哈希的 URL 中。
+  <a href="https://www.esm-link.com">Gez</a> 基于 <a href="https://rspack.dev/">Rspack</a> 编译，通过 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/script/type/importmap">importmap</a> 将模块映射到具有强缓存、基于内容哈希的 URL 中。
 </p>
 
 <p align="center">
-  📚 <b>文档：</b><a href="https://www.gez-esm.com">简体中文</a>
+  📚 <b>文档：</b><a href="https://www.esm-link.com">简体中文</a>
 </p>
 
 ## 💫 拥抱现代微前端
@@ -57,14 +57,14 @@ Web 标准的进化为我们带来了新的可能。现在，我们可以用最�
 
 ## 🎯 示例项目
 
-### [轻量级 HTML 应用](https://www.gez-esm.com/ssr-html/)
+### [轻量级 HTML 应用](https://www.esm-link.com/ssr-html/)
 一个完整的 HTML 服务端渲染示例，展示了如何使用 Gez 构建现代化的 Web 应用：
 - 🚀 基于 Rust 构建的 Rspack，提供极致的构建性能
 - 💡 包含路由、组件、样式、图片等完整功能支持
 - 🛠 快速的热更新、友好的错误提示和完整的类型支持
 - 📱 现代化的响应式设计，完美适配各种设备
 
-### [Vue2 微前端示例](https://www.gez-esm.com/ssr-vue2-host/)
+### [Vue2 微前端示例](https://www.esm-link.com/ssr-vue2-host/)
 展示基于 Vue2 的微前端架构，包含主应用和子应用：
 
 **主应用：**
@@ -82,7 +82,7 @@ Web 标准的进化为我们带来了新的可能。现在，我们可以用最�
 2. 如何确保主子应用使用相同版本的依赖
 3. 如何在开发环境中独立调试子应用
 
-### [Preact + HTM](https://www.gez-esm.com/ssr-preact-htm/)
+### [Preact + HTM](https://www.esm-link.com/ssr-preact-htm/)
 基于 Preact + HTM 的高性能实现：
 - ⚡️ 极致的包体积优化
 - 🎯 性能优先的架构设计
@@ -92,7 +92,7 @@ Web 标准的进化为我们带来了新的可能。现在，我们可以用最�
 
 ## 📚 版本说明
 
-### [v3.x](https://www.gez-esm.com) - 开发阶段
+### [v3.x](https://www.esm-link.com) - 开发阶段
 当前版本基于 Rspack 构建，提供更优的开发体验和构建性能。
 
 > **已知问题**：
