@@ -16,7 +16,7 @@ hero:
       link: /guide/start/getting-started
     - theme: alt
       text: GitHub
-      link: https://github.com/dp-os/gez
+      link: https://github.com/open-esm/gez
 
 features:
   - icon: ⚡️

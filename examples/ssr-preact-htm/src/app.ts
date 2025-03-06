@@ -124,7 +124,7 @@ const Features = () => html`
 export const App = () => html`
     <div class="container">
         <h1>
-            <img src="https://www.esm-link.com/logo.svg" alt="Gez Logo" class="logo" />
+            <img src="https://www.jsesm.com/logo.svg" alt="Gez Logo" class="logo" />
             Gez + Preact + HTM 示例
         </h1>
         <${Counter} />
@@ -132,7 +132,7 @@ export const App = () => html`
         <${List} />
         <${Features} />
         <footer>
-            <a href="https://github.com/dp-os/gez" target="_blank" rel="noopener">
+            <a href="https://github.com/open-esm/gez" target="_blank" rel="noopener">
                 在 GitHub 上查看
             </a>
         </footer>

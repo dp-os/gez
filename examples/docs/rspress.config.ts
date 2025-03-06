@@ -37,7 +37,7 @@ export default defineConfig({
                 icon: 'github',
                 mode: 'link',
                 content:
-                    'https://github.com/dp-os/gez?utm_source=www.esm-link.com'
+                    'https://github.com/open-esm/gez?utm_source=www.jsesm.com'
             }
         ]
     },
@@ -46,7 +46,7 @@ export default defineConfig({
     },
     plugins: [
         sitemap({
-            domain: 'https://www.esm-link.com',
+            domain: 'https://www.jsesm.com',
             defaultChangeFreq: 'monthly',
             defaultPriority: '0.5'
         })

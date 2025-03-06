@@ -13,7 +13,7 @@
 
 1. 克隆仓库
 ```bash
-git clone https://github.com/dp-os/gez.git
+git clone https://github.com/open-esm/gez.git
 cd gez/examples/ssr-vue2-host
 ```
 
@@ -51,12 +51,12 @@ src/
 
 ## 在线预览
 
-访问 [在线示例](https://dp-os.github.io/gez/ssr-vue2-host/) 查看运行效果。
+访问 [在线示例](https://open-esm.github.io/gez/ssr-vue2-host/) 查看运行效果。
 
 ## 相关链接
 
-- [项目文档](https://dp-os.github.io/gez/)
-- [GitHub 仓库](https://github.com/dp-os/gez)
+- [项目文档](https://open-esm.github.io/gez/)
+- [GitHub 仓库](https://github.com/open-esm/gez)
 
 ## 许可证
 

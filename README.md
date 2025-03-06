@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://www.esm-link.com/logo.svg" width="180" alt="Gez Logo" />
+  <img src="https://www.jsesm.com/logo.svg" width="180" alt="Gez Logo" />
 </p>
 
 <h1 align="center">Gez</h1>
@@ -12,11 +12,11 @@
 </p>
 
 <p align="center">
-  <a href="https://www.esm-link.com">Gez</a> 基于 <a href="https://rspack.dev/">Rspack</a> 编译，通过 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/script/type/importmap">importmap</a> 将模块映射到具有强缓存、基于内容哈希的 URL 中。
+  <a href="https://www.jsesm.com">Gez</a> 基于 <a href="https://rspack.dev/">Rspack</a> 编译，通过 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/script/type/importmap">importmap</a> 将模块映射到具有强缓存、基于内容哈希的 URL 中。
 </p>
 
 <p align="center">
-  📚 <b>文档：</b><a href="https://www.esm-link.com">简体中文</a>
+  📚 <b>文档：</b><a href="https://www.jsesm.com">简体中文</a>
 </p>
 
 ## 💫 拥抱现代微前端
@@ -57,14 +57,14 @@ Web 标准的进化为我们带来了新的可能。现在，我们可以用最�
 
 ## 🎯 示例项目
 
-### [轻量级 HTML 应用](https://www.esm-link.com/ssr-html/)
+### [轻量级 HTML 应用](https://www.jsesm.com/ssr-html/)
 一个完整的 HTML 服务端渲染示例，展示了如何使用 Gez 构建现代化的 Web 应用：
 - 🚀 基于 Rust 构建的 Rspack，提供极致的构建性能
 - 💡 包含路由、组件、样式、图片等完整功能支持
 - 🛠 快速的热更新、友好的错误提示和完整的类型支持
 - 📱 现代化的响应式设计，完美适配各种设备
 
-### [Vue2 微前端示例](https://www.esm-link.com/ssr-vue2-host/)
+### [Vue2 微前端示例](https://www.jsesm.com/ssr-vue2-host/)
 展示基于 Vue2 的微前端架构，包含主应用和子应用：
 
 **主应用：**
@@ -82,23 +82,23 @@ Web 标准的进化为我们带来了新的可能。现在，我们可以用最�
 2. 如何确保主子应用使用相同版本的依赖
 3. 如何在开发环境中独立调试子应用
 
-### [Preact + HTM](https://www.esm-link.com/ssr-preact-htm/)
+### [Preact + HTM](https://www.jsesm.com/ssr-preact-htm/)
 基于 Preact + HTM 的高性能实现：
 - ⚡️ 极致的包体积优化
 - 🎯 性能优先的架构设计
 - 🛠 适用于资源受限场景
 
-所有示例都包含完整的工程配置和最佳实践指南，帮助你快速上手并应用到生产环境。查看 [examples](https://github.com/dp-os/gez/tree/master/examples) 目录了解更多详情。
+所有示例都包含完整的工程配置和最佳实践指南，帮助你快速上手并应用到生产环境。查看 [examples](https://github.com/open-esm/gez/tree/master/examples) 目录了解更多详情。
 
 ## 📚 版本说明
 
-### [v3.x](https://www.esm-link.com) - 开发阶段
+### [v3.x](https://www.jsesm.com) - 开发阶段
 当前版本基于 Rspack 构建，提供更优的开发体验和构建性能。
 
 > **已知问题**：
 > - ESM 模块导出优化中：`modern-module` 的 `export *` 语法存在稳定性问题 [#8557](https://github.com/web-infra-dev/rspack/issues/8557)
 
-### [v2.x](https://github.com/dp-os/gez/blob/v2/docs/zh-CN/README.md) - 不推荐生产使用
+### [v2.x](https://github.com/open-esm/gez/blob/v2/docs/zh-CN/README.md) - 不推荐生产使用
 此版本不再推荐用于生产环境，建议使用最新版本。
 
 ### [v1.x](https://fmfe.github.io/genesis-docs/guide/) - 已停止维护
@@ -108,7 +108,7 @@ Web 标准的进化为我们带来了新的可能。现在，我们可以用最�
 
 感谢所有为 Gez 做出贡献的开发者！
 
-[![Contributors](https://contrib.rocks/image?repo=dp-os/gez)](https://github.com/dp-os/gez/graphs/contributors)
+[![Contributors](https://contrib.rocks/image?repo=open-esm/gez)](https://github.com/open-esm/gez/graphs/contributors)
 
 ## 📄 许可证
 

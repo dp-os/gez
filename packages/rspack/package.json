@@ -17,12 +17,12 @@
     ],
     "repository": {
         "type": "git",
-        "url": "https://github.com/dp-os/gez.git",
+        "url": "https://github.com/open-esm/gez.git",
         "directory": "packages/rspack"
     },
-    "homepage": "https://github.com/dp-os/gez",
+    "homepage": "https://github.com/open-esm/gez",
     "bugs": {
-        "url": "https://github.com/dp-os/gez/issues"
+        "url": "https://github.com/open-esm/gez/issues"
     },
     "template": "library-node",
     "license": "MIT",

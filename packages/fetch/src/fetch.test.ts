@@ -12,7 +12,7 @@ test('base', async () => {
     await fetchPkgsWithProgress({
         outputDir,
         axiosReqCfg: {
-            baseURL: 'https://dp-os.github.io/gez/',
+            baseURL: 'https://open-esm.github.io/gez/',
             timeout: 4500
         },
         packs: urls.map((url) => ({ url, name: url.split('/')[0] }))

@@ -1,0 +1,78 @@
+{
+    "index.md": {
+        "source": "9cf802bde69176ffe820ed1022f2686f1122fde6c46ebf14d2af451aabe9f83f",
+        "target": "17b784db1433b642d184f0eb11a81dd466f3c5d564f41597470d86d333d0b958"
+    },
+    "guide/start/environment.md": {
+        "source": "ddcfeb78cb63c4dacdfc33d082fcae3ed20f3082d5e237c2bcabcf4d899f49d1",
+        "target": "3f52648e47bea72e95dc0200a233e6c71cdf56110f29931a258265474f711ea6"
+    },
+    "guide/frameworks/vue2.md": {
+        "source": "c8781d16672898b928f69669e32974bd0697d0686833177b5cd41e4fd71ba51d",
+        "target": "2743c9b5925acd60afc27266869bed291009de5197508d741fc27d60839db42c"
+    },
+    "guide/frameworks/preact-htm.md": {
+        "source": "ecd5442bb79a9cd99603b8ef0edc834322cd7c78b6702477c84cada0e651868e",
+        "target": "64d73efc00eb061ccaa7dca346f4246155e9052473816b90b5e86583001e3233"
+    },
+    "guide/essentials/std.md": {
+        "source": "c1ce3d5ad2abaefad4d377141421babfa9e7145028df621b773a8887b4691e35",
+        "target": "54e0aa917cb2e0f9d9b578dcdfd3f159c9ec17e14d2ce3dd4a93a3f40399f62c"
+    },
+    "guide/frameworks/vue3.md": {
+        "source": "b8d7326f8ba4e89dc6587a9731f5634a88503c298de34303fbb9e7bdebd1ae92",
+        "target": "abf8ece34b6d5c3c7ab82ce777ff741584fe34fea8ef64d379a2539018f2f8ae"
+    },
+    "guide/start/getting-started.mdx": {
+        "source": "f035f5bbf98118c3b062a93f160200d80fd86f5244ce13e24e39518e623d89d5",
+        "target": "1e5ce0c09bc5ac1149065145f5a2fd23c3d955a2fcc470dbb1ddbceef9b9ad35"
+    },
+    "guide/essentials/rspack.md": {
+        "source": "8b5ae21776cb360854f32ba9dfa08df40868ac9b14003f35354227a92fbd5437",
+        "target": "df79b08f0b72d715e6f23ed69ef206d0b6a042228cdfa41716b9a2d50954371b"
+    },
+    "guide/essentials/render-context.md": {
+        "source": "dcadc48313b8a33f6fa0484dcacd13f994d0e9bbea50b384c47529ba715c2a4c",
+        "target": "0f982126838ff4d516b5dddae218a4ae3b56d216f446e78787c3decc5b9d25f1"
+    },
+    "guide/essentials/csr.md": {
+        "source": "ead9e2df1fd84b13796edca2b2349852fed7f0563524eb8b5a466d3fe5944af7",
+        "target": "c52725df1c467e136c0d2d7e4133972b8568dfe7c6d5aedae6935e63517649ae"
+    },
+    "guide/frameworks/html.md": {
+        "source": "6e0e6570f63383fa88304d111e768b77a4156f4a1d36dd2dd7e2ff52d1a94e6b",
+        "target": "1cbf62f486e89dff7e99b002bddd64e99377079bbfd377039d17dc41e96c3926"
+    },
+    "blog/birth-of-gez.md": {
+        "source": "eae5d43c8b86538e167d6b5dabddc87052996c074ac6e9b87e95a7d5f2383209",
+        "target": "020473cd8bbad2aae647e00b8cc505d2b6ddd10ab7402a4d98aba72f09074db2"
+    },
+    "blog/index.md": {
+        "source": "26df121f3a3388d46c03c015abb368d89a8c00239e1546b7c0379f2b6479bba7",
+        "target": "4f5308b3c3459a1991d597e505381ffa061333357833b8e3756e3a83f9569bcf"
+    },
+    "guide/essentials/module-link.md": {
+        "source": "eb6c30e8acc059c831e9fd58a40c9f22a414a7563cf41fcda935ba567af2aebb",
+        "target": "614fa913fb6ec9c40f6f6bad63222541ef7ae39a5e4d0da86c6fd97be94524af"
+    },
+    "api/core/module-config.md": {
+        "source": "91cfd81dfc96b97cf5de01ecc1a744210f74340884fb6e6de59c7a94272250f7",
+        "target": "38ef1a52e778cbf6085d03289628de36ca2cce02f02a7a62905d8a32a9e20f8d"
+    },
+    "guide/essentials/alias.md": {
+        "source": "1cf2cca65bd17dc5eaa235296559c2e12b0eed5d3ad1f99294d13e2b801feac2",
+        "target": "df74f8a30ceabdf8061ab87283aed930dcb3e2af6a127c46545795671cb1b3a7"
+    },
+    "api/core/pack-config.md": {
+        "source": "aad1d5eb4b9bc58cb0343f12e064ccf89a395dbc9d9898a4139257adc2f4c37e",
+        "target": "03ab88257d6b692e9c9b966e67872e357f070a7794e78b8d40b9f6660cd5c9fa"
+    },
+    "api/core/app.md": {
+        "source": "6bd4756969c1b2d24a72676cfebc318cfddd9a8d850d78d27314982125cad3c4",
+        "target": "c9581f859d0a1c1ddaf6fd50dc0cc6dc41351cc71ed647952edaedd4fd74eddb"
+    },
+    "api/core/manifest-json.md": {
+        "source": "c649888c26503cf9299ae1992dfc39210ec970cd2afd795628126ac415075248",
+        "target": "6a106b256c9fe6a76b8f5bc60c8806de67d76a867f5675adaa99757da87812cf"
+    }
+}

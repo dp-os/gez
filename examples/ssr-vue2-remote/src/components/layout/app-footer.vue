@@ -4,15 +4,15 @@
       <div class="footer-content">
         <div class="footer-info">
           <div class="footer-brand">
-            <img src="https://www.esm-link.com/logo.svg" alt="Gez Logo" class="footer-logo" />
+            <img src="https://www.jsesm.com/logo.svg" alt="Gez Logo" class="footer-logo" />
             <span class="footer-title">Gez</span>
           </div>
           <div class="source-links">
-            <a href="https://github.com/dp-os/gez/tree/master/examples/ssr-vue2-host" class="source-link" target="_blank" rel="noopener">
+            <a href="https://github.com/open-esm/gez/tree/master/examples/ssr-vue2-host" class="source-link" target="_blank" rel="noopener">
               <span class="source-label">Host Source</span>
               <span class="source-path">/examples/ssr-vue2-host</span>
             </a>
-            <a href="https://github.com/dp-os/gez/tree/master/examples/ssr-vue2-remote" class="source-link" target="_blank" rel="noopener">
+            <a href="https://github.com/open-esm/gez/tree/master/examples/ssr-vue2-remote" class="source-link" target="_blank" rel="noopener">
               <span class="source-label">Remote Source</span>
               <span class="source-path">/examples/ssr-vue2-remote</span>
             </a>
