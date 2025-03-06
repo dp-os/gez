@@ -17,15 +17,15 @@
 
 <p align="center">
   📚 <b>文档：</b>
-  <a href="https://www.jsesm.com/zh">简体中文</a> | 
-  <a href="https://www.jsesm.com/en">English</a> | 
-  <a href="https://www.jsesm.com/zh-TW">繁體中文</a> | 
-  <a href="https://www.jsesm.com/es">Español</a> | 
-  <a href="https://www.jsesm.com/pt">Português</a> | 
-  <a href="https://www.jsesm.com/ru">Русский</a> | 
-  <a href="https://www.jsesm.com/ja">日本語</a> | 
-  <a href="https://www.jsesm.com/fr">Français</a> | 
-  <a href="https://www.jsesm.com/ko">한국어</a>
+  <a href="https://www.jsesm.com/zh/">简体中文</a> | 
+  <a href="https://www.jsesm.com/en/">English</a> | 
+  <a href="https://www.jsesm.com/zh-TW/">繁體中文</a> | 
+  <a href="https://www.jsesm.com/es/">Español</a> | 
+  <a href="https://www.jsesm.com/pt/">Português</a> | 
+  <a href="https://www.jsesm.com/ru/">Русский</a> | 
+  <a href="https://www.jsesm.com/ja/">日本語</a> | 
+  <a href="https://www.jsesm.com/fr/">Français</a> | 
+  <a href="https://www.jsesm.com/ko/">한국어</a>
 </p>
 
 ## 💫 拥抱现代微前端
