@@ -1,0 +1,17 @@
+[
+    {
+        "type": "dir",
+        "name": "start",
+        "label": "Début"
+    },
+    {
+        "type": "dir",
+        "name": "essentials",
+        "label": "Fondamentaux"
+    },
+    {
+        "type": "dir",
+        "name": "frameworks",
+        "label": "Frameworks"
+    }
+]

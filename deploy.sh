@@ -40,7 +40,7 @@ git init
 git add -A
 git commit -m 'deploy'
 
-# 如果发布到 https://open-esm.github.io/gez/
-git push -f git@github.com:open-esm/gez.git master:docs
+# 如果发布到 https://js-esm.github.io/gez/
+git push -f git@github.com:js-esm/gez.git master:docs
 
 cd -

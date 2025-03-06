@@ -132,7 +132,7 @@ export const App = () => html`
         <${List} />
         <${Features} />
         <footer>
-            <a href="https://github.com/open-esm/gez" target="_blank" rel="noopener">
+            <a href="https://github.com/js-esm/gez" target="_blank" rel="noopener">
                 在 GitHub 上查看
             </a>
         </footer>

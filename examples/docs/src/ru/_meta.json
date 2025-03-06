@@ -1,0 +1,17 @@
+[
+  {
+    "text": "Руководство",
+    "link": "/guide/start/introduction",
+    "activeMatch": "/guide/"
+  },
+  {
+    "text": "API",
+    "link": "/api/core/gez",
+    "activeMatch": "/api/"
+  },
+  {
+    "text": "Блог",
+    "link": "/blog/index",
+    "activeMatch": "/blog/"
+  }
+]

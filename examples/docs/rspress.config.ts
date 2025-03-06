@@ -20,6 +20,41 @@ export default defineConfig({
             lang: 'en',
             label: 'English',
             title: 'Gez'
+        },
+        {
+            lang: 'es',
+            label: 'Español',
+            title: 'Gez'
+        },
+        {
+            lang: 'zh-TW',
+            label: '繁体中文',
+            title: 'Gez'
+        },
+        {
+            lang: 'pt',
+            label: 'Português',
+            title: 'Gez'
+        },
+        {
+            lang: 'ru',
+            label: 'Русский',
+            title: 'Gez'
+        },
+        {
+            lang: 'ja',
+            label: '日本語',
+            title: 'Gez'
+        },
+        {
+            lang: 'fr',
+            label: 'Français',
+            title: 'Gez'
+        },
+        {
+            lang: 'ko',
+            label: '한국어',
+            title: 'Gez'
         }
     ],
     icon: '/logo.svg',
@@ -37,7 +72,7 @@ export default defineConfig({
                 icon: 'github',
                 mode: 'link',
                 content:
-                    'https://github.com/open-esm/gez?utm_source=www.jsesm.com'
+                    'https://github.com/js-esm/gez?utm_source=www.jsesm.com'
             }
         ]
     },

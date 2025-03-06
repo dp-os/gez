@@ -1,0 +1,17 @@
+[
+    {
+        "type": "dir",
+        "name": "start",
+        "label": "시작하기"
+    },
+    {
+        "type": "dir",
+        "name": "essentials",
+        "label": "기본"
+    },
+    {
+        "type": "dir",
+        "name": "frameworks",
+        "label": "프레임워크"
+    }
+]

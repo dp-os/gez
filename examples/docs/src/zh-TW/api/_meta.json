@@ -1,0 +1,12 @@
+[
+    {
+        "type": "dir",
+        "name": "core",
+        "label": "@gez/core"
+    },
+    {
+        "type": "dir",
+        "name": "app",
+        "label": "App"
+    }
+]

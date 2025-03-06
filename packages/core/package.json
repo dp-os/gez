@@ -17,12 +17,12 @@
     ],
     "repository": {
         "type": "git",
-        "url": "https://github.com/open-esm/gez.git",
+        "url": "https://github.com/js-esm/gez.git",
         "directory": "packages/core"
     },
-    "homepage": "https://github.com/open-esm/gez",
+    "homepage": "https://github.com/js-esm/gez",
     "bugs": {
-        "url": "https://github.com/open-esm/gez/issues"
+        "url": "https://github.com/js-esm/gez/issues"
     },
     "template": "library-node",
     "keywords": [

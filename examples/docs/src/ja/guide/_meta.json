@@ -1,0 +1,17 @@
+[
+    {
+        "type": "dir",
+        "name": "start",
+        "label": "はじめに"
+    },
+    {
+        "type": "dir",
+        "name": "essentials",
+        "label": "基礎"
+    },
+    {
+        "type": "dir",
+        "name": "frameworks",
+        "label": "フレームワーク"
+    }
+]
