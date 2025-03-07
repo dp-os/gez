@@ -1,4 +1,3 @@
-```markdown
 ---
 pageType: home
 titleSuffix: Framework de rendu côté serveur haute performance basé sur ESM
@@ -48,4 +47,3 @@ features:
     title: Support d'environnement
     details: Prend en charge Node.js 22.9+ et les navigateurs modernes, avec un support complet de ESM dynamic import et import.meta.
 ---
-```
