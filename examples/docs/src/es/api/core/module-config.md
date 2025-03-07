@@ -1,5 +1,5 @@
 ---
-titleSuffix: Referencia de API de configuración de módulos del framework Gez
+titleSuffix: Referencia de la API de configuración de módulos del framework Gez
 description: Documentación detallada de la interfaz de configuración ModuleConfig del framework Gez, incluyendo reglas de importación/exportación de módulos, configuración de alias y gestión de dependencias externas, para ayudar a los desarrolladores a comprender en profundidad el sistema modular del framework.
 head:
   - - meta
@@ -38,19 +38,19 @@ interface ModuleConfig {
 }
 ```
 
-Interfaz de configuración de módulos, utilizada para definir la exportación, importación y configuración de dependencias externas de un servicio.
+Interfaz de configuración de módulos, utilizada para definir la exportación, importación y configuración de dependencias externas del servicio.
 
 #### exports
 
-Lista de configuración de exportaciones, que expone unidades de código específicas (como componentes, funciones utilitarias, etc.) en formato ESM.
+Lista de configuración de exportaciones, expone unidades de código específicas (como componentes, funciones utilitarias, etc.) del servicio en formato ESM.
 
 Soporta dos tipos:
-- `root:*`: Exporta archivos de código fuente, por ejemplo: 'root:src/components/button.vue'
-- `npm:*`: Exporta dependencias de terceros, por ejemplo: 'npm:vue'
+- `root:*`: Exporta archivos de código fuente, ej.: 'root:src/components/button.vue'
+- `npm:*`: Exporta dependencias de terceros, ej.: 'npm:vue'
 
 #### imports
 
-Mapeo de configuración de importaciones, que configura los módulos remotos a importar y sus rutas locales.
+Mapeo de configuración de importaciones, configura módulos remotos a importar y sus rutas locales.
 
 La configuración varía según el método de instalación:
 - Instalación desde código fuente (Workspace, Git): debe apuntar al directorio dist
@@ -58,7 +58,7 @@ La configuración varía según el método de instalación:
 
 #### externals
 
-Mapeo de dependencias externas, que configura las dependencias externas a utilizar, generalmente dependencias de módulos remotos.
+Mapeo de dependencias externas, configura dependencias externas a utilizar, generalmente dependencias de módulos remotos.
 
 **Ejemplo**:
 ```ts title="entry.node.ts"
@@ -76,9 +76,9 @@ export default {
 
     // Configuración de importaciones
     imports: {
-      // Instalación desde código fuente: debe apuntar al directorio dist
+      // Método de instalación desde código fuente: debe apuntar al directorio dist
       'ssr-remote': 'root:./node_modules/ssr-remote/dist',
-      // Instalación desde paquete: apunta directamente al directorio del paquete
+      // Método de instalación desde paquete: apunta directamente al directorio del paquete
       'other-remote': 'root:./node_modules/other-remote'
     },
 
@@ -114,19 +114,19 @@ interface ParsedModuleConfig {
 }
 ```
 
-Configuración de módulos analizada, que convierte la configuración original de módulos en un formato interno estandarizado:
+Configuración de módulos analizada, convierte la configuración original de módulos a un formato interno estandarizado:
 
 #### name
 Nombre del servicio actual
-- Se utiliza para identificar el módulo y generar rutas de importación
+- Se utiliza para identificar módulos y generar rutas de importación
 
 #### root
 Ruta del directorio raíz del servicio actual
-- Se utiliza para resolver rutas relativas y almacenar los resultados de la construcción
+- Se utiliza para resolver rutas relativas y almacenar artefactos de construcción
 
 #### exports
 Lista de configuración de exportaciones
-- `name`: Ruta de exportación original, por ejemplo: 'npm:vue' o 'root:src/components'
+- `name`: Ruta de exportación original, ej.: 'npm:vue' o 'root:src/components'
 - `type`: Tipo de ruta (npm o root)
 - `importName`: Nombre de importación, formato: '${serviceName}/${type}/${path}'
 - `exportName`: Ruta de exportación, relativa al directorio raíz del servicio
@@ -136,10 +136,10 @@ Lista de configuración de exportaciones
 #### imports
 Lista de configuración de importaciones
 - `name`: Nombre del servicio externo
-- `localPath`: Ruta de almacenamiento local, utilizada para almacenar los resultados de construcción del módulo externo
+- `localPath`: Ruta de almacenamiento local, utilizada para almacenar artefactos de construcción de módulos externos
 
 #### externals
 Mapeo de dependencias externas
-- Mapea las rutas de importación del módulo a la ubicación real del módulo
-- `match`: Expresión regular utilizada para coincidir con las sentencias de importación
+- Mapea rutas de importación de módulos a su ubicación real
+- `match`: Expresión regular para coincidir con declaraciones de importación
 - `import`: Ruta real del módulo

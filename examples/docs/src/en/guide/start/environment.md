@@ -1,6 +1,6 @@
 ---
 titleSuffix: Gez Framework Compatibility Guide
-description: Detailed introduction to the environmental requirements of the Gez framework, including Node.js version requirements and browser compatibility instructions, helping developers properly configure the development environment.
+description: Detailed introduction to the environmental requirements of the Gez framework, including Node.js version requirements and browser compatibility instructions, helping developers properly configure their development environment.
 head:
   - - meta
     - property: keywords
@@ -9,7 +9,7 @@ head:
 
 # Environmental Requirements
 
-This document introduces the environmental requirements for using this framework, including Node.js environment and browser compatibility.
+This document outlines the environmental requirements for using this framework, including Node.js environment and browser compatibility.
 
 ## Node.js Environment
 
@@ -17,7 +17,7 @@ The framework requires Node.js version >= 22.6, primarily to support TypeScript 
 
 ## Browser Compatibility
 
-The framework adopts a compatibility mode build by default to support a wider range of browsers. However, it's important to note that to achieve full browser compatibility support, you need to manually add the [es-module-shims](https://github.com/guybedford/es-module-shims) dependency.
+The framework is built in compatibility mode by default to support a wider range of browsers. However, to achieve full browser compatibility, you need to manually add the [es-module-shims](https://github.com/guybedford/es-module-shims) dependency.
 
 ### Compatibility Mode (Default)
 - 🌐 Chrome: >= 87
@@ -38,12 +38,12 @@ Native support mode offers the following advantages:
 - Native browser parsing, faster execution speed
 - Better code splitting and on-demand loading capabilities
 
-According to [Can I Use](https://caniuse.com/?search=importmap) statistics, the browser coverage in compatibility mode reaches 93.5%.
+According to [Can I Use](https://caniuse.com/?search=importmap) statistics, the browser coverage in native support mode reaches 93.5%.
 
 ### Enabling Compatibility Support
 
 ::: warning Important Note
-Although the framework uses compatibility mode by default, to achieve full support for older browsers, you need to add the [es-module-shims](https://github.com/guybedford/es-module-shims) dependency to your project.
+Although the framework is built in compatibility mode by default, to achieve full support for older browsers, you need to add the [es-module-shims](https://github.com/guybedford/es-module-shims) dependency to your project.
 
 :::
 
@@ -64,7 +64,7 @@ Add the following script to your HTML file:
    - Ensure resource loading stability and access speed
    - Avoid potential security risks
 2. Performance Considerations:
-   - Compatibility mode introduces slight performance overhead
+   - Compatibility mode incurs a slight performance overhead
    - Decide whether to enable it based on the browser distribution of your target user base
 
 :::

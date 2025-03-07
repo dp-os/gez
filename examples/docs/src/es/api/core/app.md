@@ -1,15 +1,15 @@
 ---
-titleSuffix: Interfaz de abstracción de aplicación del framework Gez
-description: Detalles sobre la interfaz App del framework Gez, incluyendo gestión del ciclo de vida de la aplicación, manejo de recursos estáticos y renderizado del lado del servidor, para ayudar a los desarrolladores a comprender y utilizar las funcionalidades principales de la aplicación.
+titleSuffix: Interfaz de abstracción de aplicaciones del framework Gez
+description: Detalles sobre la interfaz App del framework Gez, incluyendo la gestión del ciclo de vida de la aplicación, el manejo de recursos estáticos y la renderización del lado del servidor, para ayudar a los desarrolladores a comprender y utilizar las funciones principales de la aplicación.
 head:
   - - meta
     - property: keywords
-      content: Gez, App, abstracción de aplicación, ciclo de vida, recursos estáticos, renderizado del lado del servidor, API
+      content: Gez, App, abstracción de aplicación, ciclo de vida, recursos estáticos, renderización del lado del servidor, API
 ---
 
 # App
 
-`App` es la abstracción de la aplicación en el framework Gez, que proporciona una interfaz unificada para gestionar el ciclo de vida de la aplicación, los recursos estáticos y el renderizado del lado del servidor.
+`App` es la abstracción de la aplicación en el framework Gez, que proporciona una interfaz unificada para gestionar el ciclo de vida de la aplicación, los recursos estáticos y la renderización del lado del servidor.
 
 ```ts title="entry.node.ts"
 export default {
@@ -47,7 +47,7 @@ Middleware para el manejo de recursos estáticos.
 Entorno de desarrollo:
 - Maneja las solicitudes de recursos estáticos del código fuente
 - Soporta compilación en tiempo real y actualización en caliente
-- Utiliza una estrategia de caché no-cache
+- Utiliza una política de caché no-cache
 
 Entorno de producción:
 - Maneja los recursos estáticos después de la construcción
@@ -62,9 +62,9 @@ server.use(gez.middleware);
 
 - **Tipo**: `(options?: RenderContextOptions) => Promise<RenderContext>`
 
-Función de renderizado del lado del servidor. Proporciona diferentes implementaciones según el entorno de ejecución:
-- Entorno de producción (start): Carga el archivo de entrada del servidor construido (entry.server) para ejecutar el renderizado
-- Entorno de desarrollo (dev): Carga el archivo de entrada del servidor desde el código fuente para ejecutar el renderizado
+Función de renderización del lado del servidor. Proporciona diferentes implementaciones según el entorno:
+- Entorno de producción (start): Carga el archivo de entrada del servidor construido (entry.server) y ejecuta la renderización
+- Entorno de desarrollo (dev): Carga el archivo de entrada del servidor desde el código fuente y ejecuta la renderización
 
 ```ts
 const rc = await gez.render({
@@ -77,10 +77,11 @@ res.end(rc.html);
 
 - **Tipo**: `() => Promise<boolean>`
 
-Función de construcción para el entorno de producción. Se utiliza para la compilación y optimización de recursos. Devuelve true si la construcción es exitosa, de lo contrario devuelve false.
+Función de construcción para el entorno de producción. Se utiliza para empaquetar y optimizar recursos. Devuelve true si la construcción es exitosa, false en caso de fallo.
 
 #### destroy
 
 - **Tipo**: `() => Promise<boolean>`
 
-Función de limpieza de recursos. Se utiliza para cerrar servidores, desconectar conexiones, etc. Devuelve true si la limpieza es exitosa, de lo contrario devuelve false.
+Función de limpieza de recursos. Se utiliza para cerrar servidores, desconectar conexiones, etc. Devuelve true si la limpieza es exitosa, false en caso de fallo.
+```

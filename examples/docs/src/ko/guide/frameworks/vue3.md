@@ -1,6 +1,6 @@
 ---
 titleSuffix: Gez 프레임워크 Vue3 SSR 애플리케이션 예제
-description: Gez를 기반으로 Vue3 SSR 애플리케이션을 처음부터 구축하는 방법을 보여주는 예제입니다. 프로젝트 초기화, Vue3 설정 및 엔트리 파일 설정을 포함한 프레임워크의 기본 사용법을 다룹니다.
+description: Gez를 기반으로 Vue3 SSR 애플리케이션을 처음부터 구축하는 방법을 설명합니다. 프로젝트 초기화, Vue3 설정, 엔트리 파일 설정 등 프레임워크의 기본 사용법을 예제를 통해 보여줍니다.
 head:
   - - meta
     - property: keywords
@@ -9,7 +9,7 @@ head:
 
 # Vue3
 
-이 튜토리얼은 Gez를 기반으로 Vue3 SSR 애플리케이션을 처음부터 구축하는 방법을 안내합니다. Gez 프레임워크를 사용하여 서버 사이드 렌더링 애플리케이션을 만드는 방법을 완전한 예제를 통해 보여드리겠습니다.
+이 튜토리얼은 Gez를 기반으로 Vue3 SSR 애플리케이션을 처음부터 구축하는 방법을 안내합니다. Gez 프레임워크를 사용하여 서버 사이드 렌더링 애플리케이션을 만드는 방법을 완전한 예제를 통해 설명합니다.
 
 ## 프로젝트 구조
 
@@ -31,7 +31,7 @@ head:
 
 ### package.json
 
-`package.json` 파일을 생성하고 프로젝트 의존성 및 스크립트를 설정합니다:
+`package.json` 파일을 생성하여 프로젝트 의존성 및 스크립트를 설정합니다:
 
 ```json title="package.json"
 {
@@ -70,11 +70,11 @@ yarn install
 npm install
 ```
 
-이 명령은 Vue3, TypeScript 및 SSR 관련 의존성을 포함한 모든 필요한 패키지를 설치합니다.
+이 명령은 Vue3, TypeScript 및 SSR 관련 의존성을 포함한 모든 필수 패키지를 설치합니다.
 
 ### tsconfig.json
 
-`tsconfig.json` 파일을 생성하고 TypeScript 컴파일 옵션을 설정합니다:
+`tsconfig.json` 파일을 생성하여 TypeScript 컴파일 옵션을 설정합니다:
 
 ```json title="tsconfig.json"
 {
@@ -109,7 +109,7 @@ npm install
 
 ### app.vue
 
-메인 애플리케이션 컴포넌트 `src/app.vue`를 생성하고 Vue3의 컴포지션 API를 사용합니다:
+메인 애플리케이션 컴포넌트 `src/app.vue`를 생성하고, Vue3의 컴포지션 API를 사용합니다:
 
 ```html title="src/app.vue"
 <template>
@@ -122,7 +122,7 @@ npm install
 <script setup lang="ts">
 /**
  * @file 예제 컴포넌트
- * @description Gez 프레임워크의 기본 기능을 보여주기 위해 자동으로 업데이트되는 시간이 포함된 페이지 제목을 표시합니다.
+ * @description Gez 프레임워크의 기본 기능을 시연하기 위해 자동으로 업데이트되는 시간을 표시하는 페이지 제목을 보여줍니다.
  */
 
 import { onMounted, onUnmounted, ref } from 'vue';
@@ -145,7 +145,7 @@ onUnmounted(() => {
 
 ### create-app.ts
 
-`src/create-app.ts` 파일을 생성하고 Vue 애플리케이션 인스턴스를 생성합니다:
+`src/create-app.ts` 파일을 생성하여 Vue 애플리케이션 인스턴스를 생성합니다:
 
 ```ts title="src/create-app.ts"
 /**
@@ -171,7 +171,7 @@ export function createApp() {
 ```ts title="src/entry.client.ts"
 /**
  * @file 클라이언트 엔트리 파일
- * @description 클라이언트 상호작용 로직 및 동적 업데이트 담당
+ * @description 클라이언트 상호작용 로직 및 동적 업데이트 처리
  */
 
 import { createApp } from './create-app';
@@ -185,7 +185,7 @@ app.mount('#app');
 
 ### entry.node.ts
 
-`entry.node.ts` 파일을 생성하고 개발 환경 및 서버 시작을 설정합니다:
+`entry.node.ts` 파일을 생성하여 개발 환경 및 서버 시작을 설정합니다:
 
 ```ts title="src/entry.node.ts"
 /**
@@ -199,8 +199,8 @@ import type { GezOptions } from '@gez/core';
 export default {
     /**
      * 개발 환경 애플리케이션 생성기 설정
-     * @description Rspack 애플리케이션 인스턴스 생성 및 설정, 개발 환경 빌드 및 핫 리로드 지원
-     * @param gez Gez 프레임워크 인스턴스, 코어 기능 및 설정 인터페이스 제공
+     * @description 개발 환경의 Rspack 애플리케이션 인스턴스 생성 및 설정, HMR 및 실시간 미리보기 지원
+     * @param gez Gez 프레임워크 인스턴스, 핵심 기능 및 설정 인터페이스 제공
      * @returns 설정된 Rspack 애플리케이션 인스턴스 반환, HMR 및 실시간 미리보기 지원
      */
     async devApp(gez) {
@@ -237,10 +237,10 @@ export default {
 } satisfies GezOptions;
 ```
 
-이 파일은 개발 환경 설정 및 서버 시작을 위한 엔트리 파일로, 두 가지 주요 기능을 포함합니다:
+이 파일은 개발 환경 설정 및 서버 시작을 위한 엔트리 파일로, 두 가지 핵심 기능을 포함합니다:
 
-1. `devApp` 함수: 개발 환경의 Rspack 애플리케이션 인스턴스를 생성하고 설정하며, 핫 리로드 및 실시간 미리보기 기능을 지원합니다. 여기서 `createRspackVue3App`을 사용하여 Vue3 전용 Rspack 애플리케이션 인스턴스를 생성합니다.
-2. `server` 함수: HTTP 서버를 생성하고 설정하며, Gez 미들웨어를 통합하여 SSR 요청을 처리합니다.
+1. `devApp` 함수: 개발 환경의 Rspack 애플리케이션 인스턴스를 생성 및 설정하며, HMR 및 실시간 미리보기를 지원합니다. 여기서 `createRspackVue3App`을 사용하여 Vue3 전용 Rspack 애플리케이션 인스턴스를 생성합니다.
+2. `server` 함수: HTTP 서버를 생성 및 설정하고, Gez 미들웨어를 통합하여 SSR 요청을 처리합니다.
 
 ### entry.server.ts
 
@@ -265,7 +265,7 @@ export default async (rc: RenderContext) => {
         importMetaSet: rc.importMetaSet
     });
 
-    // 의존성 수집 커밋, 필요한 모든 리소스가 로드되도록 보장
+    // 의존성 수집 제출, 필요한 모든 리소스가 로드되도록 보장
     await rc.commit();
 
     // 완전한 HTML 구조 생성

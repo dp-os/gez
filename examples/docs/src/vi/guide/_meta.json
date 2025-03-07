@@ -1,0 +1,17 @@
+[
+    {
+        "type": "dir",
+        "name": "start",
+        "label": "Bắt đầu"
+    },
+    {
+        "type": "dir",
+        "name": "essentials",
+        "label": "Cơ bản"
+    },
+    {
+        "type": "dir",
+        "name": "frameworks",
+        "label": "Khung"
+    }
+]

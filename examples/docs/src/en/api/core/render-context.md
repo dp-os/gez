@@ -1,6 +1,5 @@
-```markdown
 ---
-titleSuffix: Gez Framework Render Context API Reference
+titleSuffix: Gez Framework Rendering Context API Reference
 description: Detailed documentation of the RenderContext core class in the Gez framework, including rendering control, resource management, state synchronization, and routing control, helping developers achieve efficient server-side rendering.
 head:
   - - meta
@@ -12,7 +11,7 @@ head:
 
 RenderContext is the core class in the Gez framework, responsible for managing the complete lifecycle of server-side rendering (SSR). It provides a comprehensive API to handle key tasks such as rendering context, resource management, and state synchronization:
 
-- **Rendering Control**: Manages the server-side rendering process, supporting multi-entry rendering, conditional rendering, and other scenarios
+- **Rendering Control**: Manages the server-side rendering process, supporting scenarios like multi-entry rendering and conditional rendering
 - **Resource Management**: Intelligently collects and injects static resources like JS and CSS to optimize loading performance
 - **State Synchronization**: Handles server-side state serialization to ensure proper client-side hydration
 - **Routing Control**: Supports advanced features like server-side redirection and status code setting
@@ -27,17 +26,17 @@ Type definition for server-side rendering handler functions.
 type ServerRenderHandle = (rc: RenderContext) => Promise<void> | void;
 ```
 
-The server-side rendering handler function is an asynchronous or synchronous function that takes a RenderContext instance as a parameter, used to handle server-side rendering logic.
+A server-side rendering handler function is an asynchronous or synchronous function that takes a RenderContext instance as a parameter, used to handle server-side rendering logic.
 
 ```ts title="entry.node.ts"
-// 1. Asynchronous handler function
+// 1. Asynchronous handler
 export default async (rc: RenderContext) => {
   const app = createApp();
   const html = await renderToString(app);
   rc.html = html;
 };
 
-// 2. Synchronous handler function
+// 2. Synchronous handler
 export const simple = (rc: RenderContext) => {
   rc.html = '<h1>Hello World</h1>';
 };
@@ -45,7 +44,7 @@ export const simple = (rc: RenderContext) => {
 
 ### RenderFiles
 
-Type definition for the list of resource files collected during the rendering process.
+Type definition for the list of resource files collected during rendering.
 
 ```ts
 interface RenderFiles {
@@ -91,16 +90,16 @@ Defines the generation mode for importmap.
 type ImportmapMode = 'inline' | 'js';
 ```
 
-- `inline`: Inlines the importmap content directly into the HTML, suitable for scenarios such as:
+- `inline`: Inlines the importmap content directly into the HTML, suitable for:
   - Reducing the number of HTTP requests
   - When importmap content is small
-  - When high first-load performance is required
-- `js`: Generates importmap content as a separate JS file, suitable for scenarios such as:
+  - When first-screen loading performance is critical
+- `js`: Generates importmap content as a separate JS file, suitable for:
   - When importmap content is large
   - When leveraging browser caching mechanisms
   - When multiple pages share the same importmap
 
-The rendering context class, responsible for resource management and HTML generation during server-side rendering (SSR).
+Rendering context class, responsible for resource management and HTML generation during server-side rendering (SSR).
 ## Instance Options
 
 Defines configuration options for the rendering context.
@@ -119,9 +118,9 @@ interface RenderContextOptions {
 - **Type**: `string`
 - **Default**: `''`
 
-The base path for static resources.
+Base path for static resources.
 - All static resources (JS, CSS, images, etc.) will be loaded based on this path
-- Supports runtime dynamic configuration without requiring rebuilds
+- Supports runtime dynamic configuration without rebuilding
 - Commonly used in multi-language sites, micro-frontend applications, etc.
 
 #### entryName
@@ -129,7 +128,7 @@ The base path for static resources.
 - **Type**: `string`
 - **Default**: `'default'`
 
-The name of the server-side rendering entry function. Used to specify the entry function to be used during server-side rendering when a module exports multiple rendering functions.
+Server-side rendering entry function name. Used to specify the entry function for server-side rendering when a module exports multiple rendering functions.
 
 ```ts title="src/entry.server.ts"
 export const mobile = async (rc: RenderContext) => {
@@ -163,7 +162,7 @@ const rc = await gez.render({
 - **Type**: `'inline' | 'js'`
 - **Default**: `'inline'`
 
-The generation mode for import maps:
+Import Map generation mode:
 - `inline`: Inlines the importmap content directly into the HTML
 - `js`: Generates importmap content as a separate JS file
 
@@ -175,14 +174,14 @@ The generation mode for import maps:
 - **Type**: `Gez`
 - **Read-only**: `true`
 
-Reference to the Gez instance. Used to access core framework functionalities and configuration information.
+Reference to the Gez instance. Used to access core framework functionality and configuration information.
 
 ### redirect
 
 - **Type**: `string | null`
 - **Default**: `null`
 
-Redirection address. Once set, the server can perform HTTP redirection based on this value, commonly used in login verification, permission control, etc.
+Redirection address. When set, the server can perform HTTP redirection based on this value, commonly used in login verification, permission control, etc.
 
 ```ts title="entry.node.ts"
 // Login verification example
@@ -229,7 +228,7 @@ export default async (rc: RenderContext) => {
 export default async (rc: RenderContext) => {
   if (needMaintenance()) {
     rc.redirect = '/maintenance';
-    rc.status = 307; // Temporary redirection, keeping the request method unchanged
+    rc.status = 307; // Temporary redirect, keeping the request method unchanged
     return;
   }
   // Continue rendering the page...
@@ -282,7 +281,7 @@ const rc = await gez.render({
 - **Read-only**: `true`
 - **Default**: `''`
 
-The base path for static resources. All static resources (JS, CSS, images, etc.) will be loaded based on this path, supporting runtime dynamic configuration.
+Base path for static resources. All static resources (JS, CSS, images, etc.) will be loaded based on this path, supporting runtime dynamic configuration.
 
 ```ts
 // Basic usage
@@ -310,7 +309,7 @@ const rc = await gez.render({
 - **Read-only**: `true`
 - **Default**: `'default'`
 
-The name of the server-side rendering entry function. Used to select the rendering function to be used from entry.server.ts.
+Server-side rendering entry function name. Used to select the rendering function to use from entry.server.ts.
 
 ```ts title="entry.node.ts"
 // Default entry function
@@ -343,7 +342,7 @@ const rc = await gez.render({
 Rendering parameters. Can pass and access parameters during server-side rendering, commonly used to pass request information, page configuration, etc.
 
 ```ts
-// Basic usage - Pass URL and language settings
+// Basic usage - passing URL and language settings
 const rc = await gez.render({
   params: {
     url: req.url,
@@ -351,7 +350,7 @@ const rc = await gez.render({
   }
 });
 
-// Page configuration - Set theme and layout
+// Page configuration - setting theme and layout
 const rc = await gez.render({
   params: {
     theme: 'dark',
@@ -359,7 +358,7 @@ const rc = await gez.render({
   }
 });
 
-// Environment configuration - Inject API address
+// Environment configuration - injecting API address
 const rc = await gez.render({
   params: {
     apiBaseUrl: process.env.API_BASE_URL,
@@ -372,7 +371,7 @@ const rc = await gez.render({
 
 - **Type**: `Set<ImportMeta>`
 
-Module dependency collection set. Automatically tracks and records module dependencies during component rendering, collecting only the resources actually used during the current page rendering.
+Module dependency collection set. Automatically tracks and records module dependencies during component rendering, only collecting resources actually used during the current page rendering.
 
 ```ts
 // Basic usage
@@ -429,7 +428,7 @@ rc.html = `
 - **Type**: `'inline' | 'js'`
 - **Default**: `'inline'`
 
-The generation mode for import maps:
+Import Map generation mode:
 - `inline`: Inlines the importmap content directly into the HTML
 - `js`: Generates importmap content as a separate JS file
 
@@ -553,7 +552,7 @@ rc.html = `
 
 - **Returns**: `string`
 
-Generates client entry module tags. Injects client entry modules, must be executed after importmap.
+Generates client entry module tags. Injects the client entry module, must be executed after importmap.
 
 ```ts
 rc.html = `
@@ -569,7 +568,7 @@ rc.html = `
 
 - **Returns**: `string`
 
-Generates module preload tags. Preloads collected ESM modules, optimizing first-load performance.
+Generates module preload tags. Preloads collected ESM modules, optimizing first-screen loading performance.
 
 ```ts
 rc.html = `
@@ -580,5 +579,4 @@ rc.html = `
     ${rc.modulePreload()}  <!-- Preload module dependencies -->
   </body>
 `;
-```
 ```

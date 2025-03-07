@@ -1,6 +1,6 @@
 ---
 titleSuffix: Gez 框架高效能建置引擎
-description: 深入解析 Gez 框架的 Rspack 建置系統，包括高效能編譯、多環境建置、資源優化等核心特性，協助開發者建置高效、可靠的現代 Web 應用程式。
+description: 深入解析 Gez 框架的 Rspack 建置系統，包括高效能編譯、多環境建置、資源優化等核心特性，協助開發者建置高效、可靠的現代 Web 應用。
 head:
   - - meta
     - property: keywords

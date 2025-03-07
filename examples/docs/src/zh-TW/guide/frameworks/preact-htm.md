@@ -23,7 +23,7 @@ head:
     ├── app.ts           # 主應用元件，定義頁面結構和互動邏輯
     ├── create-app.ts    # 應用實例建立工廠，負責初始化應用
     ├── entry.client.ts  # 客戶端入口檔案，處理瀏覽器端渲染
-    ├── entry.node.ts    # Node.js 伺服器入口檔案，負責開發環境配置和伺服器啟動
+    ├── entry.node.ts    # Node.js 伺服器入口檔案，負責開發環境設定和伺服器啟動
     └── entry.server.ts  # 伺服器端入口檔案，處理 SSR 渲染邏輯
 ```
 
@@ -206,7 +206,7 @@ render(app, document.getElementById('app')!);
 ```ts title="src/entry.node.ts"
 /**
  * @file Node.js 伺服器入口檔案
- * @description 負責開發環境配置和伺服器啟動，提供 SSR 執行環境
+ * @description 負責開發環境設定和伺服器啟動，提供 SSR 執行環境
  */
 
 import http from 'node:http';
@@ -253,7 +253,7 @@ export default {
 } satisfies GezOptions;
 ```
 
-這個檔案是開發環境配置和伺服器啟動的入口檔案，主要包含兩個核心功能：
+這個檔案是開發環境設定和伺服器啟動的入口檔案，主要包含兩個核心功能：
 
 1. `devApp` 函式：負責建立和配置開發環境的 Rspack 應用實例，支援熱更新和即時預覽功能。這裡使用 `createRspackHtmlApp` 來建立專門用於 Preact+HTM 的 Rspack 應用實例。
 2. `server` 函式：負責建立和配置 HTTP 伺服器，整合 Gez 中介軟體處理 SSR 請求。

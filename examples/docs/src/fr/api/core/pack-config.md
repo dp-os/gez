@@ -1,6 +1,6 @@
 ---
 titleSuffix: Référence de l'API de configuration de packaging du framework Gez
-description: Détaille l'interface de configuration PackConfig du framework Gez, incluant les règles de packaging des paquets, la configuration de sortie et les hooks de cycle de vie, pour aider les développeurs à mettre en œuvre des processus de construction standardisés.
+description: Documentation détaillée de l'interface de configuration PackConfig du framework Gez, incluant les règles de packaging des paquets, la configuration de sortie et les hooks de cycle de vie, pour aider les développeurs à mettre en œuvre des processus de construction standardisés.
 head:
   - - meta
     - property: keywords
@@ -31,7 +31,7 @@ interface PackConfig {
 
 #### enable
 
-Active ou désactive la fonctionnalité de packaging. Une fois activée, les artefacts de construction seront empaquetés dans un format de paquet npm standard .tgz.
+Active ou désactive la fonctionnalité de packaging. Lorsqu'elle est activée, les artefacts de construction sont empaquetés dans un format de paquet npm standard .tgz.
 
 - Type : `boolean`
 - Valeur par défaut : `false`
@@ -45,7 +45,7 @@ Spécifie le chemin de sortie du fichier de paquet. Supporte les configurations 
 
 #### packageJson
 
-Fonction de rappel pour personnaliser le contenu de package.json. Appelée avant le packaging, pour personnaliser le contenu de package.json.
+Fonction de rappel pour personnaliser le contenu de package.json. Appelée avant le packaging pour personnaliser le contenu de package.json.
 
 - Paramètres :
   - `gez: Gez` - Instance de Gez
@@ -54,7 +54,7 @@ Fonction de rappel pour personnaliser le contenu de package.json. Appelée avant
 
 Utilisations courantes :
 - Modifier le nom et la version du paquet
-- Ajouter ou mettre à jour les dépendances
+- Ajouter ou mettre à jour des dépendances
 - Ajouter des champs personnalisés
 - Configurer les informations de publication
 
@@ -100,8 +100,8 @@ Exemple :
 ```ts
 onBefore: async (gez, pkg) => {
   // Ajouter de la documentation
-  await fs.writeFile('dist/README.md', '# My App');
-  await fs.writeFile('dist/LICENSE', 'MIT License');
+  await fs.writeFile('dist/README.md', '# Mon application');
+  await fs.writeFile('dist/LICENSE', 'Licence MIT');
 
   // Exécuter des tests
   await runTests();
@@ -184,7 +184,7 @@ export default {
     // Préparatifs avant le packaging
     onBefore: async (gez, pkg) => {
       // Ajouter des fichiers nécessaires
-      await fs.writeFile('dist/README.md', '# Your App\n\nExplication des modules exportés...');
+      await fs.writeFile('dist/README.md', '# Votre application\n\nDescription des modules exportés...');
       // Exécuter une vérification de type
       await runTypeCheck();
     },

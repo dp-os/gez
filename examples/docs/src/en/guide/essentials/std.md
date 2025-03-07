@@ -9,7 +9,7 @@ head:
 
 # Standard Specifications
 
-Gez is a modern SSR framework that adopts standardized project structures and path resolution mechanisms to ensure consistency and maintainability of projects in both development and production environments.
+Gez is a modern SSR framework that adopts standardized project structures and path resolution mechanisms to ensure consistency and maintainability across development and production environments.
 
 ## Project Structure Specifications
 
@@ -18,21 +18,21 @@ Gez is a modern SSR framework that adopts standardized project structures and pa
 ```txt
 root
 │─ dist                  # Compilation output directory
-│  ├─ package.json       # Software package configuration after compilation
+│  ├─ package.json       # Compiled package configuration
 │  ├─ server             # Server-side compilation output
 │  │  └─ manifest.json   # Compilation manifest output, used for generating importmap
 │  ├─ node               # Node server program compilation output
 │  ├─ client             # Client-side compilation output
 │  │  ├─ versions        # Version storage directory
-│  │  │  └─ latest.tgz   # Archive of the dist directory for software package distribution
+│  │  │  └─ latest.tgz   # Archive of the dist directory for package distribution
 │  │  └─ manifest.json   # Compilation manifest output, used for generating importmap
 │  └─ src                # Files generated using tsc
 ├─ src
-│  ├─ entry.server.ts    # Server-side application entry
-│  ├─ entry.client.ts    # Client-side application entry
+│  ├─ entry.server.ts    # Server application entry
+│  ├─ entry.client.ts    # Client application entry
 │  └─ entry.node.ts      # Node server application entry
 ├─ tsconfig.json         # TypeScript configuration
-└─ package.json          # Software package configuration
+└─ package.json          # Package configuration
 ```
 
 ::: tip Extended Knowledge

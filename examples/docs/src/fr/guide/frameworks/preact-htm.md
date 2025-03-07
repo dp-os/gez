@@ -1,6 +1,6 @@
 ---
 titleSuffix: Exemple d'application SSR Preact+HTM avec le framework Gez
-description: Créez une application SSR Preact+HTM basée sur Gez à partir de zéro. Ce tutoriel montre les bases du framework, y compris l'initialisation du projet, la configuration de Preact et la configuration des fichiers d'entrée.
+description: Créez une application SSR Preact+HTM basée sur Gez à partir de zéro. Ce tutoriel vous guide à travers l'initialisation du projet, la configuration de Preact et la mise en place des fichiers d'entrée.
 head:
   - - meta
     - property: keywords
@@ -9,7 +9,7 @@ head:
 
 # Preact+HTM
 
-Ce tutoriel vous guidera dans la création d'une application SSR Preact+HTM basée sur Gez à partir de zéro. Nous allons utiliser un exemple complet pour montrer comment créer une application de rendu côté serveur avec le framework Gez.
+Ce tutoriel vous guidera dans la création d'une application SSR Preact+HTM basée sur Gez à partir de zéro. Nous allons utiliser un exemple complet pour montrer comment utiliser le framework Gez pour créer une application avec rendu côté serveur.
 
 ## Structure du projet
 
@@ -23,7 +23,7 @@ Commençons par comprendre la structure de base du projet :
     ├── app.ts           # Composant principal de l'application, définissant la structure de la page et la logique d'interaction
     ├── create-app.ts    # Factory de création d'instance d'application, responsable de l'initialisation de l'application
     ├── entry.client.ts  # Fichier d'entrée côté client, gérant le rendu côté navigateur
-    ├── entry.node.ts    # Fichier d'entrée du serveur Node.js, responsable de la configuration de l'environnement de développement et du démarrage du serveur
+    ├── entry.node.ts    # Fichier d'entrée Node.js, responsable de la configuration de l'environnement de développement et du démarrage du serveur
     └── entry.server.ts  # Fichier d'entrée côté serveur, gérant la logique de rendu SSR
 ```
 
@@ -109,7 +109,7 @@ Créez le fichier `tsconfig.json` pour configurer les options de compilation Typ
 }
 ```
 
-## Structure des sources
+## Structure du code source
 
 ### app.ts
 
@@ -163,8 +163,8 @@ Créez le fichier `src/create-app.ts`, responsable de la création de l'instance
 
 ```ts title="src/create-app.ts"
 /**
- * @file Création d'instance d'application
- * @description Responsable de la création et de la configuration de l'instance d'application
+ * @file Création de l'instance de l'application
+ * @description Responsable de la création et de la configuration de l'instance de l'application
  */
 
 import type { VNode } from 'preact';
@@ -205,7 +205,7 @@ Créez le fichier `entry.node.ts`, configurant l'environnement de développement
 
 ```ts title="src/entry.node.ts"
 /**
- * @file Fichier d'entrée du serveur Node.js
+ * @file Fichier d'entrée Node.js
  * @description Responsable de la configuration de l'environnement de développement et du démarrage du serveur, fournissant l'environnement d'exécution SSR
  */
 
@@ -215,7 +215,7 @@ import type { GezOptions } from '@gez/core';
 export default {
     /**
      * Configure le créateur d'application pour l'environnement de développement
-     * @description Crée et configure une instance d'application Rspack pour la construction et la mise à jour en temps réel dans l'environnement de développement
+     * @description Crée et configure l'instance d'application Rspack pour la construction et la mise à jour en temps réel
      * @param gez Instance du framework Gez, fournissant les fonctionnalités de base et les interfaces de configuration
      * @returns Retourne l'instance d'application Rspack configurée, prenant en charge HMR et la prévisualisation en temps réel
      */
@@ -236,7 +236,7 @@ export default {
      */
     async server(gez) {
         const server = http.createServer((req, res) => {
-            // Utilisez le middleware Gez pour gérer les requêtes
+            // Utilisez le middleware Gez pour traiter les requêtes
             gez.middleware(req, res, async () => {
                 // Exécutez le rendu côté serveur
                 const rc = await gez.render({
@@ -253,10 +253,10 @@ export default {
 } satisfies GezOptions;
 ```
 
-Ce fichier est le point d'entrée pour la configuration de l'environnement de développement et le démarrage du serveur, contenant deux fonctionnalités principales :
+Ce fichier est le point d'entrée pour la configuration de l'environnement de développement et le démarrage du serveur. Il contient deux fonctionnalités principales :
 
-1. Fonction `devApp` : Responsable de la création et de la configuration de l'instance d'application Rspack pour l'environnement de développement, prenant en charge la mise à jour en temps réel et la prévisualisation. Ici, nous utilisons `createRspackHtmlApp` pour créer une instance d'application Rspack spécifique à Preact+HTM.
-2. Fonction `server` : Responsable de la création et de la configuration du serveur HTTP, intégrant le middleware Gez pour gérer les requêtes SSR.
+1. La fonction `devApp` : responsable de la création et de la configuration de l'instance d'application Rspack pour l'environnement de développement, prenant en charge la mise à jour en temps réel et la prévisualisation. Ici, `createRspackHtmlApp` est utilisé pour créer une instance d'application Rspack spécifique à Preact+HTM.
+2. La fonction `server` : responsable de la création et de la configuration du serveur HTTP, intégrant le middleware Gez pour traiter les requêtes SSR.
 
 ### entry.server.ts
 
@@ -265,7 +265,7 @@ Créez le fichier d'entrée pour le rendu côté serveur `src/entry.server.ts` :
 ```ts title="src/entry.server.ts"
 /**
  * @file Fichier d'entrée pour le rendu côté serveur
- * @description Responsable du processus de rendu côté serveur, de la génération HTML et de l'injection des ressources
+ * @description Responsable du processus de rendu côté serveur, de la génération du HTML et de l'injection des ressources
  */
 
 import type { RenderContext } from '@gez/core';
@@ -280,12 +280,12 @@ export default async (rc: RenderContext) => {
     // Utilisez renderToString de Preact pour générer le contenu de la page
     const html = render(app);
 
-    // Soumettez la collecte des dépendances pour s'assurer que toutes les ressources nécessaires sont chargées
+    // Soumettez la collecte des dépendances pour garantir que toutes les ressources nécessaires sont chargées
     await rc.commit();
 
     // Générez la structure HTML complète
     rc.html = `<!DOCTYPE html>
-<html lang="fr-FR">
+<html lang="fr">
 <head>
     ${rc.preload()}
     <title>Démarrage rapide avec Gez</title>

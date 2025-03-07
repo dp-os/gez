@@ -1,6 +1,6 @@
 ---
 titleSuffix: Exemplo de Aplicação HTML SSR com Gez
-description: Aprenda a criar uma aplicação HTML SSR com Gez do zero. Este tutorial cobre a inicialização do projeto, configuração de HTML e definição de arquivos de entrada.
+description: Aprenda a criar uma aplicação HTML SSR com Gez do zero. Este tutorial mostra o uso básico do framework, incluindo inicialização do projeto, configuração de HTML e definição de arquivos de entrada.
 head:
   - - meta
     - property: keywords
@@ -9,7 +9,7 @@ head:
 
 # HTML
 
-Este tutorial irá guiá-lo na criação de uma aplicação HTML SSR (Server-Side Rendering) com Gez do zero. Vamos demonstrar como usar o framework Gez para criar uma aplicação com renderização no servidor.
+Este tutorial irá guiá-lo na criação de uma aplicação HTML SSR (Server-Side Rendering) com Gez a partir do zero. Através de um exemplo completo, mostraremos como usar o framework Gez para criar uma aplicação com renderização no servidor.
 
 ## Estrutura do Projeto
 
@@ -20,7 +20,7 @@ Primeiro, vamos entender a estrutura básica do projeto:
 ├── package.json         # Arquivo de configuração do projeto, define dependências e scripts
 ├── tsconfig.json        # Arquivo de configuração do TypeScript, define opções de compilação
 └── src                  # Diretório de código-fonte
-    ├── app.ts           # Componente principal da aplicação, define a estrutura da página e lógica de interação
+    ├── app.ts           # Componente principal da aplicação, define a estrutura e lógica da página
     ├── create-app.ts    # Fábrica de criação de instância da aplicação, responsável pela inicialização
     ├── entry.client.ts  # Arquivo de entrada do cliente, lida com a renderização no navegador
     ├── entry.node.ts    # Arquivo de entrada do servidor Node.js, configura o ambiente de desenvolvimento e inicia o servidor
@@ -59,7 +59,6 @@ Crie o arquivo `package.json` para configurar as dependências e scripts do proj
 ```
 
 Após criar o arquivo `package.json`, instale as dependências do projeto. Você pode usar um dos seguintes comandos:
-
 ```bash
 pnpm install
 # ou
@@ -107,17 +106,17 @@ Crie o arquivo `tsconfig.json` para configurar as opções de compilação do Ty
 
 ### app.ts
 
-Crie o componente principal da aplicação `src/app.ts`, que implementa a estrutura da página e a lógica de interação:
+Crie o componente principal da aplicação em `src/app.ts`, implementando a estrutura e lógica da página:
 
 ```ts title="src/app.ts"
 /**
  * @file Componente de Exemplo
- * @description Exibe um título de página com atualização automática de tempo, demonstrando as funcionalidades básicas do Gez
+ * @description Exibe um título de página com atualização automática de tempo, demonstrando funcionalidades básicas do Gez
  */
 
 export default class App {
     /**
-     * Tempo atual, no formato ISO
+     * Hora atual, no formato ISO
      * @type {string}
      */
     public time = '';
@@ -135,7 +134,7 @@ export default class App {
      * @returns {string} Retorna a estrutura HTML da página
      */
     public render(): string {
-        // Garante que os metadados de importação sejam coletados corretamente no servidor
+        // Garante a coleta correta de metadados de importação no ambiente do servidor
         if (this.ssrContext) {
             this.ssrContext.importMetaSet.add(import.meta);
         }
@@ -220,7 +219,7 @@ Crie o arquivo de entrada do cliente `src/entry.client.ts`:
 
 import { createApp } from './create-app';
 
-// Cria a instância da aplicação e inicializa
+// Cria e inicializa a instância da aplicação
 const { app } = createApp();
 app.onClient();
 ```
@@ -262,7 +261,7 @@ export default {
      */
     async server(gez) {
         const server = http.createServer((req, res) => {
-            // Usa o middleware do Gez para processar a requisição
+            // Usa middleware do Gez para processar a requisição
             gez.middleware(req, res, async () => {
                 // Executa a renderização no servidor
                 const rc = await gez.render({
@@ -342,7 +341,7 @@ export default async (rc: RenderContext) => {
 
 ## Executando o Projeto
 
-Após configurar os arquivos acima, você pode usar os seguintes comandos para executar o projeto:
+Após configurar os arquivos acima, você pode executar o projeto com os seguintes comandos:
 
 1. Modo de desenvolvimento:
 ```bash

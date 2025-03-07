@@ -1,15 +1,15 @@
 ---
-titleSuffix: Gez 框架建置清單檔案參考
-description: 詳細介紹 Gez 框架的建置清單檔案（manifest.json）結構，包括建置產物管理、匯出檔案映射和資源統計功能，幫助開發者理解和使用建置系統。
+titleSuffix: Gez 框架建構清單檔案參考
+description: 詳細介紹 Gez 框架的建構清單檔案（manifest.json）結構，包括建構產物管理、匯出檔案映射和資源統計功能，幫助開發者理解和使用建構系統。
 head:
   - - meta
     - property: keywords
-      content: Gez, ManifestJson, 建置清單, 資源管理, 建置產物, 檔案映射, API
+      content: Gez, ManifestJson, 建構清單, 資源管理, 建構產物, 檔案映射, API
 ---
 
 # ManifestJson
 
-`manifest.json` 是 Gez 框架在建置過程中產生的清單檔案，用於記錄服務建置的產物資訊。它提供了統一的介面來管理建置產物、匯出檔案和資源大小統計。
+`manifest.json` 是 Gez 框架在建構過程中產生的清單檔案，用於記錄服務建構的產物資訊。它提供了統一的介面來管理建構產物、匯出檔案和資源大小統計。
 
 ```json title="dist/client/manifest.json"
 {
@@ -71,19 +71,19 @@ interface ManifestJson {
 
 - **類型**: `string`
 
-服務名稱，來自於 GezOptions.name 設定。
+服務名稱，來自於 GezOptions.name 配置。
 
 #### exports
 
 - **類型**: `Record<string, string>`
 
-對外匯出的檔案映射關係，key 為原始檔案路徑，value 為建置後的檔案路徑。
+對外匯出的檔案映射關係，key 為原始檔案路徑，value 為建構後的檔案路徑。
 
 #### buildFiles
 
 - **類型**: `string[]`
 
-建置產物的完整檔案清單，包含所有產生的檔案路徑。
+建構產物的完整檔案清單，包含所有產生的檔案路徑。
 
 #### chunks
 
@@ -124,7 +124,7 @@ interface ManifestJsonChunks {
 
 - **類型**: `ManifestJsonChunkSizes`
 
-建置產物的大小統計資訊。
+建構產物的大小統計資訊。
 
 ### ManifestJsonChunkSizes
 

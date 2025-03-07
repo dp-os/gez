@@ -70,7 +70,7 @@ enum COMMAND {
 
 命令類型列舉：
 - `dev`: 開發環境命令，啟動開發伺服器並支援熱更新
-- `build`: 建置命令，產生生產環境的建置產物
+- `build`: 建置命令，生成生產環境的建置產物
 - `preview`: 預覽命令，啟動本地預覽伺服器
 - `start`: 啟動命令，執行生產環境伺服器
 
@@ -176,7 +176,7 @@ export default {
 建置後置處理函式。在專案建置完成後執行，可用於：
 - 執行額外的資源處理
 - 部署操作
-- 產生靜態檔案
+- 生成靜態檔案
 - 傳送建置通知
 
 ## 實例屬性
@@ -193,7 +193,7 @@ export default {
 - **類型**: `string`
 - **唯讀**: `true`
 
-基於模組名產生的合法 JavaScript 變數名。
+基於模組名生成的合法 JavaScript 變數名。
 
 ### root
 
@@ -360,9 +360,9 @@ process.once('SIGTERM', async () => {
 
 執行應用程式的建置流程，包括：
 - 編譯原始碼
-- 產生生產環境的建置產物
+- 生成生產環境的建置產物
 - 最佳化和壓縮程式碼
-- 產生資源清單
+- 生成資源清單
 
 ::: warning 注意
 在框架實例未初始化時呼叫會拋出 `NotReadyError`
@@ -372,7 +372,7 @@ process.once('SIGTERM', async () => {
 export default {
   async postBuild(gez) {
     await gez.build();
-    // 建置完成後產生靜態 HTML
+    // 建置完成後生成靜態 HTML
     const render = await gez.render({
       params: { url: '/' }
     });
@@ -419,7 +419,7 @@ export default {
 - **返回值**: `Promise<boolean>`
 
 執行建置後的處理邏輯，用於：
-- 產生靜態 HTML 檔案
+- 生成靜態 HTML 檔案
 - 處理建置產物
 - 執行部署任務
 - 傳送建置通知
@@ -427,7 +427,7 @@ export default {
 ```ts title="entry.node.ts"
 export default {
   async postBuild(gez) {
-    // 產生多個頁面的靜態 HTML
+    // 生成多個頁面的靜態 HTML
     const pages = ['/', '/about', '/404'];
 
     for (const url of pages) {
@@ -559,15 +559,15 @@ async server(gez) {
 
 - **參數**:
   - `target`: `RuntimeTarget` - 目標環境類型
-    - `'client'`: 產生瀏覽器環境的匯入映射
-    - `'server'`: 產生伺服器端環境的匯入映射
+    - `'client'`: 生成瀏覽器環境的匯入映射
+    - `'server'`: 生成伺服器端環境的匯入映射
 
 - **返回值**: `Promise<Readonly<ImportMap>>` - 唯讀的匯入映射物件
 - **異常**: 在框架實例未初始化時拋出 `NotReadyError`
 
-該方法用於產生 ES 模組匯入映射（Import Map），具有以下特點：
+該方法用於生成 ES 模組匯入映射（Import Map），具有以下特點：
 1. **模組解析**
-   - 基於建置清單產生模組映射
+   - 基於建置清單生成模組映射
    - 支援客戶端和伺服器端兩種環境
    - 自動處理模組路徑解析
 
@@ -608,7 +608,7 @@ async server(gez) {
 
 - **參數**:
   - `mode`: `ImportmapMode` - 匯入映射模式
-    - `'inline'`: 內聯模式，返回 HTML script 標籤
+    - `'inline'`: 內嵌模式，返回 HTML script 標籤
     - `'js'`: JS 檔案模式，返回帶有檔案路徑的資訊
 
 - **返回值**: 
@@ -620,9 +620,9 @@ async server(gez) {
       code: string;      // HTML script 標籤內容
     }
     ```
-  - 內聯模式:
+  - 內嵌模式:
     ```ts
     {
       src: null;
       filepath: null;
-      code
+      code:

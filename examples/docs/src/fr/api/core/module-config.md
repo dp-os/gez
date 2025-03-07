@@ -1,6 +1,6 @@
 ---
 titleSuffix: Référence de l'API de configuration des modules du framework Gez
-description: Détaille l'interface de configuration ModuleConfig du framework Gez, incluant les règles d'import/export de modules, la configuration des alias et la gestion des dépendances externes, pour aider les développeurs à mieux comprendre le système de modularité du framework.
+description: Documentation détaillée de l'interface de configuration ModuleConfig du framework Gez, incluant les règles d'import/export de modules, la configuration des alias et la gestion des dépendances externes, pour aider les développeurs à comprendre en profondeur le système de modularité du framework.
 head:
   - - meta
     - property: keywords
@@ -24,8 +24,8 @@ enum PathType {
 ```
 
 Énumération des types de chemins de modules :
-- `npm`: Représente les dépendances dans node_modules
-- `root`: Représente les fichiers à la racine du projet
+- `npm`: représente les dépendances dans node_modules
+- `root`: représente les fichiers dans le répertoire racine du projet
 
 ### ModuleConfig
 
@@ -42,23 +42,23 @@ Interface de configuration des modules, utilisée pour définir les configuratio
 
 #### exports
 
-Liste de configuration des exports, exposant des unités de code spécifiques (comme des composants, des fonctions utilitaires, etc.) dans un service au format ESM.
+Liste de configuration des exports, exposant des unités de code spécifiques (composants, fonctions utilitaires, etc.) du service au format ESM.
 
 Supporte deux types :
-- `root:*`: Exporte des fichiers sources, par exemple : 'root:src/components/button.vue'
-- `npm:*`: Exporte des dépendances tierces, par exemple : 'npm:vue'
+- `root:*`: exporte les fichiers sources, par exemple : 'root:src/components/button.vue'
+- `npm:*`: exporte des dépendances tierces, par exemple : 'npm:vue'
 
 #### imports
 
 Mappage de configuration des imports, configurant les modules distants à importer et leurs chemins locaux.
 
 La configuration varie selon le mode d'installation :
-- Installation à partir des sources (Workspace, Git) : doit pointer vers le répertoire dist
-- Installation via un package (Link, serveur statique, miroir privé, File) : pointe directement vers le répertoire du package
+- Installation depuis les sources (Workspace, Git) : doit pointer vers le répertoire dist
+- Installation depuis un package (Link, serveur statique, miroir privé, File) : pointe directement vers le répertoire du package
 
 #### externals
 
-Mappage des dépendances externes, configurant les dépendances externes à utiliser, généralement des dépendances dans des modules distants.
+Mappage des dépendances externes, configurant les dépendances externes à utiliser, généralement des dépendances provenant de modules distants.
 
 **Exemple** :
 ```ts title="entry.node.ts"
@@ -76,9 +76,9 @@ export default {
 
     // Configuration des imports
     imports: {
-      // Mode d'installation à partir des sources : doit pointer vers le répertoire dist
+      // Installation depuis les sources : doit pointer vers le répertoire dist
       'ssr-remote': 'root:./node_modules/ssr-remote/dist',
-      // Mode d'installation via un package : pointe directement vers le répertoire du package
+      // Installation depuis un package : pointe directement vers le répertoire du package
       'other-remote': 'root:./node_modules/other-remote'
     },
 
@@ -114,7 +114,7 @@ interface ParsedModuleConfig {
 }
 ```
 
-Configuration des modules parsée, convertissant la configuration originale des modules en un format interne standardisé :
+Configuration des modules après analyse, convertissant la configuration originale des modules en un format interne standardisé :
 
 #### name
 Nom du service actuel
@@ -126,20 +126,21 @@ Chemin du répertoire racine du service actuel
 
 #### exports
 Liste de configuration des exports
-- `name`: Chemin d'export original, par exemple : 'npm:vue' ou 'root:src/components'
-- `type`: Type de chemin (npm ou root)
-- `importName`: Nom d'import, format : '${serviceName}/${type}/${path}'
-- `exportName`: Chemin d'export, relatif au répertoire racine du service
-- `exportPath`: Chemin réel du fichier
-- `externalName`: Nom de la dépendance externe, utilisé comme identifiant lors de l'import de ce module par d'autres services
+- `name`: chemin d'export original, par exemple : 'npm:vue' ou 'root:src/components'
+- `type`: type de chemin (npm ou root)
+- `importName`: nom d'import, format : '${serviceName}/${type}/${path}'
+- `exportName`: chemin d'export, relatif au répertoire racine du service
+- `exportPath`: chemin réel du fichier
+- `externalName`: nom de la dépendance externe, utilisé comme identifiant lors de l'import de ce module par d'autres services
 
 #### imports
 Liste de configuration des imports
-- `name`: Nom du service externe
-- `localPath`: Chemin de stockage local, utilisé pour stocker les artefacts de construction des modules externes
+- `name`: nom du service externe
+- `localPath`: chemin de stockage local, utilisé pour stocker les artefacts de construction des modules externes
 
 #### externals
 Mappage des dépendances externes
 - Mappe les chemins d'import des modules vers leurs emplacements réels
-- `match`: Expression régulière utilisée pour correspondre aux déclarations d'import
-- `import`: Chemin réel du module
+- `match`: expression régulière utilisée pour correspondre aux instructions d'import
+- `import`: chemin réel du module
+```

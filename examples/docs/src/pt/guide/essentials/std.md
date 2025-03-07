@@ -4,7 +4,7 @@ description: Detalha a estrutura padrão de projeto do framework Gez, especifica
 head:
   - - meta
     - property: keywords
-      content: Gez, estrutura de projeto, arquivo de entrada, especificações de configuração, framework SSR, TypeScript, padrões de projeto, padrões de desenvolvimento
+      content: Gez, estrutura de projeto, arquivo de entrada, padrões de configuração, framework SSR, TypeScript, padrões de projeto, padrões de desenvolvimento
 ---
 
 # Padrões Padrão
@@ -13,7 +13,7 @@ Gez é um framework SSR moderno que adota uma estrutura de projeto padronizada e
 
 ## Padrões de Estrutura de Projeto
 
-### Estrutura de Diretório Padrão
+### Estrutura de Diretórios Padrão
 
 ```txt
 root
@@ -24,7 +24,7 @@ root
 │  ├─ node               # Saída da compilação do programa do servidor Node
 │  ├─ client             # Saída da compilação do cliente
 │  │  ├─ versions        # Diretório de armazenamento de versões
-│  │  │  └─ latest.tgz   # Arquivo do diretório dist, fornecido para distribuição de pacotes
+│  │  │  └─ latest.tgz   # Arquiva o diretório dist, fornecendo distribuição de pacotes
 │  │  └─ manifest.json   # Saída do manifesto de compilação, usado para gerar importmap
 │  └─ src                # Tipos de arquivos gerados pelo tsc
 ├─ src
@@ -42,7 +42,7 @@ root
 
 :::
 
-## Especificações de Arquivos de Entrada
+## Padrões de Arquivos de Entrada
 
 ### entry.client.ts
 O arquivo de entrada do cliente é responsável por:
@@ -53,11 +53,11 @@ O arquivo de entrada do cliente é responsável por:
 
 ### entry.server.ts
 O arquivo de entrada do servidor é responsável por:
-- **Renderização do servidor**: Executar o processo de renderização SSR
+- **Renderização do lado do servidor**: Executar o processo de renderização SSR
 - **Geração de HTML**: Construir a estrutura inicial da página
 - **Pré-busca de dados**: Lidar com a obtenção de dados no servidor
 - **Injeção de estado**: Passar o estado do servidor para o cliente
-- **Otimização de SEO**: Garantir a otimização do mecanismo de busca da página
+- **Otimização de SEO**: Garantir a otimização para motores de busca
 
 ### entry.node.ts
 O arquivo de entrada do servidor Node.js é responsável por:
@@ -65,9 +65,9 @@ O arquivo de entrada do servidor Node.js é responsável por:
 - **Processamento de rotas**: Gerenciar regras de roteamento do servidor
 - **Integração de middleware**: Configurar middleware do servidor
 - **Gerenciamento de ambiente**: Lidar com variáveis de ambiente e configurações
-- **Resposta a solicitações**: Processar solicitações e respostas HTTP
+- **Resposta a requisições**: Processar requisições e respostas HTTP
 
-## Especificações de Arquivos de Configuração
+## Padrões de Arquivos de Configuração
 
 ### package.json
 

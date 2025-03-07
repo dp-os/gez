@@ -4,7 +4,7 @@ description: Documentation détaillée de l'API des classes principales du frame
 head:
   - - meta
     - property: keywords
-      content: Gez, API, Gestion du cycle de vie, Ressources statiques, Rendu côté serveur, Rspack, Framework d'application Web
+      content: Gez, API, gestion du cycle de vie, ressources statiques, rendu côté serveur, Rspack, framework d'application Web
 ---
 
 # Gez
@@ -23,8 +23,8 @@ type RuntimeTarget = 'client' | 'server'
 ```
 
 Types d'environnements d'exécution des applications :
-- `client` : Fonctionne dans l'environnement du navigateur, supporte les opérations DOM et les API du navigateur
-- `server` : Fonctionne dans l'environnement Node.js, supporte le système de fichiers et les fonctionnalités côté serveur
+- `client` : Fonctionne dans un environnement de navigateur, supporte les opérations DOM et les API du navigateur
+- `server` : Fonctionne dans un environnement Node.js, supporte le système de fichiers et les fonctionnalités côté serveur
 
 ### ImportMap
 
@@ -70,7 +70,7 @@ enum COMMAND {
 
 Enumération des types de commandes :
 - `dev` : Commande pour l'environnement de développement, démarre le serveur de développement avec support du rechargement à chaud
-- `build` : Commande de construction, génère les artefacts de construction pour l'environnement de production
+- `build` : Commande de construction, génère les artefacts de production
 - `preview` : Commande de prévisualisation, démarre un serveur de prévisualisation local
 - `start` : Commande de démarrage, exécute le serveur de production
 
@@ -93,15 +93,15 @@ interface GezOptions {
 
 #### root
 
-- **Type**: `string`
-- **Valeur par défaut**: `process.cwd()`
+- **Type** : `string`
+- **Valeur par défaut** : `process.cwd()`
 
 Chemin du répertoire racine du projet. Peut être un chemin absolu ou relatif, les chemins relatifs sont résolus par rapport au répertoire de travail actuel.
 
 #### isProd
 
-- **Type**: `boolean`
-- **Valeur par défaut**: `process.env.NODE_ENV === 'production'`
+- **Type** : `boolean`
+- **Valeur par défaut** : `process.env.NODE_ENV === 'production'`
 
 Identifiant d'environnement.
 - `true` : Environnement de production
@@ -109,26 +109,26 @@ Identifiant d'environnement.
 
 #### basePathPlaceholder
 
-- **Type**: `string | false`
-- **Valeur par défaut**: `'[[[___GEZ_DYNAMIC_BASE___]]]'`
+- **Type** : `string | false`
+- **Valeur par défaut** : `'[[[___GEZ_DYNAMIC_BASE___]]]'`
 
-Configuration de l'espace réservé pour le chemin de base. Utilisé pour remplacer dynamiquement le chemin de base des ressources au moment de l'exécution. Définir à `false` désactive cette fonctionnalité.
+Configuration de l'espace réservé pour le chemin de base. Utilisé pour remplacer dynamiquement le chemin de base des ressources à l'exécution. Définir à `false` désactive cette fonctionnalité.
 
 #### modules
 
-- **Type**: `ModuleConfig`
+- **Type** : `ModuleConfig`
 
 Options de configuration des modules. Utilisé pour configurer les règles de résolution des modules du projet, incluant les alias de modules, les dépendances externes, etc.
 
 #### packs
 
-- **Type**: `PackConfig`
+- **Type** : `PackConfig`
 
-Options de configuration de l'empaquetage. Utilisé pour empaqueter les artefacts de construction en format standard npm .tgz.
+Options de configuration de l'empaquetage. Utilisé pour empaqueter les artefacts de construction en paquets logiciels .tgz standard npm.
 
 #### devApp
 
-- **Type**: `(gez: Gez) => Promise<App>`
+- **Type** : `(gez: Gez) => Promise<App>`
 
 Fonction de création d'application pour l'environnement de développement. Utilisé uniquement dans l'environnement de développement pour créer une instance d'application pour le serveur de développement.
 
@@ -148,9 +148,9 @@ export default {
 
 #### server
 
-- **Type**: `(gez: Gez) => Promise<void>`
+- **Type** : `(gez: Gez) => Promise<void>`
 
-Fonction de configuration du démarrage du serveur. Utilisé pour configurer et démarrer le serveur HTTP, utilisable à la fois dans les environnements de développement et de production.
+Fonction de configuration et de démarrage du serveur HTTP. Utilisé pour configurer et démarrer le serveur HTTP, utilisable à la fois dans les environnements de développement et de production.
 
 ```ts title="entry.node.ts"
 export default {
@@ -171,7 +171,7 @@ export default {
 
 #### postBuild
 
-- **Type**: `(gez: Gez) => Promise<void>`
+- **Type** : `(gez: Gez) => Promise<void>`
 
 Fonction de post-traitement après la construction. Exécutée après la construction du projet, peut être utilisée pour :
 - Exécuter un traitement supplémentaire des ressources
@@ -183,54 +183,54 @@ Fonction de post-traitement après la construction. Exécutée après la constru
 
 ### name
 
-- **Type**: `string`
-- **Lecture seule**: `true`
+- **Type** : `string`
+- **Lecture seule** : `true`
 
-Nom du module actuel, dérivé de la configuration du module.
+Nom du module actuel, provenant de la configuration du module.
 
 ### varName
 
-- **Type**: `string`
-- **Lecture seule**: `true`
+- **Type** : `string`
+- **Lecture seule** : `true`
 
 Nom de variable JavaScript valide généré à partir du nom du module.
 
 ### root
 
-- **Type**: `string`
-- **Lecture seule**: `true`
+- **Type** : `string`
+- **Lecture seule** : `true`
 
 Chemin absolu du répertoire racine du projet. Si le `root` configuré est un chemin relatif, il est résolu par rapport au répertoire de travail actuel.
 
 ### isProd
 
-- **Type**: `boolean`
-- **Lecture seule**: `true`
+- **Type** : `boolean`
+- **Lecture seule** : `true`
 
-Détermine si l'environnement actuel est de production. Priorise l'option de configuration `isProd`, sinon détermine en fonction de `process.env.NODE_ENV`.
+Détermine si l'environnement actuel est un environnement de production. Utilise en priorité l'option de configuration `isProd`, sinon détermine en fonction de `process.env.NODE_ENV`.
 
 ### basePath
 
-- **Type**: `string`
-- **Lecture seule**: `true`
-- **Lève**: `NotReadyError` - Si le framework n'est pas initialisé
+- **Type** : `string`
+- **Lecture seule** : `true`
+- **Lève** : `NotReadyError` - Si le framework n'est pas initialisé
 
 Obtient le chemin de base du module commençant et se terminant par une barre oblique. Le format de retour est `/${name}/`, où name provient de la configuration du module.
 
 ### basePathPlaceholder
 
-- **Type**: `string`
-- **Lecture seule**: `true`
+- **Type** : `string`
+- **Lecture seule** : `true`
 
-Obtient l'espace réservé pour le remplacement dynamique du chemin de base au moment de l'exécution. Peut être désactivé via la configuration.
+Obtient l'espace réservé pour le remplacement dynamique du chemin de base à l'exécution. Peut être désactivé via la configuration.
 
 ### middleware
 
-- **Type**: `Middleware`
-- **Lecture seule**: `true`
+- **Type** : `Middleware`
+- **Lecture seule** : `true`
 
 Obtient le middleware de traitement des ressources statiques. Fournit des implémentations différentes selon l'environnement :
-- Environnement de développement : Supporte la compilation en temps réel du code source et le rechargement à chaud
+- Environnement de développement : Supporte la compilation en temps réel et le rechargement à chaud
 - Environnement de production : Supporte la mise en cache à long terme des ressources statiques
 
 ```ts
@@ -244,8 +244,8 @@ const server = http.createServer((req, res) => {
 
 ### render
 
-- **Type**: `(options?: RenderContextOptions) => Promise<RenderContext>`
-- **Lecture seule**: `true`
+- **Type** : `(options?: RenderContextOptions) => Promise<RenderContext>`
+- **Lecture seule** : `true`
 
 Obtient la fonction de rendu côté serveur. Fournit des implémentations différentes selon l'environnement :
 - Environnement de développement : Supporte le rechargement à chaud et la prévisualisation en temps réel
@@ -271,34 +271,34 @@ const rc = await gez.render({
 
 ### COMMAND
 
-- **Type**: `typeof COMMAND`
-- **Lecture seule**: `true`
+- **Type** : `typeof COMMAND`
+- **Lecture seule** : `true`
 
 Obtient la définition du type d'énumération des commandes.
 
 ### moduleConfig
 
-- **Type**: `ParsedModuleConfig`
-- **Lecture seule**: `true`
-- **Lève**: `NotReadyError` - Si le framework n'est pas initialisé
+- **Type** : `ParsedModuleConfig`
+- **Lecture seule** : `true`
+- **Lève** : `NotReadyError` - Si le framework n'est pas initialisé
 
-Obtient les informations de configuration complètes du module actuel, incluant les règles de résolution des modules, la configuration des alias, etc.
+Obtient les informations de configuration complètes du module actuel, incluant les règles de résolution des modules, les configurations d'alias, etc.
 
 ### packConfig
 
-- **Type**: `ParsedPackConfig`
-- **Lecture seule**: `true`
-- **Lève**: `NotReadyError` - Si le framework n'est pas initialisé
+- **Type** : `ParsedPackConfig`
+- **Lecture seule** : `true`
+- **Lève** : `NotReadyError` - Si le framework n'est pas initialisé
 
-Obtient la configuration relative à l'empaquetage du module actuel, incluant le chemin de sortie, le traitement de package.json, etc.
+Obtient les configurations relatives à l'empaquetage du module actuel, incluant le chemin de sortie, le traitement de package.json, etc.
 
 ## Méthodes d'instance
 
 ### constructor()
 
-- **Paramètres**: 
+- **Paramètres** : 
   - `options?: GezOptions` - Options de configuration du framework
-- **Retourne**: `Gez`
+- **Retour** : `Gez`
 
 Crée une instance du framework Gez.
 
@@ -311,11 +311,11 @@ const gez = new Gez({
 
 ### init()
 
-- **Paramètres**: `command: COMMAND`
-- **Retourne**: `Promise<boolean>`
-- **Lève**:
-  - `Error`: En cas de réinitialisation
-  - `NotReadyError`: Lors de l'accès à une instance non initialisée
+- **Paramètres** : `command: COMMAND`
+- **Retour** : `Promise<boolean>`
+- **Lève** :
+  - `Error` : En cas de réinitialisation
+  - `NotReadyError` : Lors de l'accès à une instance non initialisée
 
 Initialise l'instance du framework Gez. Exécute les processus d'initialisation principaux suivants :
 
@@ -340,7 +340,7 @@ await gez.init(COMMAND.dev);
 
 ### destroy()
 
-- **Retourne**: `Promise<boolean>`
+- **Retour** : `Promise<boolean>`
 
 Détruit l'instance du framework Gez, exécute le nettoyage des ressources et la fermeture des connexions. Principalement utilisé pour :
 - Fermer le serveur de développement
@@ -356,11 +356,11 @@ process.once('SIGTERM', async () => {
 
 ### build()
 
-- **Retourne**: `Promise<boolean>`
+- **Retour** : `Promise<boolean>`
 
 Exécute le processus de construction de l'application, incluant :
 - Compilation du code source
-- Génération des artefacts de construction pour l'environnement de production
+- Génération des artefacts de production
 - Optimisation et compression du code
 - Génération du manifeste des ressources
 
@@ -386,11 +386,11 @@ export default {
 
 ### server()
 
-- **Retourne**: `Promise<void>`
-- **Lève**: `NotReadyError` - Si le framework n'est pas initialisé
+- **Retour** : `Promise<void>`
+- **Lève** : `NotReadyError` - Si le framework n'est pas initialisé
 
 Démarre le serveur HTTP et configure l'instance du serveur. Appelé dans les cycles de vie suivants :
-- Environnement de développement (dev) : Démarre le serveur de développement avec support du rechargement à chaud
+- Environnement de développement (dev) : Démarre le serveur de développement avec rechargement à chaud
 - Environnement de production (start) : Démarre le serveur de production avec des performances de niveau production
 
 ```ts title="entry.node.ts"
@@ -416,7 +416,7 @@ export default {
 
 ### postBuild()
 
-- **Retourne**: `Promise<boolean>`
+- **Retour** : `Promise<boolean>`
 
 Exécute la logique de post-traitement après la construction, utilisée pour :
 - Générer des fichiers HTML statiques
@@ -446,14 +446,14 @@ export default {
 
 ### resolvePath
 
-Résout le chemin du projet, convertit un chemin relatif en chemin absolu.
+Résout les chemins du projet, convertit les chemins relatifs en chemins absolus.
 
-- **Paramètres**:
+- **Paramètres** :
   - `projectPath: ProjectPath` - Type de chemin du projet
   - `...args: string[]` - Segments de chemin
-- **Retourne**: `string` - Chemin absolu résolu
+- **Retour** : `string` - Chemin absolu résolu
 
-- **Exemple**:
+- **Exemple** :
 ```ts
 // Résout le chemin des ressources statiques
 const htmlPath = gez.resolvePath('dist/client', 'index.html');
@@ -463,12 +463,12 @@ const htmlPath = gez.resolvePath('dist/client', 'index.html');
 
 Écrit de manière synchrone le contenu d'un fichier.
 
-- **Paramètres**:
-  - `filepath`: `string` - Chemin absolu du fichier
-  - `data`: `any` - Données à écrire, peuvent être une chaîne, un Buffer ou un objet
-- **Retourne**: `boolean` - Indique si l'écriture a réussi
+- **Paramètres** :
+  - `filepath` : `string` - Chemin absolu du fichier
+  - `data` : `any` - Données à écrire, peut être une chaîne, un Buffer ou un objet
+- **Retour** : `boolean` - Indique si l'écriture a réussi
 
-- **Exemple**:
+- **Exemple** :
 ```ts title="src/entry.node.ts"
 
 async postBuild(gez) {
@@ -481,13 +481,13 @@ async postBuild(gez) {
 
 Lit et analyse de manière synchrone un fichier JSON.
 
-- **Paramètres**:
-  - `filename`: `string` - Chemin absolu du fichier JSON
+- **Paramètres** :
+  - `filename` : `string` - Chemin absolu du fichier JSON
 
-- **Retourne**: `any` - Objet JSON analysé
-- **Lève**: Une exception si le fichier n'existe pas ou si le format JSON est incorrect
+- **Retour** : `any` - Objet JSON analysé
+- **Exception** : Lève une exception si le fichier n'existe pas ou si le format JSON est incorrect
 
-- **Exemple**:
+- **Exemple** :
 ```ts title="src/entry.node.ts"
 async server(gez) {
   const manifest = gez.readJsonSync(gez.resolvePath('dist/client', 'manifest.json'));
@@ -499,13 +499,13 @@ async server(gez) {
 
 Lit et analyse de manière asynchrone un fichier JSON.
 
-- **Paramètres**:
-  - `filename`: `string` - Chemin absolu du fichier JSON
+- **Paramètres** :
+  - `filename` : `string` - Chemin absolu du fichier JSON
 
-- **Retourne**: `Promise<any>` - Objet JSON analysé
-- **Lève**: Une exception si le fichier n'existe pas ou si le format JSON est incorrect
+- **Retour** : `Promise<any>` - Objet JSON analysé
+- **Exception** : Lève une exception si le fichier n'existe pas ou si le format JSON est incorrect
 
-- **Exemple**:
+- **Exemple** :
 ```ts title="src/entry.node.ts"
 async server(gez) {
   const manifest = await gez.readJson(gez.resolvePath('dist/client', 'manifest.json'));
@@ -517,13 +517,13 @@ async server(gez) {
 
 Obtient la liste des manifestes de construction.
 
-- **Paramètres**:
-  - `target`: `RuntimeTarget` - Type d'environnement cible
-    - `'client'`: Environnement client
-    - `'server'`: Environnement serveur
+- **Paramètres** :
+  - `target` : `RuntimeTarget` - Type d'environnement cible
+    - `'client'` : Environnement client
+    - `'server'` : Environnement serveur
 
-- **Retourne**: `Promise<readonly ManifestJson[]>` - Liste en lecture seule des manifestes de construction
-- **Lève**: `NotReadyError` si l'instance du framework n'est pas initialisée
+- **Retour** : `Promise<readonly ManifestJson[]>` - Liste en lecture seule des manifestes de construction
+- **Exception** : Lève `NotReadyError` si l'instance du framework n'est pas initialisée
 
 Cette méthode est utilisée pour obtenir la liste des manifestes de construction pour l'environnement cible spécifié, incluant les fonctionnalités suivantes :
 1. **Gestion du cache**
@@ -532,9 +532,4 @@ Cette méthode est utilisée pour obtenir la liste des manifestes de constructio
 
 2. **Adaptation à l'environnement**
    - Supporte les environnements client et serveur
-   - Retourne les informations de manifeste correspondantes en fonction de l'environnement cible
-
-3. **Mappage des modules**
-   - Inclut les informations d'exportation des modules
-   - Enregistre les relations de dépendance des ressources
-
+   - Retourne les informations de manifeste correspondantes en fonction de l'environnement c

@@ -11,7 +11,7 @@ head:
 
 ## Introdução
 
-Gez é um framework de aplicação web de alto desempenho baseado no Rspack, que oferece gerenciamento completo do ciclo de vida do aplicativo, manipulação de recursos estáticos e capacidade de renderização no lado do servidor.
+Gez é um framework de aplicação Web de alto desempenho baseado no Rspack, que oferece gerenciamento completo do ciclo de vida do aplicativo, manipulação de recursos estáticos e capacidade de renderização no lado do servidor.
 
 ## Definições de Tipos
 
@@ -69,7 +69,7 @@ enum COMMAND {
 ```
 
 Enumeração de tipos de comandos:
-- `dev`: Comando de ambiente de desenvolvimento, inicia o servidor de desenvolvimento e suporta atualização em tempo real
+- `dev`: Comando de ambiente de desenvolvimento, inicia o servidor de desenvolvimento com suporte a atualização em tempo real
 - `build`: Comando de construção, gera os artefatos de construção para o ambiente de produção
 - `preview`: Comando de pré-visualização, inicia o servidor de pré-visualização local
 - `start`: Comando de inicialização, executa o servidor de produção
@@ -124,7 +124,7 @@ Opções de configuração de módulos. Usado para configurar as regras de resol
 
 - **Tipo**: `PackConfig`
 
-Opções de configuração de empacotamento. Usado para empacotar os artefatos de construção em pacotes de software no formato .tgz do npm.
+Opções de configuração de empacotamento. Usado para empacotar os artefatos de construção em pacotes npm no formato .tgz.
 
 #### devApp
 
@@ -207,22 +207,22 @@ Caminho absoluto do diretório raiz do projeto. Se o `root` configurado for um c
 - **Tipo**: `boolean`
 - **Somente Leitura**: `true`
 
-Determina se o ambiente atual é de produção. Prioriza o `isProd` da configuração, se não configurado, é determinado com base no `process.env.NODE_ENV`.
+Determina se o ambiente atual é de produção. Prioriza o `isProd` da configuração, se não configurado, usa `process.env.NODE_ENV` para determinar.
 
 ### basePath
 
 - **Tipo**: `string`
 - **Somente Leitura**: `true`
-- **Lançamento**: `NotReadyError` - Quando o framework não está inicializado
+- **Lança**: `NotReadyError` - Quando o framework não está inicializado
 
-Obtém o caminho base do módulo que começa e termina com uma barra. Retorna o formato `/${name}/`, onde o nome é derivado da configuração do módulo.
+Obtém o caminho base do módulo que começa e termina com uma barra. Retorna o formato `/${name}/`, onde name vem da configuração do módulo.
 
 ### basePathPlaceholder
 
 - **Tipo**: `string`
 - **Somente Leitura**: `true`
 
-Obtém o espaço reservado para substituição dinâmica do caminho base em tempo de execução. Pode ser desativado através da configuração.
+Obtém o espaço reservado para substituição dinâmica do caminho base em tempo de execução. Pode ser desativado pela configuração.
 
 ### middleware
 
@@ -280,7 +280,7 @@ Obtém a definição do tipo de enumeração de comandos.
 
 - **Tipo**: `ParsedModuleConfig`
 - **Somente Leitura**: `true`
-- **Lançamento**: `NotReadyError` - Quando o framework não está inicializado
+- **Lança**: `NotReadyError` - Quando o framework não está inicializado
 
 Obtém as informações completas de configuração do módulo atual, incluindo regras de resolução de módulos, configuração de aliases, etc.
 
@@ -288,7 +288,7 @@ Obtém as informações completas de configuração do módulo atual, incluindo 
 
 - **Tipo**: `ParsedPackConfig`
 - **Somente Leitura**: `true`
-- **Lançamento**: `NotReadyError` - Quando o framework não está inicializado
+- **Lança**: `NotReadyError` - Quando o framework não está inicializado
 
 Obtém as configurações relacionadas ao empacotamento do módulo atual, incluindo caminho de saída, processamento de package.json, etc.
 
@@ -313,19 +313,19 @@ const gez = new Gez({
 
 - **Parâmetros**: `command: COMMAND`
 - **Retorno**: `Promise<boolean>`
-- **Lançamentos**:
+- **Lança**:
   - `Error`: Quando há inicialização repetida
-  - `NotReadyError`: Ao acessar uma instância não inicializada
+  - `NotReadyError`: Quando acessado antes da inicialização
 
 Inicializa a instância do framework Gez. Executa os seguintes processos principais de inicialização:
 
-1. Analisa a configuração do projeto (package.json, configuração de módulos, configuração de empacotamento, etc.)
+1. Resolve as configurações do projeto (package.json, configuração de módulos, configuração de empacotamento, etc.)
 2. Cria a instância do aplicativo (ambiente de desenvolvimento ou produção)
 3. Executa os métodos do ciclo de vida correspondentes com base no comando
 
 ::: warning Atenção
-- Inicialização repetida lançará um erro
-- Acesso a instâncias não inicializadas lançará `NotReadyError`
+- Lança um erro em caso de inicialização repetida
+- Lança `NotReadyError` ao acessar uma instância não inicializada
 
 :::
 
@@ -342,7 +342,7 @@ await gez.init(COMMAND.dev);
 
 - **Retorno**: `Promise<boolean>`
 
-Destrói a instância do framework Gez, executa operações de limpeza de recursos e fechamento de conexões. Principalmente usado para:
+Destrói a instância do framework Gez, executa a limpeza de recursos e o fechamento de conexões. Principalmente usado para:
 - Fechar o servidor de desenvolvimento
 - Limpar arquivos temporários e cache
 - Liberar recursos do sistema
@@ -360,12 +360,12 @@ process.once('SIGTERM', async () => {
 
 Executa o processo de construção do aplicativo, incluindo:
 - Compilar o código-fonte
-- Gerar artefatos de construção para o ambiente de produção
-- Otimizar e compactar o código
-- Gerar lista de recursos
+- Gerar os artefatos de construção para o ambiente de produção
+- Otimizar e comprimir o código
+- Gerar o manifesto de recursos
 
 ::: warning Atenção
-Chamadas em instâncias do framework não inicializadas lançarão `NotReadyError`
+Lança `NotReadyError` se chamado antes da inicialização do framework
 :::
 
 ```ts title="entry.node.ts"
@@ -387,7 +387,7 @@ export default {
 ### server()
 
 - **Retorno**: `Promise<void>`
-- **Lançamento**: `NotReadyError` - Quando o framework não está inicializado
+- **Lança**: `NotReadyError` - Quando o framework não está inicializado
 
 Inicia o servidor HTTP e configura a instância do servidor. Chamado nos seguintes ciclos de vida:
 - Ambiente de desenvolvimento (dev): Inicia o servidor de desenvolvimento, fornece atualização em tempo real
@@ -420,7 +420,7 @@ export default {
 
 Executa a lógica de pós-processamento de construção, usada para:
 - Gerar arquivos HTML estáticos
-- Processar artefatos de construção
+- Processar os artefatos de construção
 - Executar tarefas de implantação
 - Enviar notificações de construção
 
@@ -450,7 +450,7 @@ Resolve o caminho do projeto, convertendo caminhos relativos em absolutos.
 
 - **Parâmetros**:
   - `projectPath: ProjectPath` - Tipo de caminho do projeto
-  - `...args: string[]` - Segmentos de caminho
+  - `...args: string[]` - Segmentos do caminho
 - **Retorno**: `string` - Caminho absoluto resolvido
 
 - **Exemplo**:
@@ -466,7 +466,7 @@ Escreve o conteúdo do arquivo de forma síncrona.
 - **Parâmetros**:
   - `filepath`: `string` - Caminho absoluto do arquivo
   - `data`: `any` - Dados a serem escritos, podem ser string, Buffer ou objeto
-- **Retorno**: `boolean` - Se a escrita foi bem-sucedida
+- **Retorno**: `boolean` - Indica se a escrita foi bem-sucedida
 
 - **Exemplo**:
 ```ts title="src/entry.node.ts"
@@ -485,7 +485,7 @@ Lê e analisa um arquivo JSON de forma síncrona.
   - `filename`: `string` - Caminho absoluto do arquivo JSON
 
 - **Retorno**: `any` - Objeto JSON analisado
-- **Exceções**: Lança exceção quando o arquivo não existe ou o formato JSON é inválido
+- **Exceção**: Lança uma exceção se o arquivo não existir ou se o formato JSON for inválido
 
 - **Exemplo**:
 ```ts title="src/entry.node.ts"
@@ -503,7 +503,7 @@ Lê e analisa um arquivo JSON de forma assíncrona.
   - `filename`: `string` - Caminho absoluto do arquivo JSON
 
 - **Retorno**: `Promise<any>` - Objeto JSON analisado
-- **Exceções**: Lança exceção quando o arquivo não existe ou o formato JSON é inválido
+- **Exceção**: Lança uma exceção se o arquivo não existir ou se o formato JSON for inválido
 
 - **Exemplo**:
 ```ts title="src/entry.node.ts"
@@ -523,7 +523,7 @@ Obtém a lista de manifestos de construção.
     - `'server'`: Ambiente do servidor
 
 - **Retorno**: `Promise<readonly ManifestJson[]>` - Lista de manifestos de construção somente leitura
-- **Exceções**: Lança `NotReadyError` quando a instância do framework não está inicializada
+- **Exceção**: Lança `NotReadyError` se o framework não estiver inicializado
 
 Este método é usado para obter a lista de manifestos de construção para o ambiente de destino especificado, incluindo as seguintes funcionalidades:
 1. **Gerenciamento de Cache**
@@ -531,8 +531,9 @@ Este método é usado para obter a lista de manifestos de construção para o am
    - Retorna lista de manifestos imutável
 
 2. **Adaptação ao Ambiente**
-   - Suporta ambientes de cliente e servidor
-   - Retorna informações de manifesto correspondentes com base no ambiente de destino
+   - Suporta ambientes do cliente e do servidor
+   - Retorna informações de manifesto correspondentes ao ambiente de destino
 
 3. **Mapeamento de Módulos**
    - Inclui informações de exportação de módulos
+   - Registra dependências de recursos

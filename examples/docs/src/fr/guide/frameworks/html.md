@@ -1,6 +1,6 @@
 ---
 titleSuffix: Exemple d'application HTML SSR avec le framework Gez
-description: Créez une application HTML SSR basée sur Gez à partir de zéro. Ce tutoriel montre les bases du framework à travers un exemple complet, incluant l'initialisation du projet, la configuration HTML et la mise en place des fichiers d'entrée.
+description: Créez une application HTML SSR basée sur Gez à partir de zéro. Ce tutoriel montre les bases du framework à travers un exemple complet, incluant l'initialisation du projet, la configuration HTML et la configuration des fichiers d'entrée.
 head:
   - - meta
     - property: keywords
@@ -9,7 +9,7 @@ head:
 
 # HTML
 
-Ce tutoriel vous guidera dans la création d'une application HTML SSR basée sur Gez à partir de zéro. Nous allons utiliser un exemple complet pour montrer comment créer une application avec rendu côté serveur (SSR) en utilisant le framework Gez.
+Ce tutoriel vous guidera dans la création d'une application HTML SSR basée sur Gez à partir de zéro. Nous allons utiliser un exemple complet pour montrer comment utiliser le framework Gez pour créer une application avec rendu côté serveur.
 
 ## Structure du projet
 
@@ -20,7 +20,7 @@ Commençons par comprendre la structure de base du projet :
 ├── package.json         # Fichier de configuration du projet, définissant les dépendances et les scripts
 ├── tsconfig.json        # Fichier de configuration TypeScript, définissant les options de compilation
 └── src                  # Répertoire des sources
-    ├── app.ts           # Composant principal de l'application, définissant la structure et la logique d'interaction de la page
+    ├── app.ts           # Composant principal de l'application, définissant la structure de la page et la logique d'interaction
     ├── create-app.ts    # Factory de création d'instance d'application, responsable de l'initialisation de l'application
     ├── entry.client.ts  # Fichier d'entrée côté client, gérant le rendu côté navigateur
     ├── entry.node.ts    # Fichier d'entrée du serveur Node.js, responsable de la configuration de l'environnement de développement et du démarrage du serveur
@@ -67,7 +67,7 @@ yarn install
 npm install
 ```
 
-Cela installera tous les packages nécessaires, y compris TypeScript et les dépendances liées au SSR.
+Cela installera tous les paquets nécessaires, y compris TypeScript et les dépendances liées au SSR.
 
 ### tsconfig.json
 
@@ -111,7 +111,7 @@ Créez le composant principal de l'application `src/app.ts`, implémentant la st
 ```ts title="src/app.ts"
 /**
  * @file Composant d'exemple
- * @description Affiche un titre de page avec une mise à jour automatique de l'heure, démontrant les fonctionnalités de base du framework Gez
+ * @description Affiche un titre de page avec une mise à jour automatique de l'heure, pour démontrer les fonctionnalités de base du framework Gez
  */
 
 export default class App {
@@ -134,7 +134,7 @@ export default class App {
      * @returns {string} Retourne la structure HTML de la page
      */
     public render(): string {
-        // Assurez-vous de collecter correctement les métadonnées d'importation en environnement serveur
+        // Assurez-vous de collecter correctement les métadonnées d'importation dans un environnement côté serveur
         if (this.ssrContext) {
             this.ssrContext.importMetaSet.add(import.meta);
         }
@@ -158,7 +158,7 @@ export default class App {
             throw new Error('Élément d\'affichage de l\'heure introuvable');
         }
 
-        // Définit un timer pour mettre à jour l'heure chaque seconde
+        // Définit un minuteur pour mettre à jour l'heure chaque seconde
         setInterval(() => {
             this.time = new Date().toISOString();
             time.setAttribute('datetime', this.time);
@@ -194,7 +194,7 @@ Créez le fichier `src/create-app.ts`, responsable de la création de l'instance
 ```ts title="src/create-app.ts"
 /**
  * @file Création d'instance d'application
- * @description Responsable de la création et de la configuration de l'instance d'application
+ * @description Responsable de la création et de la configuration de l'instance de l'application
  */
 
 import App from './app';
@@ -240,7 +240,7 @@ import type { GezOptions } from '@gez/core';
 export default {
     /**
      * Configure le créateur d'application pour l'environnement de développement
-     * @description Crée et configure une instance d'application Rspack pour la construction et la mise à jour en temps réel en environnement de développement
+     * @description Crée et configure une instance d'application Rspack pour la construction et la mise à jour en temps réel dans l'environnement de développement
      * @param gez Instance du framework Gez, fournissant des fonctionnalités de base et des interfaces de configuration
      * @returns Retourne une instance d'application Rspack configurée, prenant en charge HMR et la prévisualisation en temps réel
      */
@@ -256,7 +256,7 @@ export default {
 
     /**
      * Configure et démarre le serveur HTTP
-     * @description Crée une instance de serveur HTTP, intègre le middleware Gez et gère les requêtes SSR
+     * @description Crée une instance de serveur HTTP, intègre le middleware Gez, et traite les requêtes SSR
      * @param gez Instance du framework Gez, fournissant des fonctionnalités de middleware et de rendu
      */
     async server(gez) {
@@ -280,8 +280,8 @@ export default {
 
 Ce fichier est le point d'entrée pour la configuration de l'environnement de développement et le démarrage du serveur, contenant deux fonctionnalités principales :
 
-1. La fonction `devApp` : responsable de la création et de la configuration de l'instance d'application Rspack pour l'environnement de développement, prenant en charge la mise à jour en temps réel et la prévisualisation.
-2. La fonction `server` : responsable de la création et de la configuration du serveur HTTP, intégrant le middleware Gez pour traiter les requêtes SSR.
+1. Fonction `devApp` : Responsable de la création et de la configuration de l'instance d'application Rspack pour l'environnement de développement, prenant en charge la mise à jour en temps réel et la prévisualisation.
+2. Fonction `server` : Responsable de la création et de la configuration du serveur HTTP, intégrant le middleware Gez pour traiter les requêtes SSR.
 
 ### entry.server.ts
 
@@ -322,7 +322,7 @@ export default async (rc: RenderContext) => {
 
     // Génère la structure HTML complète
     rc.html = `<!DOCTYPE html>
-<html lang="fr-FR">
+<html lang="fr">
 <head>
     ${rc.preload()}
     <title>Démarrage rapide avec Gez</title>
@@ -353,7 +353,7 @@ npm run dev
 npm run build
 ```
 
-3. Exécution en environnement de production :
+3. Exécution en production :
 ```bash
 npm run start
 ```

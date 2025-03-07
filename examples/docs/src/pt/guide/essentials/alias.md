@@ -1,24 +1,24 @@
 ---
 titleSuffix: Guia de Mapeamento de Caminhos de Importação de Módulos do Framework Gez
-description: Detalha o mecanismo de alias de caminhos do framework Gez, incluindo simplificação de caminhos de importação, evitar aninhamento profundo, segurança de tipos e otimização de resolução de módulos, ajudando desenvolvedores a melhorar a manutenibilidade do código.
+description: Detalha o mecanismo de alias de caminhos do framework Gez, incluindo simplificação de caminhos de importação, prevenção de aninhamento profundo, segurança de tipos e otimização de resolução de módulos, ajudando desenvolvedores a melhorar a manutenibilidade do código.
 head:
   - - meta
     - property: keywords
-      content: Gez, Alias de Caminhos, Path Alias, TypeScript, Importação de Módulos, Mapeamento de Caminhos, Manutenibilidade de Código
+      content: Gez, Alias de Caminho, Path Alias, TypeScript, Importação de Módulos, Mapeamento de Caminhos, Manutenibilidade de Código
 ---
 
-# Alias de Caminhos
+# Alias de Caminho
 
-O alias de caminhos (Path Alias) é um mecanismo de mapeamento de caminhos de importação de módulos que permite aos desenvolvedores usar identificadores curtos e semânticos no lugar de caminhos completos de módulos. No Gez, o mecanismo de alias de caminhos oferece as seguintes vantagens:
+O alias de caminho (Path Alias) é um mecanismo de mapeamento de caminhos de importação de módulos que permite aos desenvolvedores usar identificadores curtos e semânticos no lugar de caminhos completos de módulos. No Gez, o mecanismo de alias de caminho oferece as seguintes vantagens:
 
 - **Simplificação de caminhos de importação**: Uso de aliases semânticos no lugar de caminhos relativos longos, melhorando a legibilidade do código
-- **Evitar aninhamento profundo**: Elimina dificuldades de manutenção causadas por referências de diretórios com múltiplos níveis (como `../../../../`)
+- **Prevenção de aninhamento profundo**: Elimina dificuldades de manutenção causadas por referências de diretórios com múltiplos níveis (como `../../../../`)
 - **Segurança de tipos**: Totalmente integrado ao sistema de tipos do TypeScript, fornecendo autocompletar e verificação de tipos
-- **Otimização de resolução de módulos**: Melhora o desempenho da resolução de módulos através de mapeamentos de caminhos predefinidos
+- **Otimização de resolução de módulos**: Melhora o desempenho da resolução de módulos através de mapeamentos de caminhos pré-definidos
 
 ## Mecanismo de Alias Padrão
 
-O Gez adota um mecanismo de alias automático baseado no nome do serviço (Service Name), com um design de convenção sobre configuração que possui as seguintes características:
+O Gez adota um mecanismo de alias automático baseado no nome do serviço (Service Name), com um design que prioriza convenções em vez de configurações, apresentando as seguintes características:
 
 - **Configuração automática**: Gera aliases automaticamente com base no campo `name` do `package.json`, sem necessidade de configuração manual
 - **Padronização unificada**: Garante que todos os módulos de serviço sigam uma convenção consistente de nomenclatura e referência
@@ -29,7 +29,7 @@ O Gez adota um mecanismo de alias automático baseado no nome do serviço (Servi
 
 ### Configuração do package.json
 
-No `package.json`, o nome do serviço é definido no campo `name`, que será usado como prefixo padrão para o alias do serviço:
+No `package.json`, o nome do serviço é definido pelo campo `name`, que servirá como prefixo padrão para o alias do serviço:
 
 ```json title="package.json"
 {
@@ -61,7 +61,7 @@ Para que o TypeScript possa resolver corretamente os caminhos de alias, é neces
 ### Importação de Módulos Internos do Serviço
 
 ```ts
-// Usando alias para importar
+// Uso de alias para importação
 import { MyComponent } from 'your-app-name/src/components';
 
 // Importação equivalente com caminho relativo
@@ -98,7 +98,7 @@ import { request } from 'your-app-name/src/utils/request';
 import type { UserInfo } from 'your-app-name/src/types';
 ```
 
-### Importação Entre Serviços
+### Importação entre Serviços
 
 Após configurar o link de módulos (Module Link), é possível importar módulos de outros serviços da mesma forma:
 
@@ -123,7 +123,7 @@ export default {
                     ...buildContext.config.resolve,
                     alias: {
                         ...buildContext.config.resolve?.alias,
-                        // Configuração específica para a versão de build do Vue
+                        // Configuração de versão específica para Vue
                         'vue$': 'vue/dist/vue.esm.js',
                         // Configuração de aliases curtos para diretórios comuns
                         '@': './src',
@@ -138,7 +138,7 @@ export default {
 
 ::: warning Considerações
 1. Para módulos de negócios, recomenda-se sempre usar o mecanismo de alias padrão para manter a consistência do projeto
-2. Aliases personalizados são principalmente usados para lidar com necessidades específicas de pacotes de terceiros ou otimizar a experiência de desenvolvimento
-3. O uso excessivo de aliases personalizados pode afetar a manutenibilidade do código e a otimização da build
+2. Aliases personalizados são principalmente usados para tratar necessidades específicas de pacotes de terceiros ou otimizar a experiência de desenvolvimento
+3. O uso excessivo de aliases personalizados pode prejudicar a manutenibilidade do código e a otimização de builds
 
 :::

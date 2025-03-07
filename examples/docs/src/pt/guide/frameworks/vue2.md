@@ -1,6 +1,6 @@
 ---
-titleSuffix: Exemplo de Aplicação Vue2 SSR com Gez
-description: Aprenda a criar uma aplicação Vue2 SSR do zero usando o framework Gez. Este guia prático cobre desde a inicialização do projeto até a configuração do Vue2 e arquivos de entrada.
+titleSuffix: Exemplo de Aplicação Vue2 SSR com Gez Framework
+description: Aprenda a criar uma aplicação Vue2 SSR do zero usando o Gez Framework. Este guia prático cobre desde a inicialização do projeto até a configuração do Vue2 e arquivos de entrada.
 head:
   - - meta
     - property: keywords
@@ -9,7 +9,7 @@ head:
 
 # Vue2
 
-Este tutorial irá guiá-lo na criação de uma aplicação Vue2 SSR (Server-Side Rendering) do zero utilizando o framework Gez. Através de um exemplo completo, demonstraremos como usar o Gez para criar uma aplicação com renderização no servidor.
+Este tutorial irá guiá-lo na criação de uma aplicação Vue2 SSR (Server-Side Rendering) do zero usando o Gez Framework. Através de um exemplo completo, demonstraremos como utilizar o Gez Framework para criar uma aplicação com renderização no servidor.
 
 ## Estrutura do Projeto
 
@@ -61,7 +61,7 @@ Crie o arquivo `package.json` para configurar as dependências e scripts do proj
 }
 ```
 
-Após criar o arquivo `package.json`, instale as dependências do projeto. Você pode usar um dos seguintes comandos:
+Após criar o arquivo `package.json`, instale as dependências do projeto. Você pode usar um dos seguintes comandos para instalar:
 ```bash
 pnpm install
 # ou
@@ -122,12 +122,12 @@ Crie o componente principal da aplicação `src/app.vue`, utilizando a sintaxe `
 <script setup lang="ts">
 /**
  * @file Componente de Exemplo
- * @description Exibe um título de página com atualização automática de tempo, demonstrando funcionalidades básicas do Gez
+ * @description Exibe um título de página com atualização automática de tempo, demonstrando funcionalidades básicas do Gez Framework
  */
 
 import { onMounted, onUnmounted, ref } from 'vue';
 
-// Hora atual, atualizada a cada segundo
+// Tempo atual, atualizado a cada segundo
 const time = ref(new Date().toISOString());
 let timer: NodeJS.Timeout;
 
@@ -149,7 +149,7 @@ Crie o arquivo `src/create-app.ts`, responsável por criar a instância da aplic
 
 ```ts title="src/create-app.ts"
 /**
- * @file Criação da Instância Vue
+ * @file Criação de Instância Vue
  * @description Responsável por criar e configurar a instância da aplicação Vue
  */
 
@@ -200,9 +200,9 @@ import type { GezOptions } from '@gez/core';
 
 export default {
     /**
-     * Configura o criador da aplicação para o ambiente de desenvolvimento
+     * Configura o criador de aplicação para o ambiente de desenvolvimento
      * @description Cria e configura a instância da aplicação Rspack, usada para construção e atualização em tempo real no ambiente de desenvolvimento
-     * @param gez Instância do framework Gez, fornece funcionalidades principais e interfaces de configuração
+     * @param gez Instância do Gez Framework, fornece funcionalidades principais e interfaces de configuração
      * @returns Retorna a instância configurada da aplicação Rspack, suportando HMR e visualização em tempo real
      */
     async devApp(gez) {
@@ -218,7 +218,7 @@ export default {
     /**
      * Configura e inicia o servidor HTTP
      * @description Cria a instância do servidor HTTP, integra middleware do Gez e processa requisições SSR
-     * @param gez Instância do framework Gez, fornece middleware e funcionalidades de renderização
+     * @param gez Instância do Gez Framework, fornece middleware e funcionalidades de renderização
      */
     async server(gez) {
         const server = http.createServer((req, res) => {
@@ -241,7 +241,7 @@ export default {
 
 Este arquivo é o ponto de entrada para a configuração do ambiente de desenvolvimento e inicialização do servidor, contendo duas funcionalidades principais:
 
-1. Função `devApp`: Responsável por criar e configurar a instância da aplicação Rspack para o ambiente de desenvolvimento, suportando atualização em tempo real e visualização instantânea. Aqui, usamos `createRspackVue2App` para criar uma instância Rspack específica para Vue2.
+1. Função `devApp`: Responsável por criar e configurar a instância da aplicação Rspack para o ambiente de desenvolvimento, suportando atualização em tempo real e visualização instantânea. Aqui, `createRspackVue2App` é usado para criar uma instância Rspack específica para Vue2.
 2. Função `server`: Responsável por criar e configurar o servidor HTTP, integrando middleware do Gez para processar requisições SSR.
 
 ### entry.server.ts
@@ -311,4 +311,4 @@ npm run build
 npm run start
 ```
 
-Agora, você criou com sucesso uma aplicação Vue2 SSR com Gez! Acesse http://localhost:3000 para ver o resultado.
+Agora, você criou com sucesso uma aplicação Vue2 SSR baseada no Gez Framework! Acesse http://localhost:3000 para ver o resultado.

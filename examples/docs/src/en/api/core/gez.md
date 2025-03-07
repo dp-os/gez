@@ -1,17 +1,17 @@
 ---
 titleSuffix: Framework Core Class API Reference
-description: Detailed documentation of the Gez framework's core class API, including application lifecycle management, static resource handling, and server-side rendering capabilities, helping developers gain an in-depth understanding of the framework's core features.
+description: Detailed documentation of the Gez framework's core class API, including application lifecycle management, static asset handling, and server-side rendering capabilities, helping developers gain a deep understanding of the framework's core functionalities.
 head:
   - - meta
     - property: keywords
-      content: Gez, API, Lifecycle Management, Static Resources, Server-Side Rendering, Rspack, Web Application Framework
+      content: Gez, API, Lifecycle Management, Static Assets, Server-Side Rendering, Rspack, Web Application Framework
 ---
 
 # Gez
 
 ## Introduction
 
-Gez is a high-performance web application framework based on Rspack, providing complete application lifecycle management, static resource handling, and server-side rendering capabilities.
+Gez is a high-performance web application framework based on Rspack, providing comprehensive application lifecycle management, static asset handling, and server-side rendering capabilities.
 
 ## Type Definitions
 
@@ -45,7 +45,7 @@ ES module import mapping type.
 type SpecifierMap = Record<string, string>
 ```
 
-Module specifier mapping type, used to define module import path mappings.
+Module specifier mapping type, used to define the mapping relationships of module import paths.
 
 #### ScopesMap
 
@@ -69,7 +69,7 @@ enum COMMAND {
 ```
 
 Command type enumeration:
-- `dev`: Development environment command, starts the development server with hot reload
+- `dev`: Development environment command, starts the development server with hot reloading
 - `build`: Build command, generates production build artifacts
 - `preview`: Preview command, starts a local preview server
 - `start`: Start command, runs the production server
@@ -118,7 +118,7 @@ Base path placeholder configuration. Used for runtime dynamic replacement of res
 
 - **Type**: `ModuleConfig`
 
-Module configuration options. Used to configure project module resolution rules, including module aliases and external dependencies.
+Module configuration options. Used to configure the project's module resolution rules, including module aliases and external dependencies.
 
 #### packs
 
@@ -173,7 +173,7 @@ export default {
 
 - **Type**: `(gez: Gez) => Promise<void>`
 
-Post-build processing function. Executed after project build completion, useful for:
+Post-build processing function. Executed after the project build is completed, useful for:
 - Performing additional resource processing
 - Deployment operations
 - Generating static files
@@ -186,28 +186,28 @@ Post-build processing function. Executed after project build completion, useful 
 - **Type**: `string`
 - **Read-only**: `true`
 
-Current module name, derived from module configuration.
+The name of the current module, derived from the module configuration.
 
 ### varName
 
 - **Type**: `string`
 - **Read-only**: `true`
 
-Valid JavaScript variable name generated based on the module name.
+A valid JavaScript variable name generated based on the module name.
 
 ### root
 
 - **Type**: `string`
 - **Read-only**: `true`
 
-Absolute path to the project root directory. If the configured `root` is a relative path, it is resolved based on the current working directory.
+The absolute path of the project root directory. If the configured `root` is a relative path, it is resolved based on the current working directory.
 
 ### isProd
 
 - **Type**: `boolean`
 - **Read-only**: `true`
 
-Determines if the current environment is production. Prioritizes the `isProd` configuration option, otherwise falls back to `process.env.NODE_ENV`.
+Determines whether the current environment is production. Prioritizes the `isProd` configuration option; if not configured, it checks `process.env.NODE_ENV`.
 
 ### basePath
 
@@ -215,7 +215,7 @@ Determines if the current environment is production. Prioritizes the `isProd` co
 - **Read-only**: `true`
 - **Throws**: `NotReadyError` - When the framework is not initialized
 
-Gets the module base path with leading and trailing slashes. Returns in the format `/${name}/`, where name is derived from module configuration.
+Gets the module base path with leading and trailing slashes. Returns the format `/${name}/`, where name is from the module configuration.
 
 ### basePathPlaceholder
 
@@ -229,9 +229,9 @@ Gets the base path placeholder for runtime dynamic replacement. Can be disabled 
 - **Type**: `Middleware`
 - **Read-only**: `true`
 
-Gets the static resource handling middleware. Provides different implementations based on the environment:
-- Development environment: Supports real-time source compilation and hot reload
-- Production environment: Supports long-term caching of static resources
+Gets the static asset handling middleware. Provides different implementations based on the environment:
+- Development environment: Supports real-time source compilation and hot reloading
+- Production environment: Supports long-term caching of static assets
 
 ```ts
 const server = http.createServer((req, res) => {
@@ -248,7 +248,7 @@ const server = http.createServer((req, res) => {
 - **Read-only**: `true`
 
 Gets the server-side rendering function. Provides different implementations based on the environment:
-- Development environment: Supports hot reload and real-time preview
+- Development environment: Supports hot reloading and real-time preview
 - Production environment: Provides optimized rendering performance
 
 ```ts
@@ -282,7 +282,7 @@ Gets the command enumeration type definition.
 - **Read-only**: `true`
 - **Throws**: `NotReadyError` - When the framework is not initialized
 
-Gets the complete configuration information for the current module, including module resolution rules and alias configurations.
+Gets the complete configuration information of the current module, including module resolution rules and alias configurations.
 
 ### packConfig
 
@@ -290,7 +290,7 @@ Gets the complete configuration information for the current module, including mo
 - **Read-only**: `true`
 - **Throws**: `NotReadyError` - When the framework is not initialized
 
-Gets the packaging-related configuration for the current module, including output paths and package.json processing.
+Gets the packaging-related configuration of the current module, including output paths and package.json processing.
 
 ## Instance Methods
 
@@ -319,7 +319,7 @@ const gez = new Gez({
 
 Initializes the Gez framework instance. Executes the following core initialization processes:
 
-1. Resolves project configuration (package.json, module configuration, pack configuration, etc.)
+1. Parses project configuration (package.json, module configuration, pack configuration, etc.)
 2. Creates the application instance (development or production environment)
 3. Executes corresponding lifecycle methods based on the command
 
@@ -362,7 +362,7 @@ Executes the application build process, including:
 - Compiling source code
 - Generating production build artifacts
 - Optimizing and minifying code
-- Generating resource manifests
+- Generating asset manifests
 
 ::: warning Note
 Throws `NotReadyError` when called on an uninitialized framework instance
@@ -389,15 +389,15 @@ export default {
 - **Returns**: `Promise<void>`
 - **Throws**: `NotReadyError` - When the framework is not initialized
 
-Starts the HTTP server and configures the server instance. Called during the following lifecycle stages:
-- Development environment (dev): Starts the development server with hot reload
+Starts the HTTP server and configures the server instance. Called during the following lifecycles:
+- Development environment (dev): Starts the development server with hot reloading
 - Production environment (start): Starts the production server with production-grade performance
 
 ```ts title="entry.node.ts"
 export default {
   async server(gez) {
     const server = http.createServer((req, res) => {
-      // Handle static resources
+      // Handle static assets
       gez.middleware(req, res, async () => {
         // Server-side rendering
         const render = await gez.render({
@@ -455,7 +455,7 @@ Resolves project paths, converting relative paths to absolute paths.
 
 - **Example**:
 ```ts
-// Resolve static resource path
+// Resolve static asset path
 const htmlPath = gez.resolvePath('dist/client', 'index.html');
 ```
 
@@ -464,7 +464,7 @@ const htmlPath = gez.resolvePath('dist/client', 'index.html');
 Synchronously writes file content.
 
 - **Parameters**:
-  - `filepath`: `string` - Absolute path to the file
+  - `filepath`: `string` - Absolute path of the file
   - `data`: `any` - Data to write, can be a string, Buffer, or object
 - **Returns**: `boolean` - Whether the write was successful
 
@@ -482,16 +482,16 @@ async postBuild(gez) {
 Synchronously reads and parses a JSON file.
 
 - **Parameters**:
-  - `filename`: `string` - Absolute path to the JSON file
+  - `filename`: `string` - Absolute path of the JSON file
 
 - **Returns**: `any` - Parsed JSON object
-- **Exceptions**: Throws an exception when the file does not exist or JSON format is invalid
+- **Throws**: Throws an exception when the file does not exist or the JSON format is invalid
 
 - **Example**:
 ```ts title="src/entry.node.ts"
 async server(gez) {
   const manifest = gez.readJsonSync(gez.resolvePath('dist/client', 'manifest.json'));
-  // Use manifest object
+  // Use the manifest object
 }
 ```
 
@@ -500,16 +500,16 @@ async server(gez) {
 Asynchronously reads and parses a JSON file.
 
 - **Parameters**:
-  - `filename`: `string` - Absolute path to the JSON file
+  - `filename`: `string` - Absolute path of the JSON file
 
 - **Returns**: `Promise<any>` - Parsed JSON object
-- **Exceptions**: Throws an exception when the file does not exist or JSON format is invalid
+- **Throws**: Throws an exception when the file does not exist or the JSON format is invalid
 
 - **Example**:
 ```ts title="src/entry.node.ts"
 async server(gez) {
   const manifest = await gez.readJson(gez.resolvePath('dist/client', 'manifest.json'));
-  // Use manifest object
+  // Use the manifest object
 }
 ```
 
@@ -523,11 +523,11 @@ Gets the build manifest list.
     - `'server'`: Server environment
 
 - **Returns**: `Promise<readonly ManifestJson[]>` - Read-only build manifest list
-- **Exceptions**: Throws `NotReadyError` when the framework instance is not initialized
+- **Throws**: Throws `NotReadyError` when the framework instance is not initialized
 
-This method is used to get the build manifest list for the specified target environment, including the following features:
+This method is used to get the build manifest list for the specified target environment, including the following functionalities:
 1. **Cache Management**
-   - Uses internal caching mechanism to avoid repeated loading
+   - Uses internal caching to avoid repeated loading
    - Returns immutable manifest lists
 
 2. **Environment Adaptation**
@@ -559,11 +559,11 @@ Gets the import map object.
 
 - **Parameters**:
   - `target`: `RuntimeTarget` - Target environment type
-    - `'client'`: Generates import map for the browser environment
-    - `'server'`: Generates import map for the server environment
+    - `'client'`: Generates import maps for the browser environment
+    - `'server'`: Generates import maps for the server environment
 
 - **Returns**: `Promise<Readonly<ImportMap>>` - Read-only import map object
-- **Exceptions**: Throws `NotReadyError` when the framework instance is not initialized
+- **Throws**: Throws `NotReadyError` when the framework instance is not initialized
 
 This method is used to generate ES module import maps (Import Map), with the following characteristics:
 1. **Module Resolution**
@@ -572,7 +572,7 @@ This method is used to generate ES module import maps (Import Map), with the fol
    - Automatically handles module path resolution
 
 2. **Cache Optimization**
-   - Uses internal caching mechanism
+   - Uses internal caching
    - Returns immutable mapping objects
 
 3. **Path Handling**
@@ -615,8 +615,8 @@ Gets client import map information.
   - JS file mode:
     ```ts
     {
-      src: string;      // JS file URL
-      filepath: string;  // JS file local path
+      src: string;      // URL of the JS file
+      filepath: string;  // Local path of the JS file
       code: string;      // HTML script tag content
     }
     ```
@@ -629,23 +629,23 @@ Gets client import map information.
     }
     ```
 
-- **Exceptions**: Throws `NotReadyError` when the framework instance is not initialized
+- **Throws**: Throws `NotReadyError` when the framework instance is not initialized
 
-This method is used to generate client environment import map code, supporting two modes:
+This method is used to generate import map code for the client environment, supporting two modes:
 1. **Inline Mode (inline)**
-   - Inlines the import map directly into HTML
+   - Inlines the import map directly into the HTML
    - Reduces additional network requests
    - Suitable for scenarios with smaller import maps
 
 2. **JS File Mode (js)**
-   - Generates standalone JS files
+   - Generates a standalone JS file
    - Supports browser caching
    - Suitable for scenarios with larger import maps
 
-Core features:
+Core functionalities:
 - Automatically handles dynamic base paths
-- Supports runtime module path replacement
-- Optimizes caching strategy
+- Supports runtime replacement of module paths
+- Optimizes caching strategies
 - Ensures module loading order
 
 - **Example**:
@@ -667,31 +667,4 @@ async server(gez) {
   server.get('/inline', async (req, res) => {
     const result = await gez.render({
       importmapMode: 'inline',
-      params: { url: req.url }
-    });
-    res.send(result.html);
-  });
-}
-```
-
-### getStaticImportPaths()
-
-Gets the module's static import path list.
-
-- **Parameters**:
-  - `target`: `RuntimeTarget` - Build target
-    - `'client'`: Client environment
-    - `'server'`: Server environment
-  - `specifier`: `string` - Module specifier
-
-- **Returns**: `Promise<readonly string[] | null>` - Returns the static import path list, or null if not found
-- **Exceptions**: Throws `NotReadyError` when the framework instance is not initialized
-
-- **Example**:
-```ts
-// Get static import paths for client entry module
-const paths = await gez.getStaticImportPaths(
-  'client',
-  `your-app-name/src/entry.client`
-);
-```
+      params

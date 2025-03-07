@@ -1,15 +1,15 @@
 ---
-titleSuffix: Exemplo de Aplicação Vue3 SSR com Gez
-description: Crie uma aplicação Vue3 SSR com Gez do zero, demonstrando o uso básico do framework, incluindo inicialização do projeto, configuração do Vue3 e definição de arquivos de entrada.
+titleSuffix: Exemplo de Aplicação Vue3 SSR com Framework Gez
+description: Aprenda a criar uma aplicação Vue3 SSR com Gez do zero. Este tutorial mostra o uso básico do framework, incluindo inicialização do projeto, configuração do Vue3 e definição de arquivos de entrada.
 head:
   - - meta
     - property: keywords
-      content: Gez, Vue3, Aplicação SSR, Configuração TypeScript, Inicialização de Projeto, Renderização no Lado do Servidor, Interação no Cliente, API de Composição
+      content: Gez, Vue3, Aplicação SSR, Configuração TypeScript, Inicialização de Projeto, Renderização no Servidor, Interação no Cliente, API de Composição
 ---
 
 # Vue3
 
-Este tutorial irá guiá-lo na criação de uma aplicação Vue3 SSR com Gez do zero. Através de um exemplo completo, demonstraremos como usar o framework Gez para criar uma aplicação com renderização no lado do servidor (SSR).
+Este tutorial irá guiá-lo na criação de uma aplicação Vue3 SSR (Server-Side Rendering) com o framework Gez, começando do zero. Através de um exemplo completo, demonstraremos como utilizar o Gez para criar uma aplicação com renderização no servidor.
 
 ## Estrutura do Projeto
 
@@ -20,10 +20,10 @@ Primeiro, vamos entender a estrutura básica do projeto:
 ├── package.json         # Arquivo de configuração do projeto, define dependências e scripts
 ├── tsconfig.json        # Arquivo de configuração do TypeScript, define opções de compilação
 └── src                  # Diretório de código-fonte
-    ├── app.vue          # Componente principal da aplicação, define a estrutura e lógica da página
-    ├── create-app.ts    # Fábrica de criação de instância Vue, responsável por inicializar a aplicação
+    ├── app.vue          # Componente principal da aplicação, define estrutura e lógica da página
+    ├── create-app.ts    # Fábrica de instância Vue, responsável pela inicialização da aplicação
     ├── entry.client.ts  # Arquivo de entrada do cliente, lida com a renderização no navegador
-    ├── entry.node.ts    # Arquivo de entrada do Node.js, responsável pela configuração do ambiente de desenvolvimento e inicialização do servidor
+    ├── entry.node.ts    # Arquivo de entrada do Node.js, configura ambiente de desenvolvimento e inicia o servidor
     └── entry.server.ts  # Arquivo de entrada do servidor, lida com a lógica de renderização SSR
 ```
 
@@ -61,7 +61,7 @@ Crie o arquivo `package.json` para configurar as dependências e scripts do proj
 }
 ```
 
-Após criar o arquivo `package.json`, instale as dependências do projeto. Você pode usar um dos seguintes comandos para instalar:
+Após criar o arquivo `package.json`, instale as dependências do projeto. Você pode usar um dos seguintes comandos:
 ```bash
 pnpm install
 # ou
@@ -122,12 +122,12 @@ Crie o componente principal da aplicação `src/app.vue`, utilizando a API de Co
 <script setup lang="ts">
 /**
  * @file Componente de Exemplo
- * @description Exibe um título de página com atualização automática de tempo, demonstrando funcionalidades básicas do Gez
+ * @description Exibe um título de página com tempo atualizado automaticamente, demonstrando funcionalidades básicas do Gez
  */
 
 import { onMounted, onUnmounted, ref } from 'vue';
 
-// Hora atual, atualizada a cada segundo
+// Tempo atual, atualizado a cada segundo
 const time = ref(new Date().toISOString());
 let timer: NodeJS.Timeout;
 
@@ -185,12 +185,12 @@ app.mount('#app');
 
 ### entry.node.ts
 
-Crie o arquivo `entry.node.ts` para configurar o ambiente de desenvolvimento e inicializar o servidor:
+Crie o arquivo `entry.node.ts` para configurar o ambiente de desenvolvimento e iniciar o servidor:
 
 ```ts title="src/entry.node.ts"
 /**
  * @file Arquivo de Entrada do Node.js
- * @description Responsável pela configuração do ambiente de desenvolvimento e inicialização do servidor, fornecendo o ambiente de execução SSR
+ * @description Responsável pela configuração do ambiente de desenvolvimento e inicialização do servidor, fornecendo ambiente de execução SSR
  */
 
 import http from 'node:http';
@@ -198,10 +198,10 @@ import type { GezOptions } from '@gez/core';
 
 export default {
     /**
-     * Configura o criador da aplicação para o ambiente de desenvolvimento
+     * Configura o criador de aplicação para o ambiente de desenvolvimento
      * @description Cria e configura a instância da aplicação Rspack, usada para construção e atualização em tempo real no ambiente de desenvolvimento
-     * @param gez Instância do Gez, fornecendo funcionalidades e interfaces de configuração
-     * @returns Retorna a instância configurada da aplicação Rspack, suportando HMR e visualização em tempo real
+     * @param gez Instância do framework Gez, fornece funcionalidades principais e interfaces de configuração
+     * @returns Retorna a instância da aplicação Rspack configurada, com suporte a HMR e visualização em tempo real
      */
     async devApp(gez) {
         return import('@gez/rspack-vue').then((m) =>
@@ -216,13 +216,13 @@ export default {
     /**
      * Configura e inicia o servidor HTTP
      * @description Cria a instância do servidor HTTP, integra middleware do Gez e processa requisições SSR
-     * @param gez Instância do Gez, fornecendo middleware e funcionalidades de renderização
+     * @param gez Instância do framework Gez, fornece middleware e funcionalidades de renderização
      */
     async server(gez) {
         const server = http.createServer((req, res) => {
             // Usa middleware do Gez para processar a requisição
             gez.middleware(req, res, async () => {
-                // Executa a renderização no lado do servidor
+                // Executa a renderização no servidor
                 const rc = await gez.render({
                     params: { url: req.url }
                 });
@@ -239,8 +239,8 @@ export default {
 
 Este arquivo é o ponto de entrada para a configuração do ambiente de desenvolvimento e inicialização do servidor, contendo duas funcionalidades principais:
 
-1. `devApp`: Responsável por criar e configurar a instância da aplicação Rspack para o ambiente de desenvolvimento, suportando atualização em tempo real e visualização instantânea. Aqui, `createRspackVue3App` é usado para criar uma instância específica para Vue3.
-2. `server`: Responsável por criar e configurar o servidor HTTP, integrando middleware do Gez para processar requisições SSR.
+1. Função `devApp`: Responsável por criar e configurar a instância da aplicação Rspack para o ambiente de desenvolvimento, com suporte a atualização em tempo real e visualização instantânea. Aqui, `createRspackVue3App` é usado para criar uma instância Rspack específica para Vue3.
+2. Função `server`: Responsável por criar e configurar o servidor HTTP, integrando middleware do Gez para processar requisições SSR.
 
 ### entry.server.ts
 

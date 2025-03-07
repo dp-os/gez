@@ -201,7 +201,7 @@ import type { GezOptions } from '@gez/core';
 export default {
     /**
      * 配置開發環境的應用建立器
-     * @description 建立並配置 Rspack 應用實例，用於開發環境的建置和熱更新
+     * @description 建立並配置 Rspack 應用實例，用於開發環境的建構和熱更新
      * @param gez Gez 框架實例，提供核心功能和配置介面
      * @returns 返回配置好的 Rspack 應用實例，支援 HMR 和即時預覽
      */
@@ -302,7 +302,7 @@ export default async (rc: RenderContext) => {
 npm run dev
 ```
 
-2. 建置專案：
+2. 建構專案：
 ```bash
 npm run build
 ```

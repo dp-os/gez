@@ -9,11 +9,11 @@ head:
 
 # 클라이언트 사이드 렌더링
 
-클라이언트 사이드 렌더링(Client-Side Rendering, CSR)은 브라우저에서 페이지 렌더링을 실행하는 기술 방식입니다. Gez에서 Node.js 서버 인스턴스를 배포할 수 없는 경우, 빌드 단계에서 정적 `index.html` 파일을 생성하여 순수 클라이언트 사이드 렌더링을 구현할 수 있습니다.
+클라이언트 사이드 렌더링(Client-Side Rendering, CSR)은 브라우저에서 페이지 렌더링을 수행하는 기술입니다. Gez에서 Node.js 서버 인스턴스를 배포할 수 없는 경우, 빌드 단계에서 정적 `index.html` 파일을 생성하여 순수 클라이언트 사이드 렌더링을 구현할 수 있습니다.
 
 ## 사용 시나리오
 
-다음 시나리오에서 클라이언트 사이드 렌더링을 사용하는 것을 권장합니다:
+다음과 같은 시나리오에서 클라이언트 사이드 렌더링을 사용하는 것이 권장됩니다:
 
 - **정적 호스팅 환경**: GitHub Pages, CDN 등 서버 사이드 렌더링을 지원하지 않는 호스팅 서비스
 - **단순 애플리케이션**: 초기 로딩 속도와 SEO 요구사항이 높지 않은 소규모 애플리케이션
@@ -63,7 +63,7 @@ export default {
     async postBuild(gez) {
         // 정적 HTML 파일 생성
         const rc = await gez.render();
-        // HTML 파일 쓰기
+        // HTML 파일 작성
         gez.writeSync(
             gez.resolvePath('dist/client', 'index.html'),
             rc.html

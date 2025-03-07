@@ -11,7 +11,7 @@ head:
 
 `PackConfig` は、サービスのビルド成果物を標準的な npm .tgz 形式のパッケージにパッケージングするための設定インターフェースです。
 
-- **標準化**: npm 標準の .tgz パッケージング形式を使用
+- **標準化**: npm 標準の .tgz パッケージ形式を使用
 - **完全性**: モジュールのソースコード、型宣言、設定ファイルなど、必要なすべてのファイルを含む
 - **互換性**: npm エコシステムと完全に互換性があり、標準的なパッケージ管理ワークフローをサポート
 
@@ -38,9 +38,9 @@ interface PackConfig {
 
 #### outputs
 
-出力するパッケージファイルのパスを指定します。以下の設定方法をサポートします:
+出力するパッケージファイルのパスを指定します。以下の設定方法をサポートします：
 - `string`: 単一の出力パス、例: 'dist/versions/my-app.tgz'
-- `string[]`: 複数の出力パス、複数のバージョンを同時に生成するために使用
+- `string[]`: 複数の出力パス、複数のバージョンを同時に生成する場合に使用
 - `boolean`: true の場合、デフォルトのパス 'dist/client/versions/latest.tgz' を使用
 
 #### packageJson
@@ -191,7 +191,7 @@ export default {
 
     // パッケージング後の処理
     onAfter: async (gez, pkg, file) => {
-      // プライベート npm ミラーに公開
+      // プライベート npm レジストリに公開
       await publishToRegistry(file, {
         registry: 'https://npm.your-registry.com/'
       });

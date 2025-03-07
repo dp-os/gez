@@ -1,5 +1,5 @@
 ---
-titleSuffix: Overview and Technological Innovations of the Gez Framework
+titleSuffix: Gez Framework Overview and Technological Innovations
 description: Gain an in-depth understanding of the project background, technological evolution, and core advantages of the Gez micro-frontend framework. Explore modern server-side rendering solutions based on ESM.
 head:
   - - meta
@@ -14,7 +14,7 @@ Gez is a modern micro-frontend framework based on ECMAScript Modules (ESM), focu
 
 - **v1.0**: Implemented on-demand loading of remote components based on HTTP requests
 - **v2.0**: Achieved application integration based on Webpack Module Federation
-- **v3.0**: Redesigned the [module linking](/guide/essentials/module-link) system based on native browser ESM
+- **v3.0**: Redesigned the [Module Linking](/guide/essentials/module-link) system based on native browser ESM
 
 ## Technical Background
 In the development of micro-frontend architecture, traditional solutions mainly face the following limitations:
@@ -46,7 +46,7 @@ Please refer to the [Environment Requirements](/guide/start/environment) documen
 
 ### Core Technology Stack
 - **Dependency Management**: Uses [Import Maps](https://caniuse.com/?search=import%20map) for module mapping, with [es-module-shims](https://github.com/guybedford/es-module-shims) providing compatibility support
-- **Build System**: Handles external dependencies based on Rspack's [module-import](https://rspack.dev/config/externals#externalstypemodule-import)
+- **Build System**: Based on Rspack's [module-import](https://rspack.dev/config/externals#externalstypemodule-import) for handling external dependencies
 - **Development Toolchain**: Supports ESM hot updates and native TypeScript execution
 
 ## Framework Positioning
@@ -71,8 +71,8 @@ Gez differs from [Next.js](https://nextjs.org) or [Nuxt.js](https://nuxt.com/), 
 
 ### Performance Optimization
 - **Zero Overhead Principle**: Maximizes the use of native browser capabilities
-- **Intelligent Caching**: Precise caching strategy based on content hashing
+- **Intelligent Caching**: Content hash-based precise caching strategy
 - **On-demand Loading**: Fine-grained code splitting and dependency management
 
 ## Project Maturity
-Through nearly 5 years of iterative evolution (v1.0 to v3.0), Gez has been fully validated in enterprise-level environments. It currently supports the stable operation of dozens of business projects and continues to drive the modernization of the technology stack. The framework's stability, reliability, and performance advantages have been thoroughly tested in practice, providing a reliable technical foundation for large-scale application development.
+Through nearly 5 years of iterative evolution (v1.0 to v3.0), Gez has been fully validated in enterprise environments. It currently supports the stable operation of dozens of business projects and continues to drive the modernization of technology stacks. The framework's stability, reliability, and performance advantages have been thoroughly tested in practice, providing a reliable technical foundation for large-scale application development.

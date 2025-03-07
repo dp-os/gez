@@ -1,6 +1,6 @@
 ---
 titleSuffix: Gez Framework Vue Build Tool
-description: The Vue-specific build tool for the Gez framework, providing comprehensive support for Vue 2/3 application building, including component development, SSR rendering, and performance optimization.
+description: The Vue-specific build tool for the Gez framework, providing comprehensive support for Vue 2/3 application builds, including component development, SSR rendering, and performance optimization.
 head:
   - - meta
     - property: keywords
@@ -27,7 +27,7 @@ Install `@gez/rspack-vue` as a development dependency using your package manager
 type BuildTarget = 'node' | 'client' | 'server'
 ```
 
-The build target environment type defines the target environment for application building, used to configure specific optimizations and features during the build process:
+The build target environment type defines the target environment for the application build, used to configure specific optimizations and features during the build process:
 - `node`: Build code to run in a Node.js environment
 - `client`: Build code to run in a browser environment
 - `server`: Build code to run in a server environment
@@ -43,7 +43,7 @@ interface RspackAppConfigContext {
 }
 ```
 
-The Rspack application configuration context interface provides contextual information accessible within configuration hook functions:
+The Rspack application configuration context interface provides context information accessible within configuration hook functions:
 - `gez`: Gez framework instance
 - `buildTarget`: Current build target (client/server/node)
 - `config`: Rspack configuration object
@@ -96,7 +96,7 @@ Creates a standard Rspack application instance.
 - `options`: Rspack application configuration options
 
 **Returns:**
-- Returns a Promise that resolves to the created application instance
+- A Promise that resolves to the created application instance
 
 ### createRspackHtmlApp
 
@@ -111,7 +111,7 @@ Creates an HTML-type Rspack application instance.
 - `options`: HTML application configuration options
 
 **Returns:**
-- Returns a Promise that resolves to the created HTML application instance
+- A Promise that resolves to the created HTML application instance
 
 ## Constant Exports
 ### RSPACK_LOADER
@@ -168,4 +168,4 @@ export default {
 
 ### rspack
 
-Re-exports all contents from the `@rspack/core` package, providing full Rspack core functionality.
+Re-exports all contents of the `@rspack/core` package, providing full Rspack core functionality.

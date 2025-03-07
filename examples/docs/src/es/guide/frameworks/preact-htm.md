@@ -1,6 +1,6 @@
 ---
-titleSuffix: Ejemplo de aplicación Preact+HTM SSR con el framework Gez
-description: Aprende a crear una aplicación Preact+HTM SSR desde cero utilizando el framework Gez. Este tutorial muestra el uso básico del framework, incluyendo la inicialización del proyecto, configuración de Preact y configuración de archivos de entrada.
+titleSuffix: Ejemplo de aplicación SSR con Gez, Preact y HTM
+description: Aprende a crear una aplicación SSR con Preact+HTM desde cero utilizando el framework Gez. Este tutorial cubre la inicialización del proyecto, configuración de Preact y configuración de archivos de entrada.
 head:
   - - meta
     - property: keywords
@@ -9,7 +9,7 @@ head:
 
 # Preact+HTM
 
-Este tutorial te guiará en la creación de una aplicación Preact+HTM SSR desde cero utilizando el framework Gez. A través de un ejemplo completo, mostraremos cómo usar el framework Gez para crear una aplicación con renderizado en el servidor (SSR).
+Este tutorial te guiará en la creación de una aplicación SSR con Preact+HTM utilizando el framework Gez. A través de un ejemplo completo, mostraremos cómo usar Gez para crear una aplicación con renderizado en el servidor.
 
 ## Estructura del proyecto
 
@@ -17,13 +17,13 @@ Primero, veamos la estructura básica del proyecto:
 
 ```bash
 .
-├── package.json         # Archivo de configuración del proyecto, define dependencias y comandos de script
+├── package.json         # Archivo de configuración del proyecto, define dependencias y comandos de scripts
 ├── tsconfig.json        # Archivo de configuración de TypeScript, establece opciones de compilación
 └── src                  # Directorio de código fuente
-    ├── app.ts           # Componente principal de la aplicación, define la estructura de la página y la lógica de interacción
-    ├── create-app.ts    # Fábrica de creación de instancias de la aplicación, responsable de inicializar la aplicación
+    ├── app.ts           # Componente principal de la aplicación, define la estructura y lógica de la página
+    ├── create-app.ts    # Fábrica de creación de instancias de la aplicación, responsable de la inicialización
     ├── entry.client.ts  # Archivo de entrada del cliente, maneja el renderizado en el navegador
-    ├── entry.node.ts    # Archivo de entrada del servidor Node.js, responsable de la configuración del entorno de desarrollo y el inicio del servidor
+    ├── entry.node.ts    # Archivo de entrada del servidor Node.js, configura el entorno de desarrollo y arranca el servidor
     └── entry.server.ts  # Archivo de entrada del servidor, maneja la lógica de renderizado SSR
 ```
 
@@ -61,7 +61,7 @@ Crea el archivo `package.json` para configurar las dependencias y scripts del pr
 }
 ```
 
-Después de crear el archivo `package.json`, necesitas instalar las dependencias del proyecto. Puedes usar cualquiera de los siguientes comandos para instalarlas:
+Después de crear el archivo `package.json`, instala las dependencias del proyecto. Puedes usar cualquiera de los siguientes comandos:
 ```bash
 pnpm install
 # o
@@ -118,7 +118,7 @@ Crea el componente principal de la aplicación en `src/app.ts`, utilizando compo
 ```ts title="src/app.ts"
 /**
  * @file Componente de ejemplo
- * @description Muestra un título de página con la hora actualizada automáticamente, para demostrar las funcionalidades básicas del framework Gez
+ * @description Muestra un título de página con la hora actualizada automáticamente, para demostrar las funciones básicas de Gez
  */
 
 import { Component } from 'preact';
@@ -201,12 +201,12 @@ render(app, document.getElementById('app')!);
 
 ### entry.node.ts
 
-Crea el archivo `entry.node.ts`, responsable de la configuración del entorno de desarrollo y el inicio del servidor:
+Crea el archivo `entry.node.ts` para configurar el entorno de desarrollo y arrancar el servidor:
 
 ```ts title="src/entry.node.ts"
 /**
  * @file Archivo de entrada del servidor Node.js
- * @description Responsable de la configuración del entorno de desarrollo y el inicio del servidor, proporcionando el entorno de ejecución SSR
+ * @description Responsable de la configuración del entorno de desarrollo y arranque del servidor, proporciona el entorno de ejecución SSR
  */
 
 import http from 'node:http';
@@ -216,7 +216,7 @@ export default {
     /**
      * Configura el creador de la aplicación para el entorno de desarrollo
      * @description Crea y configura la instancia de la aplicación Rspack, utilizada para la construcción y actualización en caliente en el entorno de desarrollo
-     * @param gez Instancia del framework Gez, proporciona funciones principales e interfaces de configuración
+     * @param gez Instancia del framework Gez, proporciona funciones principales y interfaces de configuración
      * @returns Devuelve la instancia de la aplicación Rspack configurada, compatible con HMR y vista previa en tiempo real
      */
     async devApp(gez) {
@@ -230,7 +230,7 @@ export default {
     },
 
     /**
-     * Configura e inicia el servidor HTTP
+     * Configura y arranca el servidor HTTP
      * @description Crea una instancia del servidor HTTP, integra middleware de Gez y maneja solicitudes SSR
      * @param gez Instancia del framework Gez, proporciona middleware y funciones de renderizado
      */
@@ -253,9 +253,9 @@ export default {
 } satisfies GezOptions;
 ```
 
-Este archivo es el punto de entrada para la configuración del entorno de desarrollo y el inicio del servidor, y contiene dos funciones principales:
+Este archivo es el punto de entrada para la configuración del entorno de desarrollo y el arranque del servidor, y contiene dos funciones principales:
 
-1. `devApp`: Responsable de crear y configurar la instancia de la aplicación Rspack para el entorno de desarrollo, compatible con actualización en caliente y vista previa en tiempo real. Aquí se utiliza `createRspackHtmlApp` para crear una instancia de la aplicación Rspack específica para Preact+HTM.
+1. `devApp`: Responsable de crear y configurar la instancia de la aplicación Rspack para el entorno de desarrollo, compatible con actualización en caliente y vista previa en tiempo real.
 2. `server`: Responsable de crear y configurar el servidor HTTP, integrando middleware de Gez para manejar solicitudes SSR.
 
 ### entry.server.ts
@@ -265,7 +265,7 @@ Crea el archivo de entrada para el renderizado en el servidor `src/entry.server.
 ```ts title="src/entry.server.ts"
 /**
  * @file Archivo de entrada para el renderizado en el servidor
- * @description Responsable del flujo de renderizado en el servidor, generación de HTML e inyección de recursos
+ * @description Responsable del flujo de renderizado SSR, generación de HTML e inyección de recursos
  */
 
 import type { RenderContext } from '@gez/core';
@@ -302,7 +302,7 @@ export default async (rc: RenderContext) => {
 };
 ```
 
-## Ejecución del proyecto
+## Ejecutar el proyecto
 
 Después de configurar los archivos anteriores, puedes usar los siguientes comandos para ejecutar el proyecto:
 
@@ -321,4 +321,4 @@ npm run build
 npm run start
 ```
 
-¡Ahora has creado con éxito una aplicación Preact+HTM SSR basada en Gez! Visita http://localhost:3000 para ver el resultado.
+¡Ahora has creado con éxito una aplicación SSR con Preact+HTM utilizando el framework Gez! Visita http://localhost:3000 para ver el resultado.

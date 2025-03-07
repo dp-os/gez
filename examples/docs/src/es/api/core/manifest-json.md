@@ -9,7 +9,7 @@ head:
 
 # ManifestJson
 
-`manifest.json` es un archivo de manifiesto generado por el framework Gez durante el proceso de construcción, que registra la información de los artefactos de construcción del servicio. Proporciona una interfaz unificada para gestionar los artefactos de construcción, los archivos exportados y las estadísticas de tamaño de los recursos.
+`manifest.json` es un archivo de manifiesto generado por el framework Gez durante el proceso de construcción, utilizado para registrar la información de los artefactos generados en la construcción del servicio. Proporciona una interfaz unificada para gestionar los artefactos de construcción, los archivos exportados y las estadísticas de tamaño de los recursos.
 
 ```json title="dist/client/manifest.json"
 {
@@ -71,7 +71,7 @@ interface ManifestJson {
 
 - **Tipo**: `string`
 
-Nombre del servicio, proviene de la configuración de GezOptions.name.
+Nombre del servicio, proviene de la configuración GezOptions.name.
 
 #### exports
 
@@ -83,7 +83,7 @@ Relación de mapeo de archivos exportados, donde la clave es la ruta del archivo
 
 - **Tipo**: `string[]`
 
-Lista completa de archivos de artefactos de construcción, que incluye todas las rutas de archivos generados.
+Lista completa de archivos de artefactos de construcción, incluyendo todas las rutas de archivos generados.
 
 #### chunks
 

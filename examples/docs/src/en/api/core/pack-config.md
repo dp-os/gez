@@ -1,6 +1,6 @@
 ---
 titleSuffix: Gez Framework Pack Configuration API Reference
-description: Detailed documentation on the PackConfig configuration interface of the Gez framework, including package bundling rules, output configuration, and lifecycle hooks, helping developers implement standardized build processes.
+description: Detailed documentation on the PackConfig configuration interface of the Gez framework, including package bundling rules, output configurations, and lifecycle hooks, helping developers implement standardized build processes.
 head:
   - - meta
     - property: keywords
@@ -50,7 +50,7 @@ A callback function to customize the package.json content. Called before bundlin
 - Parameters:
   - `gez: Gez` - Gez instance
   - `pkg: any` - Original package.json content
-- Return: `Promise<any>` - Modified package.json content
+- Return Value: `Promise<any>` - Modified package.json content
 
 Common Use Cases:
 - Modify package name and version
@@ -72,7 +72,7 @@ packageJson: async (gez, pkg) => {
     'express': '^4.17.1'
   };
 
-  // Add publish configuration
+  // Add publishing configuration
   pkg.publishConfig = {
     registry: 'https://registry.example.com'
   };
@@ -88,11 +88,11 @@ A callback function for pre-bundling preparations.
 - Parameters:
   - `gez: Gez` - Gez instance
   - `pkg: Record<string, any>` - package.json content
-- Return: `Promise<void>`
+- Return Value: `Promise<void>`
 
 Common Use Cases:
 - Add additional files (README, LICENSE, etc.)
-- Execute tests or build validation
+- Execute tests or build validations
 - Generate documentation or metadata
 - Clean up temporary files
 
@@ -122,13 +122,13 @@ A callback function for post-bundling processing. Called after the .tgz file is 
   - `gez: Gez` - Gez instance
   - `pkg: Record<string, any>` - package.json content
   - `file: Buffer` - Bundled file content
-- Return: `Promise<void>`
+- Return Value: `Promise<void>`
 
 Common Use Cases:
 - Publish to npm registry (public or private)
-- Upload to static asset server
+- Upload to static resource server
 - Perform version management
-- Trigger CI/CD pipeline
+- Trigger CI/CD workflows
 
 Example:
 ```ts
@@ -138,7 +138,7 @@ onAfter: async (gez, pkg, file) => {
     registry: 'https://registry.example.com'
   });
 
-  // Upload to static asset server
+  // Upload to static resource server
   await uploadToServer(file, 'https://assets.example.com/packages');
 
   // Create version tag
@@ -156,7 +156,7 @@ import type { GezOptions } from '@gez/core';
 
 export default {
   modules: {
-    // Configure modules to export
+    // Configure modules to be exported
     exports: [
       'root:src/components/button.vue',
       'root:src/utils/format.ts',

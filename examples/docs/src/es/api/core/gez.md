@@ -1,6 +1,6 @@
 ---
 titleSuffix: Referencia de API de las clases principales del framework
-description: Documentación detallada de la API de las clases principales del framework Gez, incluyendo la gestión del ciclo de vida de la aplicación, el manejo de recursos estáticos y la capacidad de renderizado en el servidor, para ayudar a los desarrolladores a comprender en profundidad las funcionalidades centrales del framework.
+description: Documentación detallada de las API de las clases principales del framework Gez, incluyendo la gestión del ciclo de vida de la aplicación, el manejo de recursos estáticos y la capacidad de renderizado en el servidor, para ayudar a los desarrolladores a comprender en profundidad las funcionalidades centrales del framework.
 head:
   - - meta
     - property: keywords
@@ -96,7 +96,7 @@ interface GezOptions {
 - **Tipo**: `string`
 - **Valor predeterminado**: `process.cwd()`
 
-Ruta del directorio raíz del proyecto. Puede ser una ruta absoluta o relativa, las rutas relativas se resuelven en base al directorio de trabajo actual.
+Ruta del directorio raíz del proyecto. Puede ser una ruta absoluta o relativa, las rutas relativas se resuelven basándose en el directorio de trabajo actual.
 
 #### isProd
 
@@ -112,7 +112,7 @@ Identificador de entorno.
 - **Tipo**: `string | false`
 - **Valor predeterminado**: `'[[[___GEZ_DYNAMIC_BASE___]]]'`
 
-Configuración del marcador de posición de la ruta base. Se utiliza para reemplazar dinámicamente la ruta base de los recursos en tiempo de ejecución. Configurar como `false` desactiva esta funcionalidad.
+Configuración del marcador de posición de la ruta base. Se utiliza para reemplazar dinámicamente la ruta base de los recursos en tiempo de ejecución. Establecerlo en `false` desactiva esta funcionalidad.
 
 #### modules
 
@@ -124,7 +124,7 @@ Opciones de configuración de módulos. Se utiliza para configurar las reglas de
 
 - **Tipo**: `PackConfig`
 
-Opciones de configuración de empaquetado. Se utiliza para empaquetar los artefactos de construcción en paquetes de software en formato .tgz estándar de npm.
+Opciones de configuración de empaquetado. Se utiliza para empaquetar los artefactos de construcción en paquetes de software estándar en formato .tgz de npm.
 
 #### devApp
 
@@ -186,7 +186,7 @@ Función de procesamiento posterior a la construcción. Se ejecuta después de c
 - **Tipo**: `string`
 - **Solo lectura**: `true`
 
-Nombre del módulo actual, obtenido de la configuración del módulo.
+Nombre del módulo actual, derivado de la configuración del módulo.
 
 ### varName
 
@@ -200,14 +200,14 @@ Nombre de variable JavaScript válido generado a partir del nombre del módulo.
 - **Tipo**: `string`
 - **Solo lectura**: `true`
 
-Ruta absoluta del directorio raíz del proyecto. Si la configuración de `root` es una ruta relativa, se resuelve en base al directorio de trabajo actual.
+Ruta absoluta del directorio raíz del proyecto. Si la configuración de `root` es una ruta relativa, se resuelve basándose en el directorio de trabajo actual.
 
 ### isProd
 
 - **Tipo**: `boolean`
 - **Solo lectura**: `true`
 
-Determina si el entorno actual es de producción. Prioriza el uso de `isProd` en las opciones de configuración, si no está configurado, se determina según `process.env.NODE_ENV`.
+Determina si el entorno actual es de producción. Prioriza el uso de la opción de configuración `isProd`, si no está configurado, se determina según `process.env.NODE_ENV`.
 
 ### basePath
 
@@ -222,7 +222,7 @@ Obtiene la ruta base del módulo que comienza y termina con una barra diagonal. 
 - **Tipo**: `string`
 - **Solo lectura**: `true`
 
-Obtiene el marcador de posición de la ruta base para reemplazo dinámico en tiempo de ejecución. Se puede desactivar mediante configuración.
+Obtiene el marcador de posición de la ruta base utilizado para el reemplazo dinámico en tiempo de ejecución. Se puede desactivar mediante configuración.
 
 ### middleware
 
@@ -249,7 +249,7 @@ const server = http.createServer((req, res) => {
 
 Obtiene la función de renderizado en el servidor. Proporciona diferentes implementaciones según el entorno:
 - Entorno de desarrollo: Soporta actualización en caliente y vista previa en tiempo real.
-- Entorno de producción: Proporciona rendimiento de renderizado optimizado.
+- Entorno de producción: Proporciona un rendimiento de renderizado optimizado.
 
 ```ts
 // Uso básico
@@ -314,17 +314,17 @@ const gez = new Gez({
 - **Parámetros**: `command: COMMAND`
 - **Retorna**: `Promise<boolean>`
 - **Lanza**:
-  - `Error`: Cuando se inicializa repetidamente.
+  - `Error`: Cuando se intenta inicializar repetidamente.
   - `NotReadyError`: Cuando se accede a una instancia no inicializada.
 
 Inicializa la instancia del framework Gez. Ejecuta los siguientes procesos centrales de inicialización:
 
-1. Resuelve la configuración del proyecto (package.json, configuración de módulos, configuración de empaquetado, etc.).
+1. Analiza la configuración del proyecto (package.json, configuración de módulos, configuración de empaquetado, etc.).
 2. Crea la instancia de la aplicación (entorno de desarrollo o producción).
 3. Ejecuta los métodos del ciclo de vida correspondientes según el comando.
 
 ::: warning Nota
-- Lanza un error si se inicializa repetidamente.
+- Lanza un error si se intenta inicializar repetidamente.
 - Lanza `NotReadyError` si se accede a una instancia no inicializada.
 
 :::
@@ -342,7 +342,7 @@ await gez.init(COMMAND.dev);
 
 - **Retorna**: `Promise<boolean>`
 
-Destruye la instancia del framework Gez, ejecuta operaciones de limpieza de recursos y cierre de conexiones. Principalmente utilizado para:
+Destruye la instancia del framework Gez, ejecuta la limpieza de recursos y el cierre de conexiones. Principalmente utilizado para:
 - Cerrar el servidor de desarrollo.
 - Limpiar archivos temporales y caché.
 - Liberar recursos del sistema.
@@ -446,7 +446,7 @@ export default {
 
 ### resolvePath
 
-Resuelve la ruta del proyecto, convierte rutas relativas en absolutas.
+Resuelve las rutas del proyecto, convierte rutas relativas en absolutas.
 
 - **Parámetros**:
   - `projectPath: ProjectPath` - Tipo de ruta del proyecto.
@@ -465,7 +465,7 @@ Escribe sincrónicamente el contenido de un archivo.
 
 - **Parámetros**:
   - `filepath`: `string` - Ruta absoluta del archivo.
-  - `data`: `any` - Datos a escribir, pueden ser cadena, Buffer u objeto.
+  - `data`: `any` - Datos a escribir, pueden ser cadenas, Buffer u objetos.
 - **Retorna**: `boolean` - Indica si la escritura fue exitosa.
 
 - **Ejemplo**:
@@ -485,7 +485,7 @@ Lee y analiza sincrónicamente un archivo JSON.
   - `filename`: `string` - Ruta absoluta del archivo JSON.
 
 - **Retorna**: `any` - Objeto JSON analizado.
-- **Excepción**: Lanza una excepción si el archivo no existe o el formato JSON es incorrecto.
+- **Excepciones**: Lanza una excepción si el archivo no existe o si el formato JSON es incorrecto.
 
 - **Ejemplo**:
 ```ts title="src/entry.node.ts"
@@ -503,7 +503,7 @@ Lee y analiza asincrónicamente un archivo JSON.
   - `filename`: `string` - Ruta absoluta del archivo JSON.
 
 - **Retorna**: `Promise<any>` - Objeto JSON analizado.
-- **Excepción**: Lanza una excepción si el archivo no existe o el formato JSON es incorrecto.
+- **Excepciones**: Lanza una excepción si el archivo no existe o si el formato JSON es incorrecto.
 
 - **Ejemplo**:
 ```ts title="src/entry.node.ts"
@@ -523,7 +523,7 @@ Obtiene la lista de manifiestos de construcción.
     - `'server'`: Entorno del servidor.
 
 - **Retorna**: `Promise<readonly ManifestJson[]>` - Lista de manifiestos de construcción de solo lectura.
-- **Excepción**: Lanza `NotReadyError` si la instancia del framework no está inicializada.
+- **Excepciones**: Lanza `NotReadyError` si la instancia del framework no está inicializada.
 
 Este método se utiliza para obtener la lista de manifiestos de construcción para el entorno objetivo especificado, incluyendo las siguientes funcionalidades:
 1. **Gestión de caché**
@@ -535,5 +535,4 @@ Este método se utiliza para obtener la lista de manifiestos de construcción pa
    - Retorna la información de manifiesto correspondiente según el entorno objetivo.
 
 3. **Mapeo de módulos**
-   - Incluye información de exportación de módulos.
-   - Regist
+   - Incluye información

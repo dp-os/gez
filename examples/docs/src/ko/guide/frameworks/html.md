@@ -1,6 +1,6 @@
 ---
 titleSuffix: Gez 프레임워크 HTML SSR 애플리케이션 예제
-description: Gez를 기반으로 HTML SSR 애플리케이션을 처음부터 구축하는 방법을 보여주는 예제입니다. 프로젝트 초기화, HTML 설정 및 진입점 파일 설정을 포함한 프레임워크의 기본 사용법을 다룹니다.
+description: Gez 기반의 HTML SSR 애플리케이션을 처음부터 구축하는 방법을 보여주는 예제입니다. 프로젝트 초기화, HTML 설정 및 진입 파일 설정을 포함한 프레임워크의 기본 사용법을 다룹니다.
 head:
   - - meta
     - property: keywords
@@ -9,7 +9,7 @@ head:
 
 # HTML
 
-이 튜토리얼은 Gez를 기반으로 한 HTML SSR 애플리케이션을 처음부터 구축하는 방법을 안내합니다. Gez 프레임워크를 사용하여 서버 사이드 렌더링 애플리케이션을 만드는 방법을 완전한 예제를 통해 보여드리겠습니다.
+이 튜토리얼은 Gez 기반의 HTML SSR 애플리케이션을 처음부터 구축하는 방법을 안내합니다. Gez 프레임워크를 사용하여 서버 사이드 렌더링 애플리케이션을 만드는 방법을 완전한 예제를 통해 보여드리겠습니다.
 
 ## 프로젝트 구조
 
@@ -22,9 +22,9 @@ head:
 └── src                  # 소스 코드 디렉토리
     ├── app.ts           # 메인 애플리케이션 컴포넌트, 페이지 구조 및 상호작용 로직 정의
     ├── create-app.ts    # 애플리케이션 인스턴스 생성 팩토리, 애플리케이션 초기화 담당
-    ├── entry.client.ts  # 클라이언트 진입점 파일, 브라우저 측 렌더링 처리
-    ├── entry.node.ts    # Node.js 서버 진입점 파일, 개발 환경 설정 및 서버 시작 담당
-    └── entry.server.ts  # 서버 진입점 파일, SSR 렌더링 로직 처리
+    ├── entry.client.ts  # 클라이언트 진입 파일, 브라우저 측 렌더링 처리
+    ├── entry.node.ts    # Node.js 서버 진입 파일, 개발 환경 설정 및 서버 시작 담당
+    └── entry.server.ts  # 서버 진입 파일, SSR 렌더링 로직 처리
 ```
 
 ## 프로젝트 설정
@@ -123,7 +123,7 @@ export default class App {
 
     /**
      * 애플리케이션 인스턴스 생성
-     * @param {SsrContext} [ssrContext] - 서버 사이드 컨텍스트, 가져온 메타데이터 집합 포함
+     * @param {SsrContext} [ssrContext] - 서버 사이드 컨텍스트, 가져오기 메타데이터 집합 포함
      */
     public constructor(public ssrContext?: SsrContext) {
         // 생성자에서 추가 초기화가 필요하지 않음
@@ -134,7 +134,7 @@ export default class App {
      * @returns {string} 페이지 HTML 구조 반환
      */
     public render(): string {
-        // 서버 사이드 환경에서 가져온 메타데이터를 올바르게 수집
+        // 서버 사이드 환경에서 가져오기 메타데이터를 올바르게 수집
         if (this.ssrContext) {
             this.ssrContext.importMetaSet.add(import.meta);
         }
@@ -155,7 +155,7 @@ export default class App {
         // 시간 표시 요소 가져오기
         const time = document.querySelector('#app time');
         if (!time) {
-            throw new Error('시간 표시 요소를 찾을 수 없습니다.');
+            throw new Error('시간 표시 요소를 찾을 수 없습니다');
         }
 
         // 1초마다 시간 업데이트
@@ -180,7 +180,7 @@ export default class App {
  */
 export interface SsrContext {
     /**
-     * 가져온 메타데이터 집합
+     * 가져오기 메타데이터 집합
      * @type {Set<ImportMeta>}
      */
     importMetaSet: Set<ImportMeta>;
@@ -209,11 +209,11 @@ export function createApp() {
 
 ### entry.client.ts
 
-클라이언트 진입점 파일 `src/entry.client.ts`를 생성합니다:
+클라이언트 진입 파일 `src/entry.client.ts`를 생성합니다:
 
 ```ts title="src/entry.client.ts"
 /**
- * @file 클라이언트 진입점 파일
+ * @file 클라이언트 진입 파일
  * @description 클라이언트 상호작용 로직 및 동적 업데이트 담당
  */
 
@@ -230,7 +230,7 @@ app.onClient();
 
 ```ts title="src/entry.node.ts"
 /**
- * @file Node.js 서버 진입점 파일
+ * @file Node.js 서버 진입 파일
  * @description 개발 환경 설정 및 서버 시작 담당, SSR 런타임 환경 제공
  */
 
@@ -239,10 +239,10 @@ import type { GezOptions } from '@gez/core';
 
 export default {
     /**
-     * 개발 환경 애플리케이션 생성기 설정
-     * @description Rspack 애플리케이션 인스턴스 생성 및 설정, 개발 환경 빌드 및 핫 리로드 지원
-     * @param gez Gez 프레임워크 인스턴스, 코어 기능 및 설정 인터페이스 제공
-     * @returns HMR 및 실시간 미리보기를 지원하는 설정된 Rspack 애플리케이션 인스턴스 반환
+     * 개발 환경 애플리케이션 생성기 구성
+     * @description Rspack 애플리케이션 인스턴스 생성 및 구성, 개발 환경 빌드 및 핫 리로드 지원
+     * @param gez Gez 프레임워크 인스턴스, 핵심 기능 및 설정 인터페이스 제공
+     * @returns HMR 및 실시간 미리보기를 지원하는 구성된 Rspack 애플리케이션 인스턴스 반환
      */
     async devApp(gez) {
         return import('@gez/rspack').then((m) =>
@@ -255,7 +255,7 @@ export default {
     },
 
     /**
-     * HTTP 서버 설정 및 시작
+     * HTTP 서버 구성 및 시작
      * @description HTTP 서버 인스턴스 생성, Gez 미들웨어 통합, SSR 요청 처리
      * @param gez Gez 프레임워크 인스턴스, 미들웨어 및 렌더링 기능 제공
      */
@@ -278,18 +278,18 @@ export default {
 } satisfies GezOptions;
 ```
 
-이 파일은 개발 환경 설정 및 서버 시작을 위한 진입점 파일로, 두 가지 주요 기능을 포함합니다:
+이 파일은 개발 환경 설정 및 서버 시작을 위한 진입 파일로, 두 가지 핵심 기능을 포함합니다:
 
-1. `devApp` 함수: 개발 환경의 Rspack 애플리케이션 인스턴스를 생성 및 설정하며, 핫 리로드 및 실시간 미리보기 기능을 지원합니다.
-2. `server` 함수: HTTP 서버를 생성 및 설정하고, Gez 미들웨어를 통합하여 SSR 요청을 처리합니다.
+1. `devApp` 함수: 개발 환경의 Rspack 애플리케이션 인스턴스를 생성 및 구성하며, 핫 리로드 및 실시간 미리보기 기능을 지원합니다.
+2. `server` 함수: HTTP 서버를 생성 및 구성하고, Gez 미들웨어를 통합하여 SSR 요청을 처리합니다.
 
 ### entry.server.ts
 
-서버 사이드 렌더링 진입점 파일 `src/entry.server.ts`를 생성합니다:
+서버 사이드 렌더링 진입 파일 `src/entry.server.ts`를 생성합니다:
 
 ```ts title="src/entry.server.ts"
 /**
- * @file 서버 사이드 렌더링 진입점 파일
+ * @file 서버 사이드 렌더링 진입 파일
  * @description 서버 사이드 렌더링 프로세스, HTML 생성 및 리소스 주입 담당
  */
 
@@ -317,12 +317,12 @@ export default async (rc: RenderContext) => {
         importMetaSet: rc.importMetaSet
     });
 
-    // 의존성 수집 제출, 모든 필수 리소스가 로드되었는지 확인
+    // 의존성 수집 제출, 모든 필수 리소스가 로드되도록 보장
     await rc.commit();
 
     // 완전한 HTML 구조 생성
     rc.html = `<!DOCTYPE html>
-<html lang="ko-KR">
+<html lang="ko">
 <head>
     ${rc.preload()}
     <title>Gez 빠른 시작</title>
@@ -341,7 +341,7 @@ export default async (rc: RenderContext) => {
 
 ## 프로젝트 실행
 
-위 파일 설정을 완료한 후, 다음 명령어를 사용하여 프로젝트를 실행할 수 있습니다:
+위의 파일 설정을 완료한 후, 다음 명령어를 사용하여 프로젝트를 실행할 수 있습니다:
 
 1. 개발 모드:
 ```bash
@@ -358,4 +358,4 @@ npm run build
 npm run start
 ```
 
-이제 Gez를 기반으로 한 HTML SSR 애플리케이션을 성공적으로 생성했습니다! http://localhost:3000 에 접속하여 결과를 확인할 수 있습니다.
+이제 Gez 기반의 HTML SSR 애플리케이션을 성공적으로 생성했습니다! http://localhost:3000 에 접속하여 결과를 확인할 수 있습니다.

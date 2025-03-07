@@ -1,6 +1,6 @@
 ---
 titleSuffix: Guide de mappage des chemins d'importation des modules du framework Gez
-description: Détaille le mécanisme d'alias de chemin du framework Gez, y compris la simplification des chemins d'importation, l'évitement des imbrications profondes, la sécurité des types et l'optimisation de la résolution des modules, pour aider les développeurs à améliorer la maintenabilité du code.
+description: Détaille le mécanisme d'alias de chemin du framework Gez, y compris la simplification des chemins d'importation, l'évitement des imbrications profondes, la sécurité des types et l'optimisation de la résolution des modules, aidant les développeurs à améliorer la maintenabilité du code.
 head:
   - - meta
     - property: keywords
@@ -18,18 +18,18 @@ L'alias de chemin (Path Alias) est un mécanisme de mappage des chemins d'import
 
 ## Mécanisme d'alias par défaut
 
-Gez utilise un mécanisme d'alias automatique basé sur le nom du service (Service Name), cette conception basée sur des conventions plutôt que sur la configuration présente les caractéristiques suivantes :
+Gez utilise un mécanisme d'alias automatique basé sur le nom du service (Service Name). Cette conception basée sur des conventions plutôt que sur la configuration présente les caractéristiques suivantes :
 
 - **Configuration automatique** : Génération automatique d'alias basée sur le champ `name` dans `package.json`, sans configuration manuelle
 - **Uniformité des normes** : Assure que tous les modules de service suivent une norme de nommage et de référence cohérente
 - **Support des types** : En combinaison avec la commande `npm run build:dts`, génère automatiquement des fichiers de déclaration de types, permettant une inférence de types entre services
-- **Prédictibilité** : Permet de déduire le chemin de référence du module à partir du nom du service, réduisant les coûts de maintenance
+- **Prédictibilité** : Permet de déduire le chemin de référence d'un module à partir du nom du service, réduisant les coûts de maintenance
 
 ## Configuration
 
 ### Configuration de package.json
 
-Dans `package.json`, définissez le nom du service via le champ `name`, ce nom servira de préfixe d'alias par défaut pour le service :
+Dans `package.json`, définissez le nom du service via le champ `name`. Ce nom servira de préfixe d'alias par défaut pour le service :
 
 ```json title="package.json"
 {
@@ -100,7 +100,7 @@ import type { UserInfo } from 'your-app-name/src/types';
 
 ### Importation inter-services
 
-Lorsque la liaison de modules (Module Link) est configurée, vous pouvez utiliser la même méthode pour importer des modules d'autres services :
+Lorsque la liaison de modules (Module Link) est configurée, vous pouvez importer des modules d'autres services de la même manière :
 
 ```ts
 // Importation d'un composant d'un service distant
@@ -112,7 +112,7 @@ import { logger } from 'remote-service/src/utils';
 
 ### Alias personnalisés
 
-Pour les packages tiers ou des scénarios spécifiques, vous pouvez personnaliser les alias via le fichier de configuration Gez :
+Pour les packages tiers ou des scénarios spécifiques, vous pouvez personnaliser les alias via le fichier de configuration de Gez :
 
 ```ts title="src/entry.node.ts"
 export default {
@@ -123,9 +123,9 @@ export default {
                     ...buildContext.config.resolve,
                     alias: {
                         ...buildContext.config.resolve?.alias,
-                        // Configuration d'une version de construction spécifique pour Vue
+                        // Configuration d'une version spécifique de Vue pour la construction
                         'vue$': 'vue/dist/vue.esm.js',
-                        // Configuration d'alias courts pour les répertoires fréquemment utilisés
+                        // Configuration d'alias courts pour des répertoires fréquemment utilisés
                         '@': './src',
                         '@components': './src/components'
                     }
@@ -137,8 +137,8 @@ export default {
 ```
 
 ::: warning Remarques
-1. Pour les modules métier, il est recommandé d'utiliser toujours le mécanisme d'alias par défaut pour maintenir la cohérence du projet
-2. Les alias personnalisés sont principalement utilisés pour gérer les besoins spécifiques des packages tiers ou pour optimiser l'expérience de développement
+1. Pour les modules métier, il est recommandé de toujours utiliser le mécanisme d'alias par défaut pour maintenir la cohérence du projet
+2. Les alias personnalisés sont principalement utilisés pour gérer des besoins spécifiques de packages tiers ou pour optimiser l'expérience de développement
 3. Une utilisation excessive d'alias personnalisés peut affecter la maintenabilité du code et l'optimisation de la construction
 
 :::

@@ -1,29 +1,29 @@
 ---
-titleSuffix: Guia de Implementação de Renderização do Lado do Cliente no Framework Gez
-description: Detalha o mecanismo de renderização do lado do cliente no framework Gez, incluindo construção estática, estratégias de implantação e melhores práticas, ajudando desenvolvedores a alcançar renderização front-end eficiente em ambientes sem servidor.
+titleSuffix: Guia de Implementação de Renderização no Cliente do Framework Gez
+description: Detalha o mecanismo de renderização no cliente do framework Gez, incluindo construção estática, estratégias de implantação e melhores práticas, ajudando desenvolvedores a alcançar renderização front-end eficiente em ambientes sem servidor.
 head:
   - - meta
     - property: keywords
-      content: Gez, Renderização do Lado do Cliente, CSR, Construção Estática, Renderização Front-end, Implantação Sem Servidor, Otimização de Desempenho
+      content: Gez, Renderização no Cliente, CSR, Construção Estática, Renderização Front-end, Implantação sem Servidor, Otimização de Desempenho
 ---
 
-# Renderização do Lado do Cliente
+# Renderização no Cliente
 
-A Renderização do Lado do Cliente (Client-Side Rendering, CSR) é uma técnica de renderização de páginas executada no navegador. No Gez, quando sua aplicação não pode ser implantada em uma instância de servidor Node.js, você pode optar por gerar um arquivo `index.html` estático durante a fase de construção, implementando assim a renderização puramente do lado do cliente.
+A renderização no cliente (Client-Side Rendering, CSR) é uma técnica de renderização de páginas executada no navegador. No Gez, quando sua aplicação não pode ser implantada em uma instância de servidor Node.js, você pode optar por gerar um arquivo estático `index.html` na fase de construção, implementando a renderização puramente no cliente.
 
 ## Cenários de Uso
 
-Os seguintes cenários recomendam o uso da renderização do lado do cliente:
+Os seguintes cenários recomendam o uso de renderização no cliente:
 
-- **Ambientes de Hospedagem Estática**: como GitHub Pages, CDN e outros serviços de hospedagem que não suportam renderização do lado do servidor
-- **Aplicações Simples**: pequenas aplicações onde a velocidade de carregamento da primeira tela e SEO não são críticos
+- **Ambientes de Hospedagem Estática**: como GitHub Pages, CDN e outros serviços de hospedagem que não suportam renderização no servidor
+- **Aplicações Simples**: pequenas aplicações onde a velocidade de carregamento inicial e SEO não são prioridades
 - **Ambiente de Desenvolvimento**: para visualização e depuração rápida da aplicação durante o desenvolvimento
 
 ## Configuração
 
 ### Configuração do Modelo HTML
 
-No modo de renderização do lado do cliente, você precisa configurar um modelo HTML genérico. Este modelo servirá como contêiner para a aplicação, incluindo referências de recursos necessários e pontos de montagem.
+No modo de renderização no cliente, você precisa configurar um modelo HTML genérico. Este modelo servirá como contêiner para a aplicação, incluindo referências de recursos necessários e pontos de montagem.
 
 ```ts title="src/entry.server.ts"
 import type { RenderContext } from '@gez/core';
@@ -54,7 +54,7 @@ export default async (rc: RenderContext) => {
 
 ### Geração de HTML Estático
 
-Para usar a renderização do lado do cliente em um ambiente de produção, é necessário gerar um arquivo HTML estático durante a fase de construção. O Gez fornece uma função de gancho `postBuild` para implementar essa funcionalidade:
+Para usar a renderização no cliente em ambiente de produção, é necessário gerar um arquivo HTML estático na fase de construção. O Gez fornece uma função de gancho `postBuild` para implementar esta funcionalidade:
 
 ```ts title="src/entry.node.ts"
 import type { GezOptions } from '@gez/core';

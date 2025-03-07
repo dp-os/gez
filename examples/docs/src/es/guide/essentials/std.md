@@ -4,7 +4,7 @@ description: Descripción detallada de la estructura estándar del proyecto, nor
 head:
   - - meta
     - property: keywords
-      content: Gez, Estructura del proyecto, Archivos de entrada, Normas de configuración, Framework SSR, TypeScript, Normas del proyecto, Estándares de desarrollo
+      content: Gez, Estructura del Proyecto, Archivos de Entrada, Normas de Configuración, Framework SSR, TypeScript, Normas del Proyecto, Estándares de Desarrollo
 ---
 
 # Normas Estándar
@@ -26,7 +26,7 @@ root
 │  │  ├─ versions        # Directorio de almacenamiento de versiones
 │  │  │  └─ latest.tgz   # Archivo comprimido del directorio dist, para distribución del paquete
 │  │  └─ manifest.json   # Salida del manifiesto de compilación, utilizado para generar importmap
-│  └─ src                # Archivos generados con tsc
+│  └─ src                # Archivos generados por tsc
 ├─ src
 │  ├─ entry.server.ts    # Punto de entrada de la aplicación del servidor
 │  ├─ entry.client.ts    # Punto de entrada de la aplicación del cliente
@@ -47,13 +47,13 @@ root
 ### entry.client.ts
 El archivo de entrada del cliente es responsable de:
 - **Inicializar la aplicación**: Configurar los ajustes básicos de la aplicación del cliente
-- **Gestión de rutas**: Manejar las rutas y la navegación del cliente
+- **Gestión de rutas**: Manejar las rutas y navegación del cliente
 - **Gestión de estado**: Implementar el almacenamiento y actualización del estado del cliente
 - **Manejo de interacciones**: Gestionar eventos del usuario e interacciones de la interfaz
 
 ### entry.server.ts
 El archivo de entrada del servidor es responsable de:
-- **Renderizado del servidor (SSR)**: Ejecutar el proceso de renderizado SSR
+- **Renderizado del servidor**: Ejecutar el proceso de renderizado SSR
 - **Generación de HTML**: Construir la estructura inicial de la página
 - **Precarga de datos**: Manejar la obtención de datos en el servidor
 - **Inyección de estado**: Transferir el estado del servidor al cliente
@@ -62,8 +62,8 @@ El archivo de entrada del servidor es responsable de:
 ### entry.node.ts
 El archivo de entrada del servidor Node.js es responsable de:
 - **Configuración del servidor**: Establecer los parámetros del servidor HTTP
-- **Manejo de rutas**: Gestionar las reglas de ruta del servidor
-- **Integración de middleware**: Configurar el middleware del servidor
+- **Manejo de rutas**: Gestionar las reglas de rutas del servidor
+- **Integración de middleware**: Configurar middleware del servidor
 - **Gestión del entorno**: Manejar variables de entorno y configuraciones
 - **Respuesta a solicitudes**: Manejar solicitudes y respuestas HTTP
 

@@ -1,46 +1,46 @@
 ---
-titleSuffix: Mecanismo de Compartición de Código entre Servicios en el Framework Gez
-description: Explicación detallada del mecanismo de enlace de módulos en el framework Gez, incluyendo la compartición de código entre servicios, gestión de dependencias e implementación de la especificación ESM, para ayudar a los desarrolladores a construir aplicaciones de microfrontend eficientes.
+titleSuffix: Mecanismo de compartición de código entre servicios en el marco Gez
+description: Explicación detallada del mecanismo de enlace de módulos del marco Gez, incluyendo la compartición de código entre servicios, gestión de dependencias e implementación de la especificación ESM, para ayudar a los desarrolladores a construir aplicaciones de microfrontend eficientes.
 head:
   - - meta
     - property: keywords
-      content: Gez, Enlace de Módulos, Module Link, ESM, Compartición de Código, Gestión de Dependencias, Microfrontend
+      content: Gez, enlace de módulos, Module Link, ESM, compartición de código, gestión de dependencias, microfrontend
 ---
 
 # Enlace de Módulos
 
-El framework Gez proporciona un mecanismo completo de enlace de módulos para gestionar la compartición de código y las dependencias entre servicios. Este mecanismo se basa en la especificación ESM (ECMAScript Module) y soporta la exportación e importación de módulos a nivel de código fuente, así como una gestión completa de dependencias.
+El marco Gez proporciona un mecanismo completo de enlace de módulos para gestionar la compartición de código y las dependencias entre servicios. Este mecanismo se basa en la especificación ESM (ECMAScript Module), soportando la exportación e importación de módulos a nivel de código fuente, así como funciones completas de gestión de dependencias.
 
 ### Conceptos Clave
 
 #### Exportación de Módulos
-La exportación de módulos es el proceso de exponer unidades de código específicas (como componentes, funciones de utilidad, etc.) en un servicio en formato ESM. Soporta dos tipos de exportación:
-- **Exportación de Código Fuente**: Exporta directamente archivos de código fuente del proyecto.
-- **Exportación de Dependencias**: Exporta paquetes de dependencias de terceros utilizados en el proyecto.
+La exportación de módulos es el proceso de exponer unidades de código específicas (como componentes, funciones de utilidad, etc.) de un servicio en formato ESM. Soporta dos tipos de exportación:
+- **Exportación de código fuente**: Exporta directamente archivos de código fuente del proyecto
+- **Exportación de dependencias**: Exporta paquetes de dependencias de terceros utilizados en el proyecto
 
 #### Importación de Módulos
-La importación de módulos es el proceso de referenciar unidades de código exportadas por otros servicios en un servicio. Soporta múltiples métodos de instalación:
-- **Instalación de Código Fuente**: Adecuado para entornos de desarrollo, soporta modificaciones en tiempo real y actualización en caliente.
-- **Instalación de Paquetes**: Adecuado para entornos de producción, utiliza directamente los artefactos de construcción.
+La importación de módulos es el proceso de referenciar unidades de código exportadas por otros servicios dentro de un servicio. Soporta múltiples métodos de instalación:
+- **Instalación de código fuente**: Adecuado para entornos de desarrollo, soporta modificaciones en tiempo real y actualización en caliente
+- **Instalación de paquetes**: Adecuado para entornos de producción, utiliza directamente los artefactos de construcción
 
 ### Mecanismo de Precarga
 
 Para optimizar el rendimiento de los servicios, Gez implementa un mecanismo inteligente de precarga de módulos:
 
 1. **Análisis de Dependencias**
-   - Analiza las dependencias entre componentes durante la construcción.
-   - Identifica los módulos clave en la ruta crítica.
-   - Determina la prioridad de carga de los módulos.
+   - Analiza las dependencias entre componentes durante la construcción
+   - Identifica los módulos clave en la ruta crítica
+   - Determina la prioridad de carga de los módulos
 
 2. **Estrategia de Carga**
-   - **Carga Inmediata**: Módulos clave en la ruta crítica.
-   - **Carga Diferida**: Módulos de funcionalidades no críticas.
-   - **Carga bajo Demanda**: Módulos que se renderizan condicionalmente.
+   - **Carga inmediata**: Módulos clave en la ruta crítica
+   - **Carga diferida**: Módulos de funcionalidades no críticas
+   - **Carga bajo demanda**: Módulos que se renderizan condicionalmente
 
 3. **Optimización de Recursos**
-   - Estrategia inteligente de división de código.
-   - Gestión de caché a nivel de módulo.
-   - Compilación y empaquetado bajo demanda.
+   - Estrategia inteligente de división de código
+   - Gestión de caché a nivel de módulo
+   - Compilación y empaquetado bajo demanda
 
 ## Exportación de Módulos
 
@@ -58,7 +58,7 @@ export default {
             'root:src/components/button.vue',  // Componente Vue
             'root:src/utils/format.ts',        // Función de utilidad
             // Exportar dependencias de terceros
-            'npm:vue',                         // Framework Vue
+            'npm:vue',                         // Marco Vue
             'npm:vue-router'                   // Vue Router
         ]
     }
@@ -66,8 +66,8 @@ export default {
 ```
 
 La configuración de exportación soporta dos tipos:
-- `root:*`: Exporta archivos de código fuente, la ruta es relativa al directorio raíz del proyecto.
-- `npm:*`: Exporta dependencias de terceros, especifica directamente el nombre del paquete.
+- `root:*`: Exporta archivos de código fuente, la ruta es relativa al directorio raíz del proyecto
+- `npm:*`: Exporta dependencias de terceros, especifica directamente el nombre del paquete
 
 ## Importación de Módulos
 
@@ -97,15 +97,15 @@ export default {
 } satisfies GezOptions;
 ```
 
-Explicación de la configuración:
-1. **imports**: Configura la ruta local de los módulos remotos.
-   - Instalación de código fuente: apunta al directorio de artefactos de construcción (dist).
-   - Instalación de paquetes: apunta directamente al directorio del paquete.
+Explicación de las opciones de configuración:
+1. **imports**: Configura la ruta local de los módulos remotos
+   - Instalación de código fuente: apunta al directorio de artefactos de construcción (dist)
+   - Instalación de paquetes: apunta directamente al directorio del paquete
 
-2. **externals**: Configura dependencias externas.
-   - Para compartir dependencias de módulos remotos.
-   - Evita empaquetar dependencias duplicadas.
-   - Soporta compartir dependencias entre múltiples módulos.
+2. **externals**: Configura dependencias externas
+   - Para compartir dependencias de módulos remotos
+   - Evita empaquetar dependencias duplicadas
+   - Soporta compartir dependencias entre múltiples módulos
 
 ### Métodos de Instalación
 
@@ -113,7 +113,7 @@ Explicación de la configuración:
 Adecuado para entornos de desarrollo, soporta modificaciones en tiempo real y actualización en caliente.
 
 1. **Modo Workspace**
-Recomendado para proyectos en Monorepo:
+Recomendado para proyectos Monorepo:
 ```ts title="package.json"
 {
     "devDependencies": {
@@ -123,7 +123,7 @@ Recomendado para proyectos en Monorepo:
 ```
 
 2. **Modo Link**
-Para depuración local:
+Para depuración en desarrollo local:
 ```ts title="package.json"
 {
     "devDependencies": {
@@ -136,7 +136,7 @@ Para depuración local:
 Adecuado para entornos de producción, utiliza directamente los artefactos de construcción.
 
 1. **Registro NPM**
-Instalación a través del registro de npm:
+Instalación a través del registro npm:
 ```ts title="package.json"
 {
     "dependencies": {
@@ -234,34 +234,33 @@ npm publish dist/versions/your-app-name.tgz
 
 ### Configuración de Entorno de Desarrollo
 - **Gestión de Dependencias**
-  - Usar el modo Workspace o Link para instalar dependencias.
-  - Gestionar uniformemente las versiones de dependencias.
-  - Evitar instalar dependencias duplicadas.
+  - Usar el modo Workspace o Link para instalar dependencias
+  - Gestionar versiones de dependencias de manera unificada
+  - Evitar instalar dependencias duplicadas
 
 - **Experiencia de Desarrollo**
-  - Habilitar la función de actualización en caliente.
-  - Configurar una estrategia de precarga adecuada.
-  - Optimizar la velocidad de construcción.
+  - Habilitar la función de actualización en caliente
+  - Configurar una estrategia de precarga adecuada
+  - Optimizar la velocidad de construcción
 
 ### Configuración de Entorno de Producción
 - **Estrategia de Despliegue**
-  - Usar el registro de npm o un servidor estático.
-  - Asegurar la integridad de los artefactos de construcción.
-  - Implementar un mecanismo de publicación gradual.
+  - Usar el registro NPM o un servidor estático
+  - Asegurar la integridad de los artefactos de construcción
+  - Implementar un mecanismo de publicación gradual
 
 - **Optimización de Rendimiento**
-  - Configurar adecuadamente la precarga de recursos.
-  - Optimizar el orden de carga de módulos.
-  - Implementar una estrategia de caché efectiva.
+  - Configurar adecuadamente la precarga de recursos
+  - Optimizar el orden de carga de módulos
+  - Implementar una estrategia de caché efectiva
 
 ### Gestión de Versiones
-- **Normas de Versión**
-  - Seguir la especificación de versiones semánticas.
-  - Mantener un registro detallado de cambios.
-  - Realizar pruebas de compatibilidad de versiones.
+- **Normativa de Versiones**
+  - Seguir la normativa de versionado semántico
+  - Mantener un registro detallado de cambios
+  - Realizar pruebas de compatibilidad de versiones
 
 - **Actualización de Dependencias**
-  - Actualizar paquetes de dependencias oportunamente.
-  - Realizar auditorías de seguridad periódicamente.
-  - Mantener la consistencia de versiones de dependencias.
-```
+  - Actualizar paquetes de dependencias oportunamente
+  - Realizar auditorías de seguridad periódicamente
+  - Mantener la consistencia de versiones de dependencias

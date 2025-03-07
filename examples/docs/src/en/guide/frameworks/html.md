@@ -1,6 +1,6 @@
 ---
 titleSuffix: Gez Framework HTML SSR Application Example
-description: Build a Gez-based HTML SSR application from scratch, demonstrating the framework's basic usage through examples, including project initialization, HTML configuration, and entry file setup.
+description: Build a Gez-based HTML SSR application from scratch. This example demonstrates the basic usage of the framework, including project initialization, HTML configuration, and entry file setup.
 head:
   - - meta
     - property: keywords
@@ -13,18 +13,18 @@ This tutorial will guide you through building a Gez-based HTML SSR application f
 
 ## Project Structure
 
-First, let's understand the basic structure of the project:
+First, let's understand the basic project structure:
 
 ```bash
 .
-├── package.json         # Project configuration file, defining dependencies and script commands
-├── tsconfig.json        # TypeScript configuration file, setting compilation options
+├── package.json         # Project configuration file, defines dependencies and script commands
+├── tsconfig.json        # TypeScript configuration file, sets compilation options
 └── src                  # Source code directory
-    ├── app.ts           # Main application component, defining page structure and interaction logic
+    ├── app.ts           # Main application component, defines page structure and interaction logic
     ├── create-app.ts    # Application instance factory, responsible for initializing the application
-    ├── entry.client.ts  # Client entry file, handling browser-side rendering
+    ├── entry.client.ts  # Client entry file, handles browser-side rendering
     ├── entry.node.ts    # Node.js server entry file, responsible for development environment configuration and server startup
-    └── entry.server.ts  # Server entry file, handling SSR rendering logic
+    └── entry.server.ts  # Server entry file, handles SSR rendering logic
 ```
 
 ## Project Configuration
@@ -58,7 +58,7 @@ Create the `package.json` file to configure project dependencies and scripts:
 }
 ```
 
-After creating the `package.json` file, you need to install the project dependencies. You can use any of the following commands to install them:
+After creating the `package.json` file, install the project dependencies using one of the following commands:
 ```bash
 pnpm install
 # or
@@ -106,7 +106,7 @@ Create the `tsconfig.json` file to configure TypeScript compilation options:
 
 ### app.ts
 
-Create the main application component `src/app.ts`, implementing the page structure and interaction logic:
+Create the main application component `src/app.ts` to implement page structure and interaction logic:
 
 ```ts title="src/app.ts"
 /**
@@ -123,15 +123,15 @@ export default class App {
 
     /**
      * Create application instance
-     * @param {SsrContext} [ssrContext] - Server-side context, containing import metadata collection
+     * @param {SsrContext} [ssrContext] - Server-side context containing import metadata collection
      */
     public constructor(public ssrContext?: SsrContext) {
-        // No additional initialization needed in the constructor
+        // No additional initialization needed in constructor
     }
 
     /**
      * Render page content
-     * @returns {string} Returns the page HTML structure
+     * @returns {string} Returns page HTML structure
      */
     public render(): string {
         // Ensure correct collection of import metadata in server-side environment
@@ -149,16 +149,16 @@ export default class App {
 
     /**
      * Client-side initialization
-     * @throws {Error} Throws an error if the time display element is not found
+     * @throws {Error} Throws error if time display element is not found
      */
     public onClient(): void {
-        // Get the time display element
+        // Get time display element
         const time = document.querySelector('#app time');
         if (!time) {
             throw new Error('Time display element not found');
         }
 
-        // Set a timer to update the time every second
+        // Set interval to update time every second
         setInterval(() => {
             this.time = new Date().toISOString();
             time.setAttribute('datetime', this.time);
@@ -189,7 +189,7 @@ export interface SsrContext {
 
 ### create-app.ts
 
-Create the `src/create-app.ts` file, responsible for creating the application instance:
+Create the `src/create-app.ts` file to handle application instance creation:
 
 ```ts title="src/create-app.ts"
 /**
@@ -214,7 +214,7 @@ Create the client entry file `src/entry.client.ts`:
 ```ts title="src/entry.client.ts"
 /**
  * @file Client Entry File
- * @description Responsible for client-side interaction logic and dynamic updates
+ * @description Handles client-side interaction logic and dynamic updates
  */
 
 import { createApp } from './create-app';
@@ -226,7 +226,7 @@ app.onClient();
 
 ### entry.node.ts
 
-Create the `entry.node.ts` file, configuring the development environment and server startup:
+Create the `entry.node.ts` file to configure the development environment and server startup:
 
 ```ts title="src/entry.node.ts"
 /**
@@ -242,7 +242,7 @@ export default {
      * Configure development environment application creator
      * @description Creates and configures Rspack application instance for development environment builds and hot updates
      * @param gez Gez framework instance, providing core functionality and configuration interfaces
-     * @returns Returns configured Rspack application instance, supporting HMR and live preview
+     * @returns Returns configured Rspack application instance with HMR and live preview support
      */
     async devApp(gez) {
         return import('@gez/rspack').then((m) =>
@@ -256,7 +256,7 @@ export default {
 
     /**
      * Configure and start HTTP server
-     * @description Creates HTTP server instance, integrates Gez middleware, handles SSR requests
+     * @description Creates HTTP server instance, integrates Gez middleware, and handles SSR requests
      * @param gez Gez framework instance, providing middleware and rendering functionality
      */
     async server(gez) {
@@ -278,7 +278,7 @@ export default {
 } satisfies GezOptions;
 ```
 
-This file is the entry point for development environment configuration and server startup, containing two core functions:
+This file serves as the entry point for development environment configuration and server startup, containing two core functions:
 
 1. `devApp` function: Responsible for creating and configuring the Rspack application instance for the development environment, supporting hot updates and live preview.
 2. `server` function: Responsible for creating and configuring the HTTP server, integrating Gez middleware to handle SSR requests.
@@ -290,7 +290,7 @@ Create the server-side rendering entry file `src/entry.server.ts`:
 ```ts title="src/entry.server.ts"
 /**
  * @file Server-Side Rendering Entry File
- * @description Responsible for server-side rendering process, HTML generation, and resource injection
+ * @description Handles server-side rendering process, HTML generation, and resource injection
  */
 
 import type { RenderContext } from '@gez/core';
@@ -300,7 +300,7 @@ import { createApp } from './create-app';
 
 // Encapsulate page content generation logic
 const renderToString = (app: App, ssrContext: SsrContext): string => {
-    // Inject server-side rendering context into the application instance
+    // Inject server-side rendering context into application instance
     app.ssrContext = ssrContext;
     // Initialize server-side
     app.onServer();
@@ -317,7 +317,7 @@ export default async (rc: RenderContext) => {
         importMetaSet: rc.importMetaSet
     });
 
-    // Commit dependency collection, ensuring all necessary resources are loaded
+    // Commit dependency collection to ensure all necessary resources are loaded
     await rc.commit();
 
     // Generate complete HTML structure
@@ -341,7 +341,7 @@ export default async (rc: RenderContext) => {
 
 ## Running the Project
 
-After completing the above file configurations, you can use the following commands to run the project:
+After completing the above file configurations, you can run the project using the following commands:
 
 1. Development mode:
 ```bash
@@ -358,4 +358,4 @@ npm run build
 npm run start
 ```
 
-Now, you have successfully created a Gez-based HTML SSR application! Visit http://localhost:3000 to see the result.
+Now, you've successfully created a Gez-based HTML SSR application! Visit http://localhost:3000 to see the result.

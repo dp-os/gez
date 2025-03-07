@@ -11,8 +11,8 @@ head:
 
 RenderContext es la clase principal del framework Gez, responsable de gestionar el ciclo de vida completo del renderizado del lado del servidor (SSR). Proporciona un conjunto completo de API para manejar el contexto de renderizado, la gestión de recursos, la sincronización de estado y otras tareas clave:
 
-- **Control de renderizado**: Gestiona el proceso de renderizado del lado del servidor, soportando escenarios como renderizado de múltiples entradas y renderizado condicional.
-- **Gestión de recursos**: Recopila e inyecta de manera inteligente recursos estáticos como JS, CSS, optimizando el rendimiento de carga.
+- **Control de renderizado**: Gestiona el flujo de renderizado del lado del servidor, soportando escenarios como renderizado de múltiples entradas y renderizado condicional.
+- **Gestión de recursos**: Recopila e inyecta inteligentemente recursos estáticos como JS, CSS, optimizando el rendimiento de carga.
 - **Sincronización de estado**: Maneja la serialización del estado del servidor, asegurando una correcta hidratación (hydration) en el cliente.
 - **Control de rutas**: Soporta funciones avanzadas como redirecciones del lado del servidor y configuración de códigos de estado.
 
@@ -38,7 +38,7 @@ export default async (rc: RenderContext) => {
 
 // 2. Función síncrona
 export const simple = (rc: RenderContext) => {
-  rc.html = '<h1>Hola Mundo</h1>';
+  rc.html = '<h1>Hello World</h1>';
 };
 ```
 
@@ -55,10 +55,10 @@ interface RenderFiles {
 }
 ```
 
-- **js**: Lista de archivos JavaScript.
-- **css**: Lista de archivos de hojas de estilo.
-- **modulepreload**: Lista de módulos ESM que necesitan precarga.
-- **resources**: Lista de otros archivos de recursos (imágenes, fuentes, etc.).
+- **js**: Lista de archivos JavaScript
+- **css**: Lista de archivos de hojas de estilo
+- **modulepreload**: Lista de módulos ESM que necesitan precarga
+- **resources**: Lista de otros archivos de recursos (imágenes, fuentes, etc.)
 
 ```ts
 // Ejemplo de lista de archivos de recursos
@@ -90,14 +90,14 @@ Define el modo de generación del importmap.
 type ImportmapMode = 'inline' | 'js';
 ```
 
-- `inline`: Incluye el contenido del importmap directamente en el HTML, adecuado para los siguientes escenarios:
-  - Reducir el número de solicitudes HTTP.
-  - El contenido del importmap es pequeño.
-  - Se requiere un alto rendimiento de carga inicial.
-- `js`: Genera el contenido del importmap como un archivo JS independiente, adecuado para los siguientes escenarios:
-  - El contenido del importmap es grande.
-  - Se necesita aprovechar el mecanismo de caché del navegador.
-  - Varias páginas comparten el mismo importmap.
+- `inline`: Incluye el contenido del importmap directamente en el HTML, adecuado para:
+  - Reducir el número de solicitudes HTTP
+  - Cuando el contenido del importmap es pequeño
+  - Cuando se requiere un alto rendimiento en la carga inicial
+- `js`: Genera el contenido del importmap como un archivo JS independiente, adecuado para:
+  - Cuando el contenido del importmap es grande
+  - Cuando se necesita aprovechar el mecanismo de caché del navegador
+  - Cuando múltiples páginas comparten el mismo importmap
 
 Clase de contexto de renderizado, responsable de la gestión de recursos y la generación de HTML durante el proceso de renderizado del lado del servidor (SSR).
 ## Opciones de instancia
@@ -116,17 +116,17 @@ interface RenderContextOptions {
 #### base
 
 - **Tipo**: `string`
-- **Valor predeterminado**: `''`
+- **Valor por defecto**: `''`
 
 Ruta base para los recursos estáticos.
-- Todos los recursos estáticos (JS, CSS, imágenes, etc.) se cargarán basados en esta ruta.
-- Soporta configuración dinámica en tiempo de ejecución, sin necesidad de reconstrucción.
+- Todos los recursos estáticos (JS, CSS, imágenes, etc.) se cargarán basados en esta ruta
+- Soporta configuración dinámica en tiempo de ejecución, sin necesidad de reconstruir
 - Comúnmente utilizado en sitios multilingües, aplicaciones de microfrontends, etc.
 
 #### entryName
 
 - **Tipo**: `string`
-- **Valor predeterminado**: `'default'`
+- **Valor por defecto**: `'default'`
 
 Nombre de la función de entrada para el renderizado del lado del servidor. Se utiliza para especificar la función de entrada a usar durante el renderizado del lado del servidor, cuando un módulo exporta múltiples funciones de renderizado.
 
@@ -143,9 +143,9 @@ export const desktop = async (rc: RenderContext) => {
 #### params
 
 - **Tipo**: `Record<string, any>`
-- **Valor predeterminado**: `{}`
+- **Valor por defecto**: `{}`
 
-Parámetros de renderizado. Puede pasar cualquier tipo de parámetro a la función de renderizado, comúnmente utilizado para pasar información de la solicitud (URL, parámetros de consulta, etc.).
+Parámetros de renderizado. Se pueden pasar parámetros de cualquier tipo a la función de renderizado, comúnmente utilizados para pasar información de la solicitud (URL, parámetros de consulta, etc.).
 
 ```ts
 const rc = await gez.render({
@@ -160,11 +160,11 @@ const rc = await gez.render({
 #### importmapMode
 
 - **Tipo**: `'inline' | 'js'`
-- **Valor predeterminado**: `'inline'`
+- **Valor por defecto**: `'inline'`
 
 Modo de generación del mapa de importación (Import Map):
-- `inline`: Incluye el contenido del importmap directamente en el HTML.
-- `js`: Genera el contenido del importmap como un archivo JS independiente.
+- `inline`: Incluye el contenido del importmap directamente en el HTML
+- `js`: Genera el contenido del importmap como un archivo JS independiente
 
 
 ## Propiedades de instancia
@@ -174,14 +174,14 @@ Modo de generación del mapa de importación (Import Map):
 - **Tipo**: `Gez`
 - **Solo lectura**: `true`
 
-Referencia a la instancia de Gez. Se utiliza para acceder a las funciones principales y la información de configuración del framework.
+Referencia a la instancia de Gez. Se utiliza para acceder a las funciones principales y la configuración del framework.
 
 ### redirect
 
 - **Tipo**: `string | null`
-- **Valor predeterminado**: `null`
+- **Valor por defecto**: `null`
 
-Dirección de redirección. Al establecer este valor, el servidor puede realizar una redirección HTTP basada en él, comúnmente utilizado en escenarios de verificación de inicio de sesión, control de permisos, etc.
+Dirección de redirección. Si se establece, el servidor puede realizar una redirección HTTP basada en este valor, comúnmente utilizado en escenarios de verificación de inicio de sesión, control de permisos, etc.
 
 ```ts title="entry.node.ts"
 // Ejemplo de verificación de inicio de sesión
@@ -208,9 +208,9 @@ export default async (rc: RenderContext) => {
 ### status
 
 - **Tipo**: `number | null`
-- **Valor predeterminado**: `null`
+- **Valor por defecto**: `null`
 
-Código de estado de respuesta HTTP. Puede establecer cualquier código de estado HTTP válido, comúnmente utilizado en escenarios de manejo de errores, redirecciones, etc.
+Código de estado HTTP de respuesta. Se puede establecer cualquier código de estado HTTP válido, comúnmente utilizado en escenarios de manejo de errores, redirecciones, etc.
 
 ```ts title="entry.node.ts"
 // Ejemplo de manejo de error 404
@@ -238,7 +238,7 @@ export default async (rc: RenderContext) => {
 ### html
 
 - **Tipo**: `string`
-- **Valor predeterminado**: `''`
+- **Valor por defecto**: `''`
 
 Contenido HTML. Se utiliza para establecer y obtener el contenido HTML final generado, al establecerlo se manejan automáticamente los marcadores de posición de la ruta base.
 
@@ -254,7 +254,7 @@ export default async (rc: RenderContext) => {
         ${rc.css()}
       </head>
       <body>
-        <div id="app">Hola Mundo</div>
+        <div id="app">Hello World</div>
         ${rc.importmap()}
         ${rc.moduleEntry()}
         ${rc.modulePreload()}
@@ -279,7 +279,7 @@ const rc = await gez.render({
 
 - **Tipo**: `string`
 - **Solo lectura**: `true`
-- **Valor predeterminado**: `''`
+- **Valor por defecto**: `''`
 
 Ruta base para los recursos estáticos. Todos los recursos estáticos (JS, CSS, imágenes, etc.) se cargarán basados en esta ruta, soporta configuración dinámica en tiempo de ejecución.
 
@@ -307,14 +307,14 @@ const rc = await gez.render({
 
 - **Tipo**: `string`
 - **Solo lectura**: `true`
-- **Valor predeterminado**: `'default'`
+- **Valor por defecto**: `'default'`
 
 Nombre de la función de entrada para el renderizado del lado del servidor. Se utiliza para seleccionar la función de renderizado a usar desde entry.server.ts.
 
 ```ts title="entry.node.ts"
-// Función de entrada predeterminada
+// Función de entrada por defecto
 export default async (rc: RenderContext) => {
-  // Lógica de renderizado predeterminada
+  // Lógica de renderizado por defecto
 };
 
 // Múltiples funciones de entrada
@@ -337,9 +337,9 @@ const rc = await gez.render({
 
 - **Tipo**: `Record<string, any>`
 - **Solo lectura**: `true`
-- **Valor predeterminado**: `{}`
+- **Valor por defecto**: `{}`
 
-Parámetros de renderizado. Se pueden pasar y acceder a los parámetros durante el proceso de renderizado del lado del servidor, comúnmente utilizado para pasar información de la solicitud, configuración de la página, etc.
+Parámetros de renderizado. Se pueden pasar y acceder a parámetros durante el proceso de renderizado del lado del servidor, comúnmente utilizados para pasar información de la solicitud, configuración de la página, etc.
 
 ```ts
 // Uso básico - Pasar URL y configuración de idioma
@@ -350,7 +350,7 @@ const rc = await gez.render({
   }
 });
 
-// Configuración de la página - Establecer tema y diseño
+// Configuración de página - Establecer tema y diseño
 const rc = await gez.render({
   params: {
     theme: 'dark',
@@ -358,7 +358,7 @@ const rc = await gez.render({
   }
 });
 
-// Configuración del entorno - Inyectar URL base de la API
+// Configuración de entorno - Inyectar URL base de la API
 const rc = await gez.render({
   params: {
     apiBaseUrl: process.env.API_BASE_URL,
@@ -371,7 +371,7 @@ const rc = await gez.render({
 
 - **Tipo**: `Set<ImportMeta>`
 
-Conjunto de recopilación de dependencias de módulos. Durante el proceso de renderizado de componentes, se rastrean y registran automáticamente las dependencias de módulos, recopilando solo los recursos realmente utilizados durante el renderizado de la página actual.
+Conjunto de recopilación de dependencias de módulos. Durante el proceso de renderizado de componentes, se rastrean y registran automáticamente las dependencias de módulos, solo se recopilan los recursos realmente utilizados durante el renderizado de la página actual.
 
 ```ts
 // Uso básico
@@ -379,7 +379,7 @@ const renderToString = (app: any, context: { importMetaSet: Set<ImportMeta> }) =
   // Durante el proceso de renderizado, se recopilan automáticamente las dependencias de módulos
   // El framework llamará automáticamente a context.importMetaSet.add(import.meta) durante el renderizado de componentes
   // Los desarrolladores no necesitan manejar manualmente la recopilación de dependencias
-  return '<div id="app">Hola Mundo</div>';
+  return '<div id="app">Hello World</div>';
 };
 
 // Ejemplo de uso
@@ -394,10 +394,10 @@ const html = await renderToString(app, {
 - **Tipo**: `RenderFiles`
 
 Lista de archivos de recursos:
-- js: Lista de archivos JavaScript.
-- css: Lista de archivos de hojas de estilo.
-- modulepreload: Lista de módulos ESM que necesitan precarga.
-- resources: Lista de otros archivos de recursos (imágenes, fuentes, etc.).
+- js: Lista de archivos JavaScript
+- css: Lista de archivos de hojas de estilo
+- modulepreload: Lista de módulos ESM que necesitan precarga
+- resources: Lista de otros archivos de recursos (imágenes, fuentes, etc.)
 
 ```ts
 // Recopilación de recursos
@@ -426,11 +426,11 @@ rc.html = `
 ### importmapMode
 
 - **Tipo**: `'inline' | 'js'`
-- **Valor predeterminado**: `'inline'`
+- **Valor por defecto**: `'inline'`
 
 Modo de generación del mapa de importación:
-- `inline`: Incluye el contenido del importmap directamente en el HTML.
-- `js`: Genera el contenido del importmap como un archivo JS independiente.
+- `inline`: Incluye el contenido del importmap directamente en el HTML
+- `js`: Genera el contenido del importmap como un archivo JS independiente
 
 
 ## Métodos de instancia
@@ -438,11 +438,11 @@ Modo de generación del mapa de importación:
 ### serialize()
 
 - **Parámetros**: 
-  - `input: any` - Datos a serializar.
-  - `options?: serialize.SerializeJSOptions` - Opciones de serialización.
+  - `input: any` - Datos a serializar
+  - `options?: serialize.SerializeJSOptions` - Opciones de serialización
 - **Retorno**: `string`
 
-Serializa un objeto JavaScript a una cadena. Se utiliza durante el proceso de renderizado del lado del servidor para serializar datos de estado, asegurando que los datos se puedan incrustar de manera segura en el HTML.
+Serializa un objeto JavaScript a una cadena. Se utiliza para serializar datos de estado durante el proceso de renderizado del lado del servidor, asegurando que los datos se puedan incrustar de manera segura en el HTML.
 
 ```ts
 const state = {
@@ -460,8 +460,8 @@ rc.html = `
 ### state()
 
 - **Parámetros**: 
-  - `varName: string` - Nombre de la variable.
-  - `data: Record<string, any>` - Datos de estado.
+  - `varName: string` - Nombre de la variable
+  - `data: Record<string, any>` - Datos de estado
 - **Retorno**: `string`
 
 Serializa e inyecta datos de estado en el HTML. Utiliza métodos de serialización seguros para manejar datos, soportando estructuras de datos complejas.
@@ -484,7 +484,7 @@ rc.html = `
 
 - **Retorno**: `Promise<void>`
 
-Confirma la recopilación de dependencias y actualiza la lista de recursos. Recopila todos los módulos utilizados desde importMetaSet, analizando los recursos específicos de cada módulo basados en el archivo de manifiesto.
+Confirma la recopilación de dependencias y actualiza la lista de recursos. Recopila todos los módulos utilizados desde importMetaSet, basándose en el archivo manifest para resolver los recursos específicos de cada módulo.
 
 ```ts
 // Renderizar y confirmar dependencias
@@ -500,7 +500,7 @@ await rc.commit();
 
 - **Retorno**: `string`
 
-Genera etiquetas de precarga de recursos. Se utiliza para precargar recursos CSS y JavaScript, soportando configuración de prioridades y manejo automático de rutas base.
+Genera etiquetas de precarga de recursos. Se utiliza para precargar recursos CSS y JavaScript, soporta configuración de prioridades, maneja automáticamente la ruta base.
 
 ```ts
 rc.html = `
@@ -538,6 +538,9 @@ rc.html = `
 
 - **Retorno**: `string`
 
-Genera etiquetas de mapa de importación. Genera un mapa de importación inline o externo basado en la configuración de importmapMode.
+Genera etiquetas de mapa de importación. Genera el mapa de importación en línea o externo según la configuración de importmapMode.
 
 ```ts
+rc.html = `
+  <head>
+    ${rc.importmap()}  <!-- Inyectar mapa de

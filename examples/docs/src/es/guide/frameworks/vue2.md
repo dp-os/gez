@@ -1,6 +1,6 @@
 ---
 titleSuffix: Ejemplo de aplicación Vue2 SSR con el framework Gez
-description: Aprende a crear una aplicación Vue2 SSR con Gez desde cero. Este tutorial muestra el uso básico del framework, incluyendo la inicialización del proyecto, configuración de Vue2 y configuración de archivos de entrada.
+description: Crea una aplicación Vue2 SSR basada en Gez desde cero. Este tutorial muestra el uso básico del framework, incluyendo la inicialización del proyecto, configuración de Vue2 y configuración de archivos de entrada.
 head:
   - - meta
     - property: keywords
@@ -9,18 +9,18 @@ head:
 
 # Vue2
 
-Este tutorial te guiará en la creación de una aplicación Vue2 SSR (Server-Side Rendering) utilizando el framework Gez desde cero. A través de un ejemplo completo, mostraremos cómo usar Gez para crear una aplicación con renderizado en el servidor.
+Este tutorial te guiará en la creación de una aplicación Vue2 SSR basada en Gez desde cero. A través de un ejemplo completo, mostraremos cómo utilizar el framework Gez para crear una aplicación con renderizado en el servidor (SSR).
 
 ## Estructura del proyecto
 
-Primero, familiaricémonos con la estructura básica del proyecto:
+Primero, veamos la estructura básica del proyecto:
 
 ```bash
 .
 ├── package.json         # Archivo de configuración del proyecto, define dependencias y comandos de script
 ├── tsconfig.json        # Archivo de configuración de TypeScript, establece opciones de compilación
 └── src                  # Directorio de código fuente
-    ├── app.vue          # Componente principal de la aplicación, define la estructura y lógica de la página
+    ├── app.vue          # Componente principal de la aplicación, define la estructura y lógica de interacción de la página
     ├── create-app.ts    # Fábrica de creación de instancias de Vue, responsable de inicializar la aplicación
     ├── entry.client.ts  # Archivo de entrada del cliente, maneja el renderizado en el navegador
     ├── entry.node.ts    # Archivo de entrada del servidor Node.js, responsable de la configuración del entorno de desarrollo y el inicio del servidor
@@ -61,7 +61,7 @@ Crea el archivo `package.json` para configurar las dependencias y scripts del pr
 }
 ```
 
-Después de crear el archivo `package.json`, instala las dependencias del proyecto. Puedes usar cualquiera de los siguientes comandos para instalarlas:
+Después de crear el archivo `package.json`, necesitas instalar las dependencias del proyecto. Puedes usar cualquiera de los siguientes comandos para instalarlas:
 ```bash
 pnpm install
 # o
@@ -122,7 +122,7 @@ Crea el componente principal de la aplicación `src/app.vue`, utilizando la sint
 <script setup lang="ts">
 /**
  * @file Componente de ejemplo
- * @description Muestra un título de página con la hora actualizada automáticamente, para demostrar las funcionalidades básicas de Gez
+ * @description Muestra un título de página con la hora actualizada automáticamente, para demostrar las funciones básicas del framework Gez
  */
 
 import { onMounted, onUnmounted, ref } from 'vue';
@@ -187,7 +187,7 @@ app.$mount('#app');
 
 ### entry.node.ts
 
-Crea el archivo `entry.node.ts` para configurar el entorno de desarrollo y el inicio del servidor:
+Crea el archivo `entry.node.ts`, responsable de la configuración del entorno de desarrollo y el inicio del servidor:
 
 ```ts title="src/entry.node.ts"
 /**
@@ -201,7 +201,7 @@ import type { GezOptions } from '@gez/core';
 export default {
     /**
      * Configura el creador de la aplicación para el entorno de desarrollo
-     * @description Crea y configura la instancia de la aplicación Rspack para la construcción y actualización en caliente en el entorno de desarrollo
+     * @description Crea y configura la instancia de la aplicación Rspack, utilizada para la construcción y actualización en caliente en el entorno de desarrollo
      * @param gez Instancia del framework Gez, proporciona funciones principales e interfaces de configuración
      * @returns Devuelve la instancia de la aplicación Rspack configurada, compatible con HMR y vista previa en tiempo real
      */
@@ -217,14 +217,14 @@ export default {
 
     /**
      * Configura e inicia el servidor HTTP
-     * @description Crea una instancia del servidor HTTP, integra el middleware de Gez y maneja las solicitudes SSR
+     * @description Crea una instancia del servidor HTTP, integra middleware de Gez y maneja solicitudes SSR
      * @param gez Instancia del framework Gez, proporciona middleware y funciones de renderizado
      */
     async server(gez) {
         const server = http.createServer((req, res) => {
-            // Usar el middleware de Gez para manejar la solicitud
+            // Usar middleware de Gez para manejar solicitudes
             gez.middleware(req, res, async () => {
-                // Ejecutar el renderizado en el servidor
+                // Ejecutar renderizado en el servidor
                 const rc = await gez.render({
                     params: { url: req.url }
                 });
@@ -241,8 +241,8 @@ export default {
 
 Este archivo es el punto de entrada para la configuración del entorno de desarrollo y el inicio del servidor, y contiene dos funciones principales:
 
-1. `devApp`: Responsable de crear y configurar la instancia de la aplicación Rspack para el entorno de desarrollo, con soporte para actualización en caliente y vista previa en tiempo real. Aquí se utiliza `createRspackVue2App` para crear una instancia de Rspack específica para Vue2.
-2. `server`: Responsable de crear y configurar el servidor HTTP, integrando el middleware de Gez para manejar solicitudes SSR.
+1. `devApp`: Responsable de crear y configurar la instancia de la aplicación Rspack para el entorno de desarrollo, compatible con actualización en caliente y vista previa en tiempo real. Aquí se utiliza `createRspackVue2App` para crear una instancia de la aplicación Rspack específica para Vue2.
+2. `server`: Responsable de crear y configurar el servidor HTTP, integrando middleware de Gez para manejar solicitudes SSR.
 
 ### entry.server.ts
 
@@ -258,11 +258,11 @@ import type { RenderContext } from '@gez/core';
 import { createRenderer } from 'vue-server-renderer';
 import { createApp } from './create-app';
 
-// Crear el renderizador
+// Crear renderizador
 const renderer = createRenderer();
 
 export default async (rc: RenderContext) => {
-    // Crear la instancia de la aplicación Vue
+    // Crear instancia de la aplicación Vue
     const { app } = createApp();
 
     // Usar renderToString de Vue para generar el contenido de la página
@@ -275,7 +275,7 @@ export default async (rc: RenderContext) => {
 
     // Generar la estructura HTML completa
     rc.html = `<!DOCTYPE html>
-<html lang="es">
+<html lang="es-ES">
 <head>
     ${rc.preload()}
     <title>Inicio rápido con Gez</title>
@@ -294,7 +294,7 @@ export default async (rc: RenderContext) => {
 
 ## Ejecutar el proyecto
 
-Una vez configurados los archivos anteriores, puedes usar los siguientes comandos para ejecutar el proyecto:
+Después de configurar los archivos anteriores, puedes usar los siguientes comandos para ejecutar el proyecto:
 
 1. Modo de desarrollo:
 ```bash

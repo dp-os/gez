@@ -1,10 +1,10 @@
 ---
 titleSuffix: Gez 프레임워크 Vue2 SSR 애플리케이션 예제
-description: Gez를 기반으로 Vue2 SSR 애플리케이션을 처음부터 구축하는 방법을 예제를 통해 설명합니다. 프로젝트 초기화, Vue2 설정 및 진입 파일 설정 등 프레임워크의 기본 사용법을 다룹니다.
+description: Gez를 기반으로 Vue2 SSR 애플리케이션을 처음부터 구축하는 방법을 보여주는 예제입니다. 프로젝트 초기화, Vue2 구성 및 진입 파일 설정을 포함한 프레임워크의 기본 사용법을 다룹니다.
 head:
   - - meta
     - property: keywords
-      content: Gez, Vue2, SSR 애플리케이션, TypeScript 설정, 프로젝트 초기화, 서버 사이드 렌더링, 클라이언트 상호작용
+      content: Gez, Vue2, SSR 애플리케이션, TypeScript 구성, 프로젝트 초기화, 서버 사이드 렌더링, 클라이언트 상호작용
 ---
 
 # Vue2
@@ -23,15 +23,15 @@ head:
     ├── app.vue          # 메인 애플리케이션 컴포넌트, 페이지 구조 및 상호작용 로직 정의
     ├── create-app.ts    # Vue 인스턴스 생성 팩토리, 애플리케이션 초기화 담당
     ├── entry.client.ts  # 클라이언트 진입 파일, 브라우저 측 렌더링 처리
-    ├── entry.node.ts    # Node.js 서버 진입 파일, 개발 환경 설정 및 서버 시작 담당
-    └── entry.server.ts  # 서버 측 진입 파일, SSR 렌더링 로직 처리
+    ├── entry.node.ts    # Node.js 서버 진입 파일, 개발 환경 구성 및 서버 시작 담당
+    └── entry.server.ts  # 서버 진입 파일, SSR 렌더링 로직 처리
 ```
 
-## 프로젝트 설정
+## 프로젝트 구성
 
 ### package.json
 
-`package.json` 파일을 생성하여 프로젝트 의존성 및 스크립트를 설정합니다:
+`package.json` 파일을 생성하여 프로젝트 의존성 및 스크립트를 구성합니다:
 
 ```json title="package.json"
 {
@@ -74,7 +74,7 @@ npm install
 
 ### tsconfig.json
 
-`tsconfig.json` 파일을 생성하여 TypeScript 컴파일 옵션을 설정합니다:
+`tsconfig.json` 파일을 생성하여 TypeScript 컴파일 옵션을 구성합니다:
 
 ```json title="tsconfig.json"
 {
@@ -122,12 +122,12 @@ npm install
 <script setup lang="ts">
 /**
  * @file 예제 컴포넌트
- * @description Gez 프레임워크의 기본 기능을 시연하기 위해 자동으로 업데이트되는 시간을 표시하는 페이지 제목을 보여줍니다.
+ * @description Gez 프레임워크의 기본 기능을 시연하기 위해 자동으로 업데이트되는 시간을 표시하는 페이지 제목
  */
 
 import { onMounted, onUnmounted, ref } from 'vue';
 
-// 현재 시간, 1초마다 업데이트
+// 현재 시간, 매초 업데이트
 const time = ref(new Date().toISOString());
 let timer: NodeJS.Timeout;
 
@@ -150,7 +150,7 @@ onUnmounted(() => {
 ```ts title="src/create-app.ts"
 /**
  * @file Vue 인스턴스 생성
- * @description Vue 애플리케이션 인스턴스 생성 및 설정 담당
+ * @description Vue 애플리케이션 인스턴스 생성 및 구성 담당
  */
 
 import Vue from 'vue';
@@ -173,7 +173,7 @@ export function createApp() {
 ```ts title="src/entry.client.ts"
 /**
  * @file 클라이언트 진입 파일
- * @description 클라이언트 상호작용 로직 및 동적 업데이트 담당
+ * @description 클라이언트 상호작용 로직 및 동적 업데이트 처리
  */
 
 import { createApp } from './create-app';
@@ -187,12 +187,12 @@ app.$mount('#app');
 
 ### entry.node.ts
 
-`entry.node.ts` 파일을 생성하여 개발 환경 및 서버 시작을 설정합니다:
+`entry.node.ts` 파일을 생성하여 개발 환경 및 서버 시작을 구성합니다:
 
 ```ts title="src/entry.node.ts"
 /**
  * @file Node.js 서버 진입 파일
- * @description 개발 환경 설정 및 서버 시작 담당, SSR 런타임 환경 제공
+ * @description 개발 환경 구성 및 서버 시작, SSR 런타임 환경 제공
  */
 
 import http from 'node:http';
@@ -200,23 +200,23 @@ import type { GezOptions } from '@gez/core';
 
 export default {
     /**
-     * 개발 환경의 애플리케이션 생성기 설정
-     * @description Rspack 애플리케이션 인스턴스 생성 및 설정, 개발 환경의 빌드 및 핫 리로드 지원
-     * @param gez Gez 프레임워크 인스턴스, 핵심 기능 및 설정 인터페이스 제공
-     * @returns 설정된 Rspack 애플리케이션 인스턴스 반환, HMR 및 실시간 미리보기 지원
+     * 개발 환경 애플리케이션 생성기 구성
+     * @description Rspack 애플리케이션 인스턴스 생성 및 구성, 개발 환경 빌드 및 핫 리로드 지원
+     * @param gez Gez 프레임워크 인스턴스, 핵심 기능 및 구성 인터페이스 제공
+     * @returns HMR 및 실시간 미리보기를 지원하는 구성된 Rspack 애플리케이션 인스턴스 반환
      */
     async devApp(gez) {
         return import('@gez/rspack-vue').then((m) =>
             m.createRspackVue2App(gez, {
                 config(context) {
-                    // 여기서 Rspack 컴파일 설정을 사용자 정의할 수 있습니다.
+                    // 여기서 Rspack 컴파일 설정을 사용자 정의
                 }
             })
         );
     },
 
     /**
-     * HTTP 서버 설정 및 시작
+     * HTTP 서버 구성 및 시작
      * @description HTTP 서버 인스턴스 생성, Gez 미들웨어 통합, SSR 요청 처리
      * @param gez Gez 프레임워크 인스턴스, 미들웨어 및 렌더링 기능 제공
      */
@@ -239,10 +239,10 @@ export default {
 } satisfies GezOptions;
 ```
 
-이 파일은 개발 환경 설정 및 서버 시작을 위한 진입 파일로, 두 가지 핵심 기능을 포함합니다:
+이 파일은 개발 환경 구성 및 서버 시작을 위한 진입 파일로, 두 가지 핵심 기능을 포함합니다:
 
-1. `devApp` 함수: 개발 환경의 Rspack 애플리케이션 인스턴스를 생성 및 설정하며, 핫 리로드 및 실시간 미리보기 기능을 지원합니다. 여기서는 `createRspackVue2App`을 사용하여 Vue2 전용 Rspack 애플리케이션 인스턴스를 생성합니다.
-2. `server` 함수: HTTP 서버를 생성 및 설정하고, Gez 미들웨어를 통합하여 SSR 요청을 처리합니다.
+1. `devApp` 함수: 개발 환경의 Rspack 애플리케이션 인스턴스를 생성 및 구성하며, 핫 리로드 및 실시간 미리보기 기능을 지원합니다. 여기서는 Vue2 전용 Rspack 애플리케이션 인스턴스를 생성하기 위해 `createRspackVue2App`을 사용합니다.
+2. `server` 함수: HTTP 서버를 생성 및 구성하고, Gez 미들웨어를 통합하여 SSR 요청을 처리합니다.
 
 ### entry.server.ts
 
@@ -270,7 +270,7 @@ export default async (rc: RenderContext) => {
         importMetaSet: rc.importMetaSet
     });
 
-    // 의존성 수집 완료, 필요한 모든 리소스가 로드되도록 보장
+    // 의존성 수집 제출, 모든 필수 리소스가 로드되도록 보장
     await rc.commit();
 
     // 완전한 HTML 구조 생성
@@ -294,7 +294,7 @@ export default async (rc: RenderContext) => {
 
 ## 프로젝트 실행
 
-위의 파일 설정을 완료한 후, 다음 명령어를 사용하여 프로젝트를 실행할 수 있습니다:
+위의 파일 구성을 완료한 후, 다음 명령어를 사용하여 프로젝트를 실행할 수 있습니다:
 
 1. 개발 모드:
 ```bash

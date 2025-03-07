@@ -10,7 +10,7 @@ sidebar: false
 
 # Blog de l'équipe
 
-Bienvenue sur le blog technique de l'équipe Gez ! Ici, nous partageons nos expériences de développement de frameworks, nos innovations technologiques et nos meilleures pratiques.
+Bienvenue sur le blog technique de l'équipe Gez ! Ici, nous partagerons nos expériences de développement de frameworks, nos innovations technologiques et nos meilleures pratiques.
 
 ## Articles récents
 

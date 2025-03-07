@@ -1,15 +1,15 @@
 ---
-titleSuffix: Interface de Abstração de Aplicação do Framework Gez
-description: Detalha a interface `App` do framework Gez, incluindo gerenciamento do ciclo de vida do aplicativo, manipulação de recursos estáticos e funcionalidades de renderização no lado do servidor, ajudando os desenvolvedores a entender e utilizar as funcionalidades principais do aplicativo.
+titleSuffix: Interface de abstração de aplicação do framework Gez
+description: Detalha a interface App do framework Gez, incluindo gerenciamento do ciclo de vida do aplicativo, manipulação de recursos estáticos e renderização do lado do servidor, ajudando os desenvolvedores a entender e usar as funcionalidades principais do aplicativo.
 head:
   - - meta
     - property: keywords
-      content: Gez, App, abstração de aplicação, ciclo de vida, recursos estáticos, renderização no servidor, API
+      content: Gez, App, abstração de aplicação, ciclo de vida, recursos estáticos, renderização do lado do servidor, API
 ---
 
 # App
 
-`App` é a abstração de aplicação do framework Gez, fornecendo uma interface unificada para gerenciar o ciclo de vida do aplicativo, recursos estáticos e renderização no lado do servidor.
+`App` é a abstração de aplicação do framework Gez, fornecendo uma interface unificada para gerenciar o ciclo de vida do aplicativo, recursos estáticos e renderização do lado do servidor.
 
 ```ts title="entry.node.ts"
 export default {
@@ -18,7 +18,7 @@ export default {
     return import('@gez/rspack').then((m) =>
       m.createRspackHtmlApp(gez, {
         config(rc) {
-          // Personalização da configuração do Rspack
+          // Configuração personalizada do Rspack
         }
       })
     );
@@ -26,7 +26,7 @@ export default {
 }
 ```
 
-## Definição de Tipos
+## Definição de tipos
 ### App
 
 ```ts
@@ -47,12 +47,12 @@ Middleware de manipulação de recursos estáticos.
 Ambiente de desenvolvimento:
 - Processa solicitações de recursos estáticos do código-fonte
 - Suporta compilação em tempo real e atualização a quente (hot reload)
-- Utiliza política de cache no-cache
+- Usa política de cache no-cache
 
 Ambiente de produção:
 - Processa recursos estáticos após a construção
 - Suporta cache de longo prazo para arquivos imutáveis (.final.xxx)
-- Estratégia de carregamento de recursos otimizada
+- Estratégia otimizada de carregamento de recursos
 
 ```ts
 server.use(gez.middleware);
@@ -62,7 +62,7 @@ server.use(gez.middleware);
 
 - **Tipo**: `(options?: RenderContextOptions) => Promise<RenderContext>`
 
-Função de renderização no lado do servidor. Fornece implementações diferentes dependendo do ambiente de execução:
+Função de renderização do lado do servidor. Fornece implementações diferentes dependendo do ambiente de execução:
 - Ambiente de produção (start): Carrega o arquivo de entrada do servidor após a construção (entry.server) e executa a renderização
 - Ambiente de desenvolvimento (dev): Carrega o arquivo de entrada do servidor do código-fonte e executa a renderização
 
@@ -77,10 +77,10 @@ res.end(rc.html);
 
 - **Tipo**: `() => Promise<boolean>`
 
-Função de construção para o ambiente de produção. Usada para empacotamento e otimização de recursos. Retorna `true` em caso de sucesso na construção e `false` em caso de falha.
+Função de construção para o ambiente de produção. Usada para empacotamento e otimização de recursos. Retorna true em caso de sucesso na construção, false em caso de falha.
 
 #### destroy
 
 - **Tipo**: `() => Promise<boolean>`
 
-Função de limpeza de recursos. Usada para fechar servidores, desconectar conexões, etc. Retorna `true` em caso de sucesso na limpeza e `false` em caso de falha.
+Função de limpeza de recursos. Usada para fechar o servidor, desconectar conexões, etc. Retorna true em caso de sucesso na limpeza, false em caso de falha.

@@ -1,6 +1,6 @@
 ---
 titleSuffix: Gez Framework High-Performance Build Engine
-description: An in-depth analysis of the Rspack build system in the Gez framework, including core features such as high-performance compilation, multi-environment builds, resource optimization, and more, empowering developers to build efficient and reliable modern web applications.
+description: An in-depth analysis of the Rspack build system in the Gez framework, including core features such as high-performance compilation, multi-environment builds, and resource optimization, helping developers build efficient and reliable modern web applications.
 head:
   - - meta
     - property: keywords
@@ -9,33 +9,33 @@ head:
 
 # Rspack
 
-Gez is built on the [Rspack](https://rspack.dev/) build system, leveraging its high-performance build capabilities. This document introduces the role and core features of Rspack in the Gez framework.
+Gez is built on the [Rspack](https://rspack.dev/) build system, leveraging its high-performance build capabilities. This document will introduce the role and core features of Rspack in the Gez framework.
 
 ## Features
 
 Rspack is the core build system of the Gez framework, offering the following key features:
 
-- **High-Performance Builds**: A Rust-based build engine that delivers blazing-fast compilation speeds, significantly improving build times for large projects.
-- **Optimized Development Experience**: Supports modern development features like Hot Module Replacement (HMR) and incremental compilation, providing a smooth development experience.
+- **High-Performance Builds**: A Rust-based build engine that provides extremely fast compilation performance, significantly improving build speeds for large projects.
+- **Optimized Development Experience**: Supports modern development features such as Hot Module Replacement (HMR) and incremental compilation, delivering a smooth development experience.
 - **Multi-Environment Builds**: Unified build configurations support client, server, and Node.js environments, simplifying multi-platform development workflows.
 - **Resource Optimization**: Built-in resource processing and optimization capabilities, including code splitting, Tree Shaking, and resource compression.
 
 ## Building Applications
 
-Gez's Rspack build system adopts a modular design, primarily consisting of the following core modules:
+Gez's Rspack build system is designed with a modular architecture, primarily consisting of the following core modules:
 
 ### @gez/rspack
 
 The foundational build module, providing the following core capabilities:
 
-- **Unified Build Configuration**: Standardized build configuration management with support for multi-environment setups.
+- **Unified Build Configuration**: Standardized build configuration management with support for multi-environment configurations.
 - **Resource Processing**: Built-in handling for TypeScript, CSS, images, and other resources.
-- **Build Optimization**: Features like code splitting and Tree Shaking for performance optimization.
+- **Build Optimization**: Features such as code splitting and Tree Shaking for performance optimization.
 - **Development Server**: Integrated high-performance development server with HMR support.
 
 ### @gez/rspack-vue
 
-A dedicated build module for the Vue framework, offering:
+A specialized build module for the Vue framework, offering:
 
 - **Vue Component Compilation**: Efficient compilation for Vue 2/3 components.
 - **SSR Optimization**: Specific optimizations for server-side rendering scenarios.
@@ -43,7 +43,7 @@ A dedicated build module for the Vue framework, offering:
 
 ## Build Process
 
-Gez's build process is divided into the following stages:
+The build process in Gez is divided into the following stages:
 
 1. **Configuration Initialization**
    - Load project configurations.
@@ -71,13 +71,13 @@ Gez's build process is divided into the following stages:
 
 - **Incremental Compilation Configuration**: Properly configure the `cache` option to leverage caching for faster builds.
 - **HMR Optimization**: Configure the scope of hot updates to avoid unnecessary module updates.
-- **Resource Processing Optimization**: Use appropriate loader configurations to prevent redundant processing.
+- **Resource Processing Optimization**: Use appropriate loader configurations to avoid redundant processing.
 
 ### Production Environment Optimization
 
-- **Code Splitting Strategy**: Configure `splitChunks` effectively to optimize resource loading.
-- **Resource Compression**: Enable appropriate compression settings to balance build time and output size.
-- **Cache Optimization**: Utilize content hashing and long-term caching strategies to improve load performance.
+- **Code Splitting Strategy**: Properly configure `splitChunks` to optimize resource loading.
+- **Resource Compression**: Enable appropriate compression configurations to balance build time and output size.
+- **Cache Optimization**: Utilize content hashing and long-term caching strategies to improve loading performance.
 
 ## Configuration Example
 
@@ -99,5 +99,5 @@ export default {
 ```
 
 ::: tip
-For more detailed API documentation and configuration options, refer to the [Rspack API Documentation](/api/app/rspack.html).
+For more detailed API documentation and configuration options, please refer to the [Rspack API Documentation](/api/app/rspack.html).
 :::

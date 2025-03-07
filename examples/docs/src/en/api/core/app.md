@@ -1,6 +1,6 @@
 ---
 titleSuffix: Gez Framework Application Abstraction Interface
-description: Detailed introduction to the App interface of the Gez framework, including application lifecycle management, static resource handling, and server-side rendering functionality, helping developers understand and utilize core application features.
+description: Detailed introduction to the App interface of the Gez framework, including application lifecycle management, static resource handling, and server-side rendering functionality, helping developers understand and use core application features.
 head:
   - - meta
     - property: keywords
@@ -9,7 +9,7 @@ head:
 
 # App
 
-`App` is the application abstraction of the Gez framework, providing a unified interface to manage application lifecycle, static resources, and server-side rendering.
+`App` is the application abstraction in the Gez framework, providing a unified interface to manage the application lifecycle, static resources, and server-side rendering.
 
 ```ts title="entry.node.ts"
 export default {
@@ -46,8 +46,8 @@ Static resource handling middleware.
 
 Development environment:
 - Handles static resource requests for source code
-- Supports real-time compilation and hot reload
-- Uses no-cache caching strategy
+- Supports real-time compilation and hot updates
+- Uses no-cache policy
 
 Production environment:
 - Handles built static resources
@@ -62,9 +62,9 @@ server.use(gez.middleware);
 
 - **Type**: `(options?: RenderContextOptions) => Promise<RenderContext>`
 
-Server-side rendering function. Provides different implementations based on the runtime environment:
+Server-side rendering function. Provides different implementations based on the environment:
 - Production environment (start): Loads and executes the built server entry file (entry.server) for rendering
-- Development environment (dev): Loads and executes the server entry file from source code for rendering
+- Development environment (dev): Loads and executes the server entry file from the source code for rendering
 
 ```ts
 const rc = await gez.render({

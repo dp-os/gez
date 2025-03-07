@@ -190,7 +190,7 @@ app.mount('#app');
 ```ts title="src/entry.node.ts"
 /**
  * @file Node.js 伺服器入口檔案
- * @description 負責開發環境配置和伺服器啟動，提供 SSR 運行時環境
+ * @description 負責開發環境配置和伺服器啟動，提供 SSR 執行時環境
  */
 
 import http from 'node:http';
@@ -287,9 +287,9 @@ export default async (rc: RenderContext) => {
 };
 ```
 
-## 運行專案
+## 執行專案
 
-完成上述檔案配置後，你可以使用以下指令來運行專案：
+完成上述檔案配置後，你可以使用以下指令來執行專案：
 
 1. 開發模式：
 ```bash
@@ -301,7 +301,7 @@ npm run dev
 npm run build
 ```
 
-3. 生產環境運行：
+3. 生產環境執行：
 ```bash
 npm run start
 ```

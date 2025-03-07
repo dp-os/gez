@@ -4,13 +4,13 @@ description: Blog técnico del equipo Gez, compartiendo experiencias en desarrol
 head:
   - - meta
     - property: keywords
-      content: Gez, blog del equipo, compartir conocimientos técnicos, mejores prácticas, experiencia en desarrollo
+      content: Gez, Blog del equipo, Compartir conocimientos, Mejores prácticas, Experiencia de desarrollo
 sidebar: false
 ---
 
 # Blog del equipo
 
-¡Bienvenido al blog técnico del equipo Gez! Aquí compartiremos experiencias, innovaciones tecnológicas y mejores prácticas en el desarrollo de frameworks.
+¡Bienvenidos al blog técnico del equipo Gez! Aquí compartiremos experiencias, innovaciones tecnológicas y mejores prácticas en el desarrollo de frameworks.
 
 ## Artículos recientes
 

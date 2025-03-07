@@ -2,12 +2,12 @@
     {
         "type": "dir",
         "name": "start",
-        "label": "시작하기"
+        "label": "시작"
     },
     {
         "type": "dir",
         "name": "essentials",
-        "label": "기본"
+        "label": "기초"
     },
     {
         "type": "dir",

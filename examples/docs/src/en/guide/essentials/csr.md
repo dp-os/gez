@@ -1,6 +1,6 @@
 ---
 titleSuffix: Gez Framework Client-Side Rendering Implementation Guide
-description: Detailed explanation of the client-side rendering mechanism in the Gez framework, including static build, deployment strategies, and best practices, helping developers achieve efficient front-end rendering in serverless environments.
+description: Detailed guide on the client-side rendering mechanism of the Gez framework, including static build, deployment strategies, and best practices, helping developers achieve efficient front-end rendering in serverless environments.
 head:
   - - meta
     - property: keywords
@@ -16,14 +16,14 @@ Client-Side Rendering (CSR) is a technique where page rendering is executed in t
 The following scenarios recommend using client-side rendering:
 
 - **Static Hosting Environments**: Such as GitHub Pages, CDN, and other hosting services that do not support server-side rendering
-- **Simple Applications**: Small applications where first-load speed and SEO are not critical
+- **Simple Applications**: Small applications with low requirements for first-load speed and SEO
 - **Development Environment**: For quick preview and debugging during the development phase
 
 ## Configuration Instructions
 
 ### HTML Template Configuration
 
-In client-side rendering mode, you need to configure a generic HTML template. This template will serve as the container for your application, including necessary resource references and mount points.
+In client-side rendering mode, you need to configure a generic HTML template. This template will serve as the container for your application, including necessary resource references and mounting points.
 
 ```ts title="src/entry.server.ts"
 import type { RenderContext } from '@gez/core';

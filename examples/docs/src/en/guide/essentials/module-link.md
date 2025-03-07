@@ -4,7 +4,7 @@ description: Detailed introduction to Gez framework's module linking mechanism, 
 head:
   - - meta
     - property: keywords
-      content: Gez, Module Linking, Module Link, ESM, Code Sharing, Dependency Management, Micro-Frontend
+      content: Gez, Module Linking, ESM, Code Sharing, Dependency Management, Micro-frontend
 ---
 
 # Module Linking
@@ -35,7 +35,7 @@ To optimize service performance, Gez implements an intelligent module preloading
 2. **Loading Strategy**
    - **Immediate Loading**: Core modules on critical paths
    - **Lazy Loading**: Non-critical functional modules
-   - **On-Demand Loading**: Conditionally rendered modules
+   - **On-demand Loading**: Conditionally rendered modules
 
 3. **Resource Optimization**
    - Intelligent code splitting strategy
@@ -66,8 +66,8 @@ export default {
 ```
 
 Export configuration supports two types:
-- `root:*`: Exports source code files, with paths relative to the project root directory
-- `npm:*`: Exports third-party dependencies, directly specifying the package name
+- `root:*`: Exports source code files, paths relative to the project root directory
+- `npm:*`: Exports third-party dependencies, directly specifies package names
 
 ## Module Import
 
@@ -82,9 +82,9 @@ export default {
     modules: {
         // Import configuration
         imports: {
-            // Source code installation: points to the build artifact directory
+            // Source code installation: points to build artifact directory
             'ssr-remote': 'root:./node_modules/ssr-remote/dist',
-            // Package installation: points to the package directory
+            // Package installation: points to package directory
             'other-remote': 'root:./node_modules/other-remote'
         },
         // External dependency configuration
@@ -98,9 +98,9 @@ export default {
 ```
 
 Configuration item descriptions:
-1. **imports**: Configures the local path of remote modules
-   - Source code installation: Points to the build artifact directory (dist)
-   - Package installation: Directly points to the package directory
+1. **imports**: Configures local paths for remote modules
+   - Source code installation: Points to build artifact directory (dist)
+   - Package installation: Directly points to package directory
 
 2. **externals**: Configures external dependencies
    - Used for sharing dependencies from remote modules
@@ -155,7 +155,7 @@ Install via HTTP/HTTPS protocol:
 }
 ```
 
-## Package Build
+## Package Building
 
 ### Configuration Instructions
 
@@ -220,7 +220,7 @@ your-app-name.tgz
     └── manifest.json   # Client-side resource mapping
 ```
 
-### Release Process
+### Publishing Process
 
 ```bash
 # 1. Build production version
@@ -234,8 +234,8 @@ npm publish dist/versions/your-app-name.tgz
 
 ### Development Environment Configuration
 - **Dependency Management**
-  - Use Workspace or Link method to install dependencies
-  - Manage dependency versions uniformly
+  - Use Workspace or Link method for dependency installation
+  - Unified management of dependency versions
   - Avoid duplicate installation of the same dependencies
 
 - **Development Experience**
@@ -247,21 +247,21 @@ npm publish dist/versions/your-app-name.tgz
 - **Deployment Strategy**
   - Use NPM Registry or static server
   - Ensure build artifact integrity
-  - Implement gray release mechanism
+  - Implement canary release mechanism
 
 - **Performance Optimization**
-  - Configure resource preloading appropriately
+  - Properly configure resource preloading
   - Optimize module loading order
   - Implement effective caching strategies
 
 ### Version Management
 - **Version Specification**
-  - Follow semantic versioning specifications
+  - Follow semantic versioning specification
   - Maintain detailed changelogs
-  - Conduct compatibility testing for versions
+  - Conduct version compatibility testing
 
 - **Dependency Updates**
-  - Update dependency packages promptly
+  - Update dependencies promptly
   - Conduct regular security audits
   - Maintain dependency version consistency
 ```

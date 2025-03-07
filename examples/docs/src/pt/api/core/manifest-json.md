@@ -1,6 +1,6 @@
 ---
 titleSuffix: Referência do arquivo de manifesto de construção do framework Gez
-description: Detalha a estrutura do arquivo de manifesto de construção (manifest.json) do framework Gez, incluindo gerenciamento de artefatos de construção, mapeamento de arquivos exportados e estatísticas de recursos, ajudando desenvolvedores a entender e utilizar o sistema de construção.
+description: Detalha a estrutura do arquivo de manifesto de construção (manifest.json) do framework Gez, incluindo gerenciamento de artefatos de construção, mapeamento de arquivos exportados e estatísticas de recursos, ajudando os desenvolvedores a entender e usar o sistema de construção.
 head:
   - - meta
     - property: keywords
@@ -9,7 +9,7 @@ head:
 
 # ManifestJson
 
-O arquivo `manifest.json` é gerado pelo framework Gez durante o processo de construção e é usado para registrar informações sobre os artefatos gerados. Ele fornece uma interface unificada para gerenciar artefatos de construção, arquivos exportados e estatísticas de tamanho de recursos.
+O `manifest.json` é um arquivo de manifesto gerado durante o processo de construção do framework Gez, usado para registrar informações sobre os artefatos de construção do serviço. Ele fornece uma interface unificada para gerenciar artefatos de construção, arquivos exportados e estatísticas de tamanho de recursos.
 
 ```json title="dist/client/manifest.json"
 {
@@ -55,7 +55,7 @@ O arquivo `manifest.json` é gerado pelo framework Gez durante o processo de con
 }
 ```
 
-## Definições de Tipos
+## Definição de Tipos
 ### ManifestJson
 
 ```ts

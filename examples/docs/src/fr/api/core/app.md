@@ -1,6 +1,6 @@
 ---
 titleSuffix: Interface d'application abstraite du framework Gez
-description: Détaille l'interface App du framework Gez, y compris la gestion du cycle de vie des applications, le traitement des ressources statiques et le rendu côté serveur, aidant les développeurs à comprendre et utiliser les fonctionnalités clés de l'application.
+description: Détaille l'interface App du framework Gez, incluant la gestion du cycle de vie des applications, le traitement des ressources statiques et le rendu côté serveur, pour aider les développeurs à comprendre et utiliser les fonctionnalités clés de l'application.
 head:
   - - meta
     - property: keywords
@@ -50,8 +50,8 @@ Environnement de développement :
 - Utilise une stratégie de cache no-cache
 
 Environnement de production :
-- Traite les ressources statiques construites
-- Supporte le cache à long terme pour les fichiers immuables (.final.xxx)
+- Traite les ressources statiques après la construction
+- Supporte le cache à long terme des fichiers immuables (.final.xxx)
 - Stratégie optimisée de chargement des ressources
 
 ```ts
@@ -63,8 +63,8 @@ server.use(gez.middleware);
 - **Type**: `(options?: RenderContextOptions) => Promise<RenderContext>`
 
 Fonction de rendu côté serveur. Fournit différentes implémentations selon l'environnement d'exécution :
-- Environnement de production (start) : charge le fichier d'entrée côté serveur construit (entry.server) pour exécuter le rendu
-- Environnement de développement (dev) : charge le fichier d'entrée côté serveur du code source pour exécuter le rendu
+- Environnement de production (start) : Charge le fichier d'entrée côté serveur construit (entry.server) pour exécuter le rendu
+- Environnement de développement (dev) : Charge le fichier d'entrée côté serveur du code source pour exécuter le rendu
 
 ```ts
 const rc = await gez.render({

@@ -9,11 +9,11 @@ head:
 
 # HTML
 
-このチュートリアルでは、Gez を使用した HTML SSR アプリケーションをゼロから構築する方法を説明します。Gez フレームワークを使用してサーバーサイドレンダリングアプリケーションを作成する方法を、完全な例を通じて紹介します。
+このチュートリアルでは、Gez を使用した HTML SSR アプリケーションをゼロから構築する方法を紹介します。Gez フレームワークを使用してサーバーサイドレンダリングアプリケーションを作成する方法を、完全な例を通して示します。
 
 ## プロジェクト構造
 
-まず、プロジェクトの基本的な構造を確認しましょう：
+まず、プロジェクトの基本構造を確認しましょう：
 
 ```bash
 .
@@ -123,14 +123,14 @@ export default class App {
 
     /**
      * アプリケーションインスタンスを作成
-     * @param {SsrContext} [ssrContext] - サーバーサイドコンテキスト、インポートメタデータのセットを含む
+     * @param {SsrContext} [ssrContext] - サーバーサイドコンテキスト、インポートメタデータのコレクションを含む
      */
     public constructor(public ssrContext?: SsrContext) {
         // コンストラクタ内で追加の初期化は不要
     }
 
     /**
-     * ページコンテンツをレンダリング
+     * ページ内容をレンダリング
      * @returns {string} ページの HTML 構造を返す
      */
     public render(): string {
@@ -148,7 +148,7 @@ export default class App {
     }
 
     /**
-     * クライアントサイド初期化
+     * クライアントサイドの初期化
      * @throws {Error} 時間表示要素が見つからない場合にエラーをスロー
      */
     public onClient(): void {
@@ -167,7 +167,7 @@ export default class App {
     }
 
     /**
-     * サーバーサイド初期化
+     * サーバーサイドの初期化
      */
     public onServer(): void {
         this.time = new Date().toISOString();
@@ -180,7 +180,7 @@ export default class App {
  */
 export interface SsrContext {
     /**
-     * インポートメタデータのセット
+     * インポートメタデータのコレクション
      * @type {Set<ImportMeta>}
      */
     importMetaSet: Set<ImportMeta>;
@@ -231,7 +231,7 @@ app.onClient();
 ```ts title="src/entry.node.ts"
 /**
  * @file Node.js サーバーエントリーファイル
- * @description 開発環境の設定とサーバー起動を担当し、SSR ランタイム環境を提供
+ * @description 開発環境の設定とサーバーの起動を担当し、SSR ランタイム環境を提供
  */
 
 import http from 'node:http';
@@ -239,7 +239,7 @@ import type { GezOptions } from '@gez/core';
 
 export default {
     /**
-     * 開発環境のアプリケーション作成を設定
+     * 開発環境のアプリケーション作成器を設定
      * @description Rspack アプリケーションインスタンスを作成し、開発環境のビルドとホットリロードを設定
      * @param gez Gez フレームワークインスタンス、コア機能と設定インターフェースを提供
      * @returns 設定された Rspack アプリケーションインスタンスを返す、HMR とリアルタイムプレビューをサポート
@@ -278,7 +278,7 @@ export default {
 } satisfies GezOptions;
 ```
 
-このファイルは、開発環境の設定とサーバー起動のエントリーファイルで、以下の2つの主要な機能を含みます：
+このファイルは、開発環境の設定とサーバーの起動のためのエントリーファイルで、以下の2つの主要な機能を含みます：
 
 1. `devApp` 関数：開発環境の Rspack アプリケーションインスタンスを作成し、ホットリロードとリアルタイムプレビュー機能をサポートします。
 2. `server` 関数：HTTP サーバーを作成し、Gez ミドルウェアを統合して SSR リクエストを処理します。
@@ -298,21 +298,21 @@ import type App from './app';
 import type { SsrContext } from './app';
 import { createApp } from './create-app';
 
-// ページコンテンツ生成ロジックをカプセル化
+// ページ内容生成ロジックをカプセル化
 const renderToString = (app: App, ssrContext: SsrContext): string => {
     // サーバーサイドレンダリングコンテキストをアプリケーションインスタンスに注入
     app.ssrContext = ssrContext;
-    // サーバーサイド初期化
+    // サーバーサイドを初期化
     app.onServer();
 
-    // ページコンテンツを生成
+    // ページ内容を生成
     return app.render();
 };
 
 export default async (rc: RenderContext) => {
     // アプリケーションインスタンスを作成し、app インスタンスを含むオブジェクトを返す
     const { app } = createApp();
-    // renderToString を使用してページコンテンツを生成
+    // renderToString を使用してページ内容を生成
     const html = renderToString(app, {
         importMetaSet: rc.importMetaSet
     });
@@ -348,12 +348,12 @@ export default async (rc: RenderContext) => {
 npm run dev
 ```
 
-2. プロジェクトのビルド：
+2. プロジェクトをビルド：
 ```bash
 npm run build
 ```
 
-3. 本番環境での実行：
+3. 本番環境で実行：
 ```bash
 npm run start
 ```

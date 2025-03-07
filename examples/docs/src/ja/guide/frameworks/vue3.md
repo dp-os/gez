@@ -1,6 +1,6 @@
 ---
 titleSuffix: Gez フレームワーク Vue3 SSR アプリケーション例
-description: Gez を基にした Vue3 SSR アプリケーションをゼロから構築し、プロジェクト初期化、Vue3 設定、エントリーファイル設定など、フレームワークの基本的な使い方を実例で紹介します。
+description: Gez をベースにした Vue3 SSR アプリケーションをゼロから構築する方法を紹介します。プロジェクトの初期化、Vue3 の設定、エントリーファイルの設定など、フレームワークの基本的な使い方を実例を通して解説します。
 head:
   - - meta
     - property: keywords
@@ -9,7 +9,7 @@ head:
 
 # Vue3
 
-このチュートリアルでは、Gez を基にした Vue3 SSR アプリケーションをゼロから構築する方法を説明します。Gez フレームワークを使用してサーバーサイドレンダリングアプリケーションを作成する方法を、完全な例を通じて紹介します。
+このチュートリアルでは、Gez をベースにした Vue3 SSR アプリケーションをゼロから構築する方法を説明します。Gez フレームワークを使用してサーバーサイドレンダリングアプリケーションを作成する方法を、完全な例を通して紹介します。
 
 ## プロジェクト構造
 
@@ -21,7 +21,7 @@ head:
 ├── tsconfig.json        # TypeScript 設定ファイル、コンパイルオプションを設定
 └── src                  # ソースコードディレクトリ
     ├── app.vue          # メインアプリケーションコンポーネント、ページ構造とインタラクションロジックを定義
-    ├── create-app.ts    # Vue インスタンス作成ファクトリ、アプリケーション初期化を担当
+    ├── create-app.ts    # Vue インスタンス作成ファクトリ、アプリケーションの初期化を担当
     ├── entry.client.ts  # クライアントサイドエントリーファイル、ブラウザサイドレンダリングを処理
     ├── entry.node.ts    # Node.js サーバーエントリーファイル、開発環境設定とサーバー起動を担当
     └── entry.server.ts  # サーバーサイドエントリーファイル、SSR レンダリングロジックを処理
@@ -122,7 +122,7 @@ npm install
 <script setup lang="ts">
 /**
  * @file サンプルコンポーネント
- * @description Gez フレームワークの基本機能をデモンストレーションするための、自動更新される時間付きページタイトルを表示
+ * @description Gez フレームワークの基本的な機能をデモンストレーションするための、自動更新される時間付きのページタイトルを表示
  */
 
 import { onMounted, onUnmounted, ref } from 'vue';
@@ -171,7 +171,7 @@ export function createApp() {
 ```ts title="src/entry.client.ts"
 /**
  * @file クライアントサイドエントリーファイル
- * @description クライアントサイドインタラクションロジックと動的更新を担当
+ * @description クライアントサイドのインタラクションロジックと動的更新を担当
  */
 
 import { createApp } from './create-app';
@@ -185,12 +185,12 @@ app.mount('#app');
 
 ### entry.node.ts
 
-`entry.node.ts` ファイルを作成し、開発環境とサーバー起動を設定します：
+`entry.node.ts` ファイルを作成し、開発環境の設定とサーバーの起動を担当します：
 
 ```ts title="src/entry.node.ts"
 /**
  * @file Node.js サーバーエントリーファイル
- * @description 開発環境設定とサーバー起動を担当し、SSR ランタイム環境を提供
+ * @description 開発環境の設定とサーバー起動を担当し、SSR ランタイム環境を提供
  */
 
 import http from 'node:http';
@@ -199,7 +199,7 @@ import type { GezOptions } from '@gez/core';
 export default {
     /**
      * 開発環境のアプリケーション作成を設定
-     * @description Rspack アプリケーションインスタンスを作成し、開発環境のビルドとホットリロードを設定
+     * @description Rspack アプリケーションインスタンスを作成し、開発環境のビルドとホットリロードをサポート
      * @param gez Gez フレームワークインスタンス、コア機能と設定インターフェースを提供
      * @returns 設定された Rspack アプリケーションインスタンスを返し、HMR とリアルタイムプレビューをサポート
      */
@@ -214,7 +214,7 @@ export default {
     },
 
     /**
-     * HTTP サーバーを設定して起動
+     * HTTP サーバーの設定と起動
      * @description HTTP サーバーインスタンスを作成し、Gez ミドルウェアを統合して SSR リクエストを処理
      * @param gez Gez フレームワークインスタンス、ミドルウェアとレンダリング機能を提供
      */
@@ -237,7 +237,7 @@ export default {
 } satisfies GezOptions;
 ```
 
-このファイルは、開発環境設定とサーバー起動のエントリーファイルで、以下の2つの主要な機能を含みます：
+このファイルは、開発環境の設定とサーバー起動のエントリーファイルで、以下の2つの主要な機能を含みます：
 
 1. `devApp` 関数：開発環境の Rspack アプリケーションインスタンスを作成し、ホットリロードとリアルタイムプレビュー機能をサポートします。ここでは `createRspackVue3App` を使用して、Vue3 専用の Rspack アプリケーションインスタンスを作成します。
 2. `server` 関数：HTTP サーバーを作成し、Gez ミドルウェアを統合して SSR リクエストを処理します。
@@ -306,4 +306,4 @@ npm run build
 npm run start
 ```
 
-これで、Gez を基にした Vue3 SSR アプリケーションが正常に作成されました！http://localhost:3000 にアクセスして、その効果を確認できます。
+これで、Gez をベースにした Vue3 SSR アプリケーションが正常に作成されました！http://localhost:3000 にアクセスして効果を確認できます。

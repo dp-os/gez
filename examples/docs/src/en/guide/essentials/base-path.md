@@ -1,6 +1,6 @@
 ---
 titleSuffix: Gez Framework Static Resource Path Configuration Guide
-description: Detailed guide on configuring base paths in the Gez framework, including multi-environment deployment, CDN distribution, and resource access path settings, helping developers achieve flexible static resource management.
+description: A detailed guide on configuring base paths in the Gez framework, including multi-environment deployment, CDN distribution, and resource access path settings, helping developers achieve flexible static resource management.
 head:
   - - meta
     - property: keywords
@@ -9,11 +9,11 @@ head:
 
 # Base Path
 
-The Base Path refers to the access path prefix for static resources (such as JavaScript, CSS, images, etc.) in an application. In Gez, proper configuration of the base path is crucial for the following scenarios:
+The Base Path refers to the prefix of the access path for static resources (such as JavaScript, CSS, images, etc.) in an application. In Gez, proper configuration of the base path is crucial for the following scenarios:
 
-- **Multi-environment Deployment**: Supports resource access in different environments such as development, testing, and production
-- **Multi-region Deployment**: Adapts to cluster deployment requirements in different regions or countries
-- **CDN Distribution**: Enables global distribution and acceleration of static resources
+- **Multi-environment Deployment**: Supporting resource access in different environments such as development, testing, and production
+- **Multi-region Deployment**: Adapting to cluster deployment requirements in different regions or countries
+- **CDN Distribution**: Enabling global distribution and acceleration of static resources
 
 ## Default Path Mechanism
 
@@ -28,8 +28,8 @@ Gez employs an automatic path generation mechanism based on the service name. By
 This convention-over-configuration design offers the following advantages:
 
 - **Consistency**: Ensures all static resources use a unified access path
-- **Predictability**: The resource access path can be inferred from the `name` field in `package.json`
-- **Maintainability**: No additional configuration is required, reducing maintenance costs
+- **Predictability**: The resource access path can be inferred directly from the `name` field in `package.json`
+- **Maintainability**: No additional configuration required, reducing maintenance costs
 
 ## Dynamic Path Configuration
 

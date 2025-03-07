@@ -1,6 +1,6 @@
 ---
 titleSuffix: Gez 框架應用抽象介面
-description: 詳細介紹 Gez 框架的 App 介面，包括應用生命週期管理、靜態資源處理和伺服器端渲染功能，幫助開發者理解和使用應用核心功能。
+description: 詳細介紹 Gez 框架的 App 介面，包括應用程式生命週期管理、靜態資源處理和伺服器端渲染功能，幫助開發者理解和使用應用核心功能。
 head:
   - - meta
     - property: keywords
@@ -9,7 +9,7 @@ head:
 
 # App
 
-`App` 是 Gez 框架的應用抽象，提供了統一的介面來管理應用的生命週期、靜態資源和伺服器端渲染。
+`App` 是 Gez 框架的應用抽象，提供了統一的介面來管理應用程式的生命週期、靜態資源和伺服器端渲染。
 
 ```ts title="entry.node.ts"
 export default {

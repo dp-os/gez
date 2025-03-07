@@ -1,6 +1,6 @@
 ---
 titleSuffix: Gez 프레임워크 프로젝트 구조 및 규범 가이드
-description: Gez 프레임워크의 표준 프로젝트 구조, 진입 파일 규범 및 설정 파일 규범을 상세히 설명하여 개발자가 표준화되고 유지보수가 가능한 SSR 애플리케이션을 구축할 수 있도록 돕습니다.
+description: Gez 프레임워크의 표준 프로젝트 구조, 진입 파일 규범 및 설정 파일 규범을 상세히 설명하여 개발자가 표준화되고 유지보수 가능한 SSR 애플리케이션을 구축할 수 있도록 돕습니다.
 head:
   - - meta
     - property: keywords
@@ -9,7 +9,7 @@ head:
 
 # 표준 규범
 
-Gez는 현대적인 SSR 프레임워크로, 표준화된 프로젝트 구조와 경로 해석 메커니즘을 채택하여 개발 및 프로덕션 환경에서 프로젝트의 일관성과 유지보수성을 보장합니다.
+Gez는 현대적인 SSR 프레임워크로, 표준화된 프로젝트 구조와 경로 해석 메커니즘을 채택하여 개발 및 프로덕션 환경에서의 일관성과 유지보수성을 보장합니다.
 
 ## 프로젝트 구조 규범
 
@@ -24,7 +24,7 @@ root
 │  ├─ node               # Node 서버 프로그램 컴파일 출력
 │  ├─ client             # 클라이언트 측 컴파일 출력
 │  │  ├─ versions        # 버전 저장 디렉토리
-│  │  │  └─ latest.tgz   # dist 디렉토리를 압축하여 패키지 배포 제공
+│  │  │  └─ latest.tgz   # dist 디렉토리를 아카이브하여 외부에 패키지 배포 제공
 │  │  └─ manifest.json   # 컴파일 매니페스트 출력, importmap 생성에 사용
 │  └─ src                # tsc로 생성된 파일 유형
 ├─ src
@@ -36,9 +36,9 @@ root
 ```
 
 ::: tip 확장 지식
-- `gez.name`은 `package.json`의 `name` 필드에서 가져옴
-- `dist/package.json`은 루트 디렉토리의 `package.json`에서 가져옴
-- `packs.enable`을 `true`로 설정하면 `dist` 디렉토리를 압축함
+- `gez.name`은 `package.json`의 `name` 필드에서 유래
+- `dist/package.json`은 루트 디렉토리의 `package.json`에서 유래
+- `packs.enable`을 `true`로 설정할 경우에만 `dist` 디렉토리를 아카이브
 
 :::
 

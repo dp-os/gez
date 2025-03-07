@@ -15,9 +15,9 @@ El renderizado en el cliente (Client-Side Rendering, CSR) es una técnica de ren
 
 Se recomienda utilizar el renderizado en el cliente en los siguientes escenarios:
 
-- **Entornos de alojamiento estático**: Servicios de alojamiento como GitHub Pages, CDN, etc., que no admiten renderizado en el servidor
-- **Aplicaciones simples**: Aplicaciones pequeñas que no requieren una alta velocidad de carga inicial ni un buen SEO
-- **Entorno de desarrollo**: Para una vista previa rápida y depuración de la aplicación durante la fase de desarrollo
+- **Entornos de alojamiento estático**: Servicios de alojamiento como GitHub Pages, CDN, etc., que no admiten renderizado en el servidor.
+- **Aplicaciones simples**: Aplicaciones pequeñas donde la velocidad de carga inicial y el SEO no son críticos.
+- **Entorno de desarrollo**: Para una vista previa rápida y depuración de la aplicación durante la fase de desarrollo.
 
 ## Configuración
 
@@ -29,7 +29,7 @@ En el modo de renderizado en el cliente, necesitas configurar una plantilla HTML
 import type { RenderContext } from '@gez/core';
 
 export default async (rc: RenderContext) => {
-    // Enviar la recopilación de dependencias
+    // Enviar la recolección de dependencias
     await rc.commit();
     
     // Configurar la plantilla HTML

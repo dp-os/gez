@@ -118,7 +118,7 @@ interface ParsedModuleConfig {
 
 #### name
 目前服務的名稱
-- 用於識別模組和生成匯入路徑
+- 用於識別模組和產生匯入路徑
 
 #### root
 目前服務的根目錄路徑

@@ -1,0 +1,17 @@
+[
+  {
+    "text": "गाइड",
+    "link": "/guide/start/introduction",
+    "activeMatch": "/guide/"
+  },
+  {
+    "text": "एपीआई",
+    "link": "/api/core/gez",
+    "activeMatch": "/api/"
+  },
+  {
+    "text": "ब्लॉग",
+    "link": "/blog/index",
+    "activeMatch": "/blog/"
+  }
+]

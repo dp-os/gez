@@ -9,41 +9,41 @@ head:
 
 # Exigences environnementales
 
-Ce document décrit les exigences environnementales nécessaires pour utiliser ce framework, y compris l'environnement Node.js et la compatibilité des navigateurs.
+Ce document présente les exigences environnementales nécessaires pour utiliser ce framework, y compris l'environnement Node.js et la compatibilité des navigateurs.
 
 ## Environnement Node.js
 
-Le framework nécessite une version de Node.js >= 22.6, principalement pour prendre en charge l'importation de types TypeScript (via le drapeau `--experimental-strip-types`), sans étape de compilation supplémentaire.
+Le framework nécessite une version de Node.js >= 22.6, principalement pour supporter l'importation de types TypeScript (via le flag `--experimental-strip-types`), sans étape de compilation supplémentaire.
 
 ## Compatibilité des navigateurs
 
-Le framework est construit par défaut en mode de compatibilité pour prendre en charge une large gamme de navigateurs. Cependant, pour une compatibilité complète des navigateurs, il est nécessaire d'ajouter manuellement la dépendance [es-module-shims](https://github.com/guybedford/es-module-shims).
+Le framework est construit par défaut en mode de compatibilité pour supporter une large gamme de navigateurs. Cependant, pour une compatibilité complète des navigateurs, il est nécessaire d'ajouter manuellement la dépendance [es-module-shims](https://github.com/guybedford/es-module-shims).
 
 ### Mode de compatibilité (par défaut)
-- 🌐 Chrome : >= 87 
-- 🔷 Edge : >= 88 
-- 🦊 Firefox : >= 78 
-- 🧭 Safari : >= 14 
+- 🌐 Chrome : >= 87
+- 🔷 Edge : >= 88
+- 🦊 Firefox : >= 78
+- 🧭 Safari : >= 14
 
 Selon les statistiques de [Can I Use](https://caniuse.com/?search=dynamic%20import), le taux de couverture des navigateurs en mode de compatibilité est de 96,81 %.
 
 ### Mode de support natif
-- 🌐 Chrome : >= 89 
-- 🔷 Edge : >= 89 
-- 🦊 Firefox : >= 108 
-- 🧭 Safari : >= 16.4 
+- 🌐 Chrome : >= 89
+- 🔷 Edge : >= 89
+- 🦊 Firefox : >= 108
+- 🧭 Safari : >= 16.4
 
 Le mode de support natif offre les avantages suivants :
 - Aucun surcoût d'exécution, pas besoin de chargeur de modules supplémentaire
 - Analyse native par le navigateur, vitesse d'exécution plus rapide
-- Meilleure capacité de fractionnement du code et de chargement à la demande
+- Meilleure capacité de découpage de code et de chargement à la demande
 
 Selon les statistiques de [Can I Use](https://caniuse.com/?search=importmap), le taux de couverture des navigateurs en mode de support natif est de 93,5 %.
 
 ### Activation du support de compatibilité
 
 ::: warning Avertissement important
-Bien que le framework soit construit par défaut en mode de compatibilité, pour une prise en charge complète des anciens navigateurs, vous devez ajouter la dépendance [es-module-shims](https://github.com/guybedford/es-module-shims) à votre projet.
+Bien que le framework soit construit par défaut en mode de compatibilité, pour un support complet des anciens navigateurs, vous devez ajouter la dépendance [es-module-shims](https://github.com/guybedford/es-module-shims) à votre projet.
 
 :::
 

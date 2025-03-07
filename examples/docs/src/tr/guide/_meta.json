@@ -1,0 +1,17 @@
+[
+    {
+        "type": "dir",
+        "name": "start",
+        "label": "Başlangıç"
+    },
+    {
+        "type": "dir",
+        "name": "essentials",
+        "label": "Temel Bilgiler"
+    },
+    {
+        "type": "dir",
+        "name": "frameworks",
+        "label": "Çerçeveler"
+    }
+]

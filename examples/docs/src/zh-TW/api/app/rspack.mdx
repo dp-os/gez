@@ -43,7 +43,7 @@ interface RspackAppConfigContext {
 }
 ```
 
-Rspack 應用配置上下文介面，提供了在配置鉤子函式中可以存取的上下文資訊：
+Rspack 應用配置上下文介面，提供了在配置鉤子函數中可以存取的上下文資訊：
 - `gez`: Gez 框架實例
 - `buildTarget`: 當前的建置目標（client/server/node）
 - `config`: Rspack 配置物件
@@ -75,13 +75,13 @@ Rspack 應用配置選項介面：
 - `cssLoader`: css-loader 配置選項
 - `target`: 建置目標相容性配置
 - `definePlugin`: 全域常數定義
-- `config`: 配置鉤子函式
+- `config`: 配置鉤子函數
 
 ### RspackHtmlAppOptions
 
 繼承自 `RspackAppOptions`，用於配置 HTML 應用的特定選項。
 
-## 函式匯出
+## 函數匯出
 
 ### createRspackApp
 
@@ -169,4 +169,3 @@ export default {
 ### rspack
 
 重新匯出 `@rspack/core` 套件的所有內容，提供完整的 Rspack 核心功能。
-```

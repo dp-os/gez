@@ -4,29 +4,29 @@ description: Detalhes sobre a classe principal RenderContext do framework Gez, i
 head:
   - - meta
     - property: keywords
-      content: Gez, RenderContext, SSR, Renderização no Lado do Servidor, Contexto de Renderização, Sincronização de Estado, Gerenciamento de Recursos, Framework de Aplicação Web
+      content: Gez, RenderContext, SSR, Renderização no lado do servidor, Contexto de renderização, Sincronização de estado, Gerenciamento de recursos, Framework de aplicação web
 ---
 
 # RenderContext
 
-RenderContext é a classe central do framework Gez, responsável por gerenciar o ciclo de vida completo da renderização no lado do servidor (SSR). Ele fornece um conjunto completo de APIs para lidar com o contexto de renderização, gerenciamento de recursos, sincronização de estado e outras tarefas críticas:
+RenderContext é a classe principal do framework Gez, responsável por gerenciar o ciclo de vida completo da renderização no lado do servidor (SSR). Ele fornece um conjunto completo de APIs para lidar com o contexto de renderização, gerenciamento de recursos, sincronização de estado e outras tarefas críticas:
 
-- **Controle de Renderização**: Gerencia o fluxo de renderização no servidor, suportando cenários como renderização de múltiplas entradas e renderização condicional
-- **Gerenciamento de Recursos**: Coleta e injeta recursos estáticos como JS, CSS de forma inteligente, otimizando o desempenho de carregamento
-- **Sincronização de Estado**: Lida com a serialização do estado no servidor, garantindo a ativação correta (hydration) no cliente
-- **Controle de Roteamento**: Suporta funcionalidades avançadas como redirecionamento no servidor e configuração de códigos de status
+- **Controle de renderização**: Gerencia o fluxo de renderização no lado do servidor, suportando cenários como renderização de múltiplas entradas e renderização condicional.
+- **Gerenciamento de recursos**: Coleta e injeta recursos estáticos como JS, CSS de forma inteligente, otimizando o desempenho de carregamento.
+- **Sincronização de estado**: Lida com a serialização do estado no lado do servidor, garantindo a ativação correta no cliente (hydration).
+- **Controle de roteamento**: Suporta funcionalidades avançadas como redirecionamento no lado do servidor e configuração de códigos de status.
 
 ## Definições de Tipo
 
 ### ServerRenderHandle
 
-Definição de tipo para a função de manipulação de renderização no servidor.
+Definição de tipo para a função de manipulação de renderização no lado do servidor.
 
 ```ts
 type ServerRenderHandle = (rc: RenderContext) => Promise<void> | void;
 ```
 
-A função de manipulação de renderização no servidor é uma função assíncrona ou síncrona que recebe uma instância de RenderContext como parâmetro, usada para processar a lógica de renderização no servidor.
+A função de manipulação de renderização no lado do servidor é uma função assíncrona ou síncrona que recebe uma instância de RenderContext como parâmetro, usada para processar a lógica de renderização no lado do servidor.
 
 ```ts title="entry.node.ts"
 // 1. Função assíncrona
@@ -91,15 +91,15 @@ type ImportmapMode = 'inline' | 'js';
 ```
 
 - `inline`: Inclui o conteúdo do importmap diretamente no HTML, adequado para os seguintes cenários:
-  - Redução do número de requisições HTTP
-  - Conteúdo do importmap pequeno
-  - Alta prioridade no desempenho de carregamento inicial
+  - Reduzir o número de requisições HTTP
+  - Quando o conteúdo do importmap é pequeno
+  - Quando o desempenho de carregamento inicial é crítico
 - `js`: Gera o conteúdo do importmap como um arquivo JS independente, adequado para os seguintes cenários:
-  - Conteúdo do importmap grande
-  - Necessidade de aproveitar o mecanismo de cache do navegador
-  - Várias páginas compartilhando o mesmo importmap
+  - Quando o conteúdo do importmap é grande
+  - Quando é necessário aproveitar o mecanismo de cache do navegador
+  - Quando múltiplas páginas compartilham o mesmo importmap
 
-Classe de contexto de renderização, responsável pelo gerenciamento de recursos e geração de HTML durante o processo de renderização no servidor (SSR).
+Classe de contexto de renderização, responsável pelo gerenciamento de recursos e geração de HTML durante o processo de renderização no lado do servidor (SSR).
 ## Opções de Instância
 
 Define as opções de configuração do contexto de renderização.
@@ -116,19 +116,19 @@ interface RenderContextOptions {
 #### base
 
 - **Tipo**: `string`
-- **Valor Padrão**: `''`
+- **Valor padrão**: `''`
 
 Caminho base para recursos estáticos.
 - Todos os recursos estáticos (JS, CSS, imagens, etc.) serão carregados com base neste caminho
 - Suporta configuração dinâmica em tempo de execução, sem necessidade de reconstrução
-- Comumente usado em cenários como sites multilíngues, aplicações de micro front-end, etc.
+- Comumente usado em cenários como sites multilíngues, aplicações de micro frontend, etc.
 
 #### entryName
 
 - **Tipo**: `string`
-- **Valor Padrão**: `'default'`
+- **Valor padrão**: `'default'`
 
-Nome da função de entrada para renderização no servidor. Usado para especificar a função de entrada a ser usada durante a renderização no servidor, quando um módulo exporta múltiplas funções de renderização.
+Nome da função de entrada para renderização no lado do servidor. Usado para especificar a função de entrada a ser usada durante a renderização no lado do servidor, quando um módulo exporta múltiplas funções de renderização.
 
 ```ts title="src/entry.server.ts"
 export const mobile = async (rc: RenderContext) => {
@@ -143,9 +143,9 @@ export const desktop = async (rc: RenderContext) => {
 #### params
 
 - **Tipo**: `Record<string, any>`
-- **Valor Padrão**: `{}`
+- **Valor padrão**: `{}`
 
-Parâmetros de renderização. Permite passar parâmetros de qualquer tipo para a função de renderização, comumente usado para passar informações de requisição (URL, parâmetros de consulta, etc.).
+Parâmetros de renderização. Permite passar parâmetros de qualquer tipo para a função de renderização, comumente usado para passar informações de requisição (URL, parâmetros de query, etc.).
 
 ```ts
 const rc = await gez.render({
@@ -160,7 +160,7 @@ const rc = await gez.render({
 #### importmapMode
 
 - **Tipo**: `'inline' | 'js'`
-- **Valor Padrão**: `'inline'`
+- **Valor padrão**: `'inline'`
 
 Modo de geração do mapa de importação (Import Map):
 - `inline`: Inclui o conteúdo do importmap diretamente no HTML
@@ -172,14 +172,14 @@ Modo de geração do mapa de importação (Import Map):
 ### gez
 
 - **Tipo**: `Gez`
-- **Somente Leitura**: `true`
+- **Somente leitura**: `true`
 
 Referência à instância do Gez. Usado para acessar funcionalidades e informações de configuração do núcleo do framework.
 
 ### redirect
 
 - **Tipo**: `string | null`
-- **Valor Padrão**: `null`
+- **Valor padrão**: `null`
 
 Endereço de redirecionamento. Quando definido, o servidor pode realizar um redirecionamento HTTP com base neste valor, comumente usado em cenários como verificação de login, controle de permissões, etc.
 
@@ -208,7 +208,7 @@ export default async (rc: RenderContext) => {
 ### status
 
 - **Tipo**: `number | null`
-- **Valor Padrão**: `null`
+- **Valor padrão**: `null`
 
 Código de status HTTP. Pode ser definido qualquer código de status HTTP válido, comumente usado em cenários como tratamento de erros, redirecionamentos, etc.
 
@@ -238,9 +238,9 @@ export default async (rc: RenderContext) => {
 ### html
 
 - **Tipo**: `string`
-- **Valor Padrão**: `''`
+- **Valor padrão**: `''`
 
-Conteúdo HTML. Usado para definir e obter o conteúdo HTML final gerado, ao definir, substitui automaticamente os espaços reservados para o caminho base.
+Conteúdo HTML. Usado para definir e obter o conteúdo HTML final gerado, ao definir, trata automaticamente os espaços reservados para o caminho base.
 
 ```ts title="entry.node.ts"
 // Uso básico
@@ -278,8 +278,8 @@ const rc = await gez.render({
 ### base
 
 - **Tipo**: `string`
-- **Somente Leitura**: `true`
-- **Valor Padrão**: `''`
+- **Somente leitura**: `true`
+- **Valor padrão**: `''`
 
 Caminho base para recursos estáticos. Todos os recursos estáticos (JS, CSS, imagens, etc.) serão carregados com base neste caminho, suportando configuração dinâmica em tempo de execução.
 
@@ -296,7 +296,7 @@ const rc = await gez.render({
   params: { lang: 'zh-CN' }
 });
 
-// Exemplo de aplicação de micro front-end
+// Exemplo de aplicação de micro frontend
 const rc = await gez.render({
   base: '/app1',  // Subaplicação 1
   params: { appId: 1 }
@@ -306,10 +306,10 @@ const rc = await gez.render({
 ### entryName
 
 - **Tipo**: `string`
-- **Somente Leitura**: `true`
-- **Valor Padrão**: `'default'`
+- **Somente leitura**: `true`
+- **Valor padrão**: `'default'`
 
-Nome da função de entrada para renderização no servidor. Usado para selecionar a função de renderização a ser usada a partir do entry.server.ts.
+Nome da função de entrada para renderização no lado do servidor. Usado para selecionar a função de renderização a ser usada a partir do entry.server.ts.
 
 ```ts title="entry.node.ts"
 // Função de entrada padrão
@@ -336,10 +336,10 @@ const rc = await gez.render({
 ### params
 
 - **Tipo**: `Record<string, any>`
-- **Somente Leitura**: `true`
-- **Valor Padrão**: `{}`
+- **Somente leitura**: `true`
+- **Valor padrão**: `{}`
 
-Parâmetros de renderização. Permite passar e acessar parâmetros durante o processo de renderização no servidor, comumente usado para passar informações de requisição, configurações de página, etc.
+Parâmetros de renderização. Permite passar e acessar parâmetros durante o processo de renderização no lado do servidor, comumente usado para passar informações de requisição, configurações de página, etc.
 
 ```ts
 // Uso básico - Passar URL e configurações de idioma
@@ -371,12 +371,12 @@ const rc = await gez.render({
 
 - **Tipo**: `Set<ImportMeta>`
 
-Conjunto de coleta de dependências de módulos. Rastreia e registra automaticamente as dependências de módulos durante o processo de renderização de componentes, coletando apenas os recursos realmente usados na renderização da página atual.
+Conjunto de dependências de módulos coletadas. Durante o processo de renderização de componentes, rastreia e registra automaticamente as dependências de módulos, coletando apenas os recursos realmente usados na renderização da página atual.
 
 ```ts
 // Uso básico
 const renderToString = (app: any, context: { importMetaSet: Set<ImportMeta> }) => {
-  // Coleta automática de dependências de módulos durante o processo de renderização
+  // Coletar automaticamente as dependências de módulos durante o processo de renderização
   // O framework chamará automaticamente context.importMetaSet.add(import.meta) durante a renderização de componentes
   // Desenvolvedores não precisam lidar manualmente com a coleta de dependências
   return '<div id="app">Hello World</div>';
@@ -426,7 +426,7 @@ rc.html = `
 ### importmapMode
 
 - **Tipo**: `'inline' | 'js'`
-- **Valor Padrão**: `'inline'`
+- **Valor padrão**: `'inline'`
 
 Modo de geração do mapa de importação:
 - `inline`: Inclui o conteúdo do importmap diretamente no HTML
@@ -442,7 +442,7 @@ Modo de geração do mapa de importação:
   - `options?: serialize.SerializeJSOptions` - Opções de serialização
 - **Retorno**: `string`
 
-Serializa um objeto JavaScript em uma string. Usado para serializar dados de estado durante o processo de renderização no servidor, garantindo que os dados possam ser incorporados com segurança no HTML.
+Serializa um objeto JavaScript em uma string. Usado para serializar dados de estado durante o processo de renderização no lado do servidor, garantindo que os dados possam ser embutidos com segurança no HTML.
 
 ```ts
 const state = {
@@ -484,15 +484,15 @@ rc.html = `
 
 - **Retorno**: `Promise<void>`
 
-Confirma a coleta de dependências e atualiza a lista de recursos. Coleta todos os módulos usados a partir do importMetaSet, analisando os recursos específicos de cada módulo com base no arquivo de manifesto.
+Submete a coleta de dependências e atualiza a lista de recursos. Coleta todos os módulos usados a partir do importMetaSet, analisando os recursos específicos de cada módulo com base no arquivo de manifesto.
 
 ```ts
-// Renderizar e confirmar dependências
+// Renderizar e submeter dependências
 const html = await renderToString(app, {
   importMetaSet: rc.importMetaSet
 });
 
-// Confirmar coleta de dependências
+// Submeter coleta de dependências
 await rc.commit();
 ```
 
@@ -500,7 +500,7 @@ await rc.commit();
 
 - **Retorno**: `string`
 
-Gera tags de pré-carregamento de recursos. Usado para pré-carregar recursos CSS e JavaScript, suportando configuração de prioridade e tratamento automático do caminho base.
+Gera tags de pré-carregamento de recursos. Usado para pré-carregar recursos CSS e JavaScript, suportando configuração de prioridade, tratando automaticamente o caminho base.
 
 ```ts
 rc.html = `
@@ -543,10 +543,4 @@ Gera tags de mapa de importação. Gera o mapa de importação inline ou externo
 ```ts
 rc.html = `
   <head>
-    ${rc.importmap()}  <!-- Injetar mapa de importação -->
-  </head>
-`;
-```
-
-### moduleEntry()
-
+    ${rc.importmap()}  <!-- Injetar mapa

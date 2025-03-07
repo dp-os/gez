@@ -140,16 +140,16 @@ interface ManifestJsonChunkSizes {
 
 - **타입**: `number`
 
-JS 파일 크기(바이트).
+JS 파일 크기(바이트)입니다.
 
 #### css
 
 - **타입**: `number`
 
-CSS 파일 크기(바이트).
+CSS 파일 크기(바이트)입니다.
 
 #### resource
 
 - **타입**: `number`
 
-리소스 파일 크기(바이트).
+리소스 파일 크기(바이트)입니다.

@@ -1,6 +1,6 @@
 ---
 titleSuffix: Gez 프레임워크 Preact+HTM SSR 애플리케이션 예제
-description: Gez를 기반으로 Preact+HTM SSR 애플리케이션을 처음부터 구축하는 방법을 보여주는 예제입니다. 프로젝트 초기화, Preact 설정 및 진입점 파일 설정을 포함한 프레임워크의 기본 사용법을 다룹니다.
+description: Gez를 기반으로 Preact+HTM SSR 애플리케이션을 처음부터 구축하는 방법을 보여주는 예제입니다. 프로젝트 초기화, Preact 설정 및 진입 파일 설정을 포함한 프레임워크의 기본 사용법을 다룹니다.
 head:
   - - meta
     - property: keywords
@@ -17,14 +17,14 @@ head:
 
 ```bash
 .
-├── package.json         # 프로젝트 설정 파일, 의존성 및 스크립트 명령 정의
+├── package.json         # 프로젝트 설정 파일, 의존성 및 스크립트 명령어 정의
 ├── tsconfig.json        # TypeScript 설정 파일, 컴파일 옵션 설정
 └── src                  # 소스 코드 디렉토리
     ├── app.ts           # 메인 애플리케이션 컴포넌트, 페이지 구조 및 상호작용 로직 정의
     ├── create-app.ts    # 애플리케이션 인스턴스 생성 팩토리, 애플리케이션 초기화 담당
-    ├── entry.client.ts  # 클라이언트 진입점 파일, 브라우저 측 렌더링 처리
-    ├── entry.node.ts    # Node.js 서버 진입점 파일, 개발 환경 설정 및 서버 시작 담당
-    └── entry.server.ts  # 서버 진입점 파일, SSR 렌더링 로직 처리
+    ├── entry.client.ts  # 클라이언트 진입 파일, 브라우저 측 렌더링 처리
+    ├── entry.node.ts    # Node.js 서버 진입 파일, 개발 환경 설정 및 서버 시작 담당
+    └── entry.server.ts  # 서버 진입 파일, SSR 렌더링 로직 처리
 ```
 
 ## 프로젝트 설정
@@ -70,7 +70,7 @@ yarn install
 npm install
 ```
 
-이 명령어는 Preact, HTM, TypeScript 및 SSR 관련 의존성을 포함한 모든 필요한 패키지를 설치합니다.
+이 명령어는 Preact, HTM, TypeScript 및 SSR 관련 의존성을 포함한 모든 필수 패키지를 설치합니다.
 
 ### tsconfig.json
 
@@ -118,7 +118,7 @@ npm install
 ```ts title="src/app.ts"
 /**
  * @file 예제 컴포넌트
- * @description Gez 프레임워크의 기본 기능을 보여주기 위해 자동으로 업데이트되는 시간을 표시하는 페이지 제목을 보여줍니다.
+ * @description Gez 프레임워크의 기본 기능을 시연하기 위해 자동으로 업데이트되는 시간을 표시하는 페이지 제목을 보여줍니다.
  */
 
 import { Component } from 'preact';
@@ -181,11 +181,11 @@ export function createApp(): { app: VNode } {
 
 ### entry.client.ts
 
-클라이언트 진입점 파일 `src/entry.client.ts`를 생성합니다:
+클라이언트 진입 파일 `src/entry.client.ts`를 생성합니다:
 
 ```ts title="src/entry.client.ts"
 /**
- * @file 클라이언트 진입점 파일
+ * @file 클라이언트 진입 파일
  * @description 클라이언트 상호작용 로직 및 동적 업데이트 처리
  */
 
@@ -205,7 +205,7 @@ render(app, document.getElementById('app')!);
 
 ```ts title="src/entry.node.ts"
 /**
- * @file Node.js 서버 진입점 파일
+ * @file Node.js 서버 진입 파일
  * @description 개발 환경 설정 및 서버 시작 담당, SSR 런타임 환경 제공
  */
 
@@ -214,8 +214,8 @@ import type { GezOptions } from '@gez/core';
 
 export default {
     /**
-     * 개발 환경의 애플리케이션 생성기 설정
-     * @description Rspack 애플리케이션 인스턴스 생성 및 설정, 개발 환경의 빌드 및 핫 리로드 지원
+     * 개발 환경 애플리케이션 생성기 설정
+     * @description Rspack 애플리케이션 인스턴스 생성 및 설정, 개발 환경 빌드 및 핫 리로드 지원
      * @param gez Gez 프레임워크 인스턴스, 핵심 기능 및 설정 인터페이스 제공
      * @returns 설정된 Rspack 애플리케이션 인스턴스 반환, HMR 및 실시간 미리보기 지원
      */
@@ -223,7 +223,7 @@ export default {
         return import('@gez/rspack').then((m) =>
             m.createRspackHtmlApp(gez, {
                 config(context) {
-                    // 여기서 Rspack 컴파일 설정을 커스터마이즈
+                    // 여기서 Rspack 컴파일 설정을 사용자 정의
                 }
             })
         );
@@ -253,18 +253,18 @@ export default {
 } satisfies GezOptions;
 ```
 
-이 파일은 개발 환경 설정 및 서버 시작을 담당하는 진입점 파일로, 두 가지 핵심 기능을 포함합니다:
+이 파일은 개발 환경 설정 및 서버 시작을 담당하는 진입 파일로, 두 가지 핵심 기능을 포함합니다:
 
 1. `devApp` 함수: 개발 환경의 Rspack 애플리케이션 인스턴스를 생성 및 설정하며, 핫 리로드 및 실시간 미리보기 기능을 지원합니다. 여기서는 `createRspackHtmlApp`을 사용하여 Preact+HTM 전용 Rspack 애플리케이션 인스턴스를 생성합니다.
 2. `server` 함수: HTTP 서버를 생성 및 설정하고, Gez 미들웨어를 통합하여 SSR 요청을 처리합니다.
 
 ### entry.server.ts
 
-서버 사이드 렌더링 진입점 파일 `src/entry.server.ts`를 생성합니다:
+서버 사이드 렌더링 진입 파일 `src/entry.server.ts`를 생성합니다:
 
 ```ts title="src/entry.server.ts"
 /**
- * @file 서버 사이드 렌더링 진입점 파일
+ * @file 서버 사이드 렌더링 진입 파일
  * @description 서버 사이드 렌더링 프로세스, HTML 생성 및 리소스 주입 담당
  */
 
@@ -280,7 +280,7 @@ export default async (rc: RenderContext) => {
     // Preact의 renderToString을 사용하여 페이지 내용 생성
     const html = render(app);
 
-    // 의존성 수집 커밋, 필요한 모든 리소스가 로드되도록 보장
+    // 의존성 수집 완료, 모든 필수 리소스가 로드되도록 보장
     await rc.commit();
 
     // 완전한 HTML 구조 생성

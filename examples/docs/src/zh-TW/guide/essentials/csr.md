@@ -9,7 +9,7 @@ head:
 
 # 客戶端渲染
 
-客戶端渲染（Client-Side Rendering，CSR）是一種在瀏覽器端執行頁面渲染的技術方案。在 Gez 中，當你的應用無法部署 Node.js 伺服器實例時，可以選擇在建置階段生成靜態的 `index.html` 檔案，實現純客戶端渲染。
+客戶端渲染（Client-Side Rendering，CSR）是一種在瀏覽器端執行頁面渲染的技術方案。在 Gez 中，當你的應用無法部署 Node.js 伺服器實例時，可以選擇在建置階段生成靜態的 `index.html` 文件，實現純客戶端渲染。
 
 ## 使用場景
 
@@ -54,16 +54,16 @@ export default async (rc: RenderContext) => {
 
 ### 靜態 HTML 生成
 
-要在生產環境中使用客戶端渲染，需要在建置階段生成靜態的 HTML 檔案。Gez 提供了 `postBuild` 鉤子函數來實現這一功能：
+要在生產環境中使用客戶端渲染，需要在建置階段生成靜態的 HTML 文件。Gez 提供了 `postBuild` 鉤子函數來實現這一功能：
 
 ```ts title="src/entry.node.ts"
 import type { GezOptions } from '@gez/core';
 
 export default {
     async postBuild(gez) {
-        // 生成靜態 HTML 檔案
+        // 生成靜態 HTML 文件
         const rc = await gez.render();
-        // 寫入 HTML 檔案
+        // 寫入 HTML 文件
         gez.writeSync(
             gez.resolvePath('dist/client', 'index.html'),
             rc.html

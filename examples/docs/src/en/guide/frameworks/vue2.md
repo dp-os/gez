@@ -1,6 +1,6 @@
 ---
 titleSuffix: Gez Framework Vue2 SSR Application Example
-description: Build a Vue2 SSR application based on Gez from scratch. This example demonstrates the basic usage of the framework, including project initialization, Vue2 configuration, and entry file setup.
+description: Build a Vue2 SSR application from scratch using Gez framework. This example demonstrates the basic usage of the framework, including project initialization, Vue2 configuration, and entry file setup.
 head:
   - - meta
     - property: keywords
@@ -9,7 +9,7 @@ head:
 
 # Vue2
 
-This tutorial will guide you through building a Vue2 SSR application based on Gez from scratch. We'll demonstrate how to create a server-side rendered application using the Gez framework through a complete example.
+This tutorial will guide you through building a Vue2 SSR application from scratch using the Gez framework. We'll demonstrate how to create a server-side rendered application with a complete example.
 
 ## Project Structure
 
@@ -21,7 +21,7 @@ First, let's understand the basic project structure:
 ├── tsconfig.json        # TypeScript configuration file, setting compilation options
 └── src                  # Source code directory
     ├── app.vue          # Main application component, defining page structure and interaction logic
-    ├── create-app.ts    # Vue instance factory, responsible for application initialization
+    ├── create-app.ts    # Vue instance factory, responsible for initializing the application
     ├── entry.client.ts  # Client entry file, handling browser-side rendering
     ├── entry.node.ts    # Node.js server entry file, responsible for development environment configuration and server startup
     └── entry.server.ts  # Server entry file, handling SSR rendering logic
@@ -70,7 +70,7 @@ yarn install
 npm install
 ```
 
-This will install all necessary dependencies, including Vue2, TypeScript, and SSR-related packages.
+This will install all the necessary dependencies, including Vue2, TypeScript, and SSR-related packages.
 
 ### tsconfig.json
 
@@ -192,7 +192,7 @@ Create the `entry.node.ts` file to configure the development environment and ser
 ```ts title="src/entry.node.ts"
 /**
  * @file Node.js Server Entry File
- * @description Responsible for development environment configuration and server startup, providing SSR runtime environment
+ * @description Responsible for development environment configuration and server startup, providing the SSR runtime environment
  */
 
 import http from 'node:http';
@@ -200,7 +200,7 @@ import type { GezOptions } from '@gez/core';
 
 export default {
     /**
-     * Configure the development environment application creator
+     * Configures the development environment application creator
      * @description Creates and configures the Rspack application instance for development environment builds and hot updates
      * @param gez Gez framework instance, providing core functionality and configuration interfaces
      * @returns Returns the configured Rspack application instance, supporting HMR and live preview
@@ -216,7 +216,7 @@ export default {
     },
 
     /**
-     * Configure and start the HTTP server
+     * Configures and starts the HTTP server
      * @description Creates an HTTP server instance, integrates Gez middleware, and handles SSR requests
      * @param gez Gez framework instance, providing middleware and rendering functionality
      */
@@ -239,7 +239,7 @@ export default {
 } satisfies GezOptions;
 ```
 
-This file serves as the entry point for development environment configuration and server startup, containing two core functions:
+This file is the entry point for development environment configuration and server startup, containing two core functions:
 
 1. `devApp` function: Responsible for creating and configuring the Rspack application instance for the development environment, supporting hot updates and live preview. It uses `createRspackVue2App` to create a Rspack application instance specifically for Vue2.
 2. `server` function: Responsible for creating and configuring the HTTP server, integrating Gez middleware to handle SSR requests.
@@ -275,7 +275,7 @@ export default async (rc: RenderContext) => {
 
     // Generate complete HTML structure
     rc.html = `<!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     ${rc.preload()}
     <title>Gez Quick Start</title>
@@ -311,4 +311,4 @@ npm run build
 npm run start
 ```
 
-Now, you have successfully created a Vue2 SSR application based on Gez! Visit http://localhost:3000 to see the result.
+Now, you have successfully created a Vue2 SSR application using the Gez framework! Visit http://localhost:3000 to see the result.

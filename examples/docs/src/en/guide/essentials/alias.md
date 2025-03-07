@@ -1,6 +1,6 @@
 ---
 titleSuffix: Gez Framework Module Import Path Mapping Guide
-description: Detailed explanation of Gez framework's path alias mechanism, including simplified import paths, avoiding deep nesting, type safety, and module resolution optimization, helping developers improve code maintainability.
+description: Detailed explanation of Gez framework's path alias mechanism, including features such as simplified import paths, avoiding deep nesting, type safety, and module resolution optimization, helping developers improve code maintainability.
 head:
   - - meta
     - property: keywords
@@ -9,21 +9,21 @@ head:
 
 # Path Alias
 
-Path Alias is a module import path mapping mechanism that allows developers to use concise, semantic identifiers to replace full module paths. In Gez, the path alias mechanism offers the following advantages:
+Path Alias is a module import path mapping mechanism that allows developers to use short, semantic identifiers to replace full module paths. In Gez, the path alias mechanism offers the following advantages:
 
-- **Simplified Import Paths**: Use semantic aliases to replace lengthy relative paths, improving code readability
-- **Avoid Deep Nesting**: Eliminate maintenance difficulties caused by multi-level directory references (e.g., `../../../../`)
-- **Type Safety**: Fully integrated with TypeScript's type system, providing code completion and type checking
-- **Module Resolution Optimization**: Improve module resolution performance through predefined path mappings
+- **Simplified Import Paths**: Use semantic aliases to replace lengthy relative paths, improving code readability.
+- **Avoid Deep Nesting**: Eliminate maintenance difficulties caused by multi-level directory references (e.g., `../../../../`).
+- **Type Safety**: Fully integrated with TypeScript's type system, providing code completion and type checking.
+- **Module Resolution Optimization**: Improve module resolution performance through predefined path mappings.
 
 ## Default Alias Mechanism
 
 Gez adopts an automatic alias mechanism based on service names, which follows the convention-over-configuration design with the following characteristics:
 
-- **Automatic Configuration**: Automatically generates aliases based on the `name` field in `package.json`, no manual configuration required
-- **Unified Specification**: Ensures all service modules follow consistent naming and referencing conventions
-- **Type Support**: Works with the `npm run build:dts` command to automatically generate type declaration files, enabling cross-service type inference
-- **Predictability**: Allows inferring module reference paths through service names, reducing maintenance costs
+- **Automatic Configuration**: Automatically generates aliases based on the `name` field in `package.json`, eliminating the need for manual configuration.
+- **Unified Standard**: Ensures all service modules follow consistent naming and referencing conventions.
+- **Type Support**: Works with the `npm run build:dts` command to automatically generate type declaration files, enabling cross-service type inference.
+- **Predictability**: Allows inferring module reference paths from service names, reducing maintenance costs.
 
 ## Configuration Instructions
 
@@ -39,7 +39,7 @@ In `package.json`, define the service name using the `name` field, which will se
 
 ### tsconfig.json Configuration
 
-To enable TypeScript to correctly resolve alias paths, configure the `paths` mapping in `tsconfig.json`:
+To ensure TypeScript correctly resolves alias paths, configure the `paths` mapping in `tsconfig.json`:
 
 ```json title="tsconfig.json"
 {
@@ -68,7 +68,7 @@ import { MyComponent } from 'your-app-name/src/components';
 import { MyComponent } from '../components';
 ```
 
-### Importing Other Service Modules
+### Importing Modules from Other Services
 
 ```ts
 // Importing components from another service
@@ -79,9 +79,9 @@ import { utils } from 'other-service/src/utils';
 ```
 
 ::: tip Best Practices
-- Prefer using alias paths over relative paths
-- Maintain semantic and consistent alias paths
-- Avoid excessive directory levels in alias paths
+- Prefer using alias paths over relative paths.
+- Maintain semantic and consistent alias paths.
+- Avoid excessive directory levels in alias paths.
 
 :::
 
@@ -112,7 +112,7 @@ import { logger } from 'remote-service/src/utils';
 
 ### Custom Aliases
 
-For third-party packages or special scenarios, custom aliases can be defined through the Gez configuration file:
+For third-party packages or special scenarios, you can define custom aliases through the Gez configuration file:
 
 ```ts title="src/entry.node.ts"
 export default {
@@ -123,9 +123,9 @@ export default {
                     ...buildContext.config.resolve,
                     alias: {
                         ...buildContext.config.resolve?.alias,
-                        // Configure specific build version for Vue
+                        // Configure a specific build version for Vue
                         'vue$': 'vue/dist/vue.esm.js',
-                        // Configure short aliases for common directories
+                        // Configure short aliases for commonly used directories
                         '@': './src',
                         '@components': './src/components'
                     }
@@ -137,8 +137,8 @@ export default {
 ```
 
 ::: warning Notes
-1. For business modules, it is recommended to always use the default alias mechanism to maintain project consistency
-2. Custom aliases are mainly used to handle special requirements of third-party packages or optimize development experience
-3. Excessive use of custom aliases may affect code maintainability and build optimization
+1. For business modules, it is recommended to always use the default alias mechanism to maintain project consistency.
+2. Custom aliases are primarily used for handling special requirements of third-party packages or optimizing development experience.
+3. Excessive use of custom aliases may impact code maintainability and build optimization.
 
 :::

@@ -4,7 +4,7 @@ description: Aprende a crear una aplicación HTML SSR con Gez desde cero. Este t
 head:
   - - meta
     - property: keywords
-      content: Gez, HTML, Aplicación SSR, Configuración TypeScript, Inicialización de proyecto, Renderizado en el servidor, Interacción en el cliente
+      content: Gez, HTML, Aplicación SSR, Configuración TypeScript, Inicialización de proyecto, Renderizado en servidor, Interacción en cliente
 ---
 
 # HTML
@@ -13,7 +13,7 @@ Este tutorial te guiará en la creación de una aplicación HTML SSR (Server-Sid
 
 ## Estructura del proyecto
 
-Primero, entendamos la estructura básica del proyecto:
+Primero, veamos la estructura básica del proyecto:
 
 ```bash
 .
@@ -21,7 +21,7 @@ Primero, entendamos la estructura básica del proyecto:
 ├── tsconfig.json        # Archivo de configuración de TypeScript, establece opciones de compilación
 └── src                  # Directorio de código fuente
     ├── app.ts           # Componente principal de la aplicación, define la estructura de la página y la lógica de interacción
-    ├── create-app.ts    # Fábrica de creación de instancias de la aplicación, responsable de la inicialización
+    ├── create-app.ts    # Fábrica de creación de instancias de la aplicación, responsable de inicializar la aplicación
     ├── entry.client.ts  # Archivo de entrada del cliente, maneja el renderizado en el navegador
     ├── entry.node.ts    # Archivo de entrada del servidor Node.js, responsable de la configuración del entorno de desarrollo y el inicio del servidor
     └── entry.server.ts  # Archivo de entrada del servidor, maneja la lógica de renderizado SSR
@@ -58,7 +58,7 @@ Crea el archivo `package.json` para configurar las dependencias y scripts del pr
 }
 ```
 
-Después de crear el archivo `package.json`, instala las dependencias del proyecto. Puedes usar cualquiera de los siguientes comandos para instalarlas:
+Después de crear el archivo `package.json`, necesitas instalar las dependencias del proyecto. Puedes usar cualquiera de los siguientes comandos para instalarlas:
 ```bash
 pnpm install
 # o
@@ -106,7 +106,7 @@ Crea el archivo `tsconfig.json` para configurar las opciones de compilación de 
 
 ### app.ts
 
-Crea el componente principal de la aplicación en `src/app.ts`, implementando la estructura de la página y la lógica de interacción:
+Crea el componente principal de la aplicación `src/app.ts`, que implementa la estructura de la página y la lógica de interacción:
 
 ```ts title="src/app.ts"
 /**
@@ -126,7 +126,7 @@ export default class App {
      * @param {SsrContext} [ssrContext] - Contexto del servidor, contiene un conjunto de metadatos de importación
      */
     public constructor(public ssrContext?: SsrContext) {
-        // No se requiere inicialización adicional en el constructor
+        // No se necesita inicialización adicional en el constructor
     }
 
     /**
@@ -155,7 +155,7 @@ export default class App {
         // Obtiene el elemento de visualización de la hora
         const time = document.querySelector('#app time');
         if (!time) {
-            throw new Error('Elemento de visualización de la hora no encontrado');
+            throw new Error('No se encontró el elemento de visualización de la hora');
         }
 
         // Establece un temporizador para actualizar la hora cada segundo
@@ -214,7 +214,7 @@ Crea el archivo de entrada del cliente `src/entry.client.ts`:
 ```ts title="src/entry.client.ts"
 /**
  * @file Archivo de entrada del cliente
- * @description Responsable de la lógica de interacción y actualización dinámica en el cliente
+ * @description Responsable de la lógica de interacción del cliente y actualizaciones dinámicas
  */
 
 import { createApp } from './create-app';
@@ -226,7 +226,7 @@ app.onClient();
 
 ### entry.node.ts
 
-Crea el archivo `entry.node.ts`, responsable de la configuración del entorno de desarrollo y el inicio del servidor:
+Crea el archivo `entry.node.ts`, que configura el entorno de desarrollo y el inicio del servidor:
 
 ```ts title="src/entry.node.ts"
 /**
@@ -240,8 +240,8 @@ import type { GezOptions } from '@gez/core';
 export default {
     /**
      * Configura el creador de la aplicación para el entorno de desarrollo
-     * @description Crea y configura una instancia de la aplicación Rspack para el entorno de desarrollo, soportando HMR y vista previa en tiempo real
-     * @param gez Instancia del framework Gez, proporciona funcionalidades centrales y interfaces de configuración
+     * @description Crea y configura una instancia de la aplicación Rspack para el entorno de desarrollo, soportando construcción y actualización en caliente
+     * @param gez Instancia del framework Gez, proporciona funcionalidades principales e interfaces de configuración
      * @returns Retorna una instancia de la aplicación Rspack configurada, soportando HMR y vista previa en tiempo real
      */
     async devApp(gez) {
@@ -280,8 +280,8 @@ export default {
 
 Este archivo es el punto de entrada para la configuración del entorno de desarrollo y el inicio del servidor, y contiene dos funciones principales:
 
-1. `devApp`: Responsable de crear y configurar una instancia de la aplicación Rspack para el entorno de desarrollo, soportando HMR y vista previa en tiempo real.
-2. `server`: Responsable de crear y configurar el servidor HTTP, integrando middleware de Gez para manejar solicitudes SSR.
+1. `devApp`: Responsable de crear y configurar una instancia de la aplicación Rspack para el entorno de desarrollo, soportando actualización en caliente y vista previa en tiempo real.
+2. `server`: Responsable de crear y configurar un servidor HTTP, integrando middleware de Gez para manejar solicitudes SSR.
 
 ### entry.server.ts
 
@@ -290,7 +290,7 @@ Crea el archivo de entrada para el renderizado en el servidor `src/entry.server.
 ```ts title="src/entry.server.ts"
 /**
  * @file Archivo de entrada para el renderizado en el servidor
- * @description Responsable del flujo de renderizado SSR, generación de HTML e inyección de recursos
+ * @description Responsable del flujo de renderizado en el servidor, generación de HTML e inyección de recursos
  */
 
 import type { RenderContext } from '@gez/core';
@@ -298,7 +298,7 @@ import type App from './app';
 import type { SsrContext } from './app';
 import { createApp } from './create-app';
 
-// Encapsula la lógica de generación del contenido de la página
+// Encapsula la lógica de generación de contenido de la página
 const renderToString = (app: App, ssrContext: SsrContext): string => {
     // Inyecta el contexto de renderizado en el servidor en la instancia de la aplicación
     app.ssrContext = ssrContext;
@@ -358,4 +358,4 @@ npm run build
 npm run start
 ```
 
-¡Ahora has creado exitosamente una aplicación HTML SSR basada en Gez! Visita http://localhost:3000 para ver el resultado.
+¡Ahora has creado con éxito una aplicación HTML SSR basada en Gez! Visita http://localhost:3000 para ver el resultado.

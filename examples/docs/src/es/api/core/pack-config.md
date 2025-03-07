@@ -31,7 +31,7 @@ interface PackConfig {
 
 #### enable
 
-Habilita o deshabilita la función de empaquetado. Cuando está habilitado, los artefactos de construcción se empaquetan en un paquete estándar npm en formato .tgz.
+Habilita o deshabilita la función de empaquetado. Cuando está habilitado, los artefactos de construcción se empaquetan en un paquete npm estándar en formato .tgz.
 
 - Tipo: `boolean`
 - Valor por defecto: `false`
@@ -39,13 +39,13 @@ Habilita o deshabilita la función de empaquetado. Cuando está habilitado, los 
 #### outputs
 
 Especifica la ruta de salida del archivo del paquete. Soporta las siguientes configuraciones:
-- `string`: Una sola ruta de salida, por ejemplo 'dist/versions/my-app.tgz'
+- `string`: Una única ruta de salida, por ejemplo 'dist/versions/my-app.tgz'
 - `string[]`: Múltiples rutas de salida, para generar varias versiones simultáneamente
 - `boolean`: Cuando es true, utiliza la ruta por defecto 'dist/client/versions/latest.tgz'
 
 #### packageJson
 
-Función de callback para personalizar el contenido de package.json. Se llama antes del empaquetado para modificar el contenido de package.json.
+Función de callback para personalizar el contenido de package.json. Se llama antes del empaquetado para personalizar el contenido de package.json.
 
 - Parámetros:
   - `gez: Gez` - Instancia de Gez

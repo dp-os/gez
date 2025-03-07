@@ -11,11 +11,11 @@ import { PackageManagerTabs } from '@theme';
 
 # @gez/rspack-vue
 
-Rspack Vue パッケージは、Vue フレームワークに基づく Rspack アプリケーションを作成および設定するための API を提供し、Vue コンポーネントの開発、ビルド、およびサーバーサイドレンダリングをサポートします。
+Rspack Vue パッケージは、Vue フレームワークに基づく Rspack アプリケーションを作成および設定するための API を提供します。Vue コンポーネントの開発、ビルド、サーバーサイドレンダリングをサポートします。
 
 ## インストール
 
-パッケージマネージャーを使用して `@gez/rspack-vue` 開発依存関係をインストールします：
+パッケージマネージャを使用して `@gez/rspack-vue` 開発依存関係をインストールします：
 
 <PackageManagerTabs command="install @gez/rspack-vue -D" />
 
@@ -27,7 +27,7 @@ Rspack Vue パッケージは、Vue フレームワークに基づく Rspack ア
 type BuildTarget = 'node' | 'client' | 'server'
 ```
 
-ビルドターゲット環境の型で、アプリケーションのビルドターゲット環境を定義し、ビルドプロセス中の特定の最適化と機能を設定するために使用されます：
+ビルドターゲット環境の型で、アプリケーションのビルドターゲット環境を定義します。ビルドプロセス中の特定の最適化と機能を設定するために使用されます：
 - `node`: Node.js 環境で実行されるコードをビルド
 - `client`: ブラウザ環境で実行されるコードをビルド
 - `server`: サーバー環境で実行されるコードをビルド
@@ -69,7 +69,7 @@ interface RspackAppOptions {
 ```
 
 Rspack アプリケーション設定オプションインターフェース：
-- `css`: CSS 出力方式、'css'（独立ファイル）または 'style'（インラインスタイル）を選択可能
+- `css`: CSS 出力方式で、'css'（独立ファイル）または 'style'（インラインスタイル）を選択可能
 - `loaders`: カスタム loader 設定
 - `styleLoader`: style-loader 設定オプション
 - `cssLoader`: css-loader 設定オプション
@@ -96,7 +96,7 @@ function createRspackApp(gez: Gez, options?: RspackAppOptions): Promise<App>
 - `options`: Rspack アプリケーション設定オプション
 
 **戻り値：**
-- 作成されたアプリケーションインスタンスを解決する Promise を返します
+- 作成されたアプリケーションインスタンスに解決される Promise を返します
 
 ### createRspackHtmlApp
 
@@ -111,7 +111,7 @@ HTML タイプの Rspack アプリケーションインスタンスを作成し�
 - `options`: HTML アプリケーション設定オプション
 
 **戻り値：**
-- 作成された HTML アプリケーションインスタンスを解決する Promise を返します
+- 作成された HTML アプリケーションインスタンスに解決される Promise を返します
 
 ## 定数エクスポート
 ### RSPACK_LOADER
@@ -128,17 +128,17 @@ const RSPACK_LOADER: Record<string, string> = {
 }
 ```
 
-Rspack に組み込まれた loader 識別子マッピングオブジェクトで、一般的に使用される loader 名の定数を提供します：
+Rspack に組み込まれた loader 識別子のマッピングオブジェクトで、一般的に使用される loader 名の定数を提供します：
 
-- `builtinSwcLoader`: TypeScript/JavaScript ファイルを処理するための Rspack 組み込みの SWC loader
-- `lightningcssLoader`: CSS ファイルを処理するための高性能コンパイラである Rspack 組み込みの lightningcss loader
+- `builtinSwcLoader`: Rspack に組み込まれた SWC loader で、TypeScript/JavaScript ファイルを処理します
+- `lightningcssLoader`: Rspack に組み込まれた lightningcss loader で、CSS ファイルの高性能コンパイラを処理します
 - `styleLoader`: CSS を DOM に注入するための loader
 - `cssLoader`: CSS ファイルを解析し、CSS モジュール化を処理するための loader
 - `lessLoader`: Less ファイルを CSS にコンパイルするための loader
 - `styleResourcesLoader`: グローバルスタイルリソース（変数、mixins など）を自動的にインポートするための loader
 - `workerRspackLoader`: Web Worker ファイルを処理するための loader
 
-これらの定数を使用して、設定内で組み込みの loader を参照し、手動で文字列を入力することを避けることができます：
+これらの定数を使用して、設定内で組み込みの loader を参照し、手動で文字列を入力する必要がなくなります：
 
 ```ts title="src/entry.node.ts"
 import { RSPACK_LOADER } from '@gez/rspack';
@@ -161,11 +161,11 @@ export default {
 
 **注意事項：**
 - これらの loader は Rspack に組み込まれており、追加のインストールは不要です
-- カスタム loader 設定を行う際に、これらの定数を使用してデフォルトの loader 実装を置き換えることができます
-- 一部の loader（例：`builtinSwcLoader`）には特定の設定オプションがありますので、対応する設定ドキュメントを参照してください
+- カスタム loader 設定では、これらの定数を使用してデフォルトの loader 実装を置き換えることができます
+- 一部の loader（例：`builtinSwcLoader`）には特定の設定オプションがあります。関連する設定ドキュメントを参照してください
 
 ## モジュールエクスポート
 
 ### rspack
 
-`@rspack/core` パッケージのすべての内容を再エクスポートし、完全な Rspack コア機能を提供します。
+`@rspack/core` パッケージのすべての内容を再エクスポートし、Rspack のコア機能を完全に提供します。

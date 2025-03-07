@@ -1,7 +1,6 @@
-```markdown
 ---
 titleSuffix: Référence de l'API du contexte de rendu du framework Gez
-description: Documentation détaillée de la classe principale RenderContext du framework Gez, incluant le contrôle du rendu, la gestion des ressources, la synchronisation des états et le contrôle des routes, pour aider les développeurs à implémenter un rendu côté serveur efficace.
+description: Documentation détaillée de la classe principale RenderContext du framework Gez, incluant le contrôle du rendu, la gestion des ressources, la synchronisation des états et le contrôle du routage, pour aider les développeurs à implémenter un rendu côté serveur efficace.
 head:
   - - meta
     - property: keywords
@@ -13,9 +12,9 @@ head:
 RenderContext est la classe principale du framework Gez, responsable de la gestion du cycle de vie complet du rendu côté serveur (SSR). Elle fournit une API complète pour gérer le contexte de rendu, la gestion des ressources, la synchronisation des états, et d'autres tâches clés :
 
 - **Contrôle du rendu** : Gère le processus de rendu côté serveur, prenant en charge des scénarios comme le rendu multi-entrées et le rendu conditionnel.
-- **Gestion des ressources** : Collecte et injecte intelligemment des ressources statiques comme JS, CSS, etc., pour optimiser les performances de chargement.
+- **Gestion des ressources** : Collecte et injecte intelligemment les ressources statiques comme JS, CSS, etc., pour optimiser les performances de chargement.
 - **Synchronisation des états** : Gère la sérialisation des états côté serveur, assurant une activation correcte côté client (hydration).
-- **Contrôle des routes** : Prend en charge des fonctionnalités avancées comme les redirections côté serveur et la configuration des codes d'état.
+- **Contrôle du routage** : Prend en charge des fonctionnalités avancées comme les redirections côté serveur et la configuration des codes d'état.
 
 ## Définitions de types
 
@@ -27,17 +26,17 @@ Définition du type de la fonction de traitement du rendu côté serveur.
 type ServerRenderHandle = (rc: RenderContext) => Promise<void> | void;
 ```
 
-La fonction de traitement du rendu côté serveur est une fonction asynchrone ou synchrone qui prend une instance de RenderContext comme paramètre, utilisée pour gérer la logique du rendu côté serveur.
+La fonction de traitement du rendu côté serveur est une fonction asynchrone ou synchrone qui prend une instance de RenderContext comme paramètre, utilisée pour gérer la logique de rendu côté serveur.
 
 ```ts title="entry.node.ts"
-// 1. Fonction de traitement asynchrone
+// 1. Fonction asynchrone
 export default async (rc: RenderContext) => {
   const app = createApp();
   const html = await renderToString(app);
   rc.html = html;
 };
 
-// 2. Fonction de traitement synchrone
+// 2. Fonction synchrone
 export const simple = (rc: RenderContext) => {
   rc.html = '<h1>Hello World</h1>';
 };
@@ -85,7 +84,7 @@ rc.files = {
 
 ### ImportmapMode
 
-Définit le mode de génération de l'importmap.
+Définition du mode de génération de l'importmap.
 
 ```ts
 type ImportmapMode = 'inline' | 'js';
@@ -103,7 +102,7 @@ type ImportmapMode = 'inline' | 'js';
 Classe de contexte de rendu, responsable de la gestion des ressources et de la génération de HTML pendant le processus de rendu côté serveur (SSR).
 ## Options d'instance
 
-Définit les options de configuration du contexte de rendu.
+Définition des options de configuration du contexte de rendu.
 
 ```ts
 interface RenderContextOptions {
@@ -122,14 +121,14 @@ interface RenderContextOptions {
 Chemin de base des ressources statiques.
 - Toutes les ressources statiques (JS, CSS, images, etc.) seront chargées en fonction de ce chemin
 - Prend en charge la configuration dynamique au moment de l'exécution, sans nécessiter de reconstruction
-- Souvent utilisé pour des sites multilingues, des applications micro-frontend, etc.
+- Souvent utilisé dans des scénarios comme les sites multilingues ou les applications micro-frontend
 
 #### entryName
 
 - **Type**: `string`
 - **Valeur par défaut**: `'default'`
 
-Nom de la fonction d'entrée du rendu côté serveur. Utilisé pour spécifier la fonction d'entrée à utiliser lors du rendu côté serveur, lorsqu'un module exporte plusieurs fonctions de rendu.
+Nom de la fonction d'entrée pour le rendu côté serveur. Utilisé pour spécifier la fonction d'entrée à utiliser lors du rendu côté serveur, lorsqu'un module exporte plusieurs fonctions de rendu.
 
 ```ts title="src/entry.server.ts"
 export const mobile = async (rc: RenderContext) => {
@@ -146,7 +145,7 @@ export const desktop = async (rc: RenderContext) => {
 - **Type**: `Record<string, any>`
 - **Valeur par défaut**: `{}`
 
-Paramètres de rendu. Permet de passer des paramètres de n'importe quel type à la fonction de rendu, souvent utilisé pour passer des informations de requête (URL, paramètres de requête, etc.).
+Paramètres de rendu. Permet de passer des paramètres de tout type à la fonction de rendu, souvent utilisé pour transmettre des informations de requête (URL, paramètres de requête, etc.).
 
 ```ts
 const rc = await gez.render({
@@ -182,7 +181,7 @@ Référence à l'instance Gez. Utilisée pour accéder aux fonctionnalités et c
 - **Type**: `string | null`
 - **Valeur par défaut**: `null`
 
-Adresse de redirection. Une fois définie, le serveur peut effectuer une redirection HTTP en fonction de cette valeur, souvent utilisée pour la vérification de connexion, le contrôle des permissions, etc.
+Adresse de redirection. Une fois définie, le serveur peut effectuer une redirection HTTP en fonction de cette valeur, souvent utilisée dans des scénarios comme la vérification de connexion ou le contrôle des permissions.
 
 ```ts title="entry.node.ts"
 // Exemple de vérification de connexion
@@ -211,7 +210,7 @@ export default async (rc: RenderContext) => {
 - **Type**: `number | null`
 - **Valeur par défaut**: `null`
 
-Code d'état HTTP de la réponse. Peut être défini sur n'importe quel code d'état HTTP valide, souvent utilisé pour la gestion des erreurs, les redirections, etc.
+Code d'état HTTP de la réponse. Peut être défini à n'importe quel code d'état HTTP valide, souvent utilisé dans des scénarios de gestion d'erreurs ou de redirection.
 
 ```ts title="entry.node.ts"
 // Exemple de gestion d'erreur 404
@@ -310,7 +309,7 @@ const rc = await gez.render({
 - **Lecture seule**: `true`
 - **Valeur par défaut**: `'default'`
 
-Nom de la fonction d'entrée du rendu côté serveur. Utilisé pour sélectionner la fonction de rendu à utiliser dans entry.server.ts.
+Nom de la fonction d'entrée pour le rendu côté serveur. Utilisé pour sélectionner la fonction de rendu à utiliser dans entry.server.ts.
 
 ```ts title="entry.node.ts"
 // Fonction d'entrée par défaut
@@ -340,10 +339,10 @@ const rc = await gez.render({
 - **Lecture seule**: `true`
 - **Valeur par défaut**: `{}`
 
-Paramètres de rendu. Permet de passer et d'accéder aux paramètres pendant le processus de rendu côté serveur, souvent utilisé pour passer des informations de requête, des configurations de page, etc.
+Paramètres de rendu. Permet de passer et d'accéder aux paramètres pendant le processus de rendu côté serveur, souvent utilisé pour transmettre des informations de requête ou des configurations de page.
 
 ```ts
-// Utilisation de base - Passer l'URL et les paramètres de langue
+// Utilisation de base - Transmettre l'URL et les paramètres de langue
 const rc = await gez.render({
   params: {
     url: req.url,
@@ -372,7 +371,7 @@ const rc = await gez.render({
 
 - **Type**: `Set<ImportMeta>`
 
-Ensemble de collecte des dépendances de modules. Collecte et enregistre automatiquement les dépendances de modules pendant le processus de rendu des composants, ne collectant que les ressources réellement utilisées pendant le rendu de la page actuelle.
+Ensemble de collecte des dépendances de modules. Pendant le rendu des composants, les dépendances de modules sont automatiquement suivies et enregistrées, ne collectant que les ressources réellement utilisées pendant le rendu de la page actuelle.
 
 ```ts
 // Utilisation de base
@@ -501,7 +500,7 @@ await rc.commit();
 
 - **Valeur de retour**: `string`
 
-Génère les balises de préchargement des ressources. Utilisé pour précharger les ressources CSS et JavaScript, prenant en charge la configuration des priorités et traitant automatiquement le chemin de base.
+Génère les balises de préchargement des ressources. Utilisé pour précharger les ressources CSS et JavaScript, prenant en charge la configuration des priorités et le traitement automatique du chemin de base.
 
 ```ts
 rc.html = `
@@ -525,7 +524,7 @@ rc.html = `
 
 - **Valeur de retour**: `string`
 
-Génère les balises des feuilles de style CSS. Injecte les fichiers CSS collectés, assurant que les feuilles de style sont chargées dans le bon ordre.
+Génère les balises des feuilles de style CSS. Injecte les fichiers CSS collectés, assurant leur chargement dans le bon ordre.
 
 ```ts
 rc.html = `
@@ -551,4 +550,4 @@ rc.html = `
 
 ### moduleEntry()
 
--
+- **Valeur de retour

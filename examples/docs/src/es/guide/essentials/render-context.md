@@ -1,6 +1,6 @@
 ---
-titleSuffix: Mecanismo central de renderizado del lado del servidor en el marco Gez
-description: Explicación detallada del mecanismo de contexto de renderizado (RenderContext) en el marco Gez, incluyendo la gestión de recursos, generación de HTML y el sistema de módulos ESM, para ayudar a los desarrolladores a comprender y utilizar la funcionalidad de renderizado del lado del servidor.
+titleSuffix: Mecanismo central de renderizado del lado del servidor en el framework Gez
+description: Explicación detallada del mecanismo de contexto de renderizado (RenderContext) en el framework Gez, incluyendo la gestión de recursos, generación de HTML y el sistema de módulos ESM, para ayudar a los desarrolladores a comprender y utilizar la funcionalidad de renderizado del lado del servidor.
 head:
   - - meta
     - property: keywords
@@ -9,7 +9,7 @@ head:
 
 # Contexto de Renderizado
 
-RenderContext es una clase central en el marco Gez, responsable principalmente de la gestión de recursos y la generación de HTML durante el proceso de renderizado del lado del servidor (SSR). Tiene las siguientes características principales:
+RenderContext es una clase central en el framework Gez, responsable principalmente de la gestión de recursos y la generación de HTML durante el proceso de renderizado del lado del servidor (SSR). Cuenta con las siguientes características principales:
 
 1. **Sistema de módulos basado en ESM**
    - Utiliza el estándar moderno de ECMAScript Modules
@@ -24,7 +24,7 @@ RenderContext es una clase central en el marco Gez, responsable principalmente d
 3. **Inyección precisa de recursos**
    - Controla estrictamente el orden de carga de recursos
    - Optimiza el rendimiento de carga de la primera pantalla
-   - Asegura la fiabilidad de la activación del cliente (Hydration)
+   - Garantiza la fiabilidad de la activación del cliente (Hydration)
 
 4. **Mecanismo de configuración flexible**
    - Soporta configuración dinámica de rutas base
@@ -33,14 +33,14 @@ RenderContext es una clase central en el marco Gez, responsable principalmente d
 
 ## Modo de uso
 
-En el marco Gez, los desarrolladores generalmente no necesitan crear instancias de RenderContext directamente, sino que obtienen la instancia a través del método `gez.render()`:
+En el framework Gez, los desarrolladores generalmente no necesitan crear instancias de RenderContext directamente, sino que pueden obtener una instancia a través del método `gez.render()`:
 
 ```ts title="src/entry.node.ts"
 async server(gez) {
     const server = http.createServer((req, res) => {
         // Manejo de archivos estáticos
         gez.middleware(req, res, async () => {
-            // Obtener la instancia de RenderContext a través de gez.render()
+            // Obtener una instancia de RenderContext a través de gez.render()
             const rc = await gez.render({
                 params: {
                     url: req.url
@@ -57,7 +57,7 @@ async server(gez) {
 
 ### Recolección de dependencias
 
-RenderContext implementa un mecanismo inteligente de recolección de dependencias, que recolecta dependencias dinámicamente basándose en los componentes que se renderizan realmente, en lugar de precargar simplemente todos los recursos posibles:
+RenderContext implementa un mecanismo inteligente de recolección de dependencias, que se basa en los componentes renderizados realmente para recolectar dependencias dinámicamente, en lugar de precargar simplemente todos los recursos posibles:
 
 #### Recolección bajo demanda
 - Rastrea y registra automáticamente las dependencias de módulos durante el proceso de renderizado de componentes
@@ -67,7 +67,7 @@ RenderContext implementa un mecanismo inteligente de recolección de dependencia
 
 #### Procesamiento automático
 - Los desarrolladores no necesitan gestionar manualmente el proceso de recolección de dependencias
-- El marco recolecta automáticamente la información de dependencias durante el renderizado de componentes
+- El framework recolecta automáticamente la información de dependencias durante el renderizado de componentes
 - Procesa todos los recursos recolectados a través del método `commit()`
 - Maneja automáticamente problemas de dependencias circulares y repetidas
 
@@ -96,7 +96,7 @@ RenderContext controla estrictamente el orden de inyección de recursos, un dise
    - `css()`: Inyecta hojas de estilo para la primera pantalla, asegurando que los estilos de la página estén listos cuando se renderice el contenido
 
 2. Parte body:
-   - `importmap()`: Inyecta mapeo de importación de módulos, definiendo las reglas de resolución de rutas de módulos ESM
+   - `importmap()`: Inyecta mapeo de importación de módulos, definiendo las reglas de resolución de rutas para módulos ESM
    - `moduleEntry()`: Inyecta el módulo de entrada del cliente, debe ejecutarse después de importmap
    - `modulePreload()`: Precarga dependencias de módulos, debe ejecutarse después de importmap
 
@@ -153,9 +153,9 @@ Este mecanismo es especialmente útil en los siguientes escenarios:
 
 1. **Despliegue de sitios multilingües**
    ```
-   dominio.com      → idioma predeterminado
-   dominio.com/cn/  → sitio en chino
-   dominio.com/en/  → sitio en inglés
+   dominio-principal.com      → Idioma predeterminado
+   dominio-principal.com/cn/  → Sitio en chino
+   dominio-principal.com/en/  → Sitio en inglés
    ```
 
 2. **Aplicaciones de microfrontends**
@@ -167,8 +167,8 @@ Este mecanismo es especialmente útil en los siguientes escenarios:
 RenderContext proporciona dos modos de mapeo de importación (Import Map):
 
 1. **Modo Inline** (predeterminado)
-   - Inyecta el mapeo de importación directamente en el HTML
-   - Adecuado para aplicaciones pequeñas, reduce solicitudes adicionales de red
+   - Incluye el mapeo de importación directamente en el HTML
+   - Adecuado para aplicaciones pequeñas, reduce solicitudes de red adicionales
    - Disponible inmediatamente al cargar la página
 
 2. **Modo JS**
@@ -176,7 +176,7 @@ RenderContext proporciona dos modos de mapeo de importación (Import Map):
    - Adecuado para aplicaciones grandes, permite aprovechar el mecanismo de caché del navegador
    - Soporta actualización dinámica del contenido del mapeo
 
-Se puede seleccionar el modo adecuado mediante configuración:
+Puede elegir el modo adecuado mediante configuración:
 
 ```ts title="src/entry.node.ts"
 const rc = await gez.render({
@@ -220,16 +220,16 @@ Este mecanismo es especialmente útil en los siguientes escenarios:
    - Facilita la experimentación con la experiencia del usuario
    - Permite cambiar flexiblemente entre diferentes estrategias de renderizado
 
-3. **Requisitos especiales de renderizado**
+3. **Requerimientos especiales de renderizado**
    - Soporta el uso de flujos de renderizado personalizados para ciertas páginas
    - Se adapta a las necesidades de optimización de rendimiento en diferentes escenarios
    - Permite un control más fino del renderizado
 
 ## Mejores prácticas
 
-1. **Obtener instancias de RenderContext**
+1. **Obtener una instancia de RenderContext**
    - Siempre obtener la instancia a través del método `gez.render()`
-   - Pasar los parámetros apropiados según sea necesario
+   - Pasar los parámetros adecuados según sea necesario
    - Evitar la creación manual de instancias
 
 2. **Recolección de dependencias**
@@ -244,6 +244,6 @@ Este mecanismo es especialmente útil en los siguientes escenarios:
 
 4. **Optimización de rendimiento**
    - Utilizar preload para precargar recursos críticos
-   - Usar modulePreload de manera adecuada para optimizar la carga de módulos
+   - Usar modulePreload adecuadamente para optimizar la carga de módulos
    - Evitar la carga innecesaria de recursos
    - Aprovechar el mecanismo de caché del navegador para optimizar el rendimiento de carga

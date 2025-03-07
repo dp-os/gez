@@ -1,6 +1,6 @@
 ---
 titleSuffix: Gez フレームワーク Rspack ビルドツール
-description: Gez フレームワークの Rspack ビルドツールは、高性能なアプリケーションビルド機能を提供し、標準アプリケーションと HTML アプリケーションの開発とビルドをサポートします。複数のリソースプロセッサと最適化設定が組み込まれています。
+description: Gez フレームワークの Rspack ビルドツールは、高性能なアプリケーションビルド機能を提供し、標準アプリケーションと HTML アプリケーションの開発とビルドをサポートします。組み込みのリソースプロセッサと最適化設定を備えています。
 head:
   - - meta
     - property: keywords
@@ -15,7 +15,7 @@ Rspack パッケージは、Rspack アプリケーションの作成と設定の
 
 ## インストール
 
-パッケージマネージャを使用して `@gez/rspack` 開発依存関係をインストールします：
+パッケージマネージャーを使用して `@gez/rspack` 開発依存関係をインストールします：
 
 <PackageManagerTabs command="install @gez/rspack -D" />
 
@@ -43,7 +43,7 @@ interface RspackAppConfigContext {
 }
 ```
 
-Rspack アプリケーション設定コンテキストのインターフェースです。設定フック関数内でアクセス可能なコンテキスト情報を提供します：
+Rspack アプリケーション設定コンテキストインターフェース。設定フック関数内でアクセス可能なコンテキスト情報を提供します：
 - `gez`: Gez フレームワークインスタンス
 - `buildTarget`: 現在のビルドターゲット（client/server/node）
 - `config`: Rspack 設定オブジェクト
@@ -68,7 +68,7 @@ interface RspackAppOptions {
 }
 ```
 
-Rspack アプリケーション設定オプションのインターフェースです：
+Rspack アプリケーション設定オプションインターフェース：
 - `css`: CSS 出力方式。'css'（独立ファイル）または 'style'（インラインスタイル）を選択可能
 - `loaders`: カスタム loader 設定
 - `styleLoader`: style-loader 設定オプション
@@ -79,7 +79,7 @@ Rspack アプリケーション設定オプションのインターフェース�
 
 ### RspackHtmlAppOptions
 
-`RspackAppOptions` を継承し、HTML アプリケーションの特定のオプションを設定するために使用されます。
+`RspackAppOptions` を継承し、HTML アプリケーションの特定のオプションを設定します。
 
 ## 関数エクスポート
 
@@ -96,7 +96,7 @@ function createRspackApp(gez: Gez, options?: RspackAppOptions): Promise<App>
 - `options`: Rspack アプリケーション設定オプション
 
 **戻り値：**
-- 作成されたアプリケーションインスタンスに解決される Promise を返します
+- 作成されたアプリケーションインスタンスを解決する Promise を返します
 
 ### createRspackHtmlApp
 
@@ -111,7 +111,7 @@ HTML タイプの Rspack アプリケーションインスタンスを作成し�
 - `options`: HTML アプリケーション設定オプション
 
 **戻り値：**
-- 作成された HTML アプリケーションインスタンスに解決される Promise を返します
+- 作成された HTML アプリケーションインスタンスを解決する Promise を返します
 
 ## 定数エクスポート
 ### RSPACK_LOADER
@@ -128,15 +128,15 @@ const RSPACK_LOADER: Record<string, string> = {
 }
 ```
 
-Rspack に組み込まれた loader 識別子のマッピングオブジェクトです。一般的に使用される loader 名の定数を提供します：
+Rspack 組み込みの loader 識別子マッピングオブジェクト。一般的に使用される loader 名の定数を提供します：
 
-- `builtinSwcLoader`: Rspack に組み込まれた SWC loader。TypeScript/JavaScript ファイルを処理します
-- `lightningcssLoader`: Rspack に組み込まれた lightningcss loader。CSS ファイルの高性能コンパイラです
+- `builtinSwcLoader`: Rspack 組み込みの SWC loader。TypeScript/JavaScript ファイルを処理します
+- `lightningcssLoader`: Rspack 組み込みの lightningcss loader。CSS ファイルの高性能コンパイラです
 - `styleLoader`: CSS を DOM に注入するための loader
-- `cssLoader`: CSS ファイルを解析し、CSS モジュール化を処理するための loader
-- `lessLoader`: Less ファイルを CSS にコンパイルするための loader
-- `styleResourcesLoader`: グローバルスタイルリソース（変数、mixins など）を自動インポートするための loader
-- `workerRspackLoader`: Web Worker ファイルを処理するための loader
+- `cssLoader`: CSS ファイルを解析し、CSS モジュール化を処理する loader
+- `lessLoader`: Less ファイルを CSS にコンパイルする loader
+- `styleResourcesLoader`: グローバルスタイルリソース（変数、mixins など）を自動的にインポートする loader
+- `workerRspackLoader`: Web Worker ファイルを処理する loader
 
 これらの定数を使用して、設定内で組み込みの loader を参照できます。手動で文字列を入力する必要がありません：
 

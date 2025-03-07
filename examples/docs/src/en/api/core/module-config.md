@@ -1,6 +1,6 @@
 ---
 titleSuffix: Gez Framework Module Configuration API Reference
-description: Detailed documentation on the ModuleConfig configuration interface of the Gez framework, including module import/export rules, alias configuration, and external dependency management, helping developers gain an in-depth understanding of the framework's modular system.
+description: Detailed documentation on the ModuleConfig interface in the Gez framework, including module import/export rules, alias configuration, and external dependency management, helping developers gain a deeper understanding of the framework's modular system.
 head:
   - - meta
     - property: keywords
@@ -9,7 +9,7 @@ head:
 
 # ModuleConfig
 
-ModuleConfig provides module configuration functionality for the Gez framework, used to define module import/export rules, alias configuration, and external dependencies.
+ModuleConfig provides module configuration capabilities for the Gez framework, used to define module import/export rules, alias configuration, and external dependencies.
 
 ## Type Definitions
 
@@ -25,7 +25,7 @@ enum PathType {
 
 Module path type enumeration:
 - `npm`: Represents dependencies in node_modules
-- `root`: Represents files under the project root directory
+- `root`: Represents files in the project root directory
 
 ### ModuleConfig
 
@@ -52,9 +52,9 @@ Supports two types:
 
 Import configuration mapping, configuring remote modules to be imported and their local paths.
 
-Configuration varies depending on the installation method:
+Configuration varies based on installation method:
 - Source installation (Workspace, Git): Needs to point to the dist directory
-- Package installation (Link, static server, private mirror, File): Directly points to the package directory
+- Package installation (Link, static server, private registry, File): Directly points to the package directory
 
 #### externals
 
@@ -68,9 +68,9 @@ export default {
   modules: {
     // Export configuration
     exports: [
-      'root:src/components/button.vue',  // Exports source code file
+      'root:src/components/button.vue',  // Export source code file
       'root:src/utils/format.ts',
-      'npm:vue',  // Exports third-party dependency
+      'npm:vue',  // Export third-party dependency
       'npm:vue-router'
     ],
 
@@ -143,3 +143,4 @@ External dependency mapping
 - Maps module import paths to actual module locations
 - `match`: Regular expression used to match import statements
 - `import`: Actual module path
+```

@@ -1,6 +1,6 @@
 ---
 titleSuffix: Referência da API de Configuração de Módulos do Framework Gez
-description: Detalha a interface de configuração ModuleConfig do framework Gez, incluindo regras de importação e exportação de módulos, configuração de alias e gerenciamento de dependências externas, ajudando os desenvolvedores a entenderem profundamente o sistema modular do framework.
+description: Detalha a interface de configuração ModuleConfig do framework Gez, incluindo regras de importação e exportação de módulos, configuração de alias e gerenciamento de dependências externas, ajudando os desenvolvedores a entender profundamente o sistema modular do framework.
 head:
   - - meta
     - property: keywords
@@ -42,7 +42,7 @@ Interface de configuração de módulo, usada para definir a exportação, impor
 
 #### exports
 
-Lista de configuração de exportação, expondo unidades de código específicas (como componentes, funções utilitárias, etc.) no serviço no formato ESM.
+Lista de configuração de exportação, expõe unidades de código específicas (como componentes, funções utilitárias, etc.) no serviço no formato ESM.
 
 Suporta dois tipos:
 - `root:*`: Exporta arquivos de código-fonte, por exemplo: 'root:src/components/button.vue'
@@ -50,7 +50,7 @@ Suporta dois tipos:
 
 #### imports
 
-Mapeamento de configuração de importação, configurando módulos remotos a serem importados e seus caminhos locais.
+Mapeamento de configuração de importação, configura módulos remotos que precisam ser importados e seus caminhos locais.
 
 A configuração varia dependendo do método de instalação:
 - Instalação de código-fonte (Workspace, Git): Precisa apontar para o diretório dist
@@ -58,7 +58,7 @@ A configuração varia dependendo do método de instalação:
 
 #### externals
 
-Mapeamento de dependências externas, configurando dependências externas a serem usadas, geralmente dependências de módulos remotos.
+Mapeamento de dependências externas, configura dependências externas a serem usadas, geralmente dependências de módulos remotos.
 
 **Exemplo**:
 ```ts title="entry.node.ts"
@@ -114,7 +114,7 @@ interface ParsedModuleConfig {
 }
 ```
 
-Configuração de módulo analisada, convertendo a configuração de módulo original em um formato interno padronizado:
+Configuração de módulo analisada, converte a configuração de módulo original em um formato interno padronizado:
 
 #### name
 Nome do serviço atual
@@ -141,5 +141,5 @@ Lista de configuração de importação
 #### externals
 Mapeamento de dependências externas
 - Mapeia caminhos de importação de módulos para a localização real do módulo
-- `match`: Expressão regular usada para corresponder a instruções de importação
+- `match`: Expressão regular usada para corresponder às instruções de importação
 - `import`: Caminho real do módulo

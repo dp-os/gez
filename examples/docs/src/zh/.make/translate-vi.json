@@ -1,0 +1,102 @@
+{
+    "blog/index.md": {
+        "source": "26df121f3a3388d46c03c015abb368d89a8c00239e1546b7c0379f2b6479bba7",
+        "target": "993a0d9dfd54e34e962ca52f4f9333eaf3a5cf68b11abf111aad2e38a012efee"
+    },
+    "guide/essentials/csr.md": {
+        "source": "ead9e2df1fd84b13796edca2b2349852fed7f0563524eb8b5a466d3fe5944af7",
+        "target": "94cbd18e103c53a0dac2918de0514eadef22e2f8deeaa22348b1e5da71ea0217"
+    },
+    "index.md": {
+        "source": "821a0e1d38b437067f7129fd6140969b70074cfc2780db6db6484b2a139dbf41",
+        "target": "3a7c6b0a88ab2b1c7a3bf66a8119381123fa5424609332654759478045e67acb"
+    },
+    "guide/start/getting-started.mdx": {
+        "source": "f035f5bbf98118c3b062a93f160200d80fd86f5244ce13e24e39518e623d89d5",
+        "target": "5131d49b5ef126c83b16a7cf96f6f55aa036d1b605664b0bd4a7fbad90272f5b"
+    },
+    "guide/essentials/base-path.md": {
+        "source": "b4f0076b685e0948689877161b691f2e00f1b6d5712ffb2d2cfcff16ac11e68f",
+        "target": "f1b8c88cc80d669e24dd28fbf100186d5f88ba1213c61eae93985a977cbcbfbc"
+    },
+    "api/core/app.md": {
+        "source": "6bd4756969c1b2d24a72676cfebc318cfddd9a8d850d78d27314982125cad3c4",
+        "target": "7395597b7d3e8caafa0d911526059963bf581e6adfb03f1108ac270adee4cd2c"
+    },
+    "guide/start/environment.md": {
+        "source": "ddcfeb78cb63c4dacdfc33d082fcae3ed20f3082d5e237c2bcabcf4d899f49d1",
+        "target": "0ff28849c22337fb150e29656689756d2f2761b54107d7caa804d4abfe3028d5"
+    },
+    "api/core/manifest-json.md": {
+        "source": "c649888c26503cf9299ae1992dfc39210ec970cd2afd795628126ac415075248",
+        "target": "86de376def2e94f6de4bd5ae23f243ad4a2cc99b28415bfbadba4774c97726b0"
+    },
+    "guide/essentials/std.md": {
+        "source": "c1ce3d5ad2abaefad4d377141421babfa9e7145028df621b773a8887b4691e35",
+        "target": "95fc6c4828c5491c970cb33aabdb6cd76ae54ec4e1d667624a0f04be138bcb46"
+    },
+    "api/core/module-config.md": {
+        "source": "91cfd81dfc96b97cf5de01ecc1a744210f74340884fb6e6de59c7a94272250f7",
+        "target": "f7f463db7ead5a094d102099eab08ab7117a506575780b1ffe196371dd89d222"
+    },
+    "guide/essentials/alias.md": {
+        "source": "1cf2cca65bd17dc5eaa235296559c2e12b0eed5d3ad1f99294d13e2b801feac2",
+        "target": "c40c16076f3346e85aaf01b9e5f87ec6252571761480f6f699b4c7657f01082e"
+    },
+    "guide/essentials/rspack.md": {
+        "source": "8b5ae21776cb360854f32ba9dfa08df40868ac9b14003f35354227a92fbd5437",
+        "target": "3cf5fbb9435b5ac8046a0c517e801b05f6e9fbc9201fd2c29366a0f31641e387"
+    },
+    "api/app/rspack.mdx": {
+        "source": "e736d432e6e951adb7f66b6293495cbc123d7397596fb3fb89443d2462a85a2c",
+        "target": "7df87da7b3fa8837d8cdb8602e4166e50ab33022e9a2f633fd769493b5c0277a"
+    },
+    "api/app/rspack-vue.mdx": {
+        "source": "e7b53f18674cd5794086d75f7414948cf543f25e9d818664b7a3d59408540427",
+        "target": "37beb867cb25ca1318bd3e24650aca2d47c8b0c4db0e507e363a9e0b4977634d"
+    },
+    "api/core/pack-config.md": {
+        "source": "aad1d5eb4b9bc58cb0343f12e064ccf89a395dbc9d9898a4139257adc2f4c37e",
+        "target": "1274e6c936bea8aaff15d2e440560b0d10fb73ef25ee488728a8f5b6c4c8708a"
+    },
+    "guide/start/introduction.md": {
+        "source": "69ca82e05e5901a98e5a2d7ec358153cad73b73ff9cded74d48067e44a0a9f2a",
+        "target": "00a6659e89feabd20951024ca4578fa6e5accb1816c3e56a82216fa1d7e7488a"
+    },
+    "guide/frameworks/preact-htm.md": {
+        "source": "1e7a130ce7b7ff61935448a3c45ba1de9d0c5687f1448ab92099bf60604d6287",
+        "target": "eaeec1405221e657188a46f3aef09090bc1a8bba3f75ae44693d7a8f9c9e9ae8"
+    },
+    "guide/frameworks/vue3.md": {
+        "source": "1dc3102433647c988044f3cce92675d876e235fdc8829ebd1f5a203d20631161",
+        "target": "f8b792dd4b3bb43e74d2e5de3e509ca5d1a4bcc996a874625039d716e200bb7f"
+    },
+    "guide/essentials/module-link.md": {
+        "source": "eb6c30e8acc059c831e9fd58a40c9f22a414a7563cf41fcda935ba567af2aebb",
+        "target": "ed38e4c8b874adca64e1a5c7db605595004f8397f0fb8d08989af57b2acb0b7e"
+    },
+    "guide/frameworks/vue2.md": {
+        "source": "7753cf710c1e91c443b22aff6bccbbd2397e23e1890cb6a8033dc6e8a78b2784",
+        "target": "25f5ca3390acac7d448060f3dc4b3305d656ba0d991387564889a3f103894b56"
+    },
+    "guide/essentials/render-context.md": {
+        "source": "dcadc48313b8a33f6fa0484dcacd13f994d0e9bbea50b384c47529ba715c2a4c",
+        "target": "4fe383eb1189122e9a16a553bb1b69a10e3fe9c390334089e10c4f6aff449310"
+    },
+    "guide/frameworks/html.md": {
+        "source": "011396b57a3fae3cc2b5ead151c258ff9f2d0a2ee18c1dabb875b272b4beb928",
+        "target": "b8d0afb7ad3a119058d804220f5f898a382299a65a114a20b7de52b91b1cc70f"
+    },
+    "blog/birth-of-gez.md": {
+        "source": "eae5d43c8b86538e167d6b5dabddc87052996c074ac6e9b87e95a7d5f2383209",
+        "target": "d69690b3b658fd2b17f54c19572b861530a72c9c8e94168f3eb6201e003229b0"
+    },
+    "api/core/gez.md": {
+        "source": "b8e863f42b65930cce68ab96f2d32a93a75afa72446cad4ce07fb97559a45795",
+        "target": "ccc576f4442b04274d98af48f4314bbe5d68c11c106a5538f3bdb847f6a39706"
+    },
+    "api/core/render-context.md": {
+        "source": "a60d7c7da9ad7ebf57d6c02f5862107ee985da8daf66c8660d7774ffc8292024",
+        "target": "e11123b9f09ed99c6eadfc06d4d97cc415779e31a9d6c949e9b719e0aae6f17c"
+    }
+}

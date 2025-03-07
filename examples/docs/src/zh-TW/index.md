@@ -1,14 +1,14 @@
 ---
 pageType: home
-titleSuffix: 基於 ESM 的高效能伺服器端渲染框架
-description: Gez 是一個基於 ESM 的高效能伺服器端渲染框架，提供完整的 SSR 能力、智能的渲染上下文和創新的模組連結系統，適用於大型 Web 應用開發。
+titleSuffix: 基於 ESM 的高效能服務端渲染框架
+description: Gez 是一個基於 ESM 的高效能服務端渲染框架，提供完整的 SSR 能力、智能的渲染上下文和創新的模組連結系統，適用於大型 Web 應用開發。
 head:
   - - meta
     - property: keywords
-      content: Gez, SSR, ESM, 伺服器端渲染, 模組連結, Vue, React, TypeScript, 微前端
+      content: Gez, SSR, ESM, 服務端渲染, 模組連結, Vue, React, TypeScript, 微前端
 hero:
   name: Gez
-  text: 基於 ESM 的伺服器端渲染框架
+  text: 基於 ESM 的服務端渲染框架
   tagline: 高效能、可擴展的模組連結系統
   actions:
     - theme: brand
@@ -21,13 +21,13 @@ hero:
 features:
   - icon: ⚡️
     title: 核心引擎
-    details: 基於 ESM Import Maps 實現的高效能 SSR 引擎，支援 Vue 和 React 等主流框架，提供完整的伺服器端渲染能力。
-  - icon: �
+    details: 基於 ESM Import Maps 實現的高效能 SSR 引擎，支援 Vue 和 React 等主流框架，提供完整的服務端渲染能力。
+  - icon: 🎯
     title: 渲染上下文
-    details: 智能的 RenderContext 系統，提供精確的資源注入、狀態同步和客戶端啟動機制，確保最佳的渲染效能。
+    details: 智能的 RenderContext 系統，提供精確的資源注入、狀態同步和客戶端激活機制，確保最佳的渲染效能。
   - icon: 🔗
     title: 模組連結
-    details: 創新的模組連結系統，支援執行時期動態載入，實現精確的依賴管理和資源優化。
+    details: 創新的模組連結系統，支援執行階段動態載入，實現精確的依賴管理和資源優化。
   - icon: 📦
     title: 建置系統
     details: 靈活的建置配置，支援多版本輸出、預處理和後處理鉤子，一次建置多處部署。
@@ -40,7 +40,7 @@ features:
   - icon: 💻
     title: 企業應用
     details: 適用於大型 Web 應用、多語言站點、微服務架構，支援團隊協作和模組化開發。
-  - icon: �
+  - icon: 🚀
     title: 效能場景
     details: 為電商網站、新聞媒體等效能敏感場景提供優化，支援 SEO 和首屏載入優化。
   - icon: 🌐

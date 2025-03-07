@@ -15,7 +15,7 @@ The Rspack package provides a set of APIs for creating and configuring Rspack ap
 
 ## Installation
 
-Install `@gez/rspack` as a development dependency using your package manager:
+Install `@gez/rspack` as a development dependency using a package manager:
 
 <PackageManagerTabs command="install @gez/rspack -D" />
 
@@ -69,7 +69,7 @@ interface RspackAppOptions {
 ```
 
 Rspack application configuration options interface:
-- `css`: CSS output method, either 'css' (separate file) or 'style' (inline styles)
+- `css`: CSS output method, either 'css' (standalone file) or 'style' (inline styles)
 - `loaders`: Custom loader configurations
 - `styleLoader`: style-loader configuration options
 - `cssLoader`: css-loader configuration options
@@ -96,7 +96,7 @@ Creates a standard Rspack application instance.
 - `options`: Rspack application configuration options
 
 **Returns:**
-- Returns a Promise that resolves to the created application instance
+- A Promise that resolves to the created application instance
 
 ### createRspackHtmlApp
 
@@ -111,7 +111,7 @@ Creates an HTML-type Rspack application instance.
 - `options`: HTML application configuration options
 
 **Returns:**
-- Returns a Promise that resolves to the created HTML application instance
+- A Promise that resolves to the created HTML application instance
 
 ## Constant Exports
 ### RSPACK_LOADER

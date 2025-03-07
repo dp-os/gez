@@ -1,18 +1,18 @@
 ---
 titleSuffix: Referência da API de Configuração de Empacotamento do Framework Gez
-description: Detalha a interface de configuração PackConfig do framework Gez, incluindo regras de empacotamento de pacotes, configuração de saída e ganchos de ciclo de vida, ajudando desenvolvedores a implementar fluxos de construção padronizados.
+description: Detalha a interface de configuração PackConfig do framework Gez, incluindo regras de empacotamento de pacotes, configuração de saída e ganchos de ciclo de vida, ajudando os desenvolvedores a implementar fluxos de construção padronizados.
 head:
   - - meta
     - property: keywords
-      content: Gez, PackConfig, Empacotamento de Pacotes, Configuração de Construção, Ganchos de Ciclo de Vida, Configuração de Empacotamento, Framework de Aplicações Web
+      content: Gez, PackConfig, empacotamento de pacotes, configuração de construção, ganchos de ciclo de vida, configuração de empacotamento, framework de aplicação web
 ---
 
 # PackConfig
 
-`PackConfig` é uma interface de configuração de empacotamento de pacotes, usada para empacotar os artefatos de construção de um serviço no formato padrão .tgz do npm.
+`PackConfig` é a interface de configuração de empacotamento de pacotes, usada para empacotar os artefatos de construção de um serviço no formato padrão .tgz do npm.
 
 - **Padronização**: Utiliza o formato de empacotamento .tgz padrão do npm
-- **Integridade**: Inclui todos os arquivos necessários, como código-fonte do módulo, declarações de tipos e arquivos de configuração
+- **Integridade**: Inclui todos os arquivos necessários, como código-fonte do módulo, declarações de tipo e arquivos de configuração
 - **Compatibilidade**: Totalmente compatível com o ecossistema npm, suportando fluxos de trabalho padrão de gerenciamento de pacotes
 
 ## Definição de Tipo
@@ -31,7 +31,7 @@ interface PackConfig {
 
 #### enable
 
-Habilita ou desabilita a funcionalidade de empacotamento. Quando habilitado, os artefatos de construção são empacotados no formato .tgz padrão do npm.
+Habilita ou desabilita a funcionalidade de empacotamento. Quando habilitado, os artefatos de construção são empacotados no formato padrão .tgz do npm.
 
 - Tipo: `boolean`
 - Valor padrão: `false`
@@ -40,12 +40,12 @@ Habilita ou desabilita a funcionalidade de empacotamento. Quando habilitado, os 
 
 Especifica o caminho de saída do arquivo do pacote. Suporta as seguintes configurações:
 - `string`: Um único caminho de saída, por exemplo, 'dist/versions/my-app.tgz'
-- `string[]`: Múltiplos caminhos de saída, para gerar várias versões simultaneamente
+- `string[]`: Múltiplos caminhos de saída, usados para gerar várias versões simultaneamente
 - `boolean`: Quando true, usa o caminho padrão 'dist/client/versions/latest.tgz'
 
 #### packageJson
 
-Função de retorno de chamada para personalizar o conteúdo do package.json. Chamada antes do empacotamento, usada para personalizar o conteúdo do package.json.
+Função de callback para personalizar o conteúdo do package.json. Chamada antes do empacotamento, usada para personalizar o conteúdo do package.json.
 
 - Parâmetros:
   - `gez: Gez` - Instância do Gez
@@ -64,7 +64,7 @@ packageJson: async (gez, pkg) => {
   // Definir informações do pacote
   pkg.name = 'my-app';
   pkg.version = '1.0.0';
-  pkg.description = 'Minha Aplicação';
+  pkg.description = 'Minha aplicação';
 
   // Adicionar dependências
   pkg.dependencies = {
@@ -83,7 +83,7 @@ packageJson: async (gez, pkg) => {
 
 #### onBefore
 
-Função de retorno de chamada para preparativos antes do empacotamento.
+Função de callback para preparação antes do empacotamento.
 
 - Parâmetros:
   - `gez: Gez` - Instância do Gez
@@ -116,7 +116,7 @@ onBefore: async (gez, pkg) => {
 
 #### onAfter
 
-Função de retorno de chamada para processamento após o empacotamento. Chamada após a geração do arquivo .tgz, usada para processar os artefatos de empacotamento.
+Função de callback para processamento após o empacotamento. Chamada após a geração do arquivo .tgz, usada para processar os artefatos de empacotamento.
 
 - Parâmetros:
   - `gez: Gez` - Instância do Gez
@@ -125,7 +125,7 @@ Função de retorno de chamada para processamento após o empacotamento. Chamada
 - Retorno: `Promise<void>`
 
 Usos comuns:
-- Publicar em um repositório npm (público ou privado)
+- Publicar no repositório npm (público ou privado)
 - Fazer upload para um servidor de recursos estáticos
 - Gerenciar versões
 - Disparar fluxos de CI/CD
@@ -133,12 +133,12 @@ Usos comuns:
 Exemplo:
 ```ts
 onAfter: async (gez, pkg, file) => {
-  // Publicar em um repositório npm privado
+  // Publicar no repositório npm privado
   await publishToRegistry(file, {
     registry: 'https://registry.example.com'
   });
 
-  // Fazer upload para um servidor de recursos estáticos
+  // Fazer upload para o servidor de recursos estáticos
   await uploadToServer(file, 'https://assets.example.com/packages');
 
   // Criar tag de versão no Git
@@ -181,21 +181,21 @@ export default {
       return pkg;
     },
 
-    // Preparativos antes do empacotamento
+    // Preparação antes do empacotamento
     onBefore: async (gez, pkg) => {
       // Adicionar arquivos necessários
-      await fs.writeFile('dist/README.md', '# Your App\n\nExplicação de exportação de módulos...');
+      await fs.writeFile('dist/README.md', '# Your App\n\nExplicação da exportação de módulos...');
       // Executar verificação de tipos
       await runTypeCheck();
     },
 
     // Processamento após o empacotamento
     onAfter: async (gez, pkg, file) => {
-      // Publicar em um repositório npm privado
+      // Publicar no repositório npm privado
       await publishToRegistry(file, {
         registry: 'https://npm.your-registry.com/'
       });
-      // Ou implantar em um servidor estático
+      // Ou fazer upload para o servidor estático
       await uploadToServer(file, 'https://static.example.com/packages');
     }
   }

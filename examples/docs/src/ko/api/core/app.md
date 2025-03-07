@@ -63,8 +63,8 @@ server.use(gez.middleware);
 - **타입**: `(options?: RenderContextOptions) => Promise<RenderContext>`
 
 서버 사이드 렌더링 함수. 실행 환경에 따라 다른 구현 제공:
-- 프로덕션 환경 (start): 빌드된 서버 진입 파일(entry.server)을 로드하여 렌더링 실행
-- 개발 환경 (dev): 소스 코드의 서버 진입 파일을 로드하여 렌더링 실행
+- 프로덕션 환경 (start): 빌드된 서버 진입 파일(entry.server) 로드 및 렌더링 실행
+- 개발 환경 (dev): 소스 코드의 서버 진입 파일 로드 및 렌더링 실행
 
 ```ts
 const rc = await gez.render({
@@ -77,10 +77,10 @@ res.end(rc.html);
 
 - **타입**: `() => Promise<boolean>`
 
-프로덕션 환경 빌드 함수. 리소스 패키징 및 최적화에 사용됩니다. 빌드 성공 시 true를 반환하고, 실패 시 false를 반환합니다.
+프로덕션 환경 빌드 함수. 리소스 패키징 및 최적화에 사용. 빌드 성공 시 true 반환, 실패 시 false 반환.
 
 #### destroy
 
 - **타입**: `() => Promise<boolean>`
 
-리소스 정리 함수. 서버 종료, 연결 해제 등에 사용됩니다. 정리 성공 시 true를 반환하고, 실패 시 false를 반환합니다.
+리소스 정리 함수. 서버 종료, 연결 해제 등에 사용. 정리 성공 시 true 반환, 실패 시 false 반환.

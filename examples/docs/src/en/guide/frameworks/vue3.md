@@ -70,7 +70,7 @@ yarn install
 npm install
 ```
 
-This will install all the necessary dependencies, including Vue3, TypeScript, and SSR-related dependencies.
+This will install all the necessary dependencies, including Vue3, TypeScript, and SSR-related packages.
 
 ### tsconfig.json
 
@@ -239,7 +239,7 @@ export default {
 
 This file is the entry point for development environment configuration and server startup, containing two core functions:
 
-1. `devApp` function: Responsible for creating and configuring the Rspack application instance for the development environment, supporting hot updates and live preview. It uses `createRspackVue3App` to create a Rspack application instance specifically for Vue3.
+1. `devApp` function: Responsible for creating and configuring the Rspack application instance for the development environment, supporting hot updates and live preview. Here, `createRspackVue3App` is used to create a Rspack application instance specifically for Vue3.
 2. `server` function: Responsible for creating and configuring the HTTP server, integrating Gez middleware to handle SSR requests.
 
 ### entry.server.ts
@@ -249,7 +249,7 @@ Create the server-side rendering entry file `src/entry.server.ts`:
 ```ts title="src/entry.server.ts"
 /**
  * @file Server-Side Rendering Entry File
- * @description Handles server-side rendering process, HTML generation, and resource injection
+ * @description Handles the server-side rendering process, HTML generation, and resource injection
  */
 
 import type { RenderContext } from '@gez/core';
@@ -270,7 +270,7 @@ export default async (rc: RenderContext) => {
 
     // Generate complete HTML structure
     rc.html = `<!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     ${rc.preload()}
     <title>Gez Quick Start</title>

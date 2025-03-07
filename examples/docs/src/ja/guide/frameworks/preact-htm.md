@@ -1,6 +1,6 @@
 ---
 titleSuffix: Gez フレームワーク Preact+HTM SSR アプリケーション例
-description: Gez を使用した Preact+HTM SSR アプリケーションをゼロから構築する方法を紹介します。プロジェクトの初期化、Preact の設定、エントリーファイルの設定など、フレームワークの基本的な使い方を実例を通して解説します。
+description: Gez を使用した Preact+HTM SSR アプリケーションをゼロから構築する方法を紹介します。プロジェクトの初期化、Preact の設定、エントリーファイルの設定など、フレームワークの基本的な使い方を実例を通して説明します。
 head:
   - - meta
     - property: keywords
@@ -9,7 +9,7 @@ head:
 
 # Preact+HTM
 
-このチュートリアルでは、Gez を使用した Preact+HTM SSR アプリケーションをゼロから構築する方法を紹介します。Gez フレームワークを使用してサーバーサイドレンダリング（SSR）アプリケーションを作成する方法を、完全な例を通して説明します。
+このチュートリアルでは、Gez を使用した Preact+HTM SSR アプリケーションをゼロから構築する方法を説明します。Gez フレームワークを使用してサーバーサイドレンダリング（SSR）アプリケーションを作成する方法を、完全な例を通して紹介します。
 
 ## プロジェクト構造
 
@@ -215,7 +215,7 @@ import type { GezOptions } from '@gez/core';
 export default {
     /**
      * 開発環境のアプリケーション作成を設定
-     * @description Rspack アプリケーションインスタンスを作成し、開発環境のビルドとホットリロードをサポート
+     * @description Rspack アプリケーションインスタンスを作成し、開発環境のビルドとホットリロードを設定
      * @param gez Gez フレームワークインスタンス、コア機能と設定インターフェースを提供
      * @returns 設定された Rspack アプリケーションインスタンスを返し、HMR とリアルタイムプレビューをサポート
      */
@@ -255,12 +255,12 @@ export default {
 
 このファイルは、開発環境の設定とサーバーの起動のためのエントリーファイルです。主に以下の2つのコア機能を含みます：
 
-1. `devApp` 関数：開発環境の Rspack アプリケーションインスタンスを作成し、ホットリロードとリアルタイムプレビューをサポートします。ここでは、Preact+HTM 用の Rspack アプリケーションインスタンスを作成するために `createRspackHtmlApp` を使用します。
+1. `devApp` 関数：開発環境の Rspack アプリケーションインスタンスを作成し、ホットリロードとリアルタイムプレビュー機能をサポートします。ここでは `createRspackHtmlApp` を使用して、Preact+HTM 用の Rspack アプリケーションインスタンスを作成します。
 2. `server` 関数：HTTP サーバーを作成し、Gez ミドルウェアを統合して SSR リクエストを処理します。
 
 ### entry.server.ts
 
-サーバーサイドレンダリングのエントリーファイル `src/entry.server.ts` を作成します：
+サーバーサイドレンダリングエントリーファイル `src/entry.server.ts` を作成します：
 
 ```ts title="src/entry.server.ts"
 /**
@@ -280,7 +280,7 @@ export default async (rc: RenderContext) => {
     // Preact の renderToString を使用してページコンテンツを生成
     const html = render(app);
 
-    // 依存関係の収集をコミットし、必要なリソースがすべてロードされることを保証
+    // 依存関係の収集をコミットし、必要なリソースがすべてロードされることを確認
     await rc.commit();
 
     // 完全な HTML 構造を生成
@@ -321,4 +321,4 @@ npm run build
 npm run start
 ```
 
-これで、Gez を使用した Preact+HTM SSR アプリケーションが正常に作成されました！ http://localhost:3000 にアクセスして効果を確認できます。
+これで、Gez を使用した Preact+HTM SSR アプリケーションが正常に作成されました！http://localhost:3000 にアクセスして効果を確認できます。

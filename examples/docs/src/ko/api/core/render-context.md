@@ -1,6 +1,6 @@
 ---
 titleSuffix: Gez 프레임워크 렌더링 컨텍스트 API 참조
-description: Gez 프레임워크의 RenderContext 핵심 클래스에 대해 자세히 설명합니다. 렌더링 제어, 리소스 관리, 상태 동기화 및 라우팅 제어 등의 기능을 포함하여 개발자가 효율적인 서버 사이드 렌더링(SSR)을 구현할 수 있도록 돕습니다.
+description: Gez 프레임워크의 RenderContext 핵심 클래스에 대해 자세히 설명합니다. 렌더링 제어, 리소스 관리, 상태 동기화 및 라우팅 제어 등의 기능을 포함하여 개발자가 효율적인 서버 사이드 렌더링(SSR)을 구현할 수 있도록 도와줍니다.
 head:
   - - meta
     - property: keywords
@@ -9,12 +9,12 @@ head:
 
 # RenderContext
 
-RenderContext는 Gez 프레임워크의 핵심 클래스로, 서버 사이드 렌더링(SSR)의 전체 생명주기를 관리합니다. 이 클래스는 렌더링 컨텍스트, 리소스 관리, 상태 동기화 등과 같은 주요 작업을 처리하기 위한 완전한 API를 제공합니다:
+RenderContext는 Gez 프레임워크의 핵심 클래스로, 서버 사이드 렌더링(SSR)의 전체 생명주기를 관리합니다. 이 클래스는 렌더링 컨텍스트, 리소스 관리, 상태 동기화 등의 주요 작업을 처리하기 위한 완전한 API를 제공합니다:
 
 - **렌더링 제어**: 서버 사이드 렌더링 프로세스를 관리하며, 다중 엔트리 렌더링, 조건부 렌더링 등의 시나리오를 지원합니다.
 - **리소스 관리**: JS, CSS 등의 정적 리소스를 지능적으로 수집하고 주입하여 로딩 성능을 최적화합니다.
-- **상태 동기화**: 서버 상태 직렬화를 처리하여 클라이언트에서 올바르게 활성화(hydration)되도록 합니다.
-- **라우팅 제어**: 서버 리디렉션, 상태 코드 설정 등과 같은 고급 기능을 지원합니다.
+- **상태 동기화**: 서버 상태를 직렬화하여 클라이언트에서 올바르게 활성화(hydration)되도록 합니다.
+- **라우팅 제어**: 서버 리디렉션, 상태 코드 설정 등의 고급 기능을 지원합니다.
 
 ## 타입 정의
 
@@ -120,7 +120,7 @@ interface RenderContextOptions {
 
 정적 리소스의 기본 경로입니다.
 - 모든 정적 리소스(JS, CSS, 이미지 등)는 이 경로를 기반으로 로드됩니다.
-- 런타임에 동적으로 구성할 수 있으며, 재빌드가 필요하지 않습니다.
+- 런타임에 동적으로 설정할 수 있으며, 재빌드가 필요하지 않습니다.
 - 다국어 사이트, 마이크로 프론트엔드 애플리케이션 등에 자주 사용됩니다.
 
 #### entryName
@@ -128,7 +128,7 @@ interface RenderContextOptions {
 - **타입**: `string`
 - **기본값**: `'default'`
 
-서버 사이드 렌더링 엔트리 함수 이름입니다. 서버 사이드 렌더링 시 사용할 엔트리 함수를 지정하며, 하나의 모듈이 여러 렌더링 함수를 내보낼 때 사용됩니다.
+서버 사이드 렌더링 엔트리 함수 이름입니다. 하나의 모듈이 여러 렌더링 함수를 내보낼 때 사용할 엔트리 함수를 지정합니다.
 
 ```ts title="src/entry.server.ts"
 export const mobile = async (rc: RenderContext) => {
@@ -151,7 +151,7 @@ export const desktop = async (rc: RenderContext) => {
 const rc = await gez.render({
   params: {
     url: req.url,
-    lang: 'ko-KR',
+    lang: 'zh-CN',
     theme: 'dark'
   }
 });
@@ -162,7 +162,7 @@ const rc = await gez.render({
 - **타입**: `'inline' | 'js'`
 - **기본값**: `'inline'`
 
-임포트 맵(Import Map)의 생성 모드:
+임포트 맵(Import Map)의 생성 모드입니다:
 - `inline`: importmap 내용을 HTML에 직접 인라인으로 삽입합니다.
 - `js`: importmap 내용을 별도의 JS 파일로 생성합니다.
 
@@ -281,7 +281,7 @@ const rc = await gez.render({
 - **읽기 전용**: `true`
 - **기본값**: `''`
 
-정적 리소스의 기본 경로입니다. 모든 정적 리소스(JS, CSS, 이미지 등)는 이 경로를 기반으로 로드되며, 런타임에 동적으로 구성할 수 있습니다.
+정적 리소스의 기본 경로입니다. 모든 정적 리소스(JS, CSS, 이미지 등)는 이 경로를 기반으로 로드되며, 런타임에 동적으로 설정할 수 있습니다.
 
 ```ts
 // 기본 사용법
@@ -292,8 +292,8 @@ const rc = await gez.render({
 
 // 다국어 사이트 예시
 const rc = await gez.render({
-  base: '/ko',  // 한국어 사이트
-  params: { lang: 'ko-KR' }
+  base: '/cn',  // 중국어 사이트
+  params: { lang: 'zh-CN' }
 });
 
 // 마이크로 프론트엔드 애플리케이션 예시
@@ -317,7 +317,7 @@ export default async (rc: RenderContext) => {
   // 기본 렌더링 로직
 };
 
-// 다중 엔트리 함수
+// 여러 엔트리 함수
 export const mobile = async (rc: RenderContext) => {
   // 모바일 렌더링 로직
 };
@@ -339,18 +339,18 @@ const rc = await gez.render({
 - **읽기 전용**: `true`
 - **기본값**: `{}`
 
-렌더링 매개변수입니다. 서버 사이드 렌더링 과정에서 매개변수를 전달하고 접근할 수 있으며, 주로 요청 정보, 페이지 구성 등을 전달하는 데 사용됩니다.
+렌더링 매개변수입니다. 서버 사이드 렌더링 과정에서 매개변수를 전달하고 접근할 수 있으며, 주로 요청 정보, 페이지 설정 등을 전달하는 데 사용됩니다.
 
 ```ts
 // 기본 사용법 - URL 및 언어 설정 전달
 const rc = await gez.render({
   params: {
     url: req.url,
-    lang: 'ko-KR'
+    lang: 'zh-CN'
   }
 });
 
-// 페이지 구성 - 테마 및 레이아웃 설정
+// 페이지 설정 - 테마 및 레이아웃 설정
 const rc = await gez.render({
   params: {
     theme: 'dark',
@@ -358,7 +358,7 @@ const rc = await gez.render({
   }
 });
 
-// 환경 구성 - API 주소 주입
+// 환경 설정 - API 주소 주입
 const rc = await gez.render({
   params: {
     apiBaseUrl: process.env.API_BASE_URL,
@@ -464,7 +464,7 @@ rc.html = `
   - `data: Record<string, any>` - 상태 데이터
 - **반환값**: `string`
 
-상태 데이터를 직렬화하여 HTML에 주입합니다. 안전한 직렬화 방법을 사용하여 데이터를 처리하며, 복잡한 데이터 구조를 지원합니다.
+상태 데이터를 직렬화하여 HTML에 주입합니다. 안전한 직렬화 방법을 사용하여 복잡한 데이터 구조를 지원합니다.
 
 ```ts
 const userInfo = {
@@ -500,7 +500,7 @@ await rc.commit();
 
 - **반환값**: `string`
 
-리소스 미리 로드 태그를 생성합니다. CSS와 JavaScript 리소스를 미리 로드하는 데 사용되며, 우선순위 구성을 지원하고 기본 경로를 자동으로 처리합니다.
+리소스 미리 로드 태그를 생성합니다. CSS 및 JavaScript 리소스를 미리 로드하며, 우선순위 설정을 지원하고 기본 경로를 자동으로 처리합니다.
 
 ```ts
 rc.html = `
@@ -530,4 +530,12 @@ CSS 스타일시트 태그를 생성합니다. 수집된 CSS 파일을 주입하
 rc.html = `
   <head>
     ${rc.css()}  <!-- 수집된 모든 스타일시트 주입 -->
-  </head
+  </head>
+`;
+```
+
+### importmap()
+
+- **반환값**: `string`
+
+임포트 맵 태그를 생성

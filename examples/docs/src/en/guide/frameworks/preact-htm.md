@@ -1,6 +1,6 @@
 ---
 titleSuffix: Gez Framework Preact+HTM SSR Application Example
-description: Build a Preact+HTM SSR application based on Gez from scratch. This example demonstrates the basic usage of the framework, including project initialization, Preact configuration, and entry file setup.
+description: Build a Preact+HTM SSR application from scratch using the Gez framework. This example demonstrates the basic usage of the framework, including project initialization, Preact configuration, and entry file setup.
 head:
   - - meta
     - property: keywords
@@ -9,7 +9,7 @@ head:
 
 # Preact+HTM
 
-This tutorial will guide you through building a Preact+HTM SSR application based on Gez from scratch. We will demonstrate how to create a server-side rendered application using the Gez framework through a complete example.
+This tutorial will guide you through building a Preact+HTM SSR application from scratch using the Gez framework. We'll walk through a complete example to demonstrate how to create a server-side rendered application with Gez.
 
 ## Project Structure
 
@@ -21,7 +21,7 @@ First, let's understand the basic structure of the project:
 ├── tsconfig.json        # TypeScript configuration file, setting compilation options
 └── src                  # Source code directory
     ├── app.ts           # Main application component, defining page structure and interaction logic
-    ├── create-app.ts    # Application instance creation factory, responsible for initializing the application
+    ├── create-app.ts    # Application instance factory, responsible for initializing the application
     ├── entry.client.ts  # Client entry file, handling browser-side rendering
     ├── entry.node.ts    # Node.js server entry file, responsible for development environment configuration and server startup
     └── entry.server.ts  # Server entry file, handling SSR rendering logic
@@ -118,7 +118,7 @@ Create the main application component `src/app.ts`, using Preact's class compone
 ```ts title="src/app.ts"
 /**
  * @file Example Component
- * @description Demonstrates a page title with an automatically updating time, showcasing the basic functionality of the Gez framework
+ * @description Demonstrates a page title with an automatically updating timestamp, showcasing the basic functionality of the Gez framework
  */
 
 import { Component } from 'preact';
@@ -186,7 +186,7 @@ Create the client entry file `src/entry.client.ts`:
 ```ts title="src/entry.client.ts"
 /**
  * @file Client Entry File
- * @description Responsible for client-side interaction logic and dynamic updates
+ * @description Handles client-side interaction logic and dynamic updates
  */
 
 import { render } from 'preact';
@@ -201,7 +201,7 @@ render(app, document.getElementById('app')!);
 
 ### entry.node.ts
 
-Create the `entry.node.ts` file, configuring the development environment and server startup:
+Create the `entry.node.ts` file to configure the development environment and server startup:
 
 ```ts title="src/entry.node.ts"
 /**
@@ -214,7 +214,7 @@ import type { GezOptions } from '@gez/core';
 
 export default {
     /**
-     * Configure the development environment application creator
+     * Configures the development environment application creator
      * @description Creates and configures the Rspack application instance for development environment builds and hot updates
      * @param gez Gez framework instance, providing core functionality and configuration interfaces
      * @returns Returns the configured Rspack application instance, supporting HMR and live preview
@@ -230,8 +230,8 @@ export default {
     },
 
     /**
-     * Configure and start the HTTP server
-     * @description Creates an HTTP server instance, integrates Gez middleware, and handles SSR requests
+     * Configures and starts the HTTP server
+     * @description Creates an HTTP server instance, integrating Gez middleware to handle SSR requests
      * @param gez Gez framework instance, providing middleware and rendering functionality
      */
     async server(gez) {
@@ -265,7 +265,7 @@ Create the server-side rendering entry file `src/entry.server.ts`:
 ```ts title="src/entry.server.ts"
 /**
  * @file Server-Side Rendering Entry File
- * @description Responsible for the server-side rendering process, HTML generation, and resource injection
+ * @description Handles the server-side rendering process, HTML generation, and resource injection
  */
 
 import type { RenderContext } from '@gez/core';
@@ -277,7 +277,7 @@ export default async (rc: RenderContext) => {
     // Create the application instance
     const { app } = createApp();
 
-    // Use Preact's renderToString to generate page content
+    // Use Preact's renderToString to generate the page content
     const html = render(app);
 
     // Commit dependency collection to ensure all necessary resources are loaded
@@ -285,7 +285,7 @@ export default async (rc: RenderContext) => {
 
     // Generate the complete HTML structure
     rc.html = `<!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     ${rc.preload()}
     <title>Gez Quick Start</title>
@@ -321,4 +321,4 @@ npm run build
 npm run start
 ```
 
-Now, you have successfully created a Preact+HTM SSR application based on Gez! Visit http://localhost:3000 to see the result.
+Now, you have successfully created a Preact+HTM SSR application using the Gez framework! Visit http://localhost:3000 to see the result.

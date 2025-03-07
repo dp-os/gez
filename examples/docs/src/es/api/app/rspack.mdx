@@ -1,6 +1,6 @@
 ---
 titleSuffix: Gez Framework Rspack Build Tool
-description: La herramienta de construcción Rspack del framework Gez ofrece capacidades de construcción de aplicaciones de alto rendimiento, compatible con el desarrollo y construcción de aplicaciones estándar y aplicaciones HTML, con múltiples procesadores de recursos y configuraciones de optimización integradas.
+description: La herramienta de construcción Rspack del framework Gez ofrece capacidades de construcción de aplicaciones de alto rendimiento, soportando el desarrollo y construcción de aplicaciones estándar y aplicaciones HTML, con múltiples procesadores de recursos y configuraciones de optimización integradas.
 head:
   - - meta
     - property: keywords
@@ -11,7 +11,7 @@ import { PackageManagerTabs } from '@theme';
 
 # @gez/rspack
 
-El paquete Rspack proporciona un conjunto de API para crear y configurar aplicaciones Rspack, compatible con la construcción y desarrollo de aplicaciones estándar y aplicaciones HTML.
+El paquete Rspack proporciona un conjunto de API para crear y configurar aplicaciones Rspack, soportando la construcción y desarrollo de aplicaciones estándar y aplicaciones HTML.
 
 ## Instalación
 
@@ -43,7 +43,7 @@ interface RspackAppConfigContext {
 }
 ```
 
-Interfaz de contexto de configuración de aplicación Rspack, proporciona información de contexto accesible en las funciones de gancho de configuración:
+Interfaz de contexto de configuración de aplicación Rspack, proporciona información de contexto accesible en las funciones de enlace de configuración:
 - `gez`: Instancia del framework Gez
 - `buildTarget`: Objetivo de construcción actual (client/server/node)
 - `config`: Objeto de configuración Rspack
@@ -75,7 +75,7 @@ Interfaz de opciones de configuración de aplicación Rspack:
 - `cssLoader`: Opciones de configuración de css-loader
 - `target`: Configuración de compatibilidad del objetivo de construcción
 - `definePlugin`: Definición de constantes globales
-- `config`: Función de gancho de configuración
+- `config`: Función de enlace de configuración
 
 ### RspackHtmlAppOptions
 
@@ -132,13 +132,13 @@ Objeto de mapeo de identificadores de loaders integrados en Rspack, proporciona 
 
 - `builtinSwcLoader`: SWC loader integrado en Rspack, utilizado para procesar archivos TypeScript/JavaScript
 - `lightningcssLoader`: lightningcss loader integrado en Rspack, utilizado para compilar archivos CSS de alto rendimiento
-- `styleLoader`: Loader para inyectar CSS en el DOM
-- `cssLoader`: Loader para analizar archivos CSS y manejar la modularización de CSS
-- `lessLoader`: Loader para compilar archivos Less a CSS
-- `styleResourcesLoader`: Loader para importar automáticamente recursos de estilo globales (como variables, mixins)
-- `workerRspackLoader`: Loader para procesar archivos de Web Worker
+- `styleLoader`: Loader utilizado para inyectar CSS en el DOM
+- `cssLoader`: Loader utilizado para analizar archivos CSS y manejar la modularización de CSS
+- `lessLoader`: Loader utilizado para compilar archivos Less a CSS
+- `styleResourcesLoader`: Loader utilizado para importar automáticamente recursos de estilo globales (como variables, mixins)
+- `workerRspackLoader`: Loader utilizado para procesar archivos de Web Worker
 
-Usar estas constantes permite referenciar loaders integrados en la configuración, evitando la entrada manual de cadenas:
+Utilizar estas constantes permite referenciar loaders integrados en la configuración, evitando la entrada manual de cadenas:
 
 ```ts title="src/entry.node.ts"
 import { RSPACK_LOADER } from '@gez/rspack';
@@ -169,4 +169,3 @@ export default {
 ### rspack
 
 Reexporta todo el contenido del paquete `@rspack/core`, proporcionando la funcionalidad completa del núcleo de Rspack.
-```

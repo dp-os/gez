@@ -1,6 +1,6 @@
 ---
 titleSuffix: Mécanisme de partage de code entre services dans le framework Gez
-description: Détails sur le mécanisme de liaison de modules dans le framework Gez, y compris le partage de code entre services, la gestion des dépendances et l'implémentation de la spécification ESM, pour aider les développeurs à construire des applications micro-frontend efficaces.
+description: Détails sur le mécanisme de liaison de modules dans le framework Gez, y compris le partage de code entre services, la gestion des dépendances et l'implémentation de la spécification ESM, aidant les développeurs à construire des applications micro-frontales efficaces.
 head:
   - - meta
     - property: keywords
@@ -9,14 +9,14 @@ head:
 
 # Liaison de modules
 
-Le framework Gez fournit un mécanisme complet de liaison de modules pour gérer le partage de code et les dépendances entre services. Ce mécanisme est basé sur la spécification ESM (ECMAScript Module) et prend en charge l'exportation et l'importation de modules au niveau du code source, ainsi qu'une gestion complète des dépendances.
+Le framework Gez fournit un mécanisme complet de liaison de modules pour gérer le partage de code et les relations de dépendance entre services. Ce mécanisme est basé sur la spécification ESM (ECMAScript Module) et prend en charge l'exportation et l'importation de modules au niveau du code source, ainsi qu'une gestion complète des dépendances.
 
 ### Concepts clés
 
 #### Exportation de modules
 L'exportation de modules est le processus d'exposition d'unités de code spécifiques (comme des composants, des fonctions utilitaires, etc.) d'un service au format ESM. Deux types d'exportation sont pris en charge :
 - **Exportation de code source** : Exportation directe des fichiers de code source du projet
-- **Exportation de dépendances** : Exportation des packages de dépendances tierces utilisés par le projet
+- **Exportation de dépendances** : Exportation des packages de dépendances tiers utilisés par le projet
 
 #### Importation de modules
 L'importation de modules est le processus de référencement d'unités de code exportées par d'autres services dans un service. Plusieurs méthodes d'installation sont prises en charge :
@@ -28,7 +28,7 @@ L'importation de modules est le processus de référencement d'unités de code e
 Pour optimiser les performances des services, Gez implémente un mécanisme intelligent de préchargement de modules :
 
 1. **Analyse des dépendances**
-   - Analyse des dépendances entre les composants lors de la construction
+   - Analyse des relations de dépendance entre les composants lors de la construction
    - Identification des modules critiques sur le chemin critique
    - Détermination de la priorité de chargement des modules
 
@@ -40,7 +40,7 @@ Pour optimiser les performances des services, Gez implémente un mécanisme inte
 3. **Optimisation des ressources**
    - Stratégie intelligente de découpage de code
    - Gestion du cache au niveau des modules
-   - Compilation et construction à la demande
+   - Compilation et packaging à la demande
 
 ## Exportation de modules
 
@@ -67,7 +67,7 @@ export default {
 
 La configuration d'exportation prend en charge deux types :
 - `root:*` : Exporter des fichiers de code source, chemin relatif à la racine du projet
-- `npm:*` : Exporter des dépendances tierces, nom du package directement spécifié
+- `npm:*` : Exporter des dépendances tierces, spécifiez directement le nom du package
 
 ## Importation de modules
 
@@ -82,9 +82,9 @@ export default {
     modules: {
         // Configuration des importations
         imports: {
-            // Installation de code source : pointer vers le répertoire des artefacts de construction
+            // Installation de code source : pointe vers le répertoire des artefacts de construction
             'ssr-remote': 'root:./node_modules/ssr-remote/dist',
-            // Installation de package : pointer vers le répertoire du package
+            // Installation de package : pointe vers le répertoire du package
             'other-remote': 'root:./node_modules/other-remote'
         },
         // Configuration des dépendances externes
@@ -98,13 +98,13 @@ export default {
 ```
 
 Explication des options de configuration :
-1. **imports** : Configurer le chemin local des modules distants
-   - Installation de code source : pointer vers le répertoire des artefacts de construction (dist)
-   - Installation de package : pointer directement vers le répertoire du package
+1. **imports** : Configure le chemin local des modules distants
+   - Installation de code source : pointe vers le répertoire des artefacts de construction (dist)
+   - Installation de package : pointe directement vers le répertoire du package
 
-2. **externals** : Configurer les dépendances externes
+2. **externals** : Configure les dépendances externes
    - Utilisé pour partager les dépendances des modules distants
-   - Éviter de construire plusieurs fois les mêmes dépendances
+   - Évite de packager plusieurs fois les mêmes dépendances
    - Prend en charge le partage de dépendances entre plusieurs modules
 
 ### Méthodes d'installation
@@ -178,7 +178,7 @@ export default {
         // Activer la construction
         enable: true,
 
-        // Configuration des sorties
+        // Configuration de sortie
         outputs: [
             'dist/client/versions/latest.tgz',
             'dist/client/versions/1.0.0.tgz'
@@ -190,14 +190,14 @@ export default {
             return pkg;
         },
 
-        // Traitement avant la construction
+        // Traitement avant construction
         onBefore: async (gez, pkg) => {
-            // Générer des déclarations de type
-            // Exécuter des tests
+            // Générer les déclarations de types
+            // Exécuter les tests
             // Mettre à jour la documentation, etc.
         },
 
-        // Traitement après la construction
+        // Traitement après construction
         onAfter: async (gez, pkg, file) => {
             // Téléverser sur CDN
             // Publier sur le dépôt npm
@@ -207,7 +207,7 @@ export default {
 } satisfies GezOptions;
 ```
 
-### Artefacts de construction
+### Artéfacts de construction
 
 ```
 your-app-name.tgz
@@ -247,16 +247,16 @@ npm publish dist/versions/your-app-name.tgz
 - **Stratégie de déploiement**
   - Utiliser NPM Registry ou un serveur statique
   - Assurer l'intégrité des artefacts de construction
-  - Mettre en place un mécanisme de déploiement progressif
+  - Mettre en œuvre un mécanisme de déploiement progressif
 
 - **Optimisation des performances**
-  - Configurer correctement le préchargement des ressources
+  - Configurer judicieusement le préchargement des ressources
   - Optimiser l'ordre de chargement des modules
-  - Mettre en place une stratégie de cache efficace
+  - Mettre en œuvre une stratégie de cache efficace
 
 ### Gestion des versions
 - **Conventions de version**
-  - Suivre la convention de version sémantique
+  - Suivre les conventions de version sémantique
   - Maintenir un journal de modifications détaillé
   - Effectuer des tests de compatibilité des versions
 

@@ -9,21 +9,21 @@ head:
 
 # Rendu côté client
 
-Le rendu côté client (Client-Side Rendering, CSR) est une technique d'exécution du rendu des pages côté navigateur. Dans Gez, lorsque votre application ne peut pas déployer une instance de serveur Node.js, vous pouvez choisir de générer un fichier `index.html` statique lors de la phase de construction pour réaliser un rendu purement côté client.
+Le rendu côté client (Client-Side Rendering, CSR) est une technique d'exécution du rendu des pages côté navigateur. Avec Gez, lorsque votre application ne peut pas déployer une instance de serveur Node.js, vous pouvez choisir de générer un fichier `index.html` statique lors de la phase de construction, pour réaliser un rendu purement côté client.
 
 ## Cas d'utilisation
 
 Les scénarios suivants recommandent l'utilisation du rendu côté client :
 
-- **Environnement d'hébergement statique** : comme GitHub Pages, CDN, etc., qui ne supportent pas le rendu côté serveur
-- **Applications simples** : petites applications pour lesquelles la vitesse de chargement initial et le SEO ne sont pas des priorités
-- **Environnement de développement** : pour prévisualiser et déboguer rapidement l'application pendant la phase de développement
+- **Environnements d'hébergement statique** : tels que GitHub Pages, CDN, etc., qui ne supportent pas le rendu côté serveur
+- **Applications simples** : petites applications où la vitesse de chargement initiale et le SEO ne sont pas des priorités
+- **Environnement de développement** : pour prévisualiser et déboguer rapidement l'application pendant le développement
 
 ## Configuration
 
 ### Configuration du modèle HTML
 
-En mode rendu côté client, vous devez configurer un modèle HTML générique. Ce modèle servira de conteneur pour l'application, incluant les références aux ressources nécessaires et le point de montage.
+En mode rendu côté client, vous devez configurer un modèle HTML générique. Ce modèle servira de conteneur pour l'application, incluant les références nécessaires aux ressources et le point de montage.
 
 ```ts title="src/entry.server.ts"
 import type { RenderContext } from '@gez/core';
@@ -54,7 +54,7 @@ export default async (rc: RenderContext) => {
 
 ### Génération de HTML statique
 
-Pour utiliser le rendu côté client en production, vous devez générer un fichier HTML statique lors de la phase de construction. Gez fournit une fonction de rappel `postBuild` pour réaliser cette fonctionnalité :
+Pour utiliser le rendu côté client en production, il est nécessaire de générer un fichier HTML statique lors de la phase de construction. Gez fournit une fonction de rappel `postBuild` pour réaliser cette fonctionnalité :
 
 ```ts title="src/entry.node.ts"
 import type { GezOptions } from '@gez/core';

@@ -1,15 +1,15 @@
 ---
-titleSuffix: Référence du fichier manifest de construction du framework Gez
-description: Détails sur la structure du fichier manifest de construction (manifest.json) du framework Gez, incluant la gestion des artefacts de construction, le mappage des fichiers exportés et les statistiques de ressources, pour aider les développeurs à comprendre et utiliser le système de construction.
+titleSuffix: Référence du fichier manifeste de construction du framework Gez
+description: Documentation détaillée sur la structure du fichier manifeste de construction (manifest.json) du framework Gez, incluant la gestion des artefacts de construction, le mappage des fichiers exportés et les statistiques de ressources, pour aider les développeurs à comprendre et utiliser le système de construction.
 head:
   - - meta
     - property: keywords
-      content: Gez, ManifestJson, Manifest de construction, Gestion des ressources, Artefacts de construction, Mappage des fichiers, API
+      content: Gez, ManifestJson, Manifeste de construction, Gestion des ressources, Artefacts de construction, Mappage de fichiers, API
 ---
 
 # ManifestJson
 
-`manifest.json` est un fichier manifest généré par le framework Gez lors du processus de construction, utilisé pour enregistrer les informations sur les artefacts de construction du service. Il fournit une interface unifiée pour gérer les artefacts de construction, les fichiers exportés et les statistiques de taille des ressources.
+`manifest.json` est un fichier manifeste généré par le framework Gez lors du processus de construction, utilisé pour enregistrer les informations sur les artefacts de construction du service. Il fournit une interface unifiée pour gérer les artefacts de construction, les fichiers exportés et les statistiques de taille des ressources.
 
 ```json title="dist/client/manifest.json"
 {
@@ -89,7 +89,7 @@ Liste complète des fichiers des artefacts de construction, incluant tous les ch
 
 - **Type**: `Record<string, ManifestJsonChunks>`
 
-Relation entre les fichiers sources et les artefacts de compilation, où la clé est le chemin du fichier source et la valeur est l'information de compilation.
+Relation entre les fichiers sources et les artefacts compilés, où la clé est le chemin du fichier source et la valeur est l'information de compilation.
 
 ### ManifestJsonChunks
 
@@ -106,7 +106,7 @@ interface ManifestJsonChunks {
 
 - **Type**: `string`
 
-Chemin du fichier JS compilé à partir du fichier source actuel.
+Chemin du fichier JS compilé pour le fichier source actuel.
 
 #### css
 
@@ -152,4 +152,4 @@ Taille du fichier CSS (en octets).
 
 - **Type**: `number`
 
-Taille du fichier de ressource (en octets).
+Taille des fichiers de ressources (en octets).

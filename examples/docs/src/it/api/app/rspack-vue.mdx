@@ -1,0 +1,171 @@
+---
+titleSuffix: Strumento di costruzione Vue per il framework Gez
+description: Lo strumento di costruzione dedicato a Vue per il framework Gez, che fornisce supporto completo per la creazione di applicazioni Vue 2/3, inclusi lo sviluppo di componenti, il rendering SSR e l'ottimizzazione delle prestazioni.
+head:
+  - - meta
+    - property: keywords
+      content: Gez, Rspack, Vue, Vue2, Vue3, SSR, strumento di costruzione, sviluppo di componenti, rendering lato server, ottimizzazione delle prestazioni
+---
+
+import { PackageManagerTabs } from '@theme';
+
+# @gez/rspack-vue
+
+Il pacchetto Rspack Vue fornisce un set di API per creare e configurare applicazioni Rspack basate sul framework Vue, supportando lo sviluppo di componenti Vue, la costruzione e il rendering lato server.
+
+## Installazione
+
+Installa `@gez/rspack-vue` come dipendenza di sviluppo utilizzando il gestore di pacchetti:
+
+<PackageManagerTabs command="install @gez/rspack-vue -D" />
+
+## Esportazione dei tipi
+
+### BuildTarget
+
+```ts
+type BuildTarget = 'node' | 'client' | 'server'
+```
+
+Tipo di ambiente di costruzione, che definisce l'ambiente di destinazione per la costruzione dell'applicazione, utilizzato per configurare ottimizzazioni e funzionalità specifiche durante il processo di costruzione:
+- `node`: Costruisce il codice per l'esecuzione in ambiente Node.js
+- `client`: Costruisce il codice per l'esecuzione in ambiente browser
+- `server`: Costruisce il codice per l'esecuzione in ambiente server
+
+### RspackAppConfigContext
+
+```ts
+interface RspackAppConfigContext {
+  gez: Gez
+  buildTarget: BuildTarget
+  config: RspackOptions
+  options: RspackAppOptions
+}
+```
+
+Interfaccia del contesto di configurazione dell'applicazione Rspack, che fornisce informazioni contestuali accessibili nelle funzioni di hook di configurazione:
+- `gez`: Istanza del framework Gez
+- `buildTarget`: Obiettivo di costruzione corrente (client/server/node)
+- `config`: Oggetto di configurazione Rspack
+- `options`: Opzioni di configurazione dell'applicazione
+
+### RspackAppOptions
+
+```ts
+interface RspackAppOptions {
+  css?: 'css' | 'style'
+  loaders?: {
+    styleLoader?: string
+  }
+  styleLoader?: Record<string, any>
+  cssLoader?: Record<string, any>
+  target?: {
+    web?: string[]
+    node?: string[]
+  }
+  definePlugin?: Record<string, any>
+  config?: (context: RspackAppConfigContext) => void | Promise<void>
+}
+```
+
+Interfaccia delle opzioni di configurazione dell'applicazione Rspack:
+- `css`: Modalità di output CSS, opzioni 'css' (file separato) o 'style' (stile inline)
+- `loaders`: Configurazione personalizzata dei loader
+- `styleLoader`: Opzioni di configurazione per style-loader
+- `cssLoader`: Opzioni di configurazione per css-loader
+- `target`: Configurazione della compatibilità degli obiettivi di costruzione
+- `definePlugin`: Definizione di costanti globali
+- `config`: Funzione di hook di configurazione
+
+### RspackHtmlAppOptions
+
+Eredita da `RspackAppOptions`, utilizzato per configurare opzioni specifiche per le applicazioni HTML.
+
+## Esportazione delle funzioni
+
+### createRspackApp
+
+```ts
+function createRspackApp(gez: Gez, options?: RspackAppOptions): Promise<App>
+```
+
+Crea un'istanza standard di un'applicazione Rspack.
+
+**Parametri:**
+- `gez`: Istanza del framework Gez
+- `options`: Opzioni di configurazione dell'applicazione Rspack
+
+**Valore restituito:**
+- Restituisce una Promise che si risolve nell'istanza dell'applicazione creata
+
+### createRspackHtmlApp
+
+```ts
+function createRspackHtmlApp(gez: Gez, options?: RspackHtmlAppOptions): Promise<App>
+```
+
+Crea un'istanza di un'applicazione Rspack di tipo HTML.
+
+**Parametri:**
+- `gez`: Istanza del framework Gez
+- `options`: Opzioni di configurazione dell'applicazione HTML
+
+**Valore restituito:**
+- Restituisce una Promise che si risolve nell'istanza dell'applicazione HTML creata
+
+## Esportazione delle costanti
+### RSPACK_LOADER
+
+```ts
+const RSPACK_LOADER: Record<string, string> = {
+  builtinSwcLoader: 'builtin:swc-loader',
+  lightningcssLoader: 'builtin:lightningcss-loader',
+  styleLoader: 'style-loader',
+  cssLoader: 'css-loader',
+  lessLoader: 'less-loader',
+  styleResourcesLoader: 'style-resources-loader',
+  workerRspackLoader: 'worker-rspack-loader'
+}
+```
+
+Oggetto di mappatura degli identificatori dei loader integrati in Rspack, che fornisce costanti per i nomi dei loader più comuni:
+
+- `builtinSwcLoader`: Loader SWC integrato in Rspack, utilizzato per elaborare file TypeScript/JavaScript
+- `lightningcssLoader`: Loader lightningcss integrato in Rspack, utilizzato per elaborare file CSS con un compilatore ad alte prestazioni
+- `styleLoader`: Loader utilizzato per iniettare CSS nel DOM
+- `cssLoader`: Loader utilizzato per analizzare file CSS e gestire la modularizzazione CSS
+- `lessLoader`: Loader utilizzato per compilare file Less in CSS
+- `styleResourcesLoader`: Loader utilizzato per importare automaticamente risorse di stile globali (come variabili, mixins)
+- `workerRspackLoader`: Loader utilizzato per elaborare file Web Worker
+
+Utilizzando queste costanti, è possibile fare riferimento ai loader integrati nella configurazione, evitando di inserire manualmente stringhe:
+
+```ts title="src/entry.node.ts"
+import { RSPACK_LOADER } from '@gez/rspack';
+
+export default {
+  async devApp(gez) {
+    return import('@gez/rspack').then((m) =>
+      m.createRspackHtmlApp(gez, {
+        loaders: {
+          // Utilizzo delle costanti per fare riferimento ai loader
+          styleLoader: RSPACK_LOADER.styleLoader,
+          cssLoader: RSPACK_LOADER.cssLoader,
+          lightningcssLoader: RSPACK_LOADER.lightningcssLoader
+        }
+      })
+    );
+  }
+};
+```
+
+**Note:**
+- Questi loader sono già integrati in Rspack e non richiedono installazioni aggiuntive
+- Quando si configura un loader personalizzato, è possibile utilizzare queste costanti per sostituire l'implementazione predefinita del loader
+- Alcuni loader (come `builtinSwcLoader`) hanno opzioni di configurazione specifiche, consultare la documentazione di configurazione pertinente
+
+## Esportazione dei moduli
+
+### rspack
+
+Riesporta tutti i contenuti del pacchetto `@rspack/core`, fornendo funzionalità complete del core di Rspack.
