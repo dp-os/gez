@@ -17,7 +17,7 @@
 
 <p align="center">
   📚 <b>文档：</b>
-  <a href="https://www.jsesm.com/zh/">简体中文</a> | 
+  <a href="https://www.jsesm.com">简体中文</a> | 
   <a href="https://www.jsesm.com/en/">English</a> | 
   <a href="https://www.jsesm.com/es/">Español</a> | 
   <a href="https://www.jsesm.com/ja/">日本語</a> | 
