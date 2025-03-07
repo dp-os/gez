@@ -25,7 +25,12 @@
   <a href="https://www.jsesm.com/ru/">Русский</a> | 
   <a href="https://www.jsesm.com/ja/">日本語</a> | 
   <a href="https://www.jsesm.com/fr/">Français</a> | 
-  <a href="https://www.jsesm.com/ko/">한국어</a>
+  <a href="https://www.jsesm.com/ko/">한국어</a> | 
+  <a href="https://www.jsesm.com/de/">Deutsch</a> | 
+  <a href="https://www.jsesm.com/it/">Italiano</a> | 
+  <a href="https://www.jsesm.com/hi/">हिन्दी</a> | 
+  <a href="https://www.jsesm.com/tr/">Türkçe</a> | 
+  <a href="https://www.jsesm.com/vi/">Tiếng Việt</a>
 </p>
 
 ## 💫 拥抱现代微前端
